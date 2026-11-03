@@ -51,9 +51,28 @@ audit, and independent correspondence review before promotion.
   It proves the first-step law and identifies arbitrary prefixes with Mathlib's
   iterated history-kernel construction. Its identification with the project's
   finite path law is currently established for one stage only. The general
-  finite-prefix bridge, forced-first-action law, and infinite expected reward
-  remain open. The [independent review](critic-infinite-trajectory.md) checks
-  the law and the history/next-step distribution.
+  finite-prefix bridge remains open. The
+  [independent review](critic-infinite-trajectory.md) checks the law and the
+  history/next-step distribution.
+- `Formalization/MDP/InfinitePrefix.lean` proves the exact policy-transition
+  product for every finite singleton cylinder; its equality with the separately
+  defined finite-path law is still to prove. See the
+  [independent review](critic-infinite-prefix.md).
+- `Formalization/MDP/ForcedActionTrajectory.lean` constructs the actual
+  first-action intervention, including zero-policy-mass actions, with the
+  original policy governing all subsequent steps. See the
+  [independent review](critic-forced-action.md).
+- `Formalization/MDP/ForcedActionReturn.lean` defines the corresponding actual
+  infinite Q-return expectation and proves its integrability, geometric bounds,
+  and convergence of expected partial sums. See the
+  [independent review](critic-forced-return.md). Its Bellman fixed-point
+  identity and V–Q averaging relation are still open.
+- `Formalization/MDP/InfiniteReturn.lean` defines the actual infinite discounted
+  return and its expectation under that path law, and proves measurability,
+  integrability, the geometric bound, and convergence of expected partial sums.
+  The [independent review](critic-infinite-return.md) records the still-open
+  bridge from those sums to the separately constructed finite trajectory law
+  and thus to the Bellman fixed point.
 - `Formalization/Probability/Variance.lean` proves the source's exact finite
   transition-variance perturbation bound, Lemma 2.2. See its independent
   [scoped review](critic-variance-review.md).
@@ -61,14 +80,19 @@ audit, and independent correspondence review before promotion.
   pinned Mathlib route for Hoeffding and the additional work needed for
   variance-sensitive Bernstein, random test families, and strict probabilities.
   Neither source concentration lemma has yet been proved.
+- `Formalization/Probability/EmpiricalRow.lean` constructs actual iid finite
+  transition-row samples and normalized empirical frequencies for positive
+  sample count, proves the sample-mean identity, and proves unbiasedness.
+  The [independent review](critic-empirical-row.md) records this scope. This is
+  a prerequisite, not a proof of either concentration lemma.
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
   [SOURCE-ISSUES.md](SOURCE-ISSUES.md) for the source review, including a
   one-state counterexample under the known-reward convention and the pending
   Lean bridge to the full statistical theorem.
-- The current pinned Lean integration compiled seventeen project modules; its
-  transitive axiom audit checked 424 project declarations, allowing only
+- The current pinned Lean integration compiled twenty-two project modules; its
+  transitive axiom audit checked 498 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
