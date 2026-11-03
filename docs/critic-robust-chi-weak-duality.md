@@ -15,9 +15,14 @@ source macro `\ror` expands to `\sigma`, so the radius in the feasible ball
 and the scalar objective is the same. See the χ² branch of
 [`lemma:dual-form`](../source/upstream/tex/chapters/robust_RL.tex#L303).
 
-This is a pointwise weak inequality. It does not establish the reverse
+The [weak bridge](../Formalization/RobustRL/ChiSquaredPrimalDualWeakBridge.lean)
+also compares the supremum over the source interval to the infimum over
+feasible rows; its focused, working-tree and clean-copy compilation and
+axiom checks passed. Neither result establishes the reverse
 inequality, attainment of the scalar maximum, or the full source equality.
-The theorem's focused axiom probe passed, and the working-tree and separate
-clean-copy checks compiled all 384 project Lean modules on identical source
-hashes and audited 4,599 declarations, allowing only `propext`,
-`Classical.choice`, and `Quot.sound`.
+Before the bridge was added, the pointwise theorem's focused axiom probe
+passed, and working-tree and separate clean-copy checks compiled all 384
+then-current project Lean modules on identical source hashes. Subsequent
+working-tree and clean-copy checks including the bridge compiled 386 modules
+and audited 4,633 declarations, allowing only `propext`, `Classical.choice`,
+and `Quot.sound`.

@@ -23,14 +23,18 @@ empty. Choosing ε small enough also satisfies the sample-size upper bound for
 any fixed positive constant and any chosen positive integer sample count. The
 code in `Formalization/Obstructions/SingletonAction.lean` proves the relevant
 policy-evaluation equality and zero event measure for arbitrary extensional
-evaluation maps and confirms the cardinality inequality. It does not yet
-formalize the full sample experiment or its quantifier structure.
+evaluation maps and confirms the cardinality inequality. The
+[source-shaped experiment](../Formalization/Obstructions/Theorem37SingletonAction.lean)
+also supplies the actual row-product sampling law, trajectory-Q equality,
+and one estimator whose risk is zero for every compatible model. Its focused,
+working-tree and clean-copy compilation and axiom checks passed.
 
 **Status:** a contradiction under the standalone reading of the theorem was
 reconstructed from raw TeX and visually checked in the PDF. The scope of the
-preceding section's assumption, full formal encoding, and independent review remain
-open. Treat `A ≥ 2` as an explicit interpretive choice rather than silently
-introducing it or claiming an author-approved correction.
+preceding section's assumption and formal encoding of the full minimax theorem
+remain open. Treat `A ≥ 2` as an explicit interpretive choice rather than silently
+introducing it or claiming an author-approved correction. See the
+[source review](critic-theorem37-singleton-action-obstruction.md).
 
 ## Candidate C2: one state and known rewards in Theorem 3.7
 
@@ -263,3 +267,33 @@ chapter's positive-accuracy convention explicit. This is a scope and proof
 endpoint clarification, not a counterexample to the existential theorem at
 zero. The theorem already requires `S > 12` and constructs two actions, so the
 singleton-domain obstructions do not apply. See the [source review](critic-offline-lower-bound-domain.md).
+
+## Candidate C10: discount endpoint in the offline VI-LCB lemma
+
+**Source:** Lemma 6.2, `lem:monotone-contraction`,
+`offlineRL.tex:872–890`; its appendix proof uses `γ ≥ 1/2` at
+`offlineRL.tex:3341–3343`. The preliminary MDP definition permits
+`γ ∈ [0,1)`, and no narrower chapter-wide assumption was found before the
+lemma. The subsequent main Theorem 6.3 explicitly assumes `γ ≥ 1/2`.
+
+There is a source-level counterexample to the standalone lemma at `γ=0`.
+Take two states, one action, rewards `0.9` and `0.1`, and `N=2n` samples,
+with `n` visits to each state. Let the first empirical row be deterministic
+and the second have equal mass on the two states. These rows and counts are
+realizable by an offline dataset. Fix `δ ∈ (0,1)` and any `c_b > 0`, and
+write `κ = c_b log(N/δ)/n`. For sufficiently large even `n`, both `κ` and
+`5/N` are small enough that the following updates are untruncated.
+
+From `Q₀=0`, the penalty at both states is `d=2κ+5/N`, so
+`Q₁=(0.9−d, 0.1−d)`. Its second-row variance is `0.16`. For sufficiently
+small `κ`, the second state's next penalty is `0.4 sqrt(κ)+5/N > d`, so
+`Q₂` differs from `Q₁`. But the lemma's error bound at `τ=1`, `γ=0` is zero:
+it would force `Q₁` to be the fixed point and hence `Q₂=Q₁`. Its separate
+iteration threshold also contains `log(1/γ)`, which needs an endpoint
+interpretation at `γ=0`.
+
+This is an independently checked mathematical counterexample, not yet a Lean
+proof or author-approved erratum. Restricting the helper to the main theorem's
+`γ ≥ 1/2` domain avoids this example and matches the cited appendix step; it
+is not by itself a formal proof of the restricted lemma. The example does not
+refute Theorem 6.3, whose displayed assumptions exclude `γ=0`.

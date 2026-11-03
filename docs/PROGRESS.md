@@ -8,6 +8,20 @@ audit, and independent correspondence review before promotion.
 
 ## Current checked infrastructure
 
+- A source-level counterexample at `γ=0` shows that the standalone offline
+  VI-LCB iteration bound cannot hold on the full preliminary discount domain.
+  This example has not yet been formalized in Lean. The main offline theorem
+  assumes `γ ≥ 1/2` and is not refuted. See [source issue C10](SOURCE-ISSUES.md).
+- A singleton-action generative experiment gives one estimator with zero
+  trajectory-Q loss under the actual sampling law for every compatible model.
+  It is a conditional obstruction to the literal displayed domain of Theorem
+  3.7(i); whether an earlier `A ≥ 2` convention carries forward is unresolved.
+  The focused, working-tree and clean-copy checks passed.
+  See the [source review](critic-theorem37-singleton-action-obstruction.md).
+- A χ² weak-duality bridge lifts the pointwise clipped inequality to a
+  comparison of the scalar supremum and the infimum over feasible rows. It
+  passed focused, working-tree and clean-copy compilation and axiom audits.
+  The reverse inequality and maximum attainment remain open.
 - The standalone TD step-size counterexample and the pointwise χ² weak-duality
   helper have passed focused, working-tree and clean-copy compilation and
   axiom audits. They do not prove the main TD theorem or the full
@@ -683,8 +697,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled 384 project modules; its
-  transitive axiom audit checked 4,599 project declarations, allowing only
+- The current pinned Lean integration compiled 386 project modules; its
+  transitive axiom audit checked 4,633 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. A separate clean-copy check
   passed on the same source hashes. These checks do not replace
   source review. Current builder work and independent critic findings are
