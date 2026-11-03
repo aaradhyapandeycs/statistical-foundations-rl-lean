@@ -279,7 +279,7 @@ audit, and independent correspondence review before promotion.
 - Finite-horizon residual accumulation and optimal-policy transfer prove
   deterministic value and forced-action Q error bounds for every exact
   suffix-optimal empirical policy under a shared residual envelope.
-  The all-stage probability event and sharp sample bound remain open; see
+  The full source sample-threshold conversion remains open; see
   the [independent review](critic-finite-horizon-residual-accumulation.md).
 - The source TD bounded-iterates lemma is proved pathwise for the actual
   synchronous update and actual trajectory value. Its convergence theorem remains open; see the [independent review](critic-td-iterate-bounds.md).
@@ -314,6 +314,10 @@ audit, and independent correspondence review before promotion.
   policy and the causal backward-greedy empirical selector, with an
   explicit confidence factor. Arbitrary globally selected ties and
   the final source rate remain open; see [review](critic-finite-horizon-all-level-bernstein.md).
+- The causal finite-horizon planner has simultaneous all-stage V and Q
+  bounds with explicit confidence, sample condition and radius. The
+  printed sample-threshold/log conversion and arbitrary global ties
+  remain open; see [review](critic-finite-horizon-same-data-performance.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -504,8 +508,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred seventy-one project modules; its
-  transitive axiom audit checked 2522 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred seventy-four project modules; its
+  transitive axiom audit checked 2565 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
