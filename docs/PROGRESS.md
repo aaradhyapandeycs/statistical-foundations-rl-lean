@@ -265,6 +265,16 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/GenerativeLowerBoundParameters.lean` proves
+  scalar hard-instance parameter estimates, and `GenerativeLowerBoundBernoulli.lean`
+  proves the corresponding scalar Bernoulli divergence bound. The actual
+  product experiment and testing lower bound remain separate; see the
+  [parameter review](critic-generative-lower-bound-parameters.md) and
+  [Bernoulli review](critic-generative-lower-bound-bernoulli.md).
+- `Formalization/Probability/FreedmanVariancePeeling.lean` proves the
+  deterministic dyadic cover and radius comparison used in the source
+  Freedman argument; the stochastic martingale tail remains open.
+  See the [independent review](critic-freedman-variance-peeling.md).
 - `Formalization/Generative/PolicyLearningMainSample.lean` proves the
   source model-based policy-learning Theorem 3.2, with universal constant
   10240, the printed N-dependent logarithm, actual product sampling, and
@@ -392,8 +402,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled ninety-three project modules; its
-  transitive axiom audit checked 1786 project declarations, allowing only
+- The current pinned Lean integration compiled ninety-six project modules; its
+  transitive axiom audit checked 1811 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

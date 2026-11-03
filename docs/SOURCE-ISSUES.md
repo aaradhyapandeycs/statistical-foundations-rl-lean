@@ -110,3 +110,18 @@ This repair does not by itself justify each intermediate bound under the weaker
 threshold. The independent [mathematical review](critic-policy-evaluation-sample-constant.md)
 checks the argument and the strict-probability issue; full formal integration
 of the repair and the sharp statistical theorem remain separate obligations.
+
+## Candidate C4: strictness in the two-state testing reduction
+
+**Source:** `chapters/generative_model_model_based.tex:1790–1835`, with the
+claimed strict error conclusion at `:1551–1555`. The displayed lower bound
+`p_e ≥ 0.1` and contradiction from both success probabilities `> 0.9` alone
+yield only that some error probability is `≥ 0.1`, whereas the conclusion
+uses `> 0.1`. This is an omitted strictness step, not a counterexample.
+
+The stronger Pinsker branch retains enough slack: under the source bound
+`β ≤ 0.9`, `(1−√(β/2))/2 > 0.1`. Using that strict testing bound and assuming
+both estimation errors are at most 0.1 gives the intended contradiction.
+The [source analysis and independent mathematical check](source-generative-lower-bound-testing-bottleneck.md)
+record the argument. Formalizing the actual testing inequality and this
+strictness transfer remains open.
