@@ -53,11 +53,15 @@ and checked in an [independent review](critic-one-state-parameters.md). The cons
 greedy policy for the Bellman fixed points; the trajectory and experiment
 bridges below extend the evidence to actual infinite trajectories and a
 one-sample generative experiment. An [independent Lean review](critic-one-state-lean-review.md)
-checks the original Bellman-level claims. Exact equivalence between the encoded
-negation and every source estimator and policy convention remains unresolved,
-so this is not presented as a complete Lean refutation of the printed theorem.
-`S ≥ 2` excludes this example but is not asserted sufficient for the original
-result. No author-approved correction or ruling is assumed.
+checks the original Bellman-level claims. Two independent source readers have
+now checked that this deterministic estimator uses only the known reward and
+discount permitted by the manuscript;
+see the [source-interface review](critic-theorem37-one-state-source-interface.md).
+Under those conventions it contradicts the displayed domain of part (ii).
+Equivalence between every possible estimator convention and the entire encoded
+predicate remains separate, as does the authors' intended domain. `S ≥ 2`
+excludes this example but is not asserted sufficient for the original result.
+No author-approved correction or ruling is assumed.
 
 ## Candidate repair of Theorem 3.7
 
@@ -68,28 +72,42 @@ It also repairs an incorrect expression for the optimal Q-value after a
 suboptimal first action, the source's hypothesis count in its Fano step, and
 the policy decoder. A separate [mathematical check](critic-theorem37-correction-independent.md)
 reproduces the probability bounds and constants; a further [independent audit](critic-theorem37-final-audit.md) checks the model and estimator quantifiers. This is a proposed replacement,
-not an author-approved erratum or a completed Lean proof; the full statistical
-experiment and its testing reductions still need formal verification. The
+not an author-approved erratum or a Lean proof of that particular common
+constant. Separate Lean-verified results use the smaller common constant
+`1/32768`, as described below. The
 [one-state trajectory bridge](../Formalization/Obstructions/OneStateTrajectory.lean)
 proves exactness of a fixed known-reward estimator and its zero error under
 any data law ([review](critic-one-state-trajectory.md)). The
 [one-state experiment](../Formalization/Obstructions/OneStateExperiment.lean)
 constructs actual independent samples and packages the uniform estimator and
 feasible parameters ([review](critic-one-state-experiment.md)); [Theorem37Negation.lean](../Formalization/Obstructions/Theorem37Negation.lean)
-negates an encoded source-facing version; its estimator-interface and policy
-interpretations are not certified as exactly equivalent to the source ([audit](critic-theorem37-negation.md)). The
-[policy experiment](../Formalization/Obstructions/OneStatePolicyExperiment.lean)
+negates an encoded source-facing version. Its one-state deterministic
+estimator's known inputs have since been independently compared with the source
+([review](critic-theorem37-one-state-source-interface.md)); equivalence of all
+possible estimator and policy conventions remains separate
+([audit](critic-theorem37-negation.md)). The [policy experiment](../Formalization/Obstructions/OneStatePolicyExperiment.lean)
 likewise gives a measurable reward-greedy estimator with zero actual Q loss
 ([review](critic-one-state-policy-experiment.md)). The
 correct two-state Bellman values and source-range policy loss are proved in
 [HardMDP.lean](../Formalization/Obstructions/HardMDP.lean), with an
 [independent review](critic-hard-mdp.md). The separate
 [trajectory optimality result](../Formalization/MDP/OptimalTrajectoryValue.lean)
-applies to the stationary policy class. A separate [formalized corrected policy-risk result](../Formalization/Generative/GenerativeLowerBoundKernelQuarter.lean) now proves the source probability `≥1/4` on the explicit domain `S,A ≥ 2`, `SA ≥ 16`, with `c_N = 1/32768`, for randomized estimators selecting deterministic stationary policies. Its model is chosen after the estimator; the [independent review](critic-generative-lower-bound-kernel-quarter.md) records the scope and source comparison. A separate [formalized corrected Q-estimation result](../Formalization/Generative/GenerativeLowerBoundQMixtureFinalRandomized.lean) proves the same `≥1/4` probability for arbitrary randomized real-Q estimators on `S,A ≥ 2`, `SA ≥ 16`, with `c_N = 1/512`; see the [independent review](critic-generative-lower-bound-q-final-randomized.md). Neither result proves the wider printed domain or the earlier proposed `1/8192` constant for both parts.
+applies to the stationary policy class. A separate [formalized corrected policy-risk result](../Formalization/Generative/GenerativeLowerBoundKernelQuarter.lean) now proves the source probability `≥1/4` on the explicit domain `S,A ≥ 2`, `SA ≥ 16`, with `c_N = 1/32768`, for randomized estimators selecting deterministic stationary policies. Its model is chosen after the estimator; the [independent review](critic-generative-lower-bound-kernel-quarter.md) records the scope and source comparison. A separate [formalized corrected Q-estimation result](../Formalization/Generative/GenerativeLowerBoundQMixtureFinalRandomized.lean) proves the same `≥1/4` probability for arbitrary randomized real-Q estimators on `S,A ≥ 2`, `SA ≥ 16`, with `c_N = 1/512`; see the [independent review](critic-generative-lower-bound-q-final-randomized.md). Neither result proves the wider printed domain or the earlier proposed `1/8192` constant for both parts. A [combined restricted wrapper](../Formalization/Generative/GenerativeLowerBoundCombinedRisk.lean) uses one common constant `1/32768` for both clauses, preserving their separate hard-model witnesses. It has passed integrated and clean-copy compilation, the project axiom audit, and [independent source review](critic-generative-lower-bound-combined-correction.md).
 
-The initial review additionally records uncertainty over a confidence-radius
-scaling in Section 7.4 and a reward-convention conflict in Section 7.2. Those
-observations require further independent verification.
+The initial review additionally recorded a possible reward-convention conflict
+in the model-based algorithm subsection and a possible confidence/radius scaling issue in the chi-squared guarantees subsection.
+A subsequent source-only review ([Chapter 7 candidate review](source-review-robust-rl-chapter7-candidate-issues.md))
+found no source-internal reward conflict: the preliminaries make rewards known
+and deterministic, and the model-based algorithm subsection estimates only transitions while retaining
+the same reward. Compatibility of the cited TV guarantee with this known-reward
+setting remains a citation/proof question. The chi-squared guarantees subsection upper/lower factors
+and three radius regimes are algebraically consistent under the source macro
+`\ror=\sigma`; the separate planning-accuracy remark has a different
+logarithmic expression, but the source does not equate those logs. The upper
+and lower theorems' discount ranges differ, so their comparison applies on the
+intersection `γ ≥ 3/4`. The lower theorem does not explicitly state `ε > 0`,
+although its sample bound divides by `ε²`; a formal target needs that domain
+made explicit. No reward-convention or radius-scaling error has been established.
 
 ## Candidate C3: omitted sample-size case in policy evaluation proof
 
@@ -107,8 +125,13 @@ The printed final radius `3√(8β₁/((1−γ)³N))` is at least this bound whe
 range, while retaining the original high-sample argument and final constants.
 This repair does not by itself justify each intermediate bound under the weaker
 threshold. The independent [mathematical review](critic-policy-evaluation-sample-constant.md)
-checks the argument and the strict-probability issue; full formal integration
-of the repair and the sharp statistical theorem remain separate obligations.
+checks the argument and the strict-probability issue. The resulting
+[all-state source-radius repair](../Formalization/Generative/PolicyEvaluationGapRepairAllStates.lean)
+has passed focused compilation and an [independent source review](critic-policy-evaluation-source-gap-repair.md):
+it covers every `N > 0`, the actual policy-row sampling law, the source beta
+with `C₀ ≥ 8`, and the one-state boundary. Integrated and clean-copy builds
+and the project axiom audit passed. It does not establish each intermediate inequality
+under the weaker threshold or replace the separate sample-complexity theorem.
 
 ## Candidate C4: strictness in the two-state testing reduction
 
@@ -158,5 +181,61 @@ state-action-stage row. Each adaptive visit count is then covered without
 conditioning on that random count; a union over the row/prefix pairs may
 retain the factor 2. This requires a proved coupling between the pre-sampled
 successor streams and the actual online process, as well as an explicit
-zero-visit convention. Those steps have not yet been formalized or checked.
+zero-visit convention. Those steps have not yet been formally verified.
 
+## Candidate C7: degenerate domains in the robust chi-squared lower bound
+
+**Source:** Theorem 7.5, `thm:chi2-lower-bound`,
+`robust_RL.tex:461–480`. Its displayed assumptions do not explicitly exclude
+`A = 1` or `S = 1`, and do not state `ε > 0` despite division by `ε²`.
+
+For `A = 1`, every policy is the unique policy, so its robust value equals
+the robust optimum under every model. The strict positive-error event is
+empty, contradicting the printed positive minimax lower bound on a literal
+reading of the displayed domain. For example `S = 2`, `A = 1`, `γ = 3/4`,
+`σ = 1`, `N = 1`, and sufficiently small positive `ε` satisfy its numerical
+conditions for any positive constants. Under the known-reward convention,
+`S = 1` is also degenerate: the sole transition is known, and a
+reward-maximizing action is known. See the [source audit](critic-robust-chi-square-lower-bound-degenerate-domains.md)
+and [independent check](critic-robust-chi-square-lower-bound-degenerate-independent.md).
+
+A transparent proposed correction makes `S ≥ 2`, `A ≥ 2`, and `ε > 0`
+explicit. These exclusions address the displayed singleton cases; they do not
+prove the cited lower bound on the remaining domain. The source's general
+large-dimension discussion may indicate intended scope, but no numerical
+restriction appears in the theorem. This is not an author-approved erratum,
+and no complete Lean proof of the corrected robust theorem is claimed.
+
+## Candidate C8: undefined zero-visit bonus in UCBVI
+
+**Source:** Algorithm `alg:main-ucbvi`, `onlineRL.tex:285–345`, and its
+Bernstein bonus at lines 407–417. The algorithm initializes visit counts to
+zero and later computes the bonus for every state-action-stage row. The printed
+bonus divides by the count and does not specify a zero-count convention. Rows
+can remain unvisited, so this branch arises in the actual algorithm. The proof
+at lines 3311–3331 asserts `Q = H` for counts at most two.
+
+A proposed explicit convention is to leave `Q_h(s,a) = H` when its count is
+zero and retain the initialized uniform empirical row until the first visit;
+for positive counts, use the printed bonus and update unchanged. With the
+source's sufficiently large constants, counts one and two also saturate at
+`H`. This makes the small-count branch precise without changing observations
+or adding fictitious samples. An independent source review also checked the
+positive-count formula and the small-count constants ([review](critic-online-zero-count-convention.md)). The complete algorithm
+must use the updated count for a visited row, not its pre-episode count. This
+is an interpretation of the intended algorithm, not an author-approved
+correction. A scalar version has passed isolated compilation and an axiom
+check; its connection to the complete adaptive algorithm remains unverified.
+
+## Candidate C9: offline lower-bound accuracy endpoint
+
+The standalone offline minimax lower bound `thm:infinite-lwoer-bound`
+(`offlineRL.tex:2367–2402`) gives an upper bound on `ε` but does not restate
+`ε > 0`, although its sample threshold divides by `ε²`. The chapter's
+problem setup explicitly restricts accuracy to a positive range. Its displayed
+hard-instance proof uses a perturbation proportional to `ε` and degenerates at
+zero. A source-facing standalone declaration should therefore make the
+chapter's positive-accuracy convention explicit. This is a scope and proof
+endpoint clarification, not a counterexample to the existential theorem at
+zero. The theorem already requires `S > 12` and constructs two actions, so the
+singleton-domain obstructions do not apply. See the [source review](critic-offline-lower-bound-domain.md).

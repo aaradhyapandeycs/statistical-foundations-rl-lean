@@ -8,6 +8,16 @@ audit, and independent correspondence review before promotion.
 
 ## Current checked infrastructure
 
+- The policy-evaluation source-radius gap has an all-positive-sample repair
+  for every nonempty finite state space, using the actual sampling law and the
+  source beta with an explicit sufficient choice `C₀ ≥ 8`. The separate
+  sample-complexity theorem was already proved. See the
+  [source review](critic-policy-evaluation-source-gap-repair.md).
+- A combined proposed correction of the generative policy and Q lower bounds
+  uses the shared constant `1/32768` on the explicit restricted domain
+  `S,A ≥ 2`, `SA ≥ 16`. The two risk clauses may have different hard models.
+  See the [review](critic-generative-lower-bound-combined-correction.md); this
+  is not a proof of the original wider-domain statement.
 - A reproducible lexical inventory covers the active source include tree. It
   identifies 90 named theorem/lemma/claim environments, 17 algorithms, 1,381
   display environments, and numerous further candidate obligations. These are
@@ -462,8 +472,9 @@ audit, and independent correspondence review before promotion.
 - The corrected multi-hypothesis lower-bound infrastructure constructs the
   indexed MDP family, correct forced-action Q values and policy-loss decoder,
   and proves the actual indexed observation law and KL transport. Its
-  stronger hypotheses S,A≥2 are explicit; Fano and the corrected minimax
-  theorem remain open. See the [family review](critic-generative-lower-bound-family-mdp.md),
+  stronger hypotheses S,A≥2 are explicit. The Fano route remains a separate
+  obligation; corrected policy and Q risk results have since been proved by
+  their respective completed routes. See the [family review](critic-generative-lower-bound-family-mdp.md),
   [gap review](critic-generative-lower-bound-policy-gap.md), and
   [KL review](critic-generative-lower-bound-family-kl.md).
 - `Formalization/Generative/FiniteHorizonGenerativeSampling.lean` builds
@@ -643,9 +654,10 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled three hundred thirty-two project modules; its
-  transitive axiom audit checked 4099 project declarations, allowing only
-  `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
+- The current pinned Lean integration compiled 337 project modules; its
+  transitive axiom audit checked 4,116 project declarations, allowing only
+  `propext`, `Classical.choice`, and `Quot.sound`. A separate clean-copy check
+  passed on the same source hashes. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
 - The [trajectory critic review](critic-trajectory-review.md) checked path

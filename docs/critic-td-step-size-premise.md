@@ -1,6 +1,6 @@
 # Source review: TD step-size lemma omits an essential premise
 
-Reviewed `lemma:TD-step-size` at `source/upstream/tex/chapters/generative_model_model_free.tex:317–327` and its appendix proof at lines 2288–2320. Source SHA-256: `b7e7abfb2c2cb2c0dd82470db5ecac3a67d7163682246d499935d9130214ac4d`. This is a source/math review; no Lean lemma for this result is currently staged and no compiler was used.
+Reviewed `lemma:TD-step-size` at `source/upstream/tex/chapters/generative_model_model_free.tex:317–327` and its appendix proof at lines 2288–2320. Source SHA-256: `7f4eb058e00480bc0694cac93ac41e22f4cfe48aa58a00c4ccf909f805e60b22`. This was a source/math review; no compiler was used in the review. The corrected standalone estimate and its application under the main sample budget have since been formalized in [TDStepSizeLate.lean](../Formalization/ModelFree/TDStepSizeLate.lean) and [TDStepSizeBudget.lean](../Formalization/ModelFree/TDStepSizeBudget.lean).
 
 ## Premise gap and counterexample
 
