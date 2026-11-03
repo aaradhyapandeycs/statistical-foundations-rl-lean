@@ -145,7 +145,12 @@ audit, and independent correspondence review before promotion.
   measurable space from injective Borel tuples and proves the source-radius
   strict bound under unordered-family/empirical-row independence. Equality
   with other hyperspace σ-algebras and a full source declaration audit remain
-  separate; see the [independent review](critic-random-family-borel.md).
+  separate; see the [independent review](critic-random-family-borel.md) and
+  [source correspondence](source-hoeffding-correspondence.md).
+- `Formalization/Probability/EmpiricalBernstein.lean` proves the actual iid
+  empirical mean variance, zero-variance case and a variance-sensitive
+  exponential tail with constants weaker than the source. The source Bernstein
+  lemma remains open; see the [independent review](critic-empirical-bernstein.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
@@ -158,8 +163,8 @@ audit, and independent correspondence review before promotion.
   also checks a rational counterexample to the printed intermediate Q formula.
   Stationary optimal trajectory semantics are addressed separately; the full
   statistical lower bound remains open.
-- The current pinned Lean integration compiled thirty-five project modules; its
-  transitive axiom audit checked 871 project declarations, allowing only
+- The current pinned Lean integration compiled thirty-six project modules; its
+  transitive axiom audit checked 906 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

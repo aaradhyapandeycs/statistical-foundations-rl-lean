@@ -1,0 +1,44 @@
+# Source correspondence: Lemma 2.4 (Hoeffding)
+
+**Scoped verdict.** `StatisticalRL.FiniteDistribution.randomBorelFamily_empiricalRow_success_gt` proves the displayed strict-probability conclusion for the source's positive-sample, finite-state iid row model, with random unordered finite families interpreted using the explicitly constructed finite-enumeration σ-algebra. The source leaves that measurable-space choice implicit. This is a source/statement comparison, not an author-approved frozen declaration, a claim that a particular hyperspace σ-algebra has been identified, or a whole-paper completion claim.
+
+The author of this audit previously authored the imported random-family module and reviewed the Borel-family module. Thus this is not independent certification of those earlier implementation steps; see the separate independent dependency review `docs/critic-empirical-hoeffding-random-family.md`, and the detailed Borel review `docs/critic-random-family-borel.md`.
+
+## Source and exact comparison
+
+Pinned source: `source/upstream/tex/chapters/prelim.tex:916–927` defines N iid observations of one transition row and empirical frequencies. The lemma at lines 939–949 has label `lem:Hoeffding-prelim`, display `eq:Hoeffding-Psa-prelim`: for a fixed (s,a), finite `𝒱 ⊆ ℝ₊^S` independent of `P̂_sa`, and `0<δ<1`, the simultaneous bound has probability **greater than** `1−δ`:
+
+`|(P̂_sa−P_sa)V| ≤ √(‖V‖∞² log(2|𝒱|/δ)/(2N))` for all `V∈𝒱`.
+
+All declaration names below are in namespace `StatisticalRL.FiniteDistribution`, unless otherwise indicated.
+
+| Source component | Exact Lean representation and assessment |
+| --- | --- |
+| Fixed (s,a), finite S | Arbitrary `[Fintype State]` and `d : FiniteDistribution State` represent one normalized transition row. Apply to the actual transition row of any fixed pair. No action index is needed in this one-row theorem, and it makes no simultaneous claim over all rows. A finite distribution cannot exist on an empty state carrier; otherwise arbitrary finite labels are allowed. |
+| N iid observations of that row | `rowMeasure` is the law of `d`; `sampleMeasure N` is the N-fold product of this law, with coordinates indexed by `Fin N` rather than source indices 1 through N. `sampleMeasure_coordinate` and `sampleMeasure_independent` prove the correct marginal and mutual independence. The result permits an arbitrary probability space and measurable `draw : Ω → Fin N → State` with `μ.map draw = d.sampleMeasure N`, the actual joint iid law. A separate temporary compiled probe derived this equality from Mathlib `iIndepFun_iff_map_fun_eq_pi_map`, coordinate a.e. measurability, mutual independence, and the individual row marginals; this bridge has not been added as an exported project theorem. Source random variables conventionally are measurable, which also supplies the theorem's measurable `draw` by finite-coordinate measurability. |
+| Empirical frequency and row evaluation | `empiricalRow N hN` is the actual normalized count of each state. `empiricalRow_expectation` identifies its evaluation with the empirical mean. `d.expectation V` is the true finite row expectation, and `rowMeasure_integral` identifies it with integration. Thus the displayed difference is exactly `(P̂−P)V`. |
+| Finite nonnegative random family | `family : Ω → Finset (State → ℝ)` permits any finite family, with outcome-dependent size and no fixed size bound; `hV` requires its vectors coordinatewise nonnegative almost everywhere, enough for the probabilistic conclusion. This is no stronger than the source's usual almost-sure interpretation. A constant family is a specialization. |
+| Family measurability and independence | `finiteFamilyBorel` is the final σ-algebra of injective finite Borel enumerations after forgetting order. `enumerationFamily_surjective` includes every finite set, and `finiteFamilyBorel_measurableSet_iff` states the exact measurable-preimage characterization. `hfamily` requires this measurable unordered family. `hindep` requires independence of that unordered family and the **empirical row** in the coordinate σ-algebra `rowVectorSpace`, not independence of a chosen enumeration or the ordered sample. This is a precise interpretation of the source's otherwise unspecified random-set measurability; equality with any separately defined hyperspace σ-algebra has not been proved. |
+| Infinity norm and numerical radius | The output uses `Real.sqrt (‖V‖ ^ 2 * Real.log (2 * (family ω).card / δ) / (2 * N))`, matching the source expression with real coercions. A compiled probe confirmed `‖V‖ ≤ B ↔ ∀s, |V s| ≤ B` for nonnegative B, and inferred `BorelSpace (State → ℝ)`: the Pi norm is the finite sup norm and vector coordinates carry their usual Borel interpretation. `familyRadius_eq_source` checks the algebraic normalization used by the deterministic-family proof. |
+| Confidence and conclusion | The theorem takes `0<δ` and `δ<1`, exactly the source's endpoints, and returns `1−δ < μ.real {ω | ∀ V ∈ family ω, …}`. Both strict probability and non-strict vector inequality agree, including the simultaneous, outcome-dependent quantification. `μ` is a probability measure, so `μ.real` is its real-valued event probability. |
+| N=0 | Lean requires `hN : 0<N`. The source does not explicitly state this endpoint, but its empirical-frequency and radius formulas divide by N. The displayed source formulas have no standard meaning at N=0 without an additional convention. This is an explicit interpretation boundary, not a claim that the source proves the N=0 case. |
+| Empty family and zero vectors | The Lean simultaneous event is vacuous on an empty family and the strict probability bound remains true; `empiricalRow_empty_family_success` handles the deterministic case. The source's logarithm at `|𝒱|=0` is not assigned a convention, although no vector belongs to an empty family to require evaluating the bound. Lean's `Real.log` is total; this implementation does not settle the author's intended empty-family convention. Zero vectors have exact zero deviation (`empiricalRow_norm_zero_deviation`) and are included, not excluded by a positive-norm hypothesis. |
+
+## Evidence through the probability chain
+
+`empiricalRow_hoeffding_norm` supplies the fixed-vector tail estimate under the actual row product law. `familyViolation_lt` and `empiricalRow_family_success_gt` establish the finite-family **strict** inequality, with finite sample support supplying a positive gap for an actual violation and separate zero/empty handling. `empiricalRowLaw_familyBad_lt`, `product_supportedFamilyBad_lt`, and `randomFiniteFamily_empiricalRow_success_gt_vectorSigma` extend it to an actual joint probability model using independence of the family and empirical row. The final Borel theorem obtains the required test measurability from `familyTestSpace_le_finiteFamilyBorel`; it transfers independence via the measurable identity on unordered families. Neither success nor a tail bound is a theorem premise.
+
+A prior independent probe of the Borel theorem constructed a fair-coin random family which chooses between the empty family and the singleton zero vector, on a product with the actual row-sampling law, and checked measurable varying cardinality, independence and theorem application. This demonstrates nonconstant-family applicability; because the vectors in that example are zero, it is not a numerical concentration experiment.
+
+For the present audit, the **exact integrated source text** `Formalization/Probability/RandomFamilyBorel.lean` was copied to a temporary file and compiled with the iid-to-product and sup-norm/Borel probes appended. It passed. `#print axioms` of `randomBorelFamily_empiricalRow_success_gt` reported only `propext`, `Classical.choice`, and `Quot.sound`. At probe time the integrated Borel `.olean` was not yet available, so this verifies the source copy against the compiled imports; it does not replace a later integrated build. The separate earlier review also checked supporting declarations and their axioms.
+
+## Identity of compared sources
+
+SHA-256:
+
+- `source/upstream/tex/chapters/prelim.tex`: `2d27bb720d49020ce1d3ea362b1678a90c6208882accca90fef21c25e42031a5`.
+- `.local/RandomFamilyBorel.lean` and `Formalization/Probability/RandomFamilyBorel.lean`: `1bda21b0bac900dc0dec5db6cef949dfc99a745dff4cce14f2a1a0732c57d335`.
+- `Formalization/Probability/EmpiricalHoeffdingRandomFamily.lean`: `d5434c422e8535a134cedf7a5ff66c8ad8db0f49c77c3c018b26ec52b26f5fa6`.
+- `Formalization/Probability/EmpiricalHoeffdingFamily.lean`: `0b8bf547984a749623012f9a6a19ffe92ffa9c10f8a69d6b4abf139c794dc12d`.
+- `Formalization/Probability/EmpiricalHoeffding.lean`: `fd8be9002c7e5c6e418461818e7842c96520ca604e10e466f8431b1307798b55`.
+- `Formalization/Probability/EmpiricalRow.lean`: `6e87c90ff1150f7053845acff92d60a5c35035c7a78adcd394e0da5f3d9dc154`.

@@ -31,3 +31,4 @@ import Formalization.Probability.EmpiricalHoeffding
 import Formalization.Probability.EmpiricalHoeffdingFamily
 import Formalization.Probability.EmpiricalHoeffdingRandomFamily
 import Formalization.Probability.RandomFamilyBorel
+import Formalization.Probability.EmpiricalBernstein

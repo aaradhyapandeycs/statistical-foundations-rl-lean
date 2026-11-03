@@ -66,7 +66,7 @@ A [proposed correction](critic-theorem37-correction.md) adds `S ≥ 2` and
 It also repairs an incorrect expression for the optimal Q-value after a
 suboptimal first action, the source's hypothesis count in its Fano step, and
 the policy decoder. A separate [mathematical check](critic-theorem37-correction-independent.md)
-reproduces the probability bounds and constants. This is a proposed replacement,
+reproduces the probability bounds and constants; a further [independent audit](critic-theorem37-final-audit.md) checks the model and estimator quantifiers. This is a proposed replacement,
 not an author-approved erratum or a completed Lean proof; the full statistical
 experiment and its testing reductions still need formal verification. The
 correct two-state Bellman values and source-range policy loss are proved in
