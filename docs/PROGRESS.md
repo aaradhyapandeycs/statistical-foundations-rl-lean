@@ -265,6 +265,13 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/PolicyLearningVarianceResolventBridge.lean`
+  proves the source-constant fitted-policy evaluation bound from an explicit
+  row-residual premise, without requiring nonnegative empirical forcing.
+  `PolicyLearningPerformanceTransfer.lean` transfers two evaluation budgets
+  to V and forced-action Q performance. The probability assembly remains
+  separate; see the [bridge review](critic-policy-learning-variance-resolvent-bridge.md)
+  and [performance review](critic-policy-learning-performance-transfer.md).
 - `Formalization/Generative/PolicyLearningEmpiricalOptimalResidual.lean`
   proves the all-row residual bound for the data-selected empirical optimum
   on the same simultaneous sampling event. `PolicyLearningEmpiricalVarianceSelfBound.lean`
@@ -365,8 +372,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled eighty-four project modules; its
-  transitive axiom audit checked 1699 project declarations, allowing only
+- The current pinned Lean integration compiled eighty-six project modules; its
+  transitive axiom audit checked 1728 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
