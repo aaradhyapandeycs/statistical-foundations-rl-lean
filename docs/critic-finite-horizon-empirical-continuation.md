@@ -1,0 +1,19 @@
+# Independent source review: finite-horizon empirical continuation
+
+Reviewed `.local/FiniteHorizonEmpiricalContinuation.lean` SHA `4cdf6cc568915df0ab34ff2fff63f025f851cbe8231ab888a73939b4a39c29dc`, its handoff, and finite-horizon source `generative_model_model_based.tex:2526–2575`. Source-level verdict: the canonical actual empirical optimal **next-stage value vector** factors through strictly future samples and is independent of the complete current row under the actual independent product experiment. This is not a finite-horizon performance or sample-complexity theorem. Independent staged compilation and axiom checks passed; production export review remains separate.
+
+`empiricalStages` lists exactly H empirical stages in chronological `Fin H` order. For current zero-based h, `empiricalContinuationValue` is the actual finite trajectory value of backward-optimal empirical decisions on the list dropped by `h.val+1`; this corresponds to source stage h+2, not the current stage. The already established finite optimality trajectory bridge gives its `optimalValue` identity. At the final current stage the dropped list is empty and the trajectory continuation is proved exactly zero; H=1 is therefore handled, while `h : Fin H` correctly excludes a stage in H=0.
+
+Stage equality is derived from equality of all its actual row samples and the fixed rewards. The proof then checks every index in the dropped chronological list is strictly later than h and proves literal suffix equality whenever strictly-future observations agree. `completeFutureData` preserves exactly those observations and fills current/past entries with an arbitrary fixed state; thus factorization of the actual trajectory-valued vector follows from equality of the entire suffix, rather than assuming the desired statistical independence. The filler for the final theorem is chosen from the existing nonempty-state proof in the actual current environment, not from data or an additional hypothesis.
+
+The independent-product sample law and strict-future/current-row block independence are from the separately reviewed `docs/critic-finite-horizon-generative-sampling.md`. The final declaration composes that result with the proved reconstruction, giving independence of the whole actual continuation vector and the entire N-observation current `(h,s,a)` row. It requires `N>0` for the empirical frequencies and the source's nonstationary stage environments, without discount or stationary assumptions. It does not assert that a current-stage fitted value or arbitrary tie-selected policy is independent of current data. In particular, connecting all empirical-optimal policies/ties to the canonical value remains a separate requirement.
+
+No concentration radius, error propagation, H³ sample complexity, or source `Thm:sample-compl-finite` is proved here. Production qualification and imported-export checks also remain separate.
+
+## Independent staged compiler and axiom audit
+
+Freshly compiled the exact staged sampling and continuation modules into an isolated project-local directory, and separately imported the continuation module to inspect all eleven exports. Every compilation and probe exited zero without diagnostics; every export uses only `propext`, `Classical.choice`, and `Quot.sound`. Actual production qualification and imported-export verification remain separate.
+
+## Integrated production audit
+
+Actual production `Formalization/Generative/FiniteHorizonEmpiricalContinuation.lean` SHA `f17201dfccdd85ff10460d1fe2f3d548a4c9d9fbf237ec9829c44e09084e55ae`: only its staged sampling import qualified. The seven production modules compiled sequentially and a separate importing probe inspected all 70 exports. Every command exited zero; each declaration uses only `propext`, `Classical.choice`, and `Quot.sound` or fewer. The staged source scope and remaining gaps above are unchanged.

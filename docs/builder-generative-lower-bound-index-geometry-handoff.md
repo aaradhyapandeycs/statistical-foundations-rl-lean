@@ -1,0 +1,9 @@
+# Multi-hypothesis indexed-policy geometry
+
+Staged source `.local/GenerativeLowerBoundIndexGeometry.lean`, SHA-256 `e76ba0b8fc41c0da17b0c643f2db1175cc2135f48b2b4e293a5d978916eef8b0`; source-first plan `docs/builder-generative-lower-bound-index-geometry.md`. Source family is `generative_model_model_based.tex:1843–1950`; corrected nondegenerate scope and forced-first-action caveat are documented in `docs/critic-theorem37-correction.md` and `SOURCE-ISSUES.md`.
+
+For m=S−1 and n=A−1, `HardFamilyIndex m n` is the baseline or one active-state/nondefault-action pair, with cardinal exactly K=1+mn. `hardPolicySignature` implements the baseline-zero/one-exception active-state policies, and `hardPolicySignature_injective` proves every distinct index gives a distinct signature even in degenerate carriers (where some alternatives are empty). `decodeHardPolicy` is total on every proposed policy and falls back to the baseline for outputs outside the family; it decodes each signature exactly and decoder error implies inequality from the true indexed signature. This avoids an unproved premise that an arbitrary estimator outputs a family policy.
+
+Under m,n≥1 (corrected S≥2,A≥2), `hardFamilyIndex_card_lower` proves SA≤4K. Under the additional source SA≥16, `hardFamilyIndex_card_ge_four` proves K≥4. All arithmetic and constants are proved, and exact source cardinality/total-versus-alternative convention is explicit.
+
+This is combinatorial geometry only: there is no construction of the multi-state MDPs, no assertion that signatures are their optimal policies, no inference from Q risk to a signature mismatch, no testing/Fano claim, and no claim that the disputed Theorem 3.7 is correct. Exact staged compilation succeeded without diagnostics; all nine declarations' axiom probes use standard axioms or fewer. Independent source review and production-export checks remain.
