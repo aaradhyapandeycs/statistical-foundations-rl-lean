@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T05:54:31.010693+00:00",
+  "updated_at": "2026-11-03T06:00:18.128285+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -47,6 +47,15 @@
       "source_lines": "1306–1326",
       "lean_export": "StatisticalRL.ModelBasedPolicyLearning.source_policyLearning_pointwise_universal_constants",
       "evidence": "docs/critic-policy-learning-source-pointwise-second.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 3.2",
+      "source_label": "Thm:sample-compl-main",
+      "source_file": "chapters/generative_model_model_based.tex",
+      "source_lines": "900–923",
+      "lean_export": "StatisticalRL.ModelBasedPolicyLearning.mainSample_policyLearning_universal_constant",
+      "evidence": "docs/critic-policy-learning-main-sample-integrated-second.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

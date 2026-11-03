@@ -230,8 +230,8 @@ audit, and independent correspondence review before promotion.
 - `Formalization/Generative/ModelBasedPolicyLearning.lean` constructs the iid
   state-action experiment, empirical MDP, Q estimator, and measurable
   deterministic greedy policy with empirical trajectory optimality. The
-  true-model sample-complexity guarantee remains open; see the
-  [independent review](critic-model-based-policy-learning.md).
+  true-model sample-complexity theorem is established separately below; see
+  the [independent review](critic-model-based-policy-learning.md).
 - `Formalization/Obstructions/Theorem37Negation.lean` proves the negation
   of a source-facing encoded version of Theorem 3.7(ii) using the one-state
   experiment. Its estimator interface and stationary-policy interpretation
@@ -265,6 +265,13 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/PolicyLearningMainSample.lean` proves the
+  source model-based policy-learning Theorem 3.2, with universal constant
+  10240, the printed N-dependent logarithm, actual product sampling, and
+  simultaneous V and forced-action Q guarantees for all empirical-optimal
+  deterministic ties. Positive N is explicit as the source sampling/log
+  domain. See the [theorem audit](critic-policy-learning-main-sample.md) and
+  [independent source review](critic-policy-learning-main-sample-integrated-second.md).
 - `Formalization/Generative/PolicyLearningSourcePointwise.lean` proves
   the source policy-learning evaluation Lemma 3.5 with shared universal
   constants, actual product sampling, and all empirical-optimal deterministic
@@ -275,7 +282,7 @@ audit, and independent correspondence review before promotion.
   proves a high-probability fitted-policy evaluation bound, and
   `PolicyLearningAnyOptimalPolicy.lean` extends its event and deterministic
   performance comparison to all empirical-optimal deterministic ties. The
-  fixed true-optimal policy event and source theorem remain separate; see
+  fixed true-optimal policy event and source theorem are proved separately; see
   the [fitted-policy review](critic-policy-learning-fitted-policy-evaluation.md)
   and [tie review](critic-policy-learning-any-optimal-policy.md).
 - `Formalization/Generative/PolicyLearningVarianceResolventBridge.lean`
@@ -385,8 +392,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled ninety-one project modules; its
-  transitive axiom audit checked 1777 project declarations, allowing only
+- The current pinned Lean integration compiled ninety-three project modules; its
+  transitive axiom audit checked 1786 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

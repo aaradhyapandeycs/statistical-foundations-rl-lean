@@ -87,3 +87,5 @@ import Formalization.Generative.PolicyLearningAnyOptimalPolicy
 import Formalization.Generative.PolicyLearningFixedPolicyProjection
 import Formalization.Generative.PolicyLearningJointEvaluation
 import Formalization.Generative.PolicyLearningSourcePointwise
+import Formalization.Generative.PolicyLearningMainSampleArithmetic
+import Formalization.Generative.PolicyLearningMainSample
