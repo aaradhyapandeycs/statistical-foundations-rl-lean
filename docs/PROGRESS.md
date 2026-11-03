@@ -372,11 +372,14 @@ audit, and independent correspondence review before promotion.
   the actual random source proxy, which is controlled by the energy telescope
   and centered-square martingale under explicit positive-time rate and
   late-window bounds (including the current helper’s global rate premise).
-  Sharp proxy concentration and the final TD theorem remain separate. See
+  A deterministic increment bound and coarse variance cap are also derived
+  for the late-window centered-square martingale. Sharp proxy concentration
+  and the final TD theorem remain separate. See
+  [caps review](critic-td-sharp-freedman-caps-independent.md),
   [energy review](critic-td-sharp-energy.md),
   [martingale review](critic-td-sharp-martingale-source.md),
   [fresh-variance review](critic-td-square-fresh-variance-bridge.md),
-  [covariance review](critic-td-square-covariance.md), and
+  [covariance review](critic-td-square-covariance.md),
   [propagated-variance review](critic-td-square-propagated-variance-independent.md),
   [variance-sum review](critic-td-sharp-variance-sum-independent.md), and
   [energy-proxy review](critic-td-sharp-energy-proxy-independent.md).
@@ -407,7 +410,7 @@ audit, and independent correspondence review before promotion.
   [KL review](critic-q-learning-chi-kl.md),
   [residual review](critic-q-learning-chi-residual.md),
   [source-parameter review](critic-q-learning-chi-source-parameters.md),
-  [fixed-value review](critic-q-learning-chi-fixed-value-chain.md), and
+  [fixed-value review](critic-q-learning-chi-fixed-value-chain.md),
   [probability review](critic-q-learning-chi-probability.md), and
   [sandwich review](critic-q-learning-comparator-chain-independent.md).
 - A universal-constant Q-learning accuracy assembly is proved under an
@@ -424,10 +427,11 @@ audit, and independent correspondence review before promotion.
   source coefficient 2 and half-L1 total variation, including zero atoms
   and endpoints. The actual-measure and countable stopped-law versions remain
   separate; see [review](critic-q-learning-finite-pinsker-source-second.md).
-- A finite one-step Markov joint-law KL chain rule is established with
-  explicit support conditions. The actual forced-prefix induction,
-  geometric stopping and stability bound remain separate; see
-  [review](critic-q-learning-trajectory-kl.md).
+- A finite one-step Markov joint-law KL chain rule and an actual finite
+  forced-prefix KL induction are established with explicit support conditions,
+  including zero transitions at k=0. Geometric stopping and the stability
+  bound remain separate; see [one-step review](critic-q-learning-trajectory-kl.md)
+  and [prefix review](critic-q-learning-forced-prefix-kl-chain.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -618,8 +622,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred eighty-three project modules; its
-  transitive axiom audit checked 3694 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred eighty-eight project modules; its
+  transitive axiom audit checked 3756 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

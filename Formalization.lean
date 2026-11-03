@@ -288,3 +288,9 @@ import Formalization.ModelFree.QLearningPinskerBinaryCurvature
 import Formalization.ModelFree.QLearningFiniteLogSumPinsker
 import Formalization.ModelFree.QLearningFinitePinskerCoarsening
 import Formalization.ModelFree.TDSharpEnergyProxy
+
+import Formalization.ModelFree.QLearningTrajectoryKLPrefix
+import Formalization.ModelFree.QLearningTrajectoryKLHeterogeneous
+import Formalization.ModelFree.QLearningTrajectoryKLInduction
+import Formalization.ModelFree.QLearningTrajectoryKLPathInduction
+import Formalization.ModelFree.TDSharpFreedmanCaps
