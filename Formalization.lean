@@ -43,6 +43,8 @@ import Formalization.Probability.BernsteinMatrixMarginals
 import Formalization.Probability.EmpiricalVarianceBernstein
 import Formalization.Probability.EmpiricalVarianceConcentration
 import Formalization.Probability.EmpiricalBernsteinSelfNormalized
+import Formalization.Probability.SelfBoundingConcentration
+import Formalization.Probability.EmpiricalBernsteinCombined
 import Formalization.Generative.ModelBasedPolicyEvaluation
 import Formalization.Generative.ModelBasedPolicyLearning
 import Formalization.Generative.PolicyEvaluationPerturbation
@@ -50,3 +52,4 @@ import Formalization.Generative.PolicyEvaluationInverse
 import Formalization.Generative.PolicyEvaluationHoeffding
 import Formalization.Generative.PolicyLearningZeroDiscount
 import Formalization.Generative.PolicyEvaluationVariance
+import Formalization.Generative.PolicyEvaluationVarianceResolvent

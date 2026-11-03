@@ -184,6 +184,15 @@ audit, and independent correspondence review before promotion.
   sum-of-squares self-bound. The required stochastic self-bounding inequality
   and source empirical Bernstein conclusion remain open; see the
   [independent review](critic-empirical-bernstein-self-normalized.md).
+- `Formalization/Probability/SelfBoundingConcentration.lean` proves an
+  iid empirical-standard-deviation lower-tail bound with correct N⁻¹ᐟ² scale
+  but constants weaker than the source empirical Bernstein result. The
+  source's sharper self-normalized inequality and family extension remain
+  open; see the [independent review](critic-self-bounding-concentration.md).
+- `Formalization/Probability/EmpiricalBernsteinCombined.lean` proves a
+  fixed-vector confidence bound in terms of observed empirical variance with
+  explicit constants weaker than the source. Sharp constants and the random
+  family statement remain open; see the [independent review](critic-empirical-bernstein-combined.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
@@ -250,10 +259,15 @@ audit, and independent correspondence review before promotion.
 - `Formalization/Generative/PolicyEvaluationVariance.lean` proves a
   source-derived policy variance identity, finite and infinite discounted
   variance-budget bounds and the budget's unique Bellman equation. The
-  resolvent/square-root and sharper statistical links remain open; see the
+  empirical-resolvent and sharper statistical links remain open; see the
   [independent review](critic-policy-evaluation-variance.md).
-- The current pinned Lean integration compiled fifty-four project modules; its
-  transitive axiom audit checked 1288 project declarations, allowing only
+- `Formalization/Generative/PolicyEvaluationVarianceResolvent.lean` proves
+  the true-policy matrix resolvent identities and a square-root variance
+  budget bound, including a scaled zero-discount case. The empirical
+  comparison and sharp statistical guarantee remain open; see the
+  [independent review](critic-policy-evaluation-variance-resolvent.md).
+- The current pinned Lean integration compiled fifty-seven project modules; its
+  transitive axiom audit checked 1352 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

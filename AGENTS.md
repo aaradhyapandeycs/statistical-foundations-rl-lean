@@ -13,7 +13,8 @@ The goal is the complete end-to-end formalization of arXiv:2610.41903v1, all cha
 
 - Builders implement real definitions and proofs in assigned files; critics reconstruct source mathematics independently and attempt to refute the translation and its assumptions.
 - Keep write sets disjoint and record ownership in `docs/PROGRESS.md`. A builder cannot certify its own source fidelity. The lead integrates after critic findings are addressed.
-- Worker briefs include source locators, target scope, imports, owned files, validation command, and stop condition. Use at most three workers plus the lead, and at most two concurrent Lean compilers.
+- Worker briefs include source locators, target scope, imports, owned files, validation command, and stop condition. Use the available worker slots for independent tasks (this session permits three plus the lead), and at most two concurrent Lean compilers.
+- The user explicitly excludes Astra models. Use available Sol, Terra, or Luna models for agents and continuation work; do not select Astra as a fallback.
 - Preserve theorem signatures during proof completion. No hidden hypotheses, unproved intermediate inputs, weakened conclusions, fallback definitions, custom axioms, `sorry`, or `admit` in library code.
 - A source error is an open obligation. Record counterevidence and proposed corrections explicitly; never silently change the paper or call a corrected statement the original theorem.
 

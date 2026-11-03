@@ -1,0 +1,15 @@
+# Combined empirical Bernstein confidence bound
+
+2026-11-02. Staged file `.local/EmpiricalBernsteinCombined.lean`, SHA-256 `9fe237c05a81a97a745f7cd8d270c0785cd1629f161064722b5d30fc69910ce3`. This is a fixed-vector infrastructure result, pending independent review and integration; it does not prove the source empirical Bernstein theorem.
+
+For the actual iid sample row, N > 0, fixed V(s) ∈ [0,B] with B > 0, x > 0, population mean PV, empirical mean P̂V, and empirical frequency variance Z = Var_P̂(V), `empiricalBernstein_combined_exp` proves that the strict failure event
+
+`|P̂V − PV| > sqrt(2x/N) (sqrt(Z) + 4B sqrt(x/N)) + 2Bx/(3N)`
+
+has probability at most `5 exp(−x)`. Equivalently, the radius is `sqrt(2x/N) sqrt(Z) + (4 sqrt(2) + 2/3) Bx/N`. The equivalent expanded expression is a mathematical simplification; the formal statement uses the displayed factored radius. For 0 < δ < 1, `empiricalBernstein_combined_confidence` substitutes `x = log(5/δ)` and bounds failure by δ, giving success probability at least 1−δ.
+
+Proof: union the existing two-sided sharp population-variance Bernstein failure event, bounded by `2 exp(−x)`, with the independently reviewed empirical standard-deviation lower-tail failure event, bounded by `3 exp(−x)`. Outside the latter, replace population standard deviation by `sqrt(Z) + 4B sqrt(x/N)` in the former. The proof uses no independence between events, no desired bound as an assumption, and no custom axiom. The imported sharp strict-threshold result handles zero population variance; N = 1 and constant vectors are included. B = 0 is not covered by this combined export, while any positive upper bound may be used for a zero vector. Strict failure leaves boundary equality in the success event.
+
+Source `source/upstream/tex/chapters/prelim.tex:983–998`, lemma `empirical bernstein`, has N ≥ 2, simultaneous finite independent random-family quantification, N−1 normalization, logarithm `log(4|𝒱|/δ)`, correction coefficient 7/3, and success probability strictly greater than 1−δ. The staged fixed-vector result does not establish that theorem: its correction constant and logarithm differ, its success probability is non-strict, and it does not lift to an independent random family. Its N scaling and actual empirical variance nevertheless provide a valid weaker bound.
+
+Validation: built the reviewed unchanged project-owned prerequisite with `bash scripts/lean-local.sh -o .lake/build/lib/lean/Formalization/Probability/SelfBoundingConcentration.olean Formalization/Probability/SelfBoundingConcentration.lean`; compiled the staged theorem during development with `bash scripts/lean-local.sh .local/EmpiricalBernsteinCombined.lean`; and compiled an exact final temporary copy with both `#print axioms` commands using `bash scripts/lean-local.sh <temporary-probe>/combined-audit.lean`. Both final exports have transitive axiom closure exactly `[propext, Classical.choice, Quot.sound]`. The final temporary copy was deleted. No dependency artifacts were rebuilt. Integration must compile and audit the actual exported module.
