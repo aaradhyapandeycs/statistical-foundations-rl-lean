@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T10:27:11.091865+00:00",
+  "updated_at": "2026-11-03T13:13:46.181929+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -110,6 +110,24 @@
       "source_lines": "1422–1438",
       "lean_export": "StatisticalRL.QLearning.qRobustBellman_contracting",
       "evidence": "docs/critic-q-learning-robust-contraction-production.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 4.10",
+      "source_label": "lemma:Q-comparison-facts",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "1338–1373",
+      "lean_export": "StatisticalRL.QLearning.qComparisonFacts_support_source and StatisticalRL.QLearning.qComparisonFacts_stability_source",
+      "evidence": "docs/critic-q-learning-comparison-and-main.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 4.6",
+      "source_label": "thm:infinite-horizon-simple",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "891–912",
+      "lean_export": "StatisticalRL.QLearning.qLearning_exists_universal_constants_source_accuracy",
+      "evidence": "docs/critic-q-learning-comparison-and-main.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

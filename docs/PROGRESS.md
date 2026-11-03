@@ -405,8 +405,7 @@ audit, and independent correspondence review before promotion.
   the exact source radius and reward shift. Actual fixed-comparator
   fluctuations have proved conditional moments, variance budgets, and a
   source-radius absorption event simultaneously over both signs, rows and
-  late terminal times with confidence at least 1−δ. The full robust-model
-  stability estimate and final Q-learning theorem remain separate. A
+  late terminal times with confidence at least 1−δ. A
   same-sample comparator sandwich holds simultaneously on the absorption
   event with probability at least 1−δ under the source schedule, T≥2,
   0<δ<1 and bounded initialization. See
@@ -419,15 +418,14 @@ audit, and independent correspondence review before promotion.
   [fixed-value review](critic-q-learning-chi-fixed-value-chain.md),
   [probability review](critic-q-learning-chi-probability.md), and
   [sandwich review](critic-q-learning-comparator-chain-independent.md).
-- A universal-constant Q-learning accuracy assembly is proved under an
-  explicit bound comparing both robust comparator Q functions to the true
-  optimal trajectory Q.
-  The remaining input is reduced to a stability bound between each selected
-  model’s own optimal trajectory Q and the original model’s optimal Q. The
-  zero-discount and zero-radius endpoint identities are proved. Positive-case
-  stability remains unproved, so this is not an unconditional proof of the
-  main source theorem. See
-  [conditional assembly review](critic-q-learning-conditional-final-independent.md)
+- The source chi-square comparison lemma, including the actual optimal-Q
+  infinity-norm stability estimate, is proved. The selected-model comparator
+  reduction consumes that estimate and discharges the former assumption in
+  the universal-constant Q-learning accuracy theorem. The resulting source
+  theorem uses the actual synchronous product sampling law and retains the
+  source schedule, initialization, confidence and sample-budget conditions.
+  See the [comparison and accuracy review](critic-q-learning-comparison-and-main.md),
+  [conditional assembly review](critic-q-learning-conditional-final-independent.md),
   and [selected-model review](critic-q-learning-selected-model-closeness-source.md).
 - The finite-law pairwise variance identity and square-variance bound include
   zero-mass atoms, singleton carriers and H=0. Actual TD conditional
@@ -437,13 +435,13 @@ audit, and independent correspondence review before promotion.
   the source coefficient 2 and half-L1 total variation, including zero atoms
   and endpoints. The countable result applies to the actual geometric
   stopped-prefix masses using a derived absolute-KL summability bound. The
-  actual-measure/event-supremum identification and model stability remain
-  separate; see [finite review](critic-q-learning-finite-pinsker-source-second.md)
+  actual-measure/event-supremum identification remains a separate result; see
+  [finite review](critic-q-learning-finite-pinsker-source-second.md)
   and [countable review](critic-q-learning-countable-pinsker-independent.md).
 - A finite one-step Markov joint-law KL chain rule and an actual finite
   forced-prefix KL induction are established with explicit support conditions,
-  including zero transitions at k=0. Geometric stopping and the stability
-  bound remain separate; see [one-step review](critic-q-learning-trajectory-kl.md)
+  including zero transitions at k=0. The geometric stopped-law bound is used
+  in the stability proof; see [one-step review](critic-q-learning-trajectory-kl.md)
   and [prefix review](critic-q-learning-forced-prefix-kl-chain.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
@@ -635,8 +633,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled three hundred four project modules; its
-  transitive axiom audit checked 3899 project declarations, allowing only
+- The current pinned Lean integration compiled three hundred fourteen project modules; its
+  transitive axiom audit checked 3971 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
