@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T05:05:17.384133+00:00",
+  "updated_at": "2026-11-03T05:12:08.255131+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -20,6 +20,15 @@
       "source_lines": "140–156",
       "lean_export": "StatisticalRL.ModelBasedPolicyEvaluation.policyEvaluation_universal_constant",
       "evidence": "docs/critic-policy-evaluation-universal-constant.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 3.3",
+      "source_label": "LemAbsToNormalV",
+      "source_file": "chapters/generative_model_model_based.tex",
+      "source_lines": "1256–1263",
+      "lean_export": "StatisticalRL.ModelBasedPolicyLearning.optimalValueAbsorbingModel_preserves_optimalTrajectoryValue",
+      "evidence": "docs/critic-policy-learning-preservation.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

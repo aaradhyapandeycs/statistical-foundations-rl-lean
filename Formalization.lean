@@ -70,3 +70,5 @@ import Formalization.Generative.PolicyEvaluationHighSample
 import Formalization.Generative.PolicyEvaluationSourceTheorem
 import Formalization.Generative.PolicyLearningAbsorbing
 import Formalization.Generative.PolicyEvaluationUniversalConstant
+import Formalization.Generative.PolicyLearningAbsorbingPreservation
+import Formalization.Generative.PolicyLearningAbsorbingLipschitz

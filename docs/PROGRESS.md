@@ -258,8 +258,13 @@ audit, and independent correspondence review before promotion.
   remains open; see the [independent review](critic-policy-learning-zero-discount.md).
 - `Formalization/Generative/PolicyLearningAbsorbing.lean` constructs the
   fixed-parameter absorbing model and proves its deterministic data-invariance
-  properties. Full optimal-value preservation and statistical independence
-  remain open; see the [independent review](critic-policy-learning-absorbing.md).
+  properties. `PolicyLearningAbsorbingPreservation.lean` proves Lemma 3.3,
+  preservation of actual optimal trajectory values, and its empirical
+  counterpart. `PolicyLearningAbsorbingLipschitz.lean` proves exact fixed-parameter
+  value stability. Statistical independence remains separate; see the
+  [absorbing review](critic-policy-learning-absorbing.md),
+  [preservation review](critic-policy-learning-preservation.md), and
+  [stability review](critic-policy-learning-absorbing-lipschitz.md).
 - `Formalization/Generative/PolicyLearningHoeffding.lean` proves a
   conservative actual-sampling policy-learning value guarantee by a finite
   union over deterministic policies, accounting for the fitted policy’s data
@@ -333,8 +338,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled seventy-four project modules; its
-  transitive axiom audit checked 1547 project declarations, allowing only
+- The current pinned Lean integration compiled seventy-six project modules; its
+  transitive axiom audit checked 1567 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
