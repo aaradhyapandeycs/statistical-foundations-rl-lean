@@ -282,3 +282,9 @@ import Formalization.ModelFree.QLearningFinalBudgetConsequences
 import Formalization.ModelFree.QLearningConditionalFinalAssembly
 import Formalization.ModelFree.QLearningConditionalUniversalConstants
 import Formalization.ModelFree.TDSharpVarianceSum
+
+import Formalization.ModelFree.QLearningPinskerBinary
+import Formalization.ModelFree.QLearningPinskerBinaryCurvature
+import Formalization.ModelFree.QLearningFiniteLogSumPinsker
+import Formalization.ModelFree.QLearningFinitePinskerCoarsening
+import Formalization.ModelFree.TDSharpEnergyProxy

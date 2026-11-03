@@ -369,14 +369,17 @@ audit, and independent correspondence review before promotion.
   an explicit source late-window wrapper, single-state conditional variance
   control, cross-state square-covariance cancellation, and a per-update
   propagated conditional variance bound. Its late-window sum is bounded by
-  the actual random source proxy; sharp proxy concentration and the final TD
-  theorem remain separate. See
+  the actual random source proxy, which is controlled by the energy telescope
+  and centered-square martingale under explicit positive-time rate and
+  late-window bounds (including the current helper’s global rate premise).
+  Sharp proxy concentration and the final TD theorem remain separate. See
   [energy review](critic-td-sharp-energy.md),
   [martingale review](critic-td-sharp-martingale-source.md),
   [fresh-variance review](critic-td-square-fresh-variance-bridge.md),
   [covariance review](critic-td-square-covariance.md), and
-  [propagated-variance review](critic-td-square-propagated-variance-independent.md), and
-  [variance-sum review](critic-td-sharp-variance-sum-independent.md).
+  [propagated-variance review](critic-td-square-propagated-variance-independent.md),
+  [variance-sum review](critic-td-sharp-variance-sum-independent.md), and
+  [energy-proxy review](critic-td-sharp-energy-proxy-independent.md).
 - TD weights satisfy the source mass identity and first- and squared-mass
   bounds. A source-schedule envelope and an actual-law scalar fixed-terminal
   Freedman event are established under explicit late-terminal and large-T
@@ -417,6 +420,10 @@ audit, and independent correspondence review before promotion.
   zero-mass atoms, singleton carriers and H=0. Actual TD conditional
   variance and cross-state square-covariance bridges are proved separately;
   see [review](critic-td-variance-pairwise-source.md).
+- Finite Pinsker is proved for supported probability vectors with the
+  source coefficient 2 and half-L1 total variation, including zero atoms
+  and endpoints. The actual-measure and countable stopped-law versions remain
+  separate; see [review](critic-q-learning-finite-pinsker-source-second.md).
 - A finite one-step Markov joint-law KL chain rule is established with
   explicit support conditions. The actual forced-prefix induction,
   geometric stopping and stability bound remain separate; see
@@ -611,8 +618,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred seventy-eight project modules; its
-  transitive axiom audit checked 3623 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred eighty-three project modules; its
+  transitive axiom audit checked 3694 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
