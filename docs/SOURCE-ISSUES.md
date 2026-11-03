@@ -123,5 +123,7 @@ The stronger Pinsker branch retains enough slack: under the source bound
 `β ≤ 0.9`, `(1−√(β/2))/2 > 0.1`. Using that strict testing bound and assuming
 both estimation errors are at most 0.1 gives the intended contradiction.
 The [source analysis and independent mathematical check](source-generative-lower-bound-testing-bottleneck.md)
-record the argument. Formalizing the actual testing inequality and this
-strictness transfer remains open.
+record the argument. The strict testing and estimation-risk transfer is now
+proved for deterministic estimators on the actual two-state, one-action
+sampling law in `GenerativeLowerBoundObservationLaw.lean`; extensions to
+randomized estimators and the general fixed-size lower bound remain separate.

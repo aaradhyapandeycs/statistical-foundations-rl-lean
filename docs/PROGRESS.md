@@ -265,6 +265,15 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/GenerativeLowerBoundKLAffinity.lean` proves
+  finite full-support KL-to-testing and Bernoulli-product estimation bounds.
+  `GenerativeLowerBoundTwoStateMDP.lean` and `GenerativeLowerBoundObservationLaw.lean`
+  connect these to actual two-state MDPs and their complete sampling laws,
+  proving a strict Q-estimation lower bound for one common deterministic
+  estimator. Arbitrary extra randomization and the general fixed-size lower
+  bound remain separate. See the [KL review](critic-generative-lower-bound-kl-affinity.md),
+  [MDP review](critic-generative-lower-bound-two-state-mdp.md), and
+  [observation-law review](critic-generative-lower-bound-observation-law.md).
 - `Formalization/Generative/GenerativeLowerBoundTestingReduction.lean` and
   `GenerativeLowerBoundOverlapTesting.lean` prove finite-law testing and
   strict estimation-error transfer helpers. The quantitative KL-to-testing
@@ -424,8 +433,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred five project modules; its
-  transitive axiom audit checked 1868 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred ten project modules; its
+  transitive axiom audit checked 1928 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

@@ -1,0 +1,13 @@
+# Actual finite-law KL to strict testing and estimation bounds
+
+Exact staged sources and SHA-256:
+
+- `.local/GenerativeLowerBoundWeightedLog.lean`: `bf58dbfbfc577623377081a20d1b88577b69ee9bba6dc30429b642048ae5e764`.
+- `.local/GenerativeLowerBoundAffinityOverlap.lean`: `17d6bea10441f5cf2cbbbc4a480cd122204008caf317073d6906473bf797ff71`.
+- `.local/GenerativeLowerBoundKLAffinity.lean`: `a6d6c3713270840d598400467837c2e7c9c499cff9ee39a617cbf43db6c1112f`.
+
+The source-first derivation and exact orientations are in `docs/builder-generative-lower-bound-kl-overlap-plan.md`. The first file proves weighted-log Jensen directly from `log x≤x−1` and the oriented finite KL-to-affinity inequality for strictly positive finite probability weights. The second proves affinity²≤2·overlap via finite Cauchy–Schwarz; its own statement permits zero weights. The third identifies the finite expression with Mathlib's actual measure-theoretic KL, derives the source exponential testing branch `max error ≥ exp(−KL(μ||ν))/4` for all tests on finite full-support actual probability laws, and proves this branch is **strictly above 0.1** when KL≤0.9, including equality. Numerics use pinned `exp_neg_one_gt_d9` and `add_one_le_exp`; no Pinsker theorem is assumed.
+
+Specialization `bernoulliProduct_test_error_gt_one_tenth` proves the strict testing bound for every test under the actual N-fold Bernoulli product laws when 0<p,q<1 and `N·(q−p)²/(p(1−p))≤0.9`. Orientation is KL(Bern(q)^N || Bern(p)^N), with error under p for test=true and under q for test=false. `bernoulliProduct_estimation_error_gt_one_tenth` composes the reviewed-pending midpoint reduction: for arbitrary data-dependent estimator and scalar targets separated by more than 2ε, one of the two true product-law probabilities of strict error >ε is strictly >0.1. N=0 is allowed here as a product-law mathematical boundary. No full hard-MDP observation-law, arbitrary other data/extra randomization, or minimax theorem is claimed.
+
+The full-support law theorem intentionally requires every atom positive; this holds for both interior Bernoulli product measures. It does not assert the general KL/overlap inequality for zero-mass laws. The measure KL is finite for these products by the independently staged product lemma, and the generic finite KL expression uses absolute continuity and finite integrability, so extended-real toReal cannot hide infinity. Exact staged compilation succeeded for all three files; all 13 exported declarations' transitive axiom probes report only `propext`, `Classical.choice`, and `Quot.sound`. Independent source/refute-first review and qualification/build of actual production exports remain.

@@ -44,3 +44,13 @@ The two-state result is a source illustration, not a repair or certification of 
 ## Independent strictness check
 
 A separate worker independently checked the source implication and numerical repair: the displayed contradiction with both successes `>0.9` yields only some failure `≥0.1`, while the source Pinsker branch under β≤0.9 is strictly above 0.1; assuming both failures `≤0.1` then gives the desired contradiction. This is evidence for an omitted proof step, not a finding that the printed theorem is false.
+
+## Subsequent formal progress
+
+The production modules now prove the finite full-support KL-to-overlap bound,
+strict Bernoulli-product testing and estimation bounds, the source two-state
+trajectory Q separation, and the strict Q-risk conclusion for one deterministic
+estimator on the actual complete two-state observation law. See
+[the observation-law review](critic-generative-lower-bound-observation-law.md).
+Randomized estimators, the full fixed-size lower bound, and the source's full
+Fano lemma remain separate obligations.
