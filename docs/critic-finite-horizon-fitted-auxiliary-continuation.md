@@ -1,0 +1,23 @@
+# Independent source review: fitted true auxiliary continuation
+
+Reviewed `.local/FiniteHorizonFittedAuxiliaryContinuation.lean`, SHA-256 `371608d6edb5deca0c6f2da377d28e3e5a43883453593f228dd3fb56da1b638a`, and `docs/source-finite-horizon-all-level-bernstein-plan.md`, SHA-256 `447cd5f6a9f249141a708ba9c98b80d06059953cd3869a69b2dbc0f143067e00`. This review is source-only; the staged draft is uncompiled.
+
+## Causal dependence and tie handling
+
+`backwardGreedyActions` selects at each empirical stage the existing deterministic `EnvironmentStage.greedyAction` applied to that stage and the recursively computed optimal value of the empirical suffix. `greedyAction` is a fixed `Classical.choose` from a finite maximizer, so ties are resolved canonically by Lean's fixed choice operator for that function input. No free tie-breaking function or prior/current-data-dependent global selection is passed into the draft. The fallback action is used only when recursion reaches an empty stage list; on a finite episode it is not used at any actual stage.
+
+The continuation is evaluated at absolute stage `h+1`, after current stage `h`. The proof `backwardGreedyActions_drop` shows the selector at absolute indices `h+1+k` agrees with applying the same deterministic greedy rule to `empiricalStages.drop (h+1)`. The empirical-stage suffix identity then says this list is unchanged when all strictly future observations are retained and all current/past observations are replaced by a fixed filler. Applying `trueAuxiliaryValueAt_suffix_congr` proves the fitted **true-model** auxiliary continuation factors through strictly future data. Since the actual sampling law is a product over stage/state/action/sample coordinates, the reusable future-code/current-row independence lemma applies. This proves independence only for the after-current-stage continuation vector and the current row, not for the selected action at stage h or a continuation that includes stage h.
+
+The draft correctly allows the action selected at the current stage to depend on current rows. The source plan therefore requires a row concentration event uniform over every action before making that selection. It explicitly warns that arbitrary globally data-selected optimizers with earlier-sample-dependent tie rules do not follow from this causal factorization. That qualification is necessary and matches the draft.
+
+## Source scope and semantic limits
+
+The continuation theorem is quantified for every `h : Fin H` and every natural auxiliary level `l`; the causal factorization is not restricted to level zero. The level-zero bridge identifies the selected policy's actual true-model suffix trajectory value. It does not identify this quantity with empirical optimal value at higher levels, nor claim a concentration result. Since the source residual condition needs all natural levels through `Nat.log 2 H`, the all-`l` draft is broad enough to instantiate that range. The plan's common event correctly includes all those levels, all stages, states, actions, and the two relevant continuation families.
+
+`N>0` is needed to construct empirical stages. `h : Fin H` excludes H=0; H=1 is supported and its after-stage continuation is the empty suffix. A fixed fallback action is an explicit argument; in an application with H>0, an available environment action-nonemptiness witness can supply it. No new global nonempty-action assumption is hidden.
+
+The draft proves measurability over the finite discrete experiment and factors the actual continuation statistic, not merely an auxiliary surrogate. Remaining obligations in the plan are real: prove the fixed-optimal and fitted-continuation all-level Bernstein bounds, form the finite common event, derive its probability and residual hypotheses, and then assemble policy evaluation. The conservative confidence allocation has a larger logarithmic coefficient than the printed intermediate source value, as the plan already discloses; it cannot be reported as the exact printed constant without further proof.
+
+**Verdict:** the selector is a concrete backward-greedy rule whose post-current-stage actions and auxiliary continuation depend only on strictly future data, with deterministic tie resolution. This supports the planned independence transfer only for that continuation; the current action must be covered by an event uniform over actions. The source plan's scope and caveats agree with the draft. No compiler or axiom probe was run.
+
+Production integration: the corresponding production module bodies match the independently reviewed staged sources, with qualified imports. The full project export compiled and audited 2,522 declarations, permitting only `propext`, `Classical.choice`, and `Quot.sound`.

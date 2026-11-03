@@ -306,6 +306,14 @@ audit, and independent correspondence review before promotion.
   conditions, including source depth and constants. Proving those
   conditions as an event for the selected planner remains open; see
   [review](critic-finite-horizon-lemma-nine-wrapper.md).
+- The corrected Q-estimation mixture has actual optimal-Q separation,
+  full-array sampling reconstruction and its active-product mixture
+  density and moments. The χ² testing and Q-risk conclusion are still
+  open; see [review](critic-generative-lower-bound-q-mixture-density-closure.md).
+- One actual-law all-level Bernstein event holds for the true-optimal
+  policy and the causal backward-greedy empirical selector, with an
+  explicit confidence factor. Arbitrary globally selected ties and
+  the final source rate remain open; see [review](critic-finite-horizon-all-level-bernstein.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -496,8 +504,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred fifty-seven project modules; its
-  transitive axiom audit checked 2406 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred seventy-one project modules; its
+  transitive axiom audit checked 2522 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
