@@ -298,9 +298,14 @@ audit, and independent correspondence review before promotion.
   establish the printed theorem for S=1 or its Q-estimation part; see
   [review](critic-generative-lower-bound-kernel-quarter.md).
 - Finite-horizon variance-derived auxiliary values and their source
-  growth bound are proved for fixed policies. The level recursion,
-  data-selected policy independence, and sharp rate remain open; see
+  growth bound are proved for fixed policies. Data-selected policy
+  independence and the sharp statistical rate remain open; see
   [review](critic-finite-horizon-auxiliary-growth.md).
+- The finite-horizon auxiliary error recursion now yields the cited
+  deterministic Lemma 9 bound under its explicit all-level Bernstein
+  conditions, including source depth and constants. Proving those
+  conditions as an event for the selected planner remains open; see
+  [review](critic-finite-horizon-lemma-nine-wrapper.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -491,8 +496,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred fifty-four project modules; its
-  transitive axiom audit checked 2373 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred fifty-seven project modules; its
+  transitive axiom audit checked 2406 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
