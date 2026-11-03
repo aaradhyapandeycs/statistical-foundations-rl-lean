@@ -332,3 +332,16 @@ import Formalization.ModelFree.TDSharpSecondFreedman
 import Formalization.ModelFree.TDSharpSecondFreedmanEligibleUnion
 import Formalization.ModelFree.TDSourceFixedTerminalProxy
 import Formalization.ModelFree.TDSourceFixedTerminalProxyBudget
+
+import Formalization.ModelFree.TDEarlyVarianceBudget
+import Formalization.ModelFree.TDOriginalVarianceSplitActual
+import Formalization.ModelFree.TDOriginalVarianceSplitBudget
+import Formalization.ModelFree.TDOriginalVarianceScale
+import Formalization.ModelFree.TDOriginalVarianceCommonEvent
+import Formalization.ModelFree.TDSourceVarianceProxyLemma
+import Formalization.ModelFree.TDSourceUniversalConstants
+import Formalization.ModelFree.TDSourceVarianceProxyUniversal
+
+import Formalization.RobustRL.TVCore
+import Formalization.RobustRL.TVWeakBound
+import Formalization.RobustRL.TVWeakDuality

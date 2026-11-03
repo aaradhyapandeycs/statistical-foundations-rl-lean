@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T13:13:46.181929+00:00",
+  "updated_at": "2026-11-03T14:42:34.810161+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -128,6 +128,15 @@
       "source_lines": "891–912",
       "lean_export": "StatisticalRL.QLearning.qLearning_exists_universal_constants_source_accuracy",
       "evidence": "docs/critic-q-learning-comparison-and-main.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 4.5",
+      "source_label": "lemma:TD-variance-proxy-bound",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "727–743",
+      "lean_export": "StatisticalRL.TemporalDifference.tdSource_varianceProxy_exists_universal_constants",
+      "evidence": "docs/critic-td-variance-lemma.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

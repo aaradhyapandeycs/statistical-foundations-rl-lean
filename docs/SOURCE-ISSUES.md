@@ -122,13 +122,41 @@ The stronger Pinsker branch retains enough slack: under the source bound
 `β ≤ 0.9`, `(1−√(β/2))/2 > 0.1`. Using that strict testing bound and assuming
 both estimation errors are at most 0.1 gives the intended contradiction.
 The [source analysis and independent mathematical check](source-generative-lower-bound-testing-bottleneck.md)
-record the argument. The strict testing and estimation-risk transfer is now
-proved for deterministic estimators on the actual two-state, one-action
-sampling law in `GenerativeLowerBoundObservationLaw.lean`; extensions to
-randomized estimators and the general fixed-size lower bound remain separate.
+record the argument. A strict testing route is now also consumed by the
+formalized two-point policy-risk result for arbitrary common randomization over
+deterministic stationary policies. Separate corrected randomized policy-risk
+and Q-risk results prove the stronger `≥1/4` bound on the explicit domain
+`S,A≥2`, `SA≥16`. An arbitrary randomized-Q extension of the standalone
+two-state, one-action testing example and the source's wider original domain
+remain separate; the source's strictness omission is not itself a counterexample.
 
 ## Candidate C5: missing premise in TD step-size Lemma 4.3
 
 The printed standalone `lemma:TD-step-size` (`generative_model_model_free.tex:317–327`) omits a gamma-dependent sample-size premise used in its appendix proof, and does not explicitly bound `t` by the horizon on which the schedule is constrained. The [independent source review](critic-td-step-size-premise.md) gives a concrete admissible counterexample to the early-weight bound: take `c₁=c₂=1/4`, `T=t=100`, `γ=1−10⁻⁶`, and each learning rate equal to the printed lower endpoint. Then the initial weight is at least `0.9999`, whereas the lemma asserts it is at most `0.0001`.
 
 The proof uses `T ≥ log²(T)/(c₁(1−γ))`; the [formal helper](../Formalization/ModelFree/TDStepSizeLate.lean) retains that condition and `t≤T`, while a [separate proof](../Formalization/ModelFree/TDStepSizeBudget.lean) derives the large-T condition from the enclosing main theorem’s sample budget for a sufficient constant relation. This is a statement gap for the standalone auxiliary lemma, not by itself a counterexample to the main TD theorem. No author-approved correction is asserted.
+
+## Candidate C6: confidence factor in the UCBVI optimism proof
+
+**Source:** arXiv:2610.41903v1, `chapters/onlineRL.tex`,
+`lemma:opt` at lines 765–773 and its proof near lines 3370–3395.
+The lemma states optimism with probability exceeding `1−2SAHKδ'`. The proof's
+final paragraph instead states probability at least `1−4SAHKδ'`, after a
+preceding per-coordinate `1−2δ'` bound and a union-bound discussion.
+
+**Status:** the raw source has been checked, but the rendered PDF and a
+complete independent reconstruction of the probability accounting remain to
+be checked. The factor-four proof conclusion alone does not establish the
+printed factor-two conclusion. This observation does not prove that the
+lemma is false: a sharper common event may justify the printed factor, or the
+proof/statement may need an author correction. Retain the printed statement
+as the source target and do not silently replace either confidence factor.
+
+One candidate proof repair is to use a single simultaneous concentration
+event for every deterministic visit-prefix length up to K−1 for each
+state-action-stage row. Each adaptive visit count is then covered without
+conditioning on that random count; a union over the row/prefix pairs may
+retain the factor 2. This requires a proved coupling between the pre-sampled
+successor streams and the actual online process, as well as an explicit
+zero-visit convention. Those steps have not yet been formalized or checked.
+

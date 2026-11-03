@@ -377,9 +377,11 @@ audit, and independent correspondence review before promotion.
   extension. A deterministic
   increment bound and coarse variance cap are also derived
   for the late-window centered-square martingale. The fixed-terminal late
-  proxy satisfies the source infinity-norm bound with probability at least
-  1−δ/(2T), under the source schedule and a sufficient sample-budget constant.
-  The original-variance bound and final TD theorem remain separate. See
+  proxy and original predictable variance simultaneously satisfy both source
+  infinity-norm bounds with probability at least 1−δ/(2T), under the source
+  schedule and an explicit universal sample-budget constant. The final TD
+  accuracy theorem remains separate. See
+  [full variance-lemma review](critic-td-variance-lemma.md),
   [proxy concentration review](critic-td-proxy-concentration.md),
   [rate-extension review](critic-td-source-rate-finite-extension.md),
   [event-transport review](critic-td-source-rate-proxy-transport.md),
@@ -446,6 +448,11 @@ audit, and independent correspondence review before promotion.
   including zero transitions at k=0. The geometric stopped-law bound is used
   in the stability proof; see [one-step review](critic-q-learning-trajectory-kl.md)
   and [prefix review](critic-q-learning-forced-prefix-kl-chain.md).
+- For the robust-RL TV uncertainty set, finite event-TV is identified with
+  half-L1 and the source clipped-objective weak-duality direction is proved
+  for actual finite probability rows. The reverse inequality, maximum
+  attainment, χ² branch, and full strong-duality lemma remain open; see
+  [review](critic-robust-tv-weak.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -636,8 +643,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled three hundred twenty-one project modules; its
-  transitive axiom audit checked 4021 project declarations, allowing only
+- The current pinned Lean integration compiled three hundred thirty-two project modules; its
+  transitive axiom audit checked 4099 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

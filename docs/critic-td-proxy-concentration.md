@@ -35,10 +35,11 @@ proxy supplies the infinity-norm conclusion from coordinatewise upper bounds.
 No proxy upper bound or desired probability conclusion is assumed.
 
 **This proves only the first of the two bounds in the printed lemma.** The
-second bound concerns the original full predictable variance `W_t`; it still
-requires the early/late variance decomposition and the source-scale `33`
-estimate. The main TD accuracy theorem also remains open. No named-result
-ledger entry for the complete lemma follows from this proxy bound alone.
+second bound concerns the original full predictable variance `W_t` and is
+proved separately using the early/late decomposition and the source-scale
+`33` estimate; see the [full variance-lemma review](critic-td-variance-lemma.md).
+The main TD accuracy theorem remains open. The proxy bound alone does not
+establish the complete named lemma.
 
 ## Reviewed production sources
 
