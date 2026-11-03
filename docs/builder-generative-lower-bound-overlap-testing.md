@@ -1,0 +1,9 @@
+# Finite-law overlap and testing
+
+Staged source `.local/GenerativeLowerBoundOverlapTesting.lean`, SHA-256 `6f903b9aa711401403fe9d4c13a9c62b8b51ce335678426ab043f4b1f56a3dbb`. Source-first plan and the API-search outcome are in `docs/builder-generative-lower-bound-overlap-plan.md`; source reference is generative-model chapter lines 1694–1722.
+
+For finite Ω with measurable singletons and two actual probability measures μ₀, μ₁, `finiteOverlap` is the sum of the minima of their real singleton masses. `finiteOverlap_le_test_error_sum` proves, for every deterministic Bool-valued test, overlap ≤ μ₀(test=true)+μ₁(test=false); `finiteOverlap_half_le_max_test_error` deduces half the overlap ≤ the maximum of the two true testing error probabilities. Both use actual measures and impose no statistical independence on the test. On the source finite discrete observation space all such tests are measurable. These are deterministic/probability identities, not a claimed Pinsker theorem.
+
+Separately, `sourcePinskerBranch_strict` proves `(1−sqrt(β/2))/2>1/10` for β≤9/10, including β=9/10, matching the stronger displayed source branch. No strict β premise or adjusted numerical constant is needed. The inequality is even true for negative β because Lean's real sqrt is zero there; application to KL uses nonnegative β as usual.
+
+The crucial quantitative lower bound of finite overlap in terms of actual KL (Pinsker or a sufficient alternative) remains unproved; the scalar numerical lemma does not establish it. Pinned Mathlib searches found no ready Pinsker/Hellinger or binary-testing API. Actual hard-MDP observation laws and an unconditional minimax conclusion also remain open. Exact staged compilation and all four axiom probes passed with only standard axioms; two harmless `simpa` style warnings remain. Independent source review and production integration are pending.

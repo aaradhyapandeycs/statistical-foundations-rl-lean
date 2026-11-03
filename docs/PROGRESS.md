@@ -265,6 +265,19 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/GenerativeLowerBoundTestingReduction.lean` and
+  `GenerativeLowerBoundOverlapTesting.lean` prove finite-law testing and
+  strict estimation-error transfer helpers. The quantitative KL-to-testing
+  link and actual hard-MDP observation law remain separate; see the
+  [testing review](critic-generative-lower-bound-testing-reduction.md) and
+  [overlap review](critic-generative-lower-bound-overlap-testing.md).
+- `Formalization/Probability/BoundedIncrementFixedTimeTail.lean` proves a
+  preliminary one-sided variance-restricted martingale tail with weaker
+  constants. `BernsteinExponentialEnvelope.lean` and
+  `ConditionalBernsteinSharpMGF.lean` establish the sharp scalar and
+  conditional MGF coefficients; a sharp process and Freedman tail are
+  separate. See the [tail review](critic-bounded-increment-fixed-time-tail.md)
+  and [sharp MGF review](critic-sharp-conditional-bernstein-mgf.md).
 - `Formalization/Generative/GenerativeLowerBoundBernoulliMeasure.lean`
   identifies finite Bernoulli relative entropy, and `GenerativeLowerBoundProductKL.lean`
   proves its finite-product tensorization. The hard-MDP experiment and
@@ -411,8 +424,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred project modules; its
-  transitive axiom audit checked 1840 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred five project modules; its
+  transitive axiom audit checked 1868 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
