@@ -1,0 +1,11 @@
+# Fixed-parameter absorbing MDP for policy learning
+
+Source: `source/upstream/tex/chapters/generative_model_model_based.tex:1226–1272`, especially `eqn:transition-kernel-M-su-inf` and `eqn:reward-M-su-inf`; source SHA-256 `b7e7abfb2c2cb2c0dd82470db5ecac3a67d7163682246d499935d9130214ac4d`.
+
+`.local/PolicyLearningAbsorbing.lean` constructs the source model: for a fixed state `x` and `u∈[0,(1−γ)⁻¹]`, every action row at `x` becomes the point mass at `x` and the immediate reward becomes `(1−γ)u`; all other transition rows and rewards remain original. It proves the model satisfies the project's exact nonnegative/unit reward and discount requirements.
+
+`stateAbsorbingModel_trajectoryValue_at` proves the actual infinite-trajectory value at `x` is exactly `u` for **every** stationary randomized policy, not merely a fixed-point proxy. For the actual empirical model and two sample tables that agree at every other state, the file proves that the fixed-`u` absorbing models have equal transitions at every state/action, equal optimal Q fixed points, and equal optimal actual-trajectory values at every state. The value equality remains valid if the greedy actions for the two models are chosen separately. This is deterministic invariance under changing the removed state's data; no data-dependent choice of `u` is assumed independent.
+
+The source's full preservation statement `V*_{x,V*(x)}=V*` away from `x`, measure-theoretic independence under the joint sampling law, discretization, and sharp policy-learning rate are not established here. Deterministic invariance is not itself presented as probabilistic independence. In particular, choosing `u=V̂*(x)` can depend on the removed samples and requires the source's additional net argument.
+
+Validation: `bash scripts/lean-local.sh .local/PolicyLearningAbsorbing.lean` passed. An exact-source temporary probe checked the absorbing-state trajectory value, optimal-Q invariance, and optimal trajectory-value invariance; all reported only `propext`, `Classical.choice`, and `Quot.sound`. Staged file SHA-256 `dfdedc125e606f88241c2c491df64306ee3b0b2f83b6361f5f9dcaa6b2bd0a92`; integrated `ModelBasedPolicyLearning.lean` dependency SHA-256 `6f568330fd0744f11c0e965e5e3fd884dac5fd579965bbe4d7918f571e8c4f8c`. Independent source/semantic review and integrated-export validation remain outstanding.

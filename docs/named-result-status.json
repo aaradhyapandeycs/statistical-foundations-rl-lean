@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T03:45:35.073403+00:00",
+  "updated_at": "2026-11-03T05:05:17.384133+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative human-reviewed ledger. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -8,9 +8,18 @@
       "name": "Lemma 2.2",
       "source_label": "lem:variance-perturbation-var-P-V",
       "source_file": "chapters/prelim.tex",
-      "source_lines": "458\u2013467",
+      "source_lines": "458–467",
       "lean_export": "StatisticalRL.DiscountedMDP.transitionVariance_perturbation",
       "evidence": "docs/critic-variance-review.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 3.1",
+      "source_label": "thm:model-based-policy-eval",
+      "source_file": "chapters/generative_model_model_based.tex",
+      "source_lines": "140–156",
+      "lean_export": "StatisticalRL.ModelBasedPolicyEvaluation.policyEvaluation_universal_constant",
+      "evidence": "docs/critic-policy-evaluation-universal-constant.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

@@ -67,3 +67,6 @@ import Formalization.Generative.PolicyEvaluationFinalArithmetic
 import Formalization.Generative.PolicyEvaluationTerminalError
 import Formalization.Generative.PolicyEvaluationSampleAssembly
 import Formalization.Generative.PolicyEvaluationHighSample
+import Formalization.Generative.PolicyEvaluationSourceTheorem
+import Formalization.Generative.PolicyLearningAbsorbing
+import Formalization.Generative.PolicyEvaluationUniversalConstant

@@ -1,0 +1,41 @@
+# Refute-first source audit: policy-evaluation theorem candidate
+
+**Source-level verdict: the staged top-level declaration matches the printed fixed-policy theorem under the identified product experiment, subject to the dependency independence and export checks below.** This is a second audit of the statement and its top-level proof, not an independent re-certification of infrastructure that this reviewer previously authored or reviewed.
+
+The exact candidate is `.local/PolicyEvaluationSourceTheorem.lean`, SHA-256 `5203c0716ed90521be7ce2a9448b2a8f1b5c68e958ccb37fb274af52c80fc73a`. The source is `generative_model_model_based.tex:47–106,140–155`, particularly `thm:model-based-policy-eval`, together with `prelim.tex:30–76,89–105`; TeX chapter SHA-256 `b7e7abfb2c2cb2c0dd82470db5ecac3a67d7163682246d499935d9130214ac4d`.
+
+## Statement and quantifier audit
+
+The declaration universally quantifies finite types State and Action, M, a stationary randomized policy π, a natural per-state sample count N, δ and ε. M supplies nonempty carriers, true stochastic transition rows, known stationary rewards in [0,1] and `0≤γ<1`; π supplies a normalized action distribution for each state. The source introduces this same stationary randomized policy class in `prelim.tex:66–76`. Policy π is fixed outside the sampling probability. The statement is not a uniform guarantee for a policy chosen from the same data, which the printed fixed-policy theorem does not request.
+
+Its assumptions are precisely `0<δ<1`, `0<ε≤1/(1−γ)`, and
+
+    720 log(S/(δ(1−γ))) / ((1−γ)^3 ε²) ≤ N.
+
+The source places an unspecified sufficiently large universal positive c₀ in the same position. The literal numeral 720 has no dependence on State, Action, M, π, N, δ or ε, so this is a valid uniform witness if the checked proof and its dependencies are accepted; it is not an assertion that the source printed the number 720. A separate outer existential over c₀ is not present in this declaration, but can choose this fixed numeral; no problem-dependent constant is introduced. N is the number of draws **per state**, yielding NS draws, not SAN. The logarithm contains no hidden action cardinality or N.
+
+The conclusion existentially returns `hN : 0<N` solely because the estimator's type uses the positivity proof for empirical frequencies. `source_sample_count_pos` derives that witness from the printed budget: state nonemptiness gives S≥1, `0<δ<1` and `0<1−γ≤1` give `S/(δ(1−γ))>1`, and ε>0 gives a strictly positive budget. Thus no additional N≥1 assumption excludes an instance of the printed theorem. `hN` is a proposition proof, not a data-dependent sample count; proof irrelevance makes the witness immaterial to the mathematical estimator.
+
+The event is one joint event `‖V̂−Vπ‖∞≤ε` on the finite state function space, equivalent to the source's `∀s, |V̂(s)−Vπ(s)|≤ε`; the inequality in the event is non-strict. `1−δ < μ.real event` is stronger than the source's probability at least `1−δ`. The sample space is finite discrete and μ is a probability measure, so this is ordinary event probability. There is no extra input good event, inverse property, recurrence, variance bound, positive action support, or approximation hypothesis.
+
+## Experiment and value semantics
+
+`Samples State N = (State × Fin N) → State`, and the actual `samplingLaw M π N` is the finite product of the true policy-row laws `(M.policyTransition π s).rowMeasure`. `samplingLaw_marginal` and `samplingLaw_independent` prove the actual coordinate laws and joint independence. The source's algorithm explicitly requests N independent `Pπ(·|s)` samples at each state, and the chapter describes independent simulator calls. The chosen full product law is at least as specific as within-row iid marginals: the declaration guarantees this actual product experiment, not arbitrary cross-state coupled sampling with only rowwise marginals. The source simulator convention supports the product interpretation.
+
+The estimator uses the same array and N to form empirical frequency rows. Its definition is an empirical-model value fixed point; `valueEstimator_eq_inverse` separately proves literal equality to `(I−γ P̂π)⁻¹ rπ`, with current-state rows, the known policy-averaged reward and original discount. Proved invertibility prevents reliance on a singular-inverse default. The model is present in the Lean estimator signature, so an implementation-scope check is necessary: the separate construction review supplies a compiled invariance probe showing identical output for two admissible MDPs with the same known reward and discount, policy and data, regardless of their true transitions. Thus the model argument is not an unexplained oracle for the unknown true kernel.
+
+`M.trajectoryExpectedValue π` is defined through the actual infinite controlled path law and expected discounted reward series for the same true M and π, not defined as the desired Bellman inverse. The actual-prefix/finite-value limit bridge proves its Bellman fixed-point identification. The construction's empirical value is also linked to its actual empirical-model trajectory. These are necessary semantic dependencies of the source comparison, not additional premises in the top theorem.
+
+## Top-level proof and boundary cases
+
+The proof splits on S≤1. Because S≥1, this is the one-state case; the separate exact-estimator theorem makes the target event the whole sample space for every data outcome. For S≥2, `source_sample_budget_from_printed_log` produces both the `64β/(1−γ)` threshold and radius≤ε from the stated 720 budget. `valueEstimator_high_sample` supplies the actual-law high-sample event, and inclusion into the target event preserves strict probability. The high-sample theorem's reviewed proof constructs the recursion and terminal bound on one common simultaneous Bernstein event; merely intersecting two separate `1−δ` events would not suffice. For γ=0, its separate pointwise identity branch makes the result exact; no division by γ is required. The top theorem includes ε at its upper endpoint and all δ in the stated open interval.
+
+The source proof's displayed transition from a `64β/(1−γ)` intermediate condition to a weaker `β/(1−γ)` condition is not silently used in the candidate: the 720 sample arithmetic establishes the stronger cutoff. This avoids relying on that omitted source derivation step; it does not mean the source theorem is false.
+
+## Separate review support and limits
+
+This reviewer previously authored or reviewed parts of the high-sample and sample-arithmetic chain, and therefore this note does **not** count as an independent second certification of those same parts. Their scoped reviews are `critic-policy-evaluation-high-sample.md`, `critic-policy-evaluation-sample-assembly.md`, `critic-policy-evaluation-bernstein-recursion.md`, `critic-policy-evaluation-final-arithmetic.md`, and `critic-policy-evaluation-terminal-error.md`; retain the other assigned theorem auditor's independent investigation when deciding closure.
+
+Separate reviews by other workers support the source semantics: `critic-model-based-policy-evaluation.md` audits the product experiment, known-input estimator and transition-invariance probe; `critic-policy-evaluation-inverse.md` checks the literal matrix inverse and nonsingularity; `critic-prefix-value-bridge.md`, together with `critic-infinite-trajectory.md`, `critic-infinite-return.md`, and `critic-finite-prefix-bridge.md`, checks the actual infinite trajectory/value bridge. The prefix bridge reviewer also notes their own involvement in portions of imported law/return infrastructure, so their separate infrastructure reviews must be retained. `critic-policy-evaluation-top-level-interface.md` independently reconstructs the source interface but its author built the staged high-sample result and expressly did not certify their own build.
+
+This is source/statement review only. I have not compiled this exact top-level staged source or audited its axioms in this assignment; the builder reports two standard-only axiom checks, which are builder evidence. The actual production import closure, changed instance names if any, module build, import-only axiom check, and full independent proof/dependency audit remain separate. No author-frozen declaration or whole-chapter completion is claimed.

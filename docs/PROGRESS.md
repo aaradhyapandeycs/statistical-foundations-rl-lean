@@ -224,8 +224,8 @@ audit, and independent correspondence review before promotion.
 - `Formalization/Generative/ModelBasedPolicyEvaluation.lean` constructs
   the genuine iid policy-row experiment and measurable empirical Bellman
   estimator, with actual empirical trajectory semantics. The literal inverse
-  expression is proved separately below; the source sample-complexity bound
-  remains open. See the
+  expression and the source sample-complexity bound are proved separately
+  below. See the
   [independent review](critic-model-based-policy-evaluation.md).
 - `Formalization/Generative/ModelBasedPolicyLearning.lean` constructs the iid
   state-action experiment, empirical MDP, Q estimator, and measurable
@@ -256,6 +256,10 @@ audit, and independent correspondence review before promotion.
   true-model trajectory Q and V loss for the empirical greedy policy at γ = 0,
   for every positive sample count and every outcome. The general source theorem
   remains open; see the [independent review](critic-policy-learning-zero-discount.md).
+- `Formalization/Generative/PolicyLearningAbsorbing.lean` constructs the
+  fixed-parameter absorbing model and proves its deterministic data-invariance
+  properties. Full optimal-value preservation and statistical independence
+  remain open; see the [independent review](critic-policy-learning-absorbing.md).
 - `Formalization/Generative/PolicyLearningHoeffding.lean` proves a
   conservative actual-sampling policy-learning value guarantee by a finite
   union over deterministic policies, accounting for the fitted policy’s data
@@ -264,34 +268,42 @@ audit, and independent correspondence review before promotion.
 - `Formalization/Generative/PolicyEvaluationVariance.lean` proves a
   source-derived policy variance identity, finite and infinite discounted
   variance-budget bounds and the budget's unique Bellman equation. The
-  empirical-resolvent and sharper statistical links remain open; see the
+  empirical-resolvent and sharper statistical links are proved separately; see the
   [independent review](critic-policy-evaluation-variance.md).
+- `Formalization/Generative/PolicyEvaluationUniversalConstant.lean` proves
+  the source policy-evaluation sample theorem, Theorem 3.1, with a universal
+  constant 720 chosen before all finite model and accuracy parameters. It
+  uses the actual policy-row sampling law and trajectory values. Independent
+  source and integrated-export reviews are recorded in the
+  [theorem audit](critic-policy-evaluation-source-theorem.md),
+  [second source audit](critic-policy-evaluation-source-independent.md), and
+  [universal-constant audit](critic-policy-evaluation-universal-constant.md).
 - `Formalization/Generative/PolicyEvaluationTerminalError.lean` proves
   the terminal auxiliary error estimate. `PolicyEvaluationHighSample.lean`
   combines it with the recursion on one actual-sampling event, while
   `PolicyEvaluationSampleAssembly.lean` proves sample-threshold arithmetic
-  and one-state exactness. The source-shaped final theorem and its audit
-  remain separate; see the independent reviews of the [terminal bound](critic-policy-evaluation-terminal-error.md),
+  and one-state exactness. The source-shaped final theorem is assembled
+  separately; see the independent reviews of the [terminal bound](critic-policy-evaluation-terminal-error.md),
   [high-sample bound](critic-policy-evaluation-high-sample.md), and
   [sample assembly](critic-policy-evaluation-sample-assembly.md).
 - `Formalization/Generative/PolicyEvaluationFinalArithmetic.lean` proves
   the printed high-sample radius from explicit recursion, growth, and terminal
-  estimates; the assumptions and statistical assembly are separate. See the
+  estimates; the assumptions and statistical assembly are discharged separately. See the
   [independent review](critic-policy-evaluation-final-arithmetic.md).
 - `Formalization/Generative/PolicyEvaluationBernsteinRecursion.lean` combines
   the actual-sampling simultaneous Bernstein event with the conditional
   auxiliary residual recursion. The terminal estimate and source sample bound
-  remain separate; see the [independent review](critic-policy-evaluation-bernstein-recursion.md).
+  are assembled separately; see the [independent review](critic-policy-evaluation-bernstein-recursion.md).
 - `Formalization/Generative/PolicyEvaluationAuxiliaryGrowth.lean` derives
   the source-shaped auxiliary-value growth bound from the general-forcing
   result, with a separate zero-discount identity. Its combination with the
-  concentration recursion remains open; see the
+  concentration recursion is proved separately; see the
   [independent review](critic-policy-evaluation-auxiliary-growth.md).
 - `Formalization/Generative/PolicyEvaluationGeneralForcing.lean` extends
   the true-policy variance resolvent bound to any nonnegative forcing.
   `PolicyEvaluationResidualRecursion.lean` proves the conditional residual
   recursion using actual empirical resolvent order. The concentration event,
-  sharp growth and final sample bound must still be assembled; see the
+  sharp growth and final sample bound are assembled separately; see the
   independent reviews of [general forcing](critic-policy-evaluation-general-forcing.md)
   and the [recursion](critic-policy-evaluation-residual-recursion.md).
 - `Formalization/Generative/EmpiricalResolventOrder.lean` proves positivity,
@@ -303,26 +315,26 @@ audit, and independent correspondence review before promotion.
   equations and a conservative growth bound.
   `PolicyEvaluationAuxiliaryBernstein.lean` proves an actual-sampling
   simultaneous Bernstein event over finitely many true auxiliary levels. The
-  sharper recursion and statistical guarantee remain open; see the
+  sharper recursion and statistical guarantee are proved separately; see the
   independent reviews of the [vectors](critic-policy-evaluation-auxiliary.md)
   and [event](critic-policy-evaluation-auxiliary-bernstein.md).
 - `Formalization/Generative/PolicyEvaluationEmpiricalResolvent.lean` proves
   an empirical-versus-true policy resolvent identity and an actual-sampling
-  Bernstein bound for the first auxiliary variance vector. The remaining
-  higher-order variance term and sharp rate remain open; see the
+  Bernstein bound for the first auxiliary variance vector. The higher-order
+  variance analysis and sharp rate are established separately; see the
   [independent review](critic-policy-evaluation-empirical-resolvent.md).
 - `Formalization/Generative/PolicyEvaluationRecursiveUnroll.lean` proves
   a conditional finite unrolling of the source’s auxiliary recursion and a
   deterministic small-sample bound that repairs an omitted case in the
   source derivation. The high-sample concentration branch and full theorem
-  remain open; see the [independent review](critic-policy-evaluation-recursive-unroll.md).
+  are proved separately; see the [independent review](critic-policy-evaluation-recursive-unroll.md).
 - `Formalization/Generative/PolicyEvaluationVarianceResolvent.lean` proves
   the true-policy matrix resolvent identities and a square-root variance
   budget bound, including a scaled zero-discount case. The empirical
-  comparison and sharp statistical guarantee remain open; see the
+  comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled seventy-one project modules; its
-  transitive axiom audit checked 1524 project declarations, allowing only
+- The current pinned Lean integration compiled seventy-four project modules; its
+  transitive axiom audit checked 1547 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
