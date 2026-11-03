@@ -266,6 +266,18 @@ audit, and independent correspondence review before promotion.
   variance-budget bounds and the budget's unique Bellman equation. The
   empirical-resolvent and sharper statistical links remain open; see the
   [independent review](critic-policy-evaluation-variance.md).
+- `Formalization/Generative/PolicyEvaluationAuxiliaryGrowth.lean` derives
+  the source-shaped auxiliary-value growth bound from the general-forcing
+  result, with a separate zero-discount identity. Its combination with the
+  concentration recursion remains open; see the
+  [independent review](critic-policy-evaluation-auxiliary-growth.md).
+- `Formalization/Generative/PolicyEvaluationGeneralForcing.lean` extends
+  the true-policy variance resolvent bound to any nonnegative forcing.
+  `PolicyEvaluationResidualRecursion.lean` proves the conditional residual
+  recursion using actual empirical resolvent order. The concentration event,
+  sharp growth and final sample bound must still be assembled; see the
+  independent reviews of [general forcing](critic-policy-evaluation-general-forcing.md)
+  and the [recursion](critic-policy-evaluation-residual-recursion.md).
 - `Formalization/Generative/EmpiricalResolventOrder.lean` proves positivity,
   order preservation, the row-sum identity and absolute-value domination for
   the actual empirical policy resolvent; see the
@@ -293,8 +305,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee remain open; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled sixty-three project modules; its
-  transitive axiom audit checked 1433 project declarations, allowing only
+- The current pinned Lean integration compiled sixty-six project modules; its
+  transitive axiom audit checked 1461 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
