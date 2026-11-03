@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T06:43:06.266045+00:00",
+  "updated_at": "2026-11-03T07:37:42.451903+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -65,6 +65,15 @@
       "source_lines": "1056–1075",
       "lean_export": "StatisticalRL.freedman_natural_history",
       "evidence": "docs/critic-freedman-natural-history.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 4.2",
+      "source_label": "lemma:TD-bounded",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "293–302",
+      "lean_export": "StatisticalRL.TemporalDifference.tdIterate_bounds and StatisticalRL.TemporalDifference.tdIterate_error_norm_le",
+      "evidence": "docs/critic-td-iterate-bounds.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]
