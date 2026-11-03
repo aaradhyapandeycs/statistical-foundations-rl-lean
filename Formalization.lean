@@ -294,3 +294,10 @@ import Formalization.ModelFree.QLearningTrajectoryKLHeterogeneous
 import Formalization.ModelFree.QLearningTrajectoryKLInduction
 import Formalization.ModelFree.QLearningTrajectoryKLPathInduction
 import Formalization.ModelFree.TDSharpFreedmanCaps
+
+import Formalization.ModelFree.TDSharpSelfBoundScalar
+
+import Formalization.ModelFree.QLearningComparatorDistanceReduction
+import Formalization.ModelFree.QLearningComparatorDistanceEndpoints
+import Formalization.ModelFree.QLearningComparatorConditionalCloseness
+import Formalization.ModelFree.TDSourceRateFiniteExtension

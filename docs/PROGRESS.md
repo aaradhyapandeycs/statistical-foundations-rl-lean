@@ -371,10 +371,14 @@ audit, and independent correspondence review before promotion.
   propagated conditional variance bound. Its late-window sum is bounded by
   the actual random source proxy, which is controlled by the energy telescope
   and centered-square martingale under explicit positive-time rate and
-  late-window bounds (including the current helper’s global rate premise).
-  A deterministic increment bound and coarse variance cap are also derived
+  late-window bounds. A zero-tail extension preserves every used-through-T
+  iterate, weight and propagator while supplying global positive-rate bounds;
+  transport of the stochastic event remains separate. A deterministic
+  increment bound and coarse variance cap are also derived
   for the late-window centered-square martingale. Sharp proxy concentration
   and the final TD theorem remain separate. See
+  [rate-extension review](critic-td-source-rate-finite-extension.md),
+  [scalar review](critic-td-sharp-self-bound-scalar-independent.md),
   [caps review](critic-td-sharp-freedman-caps-independent.md),
   [energy review](critic-td-sharp-energy.md),
   [martingale review](critic-td-sharp-martingale-source.md),
@@ -416,9 +420,13 @@ audit, and independent correspondence review before promotion.
 - A universal-constant Q-learning accuracy assembly is proved under an
   explicit bound comparing both robust comparator Q functions to the true
   optimal trajectory Q.
-  That comparator-stability input remains unproved, so this is not an
-  unconditional proof of the main source theorem. See
-  [conditional assembly review](critic-q-learning-conditional-final-independent.md).
+  The remaining input is reduced to a stability bound between each selected
+  model’s own optimal trajectory Q and the original model’s optimal Q. The
+  zero-discount and zero-radius endpoint identities are proved. Positive-case
+  stability remains unproved, so this is not an unconditional proof of the
+  main source theorem. See
+  [conditional assembly review](critic-q-learning-conditional-final-independent.md)
+  and [selected-model review](critic-q-learning-selected-model-closeness-source.md).
 - The finite-law pairwise variance identity and square-variance bound include
   zero-mass atoms, singleton carriers and H=0. Actual TD conditional
   variance and cross-state square-covariance bridges are proved separately;
@@ -622,8 +630,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred eighty-eight project modules; its
-  transitive axiom audit checked 3756 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred ninety-three project modules; its
+  transitive axiom audit checked 3811 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
