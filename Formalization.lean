@@ -208,3 +208,9 @@ import Formalization.ModelFree.TDActualErrorDecomposition
 import Formalization.ModelFree.TDActualErrorUnroll
 import Formalization.ModelFree.QLearningNaturalHistory
 import Formalization.ModelFree.QLearningHistoryAdaptation
+import Formalization.ModelFree.TDCausality
+import Formalization.ModelFree.TDConditionalMoments
+import Formalization.ModelFree.TDErrorCaps
+import Formalization.ModelFree.QLearningIncrementCaps
+import Formalization.ModelFree.QLearningOptimalFluctuation
+import Formalization.ModelFree.QLearningOptimalFluctuationMoments
