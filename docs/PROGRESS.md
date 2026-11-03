@@ -166,6 +166,10 @@ audit, and independent correspondence review before promotion.
   random finite Borel family independent of that row, including empty and
   zero cases. The whole-matrix inequality remains separate; see the
   [independent review](critic-bernstein-family.md).
+- `Formalization/Probability/BernsteinMatrixMarginals.lean` proves the
+  source whole-matrix Bernstein bound from iid sampling within each row,
+  allowing arbitrary cross-row dependence, with the correct matrix independence
+  and strict success. See the [independent review](critic-bernstein-matrix-marginals.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
@@ -194,8 +198,8 @@ audit, and independent correspondence review before promotion.
   Q-policy loss is zero across the one-state generative experiment. A literal
   source-theorem proposition and formal negation remain separate; see the
   [independent review](critic-one-state-policy-experiment.md).
-- The current pinned Lean integration compiled forty-two project modules; its
-  transitive axiom audit checked 1056 project declarations, allowing only
+- The current pinned Lean integration compiled forty-three project modules; its
+  transitive axiom audit checked 1079 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

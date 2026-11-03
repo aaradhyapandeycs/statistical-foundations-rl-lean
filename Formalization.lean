@@ -38,3 +38,4 @@ import Formalization.Probability.RandomFamilyBorel
 import Formalization.Probability.EmpiricalBernstein
 import Formalization.Probability.SharpEmpiricalBernstein
 import Formalization.Probability.BernsteinFamily
+import Formalization.Probability.BernsteinMatrixMarginals
