@@ -69,6 +69,10 @@ the policy decoder. A separate [mathematical check](critic-theorem37-correction-
 reproduces the probability bounds and constants; a further [independent audit](critic-theorem37-final-audit.md) checks the model and estimator quantifiers. This is a proposed replacement,
 not an author-approved erratum or a completed Lean proof; the full statistical
 experiment and its testing reductions still need formal verification. The
+[one-state trajectory bridge](../Formalization/Obstructions/OneStateTrajectory.lean)
+proves exactness of a fixed known-reward estimator and its zero error under
+any data law ([review](critic-one-state-trajectory.md)); the complete theorem
+quantifiers remain separate. The
 correct two-state Bellman values and source-range policy loss are proved in
 [HardMDP.lean](../Formalization/Obstructions/HardMDP.lean), with an
 [independent review](critic-hard-mdp.md). The separate

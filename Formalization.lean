@@ -25,6 +25,7 @@ import Formalization.Obstructions.SingletonAction
 import Formalization.Obstructions.OneState
 import Formalization.Obstructions.OneStateParameters
 import Formalization.Obstructions.HardMDP
+import Formalization.Obstructions.OneStateTrajectory
 import Formalization.Probability.Variance
 import Formalization.Probability.EmpiricalRow
 import Formalization.Probability.EmpiricalHoeffding
@@ -32,3 +33,4 @@ import Formalization.Probability.EmpiricalHoeffdingFamily
 import Formalization.Probability.EmpiricalHoeffdingRandomFamily
 import Formalization.Probability.RandomFamilyBorel
 import Formalization.Probability.EmpiricalBernstein
+import Formalization.Probability.SharpEmpiricalBernstein

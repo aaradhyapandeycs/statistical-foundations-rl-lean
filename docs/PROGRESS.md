@@ -151,6 +151,11 @@ audit, and independent correspondence review before promotion.
   empirical mean variance, zero-variance case and a variance-sensitive
   exponential tail with constants weaker than the source. The source Bernstein
   lemma remains open; see the [independent review](critic-empirical-bernstein.md).
+- `Formalization/Probability/SharpEmpiricalBernstein.lean` derives the
+  source-constant fixed-vector Bernstein tail under actual iid sampling,
+  including zero range and variance. The simultaneous random-family and
+  whole-matrix source bounds remain open; see the
+  [independent review](critic-sharp-empirical-bernstein.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
@@ -163,8 +168,13 @@ audit, and independent correspondence review before promotion.
   also checks a rational counterexample to the printed intermediate Q formula.
   Stationary optimal trajectory semantics are addressed separately; the full
   statistical lower bound remains open.
-- The current pinned Lean integration compiled thirty-six project modules; its
-  transitive axiom audit checked 906 project declarations, allowing only
+- `Formalization/Obstructions/OneStateTrajectory.lean` proves that one
+  estimator using known rewards and discount is exact for actual stationary
+  optimal trajectory Q, uniformly over one-state models and data laws.
+  The formal statistical quantifier package is separate; see the
+  [independent review](critic-one-state-trajectory.md).
+- The current pinned Lean integration compiled thirty-eight project modules; its
+  transitive axiom audit checked 948 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
