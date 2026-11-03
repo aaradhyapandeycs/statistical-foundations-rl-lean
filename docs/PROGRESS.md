@@ -26,6 +26,12 @@ audit, and independent correspondence review before promotion.
   singleton-action zero-gap mechanism for that policy class. General robust
   optimality and the source lower-bound experiment remain open. See the
   [review](critic-robust-chi-policy-value-independent-review.md).
+- A singleton-action counterexample establishes feasible source parameters and
+  zero strict-error risk for one fixed estimator against every model pair in
+  the stationary-policy interface, under actual product sampling laws. Its
+  focused, working-tree and clean-copy compilation and axiom audits passed.
+  The full source minimax expression remains separate. See the
+  [review](critic-robust-chi-singleton-action-v5.md).
 - The policy-evaluation source-radius gap has an all-positive-sample repair
   for every nonempty finite state space, using the actual sampling law and the
   source beta with an explicit sufficient choice `C₀ ≥ 8`. The separate
@@ -672,8 +678,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled 381 project modules; its
-  transitive axiom audit checked 4,541 project declarations, allowing only
+- The current pinned Lean integration compiled 382 project modules; its
+  transitive axiom audit checked 4,581 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. A separate clean-copy check
   passed on the same source hashes. These checks do not replace
   source review. Current builder work and independent critic findings are

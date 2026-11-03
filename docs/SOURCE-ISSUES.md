@@ -211,6 +211,12 @@ and no complete Lean proof of the corrected robust theorem is claimed. A
 [stationary-policy robust-value foundation](../Formalization/RobustRL/ChiSquaredPolicyValue.lean)
 constructs actual trajectory-value infima and proves the singleton-action
 zero-gap mechanism in that policy class; see its [review](critic-robust-chi-policy-value-independent-review.md).
+The [singleton-action counterexample](../Formalization/RobustRL/SingletonActionCounterexample.lean)
+also establishes feasible parameters and zero risk for one fixed estimator
+against every model pair, under their actual row-product sampling laws. It has
+passed focused, working-tree and clean-copy compilation and axiom checks.
+It does not encode the complete estimator infimum in the manuscript. See the
+[source and evidence review](critic-robust-chi-singleton-action-v5.md).
 
 ## Candidate C8: undefined zero-visit bonus in UCBVI
 
