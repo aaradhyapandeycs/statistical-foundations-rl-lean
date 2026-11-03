@@ -330,13 +330,14 @@ audit, and independent correspondence review before promotion.
   large-T premise for a sufficient constant. The stochastic TD
   theorem remains open; see [review](critic-td-step-size-budget.md).
 - Q-learning has an actual finite product experiment and proved
-  past-prefix/current-row independence. Conditional moments and
-  convergence remain open; see [review](critic-q-learning-causality.md).
+  past-prefix/current-row independence. Conditional moments are established
+  separately below; convergence remains open. See
+  [review](critic-q-learning-causality.md).
 - Q-learning increments have conditional mean zero and true-row
   conditional variance under the actual sample prefix. Their strict
   increment history is included in that prefix; its conditional
-  square is the tower-transferred row variance. Deterministic caps
-  and the Freedman/rate theorem remain open; see
+  square is the tower-transferred row variance. Coarse deterministic caps
+  are available; the sharp convergence rate remains open. See
   [review](critic-q-learning-natural-history.md).
 - The actual TD error obeys the exact finite chronological telescope
   with its source noise terms. Conditional moments and the TD rate
@@ -344,12 +345,22 @@ audit, and independent correspondence review before promotion.
 - TD noise has conditional mean zero and actual policy-row conditional
   variance under its exact sample prefix, with deterministic
   propagated-increment bounds, conditional cross-state cancellation and
-  exact propagator rows. The final weighted variance proxy, Freedman and
-  the final rate remain open; see [review](critic-td-conditional-moments.md).
-- Q-learning has coarse caps for actual iterate-dependent increments
-  and separate fixed-terminal optimal-value fluctuation moments and active
-  natural-history caps. Their source concentration and rate remain open; see
-  [review](critic-q-learning-optimal-fluctuation.md).
+  exact propagator rows. The source weighted-variance proxy, its finite sum,
+  and the fixed-terminal natural history are established; a deterministic
+  terminal cap, Freedman event and final rate remain open. See
+  [variance review](critic-td-weighted-variance.md),
+  [sum review](critic-td-variance-sum.md), and
+  [history review](critic-td-terminal-history.md).
+- Q-learning has coarse caps for actual iterate-dependent increments and
+  an actual-law Freedman event for the optimal-value fluctuation at one fixed
+  state-action row and terminal time. Its source-indexed weight schedule,
+  predictable variance and magnitude bounds are proved. A simultaneous
+  row/time event, sharp robust comparisons and the final convergence rate
+  remain open; see [review](critic-q-learning-optimal-freedman.md).
+- TD weights satisfy the source mass identity and first- and squared-mass
+  bounds under an explicit pointwise weight envelope. Deriving the envelope
+  for the source schedule and applying concentration remain separate; see
+  [review](critic-td-weight-mass.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -540,8 +551,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred twenty-two project modules; its
-  transitive axiom audit checked 3029 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred thirty-four project modules; its
+  transitive axiom audit checked 3148 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

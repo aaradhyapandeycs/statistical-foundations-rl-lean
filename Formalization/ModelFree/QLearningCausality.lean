@@ -1,6 +1,6 @@
 import Formalization.ModelFree.QLearningSynchronousSampling
 
-/-! Uncompiled draft: finite-prefix causality and fresh-row independence. -/
+/-! Finite-prefix causality and fresh-row independence. -/
 open MeasureTheory ProbabilityTheory
 namespace StatisticalRL.QLearning
 

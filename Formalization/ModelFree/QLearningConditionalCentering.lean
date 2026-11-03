@@ -36,14 +36,5 @@ theorem qFresh_increment_sq_decomposition (M : DiscountedMDP State Action) (η :
   classical
   simp [qRowIncrement, qFreshIndicator]
 
-/- Pending, without assuming either conclusion:
-  * prove qPastSigma ≤ ambient and the current coordinate's generated sigma is
-    independent of qPastSigma using qPast_indep_fresh, not just iterate independence;
-  * apply condExp_indep_eq to qFreshIndicator and identify its integral using
-    qSamplingLaw_marginal with (M.transition s a).prob x;
-  * prove each predictable coefficient strongly measurable and all products
-    integrable (the experiment is finite); use condExp_finset_sum and pull-out;
-  * obtain centering and conditional second moment = qRowVariance, a.e. under
-    qSamplingLaw M T. The proof concerns F_t, not priorIncrementSigma.
--/
+/- Conditional indicator and increment moments are established in QLearningConditionalIncrement. -/
 end StatisticalRL.QLearning

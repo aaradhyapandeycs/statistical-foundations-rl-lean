@@ -218,3 +218,16 @@ import Formalization.ModelFree.TDCrossCovariance
 import Formalization.ModelFree.TDLinearRowVariance
 import Formalization.ModelFree.TDPropagatorRows
 import Formalization.ModelFree.QLearningOptimalFluctuationHistory
+
+import Formalization.ModelFree.QLearningOptimalFluctuationWindow
+import Formalization.ModelFree.QLearningOptimalLateBudget
+import Formalization.ModelFree.QLearningWeightTelescope
+import Formalization.ModelFree.QLearningSourceReindex
+import Formalization.ModelFree.QLearningLateRateSchedule
+import Formalization.ModelFree.QLearningSourceLateCaps
+import Formalization.ModelFree.QLearningOptimalPredictableVariance
+import Formalization.ModelFree.QLearningOptimalFreedman
+import Formalization.ModelFree.TDWeightMass
+import Formalization.ModelFree.TDWeightedVariance
+import Formalization.ModelFree.TDVarianceSum
+import Formalization.ModelFree.TDTerminalHistory

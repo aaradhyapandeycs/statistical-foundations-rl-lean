@@ -91,8 +91,5 @@ theorem qOptimalFluctuation_abs_le (M : DiscountedMDP State Action) (η : ℕ �
     M.effectiveHorizon (qTrueOptimalValue_bounds M) (data ((s,a), ⟨t,h.1⟩))
   simpa [qOptimalFluctuationIncrement, h, abs_mul, abs_of_nonneg hw] using mul_le_mul_of_nonneg_left hb hw
 
-/- Pending: inactive-layer zero statement, global bound by an explicit maximum
-weight, finite sum of exact conditional variances and late-weight source lemma,
-weighted sum/source indexing match, and Freedman/union probability. All proofs
-above await focused compilation and independent source review. -/
+/- Fixed-row schedule, variance and Freedman bounds are established in subsequent modules; uniform bounds and the final rate remain separate. -/
 end StatisticalRL.QLearning

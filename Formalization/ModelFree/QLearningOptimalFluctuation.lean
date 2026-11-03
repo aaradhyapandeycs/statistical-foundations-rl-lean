@@ -34,17 +34,5 @@ noncomputable def qOptimalFluctuation (M : DiscountedMDP State Action) (η : ℕ
     (T u : ℕ) (s : State) (a : Action) (data : QSamples State Action T) : ℝ :=
   ∑ t ∈ Finset.range T, qOptimalFluctuationIncrement M η T u s a t data
 
-/- Obligations (not assumed): prove for 1≤i≤u that the product definition
-matches source η_i^(u), including i=u and empty product; eta weights and γ are
-fixed before the experiment. Prove the sum corresponds exactly to ξ_u with
-floor(T/2)<i≤u for u≤T. The true value is the actual trajectory value, not an
-empirical estimate. For each t<T, the coordinate is the fresh row draw at
-source iteration t+1, and fixed V* has true-row mean zero and conditional
-variance γ²(η_{t+1}^(u))² Var_P(V*) on the strict sample prefix (zero outside
-window). Establish boundedness 0≤V*≤H and rate bounds 0≤η_k≤1 for k≤u;
-then each active increment has |X_t|≤γ η_{t+1}^(u) H, and conditional square
-≤γ²(η_{t+1}^(u))² H². Transfer to natural increment history by the tower
-property; prove a deterministic global B and variance cap from weight lemmas
-before Freedman. T=0 and empty windows give identically zero increments; γ=0
-also makes them zero. No concentration or rate theorem is claimed. -/
+/- Moments, history, source indexing and the fixed-row Freedman bound are established in subsequent modules. -/
 end StatisticalRL.QLearning

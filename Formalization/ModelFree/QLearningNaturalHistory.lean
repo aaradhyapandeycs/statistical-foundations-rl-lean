@@ -50,16 +50,5 @@ theorem qCondExp_zero_of_smaller (M : DiscountedMDP State Action) (T : ℕ)
   have hz : (qSamplingLaw M T)[(0 : QSamples State Action T → ℝ) | m₁] = 0 := condExp_zero
   exact htower.symm.trans (hzero.trans (Filter.Eventually.of_forall fun x ↦ by change (qSamplingLaw M T)[(0 : QSamples State Action T → ℝ) | m₁] x = 0; rw [hz]; rfl))
 
-/- Remaining actual-law proof obligations, with no assumed desired identity:
-  1. For j<T, qPaddedIncrement j is strongly measurable under qPastSigma T (j+1).
-     Derive this from Q_j prefix factorization and the current coordinate being
-     contained in that larger prefix; for j≥T it is the constant zero.
-  2. For every j<t, use qPastSigma_mono to derive measurability in qPastSigma T t.
-     Therefore priorIncrementSigma (qPaddedIncrement ...) t ≤ qPastSigma T t.
-  3. For t<T apply qRowIncrement_condExp_zero and qCondExp_zero_of_smaller;
-     for t≥T use condExp_zero. Source update t+1 corresponds to layer t.
-  4. Apply tower again to conditional squared increments, carefully retaining
-     a conditional expectation of true-row variance under the smaller history;
-     only a proved deterministic cap may be substituted for it.
-No Freedman probability estimate or convergence rate is claimed here. -/
+/- Adaptation and natural-history moment transfer are established in QLearningHistoryAdaptation. -/
 end StatisticalRL.QLearning
