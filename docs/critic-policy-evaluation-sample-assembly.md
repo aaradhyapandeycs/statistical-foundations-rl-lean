@@ -1,0 +1,19 @@
+# Independent review: source sample-size arithmetic
+
+**Verdict: pass for the stated arithmetic and one-state exactness ingredients.** The module does not state the printed policy-evaluation theorem or its probability guarantee.
+
+The printed theorem at `generative_model_model_based.tex:141–155` has a universal sufficiently large c₀, accuracy `0<ε≤1/(1−γ)`, confidence `0<δ<1`, and a per-state sample bound `N≥c₀ log(S/(δ(1−γ)))/((1−γ)^3 ε²)`. Its conclusion holds simultaneously for every state with probability at least `1−δ`. In the staged module, h, S, δ, ε and N are real arithmetic variables; a later source theorem must instantiate h=1−γ, S=card State and N as the actual positive natural sample size, then establish the probability/quantifier conclusion. The file does not itself freeze or prove that source theorem.
+
+For S≥2, h∈(0,1], and δ∈(0,1], `source_selected_depth_log_bound` sets `m=⌈log(e/h)⌉₊` and proves `β=2 log(4S(m+1)/δ)≤10 H`, where `H=log(S/(δh))`. The `m+1` counts the actual inclusive levels 0 through m. Its ceiling estimate `m+1≤3/h`, comparison `4S(m+1)/δ≤12X≤X⁵` with X=S/(δh)≥2, and logarithm monotonicity all use positive arguments; there is no sample count hidden inside either logarithm.
+
+The arithmetic is consistent with the concrete sufficient constant 720. The sample premise gives `N h³ ε²≥720H≥72β`; `ε≤1/h` gives `h² ε²≤1`. Consequently `Nh≥72β≥64β`, proving the high-sample cutoff, while the factor 72 proves `3√(8β/(h³N))≤ε`. Equality at `ε=1/h` is allowed. The source's c₀ is existential; 720 is this particular sufficient constant, conditional on the other staged source-radius ingredients and their correct composition, not a constant printed by the paper.
+
+`valueEstimator_eq_true_of_subsingleton` works for the actual estimator, any sample outcome and every admissible one-state MDP/policy. Since the value is constant on a subsingleton, both probability rows have the same expectation; the reviewed perturbation bound gives zero norm and hence equality. MDP state nonemptiness makes this the S=1 case. This genuinely handles the case where `log(S/(δh))` can approach zero and the S≥2 logarithm comparison cannot hold uniformly. No sampling event is assumed. For γ=0 and arbitrary S, exactness is available in separate reviewed modules; it is not claimed or proved by this file's one-state lemma.
+
+Remaining work includes proving that the previously reviewed actual-law simultaneous event supplies the recursion and terminal antecedents on the **same event**, instantiating the radius theorem with its β and selected depth, bridging real N to positive natural sample count, handling γ=0 and S=1, and deriving the printed probability and all-state error quantifiers. A one-state fact plus arithmetic alone is not a high-probability source theorem. The staged theorem uses `N≥64β/h`, so any claim at another threshold must explicitly justify that branch.
+
+Staged source SHA-256 `f408a6050eb96cfc7b4c5ab95ff1d22f0c556ad6b0a3a7783164642d03accc5b`; source TeX SHA-256 `b7e7abfb2c2cb2c0dd82470db5ecac3a67d7163682246d499935d9130214ac4d`. An exact unchanged source copy with the original imports and four appended `#print axioms` commands compiled independently, exit 0. The one-state exactness, generic arithmetic, depth-log comparison and printed-log budget declarations all use only `propext`, `Classical.choice`, and `Quot.sound`. The compiler reported the same nonsemantic `unnecessarySeqFocus` style warning at line 94 as the builder. Integrated export verification remains separate.
+
+## Integrated export verification
+
+Production SampleAssembly is byte-identical to reviewed SHA-256 `f408a6050eb96cfc7b4c5ab95ff1d22f0c556ad6b0a3a7783164642d03accc5b`. The actual module compiled with the same nonsemantic line-94 style warning, and all four import-only axiom checks succeeded with only `propext`, `Classical.choice`, and `Quot.sound`.

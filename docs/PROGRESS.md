@@ -266,6 +266,14 @@ audit, and independent correspondence review before promotion.
   variance-budget bounds and the budget's unique Bellman equation. The
   empirical-resolvent and sharper statistical links remain open; see the
   [independent review](critic-policy-evaluation-variance.md).
+- `Formalization/Generative/PolicyEvaluationTerminalError.lean` proves
+  the terminal auxiliary error estimate. `PolicyEvaluationHighSample.lean`
+  combines it with the recursion on one actual-sampling event, while
+  `PolicyEvaluationSampleAssembly.lean` proves sample-threshold arithmetic
+  and one-state exactness. The source-shaped final theorem and its audit
+  remain separate; see the independent reviews of the [terminal bound](critic-policy-evaluation-terminal-error.md),
+  [high-sample bound](critic-policy-evaluation-high-sample.md), and
+  [sample assembly](critic-policy-evaluation-sample-assembly.md).
 - `Formalization/Generative/PolicyEvaluationFinalArithmetic.lean` proves
   the printed high-sample radius from explicit recursion, growth, and terminal
   estimates; the assumptions and statistical assembly are separate. See the
@@ -313,8 +321,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee remain open; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled sixty-eight project modules; its
-  transitive axiom audit checked 1496 project declarations, allowing only
+- The current pinned Lean integration compiled seventy-one project modules; its
+  transitive axiom audit checked 1524 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
