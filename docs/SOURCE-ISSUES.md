@@ -58,6 +58,18 @@ argument above is an independent mathematical review, not a complete Lean
 refutation. `S ≥ 2` excludes this example but is not asserted to be sufficient
 for the original result. No corrected theorem or author ruling is assumed.
 
+## Candidate repair of Theorem 3.7
+
+A [proposed correction](critic-theorem37-correction.md) adds `S ≥ 2` and
+`A ≥ 2` to the combined statement and supplies a conservative constant
+`c_N = 1/8192`, with separate arguments for policy learning and Q estimation.
+It also repairs an incorrect expression for the optimal Q-value after a
+suboptimal first action, the source's hypothesis count in its Fano step, and
+the policy decoder. A separate [mathematical check](critic-theorem37-correction-independent.md)
+reproduces the probability bounds and constants. This is a proposed replacement,
+not an author-approved erratum or a completed Lean proof; the full statistical
+experiment and its testing reductions still need formal verification.
+
 The initial review additionally records uncertainty over a confidence-radius
 scaling in Section 7.4 and a reward-convention conflict in Section 7.2. Those
 observations require further independent verification.
