@@ -102,8 +102,12 @@ audit, and independent correspondence review before promotion.
   discounted state and state-action occupancy laws from actual infinite path
   events and the specified initial distribution, proves normalization, the
   policy factorization and deterministic-policy indicator, and handles γ = 0.
-  Explicit specialization of the indicator to the constructed optimal policy
-  remains separate; see the [independent review](critic-discounted-occupancy.md).
+  The explicit optimal-policy indicator is established separately below; see
+  the [independent review](critic-discounted-occupancy.md).
+- `Formalization/MDP/OptimalDiscountedOccupancy.lean` specializes the
+  occupancy indicator to the constructed optimal greedy policy, with the same
+  initial distribution and actual trajectory events. See the
+  [independent review](critic-optimal-discounted-occupancy.md).
 - `Formalization/MDP/InfiniteReturn.lean` defines the actual infinite discounted
   return and its expectation under that path law, and proves measurability,
   integrability, the geometric bound, and convergence of expected partial sums.
@@ -135,9 +139,13 @@ audit, and independent correspondence review before promotion.
 - `Formalization/Probability/EmpiricalHoeffdingRandomFamily.lean` proves the
   strict source-radius bound for variable-size, possibly empty random families
   independent of the actual empirical row, under an explicit family-test
-  measurable structure. Compatibility with conventional random-finite-set
-  measurable structures is not yet established; see the
+  measurable structure; see the
   [independent review](critic-empirical-hoeffding-random-family.md).
+- `Formalization/Probability/RandomFamilyBorel.lean` constructs a finite-family
+  measurable space from injective Borel tuples and proves the source-radius
+  strict bound under unordered-family/empirical-row independence. Equality
+  with other hyperspace σ-algebras and a full source declaration audit remain
+  separate; see the [independent review](critic-random-family-borel.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
@@ -150,8 +158,8 @@ audit, and independent correspondence review before promotion.
   also checks a rational counterexample to the printed intermediate Q formula.
   Stationary optimal trajectory semantics are addressed separately; the full
   statistical lower bound remains open.
-- The current pinned Lean integration compiled thirty-three project modules; its
-  transitive axiom audit checked 846 project declarations, allowing only
+- The current pinned Lean integration compiled thirty-five project modules; its
+  transitive axiom audit checked 871 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

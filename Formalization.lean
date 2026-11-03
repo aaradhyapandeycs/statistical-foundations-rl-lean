@@ -18,6 +18,7 @@ import Formalization.MDP.ForcedActionReturn
 import Formalization.MDP.ForcedPrefixBridge
 import Formalization.MDP.OptimalTrajectoryValue
 import Formalization.MDP.DiscountedOccupancy
+import Formalization.MDP.OptimalDiscountedOccupancy
 import Formalization.MDP.OccupancyBridge
 import Formalization.MDP.PolicyValueQ
 import Formalization.Obstructions.SingletonAction
@@ -29,3 +30,4 @@ import Formalization.Probability.EmpiricalRow
 import Formalization.Probability.EmpiricalHoeffding
 import Formalization.Probability.EmpiricalHoeffdingFamily
 import Formalization.Probability.EmpiricalHoeffdingRandomFamily
+import Formalization.Probability.RandomFamilyBorel
