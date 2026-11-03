@@ -376,8 +376,11 @@ audit, and independent correspondence review before promotion.
   the actual random proxy and eligible-terminal event are unchanged by this
   extension. A deterministic
   increment bound and coarse variance cap are also derived
-  for the late-window centered-square martingale. Sharp proxy concentration
-  and the final TD theorem remain separate. See
+  for the late-window centered-square martingale. The fixed-terminal late
+  proxy satisfies the source infinity-norm bound with probability at least
+  1−δ/(2T), under the source schedule and a sufficient sample-budget constant.
+  The original-variance bound and final TD theorem remain separate. See
+  [proxy concentration review](critic-td-proxy-concentration.md),
   [rate-extension review](critic-td-source-rate-finite-extension.md),
   [event-transport review](critic-td-source-rate-proxy-transport.md),
   [scalar review](critic-td-sharp-self-bound-scalar-independent.md),
@@ -633,8 +636,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled three hundred fourteen project modules; its
-  transitive axiom audit checked 3971 project declarations, allowing only
+- The current pinned Lean integration compiled three hundred twenty-one project modules; its
+  transitive axiom audit checked 4021 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
