@@ -365,11 +365,16 @@ audit, and independent correspondence review before promotion.
   [review](critic-td-square.md).
 - The chronological TD propagator composition, weighted square-energy
   telescope and its deterministic endpoint cap are established. A general
-  fixed-terminal centered-square martingale has actual-history centering;
-  restricting it to the source late window, sharp variance concentration,
-  and the final TD theorem remain separate. See
-  [energy review](critic-td-sharp-energy.md) and
-  [martingale review](critic-td-sharp-martingale-source.md).
+  fixed-terminal centered-square martingale has actual-history centering,
+  an explicit source late-window wrapper, single-state conditional variance
+  control, cross-state square-covariance cancellation, and a per-update
+  propagated conditional variance bound. The cumulative sharp variance
+  concentration and final TD theorem remain separate. See
+  [energy review](critic-td-sharp-energy.md),
+  [martingale review](critic-td-sharp-martingale-source.md),
+  [fresh-variance review](critic-td-square-fresh-variance-bridge.md),
+  [covariance review](critic-td-square-covariance.md), and
+  [propagated-variance review](critic-td-square-propagated-variance-independent.md).
 - TD weights satisfy the source mass identity and first- and squared-mass
   bounds. A source-schedule envelope and an actual-law scalar fixed-terminal
   Freedman event are established under explicit late-terminal and large-T
@@ -387,7 +392,10 @@ audit, and independent correspondence review before promotion.
   fluctuations have proved conditional moments, variance budgets, and a
   source-radius absorption event simultaneously over both signs, rows and
   late terminal times with confidence at least 1−δ. The full robust-model
-  stability estimate and final Q-learning theorem remain separate. See
+  stability estimate and final Q-learning theorem remain separate. A
+  same-sample comparator sandwich holds simultaneously on the absorption
+  event with probability at least 1−δ under the source schedule, T≥2,
+  0<δ<1 and bounded initialization. See
   [operator review](critic-q-learning-robust-contraction.md),
   [optimizer review](critic-q-learning-robust-compact-attain-range.md),
   [comparison review](critic-q-learning-chi-comparison.md),
@@ -395,11 +403,12 @@ audit, and independent correspondence review before promotion.
   [residual review](critic-q-learning-chi-residual.md),
   [source-parameter review](critic-q-learning-chi-source-parameters.md),
   [fixed-value review](critic-q-learning-chi-fixed-value-chain.md), and
-  [probability review](critic-q-learning-chi-probability.md).
+  [probability review](critic-q-learning-chi-probability.md), and
+  [sandwich review](critic-q-learning-comparator-chain-independent.md).
 - The finite-law pairwise variance identity and square-variance bound include
-  zero-mass atoms, singleton carriers and H=0. The actual TD conditional
-  variance and cross-state square-covariance bridges remain separate; see
-  [review](critic-td-variance-pairwise-source.md).
+  zero-mass atoms, singleton carriers and H=0. Actual TD conditional
+  variance and cross-state square-covariance bridges are proved separately;
+  see [review](critic-td-variance-pairwise-source.md).
 - A finite one-step Markov joint-law KL chain rule is established with
   explicit support conditions. The actual forced-prefix induction,
   geometric stopping and stability bound remain separate; see
@@ -594,8 +603,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred sixty-three project modules; its
-  transitive axiom audit checked 3454 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred seventy-two project modules; its
+  transitive axiom audit checked 3576 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

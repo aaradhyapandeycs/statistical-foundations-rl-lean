@@ -264,3 +264,14 @@ import Formalization.ModelFree.QLearningChiFixedValueUnion
 import Formalization.ModelFree.QLearningChiSourceRadius
 import Formalization.ModelFree.QLearningChiSourceRadiusUnion
 import Formalization.ModelFree.TDVariancePairwise
+
+import Formalization.ModelFree.QLearningComparatorRecursion
+import Formalization.ModelFree.QLearningComparatorUnroll
+import Formalization.ModelFree.QLearningComparatorSandwich
+import Formalization.ModelFree.QLearningComparatorSameData
+
+import Formalization.ModelFree.TDSharpVariance
+import Formalization.ModelFree.TDSharpLateWindow
+import Formalization.ModelFree.TDSharpFreshVarianceBridge
+import Formalization.ModelFree.TDSharpSquareCovariance
+import Formalization.ModelFree.TDSharpPropagatedVariance
