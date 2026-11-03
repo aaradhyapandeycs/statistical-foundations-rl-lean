@@ -249,3 +249,12 @@ import Formalization.ModelFree.QLearningChiKL
 import Formalization.ModelFree.TDSharpEnergy
 import Formalization.ModelFree.QLearningChiResidual
 import Formalization.ModelFree.QLearningOptimalFreedmanUnion
+
+import Formalization.ModelFree.QLearningChiSourceParameters
+import Formalization.ModelFree.QLearningChiResidualUpper
+import Formalization.ModelFree.QLearningChiStochasticInterface
+import Formalization.ModelFree.QLearningChiFixedValueMoments
+import Formalization.ModelFree.QLearningChiFixedValueHistory
+import Formalization.ModelFree.QLearningChiFixedValueVariance
+import Formalization.ModelFree.QLearningTrajectoryKL
+import Formalization.ModelFree.TDSharpMartingale

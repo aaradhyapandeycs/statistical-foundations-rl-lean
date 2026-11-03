@@ -364,9 +364,12 @@ audit, and independent correspondence review before promotion.
   concentration and TD accuracy theorem remain separate; see
   [review](critic-td-square.md).
 - The chronological TD propagator composition, weighted square-energy
-  telescope and its deterministic endpoint cap are established. The
-  centered-square martingale, sharp variance probability bound, and final
-  TD theorem remain separate; see [review](critic-td-sharp-energy.md).
+  telescope and its deterministic endpoint cap are established. A general
+  fixed-terminal centered-square martingale has actual-history centering;
+  restricting it to the source late window, sharp variance concentration,
+  and the final TD theorem remain separate. See
+  [energy review](critic-td-sharp-energy.md) and
+  [martingale review](critic-td-sharp-martingale-source.md).
 - TD weights satisfy the source mass identity and first- and squared-mass
   bounds. A source-schedule envelope and an actual-law scalar fixed-terminal
   Freedman event are established under explicit late-terminal and large-T
@@ -379,14 +382,22 @@ audit, and independent correspondence review before promotion.
   nonnegative radius. Compactness gives actual optimizing rows and their
   shifted fixed-point value bounds. The source two-sided χ² comparison
   of robust expectations is proved, as is the support-aware finite-row
-  KL-to-χ² bound. Both robust fixed-point residual signs have
-  source-parameter comparison bounds. The full robust-model stability
-  estimate, stochastic events and final Q-learning theorem remain separate. See
+  KL-to-χ² bound. Both robust fixed-point residual signs have bounds at
+  the exact source radius and reward shift. Actual fixed-comparator
+  fluctuations have proved conditional moments and variance budgets; their
+  simultaneous probability event remains separate. The full robust-model
+  stability estimate and final Q-learning theorem remain separate. See
   [operator review](critic-q-learning-robust-contraction.md),
   [optimizer review](critic-q-learning-robust-compact-attain-range.md),
   [comparison review](critic-q-learning-chi-comparison.md),
-  [KL review](critic-q-learning-chi-kl.md), and
-  [residual review](critic-q-learning-chi-residual.md).
+  [KL review](critic-q-learning-chi-kl.md),
+  [residual review](critic-q-learning-chi-residual.md),
+  [source-parameter review](critic-q-learning-chi-source-parameters.md), and
+  [fixed-value review](critic-q-learning-chi-fixed-value-chain.md).
+- A finite one-step Markov joint-law KL chain rule is established with
+  explicit support conditions. The actual forced-prefix induction,
+  geometric stopping and stability bound remain separate; see
+  [review](critic-q-learning-trajectory-kl.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -577,8 +588,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred fifty project modules; its
-  transitive axiom audit checked 3333 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred fifty-eight project modules; its
+  transitive axiom audit checked 3407 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
