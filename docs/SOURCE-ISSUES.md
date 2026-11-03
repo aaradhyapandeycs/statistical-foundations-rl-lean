@@ -126,3 +126,9 @@ record the argument. The strict testing and estimation-risk transfer is now
 proved for deterministic estimators on the actual two-state, one-action
 sampling law in `GenerativeLowerBoundObservationLaw.lean`; extensions to
 randomized estimators and the general fixed-size lower bound remain separate.
+
+## Candidate C5: missing premise in TD step-size Lemma 4.3
+
+The printed standalone `lemma:TD-step-size` (`generative_model_model_free.tex:317–327`) omits a gamma-dependent sample-size premise used in its appendix proof, and does not explicitly bound `t` by the horizon on which the schedule is constrained. The [independent source review](critic-td-step-size-premise.md) gives a concrete admissible counterexample to the early-weight bound: take `c₁=c₂=1/4`, `T=t=100`, `γ=1−10⁻⁶`, and each learning rate equal to the printed lower endpoint. Then the initial weight is at least `0.9999`, whereas the lemma asserts it is at most `0.0001`.
+
+The proof uses `T ≥ log²(T)/(c₁(1−γ))`; the formal helper must retain that condition and `t≤T`, or prove them from the enclosing main theorem's sample-size assumptions. This is a statement gap for the standalone auxiliary lemma, not by itself a counterexample to the main TD theorem. No author-approved correction is asserted.

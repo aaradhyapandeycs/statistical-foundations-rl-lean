@@ -274,13 +274,14 @@ audit, and independent correspondence review before promotion.
   and [concentration review](critic-finite-horizon-continuation-bernstein.md).
 - `Formalization/Generative/FiniteHorizonEmpiricalContinuation.lean` proves
   that the actual empirical optimal continuation depends only on strictly
-  future-stage samples and is independent of the current row. The finite-
-  horizon statistical theorem remains open; see the [independent review](critic-finite-horizon-empirical-continuation.md).
+  future-stage samples and is independent of the current row. The causal
+  planner’s source sample theorem is now proved for positive N; see the [independent review](critic-finite-horizon-empirical-continuation.md).
 - Finite-horizon residual accumulation and optimal-policy transfer prove
   deterministic value and forced-action Q error bounds for every exact
   suffix-optimal empirical policy under a shared residual envelope.
-  The full source sample-threshold conversion remains open; see
-  the [independent review](critic-finite-horizon-residual-accumulation.md).
+  The source sample-threshold conversion is established for the causal
+  backward-greedy planner and positive N; see
+  the [independent review](critic-finite-horizon-source-theorem.md).
 - The source TD bounded-iterates lemma is proved pathwise for the actual
   synchronous update and actual trajectory value. Its convergence theorem remains open; see the [independent review](critic-td-iterate-bounds.md).
 - The corrected indexed hard family now has finite Fano and two-point
@@ -299,12 +300,12 @@ audit, and independent correspondence review before promotion.
   [review](critic-generative-lower-bound-kernel-quarter.md).
 - Finite-horizon variance-derived auxiliary values and their source
   growth bound are proved for fixed policies. Data-selected policy
-  independence and the sharp statistical rate remain open; see
+  independence for arbitrary global ties remains open; see
   [review](critic-finite-horizon-auxiliary-growth.md).
 - The finite-horizon auxiliary error recursion now yields the cited
   deterministic Lemma 9 bound under its explicit all-level Bernstein
-  conditions, including source depth and constants. Proving those
-  conditions as an event for the selected planner remains open; see
+  conditions, including source depth and constants. The corresponding
+  event for the causal selected planner is proved; see
   [review](critic-finite-horizon-lemma-nine-wrapper.md).
 - The corrected Q-estimation mixture has actual optimal-Q separation,
   full-array sampling reconstruction and its active-product mixture
@@ -312,12 +313,11 @@ audit, and independent correspondence review before promotion.
   open; see [review](critic-generative-lower-bound-q-mixture-density-closure.md).
 - One actual-law all-level Bernstein event holds for the true-optimal
   policy and the causal backward-greedy empirical selector, with an
-  explicit confidence factor. Arbitrary globally selected ties and
-  the final source rate remain open; see [review](critic-finite-horizon-all-level-bernstein.md).
+  explicit confidence factor. Arbitrary globally selected ties remain open; see [review](critic-finite-horizon-all-level-bernstein.md).
 - The causal finite-horizon planner has simultaneous all-stage V and Q
   bounds with explicit confidence, sample condition and radius. The
-  printed sample-threshold/log conversion and arbitrary global ties
-  remain open; see [review](critic-finite-horizon-same-data-performance.md).
+  printed sample-threshold/log conversion is proved for positive N; arbitrary
+  globally chosen ties remain open; see [review](critic-finite-horizon-same-data-performance.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -508,8 +508,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred seventy-four project modules; its
-  transitive axiom audit checked 2565 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred seventy-seven project modules; its
+  transitive axiom audit checked 2584 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

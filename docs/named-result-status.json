@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T07:37:42.451903+00:00",
+  "updated_at": "2026-11-03T08:46:29.000681+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -74,6 +74,15 @@
       "source_lines": "293–302",
       "lean_export": "StatisticalRL.TemporalDifference.tdIterate_bounds and StatisticalRL.TemporalDifference.tdIterate_error_norm_le",
       "evidence": "docs/critic-td-iterate-bounds.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 3.9",
+      "source_label": "Thm:sample-compl-finite",
+      "source_file": "chapters/generative_model_model_based.tex",
+      "source_lines": "2551–2570",
+      "lean_export": "StatisticalRL.FiniteHorizonGenerative.exists_universal_causalFinitePolicy_sample_constant",
+      "evidence": "docs/critic-finite-horizon-source-theorem.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

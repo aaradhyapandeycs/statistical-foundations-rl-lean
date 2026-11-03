@@ -27,6 +27,8 @@ component is not a claim that its chapter or the monograph is complete.
 
 | Bounded temporal-difference iterates, `lemma:TD-bounded`, model-free chapter lines 293–302 | [TDIterateBounds.lean](../Formalization/ModelFree/TDIterateBounds.lean) | **Lemma 4.2 proved and independently reviewed:** the exact synchronous update stays in the source return interval and its full sup-norm error against the actual infinite-trajectory policy value is bounded by the effective horizon, pathwise for every sample sequence and every admissible prefix of learning rates. The TD sampling law, martingale analysis, and high-probability convergence theorem remain separate. [Review](critic-td-iterate-bounds.md). |
 
+| Finite-horizon model-based policy learning, `Thm:sample-compl-finite`, model-based chapter lines 2551–2570 | [FiniteHorizonMainSample.lean](../Formalization/Generative/FiniteHorizonMainSample.lean) | **Theorem 3.9 proved and independently reviewed for positive N and the causal backward-greedy planner:** actual stage/state/action product sampling, explicit universal constant 8640, δ>0, 0<ε≤H, and simultaneous actual V/Q bounds at all source stages. Positive N is the empirical-frequency convention; the printed threshold alone does not force it for all δ≥1. The statement concerns the concrete backward-induction tie rule, not arbitrary globally selected data-dependent optimal ties. [Source review](critic-finite-horizon-source-theorem.md). |
+
 The latest project-wide local check and open obligations are in
 [PROGRESS.md](PROGRESS.md). Theorem 3.7's one-state issue is tracked separately
 in [SOURCE-ISSUES.md](SOURCE-ISSUES.md); it has not been silently corrected or
