@@ -287,7 +287,7 @@ audit, and independent correspondence review before promotion.
 - The corrected indexed hard family now has finite Fano and two-point
   deterministic-estimator risk proofs, including strict lower-risk
   bounds under explicit budgets. The unrestricted printed theorem and its
-  Q-estimation conclusion remain open; see the
+  wider printed domain remains open; see the
   [independent review](critic-generative-lower-bound-policy-risk-branches-compiled.md).
 - The synchronous TD sample interface constructs the actual finite
   policy-transition product law and connects it to bounded iterates;
@@ -309,8 +309,9 @@ audit, and independent correspondence review before promotion.
   [review](critic-finite-horizon-lemma-nine-wrapper.md).
 - The corrected Q-estimation mixture has actual optimal-Q separation,
   full-array sampling reconstruction and its active-product mixture
-  density and moments. The χ² testing and Q-risk conclusion are still
-  open; see [review](critic-generative-lower-bound-q-mixture-density-closure.md).
+  density and moments. A separate corrected Q-risk theorem handles arbitrary
+  randomized real-Q estimators on S,A≥2; the wider printed domain remains
+  open. See [review](critic-generative-lower-bound-q-final-randomized.md).
 - One actual-law all-level Bernstein event holds for the true-optimal
   policy and the causal backward-greedy empirical selector, with an
   explicit confidence factor. Arbitrary globally selected ties remain open; see [review](critic-finite-horizon-all-level-bernstein.md).
@@ -324,6 +325,13 @@ audit, and independent correspondence review before promotion.
 - The exact TD learning-weight identities and a finite-product
   exponential envelope are proved; the corrected schedule-specific
   bounds remain separate. See [review](critic-td-learning-weights.md).
+- Corrected TD step-size early and late bounds include the missing
+  large-T/time premises, and the source main budget supplies the
+  large-T premise for a sufficient constant. The stochastic TD
+  theorem remains open; see [review](critic-td-step-size-budget.md).
+- Q-learning has an actual finite product experiment and proved
+  past-prefix/current-row independence. Conditional moments and
+  convergence remain open; see [review](critic-q-learning-causality.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -514,8 +522,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred seventy-nine project modules; its
-  transitive axiom audit checked 2610 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred one project modules; its
+  transitive axiom audit checked 2755 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
