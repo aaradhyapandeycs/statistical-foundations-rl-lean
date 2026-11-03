@@ -276,6 +276,11 @@ audit, and independent correspondence review before promotion.
   that the actual empirical optimal continuation depends only on strictly
   future-stage samples and is independent of the current row. The finite-
   horizon statistical theorem remains open; see the [independent review](critic-finite-horizon-empirical-continuation.md).
+- Finite-horizon residual accumulation and optimal-policy transfer prove
+  deterministic value and forced-action Q error bounds for every exact
+  suffix-optimal empirical policy under a shared residual envelope.
+  The all-stage probability event and sharp sample bound remain open; see
+  the [independent review](critic-finite-horizon-residual-accumulation.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   Fano and the corrected minimax theorem remain open; see the independent
@@ -466,8 +471,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred twenty-eight project modules; its
-  transitive axiom audit checked 2178 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred thirty project modules; its
+  transitive axiom audit checked 2213 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
