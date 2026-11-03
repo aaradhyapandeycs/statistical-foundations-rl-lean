@@ -332,6 +332,15 @@ audit, and independent correspondence review before promotion.
 - Q-learning has an actual finite product experiment and proved
   past-prefix/current-row independence. Conditional moments and
   convergence remain open; see [review](critic-q-learning-causality.md).
+- Q-learning increments have conditional mean zero and true-row
+  conditional variance under the actual sample prefix. Their strict
+  increment history is included in that prefix; its conditional
+  square is the tower-transferred row variance. Deterministic caps
+  and the Freedman/rate theorem remain open; see
+  [review](critic-q-learning-natural-history.md).
+- The actual TD error obeys the exact finite chronological telescope
+  with its source noise terms. Conditional moments and the TD rate
+  remain separate; see [review](critic-td-error-unroll.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -522,8 +531,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred one project modules; its
-  transitive axiom audit checked 2755 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred twelve project modules; its
+  transitive axiom audit checked 2863 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
