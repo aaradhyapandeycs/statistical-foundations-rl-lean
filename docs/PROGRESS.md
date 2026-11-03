@@ -8,6 +8,11 @@ audit, and independent correspondence review before promotion.
 
 ## Current checked infrastructure
 
+- The standalone TD step-size counterexample and the pointwise χ² weak-duality
+  helper have passed focused, working-tree and clean-copy compilation and
+  axiom audits. They do not prove the main TD theorem or the full
+  robust-duality lemma, respectively. See the [step-size source issue](SOURCE-ISSUES.md)
+  and [χ² review](critic-robust-chi-weak-duality.md).
 - A proposed corrected UCBVI implementation proves all-stage actual-trajectory
   optimism under the source's strict factor-two confidence bound for a fixed
   deterministic tie rule and explicit `N=0 → Q=H` convention. Its 41-module
@@ -678,8 +683,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled 382 project modules; its
-  transitive axiom audit checked 4,581 project declarations, allowing only
+- The current pinned Lean integration compiled 384 project modules; its
+  transitive axiom audit checked 4,599 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. A separate clean-copy check
   passed on the same source hashes. These checks do not replace
   source review. Current builder work and independent critic findings are

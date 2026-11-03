@@ -195,6 +195,7 @@ import Formalization.Generative.GenerativeLowerBoundQMixtureFinalRandomized
 import Formalization.ModelFree.QLearningSynchronousSampling
 import Formalization.ModelFree.QLearningCausality
 import Formalization.ModelFree.TDStepSizeEarly
+import Formalization.ModelFree.TDStandaloneStepSizeCounterexample
 import Formalization.ModelFree.TDStepSizeLate
 import Formalization.ModelFree.TDStepSizeBudget
 import Formalization.ModelFree.QLearningConditionalMoments
@@ -354,4 +355,5 @@ import Formalization.Generative.GenerativeLowerBoundCombinedRisk
 import Formalization.Online.OnlineZeroCountOptimisticUpdate
 import Formalization.Online.SourceOptimism
 import Formalization.RobustRL.ChiSquaredPolicyValue
+import Formalization.RobustRL.ChiSquaredWeakDuality
 import Formalization.RobustRL.SingletonActionCounterexample

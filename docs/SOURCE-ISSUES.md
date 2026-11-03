@@ -159,6 +159,13 @@ The printed standalone `lemma:TD-step-size` (`generative_model_model_free.tex:31
 
 The proof uses `T ≥ log²(T)/(c₁(1−γ))`; the [formal helper](../Formalization/ModelFree/TDStepSizeLate.lean) retains that condition and `t≤T`, while a [separate proof](../Formalization/ModelFree/TDStepSizeBudget.lean) derives the large-T condition from the enclosing main theorem’s sample budget for a sufficient constant relation. This is a statement gap for the standalone auxiliary lemma, not by itself a counterexample to the main TD theorem. No author-approved correction is asserted.
 
+The [standalone counterexample](../Formalization/ModelFree/TDStandaloneStepSizeCounterexample.lean)
+formalizes the numerical schedule and strict failure of the initial-weight
+bound using the project's actual step-size and weight definitions. The same
+proof passed a focused check under a draft header; the current source passed
+working-tree and clean-copy compilation and axiom checks. It does
+not assert that the main theorem's sample budget holds for this witness.
+
 ## Candidate C6: confidence factor in the UCBVI optimism proof
 
 **Source:** arXiv:2610.41903v1, `chapters/onlineRL.tex`,
