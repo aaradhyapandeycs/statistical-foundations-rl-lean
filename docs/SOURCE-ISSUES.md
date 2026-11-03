@@ -179,9 +179,12 @@ One candidate proof repair is to use a single simultaneous concentration
 event for every deterministic visit-prefix length up to K−1 for each
 state-action-stage row. Each adaptive visit count is then covered without
 conditioning on that random count; a union over the row/prefix pairs may
-retain the factor 2. This requires a proved coupling between the pre-sampled
-successor streams and the actual online process, as well as an explicit
-zero-visit convention. Those steps have not yet been formally verified.
+retain the factor 2. The proposed corrected implementation now has an
+[isolated Lean proof](critic-online-corrected-optimism.md) using a
+pre-sampled-to-sequential law bridge and an explicit zero-visit convention.
+It covers one fixed deterministic tie rule; the literal printed algorithm
+leaves its zero-count update undefined. Full working and clean integration builds and axiom audits passed. The
+source's factor discrepancy remains documented.
 
 ## Candidate C7: degenerate domains in the robust chi-squared lower bound
 

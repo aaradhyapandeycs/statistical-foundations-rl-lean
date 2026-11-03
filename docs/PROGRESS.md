@@ -8,10 +8,18 @@ audit, and independent correspondence review before promotion.
 
 ## Current checked infrastructure
 
+- A proposed corrected UCBVI implementation proves all-stage actual-trajectory
+  optimism under the source's strict factor-two confidence bound for a fixed
+  deterministic tie rule and explicit `N=0 → Q=H` convention. Its 41-module
+  isolated build and 180-export probes passed, as did the integrated and
+  clean-copy checks. This does not certify the literal source algorithm
+  where the zero-count bonus is undefined. See the
+  [source review](critic-online-corrected-optimism.md).
 - The proposed UCBVI zero-count correction is formalized at the scalar update
   level: unvisited rows retain `Q=H`, positive counts use the printed update,
-  and small-count saturation and range are proved. The complete planner and
-  optimism theorem remain open. See the
+  and small-count saturation and range are proved. A proposed corrected
+  planner and optimism result are separately integrated and verified; the
+  literal printed-source claim remains open. See the
   [review](critic-online-zero-count-scalar-independent-review.md).
 - The χ² robust policy-value foundation defines the infimum over actual
   trajectory values for stationary randomized policies, and proves the
@@ -664,8 +672,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled 339 project modules; its
-  transitive axiom audit checked 4,167 project declarations, allowing only
+- The current pinned Lean integration compiled 381 project modules; its
+  transitive axiom audit checked 4,541 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. A separate clean-copy check
   passed on the same source hashes. These checks do not replace
   source review. Current builder work and independent critic findings are

@@ -352,4 +352,5 @@ import Formalization.Generative.PolicyEvaluationGapRepairSource
 import Formalization.Generative.PolicyEvaluationGapRepairAllStates
 import Formalization.Generative.GenerativeLowerBoundCombinedRisk
 import Formalization.Online.OnlineZeroCountOptimisticUpdate
+import Formalization.Online.SourceOptimism
 import Formalization.RobustRL.ChiSquaredPolicyValue
