@@ -29,6 +29,8 @@ component is not a claim that its chapter or the monograph is complete.
 
 | Finite-horizon model-based policy learning, `Thm:sample-compl-finite`, model-based chapter lines 2551–2570 | [FiniteHorizonMainSample.lean](../Formalization/Generative/FiniteHorizonMainSample.lean) | **Theorem 3.9 proved and independently reviewed for positive N and the causal backward-greedy planner:** actual stage/state/action product sampling, explicit universal constant 8640, δ>0, 0<ε≤H, and simultaneous actual V/Q bounds at all source stages. Positive N is the empirical-frequency convention; the printed threshold alone does not force it for all δ≥1. The statement concerns the concrete backward-induction tie rule, not arbitrary globally selected data-dependent optimal ties. [Source review](critic-finite-horizon-source-theorem.md). |
 
+| Bounded Q-learning iterates, `lemma:non-negativity-Qt-Vt`, model-free chapter lines 1052–1071 | [QLearningIterateBounds.lean](../Formalization/ModelFree/QLearningIterateBounds.lean) | **Lemma 4.8 proved and independently reviewed:** for the synchronous Q-learning update, Q and its action-maximum value remain in the source interval, and full sup-norm error against the actual optimal trajectory Q is at most the effective horizon. These are pathwise bounds for any sample sequence and admissible rate prefix; the sampling law and convergence theorem remain separate. [Review](critic-q-learning-iterate-bounds.md). |
+
 The latest project-wide local check and open obligations are in
 [PROGRESS.md](PROGRESS.md). Theorem 3.7's one-state issue is tracked separately
 in [SOURCE-ISSUES.md](SOURCE-ISSUES.md); it has not been silently corrected or

@@ -173,3 +173,5 @@ import Formalization.Generative.FiniteHorizonPolicyPerformanceConsumption
 import Formalization.Generative.FiniteHorizonSampleArithmetic
 import Formalization.Generative.FiniteHorizonOneStage
 import Formalization.Generative.FiniteHorizonMainSample
+import Formalization.ModelFree.QLearningIterateBounds
+import Formalization.ModelFree.TDLearningWeights

@@ -318,6 +318,12 @@ audit, and independent correspondence review before promotion.
   bounds with explicit confidence, sample condition and radius. The
   printed sample-threshold/log conversion is proved for positive N; arbitrary
   globally chosen ties remain open; see [review](critic-finite-horizon-same-data-performance.md).
+- The synchronous Q-learning update satisfies the source Q/V range and
+  optimal trajectory-Q error invariant pathwise. The sampling and
+  convergence results are separate; see [review](critic-q-learning-iterate-bounds.md).
+- The exact TD learning-weight identities and a finite-product
+  exponential envelope are proved; the corrected schedule-specific
+  bounds remain separate. See [review](critic-td-learning-weights.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -508,8 +514,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred seventy-seven project modules; its
-  transitive axiom audit checked 2584 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred seventy-nine project modules; its
+  transitive axiom audit checked 2610 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
