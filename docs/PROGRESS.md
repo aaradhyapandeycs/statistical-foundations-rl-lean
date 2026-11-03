@@ -256,18 +256,33 @@ audit, and independent correspondence review before promotion.
   true-model trajectory Q and V loss for the empirical greedy policy at γ = 0,
   for every positive sample count and every outcome. The general source theorem
   remains open; see the [independent review](critic-policy-learning-zero-discount.md).
+- `Formalization/Generative/PolicyLearningHoeffding.lean` proves a
+  conservative actual-sampling policy-learning value guarantee by a finite
+  union over deterministic policies, accounting for the fitted policy’s data
+  dependence. Its rate is weaker than the source and does not prove its Q
+  guarantee; see the [independent review](critic-policy-learning-hoeffding.md).
 - `Formalization/Generative/PolicyEvaluationVariance.lean` proves a
   source-derived policy variance identity, finite and infinite discounted
   variance-budget bounds and the budget's unique Bellman equation. The
   empirical-resolvent and sharper statistical links remain open; see the
   [independent review](critic-policy-evaluation-variance.md).
+- `Formalization/Generative/PolicyEvaluationEmpiricalResolvent.lean` proves
+  an empirical-versus-true policy resolvent identity and an actual-sampling
+  Bernstein bound for the first auxiliary variance vector. The remaining
+  higher-order variance term and sharp rate remain open; see the
+  [independent review](critic-policy-evaluation-empirical-resolvent.md).
+- `Formalization/Generative/PolicyEvaluationRecursiveUnroll.lean` proves
+  a conditional finite unrolling of the source’s auxiliary recursion and a
+  deterministic small-sample bound that repairs an omitted case in the
+  source derivation. The high-sample concentration branch and full theorem
+  remain open; see the [independent review](critic-policy-evaluation-recursive-unroll.md).
 - `Formalization/Generative/PolicyEvaluationVarianceResolvent.lean` proves
   the true-policy matrix resolvent identities and a square-root variance
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee remain open; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled fifty-seven project modules; its
-  transitive axiom audit checked 1352 project declarations, allowing only
+- The current pinned Lean integration compiled sixty project modules; its
+  transitive axiom audit checked 1401 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

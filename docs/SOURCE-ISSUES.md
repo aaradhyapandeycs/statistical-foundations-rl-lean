@@ -50,13 +50,14 @@ and checked in an [independent review](critic-one-state-parameters.md). The cons
 `S = 1`: it yields one hypothesis where the Fano step requires at least four.
 
 `Formalization/Obstructions/OneState.lean` establishes the exact formula and
-greedy policy for the Bellman fixed points. Identification with the source's
-infinite-trajectory optimal Q and formalization of the statistical experiment
-remain open. An [independent Lean review](critic-one-state-lean-review.md)
-checks the exact Bellman-level claims. The source
-argument above is an independent mathematical review, not a complete Lean
-refutation. `S ≥ 2` excludes this example but is not asserted to be sufficient
-for the original result. No corrected theorem or author ruling is assumed.
+greedy policy for the Bellman fixed points; the trajectory and experiment
+bridges below extend the evidence to actual infinite trajectories and a
+one-sample generative experiment. An [independent Lean review](critic-one-state-lean-review.md)
+checks the original Bellman-level claims. Exact equivalence between the encoded
+negation and every source estimator and policy convention remains unresolved,
+so this is not presented as a complete Lean refutation of the printed theorem.
+`S ≥ 2` excludes this example but is not asserted sufficient for the original
+result. No author-approved correction or ruling is assumed.
 
 ## Candidate repair of Theorem 3.7
 
@@ -90,3 +91,22 @@ remains to be formalized.
 The initial review additionally records uncertainty over a confidence-radius
 scaling in Section 7.4 and a reward-convention conflict in Section 7.2. Those
 observations require further independent verification.
+
+## Candidate C3: omitted sample-size case in policy evaluation proof
+
+**Source:** `chapters/generative_model_model_based.tex:589–634`, especially
+`eq:T2-bound` and `eqn:ice-cream`. The displayed intermediate bounds assume
+`N ≥ 64β₁/(1−γ)`, but the final estimate is stated for
+`N ≥ β₁/(1−γ)` without an explicit argument covering the intervening range.
+This is a gap in the displayed derivation, not a counterexample to the final
+claim. The source uses the same β₁ before and after this step.
+
+**Proposed proof repair:** both the true and empirical policy values lie in
+`[0, 1/(1−γ)]`, so their sup-norm difference is at most `1/(1−γ)`.
+The printed final radius `3√(8β₁/((1−γ)³N))` is at least this bound when
+`N ≤ 72β₁/(1−γ)`. A deterministic low-sample case thus covers the omitted
+range, while retaining the original high-sample argument and final constants.
+This repair does not by itself justify each intermediate bound under the weaker
+threshold. The independent [mathematical review](critic-policy-evaluation-sample-constant.md)
+checks the argument and the strict-probability issue; full formal integration
+of the repair and the sharp statistical theorem remain separate obligations.

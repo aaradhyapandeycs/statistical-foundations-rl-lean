@@ -53,3 +53,6 @@ import Formalization.Generative.PolicyEvaluationHoeffding
 import Formalization.Generative.PolicyLearningZeroDiscount
 import Formalization.Generative.PolicyEvaluationVariance
 import Formalization.Generative.PolicyEvaluationVarianceResolvent
+import Formalization.Generative.PolicyLearningHoeffding
+import Formalization.Generative.PolicyEvaluationRecursiveUnroll
+import Formalization.Generative.PolicyEvaluationEmpiricalResolvent
