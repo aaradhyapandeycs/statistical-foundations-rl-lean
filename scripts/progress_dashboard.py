@@ -2,6 +2,7 @@
 """Read-only loopback project dashboard. Run: python3 scripts/progress_dashboard.py."""
 import argparse
 from datetime import datetime, timezone
+from functools import lru_cache
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path, PurePosixPath
@@ -20,6 +21,21 @@ def git(*args):
 def project_lean(path):
     p = PurePosixPath(path)
     return p.suffix == '.lean' and (len(p.parts) == 1 or p.parts[0] == 'Formalization')
+
+
+@lru_cache(maxsize=4)
+def published_snapshot(sha):
+    tree = git('ls-tree', '-r', sha).splitlines()
+    names = [line.split('\t', 1)[1] for line in tree
+             if '\t' in line and not line.startswith('120000 ')
+             and project_lean(line.split('\t', 1)[1])]
+    lines = sum(len(subprocess.check_output(
+        ['git', '-C', str(ROOT), 'show', f'{sha}:{p}'], stderr=subprocess.DEVNULL,
+        timeout=10).splitlines()) for p in names)
+    return {'available': True, 'reference': 'origin/main', 'sha': sha,
+            'lean_lines': lines, 'lean_files': len(names),
+            'commit_time': git('show', '-s', '--format=%cI', sha),
+            'url': REPO_URL + '/commit/' + sha}
 
 
 def status():
@@ -45,17 +61,7 @@ def status():
     published = {'available': False, 'reference': 'origin/main'}
     try:
         sha = git('rev-parse', '--verify', 'refs/remotes/origin/main')
-        tree = git('ls-tree', '-r', sha).splitlines()
-        names = [line.split('\t', 1)[1] for line in tree
-                 if '\t' in line and not line.startswith('120000 ')
-                 and project_lean(line.split('\t', 1)[1])]
-        lines = sum(len(subprocess.check_output(
-            ['git', '-C', str(ROOT), 'show', f'{sha}:{p}'], stderr=subprocess.DEVNULL,
-            timeout=10).splitlines()) for p in names)
-        published = {'available': True, 'reference': 'origin/main', 'sha': sha,
-                     'lean_lines': lines, 'lean_files': len(names),
-                     'commit_time': git('show', '-s', '--format=%cI', sha),
-                     'url': REPO_URL + '/commit/' + sha}
+        published = published_snapshot(sha)
     except (subprocess.SubprocessError, OSError):
         pass
     return {'observed_at': datetime.now(timezone.utc).isoformat(),
