@@ -174,6 +174,11 @@ audit, and independent correspondence review before promotion.
   iid empirical-variance bias correction and a source-radius bound in a
   restricted confidence regime. General self-normalized concentration remains
   open; see the [independent review](critic-empirical-variance-bernstein.md).
+- `Formalization/Probability/EmpiricalVarianceConcentration.lean` proves a
+  two-sided additive concentration bound for the empirical variance and a
+  one-sided population-variance confidence bound on the actual iid sample law.
+  The source's sharper self-normalized empirical Bernstein theorem remains
+  open; see the [independent review](critic-empirical-variance-concentration.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
@@ -229,8 +234,16 @@ audit, and independent correspondence review before promotion.
   empirical Bellman estimator equals the source's literal inverse expression.
   Statistical guarantees remain separate; see the
   [independent review](critic-policy-evaluation-inverse.md).
-- The current pinned Lean integration compiled forty-nine project modules; its
-  transitive axiom audit checked 1188 project declarations, allowing only
+- `Formalization/Generative/PolicyEvaluationHoeffding.lean` proves a
+  strict high-probability actual-sampling evaluation bound and a sufficient
+  sample size scaling as (1−γ)⁻⁴. This is weaker than the source's
+  (1−γ)⁻³ result; see the [independent review](critic-policy-evaluation-hoeffding.md).
+- `Formalization/Generative/PolicyLearningZeroDiscount.lean` proves zero
+  true-model trajectory Q and V loss for the empirical greedy policy at γ = 0,
+  for every positive sample count and every outcome. The general source theorem
+  remains open; see the [independent review](critic-policy-learning-zero-discount.md).
+- The current pinned Lean integration compiled fifty-two project modules; its
+  transitive axiom audit checked 1229 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
