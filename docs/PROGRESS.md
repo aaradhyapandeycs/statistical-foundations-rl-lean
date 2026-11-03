@@ -265,6 +265,15 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/PolicyLearningEmpiricalOptimalResidual.lean`
+  proves the all-row residual bound for the data-selected empirical optimum
+  on the same simultaneous sampling event. `PolicyLearningEmpiricalVarianceSelfBound.lean`
+  proves the fitted-value variance expansion, and `PolicyLearningTrueResolventJensen.lean`
+  establishes the arbitrary-input true-resolvent bridge. Combining these
+  into the policy-learning theorem remains open; see the independent reviews
+  of the [residual](critic-policy-learning-empirical-optimal-residual.md),
+  [self-bound](critic-policy-learning-empirical-variance-self-bound.md), and
+  [resolvent](critic-policy-learning-true-resolvent-jensen.md).
 - `Formalization/Generative/PolicyLearningVarianceTransfer.lean` proves
   standard-deviation stability and a conditional grid-to-value transfer.
   `PolicyLearningAllRowBernstein.lean` proves the source-constant simultaneous
@@ -356,8 +365,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled eighty-one project modules; its
-  transitive axiom audit checked 1673 project declarations, allowing only
+- The current pinned Lean integration compiled eighty-four project modules; its
+  transitive axiom audit checked 1699 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
