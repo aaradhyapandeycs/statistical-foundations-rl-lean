@@ -265,6 +265,11 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/PolicyLearningLeaveOneOutIndependence.lean`
+  proves that the fixed-parameter auxiliary value family is independent of
+  the omitted empirical row under the actual sampling law. It does not
+  assert independence for a parameter selected from the data; see the
+  [independent review](critic-policy-learning-leave-one-out-independence.md).
 - `Formalization/Generative/PolicyLearningHoeffding.lean` proves a
   conservative actual-sampling policy-learning value guarantee by a finite
   union over deterministic policies, accounting for the fitted policy’s data
@@ -338,8 +343,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled seventy-six project modules; its
-  transitive axiom audit checked 1567 project declarations, allowing only
+- The current pinned Lean integration compiled seventy-seven project modules; its
+  transitive axiom audit checked 1591 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
