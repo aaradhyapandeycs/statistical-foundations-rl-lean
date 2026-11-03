@@ -98,6 +98,11 @@ audit, and independent correspondence review before promotion.
   Bellman fixed point and whose Q and V dominate all stationary randomized
   policies. The result does not quantify over nonstationary or history-dependent
   policies; see the [independent review](critic-optimal-trajectory-value.md).
+- `Formalization/MDP/PolicyIteration.lean` proves the source γ^k trajectory-Q
+  error rate for arbitrary maximizing tie choices and finite optimal-value
+  attainment, including an arbitrary initial stationary randomized policy.
+  A fixed tie rule also eventually stabilizes at the greedy policy. See the
+  [independent review](critic-policy-iteration.md).
 - `Formalization/MDP/DiscountedOccupancy.lean` constructs the source's
   discounted state and state-action occupancy laws from actual infinite path
   events and the specified initial distribution, proves normalization, the
@@ -156,6 +161,11 @@ audit, and independent correspondence review before promotion.
   including zero range and variance. The simultaneous random-family and
   whole-matrix source bounds remain open; see the
   [independent review](critic-sharp-empirical-bernstein.md).
+- `Formalization/Probability/BernsteinFamily.lean` proves the source
+  Bernstein radius and strict success for a single empirical row and a
+  random finite Borel family independent of that row, including empty and
+  zero cases. The whole-matrix inequality remains separate; see the
+  [independent review](critic-bernstein-family.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
@@ -171,10 +181,21 @@ audit, and independent correspondence review before promotion.
 - `Formalization/Obstructions/OneStateTrajectory.lean` proves that one
   estimator using known rewards and discount is exact for actual stationary
   optimal trajectory Q, uniformly over one-state models and data laws.
-  The formal statistical quantifier package is separate; see the
+  The formal statistical experiment is addressed separately; see the
   [independent review](critic-one-state-trajectory.md).
-- The current pinned Lean integration compiled thirty-eight project modules; its
-  transitive axiom audit checked 948 project declarations, allowing only
+- `Formalization/Obstructions/OneStateExperiment.lean` constructs the actual
+  one-sample-per-row generative law and proves one jointly measurable
+  known-reward Q estimator has zero error uniformly across the admissible
+  one-state models for each feasible source parameter choice. A literal
+  source-theorem proposition and its formal negation are not yet encoded;
+  see the [independent review](critic-one-state-experiment.md).
+- `Formalization/Obstructions/OneStatePolicyExperiment.lean` constructs a
+  measurable deterministic reward-greedy estimator whose actual trajectory
+  Q-policy loss is zero across the one-state generative experiment. A literal
+  source-theorem proposition and formal negation remain separate; see the
+  [independent review](critic-one-state-policy-experiment.md).
+- The current pinned Lean integration compiled forty-two project modules; its
+  transitive axiom audit checked 1056 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

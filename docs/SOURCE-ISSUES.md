@@ -71,8 +71,14 @@ not an author-approved erratum or a completed Lean proof; the full statistical
 experiment and its testing reductions still need formal verification. The
 [one-state trajectory bridge](../Formalization/Obstructions/OneStateTrajectory.lean)
 proves exactness of a fixed known-reward estimator and its zero error under
-any data law ([review](critic-one-state-trajectory.md)); the complete theorem
-quantifiers remain separate. The
+any data law ([review](critic-one-state-trajectory.md)). The
+[one-state experiment](../Formalization/Obstructions/OneStateExperiment.lean)
+constructs actual independent samples and packages the uniform estimator and
+feasible parameters ([review](critic-one-state-experiment.md)); a literal
+source-theorem proposition and its formal negation remain separate. The
+[policy experiment](../Formalization/Obstructions/OneStatePolicyExperiment.lean)
+likewise gives a measurable reward-greedy estimator with zero actual Q loss
+([review](critic-one-state-policy-experiment.md)). The
 correct two-state Bellman values and source-range policy loss are proved in
 [HardMDP.lean](../Formalization/Obstructions/HardMDP.lean), with an
 [independent review](critic-hard-mdp.md). The separate
