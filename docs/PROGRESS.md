@@ -265,6 +265,12 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/PolicyLearningSourcePointwise.lean` proves
+  the source policy-learning evaluation Lemma 3.5 with shared universal
+  constants, actual product sampling, and all empirical-optimal deterministic
+  ties. Positive N is explicit as the sampling and logarithm domain; see the
+  [source audit](critic-policy-learning-source-pointwise.md) and
+  [integrated independent audit](critic-policy-learning-source-pointwise-second.md).
 - `Formalization/Generative/PolicyLearningFittedPolicyEvaluation.lean`
   proves a high-probability fitted-policy evaluation bound, and
   `PolicyLearningAnyOptimalPolicy.lean` extends its event and deterministic
@@ -379,8 +385,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled eighty-eight project modules; its
-  transitive axiom audit checked 1739 project declarations, allowing only
+- The current pinned Lean integration compiled ninety-one project modules; its
+  transitive axiom audit checked 1777 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T05:22:49.117359+00:00",
+  "updated_at": "2026-11-03T05:54:31.010693+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -38,6 +38,15 @@
       "source_lines": "1292–1300",
       "lean_export": "StatisticalRL.ModelBasedPolicyLearning.empirical_absorbingGrid_covers_valueEstimator",
       "evidence": "docs/critic-policy-learning-absorbing-grid.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 3.5",
+      "source_label": "lem:policy-learning-evaluation",
+      "source_file": "chapters/generative_model_model_based.tex",
+      "source_lines": "1306–1326",
+      "lean_export": "StatisticalRL.ModelBasedPolicyLearning.source_policyLearning_pointwise_universal_constants",
+      "evidence": "docs/critic-policy-learning-source-pointwise-second.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

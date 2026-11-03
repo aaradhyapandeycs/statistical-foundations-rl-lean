@@ -1,0 +1,11 @@
+# Fixed-policy projection and true-optimal evaluation event
+
+Exact staged source `.local/PolicyLearningFixedPolicyProjection.lean`, SHA-256 `fffc379f35f554862fb3b0f8cca7538f3cd1bef30a8bbd3cba9a91ea754f7517`. It imports only production `PolicyEvaluationSourceTheorem` and `PolicyLearningHoeffding`.
+
+For an arbitrary fixed deterministic action map f, `projectPolicySamples` selects each state’s f-row from the actual state/action sample array. `samplingLaw_projectPolicySamples` proves equality of its complete pushforward law with the fixed-policy evaluation product law: injectivity of `(s,i) ↦ ((s,f s),i)` preserves independence across all states and observations, and each marginal is the true policy-induced row. This does not assert such an identity for a data-dependent f or an arbitrary randomized policy.
+
+`projectedPolicy_value_eq` proves the actual trajectory value of f in the full empirical MDP equals the policy-evaluation plug-in value on projected data. It uses Bellman uniqueness, rather than identifying the distinct empirical models. `trueOptimalPolicy_evaluation_event` specializes f to the fixed true optimal greedy policy, and gives strict probability greater than `1−δ/2` under the actual full learning sampling law, for any positive ε ≤ 1/(1−γ) satisfying the precise evaluation source budget `720 log(S/((δ/2)(1−γ)))/((1−γ)³ ε²) ≤ N`. This event is on the same data space as the fitted-policy event and needs no independence between them. S=1 and γ=0 are included.
+
+The explicit β-radius specialization and final union/performance/sample-size assembly are not proved here; see `docs/builder-policy-learning-true-optimal-event-plan.md` for a conservative route. This event keeps the source evaluation theorem’s exact sample budget and 720 coefficient, without assuming its desired probability result.
+
+Focused compilation of the exact staged file succeeded using `lake env lean -o .local/PolicyLearningFixedPolicyProjection.olean .local/PolicyLearningFixedPolicyProjection.lean`. A copy with all five exports probed by `#print axioms` compiled: the projection definition has no axioms, and the four proofs use only `propext`, `Classical.choice`, and `Quot.sound`. Independent source review and an actual production-export check remain.
