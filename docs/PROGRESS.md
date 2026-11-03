@@ -30,6 +30,16 @@ audit, and independent correspondence review before promotion.
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
+- The [trajectory critic review](critic-trajectory-review.md) checked path
+  weights, reward order, terminal marginalization, and two concrete Lean
+  examples. Its reviewer authored the imported basic MDP dependencies, whose
+  separate review remains necessary. The review also confirms that the
+  singleton-action obstruction depends on the source interpretation.
+- A separate [fixed-point critic review](critic-fixedpoint-review.md) checked
+  the source-facing model fields, finite supremum norms, Bellman contractions,
+  fixed-point selection, and the γ = 0 boundary. It passes those scoped
+  infrastructure claims while leaving source trajectory semantics and policy
+  iteration open.
 
 ## Teams and ownership
 

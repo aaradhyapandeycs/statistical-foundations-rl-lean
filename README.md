@@ -34,10 +34,10 @@ Only the standard foundational axioms `propext`, `Classical.choice`, and
 `Quot.sound` are allowed in the transitive dependency closure. No source theorem
 may be claimed by assuming its missing intermediate steps.
 
-`ci/lean.yml` is a GitHub Actions workflow template. GitHub Actions is not yet
-enabled for this repository; the connected GitHub credential lacks permission
-to publish workflow files. The commands above and `python3 scripts/check.py`
-can be run locally.
+The GitHub Actions workflow checks the pinned source, inventory, scanner tests,
+Lean build, and project axiom audit on each push. Its presence does not by itself
+establish that a particular run has passed. The same commands and
+`python3 scripts/check.py` can be run locally.
 
 ## Guidance and attribution
 
