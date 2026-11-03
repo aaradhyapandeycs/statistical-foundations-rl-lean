@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T06:00:18.128285+00:00",
+  "updated_at": "2026-11-03T06:43:06.266045+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -56,6 +56,15 @@
       "source_lines": "900–923",
       "lean_export": "StatisticalRL.ModelBasedPolicyLearning.mainSample_policyLearning_universal_constant",
       "evidence": "docs/critic-policy-learning-main-sample-integrated-second.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 2.9",
+      "source_label": "lem:Freedman-prelim",
+      "source_file": "chapters/prelim.tex",
+      "source_lines": "1056–1075",
+      "lean_export": "StatisticalRL.freedman_natural_history",
+      "evidence": "docs/critic-freedman-natural-history.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]
