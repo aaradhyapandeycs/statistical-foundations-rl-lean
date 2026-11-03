@@ -243,3 +243,9 @@ import Formalization.ModelFree.QLearningRobustAttainment
 import Formalization.ModelFree.QLearningRobustRange
 import Formalization.ModelFree.TDSquareEnergy
 import Formalization.ModelFree.QLearningChiLower
+
+import Formalization.ModelFree.QLearningChiComparison
+import Formalization.ModelFree.QLearningChiKL
+import Formalization.ModelFree.TDSharpEnergy
+import Formalization.ModelFree.QLearningChiResidual
+import Formalization.ModelFree.QLearningOptimalFreedmanUnion

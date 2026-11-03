@@ -352,16 +352,21 @@ audit, and independent correspondence review before promotion.
   [sum review](critic-td-variance-sum.md), and
   [history review](critic-td-terminal-history.md).
 - Q-learning has coarse caps for actual iterate-dependent increments and
-  an actual-law Freedman event for the optimal-value fluctuation at one fixed
-  state-action row and terminal time. Its source-indexed weight schedule,
-  predictable variance and magnitude bounds are proved. A simultaneous
-  row/time event, sharp robust comparisons and the final convergence rate
-  remain open; see [review](critic-q-learning-optimal-freedman.md).
+  an actual-law Freedman event for the optimal-value fluctuation, simultaneously
+  over state-action rows and the late terminal times. The source-indexed
+  weight schedule, predictable variance, magnitude bounds and confidence
+  union are proved. Sharp robust-comparator events and the final convergence
+  rate remain open; see [fixed-row review](critic-q-learning-optimal-freedman.md)
+  and [union review](critic-q-learning-optimal-freedman-union.md).
 - The source TD squared-iterate energy inequality is proved for each
   coordinate and positive update under the actual sample law, with the
   source initial-value and rate conditions. The later sharp variance
   concentration and TD accuracy theorem remain separate; see
   [review](critic-td-square.md).
+- The chronological TD propagator composition, weighted square-energy
+  telescope and its deterministic endpoint cap are established. The
+  centered-square martingale, sharp variance probability bound, and final
+  TD theorem remain separate; see [review](critic-td-sharp-energy.md).
 - TD weights satisfy the source mass identity and first- and squared-mass
   bounds. A source-schedule envelope and an actual-law scalar fixed-terminal
   Freedman event are established under explicit late-terminal and large-T
@@ -372,13 +377,16 @@ audit, and independent correspondence review before promotion.
 - The support-aware χ² uncertainty set defines both robust Q-learning
   operators. Both are contractions and have unique fixed points for a
   nonnegative radius. Compactness gives actual optimizing rows and their
-  shifted fixed-point value bounds. A support-aware upper χ² deviation and
-  the lower supremum witness are established; the source-shaped infimum and
-  stability bounds remain separate. See
+  shifted fixed-point value bounds. The source two-sided χ² comparison
+  of robust expectations is proved, as is the support-aware finite-row
+  KL-to-χ² bound. Both robust fixed-point residual signs have
+  source-parameter comparison bounds. The full robust-model stability
+  estimate, stochastic events and final Q-learning theorem remain separate. See
   [operator review](critic-q-learning-robust-contraction.md),
   [optimizer review](critic-q-learning-robust-compact-attain-range.md),
-  [upper-deviation review](critic-q-learning-chi-upper.md), and
-  [lower-witness review](critic-q-learning-chi-lower.md).
+  [comparison review](critic-q-learning-chi-comparison.md),
+  [KL review](critic-q-learning-chi-kl.md), and
+  [residual review](critic-q-learning-chi-residual.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -569,8 +577,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred forty-five project modules; its
-  transitive axiom audit checked 3277 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred fifty project modules; its
+  transitive axiom audit checked 3333 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
