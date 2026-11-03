@@ -1,0 +1,19 @@
+# Independent source review: finite-horizon policy perturbation
+
+Reviewed staged `.local/FiniteHorizonPolicyPerturbation.lean` SHA `546b25ca13cc72ed182cc55999a85a4655e39e6636948bfd257fe144f06ed4ea`, its handoff and finite-horizon algorithm at `generative_model_model_based.tex:2526–2548`. Source-level verdict: the stated deterministic actual-trajectory Bellman/residual identities are sound under explicitly identical stage rewards and the same nonstationary Markov policy. The source section does not print this helper as a numbered theorem; it is an independently derived prerequisite, not the finite-horizon sample-complexity result. Independent staged compiler and axiom checks passed; production export verification remains separate.
+
+The residual is `(P_F−P_E)W`, where `E` is the true stage, `F` the comparison stage and W the comparison-model suffix value. Given the same current policy and reward equality, the actual backup difference is its policy average plus the true-kernel propagation `P_E(W−V)`. The signs and propagation orientation follow directly from `P_F W−P_E V=(P_F−P_E)W+P_E(W−V)`. The one-step value identity uses actual finite trajectory expectations with suffix policy shifted from `π k` to `π(k+1)`; the forced-first-action Q identity holds separately for each action, without averaging that action or assuming it has positive policy mass.
+
+The recursively defined `propagatedPolicyResidual` takes a list of paired true/comparison stages, so those trajectories have the same horizon, and computes each local residual from the actual comparison suffix while propagating through the actual true row and same policy. Induction proves the whole-episode value difference equals this finite nested expression, with same reward at every pair; the desired difference is not assumed as a recursion. This is a nested recursion, not an already established occupancy-weighted closed sum. The empty list gives both zero, and terminal continuation makes the final residual zero.
+
+The empirical specialization pairs each true stage with the actual same-data frequency stage and derives its reward equality from the known-reward construction. The result holds pointwise for every data array and every nonstationary randomized Markov policy, so it can be instantiated for a realized data-dependent policy; this does **not** establish that its suffix value is independent of current samples or that an arbitrary history-dependent policy is covered. No kernel closeness, concentration event, optimality premise, reward mismatch or discount is hidden in the specialization. It requires positive N for empirical frequency construction.
+
+No propagated norm/occupancy bound, empirical-optimal tie equivalence, variance control, probability guarantee, H³ rate, or full `Thm:sample-compl-finite` is claimed. Actual production qualification and imported-export audit remain separate.
+
+## Independent staged compiler and axiom audit
+
+Freshly compiled the exact staged sampling, continuation and perturbation modules into an isolated project-local directory. A separate importing probe inspected all nine perturbation exports; all commands exited zero without diagnostics and every export depends only on `propext`, `Classical.choice`, and `Quot.sound`. Actual production qualification and imported-export checks remain separate.
+
+## Integrated production audit
+
+Production `Formalization/Generative/FiniteHorizonPolicyPerturbation.lean` SHA `3e76d105323d8118763f0a2959e07666d2bb38d9ccd8d888dce40341cd8dc370` differs from the reviewed staged source only by qualifying its continuation import. The actual production module compiled cleanly; a separate import probe inspected all nine exports, each using only `propext`, `Classical.choice`, and `Quot.sound`. Source scope and missing claims above remain unchanged.

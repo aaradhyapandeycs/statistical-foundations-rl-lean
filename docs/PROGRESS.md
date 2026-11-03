@@ -265,6 +265,13 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/FiniteHorizonPolicyPerturbation.lean` proves
+  exact nonstationary-policy trajectory perturbation identities.
+  `FiniteHorizonContinuationBernstein.lean` proves fixed-row Bernstein
+  concentration for the actual random empirical continuation using proved
+  future-sample independence. A full finite-horizon sample bound remains
+  open; see the [perturbation review](critic-finite-horizon-policy-perturbation.md)
+  and [concentration review](critic-finite-horizon-continuation-bernstein.md).
 - `Formalization/Generative/FiniteHorizonEmpiricalContinuation.lean` proves
   that the actual empirical optimal continuation depends only on strictly
   future-stage samples and is independent of the current row. The finite-
@@ -453,8 +460,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred twenty-two project modules; its
-  transitive axiom audit checked 2132 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred twenty-four project modules; its
+  transitive axiom audit checked 2160 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
