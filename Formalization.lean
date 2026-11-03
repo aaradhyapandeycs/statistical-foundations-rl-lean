@@ -258,3 +258,9 @@ import Formalization.ModelFree.QLearningChiFixedValueHistory
 import Formalization.ModelFree.QLearningChiFixedValueVariance
 import Formalization.ModelFree.QLearningTrajectoryKL
 import Formalization.ModelFree.TDSharpMartingale
+
+import Formalization.ModelFree.QLearningChiFixedValueFreedman
+import Formalization.ModelFree.QLearningChiFixedValueUnion
+import Formalization.ModelFree.QLearningChiSourceRadius
+import Formalization.ModelFree.QLearningChiSourceRadiusUnion
+import Formalization.ModelFree.TDVariancePairwise

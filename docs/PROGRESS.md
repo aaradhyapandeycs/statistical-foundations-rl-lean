@@ -384,16 +384,22 @@ audit, and independent correspondence review before promotion.
   of robust expectations is proved, as is the support-aware finite-row
   KL-to-χ² bound. Both robust fixed-point residual signs have bounds at
   the exact source radius and reward shift. Actual fixed-comparator
-  fluctuations have proved conditional moments and variance budgets; their
-  simultaneous probability event remains separate. The full robust-model
+  fluctuations have proved conditional moments, variance budgets, and a
+  source-radius absorption event simultaneously over both signs, rows and
+  late terminal times with confidence at least 1−δ. The full robust-model
   stability estimate and final Q-learning theorem remain separate. See
   [operator review](critic-q-learning-robust-contraction.md),
   [optimizer review](critic-q-learning-robust-compact-attain-range.md),
   [comparison review](critic-q-learning-chi-comparison.md),
   [KL review](critic-q-learning-chi-kl.md),
   [residual review](critic-q-learning-chi-residual.md),
-  [source-parameter review](critic-q-learning-chi-source-parameters.md), and
-  [fixed-value review](critic-q-learning-chi-fixed-value-chain.md).
+  [source-parameter review](critic-q-learning-chi-source-parameters.md),
+  [fixed-value review](critic-q-learning-chi-fixed-value-chain.md), and
+  [probability review](critic-q-learning-chi-probability.md).
+- The finite-law pairwise variance identity and square-variance bound include
+  zero-mass atoms, singleton carriers and H=0. The actual TD conditional
+  variance and cross-state square-covariance bridges remain separate; see
+  [review](critic-td-variance-pairwise-source.md).
 - A finite one-step Markov joint-law KL chain rule is established with
   explicit support conditions. The actual forced-prefix induction,
   geometric stopping and stability bound remain separate; see
@@ -588,8 +594,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred fifty-eight project modules; its
-  transitive axiom audit checked 3407 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred sixty-three project modules; its
+  transitive axiom audit checked 3454 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
