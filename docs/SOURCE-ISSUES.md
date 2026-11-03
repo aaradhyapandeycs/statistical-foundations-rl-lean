@@ -32,8 +32,30 @@ preceding section's assumption, full formal encoding, and independent review rem
 open. Treat `A ≥ 2` as an explicit interpretive choice rather than silently
 introducing it or claiming an author-approved correction.
 
-The source review also identifies a potential `S = 1` obstruction to Q-value
-estimation in Theorem 3.7(ii), uncertainty over a confidence-radius scaling in
-Section 7.4, and a reward-convention conflict in Section 7.2. See
-`critic-initial-review.md` for scope and evidence. Those observations require
-further independent verification.
+## Candidate C2: one state and known rewards in Theorem 3.7
+
+Independent [source review](critic-one-state-review.md) finds that both parts
+of the theorem are contradicted by `S = 1`, `A = 16` under the source's
+known-reward convention. The only transition law returns to the sole state;
+the single estimator `Q̂(a) = r(a) + γ max_b r(b)/(1−γ)` can use the known
+reward and is exact for every admissible model and dataset. A fixed
+tie-breaking reward-greedy policy is likewise optimal. The earlier `A ≥ 2`
+policy-learning convention is satisfied by this example.
+
+For every proposed constant `c_N > 0`, the reviewer chooses `γ = 2/3`, `N = 1`
+and a sufficiently small positive ε satisfying the printed sample and accuracy
+restrictions. The construction used in the paper's proof also degenerates at
+`S = 1`: it yields one hypothesis where the Fano step requires at least four.
+
+`Formalization/Obstructions/OneState.lean` establishes the exact formula and
+greedy policy for the Bellman fixed points. Identification with the source's
+infinite-trajectory optimal Q and formalization of the statistical experiment
+remain open. An [independent Lean review](critic-one-state-lean-review.md)
+checks the exact Bellman-level claims. The source
+argument above is an independent mathematical review, not a complete Lean
+refutation. `S ≥ 2` excludes this example but is not asserted to be sufficient
+for the original result. No corrected theorem or author ruling is assumed.
+
+The initial review additionally records uncertainty over a confidence-radius
+scaling in Section 7.4 and a reward-convention conflict in Section 7.2. Those
+observations require further independent verification.

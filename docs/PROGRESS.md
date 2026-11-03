@@ -24,15 +24,32 @@ audit, and independent correspondence review before promotion.
 - `Formalization/MDP/FiniteQTrajectory.lean` additionally constructs the
   action-conditioned trajectory law, proves both indexed finite-horizon policy
   Bellman equations, and supplies zero terminal values.
+- `Formalization/MDP/FiniteOptimal.lean` constructs a greedy deterministic
+  stage sequence in one common, time-varying environment, proves it dominates
+  randomized Markov policies, and derives the finite optimal Bellman equations.
+  The [independent review](critic-finite-optimal.md) identifies the finite
+  policy representation and zero-horizon boundaries that remain to address.
+- `Formalization/MDP/FiniteOccupancy.lean` constructs finite state and
+  state-action occupancy laws and proves their factorization and initial-state
+  identity. The [independent review](critic-finite-occupancy.md) identifies
+  the still-missing full-episode event bridge and optimal-policy specialization.
+- `Formalization/MDP/DiscountedFiniteTrajectory.lean` defines discounted
+  rewards on actual finite trajectory laws, proves their Bellman recursion,
+  and proves that finite expectations converge to the unique state Bellman
+  fixed point. Its [independent review](critic-discounted-finite.md) checks
+  the finite-law semantics and discount exponents. The infinite-path expectation
+  and its interchange with the limit have not yet been constructed.
 - `Formalization/Probability/Variance.lean` proves the source's exact finite
   transition-variance perturbation bound, Lemma 2.2. See its independent
   [scoped review](critic-variance-review.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
-  policy-loss obstruction; [SOURCE-ISSUES.md](SOURCE-ISSUES.md) records the
-  unresolved question of whether Section 3.3's `A ≥ 2` assumption carries
-  forward to the lower-bound theorem in Section 3.4.
-- The pinned Lean toolchain compiled ten project modules; the
-  transitive axiom audit checked 235 project declarations, allowing only
+  policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
+  Bellman fixed-point formula and optimal greedy policy. See
+  [SOURCE-ISSUES.md](SOURCE-ISSUES.md) for the source review, including a
+  one-state counterexample under the known-reward convention and the pending
+  Lean bridge to the full statistical theorem.
+- The current pinned Lean integration compiled fourteen project modules; its
+  transitive axiom audit checked 364 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
