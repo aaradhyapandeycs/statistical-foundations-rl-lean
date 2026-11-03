@@ -179,6 +179,11 @@ audit, and independent correspondence review before promotion.
   one-sided population-variance confidence bound on the actual iid sample law.
   The source's sharper self-normalized empirical Bernstein theorem remains
   open; see the [independent review](critic-empirical-variance-concentration.md).
+- `Formalization/Probability/EmpiricalBernsteinSelfNormalized.lean` proves
+  exact leave-one-out empirical-variance identities and a sharp deterministic
+  sum-of-squares self-bound. The required stochastic self-bounding inequality
+  and source empirical Bernstein conclusion remain open; see the
+  [independent review](critic-empirical-bernstein-self-normalized.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
@@ -242,8 +247,13 @@ audit, and independent correspondence review before promotion.
   true-model trajectory Q and V loss for the empirical greedy policy at γ = 0,
   for every positive sample count and every outcome. The general source theorem
   remains open; see the [independent review](critic-policy-learning-zero-discount.md).
-- The current pinned Lean integration compiled fifty-two project modules; its
-  transitive axiom audit checked 1229 project declarations, allowing only
+- `Formalization/Generative/PolicyEvaluationVariance.lean` proves a
+  source-derived policy variance identity, finite and infinite discounted
+  variance-budget bounds and the budget's unique Bellman equation. The
+  resolvent/square-root and sharper statistical links remain open; see the
+  [independent review](critic-policy-evaluation-variance.md).
+- The current pinned Lean integration compiled fifty-four project modules; its
+  transitive axiom audit checked 1288 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
