@@ -1,0 +1,20 @@
+# Reviewed source-to-Lean coverage
+
+This ledger complements the [source inventory](source-inventory.md). The
+inventory is generated with all items initially unformalized; this ledger
+records only reviewed, compiled results and their precise scope. A listed
+component is not a claim that its chapter or the monograph is complete.
+
+| Source item in `prelim.tex` | Lean evidence | Reviewed scope and remaining work |
+| --- | --- | --- |
+| Lemma 2.2, `lem:variance-perturbation-var-P-V`, lines 458–467 | `StatisticalRL.DiscountedMDP.transitionVariance_perturbation` in [Variance.lean](../Formalization/Probability/Variance.lean) | The actual transition-row variances, two source intervals, exact coefficient `4/(1−γ)` and finite supremum norms. [Review](critic-variance-review.md). |
+| Policy Bellman equations, `eq:Bellman-finite-pi`, lines 784–799 | `StatisticalRL.DecisionStage.trajectory_bellman_at` in [FiniteQTrajectory.lean](../Formalization/MDP/FiniteQTrajectory.lean) | Actual time-varying trajectory law, first action fixed for Q, randomized future policy, both equations for every valid stage and terminal zeros. [Review](critic-finite-q-review.md). |
+| Finite optimality, `eq:Bellman-finite-opt` and deterministic policy, lines 737–745 and 799–815 | `StatisticalRL.EnvironmentStage.greedy_suffix_dominates` and `optimalAt_bellman` in [FiniteOptimal.lean](../Formalization/MDP/FiniteOptimal.lean) | One greedy stage sequence in a common environment dominates all represented randomized Markov policies at all times, states, and actions. The [review](critic-finite-optimal.md) records finite-policy and zero-horizon representation boundaries. |
+| Finite occupancy, `eq:dh-pi-defn`, `eqn:defn-d1rho-finite`, and `eq:dhstar-finite`, lines 749–774 | `stateOccupancy_eq_fullPath`, `stateActionOccupancy_eq_fullPath`, and `greedy_stateActionOccupancy` in [OccupancyBridge.lean](../Formalization/MDP/OccupancyBridge.lean) | Genuine full-episode trajectory events, initial distribution, arbitrary randomized policy and the constructed greedy-policy indicator formula. [Reviews](critic-finite-occupancy.md), [bridge review](critic-occupancy-bridge.md). |
+| Infinite-horizon Bellman consistency and VI, lines 190–264 and 316–355 | Bellman contractions and fixed-point iteration in [Basic.lean](../Formalization/MDP/Basic.lean), [FixedPoint.lean](../Formalization/MDP/FixedPoint.lean), and [PolicyValueQ.lean](../Formalization/MDP/PolicyValueQ.lean) | **Partial:** fixed-point algebra and VI rate proved; identification with infinite-trajectory value/Q, optimal-policy existence, and the source's separate policy-iteration statement remain open. [Reviews](critic-fixedpoint-review.md), [V–Q review](critic-policy-value-q.md). |
+| Infinite path and discounted values, `eq:defn-Vpi-inf`, lines 89–109 | [InfiniteTrajectory.lean](../Formalization/MDP/InfiniteTrajectory.lean) and [DiscountedFiniteTrajectory.lean](../Formalization/MDP/DiscountedFiniteTrajectory.lean) | **Partial:** actual normalized infinite path law, first-step law and general Mathlib history-kernel prefix; finite discounted expected returns converge to the state Bellman fixed point. General equivalence to the project's finite path law, infinite expected return, and forced-first-action law remain open. [Reviews](critic-infinite-trajectory.md), [discounted review](critic-discounted-finite.md). |
+
+The latest project-wide local check and open obligations are in
+[PROGRESS.md](PROGRESS.md). Theorem 3.7's one-state issue is tracked separately
+in [SOURCE-ISSUES.md](SOURCE-ISSUES.md); it has not been silently corrected or
+reported as a completed Lean refutation.

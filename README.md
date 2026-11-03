@@ -27,8 +27,9 @@ lake env lean Audit.lean
 
 The source provenance and license are recorded in [source/](source/README.md).
 Current work and open obligations are recorded in [docs/PROGRESS.md](docs/PROGRESS.md).
-The source checklist, when generated, is `docs/source-inventory.md`; it does
-not itself certify proof coverage.
+The [source checklist](docs/source-inventory.md) does not itself certify proof
+coverage; the [reviewed coverage ledger](docs/COVERAGE.md) maps current results
+to source statements and records their exact limits.
 
 Only the standard foundational axioms `propext`, `Classical.choice`, and
 `Quot.sound` are allowed in the transitive dependency closure. No source theorem
