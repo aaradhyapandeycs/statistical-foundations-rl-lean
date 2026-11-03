@@ -68,7 +68,13 @@ suboptimal first action, the source's hypothesis count in its Fano step, and
 the policy decoder. A separate [mathematical check](critic-theorem37-correction-independent.md)
 reproduces the probability bounds and constants. This is a proposed replacement,
 not an author-approved erratum or a completed Lean proof; the full statistical
-experiment and its testing reductions still need formal verification.
+experiment and its testing reductions still need formal verification. The
+correct two-state Bellman values and source-range policy loss are proved in
+[HardMDP.lean](../Formalization/Obstructions/HardMDP.lean), with an
+[independent review](critic-hard-mdp.md). The separate
+[trajectory optimality result](../Formalization/MDP/OptimalTrajectoryValue.lean)
+applies to the stationary policy class; the multi-model statistical reduction
+remains to be formalized.
 
 The initial review additionally records uncertainty over a confidence-radius
 scaling in Section 7.4 and a reward-convention conflict in Section 7.2. Those

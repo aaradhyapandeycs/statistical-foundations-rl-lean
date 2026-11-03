@@ -18,7 +18,8 @@ audit, and independent correspondence review before promotion.
   and Bellman maps; it proves both policy and optimality contraction bounds.
 - `Formalization/MDP/FixedPoint.lean` proves Bellman fixed-point existence,
   uniqueness, geometric iteration bounds, and interval bounds. Identification
-  with infinite-trajectory Q-values and optimal-policy existence remain open.
+  with actual trajectory policy and optimal Q values and optimal-policy
+  existence is established separately below.
 - `Formalization/MDP/FiniteHorizon.lean` and `FiniteTrajectory.lean` construct
   nonstationary finite trajectories and prove that their expected cumulative
   reward equals backward evaluation. Finite-horizon optimality is addressed
@@ -48,8 +49,8 @@ audit, and independent correspondence review before promotion.
 - `Formalization/MDP/PolicyValueQ.lean` proves that the state Bellman fixed
   point equals the policy average of the Q Bellman fixed point, and proves the
   corresponding reward-plus-continuation identity. Its
-  [independent review](critic-policy-value-q.md) records the still-open
-  infinite-trajectory interpretation.
+  [independent review](critic-policy-value-q.md) records the then-open
+  infinite-trajectory interpretation, addressed in `ForcedPrefixBridge.lean`.
 - `Formalization/MDP/InfiniteTrajectory.lean` constructs a normalized infinite
   controlled path law from the actual policy and transition distributions.
   It proves the first-step law and identifies arbitrary prefixes with Mathlib's
@@ -85,7 +86,18 @@ audit, and independent correspondence review before promotion.
   infinite Q-return expectation and proves its integrability, geometric bounds,
   and convergence of expected partial sums. See the
   [independent review](critic-forced-return.md). Its Bellman fixed-point
-  identity and V–Q averaging relation are still open.
+  identity and V–Q averaging relation are established separately below.
+- `Formalization/MDP/ForcedPrefixBridge.lean` identifies the actual forced-
+  first-action infinite Q expectation with the policy Q fixed point for all
+  discounts and actions, including zero policy probability. It proves the
+  policy Q Bellman equation and actual V–Q averaging identity. Stationary
+  optimality is addressed separately below; see the
+  [independent review](critic-forced-prefix-bridge.md).
+- `Formalization/MDP/OptimalTrajectoryValue.lean` constructs a deterministic
+  stationary greedy policy whose actual trajectory Q attains the optimality
+  Bellman fixed point and whose Q and V dominate all stationary randomized
+  policies. The result does not quantify over nonstationary or history-dependent
+  policies; see the [independent review](critic-optimal-trajectory-value.md).
 - `Formalization/MDP/InfiniteReturn.lean` defines the actual infinite discounted
   return and its expectation under that path law, and proves measurability,
   integrability, the geometric bound, and convergence of expected partial sums.
@@ -114,14 +126,26 @@ audit, and independent correspondence review before promotion.
   strict success probability, and treats empty and zero-vector cases. The
   random independent-family extension remains open; see its
   [independent review](critic-empirical-hoeffding-family.md).
+- `Formalization/Probability/EmpiricalHoeffdingRandomFamily.lean` proves the
+  strict source-radius bound for variable-size, possibly empty random families
+  independent of the actual empirical row, under an explicit family-test
+  measurable structure. Compatibility with conventional random-finite-set
+  measurable structures is not yet established; see the
+  [independent review](critic-empirical-hoeffding-random-family.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
   [SOURCE-ISSUES.md](SOURCE-ISSUES.md) for the source review, including a
   one-state counterexample under the known-reward convention and the pending
   Lean bridge to the full statistical theorem.
-- The current pinned Lean integration compiled twenty-eight project modules; its
-  transitive axiom audit checked 620 project declarations, allowing only
+- `Formalization/Obstructions/HardMDP.lean` constructs the source's two-state
+  hard example and proves its correct optimal and bad-policy Bellman values,
+  source-range value separation, and policy loss. Its [independent review](critic-hard-mdp.md)
+  also checks a rational counterexample to the printed intermediate Q formula.
+  Stationary optimal trajectory semantics are addressed separately; the full
+  statistical lower bound remains open.
+- The current pinned Lean integration compiled thirty-two project modules; its
+  transitive axiom audit checked 797 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
