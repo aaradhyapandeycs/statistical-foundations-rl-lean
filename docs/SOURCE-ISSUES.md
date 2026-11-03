@@ -44,7 +44,9 @@ policy-learning convention is satisfied by this example.
 
 For every proposed constant `c_N > 0`, the reviewer chooses `γ = 2/3`, `N = 1`
 and a sufficiently small positive ε satisfying the printed sample and accuracy
-restrictions. The construction used in the paper's proof also degenerates at
+restrictions. This numerical feasibility is now proved for every positive
+constant in [OneStateParameters.lean](../Formalization/Obstructions/OneStateParameters.lean)
+and checked in an [independent review](critic-one-state-parameters.md). The construction used in the paper's proof also degenerates at
 `S = 1`: it yields one hypothesis where the Fano step requires at least four.
 
 `Formalization/Obstructions/OneState.lean` establishes the exact formula and

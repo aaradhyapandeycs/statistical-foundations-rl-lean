@@ -20,7 +20,8 @@ audit, and independent correspondence review before promotion.
   with infinite-trajectory Q-values and optimal-policy existence remain open.
 - `Formalization/MDP/FiniteHorizon.lean` and `FiniteTrajectory.lean` construct
   nonstationary finite trajectories and prove that their expected cumulative
-  reward equals backward evaluation. Finite-horizon optimality remains open.
+  reward equals backward evaluation. Finite-horizon optimality is addressed
+  separately by `FiniteOptimal.lean` below.
 - `Formalization/MDP/FiniteQTrajectory.lean` additionally constructs the
   action-conditioned trajectory law, proves both indexed finite-horizon policy
   Bellman equations, and supplies zero terminal values.
@@ -39,8 +40,9 @@ audit, and independent correspondence review before promotion.
   rewards on actual finite trajectory laws, proves their Bellman recursion,
   and proves that finite expectations converge to the unique state Bellman
   fixed point. Its [independent review](critic-discounted-finite.md) checks
-  the finite-law semantics and discount exponents. The infinite-path expectation
-  and its interchange with the limit have not yet been constructed.
+  the finite-law semantics and discount exponents. Infinite-path expectations
+  and their partial-sum convergence are constructed separately below; the
+  transfer of payoff integrals through the finite-prefix connection remains open.
 - `Formalization/MDP/PolicyValueQ.lean` proves that the state Bellman fixed
   point equals the policy average of the Q Bellman fixed point, and proves the
   corresponding reward-plus-continuation identity. Its
@@ -50,14 +52,23 @@ audit, and independent correspondence review before promotion.
   controlled path law from the actual policy and transition distributions.
   It proves the first-step law and identifies arbitrary prefixes with Mathlib's
   iterated history-kernel construction. Its identification with the project's
-  finite path law is currently established for one stage only. The general
-  finite-prefix bridge remains open. The
+  finite path law is established at every prefix length in
+  `FinitePrefixBridge.lean` below. The
   [independent review](critic-infinite-trajectory.md) checks the law and the
   history/next-step distribution.
 - `Formalization/MDP/InfinitePrefix.lean` proves the exact policy-transition
-  product for every finite singleton cylinder; its equality with the separately
-  defined finite-path law is still to prove. See the
+  product for every finite singleton cylinder; the separately defined finite
+  path law is related below. See the
   [independent review](critic-infinite-prefix.md).
+- `Formalization/MDP/FinitePrefixBridge.lean` proves that for every length,
+  including zero, the actual infinite-law prefix has exactly the independently
+  constructed finite path law. Transferring payoffs and their limits remains
+  separate; see the [independent review](critic-finite-prefix-bridge.md).
+- `Formalization/MDP/InfiniteValueBellman.lean` proves an actual-path
+  first-step expectation identity for every valid discount and identifies the
+  trajectory value with the Bellman fixed point when γ = 0. The general
+  shifted-tail/Bellman identification remains open; see the
+  [independent review](critic-infinite-value-bellman.md).
 - `Formalization/MDP/ForcedActionTrajectory.lean` constructs the actual
   first-action intervention, including zero-policy-mass actions, with the
   original policy governing all subsequent steps. See the
@@ -71,8 +82,8 @@ audit, and independent correspondence review before promotion.
   return and its expectation under that path law, and proves measurability,
   integrability, the geometric bound, and convergence of expected partial sums.
   The [independent review](critic-infinite-return.md) records the still-open
-  bridge from those sums to the separately constructed finite trajectory law
-  and thus to the Bellman fixed point.
+  payoff-integral bridge from those sums to the finite trajectory law and thus
+  to the Bellman fixed point.
 - `Formalization/Probability/Variance.lean` proves the source's exact finite
   transition-variance perturbation bound, Lemma 2.2. See its independent
   [scoped review](critic-variance-review.md).
@@ -85,14 +96,19 @@ audit, and independent correspondence review before promotion.
   sample count, proves the sample-mean identity, and proves unbiasedness.
   The [independent review](critic-empirical-row.md) records this scope. This is
   a prerequisite, not a proof of either concentration lemma.
+- `Formalization/Probability/EmpiricalHoeffding.lean` proves the sharp
+  fixed-vector two-sided Hoeffding tail for actual iid row samples, including
+  a separate zero-norm case. The simultaneous source lemma for independent
+  random vector families and its strict probability remain open. See the
+  [independent review](critic-empirical-hoeffding.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
   [SOURCE-ISSUES.md](SOURCE-ISSUES.md) for the source review, including a
   one-state counterexample under the known-reward convention and the pending
   Lean bridge to the full statistical theorem.
-- The current pinned Lean integration compiled twenty-two project modules; its
-  transitive axiom audit checked 498 project declarations, allowing only
+- The current pinned Lean integration compiled twenty-six project modules; its
+  transitive axiom audit checked 592 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
