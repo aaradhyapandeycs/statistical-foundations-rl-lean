@@ -214,3 +214,7 @@ import Formalization.ModelFree.TDErrorCaps
 import Formalization.ModelFree.QLearningIncrementCaps
 import Formalization.ModelFree.QLearningOptimalFluctuation
 import Formalization.ModelFree.QLearningOptimalFluctuationMoments
+import Formalization.ModelFree.TDCrossCovariance
+import Formalization.ModelFree.TDLinearRowVariance
+import Formalization.ModelFree.TDPropagatorRows
+import Formalization.ModelFree.QLearningOptimalFluctuationHistory

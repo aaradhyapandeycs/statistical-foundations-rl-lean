@@ -343,11 +343,12 @@ audit, and independent correspondence review before promotion.
   remain separate; see [review](critic-td-error-unroll.md).
 - TD noise has conditional mean zero and actual policy-row conditional
   variance under its exact sample prefix, with deterministic
-  propagated-increment bounds. Cross-state variance, Freedman and
+  propagated-increment bounds, conditional cross-state cancellation and
+  exact propagator rows. The final weighted variance proxy, Freedman and
   the final rate remain open; see [review](critic-td-conditional-moments.md).
 - Q-learning has coarse caps for actual iterate-dependent increments
-  and separate fixed-terminal optimal-value fluctuation moments.
-  Their source concentration and rate remain open; see
+  and separate fixed-terminal optimal-value fluctuation moments and active
+  natural-history caps. Their source concentration and rate remain open; see
   [review](critic-q-learning-optimal-fluctuation.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
@@ -539,8 +540,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred eighteen project modules; its
-  transitive axiom audit checked 2970 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred twenty-two project modules; its
+  transitive axiom audit checked 3029 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
