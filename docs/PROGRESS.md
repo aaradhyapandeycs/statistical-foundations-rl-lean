@@ -205,7 +205,8 @@ audit, and independent correspondence review before promotion.
 - `Formalization/Generative/ModelBasedPolicyEvaluation.lean` constructs
   the genuine iid policy-row experiment and measurable empirical Bellman
   estimator, with actual empirical trajectory semantics. The literal inverse
-  expression and source sample-complexity bound remain open; see the
+  expression is proved separately below; the source sample-complexity bound
+  remains open. See the
   [independent review](critic-model-based-policy-evaluation.md).
 - `Formalization/Generative/ModelBasedPolicyLearning.lean` constructs the iid
   state-action experiment, empirical MDP, Q estimator, and measurable
@@ -218,8 +219,18 @@ audit, and independent correspondence review before promotion.
   have unresolved source-equivalence boundaries; see the
   [independent audit](critic-theorem37-negation.md). It is not an
   author-approved correction or a proof of the printed theorem.
-- The current pinned Lean integration compiled forty-seven project modules; its
-  transitive axiom audit checked 1169 project declarations, allowing only
+- `Formalization/Generative/PolicyEvaluationPerturbation.lean` proves the
+  exact actual-trajectory Bellman error identity and its γ/(1−γ) sup-norm
+  residual bound for true and empirical models with common known reward and
+  discount, including γ = 0. It is deterministic; the source statistical
+  guarantee remains separate. See the [independent review](critic-policy-evaluation-perturbation.md).
+- `Formalization/Generative/PolicyEvaluationInverse.lean` proves that the
+  stochastic empirical matrix yields an invertible `I−γ P̂π` and that the
+  empirical Bellman estimator equals the source's literal inverse expression.
+  Statistical guarantees remain separate; see the
+  [independent review](critic-policy-evaluation-inverse.md).
+- The current pinned Lean integration compiled forty-nine project modules; its
+  transitive axiom audit checked 1188 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

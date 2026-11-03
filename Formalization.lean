@@ -43,3 +43,5 @@ import Formalization.Probability.BernsteinMatrixMarginals
 import Formalization.Probability.EmpiricalVarianceBernstein
 import Formalization.Generative.ModelBasedPolicyEvaluation
 import Formalization.Generative.ModelBasedPolicyLearning
+import Formalization.Generative.PolicyEvaluationPerturbation
+import Formalization.Generative.PolicyEvaluationInverse
