@@ -1,0 +1,5 @@
+# Indexed family data processing
+
+Draft `.local/GenerativeLowerBoundFamilyDataProcessing.lean` specializes finite-law KL data processing to the actual indexed-family full observation arrays. It uses one common arbitrary finite-valued statistic on the same data space. The complete arrays do not have full support: deterministic rows are handled by applying data processing to the full-support active-coordinate Bernoulli products and composing with the common injective reconstruction; actual full-array KL equals coordinate KL in the same orientation.
+
+The staged export compiles unchanged. Its SHA-256 is `0ac65e10c8903678ce4e0bf22c0bfee3e14265b5a91b94a24d8d81fe65ab48bd`; the actual exported theorem has only `propext`, `Classical.choice`, and `Quot.sound` as transitive axioms. Independent review is pending, and staged imports do not establish a production export. It does not establish the finite-mixture identity, entropy/Fano inequality, or a testing bound. Constants and zero-mass mixture/decoder cells remain to be handled in those later steps.

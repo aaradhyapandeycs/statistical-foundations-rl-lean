@@ -276,6 +276,12 @@ audit, and independent correspondence review before promotion.
   that the actual empirical optimal continuation depends only on strictly
   future-stage samples and is independent of the current row. The finite-
   horizon statistical theorem remains open; see the [independent review](critic-finite-horizon-empirical-continuation.md).
+- The finite KL data-processing modules prove log-sum with empty decoder
+  cells, finite-law KL contraction and its actual indexed-family specialization.
+  Fano and the corrected minimax theorem remain open; see the independent
+  [cell review](critic-generative-lower-bound-cell-logsum.md),
+  [finite-law review](critic-generative-lower-bound-finite-kl-data-processing.md),
+  and [family review](critic-generative-lower-bound-family-data-processing.md).
 - The corrected multi-hypothesis lower-bound infrastructure constructs the
   indexed MDP family, correct forced-action Q values and policy-loss decoder,
   and proves the actual indexed observation law and KL transport. Its
@@ -460,8 +466,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred twenty-four project modules; its
-  transitive axiom audit checked 2160 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred twenty-eight project modules; its
+  transitive axiom audit checked 2178 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
