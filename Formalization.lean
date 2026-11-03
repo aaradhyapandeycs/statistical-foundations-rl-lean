@@ -275,3 +275,10 @@ import Formalization.ModelFree.TDSharpLateWindow
 import Formalization.ModelFree.TDSharpFreshVarianceBridge
 import Formalization.ModelFree.TDSharpSquareCovariance
 import Formalization.ModelFree.TDSharpPropagatedVariance
+
+import Formalization.ModelFree.QLearningFinalRateArithmetic
+import Formalization.ModelFree.QLearningFinalSampleBudget
+import Formalization.ModelFree.QLearningFinalBudgetConsequences
+import Formalization.ModelFree.QLearningConditionalFinalAssembly
+import Formalization.ModelFree.QLearningConditionalUniversalConstants
+import Formalization.ModelFree.TDSharpVarianceSum

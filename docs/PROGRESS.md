@@ -355,8 +355,8 @@ audit, and independent correspondence review before promotion.
   an actual-law Freedman event for the optimal-value fluctuation, simultaneously
   over state-action rows and the late terminal times. The source-indexed
   weight schedule, predictable variance, magnitude bounds and confidence
-  union are proved. Sharp robust-comparator events and the final convergence
-  rate remain open; see [fixed-row review](critic-q-learning-optimal-freedman.md)
+  union are proved. A separate robust-comparator absorption event is proved
+  below; the final convergence rate remains open. See [fixed-row review](critic-q-learning-optimal-freedman.md)
   and [union review](critic-q-learning-optimal-freedman-union.md).
 - The source TD squared-iterate energy inequality is proved for each
   coordinate and positive update under the actual sample law, with the
@@ -368,13 +368,15 @@ audit, and independent correspondence review before promotion.
   fixed-terminal centered-square martingale has actual-history centering,
   an explicit source late-window wrapper, single-state conditional variance
   control, cross-state square-covariance cancellation, and a per-update
-  propagated conditional variance bound. The cumulative sharp variance
-  concentration and final TD theorem remain separate. See
+  propagated conditional variance bound. Its late-window sum is bounded by
+  the actual random source proxy; sharp proxy concentration and the final TD
+  theorem remain separate. See
   [energy review](critic-td-sharp-energy.md),
   [martingale review](critic-td-sharp-martingale-source.md),
   [fresh-variance review](critic-td-square-fresh-variance-bridge.md),
   [covariance review](critic-td-square-covariance.md), and
-  [propagated-variance review](critic-td-square-propagated-variance-independent.md).
+  [propagated-variance review](critic-td-square-propagated-variance-independent.md), and
+  [variance-sum review](critic-td-sharp-variance-sum-independent.md).
 - TD weights satisfy the source mass identity and first- and squared-mass
   bounds. A source-schedule envelope and an actual-law scalar fixed-terminal
   Freedman event are established under explicit late-terminal and large-T
@@ -405,6 +407,12 @@ audit, and independent correspondence review before promotion.
   [fixed-value review](critic-q-learning-chi-fixed-value-chain.md), and
   [probability review](critic-q-learning-chi-probability.md), and
   [sandwich review](critic-q-learning-comparator-chain-independent.md).
+- A universal-constant Q-learning accuracy assembly is proved under an
+  explicit bound comparing both robust comparator Q functions to the true
+  optimal trajectory Q.
+  That comparator-stability input remains unproved, so this is not an
+  unconditional proof of the main source theorem. See
+  [conditional assembly review](critic-q-learning-conditional-final-independent.md).
 - The finite-law pairwise variance identity and square-variance bound include
   zero-mass atoms, singleton carriers and H=0. Actual TD conditional
   variance and cross-state square-covariance bridges are proved separately;
@@ -603,8 +611,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred seventy-two project modules; its
-  transitive axiom audit checked 3576 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred seventy-eight project modules; its
+  transitive axiom audit checked 3623 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
