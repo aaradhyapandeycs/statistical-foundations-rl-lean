@@ -204,7 +204,10 @@ explicit. These exclusions address the displayed singleton cases; they do not
 prove the cited lower bound on the remaining domain. The source's general
 large-dimension discussion may indicate intended scope, but no numerical
 restriction appears in the theorem. This is not an author-approved erratum,
-and no complete Lean proof of the corrected robust theorem is claimed.
+and no complete Lean proof of the corrected robust theorem is claimed. A
+[stationary-policy robust-value foundation](../Formalization/RobustRL/ChiSquaredPolicyValue.lean)
+constructs actual trajectory-value infima and proves the singleton-action
+zero-gap mechanism in that policy class; see its [review](critic-robust-chi-policy-value-independent-review.md).
 
 ## Candidate C8: undefined zero-visit bonus in UCBVI
 
@@ -224,8 +227,9 @@ or adding fictitious samples. An independent source review also checked the
 positive-count formula and the small-count constants ([review](critic-online-zero-count-convention.md)). The complete algorithm
 must use the updated count for a visited row, not its pre-episode count. This
 is an interpretation of the intended algorithm, not an author-approved
-correction. A scalar version has passed isolated compilation and an axiom
-check; its connection to the complete adaptive algorithm remains unverified.
+correction. A [scalar version](../Formalization/Online/OnlineZeroCountOptimisticUpdate.lean)
+has passed isolated compilation and an axiom check ([review](critic-online-zero-count-scalar-independent-review.md)); its connection to the complete
+adaptive algorithm remains unverified.
 
 ## Candidate C9: offline lower-bound accuracy endpoint
 

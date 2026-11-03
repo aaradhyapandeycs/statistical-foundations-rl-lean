@@ -8,6 +8,16 @@ audit, and independent correspondence review before promotion.
 
 ## Current checked infrastructure
 
+- The proposed UCBVI zero-count correction is formalized at the scalar update
+  level: unvisited rows retain `Q=H`, positive counts use the printed update,
+  and small-count saturation and range are proved. The complete planner and
+  optimism theorem remain open. See the
+  [review](critic-online-zero-count-scalar-independent-review.md).
+- The χ² robust policy-value foundation defines the infimum over actual
+  trajectory values for stationary randomized policies, and proves the
+  singleton-action zero-gap mechanism for that policy class. General robust
+  optimality and the source lower-bound experiment remain open. See the
+  [review](critic-robust-chi-policy-value-independent-review.md).
 - The policy-evaluation source-radius gap has an all-positive-sample repair
   for every nonempty finite state space, using the actual sampling law and the
   source beta with an explicit sufficient choice `C₀ ≥ 8`. The separate
@@ -654,8 +664,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled 337 project modules; its
-  transitive axiom audit checked 4,116 project declarations, allowing only
+- The current pinned Lean integration compiled 339 project modules; its
+  transitive axiom audit checked 4,167 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. A separate clean-copy check
   passed on the same source hashes. These checks do not replace
   source review. Current builder work and independent critic findings are
