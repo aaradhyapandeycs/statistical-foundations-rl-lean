@@ -282,20 +282,28 @@ audit, and independent correspondence review before promotion.
   The all-stage probability event and sharp sample bound remain open; see
   the [independent review](critic-finite-horizon-residual-accumulation.md).
 - The source TD bounded-iterates lemma is proved pathwise for the actual
-  synchronous update and actual trajectory value. Its sampling-law and
-  convergence theorem remain open; see the [independent review](critic-td-iterate-bounds.md).
+  synchronous update and actual trajectory value. Its convergence theorem remains open; see the [independent review](critic-td-iterate-bounds.md).
 - The corrected indexed hard family now has finite Fano and two-point
   deterministic-estimator risk proofs, including strict lower-risk
-  bounds under explicit budgets. Randomized estimators, the final source
-  threshold, and the disputed printed theorem remain open; see the
+  bounds under explicit budgets. The unrestricted printed theorem and its
+  Q-estimation conclusion remain open; see the
   [independent review](critic-generative-lower-bound-policy-risk-branches-compiled.md).
 - The synchronous TD sample interface constructs the actual finite
   policy-transition product law and connects it to bounded iterates;
   filtration and convergence remain open. Its extra time-zero draw is
   unused; see the [review](critic-td-synchronous-sampling.md).
+- A corrected policy-risk lower bound proves the source 1/4 probability
+  on the explicit restricted domain S,A≥2 and SA≥16, even for a
+  common randomized estimator of deterministic policies. It does not
+  establish the printed theorem for S=1 or its Q-estimation part; see
+  [review](critic-generative-lower-bound-kernel-quarter.md).
+- Finite-horizon variance-derived auxiliary values and their source
+  growth bound are proved for fixed policies. The level recursion,
+  data-selected policy independence, and sharp rate remain open; see
+  [review](critic-finite-horizon-auxiliary-growth.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
-  Fano and the corrected minimax theorem remain open; see the independent
+  The complete printed minimax theorem remains open; see the independent
   [cell review](critic-generative-lower-bound-cell-logsum.md),
   [finite-law review](critic-generative-lower-bound-finite-kl-data-processing.md),
   and [family review](critic-generative-lower-bound-family-data-processing.md).
@@ -483,8 +491,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred forty-three project modules; its
-  transitive axiom audit checked 2279 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred fifty-four project modules; its
+  transitive axiom audit checked 2373 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

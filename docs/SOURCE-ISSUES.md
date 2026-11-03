@@ -85,8 +85,7 @@ correct two-state Bellman values and source-range policy loss are proved in
 [HardMDP.lean](../Formalization/Obstructions/HardMDP.lean), with an
 [independent review](critic-hard-mdp.md). The separate
 [trajectory optimality result](../Formalization/MDP/OptimalTrajectoryValue.lean)
-applies to the stationary policy class; the multi-model statistical reduction
-remains to be formalized.
+applies to the stationary policy class. A separate [formalized corrected policy-risk result](../Formalization/Generative/GenerativeLowerBoundKernelQuarter.lean) now proves the source probability `≥1/4` on the explicit domain `S,A ≥ 2`, `SA ≥ 16`, with `c_N = 1/32768`, for randomized estimators selecting deterministic stationary policies. Its model is chosen after the estimator; the [independent review](critic-generative-lower-bound-kernel-quarter.md) records the scope and source comparison. The Q-estimation part, the wider printed domain, and the earlier proposed `1/8192` constant are not established by this Lean result.
 
 The initial review additionally records uncertainty over a confidence-radius
 scaling in Section 7.4 and a reward-convention conflict in Section 7.2. Those
