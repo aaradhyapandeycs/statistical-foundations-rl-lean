@@ -1,0 +1,28 @@
+name: Lean and source checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Restore and verify the pinned source
+        run: python3 scripts/fetch_source.py
+      - name: Check source inventory and scanner tests
+        run: |
+          python3 scripts/inventory.py --check
+          python3 -m unittest discover -s scripts/tests -p 'test_inventory.py' -v
+      - uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64 # v1
+        with:
+          build: 'true'
+          test: 'false'
+          use-mathlib-cache: 'true'
+      - name: Audit all project modules and axioms
+        run: python3 scripts/check.py
