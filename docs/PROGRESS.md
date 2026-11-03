@@ -170,6 +170,10 @@ audit, and independent correspondence review before promotion.
   source whole-matrix Bernstein bound from iid sampling within each row,
   allowing arbitrary cross-row dependence, with the correct matrix independence
   and strict success. See the [independent review](critic-bernstein-matrix-marginals.md).
+- `Formalization/Probability/EmpiricalVarianceBernstein.lean` proves the
+  iid empirical-variance bias correction and a source-radius bound in a
+  restricted confidence regime. General self-normalized concentration remains
+  open; see the [independent review](critic-empirical-variance-bernstein.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
@@ -198,8 +202,24 @@ audit, and independent correspondence review before promotion.
   Q-policy loss is zero across the one-state generative experiment. A literal
   source-theorem proposition and formal negation remain separate; see the
   [independent review](critic-one-state-policy-experiment.md).
-- The current pinned Lean integration compiled forty-three project modules; its
-  transitive axiom audit checked 1079 project declarations, allowing only
+- `Formalization/Generative/ModelBasedPolicyEvaluation.lean` constructs
+  the genuine iid policy-row experiment and measurable empirical Bellman
+  estimator, with actual empirical trajectory semantics. The literal inverse
+  expression and source sample-complexity bound remain open; see the
+  [independent review](critic-model-based-policy-evaluation.md).
+- `Formalization/Generative/ModelBasedPolicyLearning.lean` constructs the iid
+  state-action experiment, empirical MDP, Q estimator, and measurable
+  deterministic greedy policy with empirical trajectory optimality. The
+  true-model sample-complexity guarantee remains open; see the
+  [independent review](critic-model-based-policy-learning.md).
+- `Formalization/Obstructions/Theorem37Negation.lean` proves the negation
+  of a source-facing encoded version of Theorem 3.7(ii) using the one-state
+  experiment. Its estimator interface and stationary-policy interpretation
+  have unresolved source-equivalence boundaries; see the
+  [independent audit](critic-theorem37-negation.md). It is not an
+  author-approved correction or a proof of the printed theorem.
+- The current pinned Lean integration compiled forty-seven project modules; its
+  transitive axiom audit checked 1169 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

@@ -74,8 +74,9 @@ proves exactness of a fixed known-reward estimator and its zero error under
 any data law ([review](critic-one-state-trajectory.md)). The
 [one-state experiment](../Formalization/Obstructions/OneStateExperiment.lean)
 constructs actual independent samples and packages the uniform estimator and
-feasible parameters ([review](critic-one-state-experiment.md)); a literal
-source-theorem proposition and its formal negation remain separate. The
+feasible parameters ([review](critic-one-state-experiment.md)); [Theorem37Negation.lean](../Formalization/Obstructions/Theorem37Negation.lean)
+negates an encoded source-facing version; its estimator-interface and policy
+interpretations are not certified as exactly equivalent to the source ([audit](critic-theorem37-negation.md)). The
 [policy experiment](../Formalization/Obstructions/OneStatePolicyExperiment.lean)
 likewise gives a measurable reward-greedy estimator with zero actual Q loss
 ([review](critic-one-state-policy-experiment.md)). The
