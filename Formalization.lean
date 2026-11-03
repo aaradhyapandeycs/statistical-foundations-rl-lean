@@ -56,3 +56,6 @@ import Formalization.Generative.PolicyEvaluationVarianceResolvent
 import Formalization.Generative.PolicyLearningHoeffding
 import Formalization.Generative.PolicyEvaluationRecursiveUnroll
 import Formalization.Generative.PolicyEvaluationEmpiricalResolvent
+import Formalization.Generative.PolicyEvaluationAuxiliary
+import Formalization.Generative.PolicyEvaluationAuxiliaryBernstein
+import Formalization.Generative.EmpiricalResolventOrder

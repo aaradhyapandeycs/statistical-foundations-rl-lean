@@ -266,6 +266,18 @@ audit, and independent correspondence review before promotion.
   variance-budget bounds and the budget's unique Bellman equation. The
   empirical-resolvent and sharper statistical links remain open; see the
   [independent review](critic-policy-evaluation-variance.md).
+- `Formalization/Generative/EmpiricalResolventOrder.lean` proves positivity,
+  order preservation, the row-sum identity and absolute-value domination for
+  the actual empirical policy resolvent; see the
+  [independent review](critic-empirical-resolvent-order.md).
+- `Formalization/Generative/PolicyEvaluationAuxiliary.lean` constructs the
+  true and empirical recursive variance-value vectors, their defining matrix
+  equations and a conservative growth bound.
+  `PolicyEvaluationAuxiliaryBernstein.lean` proves an actual-sampling
+  simultaneous Bernstein event over finitely many true auxiliary levels. The
+  sharper recursion and statistical guarantee remain open; see the
+  independent reviews of the [vectors](critic-policy-evaluation-auxiliary.md)
+  and [event](critic-policy-evaluation-auxiliary-bernstein.md).
 - `Formalization/Generative/PolicyEvaluationEmpiricalResolvent.lean` proves
   an empirical-versus-true policy resolvent identity and an actual-sampling
   Bernstein bound for the first auxiliary variance vector. The remaining
@@ -281,8 +293,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee remain open; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled sixty project modules; its
-  transitive axiom audit checked 1401 project declarations, allowing only
+- The current pinned Lean integration compiled sixty-three project modules; its
+  transitive axiom audit checked 1433 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
