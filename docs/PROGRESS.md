@@ -21,12 +21,18 @@ audit, and independent correspondence review before promotion.
 - `Formalization/MDP/FiniteHorizon.lean` and `FiniteTrajectory.lean` construct
   nonstationary finite trajectories and prove that their expected cumulative
   reward equals backward evaluation. Finite-horizon optimality remains open.
+- `Formalization/MDP/FiniteQTrajectory.lean` additionally constructs the
+  action-conditioned trajectory law, proves both indexed finite-horizon policy
+  Bellman equations, and supplies zero terminal values.
+- `Formalization/Probability/Variance.lean` proves the source's exact finite
+  transition-variance perturbation bound, Lemma 2.2. See its independent
+  [scoped review](critic-variance-review.md).
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction; [SOURCE-ISSUES.md](SOURCE-ISSUES.md) records the
   unresolved question of whether Section 3.3's `A ≥ 2` assumption carries
   forward to the lower-bound theorem in Section 3.4.
-- The pinned Lean toolchain compiled the eight current project modules; the
-  transitive axiom audit checked 199 project declarations, allowing only
+- The pinned Lean toolchain compiled ten project modules; the
+  transitive axiom audit checked 235 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
@@ -40,6 +46,9 @@ audit, and independent correspondence review before promotion.
   fixed-point selection, and the γ = 0 boundary. It passes those scoped
   infrastructure claims while leaving source trajectory semantics and policy
   iteration open.
+- The [finite-Q critic review](critic-finite-q-review.md) checks the indexed
+  policy Bellman equations against the actual action-conditioned trajectory law.
+  Whole-chapter and infinite-horizon completion remain open.
 
 ## Teams and ownership
 
