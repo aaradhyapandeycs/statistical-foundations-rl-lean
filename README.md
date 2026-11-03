@@ -40,6 +40,15 @@ Lean build, and project axiom audit on each push. Its presence does not by itsel
 establish that a particular run has passed. The same commands and
 `python3 scripts/check.py` can be run locally.
 
+## Live progress
+
+Run `python3 scripts/progress_dashboard.py` and open
+`http://127.0.0.1:8765/` on the same computer. The read-only dashboard refreshes
+local Lean line counts and a conservative reviewed-named-result ledger every
+10 seconds. Its percentage is not an estimate of all mathematical work in the
+monograph. The locally recorded `origin/main` snapshot may lag GitHub until
+the next fetch or push.
+
 ## Guidance and attribution
 
 The project uses [Scott Armstrong's LeanAutoformalizationSkills](https://github.com/scottnarmstrong/LeanAutoformalizationSkills)
