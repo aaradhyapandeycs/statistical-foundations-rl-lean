@@ -110,3 +110,4 @@ import Formalization.Probability.BernsteinExponentialProcess
 import Formalization.Probability.BernsteinFixedTimeTail
 import Formalization.Probability.FreedmanExactAssembly
 import Formalization.Probability.FreedmanNaturalHistory
+import Formalization.Generative.FiniteHorizonGenerativeSampling

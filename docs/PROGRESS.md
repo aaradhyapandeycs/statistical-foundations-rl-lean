@@ -265,6 +265,10 @@ audit, and independent correspondence review before promotion.
   [absorbing review](critic-policy-learning-absorbing.md),
   [preservation review](critic-policy-learning-preservation.md), and
   [stability review](critic-policy-learning-absorbing-lipschitz.md).
+- `Formalization/Generative/FiniteHorizonGenerativeSampling.lean` builds
+  the actual finite-stage generative experiment, empirical stages and
+  future-block independence. The finite-horizon sample theorem remains open;
+  see the [independent review](critic-finite-horizon-generative-sampling.md).
 - `Formalization/Generative/GenerativeLowerBoundKLAffinity.lean` proves
   finite full-support KL-to-testing and Bernoulli-product estimation bounds.
   `GenerativeLowerBoundTwoStateMDP.lean` and `GenerativeLowerBoundObservationLaw.lean`
@@ -438,8 +442,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred fourteen project modules; its
-  transitive axiom audit checked 1981 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred fifteen project modules; its
+  transitive axiom audit checked 2007 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
