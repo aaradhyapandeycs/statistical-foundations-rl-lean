@@ -373,11 +373,13 @@ audit, and independent correspondence review before promotion.
   and centered-square martingale under explicit positive-time rate and
   late-window bounds. A zero-tail extension preserves every used-through-T
   iterate, weight and propagator while supplying global positive-rate bounds;
-  transport of the stochastic event remains separate. A deterministic
+  the actual random proxy and eligible-terminal event are unchanged by this
+  extension. A deterministic
   increment bound and coarse variance cap are also derived
   for the late-window centered-square martingale. Sharp proxy concentration
   and the final TD theorem remain separate. See
   [rate-extension review](critic-td-source-rate-finite-extension.md),
+  [event-transport review](critic-td-source-rate-proxy-transport.md),
   [scalar review](critic-td-sharp-self-bound-scalar-independent.md),
   [caps review](critic-td-sharp-freedman-caps-independent.md),
   [energy review](critic-td-sharp-energy.md),
@@ -431,10 +433,13 @@ audit, and independent correspondence review before promotion.
   zero-mass atoms, singleton carriers and H=0. Actual TD conditional
   variance and cross-state square-covariance bridges are proved separately;
   see [review](critic-td-variance-pairwise-source.md).
-- Finite Pinsker is proved for supported probability vectors with the
-  source coefficient 2 and half-L1 total variation, including zero atoms
-  and endpoints. The actual-measure and countable stopped-law versions remain
-  separate; see [review](critic-q-learning-finite-pinsker-source-second.md).
+- Pinsker is proved for supported finite and countable mass functions with
+  the source coefficient 2 and half-L1 total variation, including zero atoms
+  and endpoints. The countable result applies to the actual geometric
+  stopped-prefix masses using a derived absolute-KL summability bound. The
+  actual-measure/event-supremum identification and model stability remain
+  separate; see [finite review](critic-q-learning-finite-pinsker-source-second.md)
+  and [countable review](critic-q-learning-countable-pinsker-independent.md).
 - A finite one-step Markov joint-law KL chain rule and an actual finite
   forced-prefix KL induction are established with explicit support conditions,
   including zero transitions at k=0. Geometric stopping and the stability
@@ -630,8 +635,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred ninety-three project modules; its
-  transitive axiom audit checked 3811 project declarations, allowing only
+- The current pinned Lean integration compiled three hundred four project modules; its
+  transitive axiom audit checked 3899 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
