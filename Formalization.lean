@@ -17,6 +17,7 @@ import Formalization.MDP.ForcedActionTrajectory
 import Formalization.MDP.ForcedActionReturn
 import Formalization.MDP.ForcedPrefixBridge
 import Formalization.MDP.OptimalTrajectoryValue
+import Formalization.MDP.DiscountedOccupancy
 import Formalization.MDP.OccupancyBridge
 import Formalization.MDP.PolicyValueQ
 import Formalization.Obstructions.SingletonAction

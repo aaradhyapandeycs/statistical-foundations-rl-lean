@@ -98,6 +98,12 @@ audit, and independent correspondence review before promotion.
   Bellman fixed point and whose Q and V dominate all stationary randomized
   policies. The result does not quantify over nonstationary or history-dependent
   policies; see the [independent review](critic-optimal-trajectory-value.md).
+- `Formalization/MDP/DiscountedOccupancy.lean` constructs the source's
+  discounted state and state-action occupancy laws from actual infinite path
+  events and the specified initial distribution, proves normalization, the
+  policy factorization and deterministic-policy indicator, and handles γ = 0.
+  Explicit specialization of the indicator to the constructed optimal policy
+  remains separate; see the [independent review](critic-discounted-occupancy.md).
 - `Formalization/MDP/InfiniteReturn.lean` defines the actual infinite discounted
   return and its expectation under that path law, and proves measurability,
   integrability, the geometric bound, and convergence of expected partial sums.
@@ -144,8 +150,8 @@ audit, and independent correspondence review before promotion.
   also checks a rational counterexample to the printed intermediate Q formula.
   Stationary optimal trajectory semantics are addressed separately; the full
   statistical lower bound remains open.
-- The current pinned Lean integration compiled thirty-two project modules; its
-  transitive axiom audit checked 797 project declarations, allowing only
+- The current pinned Lean integration compiled thirty-three project modules; its
+  transitive axiom audit checked 846 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
