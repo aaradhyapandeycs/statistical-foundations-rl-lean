@@ -31,25 +31,44 @@ audit, and independent correspondence review before promotion.
   policy representation and zero-horizon boundaries that remain to address.
 - `Formalization/MDP/FiniteOccupancy.lean` constructs finite state and
   state-action occupancy laws and proves their factorization and initial-state
-  identity. The [independent review](critic-finite-occupancy.md) identifies
-  the still-missing full-episode event bridge and optimal-policy specialization.
+  identity. `OccupancyBridge.lean` proves equality with events under one full
+  episode law and derives the greedy optimal-policy indicator formula. See the
+  [initial review](critic-finite-occupancy.md) and the subsequent
+  [bridge review](critic-occupancy-bridge.md).
 - `Formalization/MDP/DiscountedFiniteTrajectory.lean` defines discounted
   rewards on actual finite trajectory laws, proves their Bellman recursion,
   and proves that finite expectations converge to the unique state Bellman
   fixed point. Its [independent review](critic-discounted-finite.md) checks
   the finite-law semantics and discount exponents. The infinite-path expectation
   and its interchange with the limit have not yet been constructed.
+- `Formalization/MDP/PolicyValueQ.lean` proves that the state Bellman fixed
+  point equals the policy average of the Q Bellman fixed point, and proves the
+  corresponding reward-plus-continuation identity. Its
+  [independent review](critic-policy-value-q.md) records the still-open
+  infinite-trajectory interpretation.
+- `Formalization/MDP/InfiniteTrajectory.lean` constructs a normalized infinite
+  controlled path law from the actual policy and transition distributions.
+  It proves the first-step law and identifies arbitrary prefixes with Mathlib's
+  iterated history-kernel construction. Its identification with the project's
+  finite path law is currently established for one stage only. The general
+  finite-prefix bridge, forced-first-action law, and infinite expected reward
+  remain open. The [independent review](critic-infinite-trajectory.md) checks
+  the law and the history/next-step distribution.
 - `Formalization/Probability/Variance.lean` proves the source's exact finite
   transition-variance perturbation bound, Lemma 2.2. See its independent
   [scoped review](critic-variance-review.md).
+- [Concentration API discovery](probability-api-discovery.md) identifies a
+  pinned Mathlib route for Hoeffding and the additional work needed for
+  variance-sensitive Bernstein, random test families, and strict probabilities.
+  Neither source concentration lemma has yet been proved.
 - `Formalization/Obstructions/SingletonAction.lean` proves a singleton-action
   policy-loss obstruction. `Obstructions/OneState.lean` proves a one-state
   Bellman fixed-point formula and optimal greedy policy. See
   [SOURCE-ISSUES.md](SOURCE-ISSUES.md) for the source review, including a
   one-state counterexample under the known-reward convention and the pending
   Lean bridge to the full statistical theorem.
-- The current pinned Lean integration compiled fourteen project modules; its
-  transitive axiom audit checked 364 project declarations, allowing only
+- The current pinned Lean integration compiled seventeen project modules; its
+  transitive axiom audit checked 424 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

@@ -7,6 +7,9 @@ import Formalization.MDP.FiniteOccupancy
 import Formalization.MDP.FiniteOptimal
 import Formalization.MDP.FixedPoint
 import Formalization.MDP.DiscountedFiniteTrajectory
+import Formalization.MDP.InfiniteTrajectory
+import Formalization.MDP.OccupancyBridge
+import Formalization.MDP.PolicyValueQ
 import Formalization.Obstructions.SingletonAction
 import Formalization.Obstructions.OneState
 import Formalization.Probability.Variance
