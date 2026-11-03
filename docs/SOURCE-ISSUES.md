@@ -167,10 +167,9 @@ The lemma states optimism with probability exceeding `1−2SAHKδ'`. The proof's
 final paragraph instead states probability at least `1−4SAHKδ'`, after a
 preceding per-coordinate `1−2δ'` bound and a union-bound discussion.
 
-**Status:** the raw source has been checked, but the rendered PDF and a
-complete independent reconstruction of the probability accounting remain to
-be checked. The factor-four proof conclusion alone does not establish the
-printed factor-two conclusion. This observation does not prove that the
+**Status:** the raw source and extracted PDF text have been checked; a visual
+PDF check remains open. The factor-four proof conclusion alone does not
+establish the printed factor-two conclusion. This observation does not prove that the
 lemma is false: a sharper common event may justify the printed factor, or the
 proof/statement may need an author correction. Retain the printed statement
 as the source target and do not silently replace either confidence factor.
@@ -183,8 +182,9 @@ retain the factor 2. The proposed corrected implementation now has an
 [isolated Lean proof](critic-online-corrected-optimism.md) using a
 pre-sampled-to-sequential law bridge and an explicit zero-visit convention.
 It covers one fixed deterministic tie rule; the literal printed algorithm
-leaves its zero-count update undefined. Full working and clean integration builds and axiom audits passed. The
-source's factor discrepancy remains documented.
+leaves its zero-count update undefined. Full working and clean integration
+builds and axiom audits passed. This is an alternative proof for the corrected
+implementation; the source's factor discrepancy remains documented.
 
 ## Candidate C7: degenerate domains in the robust chi-squared lower bound
 
@@ -231,8 +231,12 @@ positive-count formula and the small-count constants ([review](critic-online-zer
 must use the updated count for a visited row, not its pre-episode count. This
 is an interpretation of the intended algorithm, not an author-approved
 correction. A [scalar version](../Formalization/Online/OnlineZeroCountOptimisticUpdate.lean)
-has passed isolated compilation and an axiom check ([review](critic-online-zero-count-scalar-independent-review.md)); its connection to the complete
-adaptive algorithm remains unverified.
+has passed compilation and an axiom check
+([review](critic-online-zero-count-scalar-independent-review.md)). A separately integrated
+[corrected planner and optimism proof](critic-online-corrected-optimism.md)
+uses this zero-count convention under the actual adaptive sequential law,
+for one fixed deterministic tie rule. The printed zero-count behavior remains
+undefined, and the proposed convention is not an author-approved correction.
 
 ## Candidate C9: offline lower-bound accuracy endpoint
 
