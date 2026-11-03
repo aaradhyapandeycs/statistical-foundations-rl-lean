@@ -1,0 +1,11 @@
+# Arbitrary empirical-optimal deterministic policy
+
+Staged source `.local/PolicyLearningAnyOptimalPolicy.lean`, SHA-256 `e60fb346a093414e4b1f1b7cd0299196552a36e407fc2d5ec2189fe0562fecdc`. Imports staged `PolicyLearningFittedPolicyEvaluation` (SHA `012f5481e9da86b91a354ed54a808c6f3fd1b2a60d63c5ab7660b65b9452fa8c`) and `PolicyLearningPerformanceTransfer` (SHA `a0bd5f59289707d9a4a0739914e960c76a4b04335b14acfdfc1f55806ccb825d`).
+
+`EmpiricallyOptimal` explicitly says the deterministic policy's actual empirical trajectory value dominates that of every stationary policy at every state. The implemented selector satisfies this property (`policyEstimator_empiricallyOptimal`), and every such policy has exactly the existing empirical optimal value (`empiricallyOptimal_value_eq`). `empiricallyOptimal_performance` transfers two explicit evaluation budgets ε₀ and ε₁ to actual trajectory V and forced-first-action Q losses ε₀+ε₁ and γ(ε₀+ε₁), without relying on a particular tie selection. This includes γ=0.
+
+`all_empiricallyOptimal_evaluation_source_bound` proves the fitted evaluation bound simultaneously for all such policies under the actual sampling law, with probability strictly above `1−δ/2` and source β and constants. The all-row residual event is obtained first, then the proof universally instantiates f and its selected row; no independence or measurability of any subsequent data-selected tie choice is assumed. It uses the empirical value equality and the generic deterministic variance/resolvent bridge. No target-shaped event is an assumption.
+
+This is an intermediate result, not the full source sample-complexity theorem. The fixed true-optimal-policy event, its union probability, and sample arithmetic must still be connected. In particular, the two evaluation radii retain distinct coefficients: a future simplification must explicitly accommodate the observed √2 factor, e.g. by enlarging its universal constant; this file makes no unjustified constant identification.
+
+Exact staged source compiled successfully with `.local` on `LEAN_PATH`; a copy with all five declarations probed by `#print axioms` compiled, each reporting only `propext`, `Classical.choice`, `Quot.sound`. Independent source review and a production-import build remain necessary.
