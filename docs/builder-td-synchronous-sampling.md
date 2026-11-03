@@ -1,0 +1,5 @@
+# Synchronous TD sampling law
+
+`.local/TDSynchronousSampling.lean` stages a finite-time experiment with one draw for each `(state,time)` and the actual policy transition row. It reuses the established policy-evaluation product law, its coordinate marginals, and mutual independence. A finite array is extended by a fixed state outside 0,…,T for the existing total `tdIterate` interface; the update at T only consumes indices 1,…,T, while index 0 is an unused extra product coordinate. The actual sampled iterate is measurable on a finite input space and satisfies the existing deterministic boundedness theorem on every realization, hence almost surely.
+
+The staged source was subsequently independently reviewed and compiled, and the byte-identical production module passed the full project check; see `critic-td-synchronous-sampling.md`. It does not establish independence of an iterate and its past or future samples, a martingale-difference property, concentration, convergence, a statistical rate, or an infinite-time path law. A formal horizon-dependence/causality lemma remains useful for connecting the update to the natural filtration.

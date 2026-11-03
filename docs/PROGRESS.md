@@ -284,6 +284,15 @@ audit, and independent correspondence review before promotion.
 - The source TD bounded-iterates lemma is proved pathwise for the actual
   synchronous update and actual trajectory value. Its sampling-law and
   convergence theorem remain open; see the [independent review](critic-td-iterate-bounds.md).
+- The corrected indexed hard family now has finite Fano and two-point
+  deterministic-estimator risk proofs, including strict lower-risk
+  bounds under explicit budgets. Randomized estimators, the final source
+  threshold, and the disputed printed theorem remain open; see the
+  [independent review](critic-generative-lower-bound-policy-risk-branches-compiled.md).
+- The synchronous TD sample interface constructs the actual finite
+  policy-transition product law and connects it to bounded iterates;
+  filtration and convergence remain open. Its extra time-zero draw is
+  unused; see the [review](critic-td-synchronous-sampling.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   Fano and the corrected minimax theorem remain open; see the independent
@@ -474,8 +483,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled one hundred thirty-one project modules; its
-  transitive axiom audit checked 2220 project declarations, allowing only
+- The current pinned Lean integration compiled one hundred forty-three project modules; its
+  transitive axiom audit checked 2279 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.
