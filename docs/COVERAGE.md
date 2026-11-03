@@ -31,6 +31,10 @@ component is not a claim that its chapter or the monograph is complete.
 
 | Bounded Q-learning iterates, `lemma:non-negativity-Qt-Vt`, model-free chapter lines 1052–1071 | [QLearningIterateBounds.lean](../Formalization/ModelFree/QLearningIterateBounds.lean) | **Lemma 4.8 proved and independently reviewed:** for the synchronous Q-learning update, Q and its action-maximum value remain in the source interval, and full sup-norm error against the actual optimal trajectory Q is at most the effective horizon. These are pathwise bounds for any sample sequence and admissible rate prefix; the sampling law and convergence theorem remain separate. [Review](critic-q-learning-iterate-bounds.md). |
 
+| TD squared-iterate energy, `lemma:TD-square`, model-free chapter lines 643–659 | [TDSquareEnergy.lean](../Formalization/ModelFree/TDSquareEnergy.lean) | **Lemma 4.4 proved and independently reviewed:** the source coordinatewise inequality under the actual synchronous sampling law and used-sample history, for positive updates within any finite sample horizon and the source initialization/rate bounds. The sharp variance concentration and final TD theorem remain separate. [Review](critic-td-square.md). |
+
+| Robust Bellman contraction, `lemma:robust-Bellman-contraction`, model-free chapter lines 1422–1438 | [QLearningRobustContraction.lean](../Formalization/ModelFree/QLearningRobustContraction.lean) | **Lemma 4.11 proved and independently reviewed:** both source support-aware operators are γ-contractions in the finite sup norm. The Lean result permits nonnegative χ² radius, covering the source positive-radius case. The comparison stability lemma and final Q-learning theorem remain separate. [Review](critic-q-learning-robust-contraction-production.md). |
+
 The latest project-wide local check and open obligations are in
 [PROGRESS.md](PROGRESS.md). Theorem 3.7's one-state issue is tracked separately
 in [SOURCE-ISSUES.md](SOURCE-ISSUES.md); it has not been silently corrected or

@@ -357,10 +357,28 @@ audit, and independent correspondence review before promotion.
   predictable variance and magnitude bounds are proved. A simultaneous
   row/time event, sharp robust comparisons and the final convergence rate
   remain open; see [review](critic-q-learning-optimal-freedman.md).
+- The source TD squared-iterate energy inequality is proved for each
+  coordinate and positive update under the actual sample law, with the
+  source initial-value and rate conditions. The later sharp variance
+  concentration and TD accuracy theorem remain separate; see
+  [review](critic-td-square.md).
 - TD weights satisfy the source mass identity and first- and squared-mass
-  bounds under an explicit pointwise weight envelope. Deriving the envelope
-  for the source schedule and applying concentration remain separate; see
-  [review](critic-td-weight-mass.md).
+  bounds. A source-schedule envelope and an actual-law scalar fixed-terminal
+  Freedman event are established under explicit late-terminal and large-T
+  assumptions. The event uses conservative caps; a sharp variance analysis,
+  simultaneous events and the source accuracy theorem remain open. See
+  [weight review](critic-td-weight-mass.md) and
+  [terminal review](critic-td-terminal-caps-freedman.md).
+- The support-aware χ² uncertainty set defines both robust Q-learning
+  operators. Both are contractions and have unique fixed points for a
+  nonnegative radius. Compactness gives actual optimizing rows and their
+  shifted fixed-point value bounds. A support-aware upper χ² deviation and
+  the lower supremum witness are established; the source-shaped infimum and
+  stability bounds remain separate. See
+  [operator review](critic-q-learning-robust-contraction.md),
+  [optimizer review](critic-q-learning-robust-compact-attain-range.md),
+  [upper-deviation review](critic-q-learning-chi-upper.md), and
+  [lower-witness review](critic-q-learning-chi-lower.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
@@ -551,8 +569,8 @@ audit, and independent correspondence review before promotion.
   budget bound, including a scaled zero-discount case. The empirical
   comparison and sharp statistical guarantee are proved separately; see the
   [independent review](critic-policy-evaluation-variance-resolvent.md).
-- The current pinned Lean integration compiled two hundred thirty-four project modules; its
-  transitive axiom audit checked 3148 project declarations, allowing only
+- The current pinned Lean integration compiled two hundred forty-five project modules; its
+  transitive axiom audit checked 3277 project declarations, allowing only
   `propext`, `Classical.choice`, and `Quot.sound`. These checks do not replace
   source review. Current builder work and independent critic findings are
   recorded separately in `builder-*.md` and `critic-*.md`.

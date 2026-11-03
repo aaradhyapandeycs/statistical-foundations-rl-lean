@@ -231,3 +231,15 @@ import Formalization.ModelFree.TDWeightMass
 import Formalization.ModelFree.TDWeightedVariance
 import Formalization.ModelFree.TDVarianceSum
 import Formalization.ModelFree.TDTerminalHistory
+
+import Formalization.ModelFree.TDTerminalCaps
+import Formalization.ModelFree.TDTerminalWeightEnvelope
+import Formalization.ModelFree.TDTerminalFreedman
+import Formalization.ModelFree.QLearningRobustComparator
+import Formalization.ModelFree.QLearningRobustContraction
+import Formalization.ModelFree.QLearningChiUpper
+import Formalization.ModelFree.QLearningRobustBallCompact
+import Formalization.ModelFree.QLearningRobustAttainment
+import Formalization.ModelFree.QLearningRobustRange
+import Formalization.ModelFree.TDSquareEnergy
+import Formalization.ModelFree.QLearningChiLower
