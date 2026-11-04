@@ -6,6 +6,22 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Corrected actual MVP T2 and T5 displayed bounds verified
+
+- T2 holds deterministically for K≥2 with fixed c₁=4,c₂=16, using the
+  actual retained-row count and factor-four reciprocal budget. T5 holds for
+  every K≥1 on the actual sequential law; the K=1 branch is direct for
+  arbitrary positive H, and the source natural-log failure coefficient is
+  retained. Both use C8/C13/C16 and one fixed greedy tie.
+- Qualification: six T2 and eleven T5 providers, eight and fourteen export
+  probes, and two full Chapter 5 files with seventeen applying-proof probes.
+  Affected integration: 21 rebuilt + 790 verified reused = 811
+  modules; 7,489 declarations with permitted standard axioms. This is an
+  affected check, not a fresh clean 811-module build.
+- These displayed claims add no numbered ledger entry: 20 original named
+  results with existing disclosures and 10 corrected variants remain. Source
+  Lemma 5.14 and the full MVP regret theorem remain open.
+
 ## Corrected MVP T6 variance lemma verified
 
 - Corrected Lemma 5.15 (`lem:bound-T6-ucb-mvp`, onlineRL.tex:1822–1833)

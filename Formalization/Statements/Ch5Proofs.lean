@@ -1,3 +1,5 @@
+import Formalization.Online.Regret.MVP.T5.MVPT5AllKConfidence
+import Formalization.Online.Regret.MVP.T2.MVPT2ActualSource
 import Formalization.Online.Regret.MVP.T6.MVPActualT6SourceFinal
 import Formalization.Online.Regret.MVP.Optimism.MVPSourceOptimismFinal
 import Formalization.Online.Regret.MVP.Probability.MVPCorrectedSourceUniformFull
@@ -241,5 +243,30 @@ theorem Lemma5_15_corrected_holds : Lemma5_15_corrected := by
     StatisticalRL.OnlineRL.mvpVarianceHistory, StatisticalRL.OnlineRL.onlineW1SourceIota,
     StatisticalRL.OnlineRL.onlineSourceOptimismDeltaPrime,
     StatisticalRL.OnlineRL.onlineRegretAnalysisCharge] using hp
+
+
+theorem MVP_T2_K2_corrected_holds : MVP_T2_K2_corrected := by
+  intro State Action instState instAction H K hH hK E initial fallback path δ hδ hδ1
+  letI : Fintype State := instState
+  letI : Fintype Action := instAction
+  have h := StatisticalRL.OnlineRL.mvpActualT2_le_sourceBound_fixed
+    H K hH hK E initial fallback path δ hδ hδ1
+  simpa [StatisticalRL.OnlineRL.mvpVarianceT2, StatisticalRL.OnlineRL.mvpActualT5,
+    StatisticalRL.OnlineRL.mvpVarianceContinuation, StatisticalRL.OnlineRL.mvpVarianceHistory,
+    StatisticalRL.OnlineRL.onlineW1SourceIota,
+    StatisticalRL.OnlineRL.onlineSourceOptimismDeltaPrime,
+    StatisticalRL.OnlineRL.onlineRegretAnalysisCharge] using h
+
+
+theorem MVP_T5_corrected_holds : MVP_T5_corrected := by
+  intro State Action instState instAction H K hH hK E ρ fallback δ hδ hδ1
+  letI : Fintype State := instState
+  letI : Fintype Action := instAction
+  have h := StatisticalRL.OnlineRL.mvpActualT5_source_confidence H K hH hK E ρ fallback δ hδ hδ1
+  simpa [StatisticalRL.OnlineRL.mvpActualT5, StatisticalRL.OnlineRL.mvpActualW3,
+    StatisticalRL.OnlineRL.mvpVarianceT6UCB, StatisticalRL.OnlineRL.mvpVarianceT2,
+    StatisticalRL.OnlineRL.mvpVarianceContinuation, StatisticalRL.OnlineRL.mvpVarianceHistory,
+    StatisticalRL.OnlineRL.onlineW1SourceIota, StatisticalRL.OnlineRL.onlineSourceOptimismDeltaPrime,
+    StatisticalRL.OnlineRL.onlineRegretAnalysisCharge] using h
 
 end StatisticalRL.Statements

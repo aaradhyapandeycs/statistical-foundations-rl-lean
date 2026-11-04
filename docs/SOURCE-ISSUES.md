@@ -291,6 +291,14 @@ C16 and fixed deterministic ties remain disclosed; Lemma 5.14 and full MVP
 regret remain open. See [review](critic-online-MVP-t6.md) and
 [verification](online-MVP-t6-verification.md).
 
+The corrected actual MVP T2 and T5 displayed bounds also use the positive-count
+source bonus and zero-count analysis charge H (C8), power-of-two trigger (C13),
+reciprocal allocation (C16), fixed 4/16 coefficients and one fixed tie. T2 is
+proved for K≥2, as in the reciprocal-budget scope (C12); T5 covers K≥1 and
+uses the printed natural-log failure coefficient. Neither claim is an uncorrected
+source certification or a numbered ledger addition. See
+[review](critic-online-MVP-t2-t5.md) and [verification](online-MVP-t2-t5-verification.md).
+
 ## Candidate C9: offline lower-bound accuracy endpoint
 
 The standalone offline minimax lower bound `thm:infinite-lwoer-bound`

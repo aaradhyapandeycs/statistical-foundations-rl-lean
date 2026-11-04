@@ -1,3 +1,5 @@
+import Formalization.Online.Regret.MVP.MVPT5Definitions
+import Formalization.Online.Regret.MVP.MVPT2Definitions
 import Formalization.Online.Regret.MVP.MVPVarianceDefinitions
 import Formalization.Online.Regret.MVP.MVPModelDefinitions
 import Formalization.Online.Regret.MVP.MVPUniformSourceDefinitions
@@ -535,5 +537,95 @@ noncomputable def Lemma5_15_corrected : Prop :=
               max ((onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).expectation (U h k) -
                 ((E h).transition (sa h k).1 (sa h k).2).expectation (U h k)) 0) +
             (K : ℝ)*(H : ℝ)^2*I}
+
+
+/-- Corrected displayed MVP T2 bound `eq:T2-ub-analysis-mvp`,
+`source/upstream/tex/chapters/onlineRL.tex:1793–1801`. The source's suitably
+chosen coefficients are fixed to (4,16), and K≥2. The actual retained-table
+history uses the C8 zero-count analysis charge H and positive-count source
+bonus, C13 power-of-two trigger, C16 reciprocal confidence allocation, and
+one fixed deterministic greedy tie rule. This is a displayed estimate, not a
+separate numbered lemma. -/
+noncomputable def MVP_T2_K2_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H) (hK : 2 ≤ K)
+    (E : Fin H → EnvironmentStage State Action) (initial : Fin K → State)
+    (fallback : State) (path : OnlineOutcomePath.{u,0} State (K*H)) (δ : ℝ),
+    0 < δ → δ ≤ 1 →
+    let δp := δ / (100 * (Fintype.card State : ℝ)^2 *
+      (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let I := 40000 * (Real.log K / Real.log 2)^3 *
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) * Real.log (1/δp)
+    let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) 4 16
+    let history := onlineSequentialPathHistory
+      (onlineEpisodicChoose H K hH initial fallback planner) (K*H) [] path
+    let U := fun (h : Fin H) (k : Fin K) =>
+      onlineCappedBackwardValueAt (H : ℝ) (Real.log (1/δp)) 4 16
+        (onlineMVPHistoryPlanningStages hH E fallback (history.take (k.val*H))) (h.val+1)
+    let sa := fun (h : Fin H) (k : Fin K) =>
+      onlineActualStageRowSequence H K hH initial fallback planner path h k.val
+    let stage := fun (h : Fin H) (k : Fin K) =>
+      let hist := history.take (k.val*H)
+      letI : Nonempty State := (E h).state_nonempty
+      onlineMVPActualPlanningStage E (onlineMVPHistoryRowAt hH E fallback hist)
+        (onlineMVPHistoryNextAt fallback hist) hist.length h
+    (∑ h : Fin H, ∑ k : Fin K,
+      if 0 < ((stage h k).observations (sa h k).1 (sa h k).2).length then
+        4 * Real.sqrt ((onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).variance (U h k) *
+          Real.log (1/δp) / ((stage h k).observations (sa h k).1 (sa h k).2).length) +
+        16*(H : ℝ)*Real.log (1/δp) / ((stage h k).observations (sa h k).1 (sa h k).2).length
+      else H) ≤
+      (1/2 : ℝ) * Real.sqrt ((Fintype.card State : ℝ) * Fintype.card Action * H *
+        (∑ h : Fin H, ∑ k : Fin K,
+          (onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).variance (U h k)) * I) +
+      (1/2 : ℝ) * (Fintype.card State : ℝ) * Fintype.card Action * (H : ℝ)^2 * I
+
+
+/-- Corrected displayed MVP T5 bound `eq:T5-ub-analysis-mvp`,
+`source/upstream/tex/chapters/onlineRL.tex:1804–1810`. The actual retained-table
+sequential law uses iid resets and conditional transition sampling; K≥1,
+including the direct K=1 case. Coefficients are fixed to (4,16), with the C8
+zero-count analysis charge H, C13 power-of-two trigger, C16 reciprocal confidence
+allocation, and one deterministic greedy tie rule. This displayed estimate is
+not a separate numbered lemma. -/
+noncomputable def MVP_T5_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
+    (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+    (fallback : State) (δ : ℝ), 0 < δ → δ ≤ 1 →
+    let δp := δ / (100 * (Fintype.card State : ℝ)^2 *
+      (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let I := 40000 * (Real.log K / Real.log 2)^3 *
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) * Real.log (1/δp)
+    let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) 4 16
+    1 - 2 * Real.log (K*H) * δp ≤
+      (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
+          let history := onlineSequentialPathHistory
+            (onlineEpisodicChoose H K hH sample.1 fallback planner) (K*H) [] sample.2
+          let U := fun (h : Fin H) (k : Fin K) =>
+            onlineCappedBackwardValueAt (H : ℝ) (Real.log (1/δp)) 4 16
+              (onlineMVPHistoryPlanningStages hH E fallback (history.take (k.val*H))) (h.val+1)
+          let sa := fun (h : Fin H) (k : Fin K) =>
+            onlineActualStageRowSequence H K hH sample.1 fallback planner sample.2 h k.val
+          let stage := fun (h : Fin H) (k : Fin K) =>
+            let hist := history.take (k.val*H)
+            letI : Nonempty State := (E h).state_nonempty
+            onlineMVPActualPlanningStage E (onlineMVPHistoryRowAt hH E fallback hist)
+              (onlineMVPHistoryNextAt fallback hist) hist.length h
+          (∑ h : Fin H, ∑ k : Fin K,
+            (onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).variance (U h k)) ≤
+          (∑ h : Fin H, ∑ k : Fin K,
+            ((onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).expectation (fun s => (U h k s)^2) -
+              ((E h).transition (sa h k).1 (sa h k).2).expectation (fun s => (U h k s)^2))) +
+          2*(H : ℝ)*(∑ h : Fin H, ∑ k : Fin K,
+            if 0 < ((stage h k).observations (sa h k).1 (sa h k).2).length then
+              4 * Real.sqrt ((onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).variance (U h k) *
+                Real.log (1/δp) / ((stage h k).observations (sa h k).1 (sa h k).2).length) +
+              16*(H : ℝ)*Real.log (1/δp) / ((stage h k).observations (sa h k).1 (sa h k).2).length
+            else H) +
+          Real.sqrt ((H : ℝ)^2 * (∑ h : Fin H, ∑ k : Fin K,
+            ((E h).transition (sa h k).1 (sa h k).2).variance (U h k)) * I) +
+          (K : ℝ)*(H : ℝ)^2*I}
 
 end StatisticalRL.Statements
