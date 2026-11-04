@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.Joint.OnlineT234Joint
 import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
 import Formalization.Statements.Ch5
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
@@ -69,5 +70,21 @@ theorem Lemma5_4_holds : Lemma5_4 := by
   apply ρ.expectation_le_const
   intro s
   exact finitePolicy_expected_cumulative_variance_le_horizon_sq H E π s
+
+
+/-- Instantiate the applying joint export at the exact printed iota and
+expand all three source terms and both T3 inequalities. -/
+theorem Lemma5_8_K2_corrected_holds : Lemma5_8_K2_corrected := by
+  intro State Action instS instA H K hH hK E ρ δ c₁ c₂ hδ hδone hc₁ hc₂
+  dsimp only
+  intro hI
+  have hp := onlineSourceAllocated_actualT234_K2_strict H K hH hK E ρ
+    (Classical.choice (E ⟨0, hH⟩).state_nonempty) δ c₁ c₂
+    (onlineW1SourceIota (Fintype.card State) (Fintype.card Action) H K
+      (onlineSourceOptimismDeltaPrime δ (Fintype.card State) (Fintype.card Action) H K))
+    hδ hδone hc₁ hc₂ hI
+  simpa only [onlineSourceOptimismDeltaPrime, onlineW1SourceIota,
+    onlineActualT234SourceEvent, onlineActualT3SourceBoundEvent,
+    onlineActualT2, Set.mem_setOf_eq, Set.setOf_app_iff, and_assoc] using hp
 
 end StatisticalRL.Statements

@@ -374,3 +374,12 @@ errors in the manuscript.
   C8 the zero-count correction. The earlier W1-only entry remains available,
   while its ledger variant is superseded. The unmodified K=1 source claim
   and the final regret theorem are not certified by this result.
+
+- Complete joint Lemma 5.8 (`lem:bound-T234`, `onlineRL.tex:988–1005`)
+  is formalized as `Lemma5_8_K2_corrected`. It retains the printed iota,
+  threshold, all four displayed inequalities and strict confidence. The
+  explicit K≥2 restriction addresses C12, and the finite zero-count
+  implementation and analysis charge H address C8. One fixed deterministic
+  maximizing tie rule is used. The unrestricted endpoint, later T5/T6 bounds
+  and final regret theorem are not certified by this result. See
+  [independent review](critic-online-t234-joint.md).

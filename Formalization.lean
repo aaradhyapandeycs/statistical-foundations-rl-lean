@@ -379,3 +379,4 @@ import Formalization.Online.Regret.NonnegativeTelescope
 import Formalization.Online.Regret.W1.OnlineW1RestrictedSourceBudget
 import Formalization.Online.Regret.Joint.OnlineW123Final
 import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
+import Formalization.Online.Regret.Joint.OnlineT234Joint

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T11:24:55.300867+00:00",
+  "updated_at": "2026-11-04T12:22:46.660625+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -264,6 +264,21 @@
       "evidence": "docs/critic-online-w123-joint.md",
       "supporting_evidence": [
         "docs/online-w123-joint-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.8, complete joint T2/T3/T4 (K>=2 corrected variant)",
+      "source_label": "lem:bound-T234",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "988–1005",
+      "lean_export": "StatisticalRL.OnlineRL.onlineSourceAllocated_actualT234_K2_strict",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_8_K2_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_8_K2_corrected_holds",
+      "statement_scope": "All four printed inequalities, including both parts of the T3 radius chain, on one actual-law event with strict printed 4 log2(KH) delta-prime confidence. Printed iota and threshold retained. K>=2 (SOURCE-ISSUES C12), finite zero-count analysis charge H (C8), fixed deterministic greedy tie, and source confidence/bonus domains. No T56 or final regret theorem certified.",
+      "evidence": "docs/critic-online-t234-joint.md",
+      "supporting_evidence": [
+        "docs/online-t234-joint-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

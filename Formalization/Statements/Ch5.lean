@@ -1,3 +1,5 @@
+import Formalization.Online.Regret.T2.OnlineT2ActualDefinitions
+import Formalization.Online.Regret.T3.T3Definitions
 import Formalization.Online.Regret.PolicyVariance.TrajectoryVarianceDefinitions
 import Formalization.Online.SourceOptimism.SequentialEpisodeDefinitions
 import Formalization.Online.SourceOptimism.CappedGreedyPlannerDefinitions
@@ -180,5 +182,52 @@ noncomputable def Lemma5_4 : Prop :=
     ρ.expectation (fun s =>
       (DecisionStage.trajectoryLaw stages s).expectation
         (finiteTrajectoryVarianceSum stages s)) ≤ (H : ℝ)^2
+
+
+/-- Corrected/restricted Lemma 5.8, `lem:bound-T234`,
+`chapters/onlineRL.tex:988–1005`. All four displayed inequalities (including
+both parts of the T3 radius chain) hold on one actual sequential experiment.
+The printed iota and its lower-bound hypothesis are retained. The algorithm
+uses the finite zero-count completion and one fixed deterministic maximizing
+tie rule; K ≥ 2 is explicit. Candidate C8 in `docs/SOURCE-ISSUES.md` records the
+zero-count correction, and C12 records the missing endpoint: at K=H=1 the
+printed strict probability bound would require probability > 1.
+The full unrestricted printed lemma and the final regret theorem are not
+asserted by this entry. -/
+noncomputable def Lemma5_8_K2_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H), 2 ≤ K →
+    ∀ (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+      (δ c₁ c₂ : ℝ),
+    0 < δ → δ ≤ 1 → 4 ≤ c₁ → c₁^2 ≤ c₂ →
+    let fallback : State := Classical.choice (E ⟨0, hH⟩).state_nonempty
+    let δ' := δ / (100 * (Fintype.card State : ℝ)^2 *
+      (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let I := 40000 * (Real.log K / Real.log 2)^3 *
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) *
+        Real.log (1 / δ')
+    8 * max (c₁^2) c₂ * (Real.log K / Real.log 2) * Real.log (1 / δ') ≤ I →
+    let planner := onlineCappedGreedyPlanner E (Real.log (1 / δ')) c₁ c₂
+    1 - 4 * (Real.log ((K : ℝ) * H) / Real.log 2) * δ' <
+      (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K * H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{u, 0} State (K * H) |
+          (∑ k : Fin K,
+            (onlineActualEpisodeRegretTerms H K hH E sample.1 fallback sample.2 k δ' c₁ c₂).2.1) ≤
+            (1 / 2 : ℝ) * Real.sqrt ((Fintype.card State : ℝ) * Fintype.card Action * H *
+              onlineActualT5 H K hH E sample.1 fallback sample.2 δ' c₁ c₂ * I) +
+              (1 / 2 : ℝ) * (Fintype.card State : ℝ) * Fintype.card Action * H^2 * I ∧
+          |∑ k : Fin K,
+            (onlineActualEpisodeRegretTerms H K hH E sample.1 fallback sample.2 k δ' c₁ c₂).2.2.1| ≤
+            Real.sqrt (8 * onlineActualT6UCB H K hH E sample.1 fallback sample.2 δ' c₁ c₂ *
+              Real.log (1 / δ')) + 5 * (H : ℝ) * Real.log (1 / δ') ∧
+          Real.sqrt (8 * onlineActualT6UCB H K hH E sample.1 fallback sample.2 δ' c₁ c₂ *
+            Real.log (1 / δ')) + 5 * (H : ℝ) * Real.log (1 / δ') ≤
+            4 * Real.sqrt (onlineActualT6Policy H K hH E sample.1 fallback sample.2 δ' c₁ c₂ *
+              Real.log (1 / δ')) +
+            4 * Real.sqrt (onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' c₁ c₂ *
+              Real.log (1 / δ')) + 5 * (H : ℝ) * Real.log (1 / δ') ∧
+          |∑ k : Fin K,
+            (onlineActualEpisodeRegretTerms H K hH E sample.1 fallback sample.2 k δ' c₁ c₂).2.2.2| ≤
+            Real.sqrt (2 * (K : ℝ) * (H : ℝ)^2 * Real.log (1 / δ'))}
 
 end StatisticalRL.Statements

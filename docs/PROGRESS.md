@@ -6,6 +6,37 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Complete corrected joint T2/T3/T4 lemma verified
+
+- Corrected/restricted Lemma 5.8 now has all four printed inequalities on
+  one event under the actual reset-vector and causal sequential-path law.
+  In particular, it proves the comparison between the two T3 radii, as well
+  as the bound on the absolute T3 sum. The exact printed iota, lower-bound
+  hypothesis and strict confidence 1−4 log₂(KH) delta-prime are retained.
+- T2 is bounded deterministically using first visits and reciprocal counts.
+  The T3 proof derives predictable conditional variance and applies Freedman;
+  T4 telescopes to episode return minus selected-policy value, with zero
+  conditional mean and range H, before applying episode Azuma. No event or
+  variance estimate is an unproved premise.
+- Scope: K≥2 addresses C12; the finite zero-count completion and analysis
+  charge H address C8; the implementation uses one fixed deterministic
+  maximizing tie rule. This is a corrected variant of the auxiliary lemma.
+- The affected 566-module check passed: 50 rebuilt, 516 verified reused,
+  and 5,811 declarations audited with only standard axioms. It is not a
+  fresh clean 566-module build. See [verification](online-t234-joint-verification.md)
+  and [independent review](critic-online-t234-joint.md).
+- Current library: 64,724 project Lean lines including comments and blanks,
+  in 566 files. The ledger has 18 original named-result entries with their
+  existing disclosed restrictions, plus four corrected variants. No complete
+  chapter or monograph is certified.
+- Work continues on adaptive T5/T6 bounds, stagewise optimistic-to-policy
+  gaps and their joint confidence accounting, followed by final regret.
+  Quarantined component drafts are not source completion evidence.
+- Ownership: builders — actual T2 count bounds, T3 predictable variance and
+  T4 episode concentration; coordinator — joint event, complete statement
+  index, integration and publication; independent critic — source semantics,
+  actual export consumption, qualification and terminal build evidence.
+
 ## Fixed-policy cumulative variance lemma verified
 
 - Original Lemma 5.4 (online-RL source lines 648–658) now has its full
@@ -25,8 +56,8 @@ audit, and independent correspondence review before promotion.
   elsewhere, plus three separate corrected variants. No chapter or monograph
   completion is certified. See [verification](online-policy-variance-verification.md)
   and [independent review](critic-online-policy-variance.md).
-- Current work continues on the joint T2/T3/T4 source bound and adaptive
-  T5/T6 concentration. Their staged drafts are outside this publication.
+- At that milestone, joint T2/T3/T4 and adaptive T5/T6 work remained in
+  staged drafts. The newer T234 milestone is recorded above.
 - Ownership: builder — variance decomposition and finite trajectory budget;
   coordinator — source specialization, statement index and frozen integration;
   independent critic — source semantics, definition extraction, actual export
