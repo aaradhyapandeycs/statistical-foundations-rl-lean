@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T15:33:05.224344+00:00",
+  "updated_at": "2026-11-04T15:56:15.912734+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -324,6 +324,21 @@
       "evidence": "docs/critic-online-ucbvi-regret.md",
       "supporting_evidence": [
         "docs/online-ucbvi-regret-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.22, signed square variance (corrected coefficient)",
+      "source_label": "lemma:sqv",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "3612–3615",
+      "lean_export": "StatisticalRL.GeneralVariance.variance_square_le_four_of_abs_bound and StatisticalRL.GeneralVariance.variance_centeredSquare_le_four_of_abs_bound",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_22_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_22_corrected_holds",
+      "statement_scope": "Arbitrary probability space, measurable real X and pointwise absolute bound C. First coefficient 4 is unchanged; printed second coefficient 1 is false for signed X and is replaced by 4 (SOURCE-ISSUES C14). Integrability and MemLp are derived, not extra hypotheses. Exact ProbabilityTheory.variance counterexample: |X|=1, VarX=7/16, Var((X-EX)^2)=63/64. Original false general lemma is not certified.",
+      "evidence": "docs/critic-square-variance-correction.md",
+      "supporting_evidence": [
+        "docs/square-variance-correction-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

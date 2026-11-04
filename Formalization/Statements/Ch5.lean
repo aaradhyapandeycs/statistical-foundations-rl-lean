@@ -1,3 +1,4 @@
+import Mathlib.Probability.Moments.Variance
 import Formalization.Online.Regret.T2.OnlineT2ActualDefinitions
 import Formalization.Online.Regret.T3.T3Definitions
 import Formalization.Online.Regret.PolicyVariance.TrajectoryVarianceDefinitions
@@ -350,5 +351,19 @@ noncomputable def Thm5_2_corrected : Prop :=
                   (onlineCappedEpisodePolicy H hH E history k.val (Real.log (1 / δ')) c₁ c₂))
                 (sample.1 k))) ≤
           20 * (Real.sqrt ((S : ℝ) * A * H^3 * K) + (S : ℝ)^2 * A * H^3) * (1 + I)}
+
+
+/-- Lemma 5.22 (`lemma:sqv`, onlineRL.tex:3612–3615), corrected as described
+in `docs/SOURCE-ISSUES.md#C14`: the source coefficient one for centered squares
+fails for signed variables, so both bounds use coefficient four. The probability
+space is arbitrary and no integrability assumption is added. -/
+def Lemma5_22_corrected : Prop :=
+  ∀ (Ω : Type*) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (X : Ω → ℝ), Measurable X → ∀ C : ℝ, (∀ ω, |X ω| ≤ C) →
+      ProbabilityTheory.variance (fun ω => (X ω)^2) μ ≤
+          4*C^2 * ProbabilityTheory.variance X μ ∧
+      ProbabilityTheory.variance (fun ω => (X ω - ∫ z, X z ∂μ)^2) μ ≤
+          4*C^2 * ProbabilityTheory.variance X μ
+
 
 end StatisticalRL.Statements

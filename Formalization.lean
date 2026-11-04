@@ -383,3 +383,6 @@ import Formalization.Online.Regret.Joint.OnlineT234Joint
 import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
 import Formalization.Online.Regret.Main.OnlineUCBVIRegretMain
 import Formalization.Online.Regret.Counts.OnlineReciprocalSource
+import Formalization.Probability.SquaredVarianceBounds
+import Formalization.Counterexamples.CenteredSquareVariance
+import Formalization.Counterexamples.CenteredSquareVarianceMeasure

@@ -6,6 +6,33 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Signed variance error verified and repaired
+
+- The second clause of Lemma 5.22 (`lemma:sqv`, onlineRL.tex:3612–3615) is
+  false as stated for a general signed random variable. A two-point law
+  with probabilities 1/8 and 7/8 at 1 and −1 has Cmax=1, mean−3/4, variance7/16,
+  and centered-square variance63/64. The printed coefficient 1 bound fails.
+- The witness uses Mathlib's actual probability-measure variance, with a
+  measurable coordinate sample under the finite product law. Its exact
+  mean and both variances are linked to verified finite expectations.
+- Both corrected inequalities with coefficient 4 are proved for an arbitrary
+  probability space and measurable |X|≤C. The first printed inequality
+  already had 4; only the centered-square coefficient changes. No separate
+  integrability or MemLp hypothesis is added. See SOURCE-ISSUES C14.
+- The nonnegative [0,C] special case with centered-square coefficient 1 is
+  valid and remains available. The published UCBVI theorem uses valid
+  bounds, so this general-lemma error does not invalidate its Lean proof.
+- The full statement/applying wrapper, three provider modules and actual
+  export probes passed. Affected 671 integration: 7 rebuilt+
+  664 verified reused; 6,484 declarations audited with standard axioms.
+- Size: 73,559 Lean lines including comments/blanks in 671 files. Ledger:
+  19 original named entries with existing disclosures, seven corrected
+  variants. The printed false Lemma 5.22 is not counted as an original.
+  Other chapter obligations and the entire monograph remain incomplete.
+- Ownership: coordinator — finite signed witness and source issue;
+  Terra builder — general measure proof, exact variance bridge and index;
+  independent critic — raw source, counterexample, scope and final evidence.
+
 ## Printed inverse-visit count lemma verified
 
 - Lemma 5.3 (`lem:sum-inv-Nhk-ucbvi`, onlineRL.tex:638–646) now has the

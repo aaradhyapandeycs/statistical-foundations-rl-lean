@@ -1,3 +1,4 @@
+import Formalization.Probability.SquaredVarianceBounds
 import Formalization.Online.Regret.Main.OnlineUCBVIRegretMain
 import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
 import Formalization.Online.Regret.Joint.OnlineT234Joint
@@ -138,5 +139,10 @@ theorem Thm5_2_corrected_holds : Thm5_2_corrected := by
   simpa [onlineUCBVIRegretRateEvent, onlineUCBVIRegretRate,
     onlineSourceOptimismDeltaPrime, onlineW1SourceIota, onlineActualEpisodeRegret,
     onlineCappedEpisodePolicyValue, fallback] using hp.le
+
+theorem Lemma5_22_corrected_holds : Lemma5_22_corrected := by
+  intro Ω _ μ _ X hX C hbound
+  exact ⟨StatisticalRL.GeneralVariance.variance_square_le_four_of_abs_bound μ X hX C hbound,
+    StatisticalRL.GeneralVariance.variance_centeredSquare_le_four_of_abs_bound μ X hX C hbound⟩
 
 end StatisticalRL.Statements

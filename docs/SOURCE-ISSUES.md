@@ -404,3 +404,45 @@ errors in the manuscript.
   This establishes the corrected algorithm, while the printed zero-count
   rule remains undefined as recorded in C8. See the
   [independent review](critic-online-ucbvi-regret.md).
+
+<a id="C14"></a>
+
+## Candidate C14: centered-square variance for signed variables
+
+**Status: confirmed false conclusion in the second clause; corrected general
+bound proved, with an independently reviewed exact Lean counterexample.**
+
+Source: `chapters/onlineRL.tex:3612–3615`, `lemma:sqv` (Lemma 5.22), and
+its centered-fourth-moment argument at lines 3627–3631. The pinned chapter
+SHA-256 is `393a4d26c228d833a27e54a4913489e499d2143f2f9b80ebf3c55d9a9ccb8c53`.
+The source calls Cmax the largest possible magnitude of X. It asserts
+Var((X−E[X])²)≤Cmax²Var(X) for a general random variable.
+
+Take X=1 with probability 1/8 and X=−1 with probability 7/8. Both values have
+absolute value 1, while E[X]=−3/4, Var(X)=7/16, and Var((X−E[X])²)=63/64.
+Thus 63/64>7/16 contradicts the second clause with Cmax=1. The proof's use
+of |X−E[X]|≤Cmax fails: at X=1 the deviation is 7/4.
+
+The exact probability-space refutation is
+`StatisticalRL.SourceCounterexamples.centeredSquare_measure_coefficient_one_false`
+in [CenteredSquareVarianceMeasure.lean](../Formalization/Counterexamples/CenteredSquareVarianceMeasure.lean).
+Its actual sample is measurable, has absolute value 1 everywhere, and uses
+the same measure-theoretic variance as the corrected general statement.
+The first clause Var(X²)≤4Cmax²Var(X) is not refuted.
+
+A valid repair replaces the centered-square coefficient 1 by 4. Since
+|X−E[X]|≤2Cmax, its fourth centered moment is at most 4Cmax²Var(X), and
+Var((X−E[X])²) is at most that fourth moment. The general probability-space
+repair is proved in [SquaredVarianceBounds.lean](../Formalization/Probability/SquaredVarianceBounds.lean)
+and indexed as `StatisticalRL.Statements.Lemma5_22_corrected`. Measurability
+and the source absolute bound suffice; integrability is derived in Lean.
+The printed source remains unchanged and its false general clause is not
+certified.
+
+The coefficient 1 special case is valid when 0≤X≤Cmax. The existing
+`FiniteDistribution.centeredSquare_variance_le` explicitly has this range
+premise. The current W3 implementation uses valid nonnegative bounded-value
+estimates, including its own factor4 square-variance proof. Independent
+consumption review found no effect on the already-published corrected UCBVI
+regret theorem. See [independent review](critic-square-variance-correction.md)
+and [verification](square-variance-correction-verification.md).
