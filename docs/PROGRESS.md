@@ -6,6 +6,36 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Complete corrected T5/T6 lemma verified
+
+- Corrected/restricted Lemma 5.9 now has all three initial inequalities with
+  the printed 14-confidence coefficient and both simplified inequalities
+  with the printed 30 coefficient under the printed large-K condition.
+  All quantities use the same actual reset-vector/causal-path law. Literal
+  printed T0 and iota appear in the complete Chapter 5 statement.
+- The proof discharges the uniform stage-suffix T3 concentration family,
+  derives the actual uniform T0/optimism event, and combines the proved T8,
+  selected-policy variance and gap estimates. No concentration event or
+  variance bound remains an assumed premise of the final source export.
+- The chosen universal bonus constants are 4 and 16. Scope remains K≥2,
+  the finite zero-count completion/analysis charge H (C8) and a fixed greedy
+  tie rule. C12's auxiliary K=1 endpoint is not certified here.
+- The guarded affected check passed: 97 rebuilt and 562 verified
+  reused modules, covering all 659 project modules; the full audit checked
+  6,382 declarations with only the standard three axioms. This is an
+  affected build, not a fresh clean full rebuild.
+- Project size: 72,393 Lean lines including comments/blanks in 659 files.
+  The ledger retains 18 original named entries with existing disclosures
+  plus five corrected variants. No whole chapter or monograph is certified.
+- The isolated main UCBVI theorem passed source review and qualified
+  focused compilation. Its production integration remains separate and
+  pending; it is not counted by this milestone.
+- Ownership: Data builder — suffix martingale family and unconditional
+  probability producer; Terra builder — uniform actual gap/T56 assembly;
+  coordinator — simplified event, complete statement/applying proof,
+  integration and publication; independent critic — source, imports,
+  semantic consumption and terminal evidence.
+
 ## Complete corrected joint T2/T3/T4 lemma verified
 
 - Corrected/restricted Lemma 5.8 now has all four printed inequalities on

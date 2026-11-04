@@ -383,3 +383,13 @@ errors in the manuscript.
   maximizing tie rule is used. The unrestricted endpoint, later T5/T6 bounds
   and final regret theorem are not certified by this result. See
   [independent review](critic-online-t234-joint.md).
+
+- Complete Lemma 5.9 (`lem:bound-T56`, `onlineRL.tex:1055–1092`) is
+  formalized as `Lemma5_9_K2_corrected`. All five inequalities, printed
+ 14/30 probability coefficients, literal T0/iota and the large-K condition
+  for the last two are retained. Fixed universal c1=4,c2=16 discharge the
+  coefficient-dependent T2 threshold. K≥2 is disclosed for the auxiliary
+  proof route (C12); zero-count completion and H charge follow C8. A fixed
+  deterministic maximizing tie rule is used. This is a corrected variant,
+  not certification of the unrestricted printed algorithm or K=1 lemma.
+  See [independent review](critic-online-t56-joint.md).

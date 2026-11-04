@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T12:22:46.660625+00:00",
+  "updated_at": "2026-11-04T14:27:33.229008+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -279,6 +279,21 @@
       "evidence": "docs/critic-online-t234-joint.md",
       "supporting_evidence": [
         "docs/online-t234-joint-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.9, complete T5/T6 bounds (K>=2 corrected variant)",
+      "source_label": "lem:bound-T56",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "1055–1092",
+      "lean_export": "StatisticalRL.OnlineRL.onlineSourceAllocated_T3_T56_simplified_actual_confidence",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_9_K2_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_9_K2_corrected_holds",
+      "statement_scope": "All three first-event bounds with at least 1−14 S^2 A H^2 K delta-prime probability; both simplified bounds with at least 1−30 S^2 A H^2 K delta-prime probability under the printed large-K condition. Same actual law, literal printed T0/iota, fixed universal coefficients 4 and 16. K>=2 (C12), finite zero-count completion and analysis charge H (C8), fixed deterministic greedy tie. No concentration premises; no main regret closure claimed.",
+      "evidence": "docs/critic-online-t56-joint.md",
+      "supporting_evidence": [
+        "docs/online-t56-joint-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

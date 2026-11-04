@@ -230,4 +230,63 @@ noncomputable def Lemma5_8_K2_corrected : Prop :=
             (onlineActualEpisodeRegretTerms H K hH E sample.1 fallback sample.2 k δ' c₁ c₂).2.2.2| ≤
             Real.sqrt (2 * (K : ℝ) * (H : ℝ)^2 * Real.log (1 / δ'))}
 
+/-- Corrected/restricted Lemma 5.9, `lem:bound-T56`,
+`chapters/onlineRL.tex:1055–1092`. The first event contains all three
+displayed T5/T6 bounds with the printed 14-confidence coefficient. Under
+the printed large-K condition, the second event contains both simplified
+bounds with the printed 30-confidence coefficient. All quantities refer
+to the same reset-vector and actual causal sequential experiment.
+The universal bonus constants are chosen as c₁=4 and c₂=16, independently
+of all problem and confidence parameters. T0 is written out using its
+source definition at lines 1027–1033; iota is the printed quantity at
+lines 726–734. No concentration or variance estimate is a hypothesis.
+The implementation uses the finite zero-count completion and H analysis
+charge (Candidate C8 in `docs/SOURCE-ISSUES.md`) and one fixed deterministic
+maximizing tie rule. K≥2 is explicit for the auxiliary logarithmic proof
+route (Candidate C12); the unrestricted K=1 claim is not certified here. -/
+noncomputable def Lemma5_9_K2_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H), 2 ≤ K →
+    ∀ (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+      (δ : ℝ), 0 < δ → δ < 1 →
+    let fallback : State := Classical.choice (E ⟨0,hH⟩).state_nonempty
+    let S : ℝ := Fintype.card State
+    let A : ℝ := Fintype.card Action
+    let δ' := δ / (100*S^2*A^2*(H:ℝ)^2*(K:ℝ)^2)
+    let L := Real.log (1/δ')
+    let I := 40000*(Real.log K/Real.log 2)^3*Real.log (3*S*A*H)*L
+    let planner := onlineCappedGreedyPlanner E L 4 16
+    let μ := (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure
+    let T0 := fun sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) =>
+      (3/8:ℝ)*Real.sqrt (S*A*H*
+        onlineActualT6Policy H K hH E sample.1 fallback sample.2 δ' 4 16*I) +
+      (3/8:ℝ)*Real.sqrt (S^2*A*H*
+        onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' 4 16*I) +
+      (1/4:ℝ)*S^2*A*H^2*I + 7*Real.sqrt ((K:ℝ)*(H:ℝ)^2)*L +
+      onlineActualT2 H K hH E sample.1 fallback sample.2 δ' 4 16
+    (1-14*S^2*A*H^2*K*δ' ≤
+      μ.real {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
+        onlineActualT5 H K hH E sample.1 fallback sample.2 δ' 4 16 ≤
+          (∑ h : Fin H, ∑ k : Fin K,
+            onlineActualW3Point H K hH E sample.1 fallback sample.2 δ' 4 16 h k) +
+          2*(H:ℝ)*onlineActualT2 H K hH E sample.1 fallback sample.2 δ' 4 16 +
+          2*(K:ℝ)*(H:ℝ)^2 +
+          Real.sqrt (32*(H:ℝ)^2*onlineActualT6UCB H K hH E sample.1 fallback sample.2 δ' 4 16*L) +
+          5*(H:ℝ)^2*L ∧
+        onlineActualT6Policy H K hH E sample.1 fallback sample.2 δ' 4 16 ≤
+          (K:ℝ)*(H:ℝ)^2+Real.sqrt (2*((K:ℝ)*(H:ℝ)^6)*L) ∧
+        onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' 4 16 ≤
+          2*(H:ℝ)^2*T0 sample+18*(H:ℝ)^2*L}) ∧
+    (S*A*H^2*I ≤ (K:ℝ) →
+      1-30*S^2*A*H^2*K*δ' ≤
+        μ.real {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
+          onlineActualT6Policy H K hH E sample.1 fallback sample.2 δ' 4 16 ≤
+            2*(K:ℝ)*(H:ℝ)^2 ∧
+          onlineActualT5 H K hH E sample.1 fallback sample.2 δ' 4 16 ≤
+            6*(K:ℝ)*(H:ℝ)^2 +
+            (1/2:ℝ)*Real.sqrt (S^2*A*H^3*
+              onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' 4 16*I) +
+            4*S^2*A*H^3*I})
+
+
 end StatisticalRL.Statements

@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
 import Formalization.Online.Regret.Joint.OnlineT234Joint
 import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
 import Formalization.Statements.Ch5
@@ -86,5 +87,34 @@ theorem Lemma5_8_K2_corrected_holds : Lemma5_8_K2_corrected := by
   simpa only [onlineSourceOptimismDeltaPrime, onlineW1SourceIota,
     onlineActualT234SourceEvent, onlineActualT3SourceBoundEvent,
     onlineActualT2, Set.mem_setOf_eq, Set.setOf_app_iff, and_assoc] using hp
+
+/-- Apply the unconditional actual-law export, weaken its strict confidence,
+and project its stronger joint event onto the printed simplified event. -/
+theorem Lemma5_9_K2_corrected_holds : Lemma5_9_K2_corrected := by
+  intro State Action instS instA H K hH hK E ρ δ hδ hδone
+  let fallback : State := Classical.choice (E ⟨0, hH⟩).state_nonempty
+  let δ' := onlineSourceOptimismDeltaPrime δ (Fintype.card State) (Fintype.card Action) H K
+  let planner := onlineCappedGreedyPlanner E (Real.log (1 / δ')) 4 16
+  let μ := (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K * H)).rowMeasure
+  have hp := onlineSourceAllocated_T3_T56_simplified_actual_confidence
+    H K hH hK E ρ fallback δ hδ hδone.le
+  dsimp only
+  refine ⟨?_, ?_⟩
+  · simpa only [fallback, onlineSourceOptimismDeltaPrime, onlineW1SourceIota,
+      onlineActualT56JointEvent, onlineActualT0SourceUpper] using hp.1.le
+  · intro hlarge
+    have hlarge' : (Fintype.card State : ℝ) * Fintype.card Action * H^2 *
+        onlineW1SourceIota (Fintype.card State) (Fintype.card Action) H K δ' ≤ K := by
+      simpa only [δ', onlineSourceOptimismDeltaPrime, onlineW1SourceIota] using hlarge
+    have hprob := (hp.2 hlarge').le
+    have hm := MeasureTheory.measureReal_mono (μ := μ)
+      (Set.inter_subset_right :
+        onlineActualT56JointEvent H K hH E fallback δ' 4 16 ∩
+          onlineActualT56SimplifiedEvent H K hH E fallback δ' 4 16 ⊆
+        onlineActualT56SimplifiedEvent H K hH E fallback δ' 4 16)
+      (MeasureTheory.measure_ne_top μ _)
+    have hsimple := hprob.trans hm
+    simpa only [μ, planner, fallback, δ', onlineSourceOptimismDeltaPrime,
+      onlineActualT56SimplifiedEvent, onlineW1SourceIota] using hsimple
 
 end StatisticalRL.Statements
