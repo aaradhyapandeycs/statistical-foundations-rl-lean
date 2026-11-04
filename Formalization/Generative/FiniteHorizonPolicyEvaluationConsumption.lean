@@ -1,21 +1,12 @@
 import Formalization.Generative.FiniteHorizonBernsteinResidualBridge
 
+import Formalization.Statements.Ch3Definitions
 /-! Same-data actual trajectory consumption of the common auxiliary event.
 The explicit cardinality/log factor is retained throughout. -/
 open MeasureTheory ProbabilityTheory
 namespace StatisticalRL.FiniteHorizonGenerative
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 local instance evaluationConsumptionStateMeasurable : MeasurableSpace State := ⊤
-
-/-- Actual expected cumulative trajectory reward from an episode suffix. -/
-noncomputable def policyTrajectorySuffix (es : List (EnvironmentStage State Action))
-    (f : ℕ → State → Action) (h : ℕ) : State → ℝ :=
-  DecisionStage.trajectoryValue ((EnvironmentStage.controlled es (deterministicPolicy f)).drop h)
-
-/-- The source's forced-first-action trajectory Q on the same suffix. -/
-noncomputable def policyTrajectoryQSuffix (es : List (EnvironmentStage State Action))
-    (f : ℕ → State → Action) (h : ℕ) : State → Action → ℝ :=
-  DecisionStage.trajectoryQ ((EnvironmentStage.controlled es (deterministicPolicy f)).drop h)
 
 theorem trueAuxiliaryValueAt_zero_eq_policyTrajectorySuffix
     (es : List (EnvironmentStage State Action)) (f : ℕ → State → Action) (h : ℕ) :

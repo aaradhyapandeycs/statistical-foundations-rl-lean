@@ -1,0 +1,55 @@
+import Formalization.Statements.Ch3
+import Formalization.Generative.PolicyEvaluationUniversalConstant
+import Formalization.Generative.PolicyLearningMainSample
+import Formalization.Generative.PolicyLearningAbsorbingPreservation
+import Formalization.Generative.PolicyLearningAbsorbingGrid
+import Formalization.Generative.PolicyLearningSourcePointwise
+import Formalization.Generative.FiniteHorizonMainSample
+
+/-! Proofs of the source-facing Chapter 3 entries using the existing exports. -/
+open MeasureTheory
+namespace StatisticalRL.Statements.Ch3
+
+theorem Thm3_1_holds : Thm3_1 :=
+  StatisticalRL.ModelBasedPolicyEvaluation.policyEvaluation_universal_constant
+
+theorem Thm3_2_positiveN_holds : Thm3_2_positiveN := by
+  obtain ⟨c, hc, hmain⟩ :=
+    StatisticalRL.ModelBasedPolicyLearning.mainSample_policyLearning_universal_constant
+  refine ⟨c, hc, ?_⟩
+  intro State Action _ _ M N hN δ ε hδ hδ1 hε hεmax hsize
+  exact (hmain State Action M N hN δ ε hδ hδ1 hε hεmax hsize).le
+
+theorem Lemma3_3_holds : Lemma3_3 := by
+  intro State Action _ _ M x s
+  exact StatisticalRL.ModelBasedPolicyLearning.optimalValueAbsorbingModel_preserves_optimalTrajectoryValue M x s
+
+theorem Lemma3_4_holds : Lemma3_4 := by
+  intro State Action _ _ M N hN data x
+  exact StatisticalRL.ModelBasedPolicyLearning.empirical_absorbingGrid_covers_valueEstimator M N hN data x
+
+theorem Lemma3_5_positiveN_holds : Lemma3_5_positiveN := by
+  obtain ⟨c₀, c₁, hc₀, hc₁, hmain⟩ :=
+    StatisticalRL.ModelBasedPolicyLearning.source_policyLearning_pointwise_universal_constants
+  refine ⟨c₀, c₁, hc₀, hc₁, ?_⟩
+  intro State Action _ _ M N hN δ hδ hδ1 hsize
+  have hp := hmain State Action M N hN δ hδ hδ1 hsize
+  refine hp.le.trans (measureReal_mono ?_)
+  intro data hd f hf
+  exact ⟨(hd f hf).1, (hd f hf).2.2⟩
+
+theorem Thm3_9_causal_positiveN_holds : Thm3_9_causal_positiveN := by
+  obtain ⟨c, hc, hmain⟩ :=
+    StatisticalRL.FiniteHorizonGenerative.exists_universal_causalFinitePolicy_sample_constant
+  refine ⟨c, hc, ?_⟩
+  intro State Action _ _ H hH E N hN δ ε hδ hε hεH hsize
+  let fallback : Action := Classical.choice (E ⟨0, hH⟩).action_nonempty
+  have hp := hmain State Action H E N hN hH fallback δ ε hδ hε hεH hsize
+  refine hp.trans (measureReal_mono ?_)
+  intro data hd
+  dsimp only [StatisticalRL.FiniteHorizonGenerative.CausalPolicyPerformanceEvent] at hd
+  dsimp only
+  intro h
+  exact ⟨fun s ↦ ((hd h.val).1 s).2, fun s a ↦ ((hd h.val).2 s a).2⟩
+
+end StatisticalRL.Statements.Ch3

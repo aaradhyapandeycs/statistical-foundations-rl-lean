@@ -1,3 +1,4 @@
+import Formalization.ModelFree.QLearningComparisonDefinitions
 import Formalization.ModelFree.QLearningChiLower
 
 /-! Source wrapper for Q-comparison-facts (i).
@@ -5,10 +6,6 @@ The finite span is the actual maximum minus minimum, not a location bound. -/
 open scoped BigOperators
 namespace StatisticalRL.QLearning
 variable {State : Type*} [Fintype State]
-
-/-- Finite max-minus-min span: the minimum is the negative maximum of -v. -/
-noncomputable def qChiValueSpan [Nonempty State] (v : State → ℝ) : ℝ :=
-  actionMaximum v + actionMaximum (fun x ↦ -v x)
 
 theorem qChi_pairwise_le_span [Nonempty State] (v : State → ℝ) (x y : State) :
     |v x - v y| ≤ qChiValueSpan v := by

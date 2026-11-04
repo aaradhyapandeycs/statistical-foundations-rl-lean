@@ -1,3 +1,4 @@
+import Formalization.ModelFree.TDConditionalMomentDefinitions
 import Formalization.ModelFree.TDCausality
 import Formalization.ModelFree.TDActualErrorDecomposition
 import Formalization.Probability.Variance
@@ -12,10 +13,6 @@ open scoped BigOperators
 namespace StatisticalRL.TemporalDifference
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 local instance tdMomentsStateMeasurable : MeasurableSpace State := ⊤
-
-noncomputable def tdValueBefore (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (T t : ℕ) (V₀ : State → ℝ) (data : TDSamples State T) : State → ℝ :=
-  tdIterate M π η (tdSamplesExtend M T data) V₀ t
 
 noncomputable def tdRowMean (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (s : State) (v : State → ℝ) : ℝ := (M.policyTransition π s).expectation v

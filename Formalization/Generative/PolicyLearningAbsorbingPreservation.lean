@@ -1,5 +1,6 @@
 import Formalization.Generative.PolicyLearningAbsorbing
 
+import Formalization.Statements.Ch3Definitions
 /-! Source Lemma `LemAbsToNormalV`: the absorbing model at the original optimal
 trajectory value has the same optimal trajectory values everywhere. -/
 
@@ -7,10 +8,6 @@ namespace StatisticalRL.ModelBasedPolicyLearning
 
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 noncomputable local instance preservationStateDecidable : DecidableEq State := Classical.decEq State
-
-/-- The source's value V* as an actual optimal-policy trajectory value. -/
-noncomputable def optimalTrajectoryValue (M : DiscountedMDP State Action) : State → ℝ :=
-  M.trajectoryExpectedValue M.optimalGreedyPolicy
 
 /-- Its state value is the maximum of the original optimal Q fixed point. -/
 theorem optimalTrajectoryValue_eq_actionMaximum (M : DiscountedMDP State Action) (s : State) :
@@ -24,13 +21,6 @@ theorem optimalTrajectoryValue_eq_actionMaximum (M : DiscountedMDP State Action)
     (M.trajectoryExpectedQ M.optimalGreedyPolicy s) = _
   rw [EnvironmentStage.expectation_pointMass, M.optimalGreedy_trajectoryQ,
     M.optimalGreedyAction_max]
-
-/-- Absorb at x with u equal to the original model's actual optimal value at x. -/
-noncomputable def optimalValueAbsorbingModel (M : DiscountedMDP State Action) (x : State) :
-    DiscountedMDP State Action :=
-  stateAbsorbingModel M x (optimalTrajectoryValue M x)
-    (M.trajectoryExpectedValue_bounds M.optimalGreedyPolicy x).1
-    (M.trajectoryExpectedValue_bounds M.optimalGreedyPolicy x).2
 
 /-- Candidate optimal Q for the absorbing model: the old optimal Q away from x,
 and the common value V*(x) for all actions at x. -/

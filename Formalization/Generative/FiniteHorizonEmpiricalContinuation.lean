@@ -1,6 +1,7 @@
 import Formalization.Generative.FiniteHorizonGenerativeSampling
 import Mathlib.Data.List.OfFn
 
+import Formalization.Statements.Ch3Definitions
 /-! Actual empirical optimal continuation values factor through strictly
 future stage samples. No statistical sample-complexity bound is claimed. -/
 open MeasureTheory ProbabilityTheory
@@ -9,11 +10,6 @@ variable {State Action : Type*} [Fintype State] [Fintype Action]
 local instance finiteContinuationStateMeasurable : MeasurableSpace State := ⊤
 noncomputable local instance finiteContinuationStateDecidable : DecidableEq State := Classical.decEq State
 noncomputable local instance finiteContinuationActionDecidable : DecidableEq Action := Classical.decEq Action
-
-/-- The actual empirical environment stages in chronological order. -/
-noncomputable def empiricalStages {H : ℕ} (E : Fin H → EnvironmentStage State Action)
-    (N : ℕ) (hN : 0 < N) (data : Samples State Action H N) :
-    List (EnvironmentStage State Action) := List.ofFn (empiricalStage E N hN data)
 
 theorem empiricalStages_length {H : ℕ} (E : Fin H → EnvironmentStage State Action)
     (N : ℕ) (hN : 0 < N) (data : Samples State Action H N) :

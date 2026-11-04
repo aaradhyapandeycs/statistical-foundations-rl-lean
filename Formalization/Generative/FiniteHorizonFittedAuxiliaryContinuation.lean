@@ -1,18 +1,12 @@
 import Formalization.Generative.FiniteHorizonAuxiliaryVariance
 
+import Formalization.Statements.Ch3Definitions
 /-! Causal backward-greedy policy selection and its TRUE auxiliary continuation.
 This is distinct from a fixed policy's empirical auxiliary value family. -/
 open MeasureTheory ProbabilityTheory
 namespace StatisticalRL.FiniteHorizonGenerative
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 local instance fittedAuxiliaryStateMeasurable : MeasurableSpace State := ⊤
-
-/-- A deterministic local greedy selector; fallback only acts after the episode. -/
-noncomputable def backwardGreedyActions (fallback : Action) :
-    List (EnvironmentStage State Action) → ℕ → State → Action
-  | [], _ => fun _ ↦ fallback
-  | E :: es, 0 => E.greedyAction (EnvironmentStage.optimalValue es)
-  | _ :: es, n + 1 => backwardGreedyActions fallback es n
 
 theorem backwardGreedyActions_drop (fallback : Action)
     (es : List (EnvironmentStage State Action)) (h k : ℕ) (s : State) :

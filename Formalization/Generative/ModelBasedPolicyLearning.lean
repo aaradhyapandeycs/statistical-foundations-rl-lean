@@ -1,6 +1,7 @@
 import Formalization.Probability.EmpiricalRow
 import Formalization.MDP.OptimalTrajectoryValue
 
+import Formalization.Statements.Ch3Definitions
 /-!
 # Model-based policy learning with a generative model
 
@@ -21,14 +22,6 @@ local instance stateMeasurable : MeasurableSpace State := ⊤
 local instance actionMeasurable : MeasurableSpace Action := ⊤
 noncomputable local instance stateDecidable : DecidableEq State := Classical.decEq State
 
-/-- One observation for each state-action pair and sample index. -/
-abbrev Samples (State Action : Type*) (N : ℕ) := ((State × Action) × Fin N) → State
-
-/-- The genuine product of the true state-action transition row laws. -/
-noncomputable def samplingLaw (M : DiscountedMDP State Action) (N : ℕ) :
-    Measure (Samples State Action N) :=
-  Measure.pi (fun i : (State × Action) × Fin N ↦ (M.transition i.1.1 i.1.2).rowMeasure)
-
 instance samplingLaw_probability (M : DiscountedMDP State Action) (N : ℕ) :
     IsProbabilityMeasure (samplingLaw M N) := by
   unfold samplingLaw
@@ -44,46 +37,12 @@ theorem samplingLaw_independent (M : DiscountedMDP State Action) (N : ℕ) :
     iIndepFun (fun i (data : Samples State Action N) ↦ data i) (samplingLaw M N) := by
   exact iIndepFun_pi (fun _ ↦ measurable_id.aemeasurable)
 
-/-- The empirical row is the frequency vector of that state-action's draws. -/
-noncomputable def empiricalRow (N : ℕ) (hN : 0 < N)
-    (data : Samples State Action N) (s : State) (a : Action) : FiniteDistribution State :=
-  FiniteDistribution.empiricalRow N hN (fun i ↦ data ((s, a), i))
-
 omit [Fintype Action] in
 theorem empiricalRow_expectation (N : ℕ) (hN : 0 < N)
     (data : Samples State Action N) (s : State) (a : Action) (V : State → ℝ) :
     (empiricalRow N hN data s a).expectation V =
       (N : ℝ)⁻¹ * ∑ i : Fin N, V (data ((s, a), i)) :=
   FiniteDistribution.empiricalRow_expectation N hN (fun i ↦ data ((s, a), i)) V
-
-/-- The sample model has the empirical kernel and the original known reward and discount. -/
-noncomputable def empiricalModel (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (data : Samples State Action N) : DiscountedMDP State Action where
-  state_nonempty := M.state_nonempty
-  action_nonempty := M.action_nonempty
-  transition := empiricalRow N hN data
-  reward := M.reward
-  reward_nonneg := M.reward_nonneg
-  reward_le_one := M.reward_le_one
-  discount := M.discount
-  discount_nonneg := M.discount_nonneg
-  discount_lt_one := M.discount_lt_one
-
-/-- The empirical optimal Q-function obtained from the optimal Bellman fixed point. -/
-noncomputable def qEstimator (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (data : Samples State Action N) : State → Action → ℝ :=
-  (empiricalModel M N hN data).optimalityFixedPoint
-
-/-- A deterministic greedy empirical-optimal action, including a choice for ties. -/
-noncomputable def policyEstimator (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (data : Samples State Action N) : State → Action :=
-  (empiricalModel M N hN data).optimalGreedyAction
-
-/-- The empirical optimal value is the actual trajectory value of the output policy. -/
-noncomputable def valueEstimator (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (data : Samples State Action N) : State → ℝ :=
-  (empiricalModel M N hN data).trajectoryExpectedValue
-    (fun s ↦ EnvironmentStage.pointMass (policyEstimator M N hN data s))
 
 theorem qEstimator_measurable (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) :
     Measurable (qEstimator M N hN) := by

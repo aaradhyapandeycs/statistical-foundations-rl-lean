@@ -1,5 +1,6 @@
 import Formalization.Generative.ModelBasedPolicyLearning
 
+import Formalization.Statements.Ch3Definitions
 /-!
 # State-absorbing leave-one-out model
 
@@ -13,30 +14,6 @@ namespace StatisticalRL.ModelBasedPolicyLearning
 
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 noncomputable local instance absorbingStateDecidable : DecidableEq State := Classical.decEq State
-
-/-- Replace every transition at x by absorption and every reward there by
-`(1−γ)u`, leaving all other rows unchanged. -/
-noncomputable def stateAbsorbingModel (M : DiscountedMDP State Action)
-    (x : State) (u : ℝ) (hu0 : 0 ≤ u) (hu1 : u ≤ 1 / (1 - M.discount)) :
-    DiscountedMDP State Action where
-  state_nonempty := M.state_nonempty
-  action_nonempty := M.action_nonempty
-  transition := fun s a ↦ if s = x then EnvironmentStage.pointMass x else M.transition s a
-  reward := fun s a ↦ if s = x then (1 - M.discount) * u else M.reward s a
-  reward_nonneg := by
-    intro s a
-    split
-    · exact mul_nonneg (sub_pos.mpr M.discount_lt_one).le hu0
-    · exact M.reward_nonneg s a
-  reward_le_one := by
-    intro s a
-    split
-    · have h := (le_div_iff₀ (sub_pos.mpr M.discount_lt_one)).mp hu1
-      nlinarith
-    · exact M.reward_le_one s a
-  discount := M.discount
-  discount_nonneg := M.discount_nonneg
-  discount_lt_one := M.discount_lt_one
 
 /-- The replaced state's transition really is the point mass at that state. -/
 theorem stateAbsorbingModel_transition_at (M : DiscountedMDP State Action)

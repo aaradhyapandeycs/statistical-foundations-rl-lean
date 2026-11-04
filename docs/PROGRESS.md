@@ -6,6 +6,19 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Statement-index backfill
+
+- The index states the printed Lemma 4.8 and restricts its global learning-rate
+  hypothesis when applying the existing, stronger exports. This implication is
+  not a source discrepancy; the former C11 finding has been removed.
+- Ownership: coordinator — Chapters 2 and 4 and integration; chapter builder —
+  Chapter 3; online builder — Chapter 5; independent critic — source review of
+  all entries. Changes to existing modules only extract definitions and add
+  imports; existing theorem statements and proof bodies are preserved.
+- The 16-entry backfill passed the clean 403-module build and transitive
+  axiom audit (4720 declarations). See [verification](statement-index-verification.md)
+  and [independent source review](critic-statement-index-backfill.md).
+
 ## Current checked infrastructure
 
 - A source-level counterexample at `γ=0` shows that the standalone offline

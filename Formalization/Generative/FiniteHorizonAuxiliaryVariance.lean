@@ -1,6 +1,7 @@
 import Formalization.Generative.FiniteHorizonPolicyPerturbation
 import Formalization.Probability.Variance
 
+import Formalization.Statements.Ch3Definitions
 /-! The true-variance-derived forcing/value recursion of Li et al. (61)-(62).
 Higher-level forcing is not constrained to the original reward interval.
 No growth estimate or conditional Lemma 9 premise is assumed. -/
@@ -8,10 +9,6 @@ open MeasureTheory ProbabilityTheory
 namespace StatisticalRL.FiniteHorizonGenerative
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 local instance auxiliaryVarianceStateMeasurable : MeasurableSpace State := ⊤
-
-/-- The same fixed deterministic nonstationary policy in both models. -/
-noncomputable def deterministicPolicy (f : ℕ → State → Action) : ℕ → StationaryPolicy State Action :=
-  fun k s ↦ EnvironmentStage.pointMass (f k s)
 
 /-- True auxiliary values, defined backwards in episode time at every level.
 The level-successor forcing is the true-row conditional standard deviation

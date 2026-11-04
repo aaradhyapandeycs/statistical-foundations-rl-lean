@@ -1,5 +1,6 @@
 import Formalization.Generative.FiniteHorizonPolicyEvaluationConsumption
 
+import Formalization.Statements.Ch3Definitions
 /-! Actual all-stage V and forced-action Q performance for the concrete causal
 selector, retaining the safe all-level confidence/log factor. -/
 open MeasureTheory ProbabilityTheory
@@ -129,21 +130,6 @@ theorem allLevelBernsteinEvent_policyPerformance {H : ℕ}
     calc
       _ ≤ 2 * r := hh.2
       _ = _ := by dsimp [r]; ring
-
-/-- Simultaneous actual V/Q performance of the specified causal planner. -/
-def CausalPolicyPerformanceEvent {H : ℕ}
-    (E : Fin H → EnvironmentStage State Action) (N : ℕ) (hN : 0 < N)
-    (fallback : Action) (R : ℝ) (data : Samples State Action H N) : Prop :=
-    let f := backwardGreedyActions fallback (empiricalStages E N hN data)
-    ∀ h : ℕ,
-      (∀ s, 0 ≤ EnvironmentStage.optimalValue ((List.ofFn E).drop h) s -
-          policyTrajectorySuffix (List.ofFn E) f h s ∧
-        EnvironmentStage.optimalValue ((List.ofFn E).drop h) s -
-          policyTrajectorySuffix (List.ofFn E) f h s ≤ R) ∧
-      (∀ s a, 0 ≤ EnvironmentStage.optimalQ ((List.ofFn E).drop h) s a -
-          policyTrajectoryQSuffix (List.ofFn E) f h s a ∧
-        EnvironmentStage.optimalQ ((List.ofFn E).drop h) s a -
-          policyTrajectoryQSuffix (List.ofFn E) f h s a ≤ R)
 
 /-- The actual causal algorithm enjoys both all-stage performance bounds on a
 single probability event, with the explicit unabsorbed confidence logarithm. -/

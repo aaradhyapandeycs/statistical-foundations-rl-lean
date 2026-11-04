@@ -1,3 +1,4 @@
+import Formalization.Online.SourceOptimism.CappedGreedyPlannerDefinitions
 import Formalization.Online.SourceOptimism.ObservedBackwardOptimismComposition
 
 /-! A deterministic greedy episode planner from the
@@ -7,25 +8,6 @@ namespace StatisticalRL.OnlineRL
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 noncomputable local instance : DecidableEq State := Classical.decEq State
 noncomputable local instance : DecidableEq Action := Classical.decEq Action
-
-/-- The completed-history table computed after an episode, before the next
-policy is chosen. Stage order is the source chronological order. -/
-noncomputable def onlineCompletedHistoryPlanningStages {H : ℕ}
-    (E : Fin H → EnvironmentStage State Action)
-    (history : List (OnlineMDPRow State Action H × State)) :
-    List (OnlineObservedPlanningStage State Action) :=
-  List.ofFn (fun h => onlineHistoryPlanningStage E history h)
-
-/-- A fixed deterministic maximizing tie rule. It depends only on the supplied
-completed history and the current stage/state, never on new episode samples. -/
-noncomputable def onlineCappedGreedyPlanner {H : ℕ}
-    (E : Fin H → EnvironmentStage State Action) (L c₁ c₂ : ℝ) :
-    OnlineEpisodePlanner State Action H :=
-  fun history h s =>
-    letI : Nonempty Action := (E h).action_nonempty
-    Classical.choose (EnvironmentStage.exists_maximizer
-      (onlineCappedBackwardQAt (H : ℝ) L c₁ c₂
-        (onlineCompletedHistoryPlanningStages E history) h.val s))
 
 /-- The selected action actually maximizes this same data-dependent Q table. -/
 theorem onlineCappedGreedyPlanner_max {H : ℕ}

@@ -1,3 +1,4 @@
+import Formalization.ModelFree.QLearningSamplingDefinitions
 import Formalization.ModelFree.QLearningIterateBounds
 import Formalization.Generative.ModelBasedPolicyLearning
 
@@ -8,13 +9,6 @@ namespace StatisticalRL.QLearning
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 local instance qSamplingStateMeasurable : MeasurableSpace State := ⊤
 local instance qSamplingActionMeasurable : MeasurableSpace Action := ⊤
-
-/-- Exactly T next-state draws per state/action, indexed from zero. -/
-abbrev QSamples (State Action : Type*) (T : ℕ) := ModelBasedPolicyLearning.Samples State Action T
-
-/-- The genuine product sampling law of the MDP transition rows. -/
-noncomputable def qSamplingLaw (M : DiscountedMDP State Action) (T : ℕ) :
-    Measure (QSamples State Action T) := ModelBasedPolicyLearning.samplingLaw M T
 
 instance qSamplingLaw_probability (M : DiscountedMDP State Action) (T : ℕ) :
     IsProbabilityMeasure (qSamplingLaw M T) := by
@@ -32,23 +26,11 @@ theorem qSamplingLaw_independent (M : DiscountedMDP State Action) (T : ℕ) :
     iIndepFun (fun i (data : QSamples State Action T) ↦ data i) (qSamplingLaw M T) :=
   ModelBasedPolicyLearning.samplingLaw_independent M T
 
-/-- Source iteration t+1 uses zero-indexed coordinate t; outside 1,…,T the
-extension returns a fixed state, which is never queried by iterations ≤T. -/
-noncomputable def qSamplesExtend (M : DiscountedMDP State Action) (T : ℕ)
-    (data : QSamples State Action T) : ℕ → State → Action → State := fun t s a ↦
-  if h : 0 < t ∧ t ≤ T then data ((s,a), ⟨t - 1, by omega⟩)
-  else Classical.choice M.state_nonempty
-
 /-- Exact source update-time to sample-index correspondence. -/
 theorem qSamplesExtend_succ (M : DiscountedMDP State Action) (T : ℕ)
     (data : QSamples State Action T) (t : ℕ) (ht : t < T) (s : State) (a : Action) :
     qSamplesExtend M T data (t + 1) s a = data ((s,a), ⟨t,ht⟩) := by
   simp [qSamplesExtend, show 0 < t + 1 ∧ t + 1 ≤ T by omega]
-
-/-- Actual Q-learning output after T synchronous updates. -/
-noncomputable def qSampledIterate (M : DiscountedMDP State Action) (η : ℕ → ℝ)
-    (T : ℕ) (Q₀ : State → Action → ℝ) (data : QSamples State Action T) : State → Action → ℝ :=
-  qLearningIterate M η (qSamplesExtend M T data) Q₀ T
 
 /-- The sample-to-iterate function is measurable on the finite product data
 space. -/

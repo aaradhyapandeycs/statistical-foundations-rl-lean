@@ -359,3 +359,12 @@ import Formalization.RobustRL.ChiSquaredPolicyValue
 import Formalization.RobustRL.ChiSquaredWeakDuality
 import Formalization.RobustRL.ChiSquaredPrimalDualWeakBridge
 import Formalization.RobustRL.SingletonActionCounterexample
+
+import Formalization.Statements.Ch2
+import Formalization.Statements.Ch2Proofs
+import Formalization.Statements.Ch3
+import Formalization.Statements.Ch3Proofs
+import Formalization.Statements.Ch4
+import Formalization.Statements.Ch4Proofs
+import Formalization.Statements.Ch5
+import Formalization.Statements.Ch5Proofs

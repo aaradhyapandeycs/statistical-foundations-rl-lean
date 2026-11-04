@@ -1,3 +1,4 @@
+import Formalization.ModelFree.TDSourceFixedTerminalProxyDefinitions
 import Formalization.ModelFree.TDSourceFixedTerminalProxy
 import Formalization.ModelFree.TDSourceRateProxyTransport
 import Formalization.ModelFree.TDSourceFreedmanBudgetSmallness
@@ -14,13 +15,6 @@ namespace StatisticalRL.TemporalDifference
 
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 local instance tdSourceFixedTerminalBudgetStateMeasurable : MeasurableSpace State := ⊤
-
-/-- Vector of actual squared-TD proxy coordinates at one terminal. -/
-noncomputable def tdSourceFixedTerminalProxyVector
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (T t : ℕ) (V₀ : State → ℝ) (barη : ℝ)
-    (data : TDSamples State T) : State → ℝ :=
-  fun q ↦ tdSquareLateWindowRandomProxy M π η T t V₀ barη q data
 
 /-- Exact source-schedule fixed-terminal proxy bound, in the infinity norm.
 The proof derives unit rates, the late-rate envelope and per-coordinate

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-03T14:42:34.810161+00:00",
+  "updated_at": "2026-11-04T01:08:24.216328+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -11,7 +11,9 @@
       "source_lines": "458–467",
       "lean_export": "StatisticalRL.DiscountedMDP.transitionVariance_perturbation",
       "evidence": "docs/critic-variance-review.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Lemma2_2",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma2_2_holds"
     },
     {
       "name": "Theorem 3.1",
@@ -20,7 +22,9 @@
       "source_lines": "140–156",
       "lean_export": "StatisticalRL.ModelBasedPolicyEvaluation.policyEvaluation_universal_constant",
       "evidence": "docs/critic-policy-evaluation-universal-constant.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_1",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_1_holds"
     },
     {
       "name": "Lemma 3.3",
@@ -29,7 +33,9 @@
       "source_lines": "1256–1263",
       "lean_export": "StatisticalRL.ModelBasedPolicyLearning.optimalValueAbsorbingModel_preserves_optimalTrajectoryValue",
       "evidence": "docs/critic-policy-learning-preservation.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch3.Lemma3_3",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Lemma3_3_holds"
     },
     {
       "name": "Lemma 3.4",
@@ -38,7 +44,9 @@
       "source_lines": "1292–1300",
       "lean_export": "StatisticalRL.ModelBasedPolicyLearning.empirical_absorbingGrid_covers_valueEstimator",
       "evidence": "docs/critic-policy-learning-absorbing-grid.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch3.Lemma3_4",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Lemma3_4_holds"
     },
     {
       "name": "Lemma 3.5",
@@ -47,7 +55,10 @@
       "source_lines": "1306–1326",
       "lean_export": "StatisticalRL.ModelBasedPolicyLearning.source_policyLearning_pointwise_universal_constants",
       "evidence": "docs/critic-policy-learning-source-pointwise-second.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch3.Lemma3_5_positiveN",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Lemma3_5_positiveN_holds",
+      "statement_scope": "restricted; see docs/SOURCE-ISSUES.md#statement-index-scope-disclosures"
     },
     {
       "name": "Theorem 3.2",
@@ -56,7 +67,10 @@
       "source_lines": "900–923",
       "lean_export": "StatisticalRL.ModelBasedPolicyLearning.mainSample_policyLearning_universal_constant",
       "evidence": "docs/critic-policy-learning-main-sample-integrated-second.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_2_positiveN",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_2_positiveN_holds",
+      "statement_scope": "restricted; see docs/SOURCE-ISSUES.md#statement-index-scope-disclosures"
     },
     {
       "name": "Lemma 2.9",
@@ -65,7 +79,9 @@
       "source_lines": "1056–1075",
       "lean_export": "StatisticalRL.freedman_natural_history",
       "evidence": "docs/critic-freedman-natural-history.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Lemma2_9",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma2_9_holds"
     },
     {
       "name": "Lemma 4.2",
@@ -74,7 +90,9 @@
       "source_lines": "293–302",
       "lean_export": "StatisticalRL.TemporalDifference.tdIterate_bounds and StatisticalRL.TemporalDifference.tdIterate_error_norm_le",
       "evidence": "docs/critic-td-iterate-bounds.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_2",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_2_holds"
     },
     {
       "name": "Theorem 3.9",
@@ -83,7 +101,10 @@
       "source_lines": "2551–2570",
       "lean_export": "StatisticalRL.FiniteHorizonGenerative.exists_universal_causalFinitePolicy_sample_constant",
       "evidence": "docs/critic-finite-horizon-source-theorem.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_9_causal_positiveN",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_9_causal_positiveN_holds",
+      "statement_scope": "restricted; see docs/SOURCE-ISSUES.md#statement-index-scope-disclosures"
     },
     {
       "name": "Lemma 4.8",
@@ -92,7 +113,9 @@
       "source_lines": "1052–1071",
       "lean_export": "StatisticalRL.QLearning.qLearningIterate_bounds, StatisticalRL.QLearning.qLearningIterate_value_bounds, and StatisticalRL.QLearning.qLearningIterate_optimalQ_error_norm_le",
       "evidence": "docs/critic-q-learning-iterate-bounds.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_8",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_8_holds"
     },
     {
       "name": "Lemma 4.4",
@@ -101,7 +124,9 @@
       "source_lines": "643–659",
       "lean_export": "StatisticalRL.TemporalDifference.tdSquaredIterateEnergy",
       "evidence": "docs/critic-td-square.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_4",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_4_holds"
     },
     {
       "name": "Lemma 4.11",
@@ -110,7 +135,9 @@
       "source_lines": "1422–1438",
       "lean_export": "StatisticalRL.QLearning.qRobustBellman_contracting",
       "evidence": "docs/critic-q-learning-robust-contraction-production.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_11",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_11_holds"
     },
     {
       "name": "Lemma 4.10",
@@ -119,7 +146,9 @@
       "source_lines": "1338–1373",
       "lean_export": "StatisticalRL.QLearning.qComparisonFacts_support_source and StatisticalRL.QLearning.qComparisonFacts_stability_source",
       "evidence": "docs/critic-q-learning-comparison-and-main.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_10",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_10_holds"
     },
     {
       "name": "Theorem 4.6",
@@ -128,7 +157,9 @@
       "source_lines": "891–912",
       "lean_export": "StatisticalRL.QLearning.qLearning_exists_universal_constants_source_accuracy",
       "evidence": "docs/critic-q-learning-comparison-and-main.md",
-      "coverage": "docs/COVERAGE.md"
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_6",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_6_holds"
     },
     {
       "name": "Lemma 4.5",
@@ -137,6 +168,22 @@
       "source_lines": "727–743",
       "lean_export": "StatisticalRL.TemporalDifference.tdSource_varianceProxy_exists_universal_constants",
       "evidence": "docs/critic-td-variance-lemma.md",
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_5",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_5_holds"
+    }
+  ],
+  "proved_variants": [
+    {
+      "name": "UCBVI optimism (corrected variant)",
+      "source_label": "lemma:opt",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "765–775",
+      "lean_export": "StatisticalRL.OnlineRL.onlineSourceAllocated_allStageTrajectoryOptimism_strict",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_5_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_5_corrected_holds",
+      "statement_scope": "Explicit zero-count convention; fixed deterministic tie rule; 0 < δ ≤ 1. SOURCE-ISSUES C8 and C6. This does not certify the literal printed zero-count algorithm.",
+      "evidence": "docs/critic-online-corrected-optimism.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

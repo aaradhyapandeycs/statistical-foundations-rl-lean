@@ -1,19 +1,13 @@
 import Formalization.Generative.PolicyLearningFittedPolicyEvaluation
 import Formalization.Generative.PolicyLearningPerformanceTransfer
 
+import Formalization.Statements.Ch3Definitions
 /-! Uniform source intermediate bounds for all deterministic empirical optima. -/
 open MeasureTheory ProbabilityTheory
 namespace StatisticalRL.ModelBasedPolicyLearning
 open StatisticalRL.DiscountedMDP
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 local instance : MeasurableSpace State := ⊤
-
-/-- Actual empirical trajectory optimality, against all stationary policies. -/
-def EmpiricallyOptimal (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (data : Samples State Action N) (f : State → Action) : Prop :=
-  ∀ π s, (empiricalModel M N hN data).trajectoryExpectedValue π s ≤
-    (empiricalModel M N hN data).trajectoryExpectedValue
-      (fun t ↦ EnvironmentStage.pointMass (f t)) s
 
 theorem policyEstimator_empiricallyOptimal (M : DiscountedMDP State Action)
     (N : ℕ) (hN : 0 < N) (data : Samples State Action N) :

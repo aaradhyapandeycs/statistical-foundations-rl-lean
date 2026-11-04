@@ -1,0 +1,153 @@
+import Formalization.Statements.Ch3Definitions
+
+/-! # Chapter 3 statement index
+
+Each entry below gives the complete statement in the source-facing objects.
+Proof applications are kept in `Ch3Proofs.lean`. -/
+
+open MeasureTheory ProbabilityTheory
+open StatisticalRL.DiscountedMDP
+
+namespace StatisticalRL.Statements.Ch3
+
+local instance statementFinMeasurable (S : ℕ) : MeasurableSpace (Fin S) := ⊤
+local instance statementStateMeasurable (State : Type*) : MeasurableSpace State := ⊤
+
+/-- Source `thm:model-based-policy-eval`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:140–156`.
+The universal constant is chosen before the finite cardinalities, model,
+policy, accuracy, confidence and sample count. The witness `hN` is explicit
+because the Lean empirical-frequency model is defined for positive sample
+counts; the source threshold itself forces `N > 0` on its stated range. -/
+def Thm3_1 : Prop :=
+  ∃ c : ℝ, 0 < c ∧ ∀ (S A N : ℕ)
+    (M : DiscountedMDP (Fin S) (Fin A))
+    (π : StationaryPolicy (Fin S) (Fin A)) (δ ε : ℝ),
+    0 < δ → δ < 1 → 0 < ε → ε ≤ 1 / (1 - M.discount) →
+    c * Real.log (S / (δ * (1 - M.discount))) /
+      ((1 - M.discount) ^ 3 * ε ^ 2) ≤ N →
+    ∃ hN : 0 < N,
+      1 - δ ≤ (StatisticalRL.ModelBasedPolicyEvaluation.samplingLaw M π N).real
+        {data | ‖StatisticalRL.ModelBasedPolicyEvaluation.valueEstimator M π N hN data -
+          M.trajectoryExpectedValue π‖ ≤ ε}
+
+/-- Restricted positive-sample version of source `Thm:sample-compl-main`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:900–923`.
+This entry makes the existing empirical-frequency export's `N > 0`
+restriction explicit. See
+[`SOURCE-ISSUES.md#statement-index-scope-disclosures`](../../docs/SOURCE-ISSUES.md#statement-index-scope-disclosures). -/
+def Thm3_2_positiveN : Prop :=
+  ∃ c₀ : ℝ, 0 < c₀ ∧
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) (δ ε : ℝ),
+    0 < δ → δ < 1 → 0 < ε → ε ≤ 1 / (1 - M.discount) →
+    c₀ * Real.log
+      (Fintype.card State * Fintype.card Action * N /
+        ((1 - M.discount) ^ 2 * ε * δ)) /
+      ((1 - M.discount) ^ 3 * ε ^ 2) ≤ N →
+    1 - δ ≤
+      (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
+        {data | ∀ f : State → Action,
+          StatisticalRL.ModelBasedPolicyLearning.EmpiricallyOptimal M N hN data f →
+            (∀ s, M.trajectoryExpectedValue M.optimalGreedyPolicy s - ε ≤
+              M.trajectoryExpectedValue
+                (fun t ↦ EnvironmentStage.pointMass (f t)) s) ∧
+            (∀ s a, M.trajectoryExpectedQ M.optimalGreedyPolicy s a -
+                M.discount * ε ≤
+              M.trajectoryExpectedQ
+                (fun t ↦ EnvironmentStage.pointMass (f t)) s a)}
+
+/-- Source `LemAbsToNormalV`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:1254–1263`.
+The absorbing model uses the original model's actual optimal trajectory value
+at `x` as its replacement reward parameter. -/
+def Lemma3_3 : Prop :=
+  ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (x s : State),
+    StatisticalRL.ModelBasedPolicyLearning.optimalTrajectoryValue
+      (StatisticalRL.ModelBasedPolicyLearning.optimalValueAbsorbingModel M x) s =
+      StatisticalRL.ModelBasedPolicyLearning.optimalTrajectoryValue M s
+
+/-- Source `LemValueCover`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:1292–1300`.
+For the same positive-size empirical data, a grid point covers the actual
+optimal trajectory-value function within one grid step. -/
+def Lemma3_4 : Prop :=
+  ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
+    (data : StatisticalRL.ModelBasedPolicyLearning.Samples State Action N)
+    (x : State),
+    ∃ i : Fin (N + 1),
+      ‖StatisticalRL.ModelBasedPolicyLearning.valueEstimator M N hN data -
+        StatisticalRL.ModelBasedPolicyLearning.absorbingGridValue
+          (StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data)
+          N hN x i‖ ≤
+        StatisticalRL.ModelBasedPolicyLearning.absorbingGridStep M N hN
+
+/-- Restricted positive-sample version of source `lem:policy-learning-evaluation`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:1306–1326`.
+It retains the source's simultaneous norm and pointwise one-sided conclusions.
+The positive sample-count restriction is explicit for the empirical-frequency
+model; see [`SOURCE-ISSUES.md#statement-index-scope-disclosures`](../../docs/SOURCE-ISSUES.md#statement-index-scope-disclosures). -/
+def Lemma3_5_positiveN : Prop :=
+  ∃ c₀ c₁ : ℝ, 0 < c₀ ∧ 0 < c₁ ∧
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) (δ : ℝ),
+    0 < δ → δ < 1 →
+    c₀ * StatisticalRL.ModelBasedPolicyLearning.leaveOneOutBeta M N δ /
+      (1 - M.discount) ≤ N →
+    1 - δ ≤
+      (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
+        {data | ∀ f : State → Action,
+          StatisticalRL.ModelBasedPolicyLearning.EmpiricallyOptimal M N hN data f →
+            ‖(StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).trajectoryExpectedValue
+                (fun t ↦ EnvironmentStage.pointMass (f t)) -
+              M.trajectoryExpectedValue (fun t ↦ EnvironmentStage.pointMass (f t))‖ ≤
+              c₁ * Real.sqrt
+                (2 * StatisticalRL.ModelBasedPolicyLearning.leaveOneOutBeta M N δ /
+                  (N * (1 - M.discount) ^ 3)) ∧
+            ∀ s, 0 ≤ M.trajectoryExpectedValue M.optimalGreedyPolicy s -
+                M.trajectoryExpectedValue
+                  (fun t ↦ EnvironmentStage.pointMass (f t)) s ∧
+              M.trajectoryExpectedValue M.optimalGreedyPolicy s -
+                M.trajectoryExpectedValue
+                  (fun t ↦ EnvironmentStage.pointMass (f t)) s ≤
+                2 * c₁ * Real.sqrt
+                  (StatisticalRL.ModelBasedPolicyLearning.leaveOneOutBeta M N δ /
+                    (N * (1 - M.discount) ^ 3))}
+
+/-- Causal-planner, positive-sample restriction of source `Thm:sample-compl-finite`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:2551–2570`.
+The source does not fix an optimal-policy tie choice; this proved variant uses
+the concrete deterministic backward-greedy selector with its fixed fallback
+rule. It also states `N > 0` explicitly for the empirical-frequency model.
+See [`SOURCE-ISSUES.md#statement-index-scope-disclosures`](../../docs/SOURCE-ISSUES.md#statement-index-scope-disclosures).
+The assumptions `0 < ε ≤ H` imply `H > 0`, which supplies a deterministic
+fallback action from the first environment stage. -/
+def Thm3_9_causal_positiveN : Prop :=
+  ∃ c₀ : ℝ, 0 < c₀ ∧
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (H : ℕ) (hH : 0 < H)
+      (E : Fin H → EnvironmentStage State Action)
+    (N : ℕ) (hN : 0 < N) (δ ε : ℝ)
+    (hδ : 0 < δ) (hε : 0 < ε) (hεH : ε ≤ H),
+    c₀ * (H : ℝ) ^ 3 *
+      Real.log ((H : ℝ) * Fintype.card State * Fintype.card Action / δ) /
+        ε ^ 2 ≤ N →
+    1 - δ ≤
+      (StatisticalRL.FiniteHorizonGenerative.samplingLaw E N).real
+        {data |
+          let fallback : Action := Classical.choice ((E ⟨0, hH⟩).action_nonempty)
+          let f := StatisticalRL.FiniteHorizonGenerative.backwardGreedyActions fallback
+            (StatisticalRL.FiniteHorizonGenerative.empiricalStages E N hN data)
+          ∀ h : Fin H,
+            (∀ s,
+              EnvironmentStage.optimalValue ((List.ofFn E).drop h.val) s -
+                StatisticalRL.FiniteHorizonGenerative.policyTrajectorySuffix (List.ofFn E) f
+                  h.val s ≤ ε) ∧
+            (∀ s a,
+              EnvironmentStage.optimalQ ((List.ofFn E).drop h.val) s a -
+                StatisticalRL.FiniteHorizonGenerative.policyTrajectoryQSuffix (List.ofFn E) f
+                  h.val s a ≤ ε)}
+
+end StatisticalRL.Statements.Ch3

@@ -2,6 +2,7 @@ import Formalization.MDP.FiniteOptimal
 import Formalization.Probability.EmpiricalRow
 import Mathlib.Probability.Independence.Basic
 
+import Formalization.Statements.Ch3Definitions
 /-! The actual finite-horizon stage/state/action generative experiment and
 its strictly-future block independence. No policy-learning guarantee is claimed. -/
 open MeasureTheory ProbabilityTheory
@@ -11,20 +12,11 @@ local instance finiteStageStateMeasurable : MeasurableSpace State := ⊤
 noncomputable local instance finiteStageStateDecidable : DecidableEq State := Classical.decEq State
 noncomputable local instance finiteStageActionDecidable : DecidableEq Action := Classical.decEq Action
 
-abbrev SampleIndex (State Action : Type*) (H N : ℕ) := (Fin H × State × Action) × Fin N
-abbrev Samples (State Action : Type*) (H N : ℕ) := SampleIndex State Action H N → State
-
 /-- The observation count is H·S·A·N, with N samples per tuple. -/
 theorem sampleIndex_card (H N : ℕ) :
     Fintype.card (SampleIndex State Action H N) =
       H * Fintype.card State * Fintype.card Action * N := by
   simp [SampleIndex, Nat.mul_assoc]
-
-/-- N actual independent next-state observations at every stage/state/action. -/
-noncomputable def samplingLaw {H : ℕ} (E : Fin H → EnvironmentStage State Action) (N : ℕ) :
-    Measure (Samples State Action H N) :=
-  Measure.pi (fun i : SampleIndex State Action H N ↦
-    ((E i.1.1).transition i.1.2.1 i.1.2.2).rowMeasure)
 
 instance samplingLaw_probability {H : ℕ} (E : Fin H → EnvironmentStage State Action) (N : ℕ) :
     IsProbabilityMeasure (samplingLaw E N) := by unfold samplingLaw; infer_instance
@@ -55,17 +47,6 @@ theorem samplingLaw_row {H : ℕ} (E : Fin H → EnvironmentStage State Action)
   congr 1
   funext i
   exact samplingLaw_marginal E N (j i)
-
-/-- The empirical stage keeps the original known reward exactly. -/
-noncomputable def empiricalStage {H : ℕ} (E : Fin H → EnvironmentStage State Action)
-    (N : ℕ) (hN : 0 < N) (data : Samples State Action H N) (h : Fin H) :
-    EnvironmentStage State Action where
-  state_nonempty := (E h).state_nonempty
-  action_nonempty := (E h).action_nonempty
-  transition := fun s a ↦ FiniteDistribution.empiricalRow N hN (fun i ↦ data ((h,s,a),i))
-  reward := (E h).reward
-  reward_nonneg := (E h).reward_nonneg
-  reward_le_one := (E h).reward_le_one
 
 theorem empiricalStage_reward {H : ℕ} (E : Fin H → EnvironmentStage State Action)
     (N : ℕ) (hN : 0 < N) (data : Samples State Action H N) (h : Fin H) :

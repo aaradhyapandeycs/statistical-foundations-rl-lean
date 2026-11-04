@@ -18,6 +18,16 @@ The goal is the complete end-to-end formalization of arXiv:2610.41903v1, all cha
 - Preserve theorem signatures during proof completion. No hidden hypotheses, unproved intermediate inputs, weakened conclusions, fallback definitions, custom axioms, `sorry`, or `admit` in library code.
 - A source error is an open obligation. Record counterevidence and proposed corrections explicitly; never silently change the paper or call a corrected statement the original theorem.
 
+## Statement index
+
+- Every source result that `docs/COVERAGE.md` records as proved (fully, or as a disclosed corrected or restricted variant) also gets a statement entry in `Formalization/Statements/ChN.lean`, where N is the source chapter number. Add the entry in the same change that records the result as proved.
+- An entry is a `Prop`-valued definition named after the source result, e.g. `def Thm3_2 : Prop := ...`. Its docstring cites the source label and the `.tex` line range. A corrected or restricted variant uses a suffix such as `Thm3_7_corrected`, and its docstring states how it differs from the printed result and points to the matching `docs/SOURCE-ISSUES.md` entry.
+- The `Prop` must be the full, self-contained statement, with every quantifier and hypothesis written out, so a reader can check it against the book without opening proof files. Do not define it by referring to another theorem's type.
+- `Formalization/Statements/ChN.lean` imports definition modules only and contains no proofs. A separate `Formalization/Statements/ChNProofs.lean` imports it together with the proof modules and proves each entry, e.g. `theorem Thm3_2_holds : Thm3_2 := ...`. The proof applies the existing library theorem; it must not restate the result or prove it a second time. Import both files from `Formalization.lean` so the axiom audit covers them.
+- The index is a reading aid. Adding an entry never changes or weakens a library theorem signature.
+- The entry states the printed result. When the library export implies it (for example, the export assumes less, such as rate bounds only on the prefix actually used, or concludes more), that is not a discrepancy: the `ChNProofs.lean` wrapper derives the printed statement from the export, for instance by restricting a global hypothesis to the needed range. Do not stop for this, and do not record it in `SOURCE-ISSUES.md`.
+- Only when the export does not imply the printed result (it assumes more, concludes less, or concerns a different object) is it a source-fidelity finding. Then use a `_corrected` or `_restricted` entry that states exactly what is proved and points to a `SOURCE-ISSUES.md` entry, and continue with the other entries.
+
 ## Build and evidence
 
 - Lean and Mathlib versions are pinned. Respect the module conventions supported by this version; no forced port to newer syntax.

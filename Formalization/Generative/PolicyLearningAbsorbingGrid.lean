@@ -1,6 +1,7 @@
 import Formalization.Generative.PolicyLearningAbsorbingLipschitz
 import Mathlib.Algebra.Order.Floor.Ring
 
+import Formalization.Statements.Ch3Definitions
 /-! The source finite parameter grid, its actual absorbing value family,
 covering property and Bernstein-logarithm count. No independence is asserted
 for the data-selected covering index. -/
@@ -9,12 +10,6 @@ namespace StatisticalRL.ModelBasedPolicyLearning
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 noncomputable local instance gridRealDecidable : DecidableEq ℝ := Classical.decEq ℝ
 noncomputable local instance gridValueDecidable : DecidableEq (State → ℝ) := Classical.decEq _
-
-noncomputable def absorbingGridStep (M : DiscountedMDP State Action) (N : ℕ) (_hN : 0 < N) : ℝ :=
-  1 / ((N : ℝ) * (1 - M.discount))
-
-noncomputable def absorbingGridPoint (M : DiscountedMDP State Action) (N : ℕ) (_hN : 0 < N)
-    (i : Fin (N + 1)) : ℝ := (i : ℝ) / ((N : ℝ) * (1 - M.discount))
 
 noncomputable def absorbingParameterGrid (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) :
     Finset ℝ := Finset.univ.image (absorbingGridPoint M N hN)
@@ -112,11 +107,6 @@ theorem absorbingGrid_covers_interval (M : DiscountedMDP State Action) (N : ℕ)
   change u - absorbingGridPoint M N hN i ≤ 1 / D
   apply (le_div_iff₀ hD).2
   nlinarith only [hsucc, heq]
-
-noncomputable def absorbingGridValue (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (x : State) (i : Fin (N + 1)) : State → ℝ :=
-  optimalTrajectoryValue (stateAbsorbingModel M x (absorbingGridPoint M N hN i)
-    (absorbingGridPoint_bounds M N hN i).1 (absorbingGridPoint_bounds M N hN i).2)
 
 noncomputable def absorbingGridValueFamily (M : DiscountedMDP State Action)
     (N : ℕ) (hN : 0 < N) (x : State) : Finset (State → ℝ) :=

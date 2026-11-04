@@ -297,3 +297,19 @@ proof or author-approved erratum. Restricting the helper to the main theorem's
 `γ ≥ 1/2` domain avoids this example and matches the cited appendix step; it
 is not by itself a formal proof of the restricted lemma. The example does not
 refute Theorem 6.3, whose displayed assumptions exclude `γ=0`.
+
+## Statement-index scope disclosures
+
+These are limitations of the currently proved formalizations, not asserted
+errors in the manuscript.
+
+- Theorem 3.2 (`Thm:sample-compl-main`,
+  `generative_model_model_based.tex:900–923`) and Lemma 3.5
+  (`lem:policy-learning-evaluation`, lines 1306–1326) have an explicit `N > 0`
+  hypothesis in their existing Lean exports. Their statement-index entries
+  retain and disclose that restriction.
+- Theorem 3.9 (`Thm:sample-compl-finite`,
+  `generative_model_model_based.tex:2551–2570`) is proved for the causal
+  backward-greedy tie rule implemented by the existing export, with positive
+  sample count. The statement index records this scope; it does not claim the
+  result for every possible empirical-optimal tie rule.

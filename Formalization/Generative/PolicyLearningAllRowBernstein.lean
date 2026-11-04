@@ -1,6 +1,7 @@
 import Formalization.Generative.PolicyLearningLeaveOneOutBernstein
 import Formalization.Generative.PolicyLearningAbsorbingGrid
 
+import Formalization.Statements.Ch3Definitions
 /-! The source simultaneous all-row Bernstein event for a fixed parameter grid.
 No independence of the families from the full empirical matrix is assumed. -/
 
@@ -13,11 +14,6 @@ variable {State Action : Type*} [Fintype State] [Fintype Action]
 local instance allRowStateMeasurable : MeasurableSpace State := ⊤
 noncomputable local instance allRowStateDecidable : DecidableEq State := Classical.decEq State
 noncomputable local instance allRowActionDecidable : DecidableEq Action := Classical.decEq Action
-
-/-- The source's policy-learning logarithmic parameter. -/
-noncomputable def leaveOneOutBeta (M : DiscountedMDP State Action) (N : ℕ) (δ : ℝ) : ℝ :=
-  2 * Real.log (16 * Fintype.card State * Fintype.card Action * N /
-    ((1 - M.discount) * δ))
 
 /-- The actual fixed-grid vector written in the one-row Bernstein API. -/
 noncomputable def leaveOneOutGridValue (M : DiscountedMDP State Action)
