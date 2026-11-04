@@ -372,3 +372,4 @@ import Formalization.Statements.Ch5Proofs
 import Formalization.RobustRL.TVSourceMaximum
 import Formalization.Statements.Ch7
 import Formalization.Statements.Ch7Proofs
+import Formalization.RobustRL.ChiSquaredSourceMaximum

@@ -1,5 +1,8 @@
 # Robust-RL total-variation duality branch: verification record
 
+This is the historical TV-only milestone record. Both branches are now
+verified; see the [full Lemma 7.1 record](robust-strong-duality-verification.md).
+
 **Status:** the total-variation branch of source Lemma 7.1 is formalized and
 verified. The chi-squared branch remains open; the full two-branch named Lemma
 7.1 is not counted as complete. The monograph remains incomplete.

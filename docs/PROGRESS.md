@@ -6,6 +6,27 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Full robust duality lemma verified
+
+- Both source bullets of Lemma 7.1 now have the complete expanded Chapter 7
+  statement and proof: actual finite-row primal infima, attained clipped
+  objective maxima and all-threshold dominance under the source hypotheses.
+  Zero nominal atoms, ties, singleton rows, zero variance and every positive
+  radius are included. The former TV-only ledger variant is superseded.
+- Ownership: chi-squared witness builders — density, moments, all radius cases
+  and full source maximum; statement builder — expanded two-branch Prop and
+  proof wrapper; independent critic — source semantics, witness consumption,
+  transformation and final statement review; coordinator — baseline guards,
+  integration, actual-export probes and publication.
+- The affected check passed 13 rebuilt modules and 434 reused from the
+  verified TV438 baseline (447 current modules); the full namespace audit
+  passed 5,026 declarations with standard axioms only. This was not a fresh
+  447-module clean build. See [verification](robust-strong-duality-verification.md)
+  and [independent review](critic-robust-strong-duality.md).
+- The ledger has 17 reviewed named-result entries, with their disclosed
+  restrictions, and one separate corrected optimism variant. No chapter or
+  whole-monograph completion is certified.
+
 ## TD main theorem verified
 
 - Theorem 4.1 now has a complete source-facing statement and proof for the
@@ -24,7 +45,7 @@ audit, and independent correspondence review before promotion.
   and `Quot.sound`. [Verification](td-main-theorem-verification.md),
   [source review](critic-td-full-accuracy-source-20261104.md),
   [proof-consumption review](critic-td-full-accuracy-consumption-20261104.md).
-- The ledger now contains 16 named-result entries (including the restrictions
+- That release brought the ledger to 16 named-result entries (including the restrictions
   disclosed there) and one separately recorded corrected optimism variant.
   This is not a percentage of the monograph. No chapter or whole-paper
   completion is certified.
@@ -57,7 +78,8 @@ audit, and independent correspondence review before promotion.
 - A χ² weak-duality bridge lifts the pointwise clipped inequality to a
   comparison of the scalar supremum and the infimum over feasible rows. It
   passed focused, working-tree and clean-copy compilation and axiom audits.
-  The reverse inequality and maximum attainment remain open.
+  The reverse inequality and maximum attainment are now completed by the
+  full Lemma 7.1 proof above.
 - The standalone TD step-size counterexample and the pointwise χ² weak-duality
   helper have passed focused, working-tree and clean-copy compilation and
   axiom audits. Those two helpers alone do not establish the main TD theorem or the full
@@ -543,7 +565,7 @@ audit, and independent correspondence review before promotion.
   with the maximizing value dominating every other interval point. The source
   assumptions `V ≥ 0` and `σ > 0` and half-L1 TV normalization are retained;
   zero nominal atoms, ties, singleton rows, and radii above one are covered.
-  The χ² branch remains open, so Lemma 7.1 as a whole is not counted. The
+  That TV-only milestone is superseded by the full two-branch proof above. The
   affected 438-module rebuild passed (23 rebuilt, 415 reused from the prior
   verified 418-module clean baseline) and audited 4,959 declarations; this was
   not a fresh 438-module clean build. See the [verification record](tv-strong-duality-verification.md)
