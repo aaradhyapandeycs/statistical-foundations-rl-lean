@@ -303,6 +303,13 @@ refute Theorem 6.3, whose displayed assumptions exclude `γ=0`.
 These are limitations of the currently proved formalizations, not asserted
 errors in the manuscript.
 
+- The TV branch of robust-RL `lemma:dual-form` (Lemma 7.1,
+  `robust_RL.tex:302–324`) is now proved for the source finite-row setup with
+  `V ≥ 0` and `σ > 0`, using the source half-L1 normalization. The χ² branch is
+  still open; this branch result does not count the complete two-branch lemma.
+  See the [TV verification record](tv-strong-duality-verification.md) and
+  [source review](critic-robust-tv-strong-duality.md).
+
 - Theorem 3.2 (`Thm:sample-compl-main`,
   `generative_model_model_based.tex:900–923`) and Lemma 3.5
   (`lem:policy-learning-evaluation`, lines 1306–1326) have an explicit `N > 0`

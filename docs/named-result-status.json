@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T03:46:23.893410+00:00",
+  "updated_at": "2026-11-04T05:09:49+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -201,6 +201,21 @@
       "statement_scope": "Explicit zero-count convention; fixed deterministic tie rule; 0 < δ ≤ 1. SOURCE-ISSUES C8 and C6. This does not certify the literal printed zero-count algorithm.",
       "evidence": "docs/critic-online-corrected-optimism.md",
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 7.1 (TV branch)",
+      "source_label": "lemma:dual-form",
+      "source_file": "chapters/robust_RL.tex",
+      "source_lines": "302–324",
+      "lean_export": "StatisticalRL.RobustRL.TVProof.SourceMaximum.tvPrimalInf_eq_source_max",
+      "evidence": "docs/critic-robust-tv-strong-duality.md",
+      "coverage": "docs/COVERAGE.md",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Lemma7_1_tv",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Lemma7_1_tv_holds",
+      "statement_scope": "TV bullet only; source finite nominal row, V ≥ 0, σ > 0, source half-L1 normalization. The χ² branch remains open; the complete two-branch named Lemma 7.1 is not counted.",
+      "supporting_evidence": [
+        "docs/tv-strong-duality-verification.md"
+      ]
     }
   ]
 }

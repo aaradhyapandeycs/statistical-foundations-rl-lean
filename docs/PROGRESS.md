@@ -537,11 +537,17 @@ audit, and independent correspondence review before promotion.
   including zero transitions at k=0. The geometric stopped-law bound is used
   in the stability proof; see [one-step review](critic-q-learning-trajectory-kl.md)
   and [prefix review](critic-q-learning-forced-prefix-kl-chain.md).
-- For the robust-RL TV uncertainty set, finite event-TV is identified with
-  half-L1 and the source clipped-objective weak-duality direction is proved
-  for actual finite probability rows. The reverse inequality, maximum
-  attainment, χ² branch, and full strong-duality lemma remain open; see
-  [review](critic-robust-tv-weak.md).
+- The TV branch of robust-RL Lemma 7.1 now has its full source-facing statement
+  and proof: the primal infimum over actual finite rows equals an attained
+  maximum of the clipped source objective over the full `[Vmin,Vmax]` interval,
+  with the maximizing value dominating every other interval point. The source
+  assumptions `V ≥ 0` and `σ > 0` and half-L1 TV normalization are retained;
+  zero nominal atoms, ties, singleton rows, and radii above one are covered.
+  The χ² branch remains open, so Lemma 7.1 as a whole is not counted. The
+  affected 438-module rebuild passed (23 rebuilt, 415 reused from the prior
+  verified 418-module clean baseline) and audited 4,959 declarations; this was
+  not a fresh 438-module clean build. See the [verification record](tv-strong-duality-verification.md)
+  and [independent source review](critic-robust-tv-strong-duality.md).
 - The finite KL data-processing modules prove log-sum with empty decoder
   cells, finite-law KL contraction and its actual indexed-family specialization.
   The complete printed minimax theorem remains open; see the independent
