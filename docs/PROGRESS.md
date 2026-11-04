@@ -112,7 +112,9 @@ audit, and independent correspondence review before promotion.
 ## Current checked infrastructure
 
 - A source-level one-episode counterexample shows that the auxiliary online
-  W1 bound cannot use its printed vanishing log factor at `K=1`. It is
+  W1 bound cannot use its printed vanishing log factor at `K=1`. The
+  combined T2/T3/T4 lemma also asks for probability greater than one when
+  `K=H=1`. These are
   independently checked and not yet formalized in Lean; the main regret
   theorem is not refuted. See [Candidate C12](SOURCE-ISSUES.md) and its
   [source check](critic-online-k1-iota-obstruction.md).

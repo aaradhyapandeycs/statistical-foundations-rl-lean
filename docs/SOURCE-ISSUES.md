@@ -308,7 +308,7 @@ proof or author-approved erratum. Restricting the helper to the main theorem's
 is not by itself a formal proof of the restricted lemma. The example does not
 refute Theorem 6.3, whose displayed assumptions exclude `γ=0`.
 
-## Candidate C12: the one-episode endpoint of the auxiliary W1 bound
+## Candidate C12: one-episode endpoints of auxiliary online bounds
 
 **Source:** `lem:bound-W1-W2-ucbvi-proof`, `onlineRL.tex:928–953`, and
 `eq:assumption-K-proof-B`, lines 726–733. The main theorem at lines 472–480
@@ -333,6 +333,17 @@ at zero visits remains Candidate C8; the example persists under its intended
 finite zero-count completion retaining the explicitly initialized empirical
 rows. It does not refute the main regret theorem, which can handle `K = 1`
 separately using the deterministic regret bound.
+
+A second endpoint occurs in `lem:bound-T234`, lines 988–1005. At
+`K = H = 1`, its displayed confidence at line 990 demands probability
+strictly greater than `1 − 4 log₂(KH) δ′ = 1`, which is impossible for any
+probability event. The side condition at line 1003 and the proof's large-K
+condition at lines 748–751 both reduce to valid zero-logarithm inequalities.
+This confidence obstruction is independent of the undefined zero-count
+bonus and is source-level evidence; no Lean formalization of this subcase
+or author-approved erratum is claimed. It does not refute the main regret
+theorem. A corrected auxiliary theorem needs an explicit endpoint treatment
+or a domain on which the confidence factor is positive.
 
 A proposed correction restricts this auxiliary logarithmic bound to `K ≥ 2`,
 or replaces the vanishing logarithm by a positive floor and treats the endpoint
