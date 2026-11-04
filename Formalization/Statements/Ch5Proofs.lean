@@ -3,6 +3,7 @@ import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
 import Formalization.Online.Regret.Joint.OnlineT234Joint
 import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
 import Formalization.Statements.Ch5
+import Formalization.Online.Regret.Counts.OnlineReciprocalSource
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
 import Formalization.Online.Regret.NonnegativeTelescope
 import Formalization.Online.Regret.W1.OnlineW1RestrictedSourceBudget
@@ -64,8 +65,19 @@ theorem Lemma5_7_K2_corrected_holds : Lemma5_7_K2_corrected := by
       (Classical.choice (E ⟨0, hH⟩).state_nonempty) δ c₁ c₂ hδ hδone hc₁ hc₂
 
 
+/-- The actual-path count identity reduces Lemma 5.3 to its deterministic
+finite-row rank budget. -/
+theorem Lemma5_3_holds : Lemma5_3 := by
+  intro State Action instS instA H K hH hK E initial fallback planner path
+  dsimp only [Lemma5_3]
+  rw [Finset.sum_comm]
+  simpa only [onlineReciprocalMaxOneCount, one_div] using
+    onlineSequential_maxOne_reciprocal_count_budget H K hH hK E initial fallback planner path
+
+
 /-- Average the stronger pointwise-in-initial-state export under the source
 initial distribution. -/
+
 theorem Lemma5_4_holds : Lemma5_4 := by
   intro State Action instS instA H _hH E ρ π
   dsimp only

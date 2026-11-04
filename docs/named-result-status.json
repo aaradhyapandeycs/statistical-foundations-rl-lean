@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T14:40:37.414288+00:00",
+  "updated_at": "2026-11-04T15:33:05.224344+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -220,6 +220,21 @@
       "evidence": "docs/critic-online-policy-variance.md",
       "supporting_evidence": [
         "docs/online-policy-variance-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.3",
+      "source_label": "lem:sum-inv-Nhk-ucbvi",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "638–646",
+      "lean_export": "StatisticalRL.OnlineRL.onlineSequential_maxOne_reciprocal_count_budget",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_3",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_3_holds",
+      "statement_scope": "Printed deterministic max-one reciprocal-count bound, K>=2, with source episode-major sum order. The export and index generalize the algorithm-specific claim to every finite causal planner/path. First visits contribute one; no positive-visit, probability, bonus or concentration premise is added.",
+      "evidence": "docs/critic-online-reciprocal-count.md",
+      "supporting_evidence": [
+        "docs/online-reciprocal-count-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

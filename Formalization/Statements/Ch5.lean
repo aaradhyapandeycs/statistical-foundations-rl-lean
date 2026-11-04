@@ -166,12 +166,40 @@ noncomputable def Lemma5_7_K2_corrected : Prop :=
             (1 / 8 : ℝ) * S^2 * A * H^3 * iota)}
 
 
+section Lemma53
+noncomputable local instance ch5Lemma53StateDecidableEq {State : Type*} : DecidableEq State :=
+  Classical.decEq State
+noncomputable local instance ch5Lemma53ActionDecidableEq {Action : Type*} : DecidableEq Action :=
+  Classical.decEq Action
+
+/-- Lemma 5.3, `lem:sum-inv-Nhk-ucbvi`, `chapters/onlineRL.tex:639–646`.
+The deterministic bound holds for every realized finite episode path and every
+planner, so the algorithm's actual planner/path are a direct instance. The
+first visit is retained by the printed denominator `max{N,1}`. -/
+noncomputable def Lemma5_3 : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H), 2 ≤ K →
+    ∀ (E : Fin H → EnvironmentStage State Action)
+      (initial : Fin K → State) (fallback : State)
+      (planner : OnlineEpisodePlanner State Action H)
+      (path : OnlineOutcomePath.{u, 0} State (K * H)),
+    let choose := onlineEpisodicChoose H K hH initial fallback planner
+    let history := onlineSequentialPathHistory choose (K * H) [] path
+    (∑ k : Fin K, ∑ h : Fin H,
+      let rows := onlineActualStageRowSequence H K hH initial fallback planner path h
+      (1 : ℝ) / (((max
+        ((onlineRowOutcomes (history.take (k.val * H)) (h, rows k.val)).length) 1 : ℕ) : ℝ))) ≤
+      2 * (Fintype.card State : ℝ) * (Fintype.card Action : ℝ) * H *
+        (Real.log K / Real.log 2)
+end Lemma53
+
 /-- Lemma 5.4, `lem:cum-var-ub-Hsquare-ucbvi-mean`,
 `chapters/onlineRL.tex:648–658`. A deterministic stage-dependent policy is
 executed in the true MDP. The expectation averages its actual trajectory law
 from each initial state under an arbitrary initial distribution. The recursive
 variance sum adds each true transition-row variance of the same policy's
 remaining trajectory value; its terminal continuation is zero. -/
+
 noncomputable def Lemma5_4 : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (H : ℕ), 0 < H →

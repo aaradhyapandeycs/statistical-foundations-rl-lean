@@ -6,6 +6,31 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Printed inverse-visit count lemma verified
+
+- Lemma 5.3 (`lem:sum-inv-Nhk-ucbvi`, onlineRL.tex:638–646) now has the
+  printed 2SAHlog₂K bound on the sum of 1/max(N,1), for K≥2. First visits
+  contribute one; the earlier zero-totalized reciprocal helper is not used
+  as a substitute for this printed denominator.
+- The proof reindexes exact strict-past visit ranks. A row with N visits
+  contributes 1+harmonic(N−1); the N=0/1 cases and the logarithmic comparison
+  are proved. Actual pre-episode row counts are linked to those ranks.
+- The result generalizes the source's algorithm trajectory to any causal
+  episode planner and finite path. It assumes no probability event, bonus
+  condition, positive count, independence or concentration estimate.
+- The full Chapter 5 Prop spells the denominator inline, uses the printed
+  episode-major sum order and has no proof-module import. Its applying
+  wrapper commutes finite sums and consumes the actual pathwise export.
+- The affected 668 check passed: 6 rebuilt+662 verified reused;
+  6,460 declarations audited with only the standard three axioms.
+- Size: 73,339 Lean lines including comments/blanks in 668 files. Ledger:
+  19 original named entries with existing disclosures, six corrected
+  variants. Other chapter results and whole-monograph work remain open.
+- Ownership: Data builder — generic rank/harmonic calculation, actual path
+  bridge, pure count definition and source index; coordinator — integration
+  and publication; independent critic — source, signature, import and
+  terminal source/artifact evidence.
+
 ## Corrected main UCBVI regret theorem verified
 
 - Theorem 5.2 (`thm-ucbvi-regret`, onlineRL.tex:472–482) is proved for the
