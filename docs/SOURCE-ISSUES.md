@@ -517,3 +517,101 @@ source large-K premise is retained. The unchanged final conclusion is
 certified, while the literal printed intermediate inclusion is not.
 See [independent review](critic-online-MVP-counts-profiles.md) and
 [verification](online-MVP-counts-profiles-verification.md).
+
+<a id="C16"></a>
+
+## Candidate C16: MVP uniform concentration at small confidence logarithms
+
+**Status: generic Lemma 5.13 refuted under the natural bounded
+continuation-family interpretation; the source has an endpoint-index ambiguity.**
+
+Source: `chapters/onlineRL.tex:1388–1391` (confidence allocation),
+`:1670–1685` (Assumption `assumption-X-mvp`), `:1696–1712`
+(`lemma:uniform`, Lemma 5.13), and its proof at `:4180–4280`.
+Pinned chapter SHA-256:
+`393a4d26c228d833a27e54a4913489e499d2143f2f9b80ebf3c55d9a9ccb8c53`.
+
+The assumption indexes the displayed families only through H, while its
+future-dependence clause and the conclusion use the continuation family
+at h+1, including H+1. No generic terminal-zero restriction is stated.
+The counterexample uses the natural completion in which that continuation
+family also has the stated cardinality and [0,H] bounds. The fixed-profile
+application's particular terminal family does not restrict the generic
+quantifier. This convention is explicit in the Lean witness and its review.
+
+Take S=2, A=H=1, K=4, and both true state rows uniform on the two states.
+For every fixed profile, use the deterministic family {0,e0,e1}, where eb
+is the indicator of state b. The family contains zero, has three members
+(at most K+1=5), lies in [0,1], and depends on no future-stage data.
+The printed condition K≥SAH log₂K holds with equality.
+
+Set ε=(320000 log 6)⁻¹, δ′=exp(−ε), and δ=(16/25)δ′. Then 0<δ<1,
+0<δ′<1, and the printed allocation 100δ/(S²A²H²K²) equals δ′. The
+printed iota equals exactly 1. Even the stronger surrounding proof regime
+K≥SAH·iota holds: 4≥2.
+
+At l=2 each batch is the single second sample in its row. For every
+expanded-data outcome, the simultaneous-over-all-choices event includes
+the choice eb for the observed state b in each row. Each row contributes
+positive deviation 1/2 and true variance 1/4. The positive-part sum is 1
+and the variance sum is 1/2. The printed right side is
+sqrt(1/8)+1/4<3/4<1. Thus this necessary specialization of the joint event
+is empty under the actual product sampling law, although 1−δ′>0.
+This example uses a positive confidence logarithm; its probability promise
+is nonvacuous.
+
+[MVPUniformConfidence.lean](../Formalization/Counterexamples/MVPUniformConfidence.lean)
+proves the family bounds, true moments, batch deviations, both K-regime
+conditions, exact allocation/iota, empty event and actual-law probability
+refutation. The principal export is
+`StatisticalRL.SourceCounterexamples.MVPUniform.printed_uniform_probability_false`.
+The original generic lemma is not certified. This does not refute the main
+MVP regret theorem or its particular value-function family.
+
+The source proof absorbs a positive covering/union budget into a multiple
+of log(1/δ′), which can approach zero in the printed parameter range.
+A proposed repair is the reciprocal allocation
+δ′=δ/(100S²A²H²K²), together with explicit continuation-family indexing;
+it bounds the logarithm away from zero. Another possible repair enlarges
+iota with 1+log(1/δ′). The project proves the underlying actual-law uniform
+finite-family bound with its explicit cardinality-dependent logarithm.
+The full corrected source-constant specialization remains open at this
+checkpoint. See [review](critic-online-MVP-uniform-confidence.md) and
+[verification](online-MVP-probability-verification.md).
+
+<a id="C17"></a>
+
+## Candidate C17: fixed-profile MVP terminal value differs from the learner
+
+**Status: confirmed failure of the auxiliary value-identification argument;
+no refutation of the final MVP regret or decoupling conclusion is claimed.**
+
+Source: actual algorithm initialization `chapters/onlineRL.tex:1267` and
+updates `:1296–1308`; fixed-profile auxiliary algorithm at `:4423–4433`;
+family construction `:4445–4449`; asserted actual-value equality and
+membership `:4467–4472` (`eq:Vk-Itrue`). The actual learner sets V(H+1)=0.
+The auxiliary algorithm instead sets V(H+1)=H for every profile/episode.
+
+For a concrete source-level witness take S=A=1, H=2, K=2, zero rewards and
+the deterministic sole-state transition. Let c2>0 and choose
+q=min{1/(2c2),1/(80000 log 6)}, δ′=exp(−q), and δ=(4/25)δ′.
+These give q>0, 0<δ<1 and the printed confidence allocation δ′. Iota is
+40000 log 6·q≤1/2, so both K≥SAH log₂K and the stronger K≥SAH·iota hold.
+The variance terms vanish for every positive c1.
+
+At the end of the first episode both stage rows have count one, and the
+trigger fires under either the literal or dyadic rule. Actual stage 2 uses
+terminal zero, stored count one and bonus 2c2q. Its value is therefore
+2c2q, which belongs to (0,1]. The auxiliary terminal is 2, so its stage-2
+value clips to 2 for every episode/profile. Its stage-2 family is {0,2}
+and excludes the actual value. That value is the continuation test at
+stage 1 in the claimed coupling argument.
+
+This independently checked calculation concerns the printed programs and
+their claimed identification step. A complete Lean execution witness for
+these two algorithms has not been added at this checkpoint. The proposed
+repair sets the auxiliary terminal value to zero and then proves the
+actual profile/kernel/value bridge, including initial and zero-count
+cases. Changing the terminal line alone is not a proof of that bridge.
+This issue is separate from C16's generic concentration counterexample.
+See [independent review](critic-online-MVP-uniform-confidence.md).

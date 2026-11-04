@@ -6,6 +6,38 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## MVP probability infrastructure and uniform-bound counterexample
+
+- The actual expanded product law now has proved fresh-coordinate conditional
+  moments, a reverse-stage reveal filtration, exact batch variance and error
+  identities, fixed-mask Freedman bounds, finite unions and uniform coverage
+  of finite future-dependent families with sample-dependent vector choices.
+  The bound retains its explicit profile/choice/level/mask logarithm.
+- Generic Lemma 5.13 fails under the natural bounded h+1 continuation-family
+  reading at S=2,A=H=1,K=4. The Lean witness gives iota=1, both K-regimes,
+  an empty necessary event under the actual product law and a strictly
+  positive probability promise. The source's H/H+1 family ambiguity and
+  absence of a generic terminal-zero condition are disclosed as C16.
+- C17 records a separate source-level failure of the auxiliary value-family
+  identification: its terminal value H differs from the learner's zero.
+  This argument gap does not refute the final MVP regret conclusion. A full
+  Lean execution witness and corrected actual-value coupling remain open.
+- Qualified 39-provider compilation and a 73-export probe passed. Guarded
+  affected integration: 9 rebuilt+714 verified reused=723 modules;
+  6,876 project declarations permit only the standard three axioms.
+- Size: 76,666 Lean lines including comments/blanks in 723 files.
+  Ledger remains 20 named entries with existing disclosures and eight
+  corrected variants. Neither generic infrastructure nor the false original
+  Lemma 5.13 is counted as a newly completed source result.
+- Ownership: Terra — actual-product probability and finite-family proofs;
+  coordinator — counterexample, qualification and integration; independent
+  critic — source/endpoint, all actual exports and final receipts. Data's
+  committed-histogram and empirical-row work remains quarantined until its
+  actual kernel/profile bridge is completed and independently reviewed.
+- Next: the corrected confidence allocation and numerical source bound,
+  actual batch/profile kernels, corrected auxiliary values and online
+  coupling. Every complete-chapter and whole-monograph claim remains open.
+
 ## MVP profile and stored-count conclusions verified
 
 - Lemma 5.11's printed profile-cardinality bound is proved for every finite
