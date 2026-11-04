@@ -6,6 +6,33 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Corrected main UCBVI regret theorem verified
+
+- Theorem 5.2 (`thm-ucbvi-regret`, onlineRL.tex:472–482) is proved for the
+  explicit finite zero-count algorithm (C8) and a fixed maximizing tie rule.
+  For every K≥1 and 0<δ<1, its actual regret is at most
+  20(√(SAH³K)+S²AH³)(1+iota) with probability at least 1−δ. Universal bonus
+  constants 4 and 16 are independent of all model/confidence parameters.
+- Regret compares the true optimal value and the true value of the policy
+  actually selected for each episode, at its observed initial state. The
+  probability law uses iid initial resets and the actual causal transitions.
+  No intermediate event, variance estimate or regret certificate is assumed.
+- K=1 and the small-sample regime are handled by regret≤KH. For large K,
+  the proved T0 and T5/T6 events imply the scalar closure; their 39Mδ′
+  failure budget is at mostδ under the printed confidence allocation.
+  The auxiliary K≥2 restrictions therefore do not restrict this theorem.
+- The affected 666 check passed: 11 rebuilt+655 verified reused;
+  the full audit checked 6,443 declarations with only the standard axioms.
+  Source review and exact statement/applying wrapper checks passed.
+- Size: 73,062 Lean lines including comments/blanks in 666 project files.
+  Ledger: 18 original named entries with existing disclosures and six
+  corrected variants. Other chapter 5 algorithms, remaining chapters and
+  substantive prose obligations remain open; no whole chapter or book closure.
+- Ownership: Terra builder — actual regret, sharp scalar/T0 closure and
+  final theorem; Data builder — unconditional suffix/T56 prerequisites;
+  coordinator — integration/publication; independent critic — source
+  semantics, quantified rate/constants, all branches and terminal evidence.
+
 ## Complete corrected T5/T6 lemma verified
 
 - Corrected/restricted Lemma 5.9 now has all three initial inequalities with

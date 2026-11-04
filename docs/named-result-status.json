@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T14:27:33.229008+00:00",
+  "updated_at": "2026-11-04T14:40:37.414288+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -294,6 +294,21 @@
       "evidence": "docs/critic-online-t56-joint.md",
       "supporting_evidence": [
         "docs/online-t56-joint-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 5.2, UCBVI regret (corrected zero-count algorithm)",
+      "source_label": "thm-ucbvi-regret",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "472–482",
+      "lean_export": "StatisticalRL.OnlineRL.onlineUCBVI_actual_regret_high_probability",
+      "lean_statement": "StatisticalRL.Statements.Thm5_2_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Thm5_2_corrected_holds",
+      "statement_scope": "For all K>=1 and 0<delta<1, actual true-policy regret is at most 20(sqrt(SAH^3K)+S^2AH^3)(1+iota) with probability at least 1-delta. Fixed universal bonus coefficients4 and 16. Independent iid initial resets and causal sequential transitions. Explicit direct K=1 and small-sample branches; no auxiliary K>=2 restriction remains. Finite zero-count algorithm completion (C8) and fixed deterministic greedy tie; no unproved event or intermediate estimate assumed.",
+      "evidence": "docs/critic-online-ucbvi-regret.md",
+      "supporting_evidence": [
+        "docs/online-ucbvi-regret-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

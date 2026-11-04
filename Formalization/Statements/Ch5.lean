@@ -288,5 +288,39 @@ noncomputable def Lemma5_9_K2_corrected : Prop :=
               onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' 4 16*I) +
             4*S^2*A*H^3*I})
 
+/-- Corrected Theorem 5.2, `thm-ucbvi-regret`, `chapters/onlineRL.tex:472–482`,
+with source iota at `:726–734` and initial-state law at `:26–33`. The printed
+asymptotic bound is strengthened here to the explicit rate below, using the
+universal choices c₁=4 and c₂=16. It includes K=1 via the factor 1+iota.
+The algorithm uses the finite zero-count completion Q=H and a fixed
+deterministic maximizing tie rule; see Candidate C8 in
+`docs/SOURCE-ISSUES.md`. The event uses independent identically distributed reset states and the
+conditional sequential transition law, together with the true value of the
+selected episode policy. -/
+noncomputable def Thm5_2_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H), 0 < K →
+    ∀ (E : Fin H → EnvironmentStage State Action)
+      (ρ : FiniteDistribution State) (δ : ℝ),
+    0 < δ → δ < 1 →
+    ∃ c₁ c₂ : ℝ, c₁ = 4 ∧ c₂ = 16 ∧ 0 < c₁ ∧ 0 < c₂ ∧
+      let fallback : State := Classical.choice (E ⟨0, hH⟩).state_nonempty
+      let S := Fintype.card State
+      let A := Fintype.card Action
+      let δ' := δ / (100 * (S : ℝ)^2 * (A : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+      let I := 40000 * (Real.log K / Real.log 2)^3 *
+        Real.log (3 * S * A * H : ℝ) * Real.log (1 / δ')
+      let planner := onlineCappedGreedyPlanner E (Real.log (1 / δ')) c₁ c₂
+      1 - δ ≤ (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K * H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{u, 0} State (K * H) |
+          let history := onlineSequentialPathHistory
+            (onlineEpisodicChoose H K hH sample.1 fallback planner) (K * H) [] sample.2
+          (∑ k : Fin K,
+            (DecisionStage.trajectoryValue (EnvironmentStage.greedyStages (List.ofFn E)) (sample.1 k) -
+              DecisionStage.trajectoryValue
+                (EnvironmentStage.controlled (List.ofFn E)
+                  (onlineCappedEpisodePolicy H hH E history k.val (Real.log (1 / δ')) c₁ c₂))
+                (sample.1 k))) ≤
+          20 * (Real.sqrt ((S : ℝ) * A * H^3 * K) + (S : ℝ)^2 * A * H^3) * (1 + I)}
 
 end StatisticalRL.Statements

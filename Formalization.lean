@@ -381,3 +381,4 @@ import Formalization.Online.Regret.Joint.OnlineW123Final
 import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
 import Formalization.Online.Regret.Joint.OnlineT234Joint
 import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
+import Formalization.Online.Regret.Main.OnlineUCBVIRegretMain

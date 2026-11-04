@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.Main.OnlineUCBVIRegretMain
 import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
 import Formalization.Online.Regret.Joint.OnlineT234Joint
 import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
@@ -116,5 +117,14 @@ theorem Lemma5_9_K2_corrected_holds : Lemma5_9_K2_corrected := by
     have hsimple := hprob.trans hm
     simpa only [μ, planner, fallback, δ', onlineSourceOptimismDeltaPrime,
       onlineActualT56SimplifiedEvent, onlineW1SourceIota] using hsimple
+
+theorem Thm5_2_corrected_holds : Thm5_2_corrected := by
+  intro State Action _ _ H K hH hK E ρ δ hδ hδone
+  refine ⟨4, 16, rfl, rfl, by norm_num, by norm_num, ?_⟩
+  let fallback : State := Classical.choice (E ⟨0, hH⟩).state_nonempty
+  have hp := onlineUCBVI_actual_regret_high_probability H K hH hK E ρ fallback δ hδ hδone
+  simpa [onlineUCBVIRegretRateEvent, onlineUCBVIRegretRate,
+    onlineSourceOptimismDeltaPrime, onlineW1SourceIota, onlineActualEpisodeRegret,
+    onlineCappedEpisodePolicyValue, fallback] using hp.le
 
 end StatisticalRL.Statements

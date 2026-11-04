@@ -393,3 +393,14 @@ errors in the manuscript.
   deterministic maximizing tie rule is used. This is a corrected variant,
   not certification of the unrestricted printed algorithm or K=1 lemma.
   See [independent review](critic-online-t56-joint.md).
+
+- Theorem 5.2 (`thm-ucbvi-regret`, `onlineRL.tex:472–482`) is formalized
+  as `Thm5_2_corrected` for the C8 finite zero-count completion and one fixed
+  deterministic greedy tie rule. The asymptotic rate is made explicit as
+  20(√(SAH³K)+S²AH³)(1+iota), with universal bonus constants 4 and 16. All K≥1
+  are covered: K=1 and small samples use the deterministic horizon bound;
+  larger samples use the proved actual concentration/variance estimates.
+  C12's auxiliary endpoint restriction does not restrict this main theorem.
+  This establishes the corrected algorithm, while the printed zero-count
+  rule remains undefined as recorded in C8. See the
+  [independent review](critic-online-ucbvi-regret.md).
