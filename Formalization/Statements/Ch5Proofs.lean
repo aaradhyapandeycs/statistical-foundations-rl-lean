@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.MVP.Probability.MVPCorrectedSourceUniformFull
 import Formalization.Online.Regret.MVP.OnlineMVPArbitraryHistory
 import Formalization.Online.Regret.MVP.MVPProfileCardinality
 import Formalization.Online.Regret.MVP.MVPActualProfiles
@@ -174,5 +175,44 @@ theorem Lemma5_12_powerOfTwo_corrected_holds : Lemma5_12_powerOfTwo_corrected :=
       (rowAt (k.val * H + h.val))) 1 : ℕ) : ℝ)⁻¹)) ≤ _
   rw [Finset.sum_comm]
   exact StatisticalRL.OnlineRL.onlineMVP_operationalHistory_sourceCountBudget H K hH hK rowAt next hs
+
+private theorem mvpUniformSource_radius_eq (S A H I x v : ℝ) (n : ℕ) :
+    Real.sqrt (S*A*H*I/((2:ℝ)^(n+2)*x)*v) + S*A*H^2*I/((2:ℝ)^(n+2)*x) =
+    Real.sqrt ((S*A*H)*I*v/(4*(2:ℝ)^n*x)) + (S*A*H)*H*I/(4*(2:ℝ)^n*x) := by
+  have hpow : (2:ℝ)^(n+2) = 4*(2:ℝ)^n := by
+    simp only [pow_add, pow_two]
+    ring
+  rw [hpow]
+  apply congrArg₂ (fun (a b : ℝ) => a+b)
+  · apply congrArg Real.sqrt
+    ring
+  · ring
+
+theorem Lemma5_13_confidence_corrected_holds : Lemma5_13_confidence_corrected := by
+  intro State Action _ _ H K hH hK E hbudget δ hδ hδone family hzero hcard hbound
+  have hb : (K : ℝ) ≥ (Fintype.card (Fin H × (State × Action)) : ℝ) *
+      StatisticalRL.OnlineRL.MVPProfile.logTwoReal K := by
+    simpa only [Fintype.card_prod, Fintype.card_fin, Nat.cast_mul,
+      StatisticalRL.OnlineRL.MVPProfile.logTwoReal,
+      mul_assoc, mul_left_comm, mul_comm] using hbudget
+  have hp := StatisticalRL.FiniteHorizonGenerative.mvp_corrected_sourceUniform_full
+    E hH K hK family hzero hcard hbound δ hδ hδone.le hb
+  apply hp.trans
+  apply MeasureTheory.measureReal_mono _ (MeasureTheory.measure_ne_top _ _)
+  intro data hd p j X hX
+  have hs := hd p j X hX
+  constructor
+  · exact hs.1
+  · have hdim : ((H * Fintype.card State * Fintype.card Action : ℕ) : ℝ) =
+        (Fintype.card State : ℝ)*Fintype.card Action*H := by
+      push_cast
+      ring
+    have hdim3 : (3:ℝ)*((Fintype.card State : ℝ)*Fintype.card Action*H) =
+        3*(Fintype.card State : ℝ)*Fintype.card Action*H := by ring
+    have hs2 := hs.2
+    dsimp only at hs2 ⊢
+    rw [hdim, hdim3] at hs2
+    rw [mvpUniformSource_radius_eq]
+    simpa only [mvpUniformBatchSize, Nat.cast_pow, Nat.cast_ofNat] using hs2
 
 end StatisticalRL.Statements

@@ -570,14 +570,20 @@ MVP regret theorem or its particular value-function family.
 
 The source proof absorbs a positive covering/union budget into a multiple
 of log(1/δ′), which can approach zero in the printed parameter range.
-A proposed repair is the reciprocal allocation
-δ′=δ/(100S²A²H²K²), together with explicit continuation-family indexing;
-it bounds the logarithm away from zero. Another possible repair enlarges
-iota with 1+log(1/δ′). The project proves the underlying actual-law uniform
-finite-family bound with its explicit cardinality-dependent logarithm.
-The full corrected source-constant specialization remains open at this
-checkpoint. See [review](critic-online-MVP-uniform-confidence.md) and
-[verification](online-MVP-probability-verification.md).
+The reciprocal allocation δ′=δ/(100S²A²H²K²), with explicit bounded
+continuation-family indexing, now gives a proved corrected variant. It
+bounds the logarithm away from zero and absorbs the covering budget with
+the printed coefficient 40000. Both displayed inequalities hold under the
+actual expanded product law for all K≥1 in the source K-regime. The
+statement allows the stronger full strictly-future sample dependence and
+the ceiling profile cover (C15), and adds no generic terminal-zero condition.
+The original printed allocation is still refuted; this correction is not
+certification of the actual learner-family membership or the final MVP
+regret theorem. Another possible repair would enlarge iota with 1+log(1/δ′),
+but that is not the variant proved here. See the original [counterexample
+review](critic-online-MVP-uniform-confidence.md), the [corrected-statement
+review](critic-online-MVP-corrected-uniform.md) and its
+[verification](online-MVP-corrected-uniform-verification.md).
 
 <a id="C17"></a>
 

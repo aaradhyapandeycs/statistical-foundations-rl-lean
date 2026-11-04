@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T16:51:55.367966+00:00",
+  "updated_at": "2026-11-04T19:20:40.657862+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -369,6 +369,21 @@
       "evidence": "docs/critic-online-MVP-counts-profiles.md",
       "supporting_evidence": [
         "docs/online-MVP-counts-profiles-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.13, reciprocal confidence allocation correction",
+      "source_label": "lemma:uniform",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "1696–1712",
+      "lean_export": "StatisticalRL.FiniteHorizonGenerative.mvp_corrected_sourceUniform_full",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_13_confidence_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_13_confidence_corrected_holds",
+      "statement_scope": "Full two-clause simultaneous concentration under the actual expanded transition-product law, for K>=1 and K>=SAH log₂K. Corrected δ′=δ/(100S²A²H²K²), replacing printed numerator 100 (C16). Explicit bounded continuation family at h+1, including terminal endpoint; no terminal-zero premise. Proved for the stronger full strictly-future sample dependence and monotone ceiling cover (C15). Printed coefficient 40000, sample batches, both displayed inequalities and all profile/level/vector choices retained. Cardinality, logarithmic and variance estimates are proved, not assumed. This does not establish membership of the actual learner values or the MVP regret theorem.",
+      "evidence": "docs/critic-online-MVP-corrected-uniform.md",
+      "supporting_evidence": [
+        "docs/online-MVP-corrected-uniform-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

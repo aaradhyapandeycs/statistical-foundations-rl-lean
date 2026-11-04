@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.MVP.MVPUniformSourceDefinitions
 import Formalization.Online.Regret.MVP.MVPCountDefinitions
 import Formalization.Online.Regret.MVP.MVPProfileDefinitions
 import Mathlib.Probability.Moments.Variance
@@ -411,5 +412,49 @@ def Lemma5_12_powerOfTwo_corrected : Prop :=
       (((max ((StatisticalRL.OnlineRL.onlineMVPCountTablesRun rowAt next (k.val * H)).stored
         (rowAt (k.val * H + h.val))) 1 : ℕ) : ℝ)⁻¹)) ≤
       4 * (Fintype.card State : ℝ) * Fintype.card Action * H * (Real.log K / Real.log 2)
+
+/-- Corrected Lemma 5.13 (`lemma:uniform`, `chapters/onlineRL.tex:1696–1712`),
+with Assumption X at `:1670–1685`. The confidence allocation is
+δ′=δ/(100S²A²H²K²), replacing the printed 100δ/(S²A²H²K²); the printed
+generic bound fails under the latter allocation (source issue C16).
+The family at current stage h explicitly means the continuation family h+1,
+including the terminal endpoint. No generic terminal-zero condition is added.
+Families may depend on all strictly-future samples, a stronger class than
+the printed empirical-summary dependence. The monotone ceiling cover
+includes the printed integer-profile family and all actual profiles (C15).
+Level j represents source l=j+2, so every noninitial source level is present;
+the K=1 event is vacuous. Both printed inequalities and coefficient 40000
+are retained under this corrected allocation. -/
+noncomputable def Lemma5_13_confidence_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ), 0 < H → 1 ≤ K →
+    ∀ (E : Fin H → EnvironmentStage State Action),
+    (K : ℝ) ≥ (Fintype.card State : ℝ) * Fintype.card Action * H *
+      (Real.log K/Real.log 2) →
+    ∀ δ : ℝ, 0 < δ → δ < 1 →
+    ∀ (family : MVPUniformSource.Profiles (State := State) (Action := Action) H K →
+      (h : Fin H) → MVPUniformSource.FutureCode (State := State) (Action := Action) h K →
+        Finset (State → ℝ)),
+    (∀ p h code, (0 : State → ℝ) ∈ family p h code) →
+    (∀ p h code, (family p h code).card ≤ K+1) →
+    (∀ p h code V, V ∈ family p h code → ∀ s, 0 ≤ V s ∧ V s ≤ H) →
+    let S : ℝ := Fintype.card State
+    let A : ℝ := Fintype.card Action
+    let δ' := δ/(100*S^2*A^2*(H:ℝ)^2*(K:ℝ)^2)
+    let I := 40000*(Real.log K/Real.log 2)^3*Real.log (3*S*A*H)*Real.log (1/δ')
+    1-δ' ≤ (FiniteHorizonGenerative.samplingLaw E K).real {data |
+      ∀ p : MVPUniformSource.Profiles (State := State) (Action := Action) H K,
+      ∀ j : Fin (Nat.log2 K), ∀ X : Fin H → State → Action → State → ℝ,
+      (∀ h s a, X h s a ∈ family p h (MVPUniformSource.futureData h K data)) →
+      let Z := fun (h : Fin H) (s : State) (a : Action) =>
+        (MVPUniformSource.batchRow data j h s a).expectation (X h s a) -
+          ((E h).transition s a).expectation (X h s a)
+      (∑ h : Fin H, ∑ s : State, ∑ a : Action, Z h s a) ≤
+        (∑ h : Fin H, ∑ s : State, ∑ a : Action, max (Z h s a) 0) ∧
+      (∑ h : Fin H, ∑ s : State, ∑ a : Action, max (Z h s a) 0) ≤
+        Real.sqrt ((S*A*H*I/(2^(j.val+2)*(Real.log K/Real.log 2))) *
+          ∑ h : Fin H, ∑ s : State, ∑ a : Action,
+            ((E h).transition s a).variance (X h s a)) +
+          S*A*(H:ℝ)^2*I/(2^(j.val+2)*(Real.log K/Real.log 2))}
 
 end StatisticalRL.Statements

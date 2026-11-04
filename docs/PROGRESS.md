@@ -6,6 +6,34 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Corrected full MVP uniform concentration verified
+
+- Corrected Lemma 5.13 now retains both displayed inequalities and the
+  source coefficient 40000 under the actual expanded product law. It uses
+  δ′=δ/(100S²A²H²K²); the printed numerator 100 allocation remains refuted
+  (C16). The continuation-family endpoint is explicit, without a generic
+  terminal-zero premise.
+- All monotone ceiling profiles and arbitrary finite families depending on
+  the full strictly-future sample block are covered simultaneously. These
+  stronger classes include the printed profile/empirical-summary families.
+  Size≤K+1, inclusion of zero and range[0,H] are the source family premises;
+  the covering/logarithmic/variance bounds are derived in the proof.
+- The full statement and applying wrapper compile. The wrapper uses event
+  inclusion and a small abstract-real algebra lemma; no heartbeat increase
+  or statement change was needed. Qualification: 19 targets and 31 actual
+  exports passed. Affected integration: 21 rebuilt+719 verified
+  reused=740 modules, 6,951 standard-axiom declarations.
+- Size: 77,558 Lean lines including comments/blanks in 740 files. Ledger:
+  20 original named entries with their existing disclosures, nine corrected
+  variants. No chapter or whole-monograph completion is certified.
+- Ownership: coordinator — corrected source-constant proof, complete index,
+  qualification and integration; independent critic — source, definitions,
+  mapping, actual exports and final evidence. Data — actual retained sampler
+  and corrected terminal-zero value/profile bridge; Terra — actual batch
+  event transfer and optimism. Their unfinished downstream work stays private.
+- Next: actual learner-value family membership, corrected auxiliary values,
+  probability transfer to the online experiment, MVP optimism and regret.
+
 ## MVP probability infrastructure and uniform-bound counterexample
 
 - The actual expanded product law now has proved fresh-coordinate conditional
