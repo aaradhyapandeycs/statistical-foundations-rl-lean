@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T07:58:22.606439+00:00",
+  "updated_at": "2026-11-04T09:26:59.588195+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -238,17 +238,17 @@
       "coverage": "docs/COVERAGE.md"
     },
     {
-      "name": "Lemma 5.7, W1 clause only (K>=2 corrected variant)",
+      "name": "Lemma 5.7, complete joint W1/W2/W3 (K>=2 corrected variant)",
       "source_label": "lem:bound-W1-W2-ucbvi-proof",
       "source_file": "chapters/onlineRL.tex",
-      "source_lines": "928–953",
-      "lean_export": "StatisticalRL.OnlineRL.onlineSourceAllocated_actualW1RestrictedIota_strict",
-      "lean_statement": "StatisticalRL.Statements.Lemma5_7_W1_K2_corrected",
-      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_7_W1_K2_corrected_holds",
-      "statement_scope": "Only the W1 clause, with printed coefficients and confidence; K>=2 because of the K=1 vanishing logarithm (SOURCE-ISSUES C12). Uses explicit zero-count completion (C8), fixed deterministic greedy tie, 0<delta<=1 and source bonus constants. W2/W3 and the joint named lemma are not certified.",
-      "evidence": "docs/critic-online-w1-restricted.md",
+      "source_lines": "925–957",
+      "lean_export": "StatisticalRL.OnlineRL.onlineSourceAllocated_actualW123Restricted_strict",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_7_K2_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_7_K2_corrected_holds",
+      "statement_scope": "All three printed inequalities on one actual-law event with the printed 12 S^2 A H K delta-prime confidence. K>=2 (SOURCE-ISSUES C12), finite zero-count completion (C8), fixed deterministic greedy tie and source confidence/bonus domains. Singleton state spaces included. Supersedes the W1-only ledger variant; the earlier W1 statement/proof remain available. No T234 or final regret theorem is certified.",
+      "evidence": "docs/critic-online-w123-joint.md",
       "supporting_evidence": [
-        "docs/online-w1-restricted-verification.md"
+        "docs/online-w123-joint-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

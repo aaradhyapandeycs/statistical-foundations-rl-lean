@@ -1,5 +1,9 @@
 # Restricted W1 verification
 
+This report records the earlier W1-only milestone. Its coverage is now
+superseded by the [complete corrected joint lemma](online-w123-joint-verification.md);
+the source and validation evidence below is retained as history.
+
 The verified endpoint is the W1 clause only of
 `lem:bound-W1-W2-ucbvi-proof`, `chapters/onlineRL.tex:928–953`.
 `StatisticalRL.Statements.Lemma5_7_W1_K2_corrected` states the printed

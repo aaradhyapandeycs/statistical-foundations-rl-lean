@@ -2,6 +2,7 @@ import Formalization.Statements.Ch5
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
 import Formalization.Online.Regret.NonnegativeTelescope
 import Formalization.Online.Regret.W1.OnlineW1RestrictedSourceBudget
+import Formalization.Online.Regret.Joint.OnlineW123Final
 
 namespace StatisticalRL.Statements
 open StatisticalRL.OnlineRL
@@ -47,5 +48,15 @@ theorem Lemma5_7_W1_K2_corrected_holds : Lemma5_7_W1_K2_corrected := by
   have hp' := lt_of_le_of_lt hc hp
   simpa only [S, A, δ', onlineSourceOptimismDeltaPrime,
     onlineActualW1RestrictedIotaEvent, onlineW1SourceIota] using hp'
+
+/-- Consume the joint same-experiment export; expand all three source bounds. -/
+theorem Lemma5_7_K2_corrected_holds : Lemma5_7_K2_corrected := by
+  intro State Action instS instA H K hH hK E ρ δ c₁ c₂ hδ hδone hc₁ hc₂
+  simpa only [onlineSourceOptimismDeltaPrime, onlineActualW123RestrictedEvent,
+    Set.inter_def, Set.mem_setOf_eq, onlineActualW1RestrictedIotaEvent,
+    onlineActualW2RestrictedIotaEvent, onlineActualW3RestrictedIotaEvent,
+    onlineW1SourceIota] using
+    onlineSourceAllocated_actualW123Restricted_strict H K hH hK E ρ
+      (Classical.choice (E ⟨0, hH⟩).state_nonempty) δ c₁ c₂ hδ hδone hc₁ hc₂
 
 end StatisticalRL.Statements

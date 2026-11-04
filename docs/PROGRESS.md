@@ -6,6 +6,32 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Complete corrected joint W1/W2/W3 lemma verified
+
+- Corrected/restricted Lemma 5.7 now has all three printed inequalities on
+  one actual-law event, the exact printed coefficients and iota, and strict
+  confidence 1−12S²AHK delta-prime. Singleton state spaces are included.
+- The four-event argument shares one coordinate event and one optimism
+  event. For S≥2 its failure budget is (10+4S)SAHK delta-prime; for S=1
+  empirical and true expectations coincide, so every W term is zero.
+- Scope remains K≥2 (C12), finite zero-count completion (C8), fixed greedy
+  tie and the source confidence/bonus domains. T2/T3/T4 bounds, subsequent
+  variance budgets and the final regret theorem remain open.
+- Ownership: builder — W2/W3 actual-path bounds and joint confidence;
+  coordinator — source statement, index wrapper, frozen integration and
+  publication; independent critic — mathematical source, helper consumption,
+  extracted context, qualification, driver and final verification evidence.
+- The affected 513-module check passed: 40 rebuilt, 473 reused from the
+  verified477 baseline; 5,423 declarations were audited using only standard
+  axioms. This was not a fresh clean513 build. See
+  [verification](online-w123-joint-verification.md) and
+  [independent review](critic-online-w123-joint.md).
+- Current library: 58,997 Lean source lines including comments and blanks,
+  across 513 project Lean files. The ledger retains 17 original named-result
+  entries with disclosed restrictions and three separate corrected variants.
+  The joint lemma supersedes the W1-only variant; these counts do not certify
+  chapter or monograph completion.
+
 ## Restricted W1 clause verified
 
 - The W1 clause of Lemma 5.7 now has its full quantified statement entry and
@@ -14,7 +40,8 @@ audit, and independent correspondence review before promotion.
   same selected policy's true continuation variance.
 - Scope remains explicit: K≥2 for the vanishing-log endpoint issue C12,
   the finite zero-count convention C8, and a fixed deterministic greedy tie.
-  W2, W3, the joint lemma, T3/T4 concentration and final regret remain open.
+  That milestone covered W1 only; the complete corrected joint result is
+  recorded above. T3/T4 concentration and final regret remain open.
 - Ownership: builder — deterministic-prefix concentration, adaptive-history
   transfer and actual-path counts/variance aggregation; coordinator —
   readable statement, confidence weakening and integration; independent

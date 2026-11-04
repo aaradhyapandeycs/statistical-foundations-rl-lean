@@ -2,6 +2,7 @@ import Formalization.Online.SourceOptimism.SequentialEpisodeDefinitions
 import Formalization.Online.SourceOptimism.CappedGreedyPlannerDefinitions
 import Formalization.Online.Regret.Definitions
 import Formalization.Online.Regret.W1.W1Definitions
+import Formalization.Online.Regret.Joint.W123Definitions
 
 /-! Corrected source-facing Chapter 5 statement index. -/
 open scoped BigOperators
@@ -83,7 +84,7 @@ noncomputable def Lemma5_6_corrected : Prop :=
 /-- W₁ clause of `lem:bound-W1-W2-ucbvi-proof`,
 `chapters/onlineRL.tex:928–953`, with W₁ defined at lines 910–922 and iota
 at lines 726–733. This entry proves only the W₁ inequality, with the printed
-confidence and coefficients; W₂ and W₃ are separate open obligations.
+confidence and coefficients; the other two clauses are indexed separately below.
 It restricts the episode count to K ≥ 2 because the printed logarithmic
 factor vanishes at K = 1 (Candidate C12 in `docs/SOURCE-ISSUES.md`). It also
 uses the explicit finite zero-count convention Q = H (Candidate C8), the
@@ -113,5 +114,52 @@ noncomputable def Lemma5_7_W1_K2_corrected : Prop :=
             (1 / 8 : ℝ) * Real.sqrt (S * A * H *
               onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' c₁ c₂ * iota) +
             (1 / 8 : ℝ) * S * A * H^2 * iota}
+
+/-- Complete corrected/restricted `lem:bound-W1-W2-ucbvi-proof`,
+`chapters/onlineRL.tex:925–957`. W₁ and W₂ are defined at lines 910–922,
+W₃ at line 931, the joint confidence at line 935, and the three bounds at
+lines 938–946. Iota is the printed quantity at lines 726–733.
+This states all three inequalities on ONE event for the actual reset-vector
+and causal sequential-path law. The same played rows, pre-episode empirical
+rows, selected true-policy continuations and optimistic continuations define
+the W and T₆ quantities; no concentration or variance estimate is assumed.
+The episode restriction K≥2 addresses the vanishing-log endpoint (Candidate
+C12 in `docs/SOURCE-ISSUES.md`). The algorithm uses the finite zero-count
+convention Q=H (Candidate C8), one fixed deterministic greedy tie rule,
+and the source confidence/bonus domains. Singleton state spaces are included.
+The original unrestricted K=1 source lemma is not certified by this entry. -/
+noncomputable def Lemma5_7_K2_corrected : Prop :=
+  ∀ (State Action : Type) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H), 2 ≤ K →
+    ∀ (E : Fin H → EnvironmentStage State Action)
+      (ρ : FiniteDistribution State) (δ c₁ c₂ : ℝ),
+    0 < δ → δ ≤ 1 → 4 ≤ c₁ → c₁^2 ≤ c₂ →
+    let fallback : State := Classical.choice (E ⟨0, hH⟩).state_nonempty
+    let S : ℝ := Fintype.card State
+    let A : ℝ := Fintype.card Action
+    let δ' := δ / (100 * S^2 * A^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let iota := 40000 * (Real.log K / Real.log 2)^3 *
+      Real.log (3 * Fintype.card State * Fintype.card Action * H : ℝ) * Real.log (1 / δ')
+    let planner := onlineCappedGreedyPlanner E (Real.log (1 / δ')) c₁ c₂
+    1 - 12 * S^2 * A * H * K * δ' <
+      (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K * H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{0, 0} State (K * H) |
+          ((∑ k : Fin K, onlineActualEpisodeW1 H K hH E sample.1 fallback sample.2 k δ' c₁ c₂) ≤
+            (1 / 8 : ℝ) * Real.sqrt (S * A * H *
+              onlineActualT6Policy H K hH E sample.1 fallback sample.2 δ' c₁ c₂ * iota) +
+            (1 / 8 : ℝ) * Real.sqrt (S * A * H *
+              onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' c₁ c₂ * iota) +
+            (1 / 8 : ℝ) * S * A * H^2 * iota) ∧
+          ((∑ k : Fin K, onlineActualEpisodeW2 H K hH E sample.1 fallback sample.2 k δ' c₁ c₂) ≤
+            (1 / 8 : ℝ) * Real.sqrt (S^2 * A * H *
+              onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' c₁ c₂ * iota) +
+            (1 / 8 : ℝ) * S^2 * A * H^2 * iota) ∧
+          ((∑ h : Fin H, ∑ k : Fin K,
+              onlineActualW3Point H K hH E sample.1 fallback sample.2 δ' c₁ c₂ h k) ≤
+            (1 / 8 : ℝ) * Real.sqrt (S * A * H^3 *
+              onlineActualT6Policy H K hH E sample.1 fallback sample.2 δ' c₁ c₂ * iota) +
+            (1 / 8 : ℝ) * Real.sqrt (S^2 * A * H^3 *
+              onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' c₁ c₂ * iota) +
+            (1 / 8 : ℝ) * S^2 * A * H^3 * iota)}
 
 end StatisticalRL.Statements
