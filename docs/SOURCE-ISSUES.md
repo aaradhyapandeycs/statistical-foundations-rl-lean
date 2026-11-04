@@ -308,6 +308,38 @@ proof or author-approved erratum. Restricting the helper to the main theorem's
 is not by itself a formal proof of the restricted lemma. The example does not
 refute Theorem 6.3, whose displayed assumptions exclude `γ=0`.
 
+## Candidate C12: the one-episode endpoint of the auxiliary W1 bound
+
+**Source:** `lem:bound-W1-W2-ucbvi-proof`, `onlineRL.tex:928–953`, and
+`eq:assumption-K-proof-B`, lines 726–733. The main theorem at lines 472–480
+permits `K ≥ 1`; only the reciprocal-count lemma at lines 640–644 explicitly
+restricts to `K ≥ 2`. The displayed W1/W2/W3 lemma has no such restriction.
+
+At `K = 1`, the printed factor
+`iota = 40000 (log₂ K)^3 log(3SAH) log(1/δ′)` is zero. A finite source-level
+counterexample takes `S = A = H = 2`, `K = 1`, and `δ = 1/2`, with both actions
+identical and the initial state fixed at state 0. Every stage-1 transition goes
+to state 0 with zero reward. Stage-2 reward is zero at state 0 and one at
+state 1. The pre-episode empirical rows are initialized uniformly as stated
+in the source. Hence the first W1 summand is `1/2 − 0`, and the terminal
+summand is zero: `W1 = 1/2` deterministically. The printed right-hand side is
+zero for any finite continuation tables. Here `δ′ = 1/12800`, so the source
+claims its joint event has probability greater than `197/200`, whereas its
+W1 inequality fails on every path in this example.
+
+This is independently checked source-level counterevidence, **not yet a Lean
+formalization of the counterexample**. The source's separate undefined bonus
+at zero visits remains Candidate C8; the example persists under its intended
+finite zero-count completion retaining the explicitly initialized empirical
+rows. It does not refute the main regret theorem, which can handle `K = 1`
+separately using the deterministic regret bound.
+
+A proposed correction restricts this auxiliary logarithmic bound to `K ≥ 2`,
+or replaces the vanishing logarithm by a positive floor and treats the endpoint
+explicitly. Any K≥2 formalization is a disclosed restricted result, not the
+literal all-K auxiliary claim. No author-approved erratum is asserted. See the
+[independent source check](critic-online-k1-iota-obstruction.md).
+
 ## Statement-index scope disclosures
 
 These are limitations of the currently proved formalizations, not asserted

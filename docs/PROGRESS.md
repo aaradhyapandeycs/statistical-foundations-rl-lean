@@ -88,6 +88,13 @@ audit, and independent correspondence review before promotion.
 
 ## Current checked infrastructure
 
+- A source-level one-episode counterexample shows that the auxiliary online
+  W1 bound cannot use its printed vanishing log factor at `K=1`. It is
+  independently checked and not yet formalized in Lean; the main regret
+  theorem is not refuted. See [Candidate C12](SOURCE-ISSUES.md) and its
+  [source check](critic-online-k1-iota-obstruction.md).
+
+
 - A source-level counterexample at `γ=0` shows that the standalone offline
   VI-LCB iteration bound cannot hold on the full preliminary discount domain.
   This example has not yet been formalized in Lean. The main offline theorem
