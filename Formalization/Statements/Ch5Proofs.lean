@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
 import Formalization.Statements.Ch5
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
 import Formalization.Online.Regret.NonnegativeTelescope
@@ -58,5 +59,15 @@ theorem Lemma5_7_K2_corrected_holds : Lemma5_7_K2_corrected := by
     onlineW1SourceIota] using
     onlineSourceAllocated_actualW123Restricted_strict H K hH hK E ρ
       (Classical.choice (E ⟨0, hH⟩).state_nonempty) δ c₁ c₂ hδ hδone hc₁ hc₂
+
+
+/-- Average the stronger pointwise-in-initial-state export under the source
+initial distribution. -/
+theorem Lemma5_4_holds : Lemma5_4 := by
+  intro State Action instS instA H _hH E ρ π
+  dsimp only
+  apply ρ.expectation_le_const
+  intro s
+  exact finitePolicy_expected_cumulative_variance_le_horizon_sq H E π s
 
 end StatisticalRL.Statements

@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.PolicyVariance.TrajectoryVarianceDefinitions
 import Formalization.Online.SourceOptimism.SequentialEpisodeDefinitions
 import Formalization.Online.SourceOptimism.CappedGreedyPlannerDefinitions
 import Formalization.Online.Regret.Definitions
@@ -161,5 +162,23 @@ noncomputable def Lemma5_7_K2_corrected : Prop :=
             (1 / 8 : ℝ) * Real.sqrt (S^2 * A * H^3 *
               onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ' c₁ c₂ * iota) +
             (1 / 8 : ℝ) * S^2 * A * H^3 * iota)}
+
+
+/-- Lemma 5.4, `lem:cum-var-ub-Hsquare-ucbvi-mean`,
+`chapters/onlineRL.tex:648–658`. A deterministic stage-dependent policy is
+executed in the true MDP. The expectation averages its actual trajectory law
+from each initial state under an arbitrary initial distribution. The recursive
+variance sum adds each true transition-row variance of the same policy's
+remaining trajectory value; its terminal continuation is zero. -/
+noncomputable def Lemma5_4 : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H : ℕ), 0 < H →
+    ∀ (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+      (π : Fin H → State → Action),
+    let stages := List.ofFn (fun h => (E h).withPolicy
+      (fun s => EnvironmentStage.pointMass (π h s)))
+    ρ.expectation (fun s =>
+      (DecisionStage.trajectoryLaw stages s).expectation
+        (finiteTrajectoryVarianceSum stages s)) ≤ (H : ℝ)^2
 
 end StatisticalRL.Statements

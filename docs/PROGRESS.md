@@ -6,6 +6,32 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Fixed-policy cumulative variance lemma verified
+
+- Original Lemma 5.4 (online-RL source lines 648–658) now has its full
+  deterministic-policy statement and an applying proof in the Chapter 5 index.
+  Its trajectory law uses the actual policy and true transition rows. The
+  expectation bound H² holds for any initial distribution.
+- A stronger randomized-policy finite-trajectory bound supplies the proof.
+  Total return variance includes action variation and expected tail variance;
+  the nonnegative terms are retained before bounding cumulative transition
+  variance by the variance of a return in [0,H]. No conditional variance
+  certificate is an input.
+- The affected 520-module check passed: 11 rebuilt, 509 verified reused from
+  joint513, and 5,441 declarations audited with standard axioms. Seven freshly
+  qualified modules and the actual statement proof also passed focused probes.
+- At this milestone: 59,246 project Lean lines including comments and blanks,
+  across 520 files; 18 original named-result entries with disclosed restrictions
+  elsewhere, plus three separate corrected variants. No chapter or monograph
+  completion is certified. See [verification](online-policy-variance-verification.md)
+  and [independent review](critic-online-policy-variance.md).
+- Current work continues on the joint T2/T3/T4 source bound and adaptive
+  T5/T6 concentration. Their staged drafts are outside this publication.
+- Ownership: builder — variance decomposition and finite trajectory budget;
+  coordinator — source specialization, statement index and frozen integration;
+  independent critic — source semantics, definition extraction, actual export
+  consumption, qualifications and verification evidence.
+
 ## Complete corrected joint W1/W2/W3 lemma verified
 
 - Corrected/restricted Lemma 5.7 now has all three printed inequalities on
@@ -26,7 +52,7 @@ audit, and independent correspondence review before promotion.
   axioms. This was not a fresh clean513 build. See
   [verification](online-w123-joint-verification.md) and
   [independent review](critic-online-w123-joint.md).
-- Current library: 58,997 Lean source lines including comments and blanks,
+- At that milestone: 58,997 Lean source lines including comments and blanks,
   across 513 project Lean files. The ledger retains 17 original named-result
   entries with disclosed restrictions and three separate corrected variants.
   The joint lemma supersedes the W1-only variant; these counts do not certify

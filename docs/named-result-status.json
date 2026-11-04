@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T09:26:59.588195+00:00",
+  "updated_at": "2026-11-04T11:24:55.300867+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -205,6 +205,21 @@
       "supporting_evidence": [
         "docs/robust-strong-duality-verification.md",
         "docs/critic-robust-tv-strong-duality.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.4",
+      "source_label": "lem:cum-var-ub-Hsquare-ucbvi-mean",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "648–658",
+      "lean_export": "StatisticalRL.OnlineRL.finitePolicy_expected_cumulative_variance_le_horizon_sq",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_4",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_4_holds",
+      "statement_scope": "Full fixed deterministic policy claim under the actual controlled trajectory law. The statement averages a stronger pointwise-in-initial-state export over an arbitrary initial distribution. No algorithm count, tie, optimism, or conditional variance-budget premise.",
+      "evidence": "docs/critic-online-policy-variance.md",
+      "supporting_evidence": [
+        "docs/online-policy-variance-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }
