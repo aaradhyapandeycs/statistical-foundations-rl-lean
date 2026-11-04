@@ -6,6 +6,33 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## MVP profile and stored-count conclusions verified
+
+- Lemma 5.11's printed profile-cardinality bound is proved for every finite
+  episode-by-stage state-action row table, a superset of the algorithm's
+  realized traces. It retains K≥SAH log₂K and the exact printed RHS, and
+  handles K=1 explicitly. The safe ceiling family includes every actual
+  profile; the printed intermediate rounding gap is recorded as C15.
+- The corrected power-of-two trigger variant of Lemma 5.12 is proved for K≥2 from the actual
+  cumulative/pending/stored counter fold, for arbitrary chronological traces
+  with the constructed stage clock. The power-of-two trigger interpretation
+  follows the source doubling prose. Its pointwise factor-two argument fails
+  (C13), while a dyadic-block proof establishes the final factor4 sum.
+- Both full statements import definition modules only; applying wrappers
+  consume the actual exports. The combined index's 12 proof exports passed
+  the focused axiom probe. Affected integration: 17 rebuilt+
+  667 verified reused=684 modules; 6,658 declarations with only
+  propext, Classical.choice and Quot.sound.
+- Size: 74,861 Lean lines including comments/blanks in 684 files.
+  Ledger: 20 original named entries with existing disclosures and eight
+  corrected variants. No complete chapter or monograph is certified.
+- Ownership: Terra — operational count builder; Data — profile cardinality
+  and cumulative/operational bridge; coordinator — full index and integration;
+  independent critic — source, definition bodies, guards and final evidence.
+- Next: actual expanded-law uniform concentration, its random-profile
+  application, and the MVP regret proof. Single-row probability helpers are
+  private prerequisites; they are not the completed uniform source lemma.
+
 ## Signed variance error verified and repaired
 
 - The second clause of Lemma 5.22 (`lemma:sqv`, onlineRL.tex:3612–3615) is

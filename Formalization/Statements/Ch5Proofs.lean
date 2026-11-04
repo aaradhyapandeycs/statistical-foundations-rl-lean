@@ -1,3 +1,6 @@
+import Formalization.Online.Regret.MVP.OnlineMVPArbitraryHistory
+import Formalization.Online.Regret.MVP.MVPProfileCardinality
+import Formalization.Online.Regret.MVP.MVPActualProfiles
 import Formalization.Probability.SquaredVarianceBounds
 import Formalization.Online.Regret.Main.OnlineUCBVIRegretMain
 import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
@@ -144,5 +147,32 @@ theorem Lemma5_22_corrected_holds : Lemma5_22_corrected := by
   intro Ω _ μ _ X hX C hbound
   exact ⟨StatisticalRL.GeneralVariance.variance_square_le_four_of_abs_bound μ X hX C hbound,
     StatisticalRL.GeneralVariance.variance_centeredSquare_le_four_of_abs_bound μ X hX C hbound⟩
+
+
+open StatisticalRL.OnlineRL.MVPProfile
+
+theorem Lemma5_11_holds : Lemma5_11 := by
+  intro State Action instState instStateNonempty instAction instActionNonempty
+    K H hKpos hH hbudget
+  have hsource := sourceMVPFinitePossibleProfiles_card_bound_all
+    (K := K) (H := H) (Row := State × Action) hKpos hH
+    (by
+      simpa [Fintype.card_prod, Nat.cast_mul, mul_assoc, mul_left_comm, mul_comm]
+        using hbudget)
+  simpa [Fintype.card_prod, Nat.cast_mul, mul_assoc, mul_left_comm, mul_comm]
+    using hsource
+
+theorem Lemma5_12_powerOfTwo_corrected_holds : Lemma5_12_powerOfTwo_corrected := by
+  intro State Action _ _ _ _ H K hH hK row next
+  let rowAt : ℕ → Fin H × (State × Action) :=
+    fun n => (⟨n % H, Nat.mod_lt n hH⟩, row n)
+  have hs : ∀ j, j < K * H → (rowAt j).1.val = j % H := by
+    intro j hj
+    rfl
+  change (∑ k : Fin K, ∑ h : Fin H,
+    (((max ((StatisticalRL.OnlineRL.onlineMVPCountTablesRun rowAt next (k.val * H)).stored
+      (rowAt (k.val * H + h.val))) 1 : ℕ) : ℝ)⁻¹)) ≤ _
+  rw [Finset.sum_comm]
+  exact StatisticalRL.OnlineRL.onlineMVP_operationalHistory_sourceCountBudget H K hH hK rowAt next hs
 
 end StatisticalRL.Statements

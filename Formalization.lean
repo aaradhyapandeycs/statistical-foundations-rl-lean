@@ -386,3 +386,16 @@ import Formalization.Online.Regret.Counts.OnlineReciprocalSource
 import Formalization.Probability.SquaredVarianceBounds
 import Formalization.Counterexamples.CenteredSquareVariance
 import Formalization.Counterexamples.CenteredSquareVarianceMeasure
+import Formalization.Online.Regret.MVP.MVPCountDefinitions
+import Formalization.Online.Regret.MVP.OnlineMVPStoredCount
+import Formalization.Online.Regret.MVP.OnlineMVPDyadicTrigger
+import Formalization.Online.Regret.MVP.OnlineMVPStoredClosedForm
+import Formalization.Online.Regret.MVP.OnlineMVPActualVisitRanks
+import Formalization.Online.Regret.MVP.OnlineMVPBlockBudget
+import Formalization.Online.Regret.MVP.OnlineMVPRankBudget
+import Formalization.Online.Regret.MVP.OnlineMVPAllRowsBudget
+import Formalization.Online.Regret.MVP.OnlineMVPOperationalCounters
+import Formalization.Online.Regret.MVP.OnlineMVPArbitraryHistory
+import Formalization.Online.Regret.MVP.MVPProfileDefinitions
+import Formalization.Online.Regret.MVP.MVPProfileCardinality
+import Formalization.Online.Regret.MVP.MVPActualProfiles

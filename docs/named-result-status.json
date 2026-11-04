@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T15:56:15.912734+00:00",
+  "updated_at": "2026-11-04T16:51:55.367966+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -237,6 +237,21 @@
         "docs/online-reciprocal-count-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.11",
+      "source_label": "lemma:key2",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "1540–1542",
+      "lean_export": "StatisticalRL.OnlineRL.MVPProfile.sourceMVPFinitePossibleProfiles_card_bound_all",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_11",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_11_holds",
+      "statement_scope": "Printed profile-cardinality conclusion with K≥SAH log₂K, including K=1. Proved in stronger arbitrary finite episode-by-stage state-action row-table form, with the exact source threshold profile of pre-episode cumulative counts. A safe ceiling comparison family repairs the source intermediate inclusion (C15); the final printed bound is unchanged. This does not certify the printed intermediate family or full MVP algorithm/regret.",
+      "evidence": "docs/critic-online-MVP-counts-profiles.md",
+      "supporting_evidence": [
+        "docs/online-MVP-counts-profiles-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ],
   "proved_variants": [
@@ -339,6 +354,21 @@
       "evidence": "docs/critic-square-variance-correction.md",
       "supporting_evidence": [
         "docs/square-variance-correction-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.12, power-of-two trigger correction",
+      "source_label": "lem:sum-inv-Nhk-mvp",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "1570–1577",
+      "lean_export": "StatisticalRL.OnlineRL.onlineMVP_operationalHistory_sourceCountBudget",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_12_powerOfTwo_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_12_powerOfTwo_corrected_holds",
+      "statement_scope": "Printed max-one inverse stored-count conclusion for K≥2, under the power-of-two trigger interpretation in the doubling prose. The operational per-successor pending counters reset at a row trigger and stored size is the completed batch size. Arbitrary realized chronological row/successor traces include actual algorithm traces. C13 refutes the printed intermediate factor-two comparison, while a dyadic-block proof establishes the unchanged final factor4 sum.",
+      "evidence": "docs/critic-online-MVP-counts-profiles.md",
+      "supporting_evidence": [
+        "docs/online-MVP-counts-profiles-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

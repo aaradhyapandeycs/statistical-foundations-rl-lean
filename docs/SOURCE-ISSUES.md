@@ -405,6 +405,46 @@ errors in the manuscript.
   rule remains undefined as recorded in C8. See the
   [independent review](critic-online-ucbvi-regret.md).
 
+<a id="C13"></a>
+
+## Candidate C13: MVP trigger notation and stored-count comparison
+
+**Status: source trigger inconsistency and invalid intermediate argument;
+a corrected power-of-two trigger variant of Lemma 5.12 is proved.**
+
+Source: `chapters/onlineRL.tex:1570–1591`, `lem:sum-inv-Nhk-mvp`;
+the factor-two claim is at line 1582. The algorithm's counter updates are
+at lines 1281–1288, with doubling described at lines 1213–1217. The Lean
+interpretation uses power-of-two trigger times as specified by that prose.
+However, algorithm line 1280 literally lists the consecutive integers
+`{1,2,...,2^(log₂K)}`, which include every positive count up to K. Under that
+literal reading, one state/action/stage and K=32 give stored size 1 at every
+visit: the inverse-count sum is 32, exceeding the printed 4 log₂32=20.
+This is independently checked source-level arithmetic, not a Lean encoding
+of the literal algorithm. The source prose and displayed trigger conflict;
+the proved variant explicitly selects the prose-intended dyadic rule.
+
+After a fixed row has been visited three times, the cumulative count is 3.
+The last completed batch is the singleton second visit; the third visit is
+pending, so the stored batch size remains 1. Thus the claimed pointwise
+comparison `N_all ≤ 2*N` fails: 3≤2 is false. The stored sizes after n visits
+are 0,1,1,1,2,2,2,2,4,...; they are not the largest power of two below n.
+The displayed reduction to `2/max(N_all,1)` therefore fails at this point.
+
+The final sum bound is true for the prose-intended power-of-two rule. A dyadic-block proof uses the
+actual per-successor pending counters and resets, proves the stored-batch
+closed form and chronological visit-rank budget, and sums over rows/stages.
+It yields the printed `4SAH log₂K` for every K≥2. The full statement is
+`StatisticalRL.Statements.Lemma5_12_powerOfTwo_corrected`; it covers arbitrary realized traces,
+so it applies to the corrected dyadic algorithm without an assumed probability event
+or policy restriction. The first-visit max-one charge is retained.
+The corrected suffix discloses the trigger change; the alternate proof does
+not validate the printed factor-two step. The profile-to-empirical-model
+identity at lines 1531–1533 also requires dyadic updates. That identity and
+full MVP regret are not certified by these two count/profile results.
+See [independent review](critic-online-MVP-counts-profiles.md) and
+[verification](online-MVP-counts-profiles-verification.md).
+
 <a id="C14"></a>
 
 ## Candidate C14: centered-square variance for signed variables
@@ -446,3 +486,34 @@ estimates, including its own factor4 square-variance proof. Independent
 consumption review found no effect on the already-published corrected UCBVI
 regret theorem. See [independent review](critic-square-variance-correction.md)
 and [verification](square-variance-correction-verification.md).
+
+<a id="C15"></a>
+
+## Candidate C15: MVP intermediate profile-family rounding
+
+**Status: confirmed intermediate inclusion gap under a literal integer/floor
+reading; the printed final Lemma 5.11 cardinality bound is proved.**
+
+Source: profile definition `chapters/onlineRL.tex:1506–1525`,
+`defn:profile`; Lemma 5.11 (`lemma:key2`) at lines 1540–1542; the comparison
+family and inclusion argument at lines 1551–1563. The source does not impose
+a power-of-two episode count in the lemma.
+
+For K=3 with one row and one stage, two prior visits give profile index
+`max{j∈Z:2^(j−1)≤2}=2`. This exceeds the real log₂3. Hence the literal
+integer set `{0,...,log₂K}`, interpreted by its floor endpoint, omits an
+attainable profile even though K≥SAH log₂K holds. An implicit ceiling
+convention could address the notation, but is not written in that inclusion.
+This does not refute the final cardinality conclusion.
+
+The Lean proof uses the safe level cap `Nat.log2 (K-1)+1` and proves every
+actual pre-episode cumulative count has an index below it. It counts the
+finite row-table profiles inside a rowwise monotone ceiling family, applies
+stars-and-bars, and proves the same printed bound
+`(4SAHK)^(SAH log₂K+1)`. K=1 is handled by the all-zero profile. The full
+statement `StatisticalRL.Statements.Lemma5_11` counts a superset of algorithm
+profiles from all finite episode-by-stage state-action row tables; the
+source large-K premise is retained. The unchanged final conclusion is
+certified, while the literal printed intermediate inclusion is not.
+See [independent review](critic-online-MVP-counts-profiles.md) and
+[verification](online-MVP-counts-profiles-verification.md).
