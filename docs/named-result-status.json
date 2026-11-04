@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T06:29:18.906776+00:00",
+  "updated_at": "2026-11-04T07:58:22.606439+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -234,6 +234,21 @@
       "evidence": "docs/critic-online-regret-telescope.md",
       "supporting_evidence": [
         "docs/online-regret-telescope-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.7, W1 clause only (K>=2 corrected variant)",
+      "source_label": "lem:bound-W1-W2-ucbvi-proof",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "928–953",
+      "lean_export": "StatisticalRL.OnlineRL.onlineSourceAllocated_actualW1RestrictedIota_strict",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_7_W1_K2_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_7_W1_K2_corrected_holds",
+      "statement_scope": "Only the W1 clause, with printed coefficients and confidence; K>=2 because of the K=1 vanishing logarithm (SOURCE-ISSUES C12). Uses explicit zero-count completion (C8), fixed deterministic greedy tie, 0<delta<=1 and source bonus constants. W2/W3 and the joint named lemma are not certified.",
+      "evidence": "docs/critic-online-w1-restricted.md",
+      "supporting_evidence": [
+        "docs/online-w1-restricted-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

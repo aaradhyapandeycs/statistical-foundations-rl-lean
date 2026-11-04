@@ -355,3 +355,9 @@ errors in the manuscript.
   backward-greedy tie rule implemented by the existing export, with positive
   sample count. The statement index records this scope; it does not claim the
   result for every possible empirical-optimal tie rule.
+
+- The W1 clause of Lemma 5.7 (`lem:bound-W1-W2-ucbvi-proof`,
+  `onlineRL.tex:928–953`) is formalized only for K≥2 with the finite
+  zero-count completion and fixed greedy tie. Its statement entry is
+  `Lemma5_7_W1_K2_corrected`; C12 records the missing K=1 endpoint and
+  C8 the zero-count correction. W2/W3 and the full joint lemma remain open.

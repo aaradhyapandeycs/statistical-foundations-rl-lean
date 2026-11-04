@@ -376,3 +376,4 @@ import Formalization.RobustRL.ChiSquaredSourceMaximum
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope
+import Formalization.Online.Regret.W1.OnlineW1RestrictedSourceBudget

@@ -1,6 +1,7 @@
 import Formalization.Statements.Ch5
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
 import Formalization.Online.Regret.NonnegativeTelescope
+import Formalization.Online.Regret.W1.OnlineW1RestrictedSourceBudget
 
 namespace StatisticalRL.Statements
 open StatisticalRL.OnlineRL
@@ -22,5 +23,29 @@ theorem Lemma5_6_corrected_holds : Lemma5_6_corrected := by
     (Real.log (1 / δ')) c₁ c₂ hL hc₁ hc₂ (fun _ => inferInstance) hgreedy
   simpa only [onlineCappedEpisodeValueAlongPath, List.drop_zero,
     onlineCappedEpisodeTelescopeSummand] using h
+
+/-- Derive the printed W₁ confidence from the stronger proved 6SAHK budget. -/
+theorem Lemma5_7_W1_K2_corrected_holds : Lemma5_7_W1_K2_corrected := by
+  intro State Action instS instA H K hH hK E ρ δ c₁ c₂ hδ hδone hc₁ hc₂
+  letI : Nonempty State := (E ⟨0, hH⟩).state_nonempty
+  letI : Nonempty Action := (E ⟨0, hH⟩).action_nonempty
+  let S : ℝ := Fintype.card State
+  let A : ℝ := Fintype.card Action
+  let δ' := onlineSourceOptimismDeltaPrime δ (Fintype.card State) (Fintype.card Action) H K
+  have hS : 1 ≤ S := by
+    change 1 ≤ (Fintype.card State : ℝ)
+    exact_mod_cast (Nat.succ_le_iff.mpr (Fintype.card_pos (α := State)))
+  have hd : 0 < δ' := by
+    dsimp [δ', onlineSourceOptimismDeltaPrime]
+    positivity
+  have hf : 6 * S ≤ 12 * S^2 := by nlinarith
+  have hb := mul_le_mul_of_nonneg_right hf (show 0 ≤ A * H * K * δ' by positivity)
+  have hc : 1 - 12 * S^2 * A * H * K * δ' ≤ 1 - 6 * S * A * H * K * δ' := by
+    nlinarith
+  have hp := onlineSourceAllocated_actualW1RestrictedIota_strict H K hH hK E ρ
+    (Classical.choice (E ⟨0, hH⟩).state_nonempty) δ c₁ c₂ hδ hδone hc₁ hc₂
+  have hp' := lt_of_le_of_lt hc hp
+  simpa only [S, A, δ', onlineSourceOptimismDeltaPrime,
+    onlineActualW1RestrictedIotaEvent, onlineW1SourceIota] using hp'
 
 end StatisticalRL.Statements

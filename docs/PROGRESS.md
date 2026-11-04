@@ -6,6 +6,29 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Restricted W1 clause verified
+
+- The W1 clause of Lemma 5.7 now has its full quantified statement entry and
+  proof wrapper, with the printed coefficients, logarithmic factor and
+  confidence. It concerns the actual reset/path law, selected rows and the
+  same selected policy's true continuation variance.
+- Scope remains explicit: K≥2 for the vanishing-log endpoint issue C12,
+  the finite zero-count convention C8, and a fixed deterministic greedy tie.
+  W2, W3, the joint lemma, T3/T4 concentration and final regret remain open.
+- Ownership: builder — deterministic-prefix concentration, adaptive-history
+  transfer and actual-path counts/variance aggregation; coordinator —
+  readable statement, confidence weakening and integration; independent
+  critic — source semantics, transformations, frozen build and final evidence.
+- The affected 477-module check passed: 28 rebuilt and 449 reused from the
+  verified453 baseline, with 5,240 declarations audited using only standard
+  axioms. This was not a fresh clean477 build. See
+  [verification](online-w1-restricted-verification.md) and
+  [independent review](critic-online-w1-restricted.md).
+- Current library: 56,505 Lean source lines including comments and blanks,
+  across 477 project Lean files. The ledger has 17 original named-result
+  entries with disclosed restrictions and three separate corrected/restricted
+  variants. These counts do not measure whole-monograph completion.
+
 ## Corrected UCBVI telescope verified
 
 - Corrected Lemma 5.6 now states and proves the full deterministic episode
@@ -26,8 +49,8 @@ audit, and independent correspondence review before promotion.
   [independent review](critic-online-regret-telescope.md).
 - The ledger retains 17 reviewed named-result entries with their restrictions,
   plus two separately recorded corrected variants. No chapter or monograph
-  completion is certified. W1 concentration/aggregation and T3 filtration
-  work remain separate quarantined continuations.
+  completion is certified. Subsequent W1 progress is recorded above;
+  T3 filtration and concentration remain separate quarantined continuations.
 
 ## Full robust duality lemma verified
 
