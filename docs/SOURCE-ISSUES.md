@@ -281,6 +281,16 @@ fixed-profile decoupling and full MVP regret remain open. See the
 [MVP review](critic-online-MVP-actual-optimism.md) and
 [verification](online-MVP-actual-optimism-verification.md).
 
+The actual-law corrected MVP variance lemma is also proved as
+`StatisticalRL.Statements.Lemma5_15_corrected`. Its T2 uses the printed
+bonus at positive stored counts and an explicit analysis charge H at zero.
+The printed bonus divides by the zero stored count; no equivalence to an
+unwritten max-one denominator convention is asserted. The final export
+contains no assumed T8 tail, decomposition or variance certificate. C13,
+C16 and fixed deterministic ties remain disclosed; Lemma 5.14 and full MVP
+regret remain open. See [review](critic-online-MVP-t6.md) and
+[verification](online-MVP-t6-verification.md).
+
 ## Candidate C9: offline lower-bound accuracy endpoint
 
 The standalone offline minimax lower bound `thm:infinite-lwoer-bound`

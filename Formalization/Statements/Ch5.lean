@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.MVP.MVPVarianceDefinitions
 import Formalization.Online.Regret.MVP.MVPModelDefinitions
 import Formalization.Online.Regret.MVP.MVPUniformSourceDefinitions
 import Formalization.Online.Regret.MVP.MVPCountDefinitions
@@ -484,5 +485,55 @@ noncomputable def MVP_optimism_corrected : Prop :=
               onlineCappedBackwardValueAt (H : ℝ) (Real.log (1/δp)) c₁ c₂ stages h.val s) ∧
             (∀ s a, EnvironmentStage.optimalQ ((List.ofFn E).drop h.val) s a ≤
               onlineCappedBackwardQAt (H : ℝ) (Real.log (1/δp)) c₁ c₂ stages h.val s a)}
+
+
+/-! Private source-facing snippet. Definition-only imports should include
+MVPModelDefinitions, W1Definitions and the existing sequential definitions. -/
+
+/-- Corrected Lemma 5.15, `lem:bound-T6-ucb-mvp`,
+`source/upstream/tex/chapters/onlineRL.tex:1822–1833`. The actual MVP
+sequential law uses iid episode resets and conditional transition sampling.
+T2 uses the source bonus for positive counts and the C8 analysis charge H
+for zero counts. C13 reads the trigger as a power of two,
+and C16 uses the corrected reciprocal confidence allocation; one deterministic
+greedy tie rule is fixed. The K=1 case is included by a direct argument.
+See `docs/SOURCE-ISSUES.md`. -/
+noncomputable def Lemma5_15_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
+    (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+    (fallback : State) (δ c₁ c₂ : ℝ),
+    0 < δ → δ ≤ 1 → 4 ≤ c₁ → c₁^2 ≤ c₂ →
+    let δp := δ / (100 * (Fintype.card State : ℝ)^2 *
+      (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let I := 40000 * (Real.log K / Real.log 2)^3 *
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) * Real.log (1/δp)
+    let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) c₁ c₂
+    1 - 4*(Fintype.card State : ℝ)*Fintype.card Action*H*K*δp ≤
+      (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
+          let history := onlineSequentialPathHistory
+            (onlineEpisodicChoose H K hH sample.1 fallback planner) (K*H) [] sample.2
+          let U := fun (h : Fin H) (k : Fin K) =>
+            onlineCappedBackwardValueAt (H : ℝ) (Real.log (1/δp)) c₁ c₂
+              (onlineMVPHistoryPlanningStages hH E fallback (history.take (k.val*H))) (h.val+1)
+          let sa := fun (h : Fin H) (k : Fin K) =>
+            onlineActualStageRowSequence H K hH sample.1 fallback planner sample.2 h k.val
+          let stage := fun (h : Fin H) (k : Fin K) =>
+            let hist := history.take (k.val*H)
+            letI : Nonempty State := (E h).state_nonempty
+            onlineMVPActualPlanningStage E (onlineMVPHistoryRowAt hH E fallback hist)
+              (onlineMVPHistoryNextAt fallback hist) hist.length h
+          (∑ h : Fin H, ∑ k : Fin K, ((E h).transition (sa h k).1 (sa h k).2).variance (U h k)) ≤
+            4*(H : ℝ)*(∑ h : Fin H, ∑ k : Fin K,
+              if hp : 0 < ((stage h k).observations (sa h k).1 (sa h k).2).length then
+                c₁ * Real.sqrt ((onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).variance (U h k) *
+                  Real.log (1/δp) / ((stage h k).observations (sa h k).1 (sa h k).2).length) +
+                c₂*(H : ℝ)*Real.log (1/δp) / ((stage h k).observations (sa h k).1 (sa h k).2).length
+              else H) +
+            4*(H : ℝ)*(∑ h : Fin H, ∑ k : Fin K,
+              max ((onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).expectation (U h k) -
+                ((E h).transition (sa h k).1 (sa h k).2).expectation (U h k)) 0) +
+            (K : ℝ)*(H : ℝ)^2*I}
 
 end StatisticalRL.Statements

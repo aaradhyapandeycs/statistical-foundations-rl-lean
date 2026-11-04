@@ -386,6 +386,21 @@
         "docs/online-MVP-corrected-uniform-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.15, corrected MVP T6 variance bound",
+      "source_label": "lem:bound-T6-ucb-mvp",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "1822–1833",
+      "lean_export": "StatisticalRL.OnlineRL.mvpActualT6_source_confidence",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_15_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_15_corrected_holds",
+      "statement_scope": "Actual retained-table sequential law; K≥1, C8 zero-count analysis charge H with positive-count source bonus, C13 power-of-two trigger, C16 reciprocal confidence allocation, fixed deterministic greedy tie. Corrected variant; source Lemma 5.14 and MVP regret remain open.",
+      "evidence": "docs/critic-online-MVP-t6.md",
+      "supporting_evidence": [
+        "docs/online-MVP-t6-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }

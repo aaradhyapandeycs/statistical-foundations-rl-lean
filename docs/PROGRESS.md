@@ -6,6 +6,37 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Corrected MVP T6 variance lemma verified
+
+- Corrected Lemma 5.15 (`lem:bound-T6-ucb-mvp`, onlineRL.tex:1822–1833)
+  proves T6 ≤ 4H T2 + 4H W4 + KH²I with probability at least 1−4SAHKδ′
+  under the actual sequential reset/transition law, including K=1 by a direct
+  zero-variance argument. No conditional-martingale or concentration estimate
+  is inserted as a premise of the final export.
+- T2 uses the printed bonus at positive stored counts and analysis charge H
+  at zero (C8). Other disclosed conventions remain C13 power-of-two triggers,
+  C16 reciprocal δ′, and a fixed maximizing tie. The printed numerator-100
+  confidence allocation is not certified by this result.
+- The actual retained continuation process, predictable conditional variance,
+  T8 confidence estimate, greedy episode telescope and scalar closure are
+  proved. Five statement-facing definitions were extracted without changing
+  their bodies; the complete Chapter 5 Prop has definition-only imports and
+  its wrapper applies the final library export.
+- Qualification: 30 canonical modules and 45 exports, then both complete
+  Chapter 5 files and 15 applying-proof exports. Affected integration:
+  34 rebuilt + 760 verified reused = 794 modules; 7,417
+  project declarations with only permitted standard axioms. This is an
+  affected check with retained reuse evidence, not a new clean full check.
+- Size: 82,034 Lean lines including comments/blanks in 794 files. Ledger:
+  20 original named entries with existing disclosures and 10 separate
+  corrected variants. No complete chapter or monograph is certified.
+- Independent source, transformation, statement and evidence reviews passed.
+  Terra built the T6 providers; coordinator integrated and audited; an
+  independent critic checked source correspondence and actual consumption.
+- Next: actual future-family concentration, adaptive decoupling (Lemma 5.14),
+  remaining MVP variance/bonus bounds and full regret. Private helper builds
+  are not counted as source-result closure.
+
 ## Corrected actual-law MVP optimism verified
 
 - The displayed optimism claim at onlineRL.tex:1480–1487 is proved for the

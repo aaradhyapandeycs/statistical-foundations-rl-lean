@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.MVP.T6.MVPActualT6SourceFinal
 import Formalization.Online.Regret.MVP.Optimism.MVPSourceOptimismFinal
 import Formalization.Online.Regret.MVP.Probability.MVPCorrectedSourceUniformFull
 import Formalization.Online.Regret.MVP.OnlineMVPArbitraryHistory
@@ -225,5 +226,20 @@ theorem MVP_optimism_corrected_holds : MVP_optimism_corrected := by
   simpa only [StatisticalRL.OnlineRL.MVPSourceOptimismCorrected,
     StatisticalRL.OnlineRL.mvpHistoryAllStageOptimism,
     StatisticalRL.OnlineRL.onlineSourceOptimismDeltaPrime] using h
+
+
+/-! Private uncompiled wrapper; proof-file imports the qualified final provider. -/
+theorem Lemma5_15_corrected_holds : Lemma5_15_corrected := by
+  intro State Action instState instAction H K hH hK E ρ fallback δ c₁ c₂ hδ hδ1 hc₁ hc₂
+  letI : Fintype State := instState
+  letI : Fintype Action := instAction
+  have hp := StatisticalRL.OnlineRL.mvpActualT6_source_confidence
+    H K hH hK E ρ fallback δ c₁ c₂ hδ hδ1 hc₁ hc₂
+  simpa [StatisticalRL.OnlineRL.mvpT6SourceEvent,
+    StatisticalRL.OnlineRL.mvpVarianceT6UCB, StatisticalRL.OnlineRL.mvpVarianceT2,
+    StatisticalRL.OnlineRL.mvpVarianceW4, StatisticalRL.OnlineRL.mvpVarianceContinuation,
+    StatisticalRL.OnlineRL.mvpVarianceHistory, StatisticalRL.OnlineRL.onlineW1SourceIota,
+    StatisticalRL.OnlineRL.onlineSourceOptimismDeltaPrime,
+    StatisticalRL.OnlineRL.onlineRegretAnalysisCharge] using hp
 
 end StatisticalRL.Statements
