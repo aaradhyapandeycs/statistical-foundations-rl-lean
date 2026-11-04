@@ -6,6 +6,36 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Corrected actual-law MVP optimism verified
+
+- The displayed optimism claim at onlineRL.tex:1480–1487 is proved for the
+  actual sequential episode law, with the same reset distribution, causal
+  retained-history planner and realized transcript. All episode/stage/state/
+  action values are covered at probability at least 1−2SAHKδ′. No batch-event
+  probability or table-equivalence certificate is assumed by the final theorem.
+- The operational histogram, selected batch, finite stack read, history stage
+  table and planner are linked by proved pathwise identities. A product-law
+  batch event is lifted through independent resets and the proved sequential
+  transcript-law equality. Counts 0–2 use the capped deterministic branch.
+- Explicit corrections remain C8 zero-count completion, C13 power-of-two
+  trigger, C16 reciprocal confidence allocation, and one fixed greedy tie.
+  Recomputing the retained table each episode is extensionally equivalent to
+  caching it between triggers; no imperative cache interpreter is claimed.
+- Qualification passed seven model targets with 50 theorem exports, seventeen
+  optimism targets with 26 exports, and both full Chapter 5 files with fourteen
+  statement-proof exports. Affected integration: 28 rebuilt+736
+  verified reused=764 modules; 7,269 declarations with standard axioms.
+- Size: 79,918 Lean lines including comments/blanks in 764 files. The named
+  ledger stays at 20 original entries with existing disclosures and nine
+  corrected variants: this new result is a displayed claim, not a numbered
+  source environment. No complete chapter or monograph is certified.
+- Ownership: Data — committed model, sampler and history-table identities;
+  Terra — batch concentration, optimism and sequential-law transport;
+  coordinator — definition extraction, complete index, qualification and
+  integration; independent critic — source/consumption and evidence checks.
+- Next: corrected terminal-zero fixed-profile families, actual learner-value
+  membership, decoupling and the remaining MVP variance/regret argument.
+
 ## Corrected full MVP uniform concentration verified
 
 - Corrected Lemma 5.13 now retains both displayed inequalities and the

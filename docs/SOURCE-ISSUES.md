@@ -229,7 +229,7 @@ passed focused, working-tree and clean-copy compilation and axiom checks.
 It does not encode the complete estimator infimum in the manuscript. See the
 [source and evidence review](critic-robust-chi-singleton-action-v5.md).
 
-## Candidate C8: undefined zero-visit bonus in UCBVI
+## Candidate C8: undefined zero-visit bonus in UCBVI and MVP
 
 **Source:** Algorithm `alg:main-ucbvi`, `onlineRL.tex:285–345`, and its
 Bernstein bonus at lines 407–417. The algorithm initializes visit counts to
@@ -264,6 +264,22 @@ the existing fixed deterministic tie implementation. This does not define
 the original zero-count expression or prove the full regret theorem. See
 [verification](online-regret-telescope-verification.md) and
 [independent review](critic-online-regret-telescope.md).
+
+MVP uses the same Bernstein bonus at `onlineRL.tex:1303–1307`,
+after initializing every row count to zero in Algorithm `alg:main-mvp`
+(`:1256–1310`). Its unvisited rows have the same undefined division.
+The corrected MVP planner therefore uses the same explicit Q=H branch at
+zero stored count and retains the initialized uniform row. Positive counts
+use the printed capped bonus; counts one and two saturate under the proved
+constant/logarithm conditions. The actual-law corrected displayed optimism
+claim is now proved as `StatisticalRL.Statements.MVP_optimism_corrected`.
+It also discloses the C13 power-of-two trigger interpretation, C16 reciprocal
+confidence allocation and fixed deterministic greedy tie. No fictitious
+observation or independence-at-random-count premise is introduced. This is
+not an author-approved correction or a proof of the literal zero division;
+fixed-profile decoupling and full MVP regret remain open. See the
+[MVP review](critic-online-MVP-actual-optimism.md) and
+[verification](online-MVP-actual-optimism-verification.md).
 
 ## Candidate C9: offline lower-bound accuracy endpoint
 

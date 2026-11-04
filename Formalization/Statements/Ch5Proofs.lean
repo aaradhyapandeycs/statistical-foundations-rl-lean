@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.MVP.Optimism.MVPSourceOptimismFinal
 import Formalization.Online.Regret.MVP.Probability.MVPCorrectedSourceUniformFull
 import Formalization.Online.Regret.MVP.OnlineMVPArbitraryHistory
 import Formalization.Online.Regret.MVP.MVPProfileCardinality
@@ -214,5 +215,15 @@ theorem Lemma5_13_confidence_corrected_holds : Lemma5_13_confidence_corrected :=
     rw [hdim, hdim3] at hs2
     rw [mvpUniformSource_radius_eq]
     simpa only [mvpUniformBatchSize, Nat.cast_pow, Nat.cast_ofNat] using hs2
+
+theorem MVP_optimism_corrected_holds : MVP_optimism_corrected := by
+  intro State Action instState instAction H K hH hK E ρ fallback δ c₁ c₂ hδ hδ1 hc₁ hc₂
+  letI : Fintype State := instState
+  letI : Fintype Action := instAction
+  have h := StatisticalRL.OnlineRL.mvp_sourceOptimismCorrected_holds
+    (State := State) (Action := Action) H K hH hK E ρ fallback δ c₁ c₂ hδ hδ1 hc₁ hc₂
+  simpa only [StatisticalRL.OnlineRL.MVPSourceOptimismCorrected,
+    StatisticalRL.OnlineRL.mvpHistoryAllStageOptimism,
+    StatisticalRL.OnlineRL.onlineSourceOptimismDeltaPrime] using h
 
 end StatisticalRL.Statements

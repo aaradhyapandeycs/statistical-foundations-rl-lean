@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.MVP.MVPModelDefinitions
 import Formalization.Online.Regret.MVP.MVPUniformSourceDefinitions
 import Formalization.Online.Regret.MVP.MVPCountDefinitions
 import Formalization.Online.Regret.MVP.MVPProfileDefinitions
@@ -456,5 +457,32 @@ noncomputable def Lemma5_13_confidence_corrected : Prop :=
           ∑ h : Fin H, ∑ s : State, ∑ a : Action,
             ((E h).transition s a).variance (X h s a)) +
           S*A*(H:ℝ)^2*I/(2^(j.val+2)*(Real.log K/Real.log 2))}
+
+/-- Corrected MVP optimism, `eq:optimism-Q-V-geq-mvp`,
+`chapters/onlineRL.tex:1480–1487`. The actual law has iid
+resets and conditionally sampled transitions, and uses a fixed deterministic
+greedy tie rule. C8 gives the finite zero-count update, C13 uses the prose
+power-of-two trigger, and C16 replaces the printed allocation 100δ/(S²A²H²K²) by
+δ/(100S²A²H²K²). See `docs/SOURCE-ISSUES.md`. -/
+noncomputable def MVP_optimism_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
+    (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+    (fallback : State) (δ c₁ c₂ : ℝ),
+    0 < δ → δ < 1 → 4 ≤ c₁ → c₁^2 ≤ c₂ →
+    let δp := δ / (100 * (Fintype.card State : ℝ)^2 *
+      (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) c₁ c₂
+    1 - 2*(Fintype.card State : ℝ)*Fintype.card Action*H*K*δp ≤
+      (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{u, 0} State (K*H) |
+          let history := onlineSequentialPathHistory
+            (onlineEpisodicChoose H K hH sample.1 fallback planner) (K*H) [] sample.2
+          ∀ k : Fin K, ∀ h : Fin H,
+            let stages := onlineMVPHistoryPlanningStages hH E fallback (history.take (k.val*H))
+            (∀ s, EnvironmentStage.optimalValue ((List.ofFn E).drop h.val) s ≤
+              onlineCappedBackwardValueAt (H : ℝ) (Real.log (1/δp)) c₁ c₂ stages h.val s) ∧
+            (∀ s a, EnvironmentStage.optimalQ ((List.ofFn E).drop h.val) s a ≤
+              onlineCappedBackwardQAt (H : ℝ) (Real.log (1/δp)) c₁ c₂ stages h.val s a)}
 
 end StatisticalRL.Statements
