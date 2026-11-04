@@ -1,5 +1,9 @@
 # Independent source review: statement-index backfill
 
+Reviewed version: [backfill commit c157821](https://github.com/aaradhyapandeycs/statistical-foundations-rl-lean/commit/c157821fae7b88d5002e22ca75708e7d1c800417).
+The hashes below identify that snapshot. Later chapter additions have their own
+source reviews and verification evidence.
+
 Date: 2026-11-03
 Scope: source/statement review only. No Lean process was run and no Lean source
 was edited for this review. The root agent owns compilation. This review covers

@@ -6,6 +6,29 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## TD main theorem verified
+
+- Theorem 4.1 now has a complete source-facing statement and proof for the
+  printed schedule, budget, confidence and full accuracy range. Its endpoint
+  uses exactly T samples per state and the actual infinite trajectory value.
+  The proof supplies universal witnesses c₁=c₂=1/4 and
+  c₃=max(4096, exp(4)/(log 2)^4); no condition on η₀ is added.
+- Ownership: coordinator — final integration, exact-T wrapper and statement;
+  probability builder — joint-law projection and pathwise output bridge;
+  independent source critic — source domains and sampling/value semantics;
+  proof critic — concentration events, confidence allocation and helper
+  consumption. The projection builder did not independently certify that
+  component; the separate source critic reviewed it.
+- The clean `python3 scripts/check.py` run passed all 418 modules and audited
+  4820 project declarations, allowing only `propext`, `Classical.choice`
+  and `Quot.sound`. [Verification](td-main-theorem-verification.md),
+  [source review](critic-td-full-accuracy-source-20261104.md),
+  [proof-consumption review](critic-td-full-accuracy-consumption-20261104.md).
+- The ledger now contains 16 named-result entries (including the restrictions
+  disclosed there) and one separately recorded corrected optimism variant.
+  This is not a percentage of the monograph. No chapter or whole-paper
+  completion is certified.
+
 ## Statement-index backfill
 
 - The index states the printed Lemma 4.8 and restricts its global learning-rate
@@ -37,8 +60,8 @@ audit, and independent correspondence review before promotion.
   The reverse inequality and maximum attainment remain open.
 - The standalone TD step-size counterexample and the pointwise χ² weak-duality
   helper have passed focused, working-tree and clean-copy compilation and
-  axiom audits. They do not prove the main TD theorem or the full
-  robust-duality lemma, respectively. See the [step-size source issue](SOURCE-ISSUES.md)
+  axiom audits. Those two helpers alone do not establish the main TD theorem or the full
+  robust-duality lemma, respectively; Theorem 4.1 is verified separately above. See the [step-size source issue](SOURCE-ISSUES.md)
   and [χ² review](critic-robust-chi-weak-duality.md).
 - A proposed corrected UCBVI implementation proves all-stage actual-trajectory
   optimism under the source's strict factor-two confidence bound for a fixed
@@ -427,7 +450,7 @@ audit, and independent correspondence review before promotion.
 - The source TD squared-iterate energy inequality is proved for each
   coordinate and positive update under the actual sample law, with the
   source initial-value and rate conditions. The later sharp variance
-  concentration and TD accuracy theorem remain separate; see
+  concentration and TD accuracy theorem are recorded separately; see
   [review](critic-td-square.md).
 - The chronological TD propagator composition, weighted square-energy
   telescope and its deterministic endpoint cap are established. A general

@@ -2,6 +2,7 @@ import Formalization.Statements.Ch4
 import Formalization.ModelFree.TDIterateBounds
 import Formalization.ModelFree.TDSquareEnergy
 import Formalization.ModelFree.TDSourceVarianceProxyUniversal
+import Formalization.ModelFree.TDSourceAccuracyExactSamples
 import Formalization.ModelFree.QLearningIterateBounds
 import Formalization.ModelFree.QLearningStabilityInfinityNorm
 import Formalization.ModelFree.QLearningRobustContraction
@@ -11,6 +12,27 @@ import Formalization.ModelFree.QLearningSourceTheoremClosure
 namespace StatisticalRL.Statements.Ch4
 open StatisticalRL.TemporalDifference StatisticalRL.QLearning
 universe u v
+
+theorem Thm4_1_holds : Thm4_1 := by
+  obtain ⟨c₁, c₂, c₃, hc₂, horder, _hc₁le, hc₃, hsource⟩ :=
+    tdSource_policyEvaluation_exactSamples_accuracy_exists_universal_constants
+  refine ⟨c₁, c₂, c₃, hc₂, horder, hc₃, ?_⟩
+  intro State Action instState instAction M π η δ ε T hγhalf hγone hT
+    hδ hδone hε hεmax hη V₀ h₀ hbudget
+  have hεsource : ε ≤ M.effectiveHorizon := by
+    simpa [DiscountedMDP.effectiveHorizon] using hεmax
+  have hηsource : ∀ t, 1 ≤ t → t ≤ T →
+      1 / (1 + c₁ * (1 - M.discount) * T / Real.log (T : ℝ) ^ 2) ≤ η t ∧
+      η t ≤ 1 / (1 + c₂ * (1 - M.discount) * t / Real.log (T : ℝ) ^ 2) :=
+    fun t ht htT ↦ hη t ht htT
+  have h₀source : ∀ s, 0 ≤ V₀ s ∧ V₀ s ≤ M.effectiveHorizon := by
+    intro s
+    constructor
+    · exact (h₀ s).1
+    · simpa [DiscountedMDP.effectiveHorizon] using (h₀ s).2
+  have hresult := hsource State Action M π η δ ε T hγhalf hT
+    hδ hδone hε hεsource hηsource V₀ h₀source hbudget
+  simpa only [tdErrorValue, tdSourceSampledIterate] using hresult
 
 theorem Lemma4_2_holds : Lemma4_2 := by
   intro State Action instS instA M π η samples V₀ T h₀ hη t ht

@@ -1,5 +1,6 @@
 import Formalization.ModelFree.TDConditionalMomentDefinitions
 import Formalization.ModelFree.TDSourceFixedTerminalProxyDefinitions
+import Formalization.ModelFree.TDSourceSamplingDefinitions
 import Formalization.ModelFree.QLearningSamplingDefinitions
 import Formalization.ModelFree.QLearningComparisonDefinitions
 import Formalization.ModelFree.QLearningRobustDefinitions
@@ -11,6 +12,31 @@ open StatisticalRL.TemporalDifference StatisticalRL.QLearning
 universe u v
 local instance stateMeasurable (State : Type*) : MeasurableSpace State := ⊤
 local instance actionMeasurable (Action : Type*) : MeasurableSpace Action := ⊤
+
+/-- `thm:policy-evaluation-TD`, `chapters/generative_model_model_free.tex:179–224`.
+The proof uses the universal witness `c₁=c₂=1/4` and
+`c₃=max(4096, exp(4)/(log 2)^4)`. The indexed event uses exactly the source's
+T synchronous samples and compares the resulting iterate with the true
+infinite-trajectory policy value. -/
+def Thm4_1 : Prop :=
+  ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (η : ℕ → ℝ) (δ ε : ℝ) (T : ℕ),
+    1 / 2 ≤ M.discount → M.discount < 1 → 2 ≤ T →
+    0 < δ → δ < 1 → 0 < ε → ε ≤ 1 / (1 - M.discount) →
+    (∀ t, 1 ≤ t → t ≤ T →
+      1 / (1 + c₁ * (1 - M.discount) * T / Real.log (T : ℝ) ^ 2) ≤ η t ∧
+      η t ≤ 1 / (1 + c₂ * (1 - M.discount) * t / Real.log (T : ℝ) ^ 2)) →
+    ∀ (V₀ : State → ℝ),
+    (∀ s, 0 ≤ V₀ s ∧ V₀ s ≤ 1 / (1 - M.discount)) →
+    c₃ * Real.log (T : ℝ) ^ 3 *
+      Real.log ((Fintype.card State : ℝ) * T / δ) /
+        ((1 - M.discount) ^ 3 * ε ^ 2) ≤ (T : ℝ) →
+    1 - δ ≤ (tdSourceSamplingLaw M π T).real
+      {data | ∀ s : State,
+        |tdSourceSampledIterate M π η T V₀ data s -
+          M.trajectoryExpectedValue π s| ≤ ε}
 
 /-- `lemma:TD-bounded`, chapters/generative_model_model_free.tex:293–302. -/
 def Lemma4_2 : Prop :=

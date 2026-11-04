@@ -1,5 +1,8 @@
 # Statement-index verification
 
+Verified version: [backfill commit c157821](https://github.com/aaradhyapandeycs/statistical-foundations-rl-lean/commit/c157821fae7b88d5002e22ca75708e7d1c800417).
+The counts and source hashes below refer to that version.
+
 The backfill contains 16 source-facing proposition definitions and 16 proofs
 applying the existing exports: two in Chapter 2, six in Chapter 3, seven in
 Chapter 4, and one corrected UCBVI optimism entry in Chapter 5. Both chapter

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T01:08:24.216328+00:00",
+  "updated_at": "2026-11-04T03:46:23.893410+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -171,6 +171,22 @@
       "coverage": "docs/COVERAGE.md",
       "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_5",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_5_holds"
+    },
+    {
+      "name": "Theorem 4.1",
+      "source_label": "thm:policy-evaluation-TD",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "204–224",
+      "source_context_lines": "179–187 (learning-rate schedule)",
+      "lean_export": "StatisticalRL.TemporalDifference.tdSource_policyEvaluation_exactSamples_accuracy_exists_universal_constants",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_1",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_1_holds",
+      "evidence": "docs/critic-td-full-accuracy-source-20261104.md",
+      "supporting_evidence": [
+        "docs/critic-td-full-accuracy-consumption-20261104.md",
+        "docs/td-main-theorem-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ],
   "proved_variants": [
