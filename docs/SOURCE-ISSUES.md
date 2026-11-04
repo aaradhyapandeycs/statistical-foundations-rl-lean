@@ -255,6 +255,16 @@ uses this zero-count convention under the actual adaptive sequential law,
 for one fixed deterministic tie rule. The printed zero-count behavior remains
 undefined, and the proposed convention is not an author-approved correction.
 
+The corrected deterministic telescope is now proved as
+`StatisticalRL.Statements.Lemma5_6_corrected`: it assigns H as the finite
+analysis charge at zero visits and agrees with the printed bonus at
+positive counts. Its generic statement permits every greedy maximizing
+tie choice. The supporting actual-law probability decomposition retains
+the existing fixed deterministic tie implementation. This does not define
+the original zero-count expression or prove the full regret theorem. See
+[verification](online-regret-telescope-verification.md) and
+[independent review](critic-online-regret-telescope.md).
+
 ## Candidate C9: offline lower-bound accuracy endpoint
 
 The standalone offline minimax lower bound `thm:infinite-lwoer-bound`

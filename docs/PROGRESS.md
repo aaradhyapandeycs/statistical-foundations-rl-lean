@@ -6,6 +6,29 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Corrected UCBVI telescope verified
+
+- Corrected Lemma 5.6 now states and proves the full deterministic episode
+  telescope for any greedy tie choice, nonnegative bonus coefficients and
+  the source confidence range. Its sole semantic correction is the explicit
+  H analysis charge at zero visits (SOURCE-ISSUES C8).
+- The same actual-path chain supplies the four-term summed decomposition,
+  the source-law optimism-to-decomposition probability transfer for the
+  existing fixed-tie planner, and the exact fixed-optimal T1=W1+W2 split.
+  These give no bound on the terms or final regret rate.
+- Builders own the source history/probability chain; the coordinator owns
+  definitions extraction, broader parameter helpers, index and integration;
+  the independent critic checks source correspondence, scope and transforms.
+- The affected 453-module check passed (10 rebuilt, 443 reused from the
+  verified447 baseline) and audited 5,097 declarations with standard axioms.
+  This was not a fresh clean453 build. See
+  [verification](online-regret-telescope-verification.md) and
+  [independent review](critic-online-regret-telescope.md).
+- The ledger retains 17 reviewed named-result entries with their restrictions,
+  plus two separately recorded corrected variants. No chapter or monograph
+  completion is certified. W1 concentration/aggregation and T3 filtration
+  work remain separate quarantined continuations.
+
 ## Full robust duality lemma verified
 
 - Both source bullets of Lemma 7.1 now have the complete expanded Chapter 7
@@ -23,7 +46,7 @@ audit, and independent correspondence review before promotion.
   passed 5,026 declarations with standard axioms only. This was not a fresh
   447-module clean build. See [verification](robust-strong-duality-verification.md)
   and [independent review](critic-robust-strong-duality.md).
-- The ledger has 17 reviewed named-result entries, with their disclosed
+- That release brought the ledger to 17 reviewed named-result entries, with their disclosed
   restrictions, and one separate corrected optimism variant. No chapter or
   whole-monograph completion is certified.
 

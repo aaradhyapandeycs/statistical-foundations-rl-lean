@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T05:55:08.941762+00:00",
+  "updated_at": "2026-11-04T06:29:18.906776+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -220,6 +220,21 @@
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_5_corrected_holds",
       "statement_scope": "Explicit zero-count convention; fixed deterministic tie rule; 0 < δ ≤ 1. SOURCE-ISSUES C8 and C6. This does not certify the literal printed zero-count algorithm.",
       "evidence": "docs/critic-online-corrected-optimism.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.6 (corrected zero-count telescope)",
+      "source_label": "lemma:decomdetail",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "808–818",
+      "lean_export": "StatisticalRL.OnlineRL.onlineCappedEpisode_realized_telescope_nonnegative",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_6_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_6_corrected_holds",
+      "statement_scope": "Finite H analysis charge at zero visits replaces the undefined printed bonus (SOURCE-ISSUES C8). The generic deterministic result permits any greedy tie choice and nonnegative bonus coefficients, with 0 < delta-prime <= 1. No full regret theorem is certified.",
+      "evidence": "docs/critic-online-regret-telescope.md",
+      "supporting_evidence": [
+        "docs/online-regret-telescope-verification.md"
+      ],
       "coverage": "docs/COVERAGE.md"
     }
   ]

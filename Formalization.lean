@@ -373,3 +373,6 @@ import Formalization.RobustRL.TVSourceMaximum
 import Formalization.Statements.Ch7
 import Formalization.Statements.Ch7Proofs
 import Formalization.RobustRL.ChiSquaredSourceMaximum
+import Formalization.Online.Regret.FixedOptimalSplit
+import Formalization.Online.Regret.ProbabilityTransfer
+import Formalization.Online.Regret.NonnegativeTelescope
