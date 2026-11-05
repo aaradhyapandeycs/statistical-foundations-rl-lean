@@ -159,11 +159,16 @@ class Book:
         if src is None:
             self.warn(f"figure file not in the arXiv source: {path}")
             return f'<span class="missing-figure">Figure file <code>{esc(path)}</code> is not in the arXiv source.</span>'
-        name = src.stem + ".png"
+        # Some figures in the arXiv source are PNG or JPEG files named *.pdf;
+        # pdfTeX and macOS accept them, poppler does not. Trust the contents.
+        magic = src.read_bytes()[:4]
+        kind = ("png" if magic == b"\x89PNG" else "jpg" if magic[:2] == b"\xff\xd8"
+                else "pdf" if magic == b"%PDF" else src.suffix.lower().lstrip("."))
+        name = src.stem + (".jpg" if kind == "jpg" else ".png")
         dest = self.out / "figures" / name
         if name not in self.images:
             dest.parent.mkdir(parents=True, exist_ok=True)
-            if src.suffix.lower() == ".pdf":
+            if kind == "pdf":
                 if shutil.which("pdftoppm"):  # Linux CI (poppler-utils)
                     cmd = ["pdftoppm", "-png", "-r", "216", "-singlefile", str(src), str(dest.with_suffix(""))]
                 elif shutil.which("sips"):  # macOS

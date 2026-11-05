@@ -266,6 +266,7 @@ def main() -> int:
     raw = pdf_text()
     if args.dump_pdf_text:
         Path(args.dump_pdf_text).write_text(raw)
+    raw = raw.replace("\f", "\n")  # pdftotext puts no newline before a page break
     raw = re.sub(r"(?m)^\d+\s+Chapter\s+\d+\..*$", " ", raw)
     raw = re.sub(r"(?m)^\d+(?:\.\d+)+\.?\s[^\n]{3,90}?\s\d{1,3}$", " ", raw)
     raw = re.sub(r"-\n", "", raw)
