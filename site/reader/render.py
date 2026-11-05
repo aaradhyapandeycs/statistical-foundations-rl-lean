@@ -1,0 +1,451 @@
+"""HTML pages: book text on the left, Lean on the right."""
+
+from __future__ import annotations
+
+import html
+import json
+import re
+from datetime import datetime, timezone
+
+from .book import Book, ENV_NAMES
+from .lean import REPO, STATUS, STATUS_ORDER, LeanIndex
+from .tex import RESULT_KINDS, label_id
+
+MATHJAX = "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"
+ARXIV = "https://arxiv.org/abs/2610.41903v1"
+TITLE = "Statistical Foundations of Reinforcement Learning"
+SUBTITLE = "A Non-Asymptotic Perspective"
+AUTHORS = "Yuxin Chen, Yuejie Chi, Jianqing Fan, Gen Li, Yuting Wei and Yuling Yan"
+
+
+def esc(t: str) -> str:
+    return html.escape(t, quote=False)
+
+
+def attr(t: str) -> str:
+    return html.escape(t, quote=True)
+
+
+def strip_tags(t: str) -> str:
+    t = re.sub(r"<[^>]+>", "", t)
+    return html.unescape(t)
+
+
+class Site:
+    def __init__(self, book: Book, lean: LeanIndex, pages: list, front: list, back: list):
+        self.book, self.lean, self.pages = book, lean, pages
+        self.front, self.back = front, back
+        self.built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+        self.place()
+
+    # pairing -------------------------------------------------------------------
+    def block_keys(self, b) -> set:
+        keys = set(b.labels or [])
+        if b.entry:
+            keys.add("id:" + b.entry["id"])
+            keys.update(b.entry.get("labels", []))
+        return keys
+
+    @staticmethod
+    def units(b) -> list:
+        """A top-level block followed by its nested numbered or labelled blocks."""
+        return [b] + list(b.children)
+
+    def place(self):
+        """Decide, in book order, which block shows each Lean entry in full."""
+        by_key: dict = {}
+        ranged = []
+        for e in self.lean.entries:
+            keys = [l for l in e.labels if l in self.book.label_owner]
+            rid = (e.record or {}).get("source_inventory_id")
+            if rid:
+                keys.append("id:" + rid)
+            for k in keys:
+                by_key.setdefault(k, []).append(e)
+            if not keys:
+                ranged.append(e)
+        self.matches: dict = {}  # id(block) -> [entries]
+        self.placed: dict = {}   # entry name -> (page id, anchor, id(top-level block))
+        for page in self.pages:
+            for top in page.blocks:
+                for b in self.units(top):
+                    found = []
+                    for key in sorted(self.block_keys(b)):
+                        for e in by_key.get(key, []):
+                            if e not in found:
+                                found.append(e)
+                    if b.kind == "env" and b.file:
+                        for e in ranged:
+                            for r in e.ranges:
+                                if b.file.endswith(r["file"]) and r["line_start"] <= b.line_start <= r["line_end"] \
+                                        and e.name not in self.placed and e not in found:
+                                    found.append(e)
+                    if found:
+                        self.matches[id(b)] = found
+                        for e in found:
+                            self.placed.setdefault(e.name, (page.id, self.anchor(b), id(top)))
+        self.unplaced = [e for e in self.lean.entries if e.name not in self.placed]
+
+    @staticmethod
+    def anchor(b) -> str:
+        if b.anchor:
+            return b.anchor
+        if b.labels:
+            return label_id(b.labels[0])
+        return ""
+
+    def statuses(self, b) -> list:
+        sts = [e.status for e in self.matches.get(id(b), [])]
+        if not sts:
+            for lab in self.block_keys(b):
+                for row in self.lean.coverage.get(lab, []):
+                    sts.append("partial" if re.match(r"\s*\*\*Partial", row["scope"]) else "ledger")
+        return sorted(set(sts), key=STATUS_ORDER.index)
+
+    def lean_column(self, page, top) -> str:
+        out, seen, ledger_seen = [], set(), set()
+        for b in self.units(top):
+            entries = self.matches.get(id(b), [])
+            for e in entries:
+                if e.name in seen:
+                    continue
+                seen.add(e.name)
+                pid, _, top_id = self.placed[e.name]
+                if pid == page.id and top_id == id(top):
+                    out.append(self.lean.card(e))
+                else:
+                    word, cls = STATUS[e.status]
+                    out.append(f'<div class="lean-ref"><span class="status {cls}">{esc(word)}</span> '
+                               f'<a href="{pid}.html#lean-{attr(e.name)}"><code>{esc(e.name)}</code></a> '
+                               f'is shown with its main source item.</div>')
+            if not entries:
+                for lab in sorted(l for l in (b.labels or []) if l in self.lean.coverage):
+                    if lab not in ledger_seen:
+                        ledger_seen.add(lab)
+                        out.append(self.lean.ledger_card(lab, self.lean.coverage[lab]))
+            if not entries and not (set(b.labels or []) & ledger_seen) and b.kind == "env" \
+                    and getattr(b, "kind_name", "") in RESULT_KINDS:
+                word, cls = STATUS["none"]
+                name = f'{ENV_NAMES.get(b.kind_name, "")} {b.number or ""}'.strip() if b is not top else ""
+                out.append(f'<div class="lean-none"><span class="status {cls}">{esc(word)}</span>'
+                           f'{(" " + esc(name)) if name else ""}</div>')
+        return "".join(out)
+
+    # page pieces -----------------------------------------------------------------
+    def block_html(self, b) -> str:
+        h = b.html
+        if b.kind in ("env", "algorithm") and b.tex and b.file:
+            fname = b.file.split("/tex/", 1)[-1]
+            h += (f'<details class="tex-src"><summary>TeX source · {esc(fname)}:{b.line_start}–{b.line_end}</summary>'
+                  f'<pre>{esc(b.tex)}</pre></details>')
+        if b.in_proof:
+            h = f'<div class="in-proof">{h}</div>'
+        return h
+
+    def page_body(self, page) -> str:
+        rows, buf = [], []
+
+        def flush():
+            if buf:
+                rows.append(f'<div class="row"><div class="book-col">{"".join(buf)}</div>'
+                            f'<aside class="lean-col" aria-hidden="true"></aside></div>')
+                buf.clear()
+
+        for b in page.blocks:
+            col = self.lean_column(page, b)
+            if col:
+                flush()
+                rows.append(f'<div class="row paired"><div class="book-col">{self.block_html(b)}</div>'
+                            f'<aside class="lean-col" aria-label="Lean">{col}</aside></div>')
+            else:
+                buf.append(self.block_html(b))
+        flush()
+        return "".join(rows)
+
+    def toc(self, current: str | None) -> str:
+        chapters, cur_ch = [], None
+        current_page = next((p for p in self.pages if p.id == current), None)
+        for p in self.pages:
+            if p.level == 0:
+                cur_ch = {"page": p, "sections": []}
+                chapters.append(cur_ch)
+            elif cur_ch:
+                cur_ch["sections"].append(p)
+        out = ['<nav class="toc" aria-label="Book contents"><a class="toc-home" href="index.html">Contents</a><ol>']
+        for ch in chapters:
+            p = ch["page"]
+            is_open = current_page is not None and current_page.chapter == p.chapter
+            items = "".join(
+                f'<li><a href="{s.id}.html"{" aria-current=page" if s.id == current else ""}>'
+                f'<span class="secnum">{esc(s.number or "")}</span> {s.title}</a></li>' for s in ch["sections"])
+            out.append(f'<li><details{" open" if is_open else ""}><summary><a href="{p.id}.html"'
+                       f'{" aria-current=page" if p.id == current else ""}><span class="secnum">{esc(p.number or "")}</span> '
+                       f'{p.title}</a></summary><ol>{items}</ol></details></li>')
+        out.append('<li class="toc-extra"><a href="acknowledgements.html">Acknowledgements</a></li>')
+        out.append('<li class="toc-extra"><a href="references.html">References</a></li></ol></nav>')
+        return "".join(out)
+
+    def shell(self, title: str, body: str, current: str | None = None, toc: bool = True) -> str:
+        nav = [("index.html", "Home"), ("results.html", "Results"), ("about.html", "About")]
+        links = "".join(f'<a href="{h}"{" aria-current=page" if h == (current or "") + ".html" else ""}>{t}</a>'
+                        for h, t in nav)
+        layout = (f'<div class="layout">{self.toc(current)}<main id="main">{body}</main></div>' if toc
+                  else f'<div class="layout single"><main id="main">{body}</main></div>')
+        return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(title)}</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+<script src="assets/mathjax-config.js"></script>
+<script defer src="{MATHJAX}"></script>
+</head>
+<body class="tex2jax_ignore">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <button class="toc-toggle" type="button" aria-label="Show contents">☰</button>
+  <a class="brand" href="index.html">Statistical Foundations of RL <span>in Lean</span></a>
+  <nav class="links">{links}<a href="{ARXIV}">arXiv ↗</a><a href="{REPO}/tree/{self.lean.git.rev}">GitHub ↗</a>
+  <button class="theme" type="button" aria-label="Switch between light and dark">◐</button></nav>
+</header>
+<div class="banner">This formalization is <strong>incomplete</strong>. A status shows what the project's reviewed
+ledger records for one Lean entry; it never certifies a chapter or the book. <a href="about.html#status">How status works</a>.</div>
+{layout}
+<footer>
+<p>Book text: {AUTHORS}, <em>{TITLE}: {SUBTITLE}</em>, <a href="{ARXIV}">arXiv:2610.41903v1</a>,
+licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Changes were made: converted from
+the pinned TeX to HTML, comments and author-only material removed, math typeset by MathJax. The authors do not
+endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{self.lean.git.rev}"><code>{self.lean.git.rev[:10]}</code></a>.
+Built {self.built}.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
+"""
+
+    # pages ----------------------------------------------------------------------
+    def book_pages(self) -> dict:
+        out = {}
+        for i, page in enumerate(self.pages):
+            prev_ = self.pages[i - 1] if i else None
+            next_ = self.pages[i + 1] if i + 1 < len(self.pages) else None
+            nav = '<nav class="pager">'
+            if prev_:
+                nav += f'<a class="prev" href="{prev_.id}.html">← {esc(prev_.number or "")} {prev_.title}</a>'
+            if next_:
+                nav += f'<a class="next" href="{next_.id}.html">{esc(next_.number or "")} {next_.title} →</a>'
+            nav += "</nav>"
+            head = ('<div class="cols-head"><span>Book text</span><span>Lean</span></div>')
+            body = head + self.page_body(page) + nav
+            title = f"{page.number + ' ' if page.number else ''}{strip_tags(page.title)} · {TITLE}"
+            out[page.id] = self.shell(title, body, page.id)
+        return out
+
+    def result_rows(self) -> list:
+        rows = []
+        for page in self.pages:
+            for top in page.blocks:
+                for b in self.units(top):
+                    kind = getattr(b, "kind_name", None) if b.kind == "env" else ("algorithm" if b.kind == "algorithm" else None)
+                    paired = id(b) in self.matches
+                    if not kind and not paired:
+                        continue
+                    sts = self.statuses(b)
+                    if not sts and kind in RESULT_KINDS:
+                        sts = ["none"]
+                    label = b.labels[0] if b.labels else ""
+                    name = ENV_NAMES.get(kind, "Algorithm" if kind == "algorithm" else "Display") if kind else "Display"
+                    rows.append({"page": page.id, "anchor": self.anchor(b), "chapter": page.chapter,
+                                 "section": page.number or "", "kind": name, "number": b.number or "",
+                                 "title": strip_tags(b.title or ""), "label": label, "statuses": sts,
+                                 "lean": [e.name for e in self.matches.get(id(b), [])],
+                                 "result": kind in RESULT_KINDS})
+        return rows
+
+    def results_page(self) -> str:
+        rows = self.result_rows()
+        chips = "".join(f'<button type="button" class="chip" data-filter="{s}"><span class="status {STATUS[s][1]}">'
+                        f'{esc(STATUS[s][0])}</span></button>' for s in STATUS_ORDER)
+        trs, last_ch = [], None
+        for r in rows:
+            if r["chapter"] != last_ch:
+                last_ch = r["chapter"]
+                ch = next((p for p in self.pages if p.level == 0 and p.chapter == last_ch), None)
+                trs.append(f'<tr class="ch-row"><th colspan="4">{esc(last_ch or "")} {ch.title if ch else ""}</th></tr>')
+            st = "".join(f'<span class="status {STATUS[s][1]}">{esc(STATUS[s][0])}</span>' for s in r["statuses"])
+            lean = " ".join(f'<code>{esc(n)}</code>' for n in r["lean"])
+            search = " ".join([r["kind"], r["number"], r["title"], r["label"], *r["lean"]]).lower()
+            trs.append(f'<tr data-status="{" ".join(r["statuses"]) or "other"}" data-search="{attr(search)}">'
+                       f'<td><a href="{r["page"]}.html#{attr(r["anchor"])}">{esc(r["kind"])} {esc(r["number"])}</a></td>'
+                       f'<td>{esc(r["title"])}<div class="label"><code>{esc(r["label"])}</code></div></td>'
+                       f'<td>{st}</td><td class="lean-names">{lean}</td></tr>')
+        unplaced = ""
+        if self.unplaced:
+            items = "".join(f'<li><span class="status {STATUS[e.status][1]}">{esc(STATUS[e.status][0])}</span> '
+                            f'<a href="{attr(self.lean.git.blob(e.file, e.line_start, e.line_end))}"><code>{esc(e.name)}</code></a></li>'
+                            for e in self.unplaced)
+            unplaced = ('<section class="unplaced"><h2>Lean entries not matched to a book location</h2>'
+                        "<p>These statement-index entries cite no label or line range that the reader could match. "
+                        f"They are listed so nothing is hidden.</p><ul>{items}</ul></section>")
+        counts = self.counts()
+        body = f"""<h1>Results</h1>
+<p class="lede">Every numbered theorem, lemma, corollary, proposition, claim, definition, assumption, remark,
+example and algorithm of the book, in book order, plus displayed equations that a Lean entry cites. The
+status column is derived from the project's reviewed ledger at commit <code>{self.lean.git.rev[:10]}</code>.
+{counts}</p>
+<div class="filters"><input type="search" id="q" placeholder="Search number, title, label or Lean name" aria-label="Search results">
+<div class="chips"><button type="button" class="chip on" data-filter="">All</button>{chips}</div></div>
+<div class="table-wrap"><table class="results"><thead><tr><th>Item</th><th>Title and label</th><th>Status</th><th>Lean entries</th></tr></thead>
+<tbody>{''.join(trs)}</tbody></table></div>{unplaced}"""
+        return self.shell(f"Results · {TITLE}", body, "results", toc=False)
+
+    def counts(self) -> str:
+        rows = [r for r in self.result_rows() if r["result"]]
+        total = len(rows)
+        by = {s: 0 for s in STATUS_ORDER}
+        for r in rows:
+            by[r["statuses"][0] if r["statuses"] else "none"] += 1
+        parts = [f"{by[s]} {STATUS[s][0].lower()}" for s in STATUS_ORDER if by[s]]
+        return (f"Of the {total} numbered theorems, lemmas, corollaries, propositions and claims, "
+                + ", ".join(parts) + " (best status per item). Prose claims, algorithms and unlabelled"
+                " displays are not in this count.")
+
+    def index_page(self) -> str:
+        front = "".join(b.html for b in self.front)
+        chapters = [p for p in self.pages if p.level == 0]
+        rows = self.result_rows()
+        lis = []
+        for ch in chapters:
+            rs = [r for r in rows if r["chapter"] == ch.chapter and r["result"]]
+            best = [r["statuses"][0] if r["statuses"] else "none" for r in rs]
+            bits = [f"{best.count(k)} {w}" for k, w in (("original", "proved as printed"),
+                    ("corrected", "corrected form"), ("restricted", "restricted case")) if best.count(k)]
+            summary = ((", ".join(bits) + f" of {len(rs)} results") if bits else
+                       f"none of {len(rs)} results proved yet" if rs else "no numbered results")
+            lis.append(f'<li><a href="{ch.id}.html"><span class="secnum">{esc(ch.number or "")}</span> {ch.title}</a>'
+                       f'<span class="ch-count">{summary}</span></li>')
+        body = f"""<section class="hero">
+<h1>{TITLE}<span>{SUBTITLE}</span></h1>
+<p class="authors">{AUTHORS} · <a href="{ARXIV}">arXiv:2610.41903v1</a></p>
+<p>The whole monograph, rendered from its pinned arXiv TeX source, with Lean&nbsp;4 statements and proofs shown
+next to the results they formalize. Each result links to its exact <code>.tex</code> lines and to the Lean source
+at a fixed commit. Most results are not yet formalized, and the page says so.</p>
+<p class="stats">{self.counts()}</p>
+<p class="actions"><a class="button primary" href="{chapters[0].id if chapters else 'index'}.html">Read the book →</a>
+<a class="button" href="results.html">Browse results</a></p>
+</section>
+<section class="abstract"><h2>Abstract</h2>{front}</section>
+<section><h2>Chapters</h2><ol class="chapters">{''.join(lis)}</ol></section>"""
+        return self.shell(TITLE, body, "index", toc=False)
+
+    def about_page(self) -> str:
+        legend = "".join(f'<li><span class="status {STATUS[s][1]}">{esc(STATUS[s][0])}</span> {esc(desc)}</li>'
+                         for s, desc in [
+                             ("original", "The ledger certifies the printed result: source review, compiled export and permitted axioms."),
+                             ("corrected", "A corrected variant is proved; the card says what differs and links the source issue."),
+                             ("restricted", "A restricted variant (for example positive sample sizes) is proved; the card states the restriction."),
+                             ("unrecorded", "A statement entry exists in Lean but the reviewed ledger has no record for it, so it is not shown as proved."),
+                             ("partial", "The coverage ledger lists components, but no statement entry covers the whole result."),
+                             ("ledger", "The coverage ledger has a note (for example a source gap or proposed repair); nothing is claimed as proved."),
+                             ("none", "No Lean entry and no ledger note. This is the default.")])
+        rev = self.lean.git.rev
+        body = f"""<h1>About this reader</h1>
+<p>This site shows <em>{TITLE}</em> (arXiv:2610.41903v1) next to the Lean&nbsp;4 formalization in
+<a href="{self.lean.git.blob('README.md')}">statistical-foundations-rl-lean</a>. It was inspired by Axiom's
+<a href="https://stacks.axiommath.ai/">Stacks Project in Lean</a> site and shares no code with it.</p>
+<h2 id="status">How status works</h2>
+<p>The site derives each status from the reviewed ledger <code>docs/named-result-status.json</code> and the
+coverage ledger <code>docs/COVERAGE.md</code> at commit <code>{rev[:10]}</code>. It never infers a proof from the
+existence of Lean code. Corrected and restricted results are never shown as plain proofs. No chapter or the book
+is described as complete.</p>
+<ul class="legend">{legend}</ul>
+<h2>Sources</h2>
+<ul>
+<li>Book: the pinned arXiv source, restored and checked against SHA-256 hashes by <code>scripts/fetch_source.py</code>
+(source archive {esc(self.book.provenance['artifacts']['2610.41903v1.tar'][:12])}…). The site follows the
+<code>StatisticalRL-nowplain.tex</code> variant, so material marked arXiv-only is omitted.</li>
+<li>Numbering, labels and line ranges: <code>docs/source-inventory.json</code>, a lexical checklist that certifies nothing.</li>
+<li>Lean: statement-index entries in <code>Formalization/Statements/ChN.lean</code>, matched by the source labels and
+<code>.tex</code> ranges cited in their docstrings; their <code>_holds</code> proofs; and the library theorems
+named by the ledger. All read from commit <code>{rev}</code>.</li>
+</ul>
+<h2>Rendering</h2>
+<p>A small converter turns the TeX into HTML and leaves the math to MathJax&nbsp;3, with the book's own macros.
+Equation numbers come from the inventory. Each theorem-like block has a “TeX source” disclosure with its exact
+lines, so the rendering can be checked against the source. PDF figures were converted to PNG. Figure numbers are computed by the reader (per chapter, as in the <code>book</code> class the publisher's class loads), because the inventory does not record them.</p>
+<h2>Licences</h2>
+<p>Book text and figures: CC BY 4.0, attributed to the six authors; changes were made as described above, and the
+authors do not endorse this formalization. Publisher formatting files from the arXiv archive are not republished.
+Lean code and this site: Apache-2.0.</p>"""
+        return self.shell(f"About · {TITLE}", body, "about", toc=False)
+
+    def references_page(self) -> str:
+        items = []
+        keys = sorted(self.book.cited, key=lambda k: (self.book.authors(k)[0].lower(), self.book.authors(k)[1]))
+        for k in keys:
+            e = self.book.bib.get(k)
+            if not e:
+                items.append(f'<li id="ref-{attr(k)}"><code>{esc(k)}</code> (not in the bibliography file)</li>')
+                continue
+            d = self.book.detex
+            venue = d(e.get("journal") or e.get("booktitle") or e.get("publisher") or e.get("howpublished") or "")
+            items.append(f'<li id="ref-{attr(k)}">{esc(d(e.get("author", "")).replace(" and ", ", "))}. '
+                         f'<em>{esc(d(e.get("title", "")))}</em>. {esc(venue)}{", " if venue else ""}{esc(d(e.get("year", "")))}.</li>')
+        body = f"<h1>References</h1><ol class=\"refs\">{''.join(items)}</ol>"
+        return self.shell(f"References · {TITLE}", body, "references")
+
+    def ack_page(self) -> str:
+        body = "<h1>Acknowledgements</h1>" + "".join(b.html for b in self.back)
+        return self.shell(f"Acknowledgements · {TITLE}", body, "acknowledgements")
+
+    # references between pages ----------------------------------------------------
+    def resolve(self, pages: dict) -> dict:
+        where = {}
+        for pid, text in pages.items():
+            for m in re.finditer(r'id="([^"]+)"', text):
+                where.setdefault(html.unescape(m.group(1)), pid)
+        missing = {}
+
+        def fmt(mode, cmd, label):
+            num, kind = self.book.label_number(label)
+            if num is None:
+                missing[label] = missing.get(label, 0) + 1
+                return "??"
+            text = f"({num})" if cmd == "eqref" or (cmd in ("cref", "Cref") and kind == "equation") else num
+            if cmd in ("cref", "Cref"):
+                word = {"equation": "Eq.", "heading": "Section", "display": "Eq."}.get(kind, ENV_NAMES.get(kind, kind.capitalize()))
+                text = f"{word} {text}"
+            if mode == "m":
+                return text
+            anchor = label_id(label)
+            pid = where.get(anchor)
+            if not pid:
+                owner = self.book.label_owner.get(label)
+                if owner and ("E-" + owner["id"]) in where:
+                    anchor = "E-" + owner["id"]
+                    pid = where[anchor]
+            if not pid:
+                return esc(text)
+            return f'<a class="ref" href="{pid}.html#{attr(anchor)}">{esc(text)}</a>'
+
+        out = {}
+        for pid, text in pages.items():
+            out[pid] = re.sub(r"@@REF\|(\w)\|(\w+)\|([^@]*)@@", lambda m: fmt(m.group(1), m.group(2), m.group(3)), text)
+        self.missing_refs = missing
+        return out
+
+    def mathjax_config(self) -> str:
+        macros = self.book.mathjax_macros()
+        cfg = {
+            "tex": {"packages": {"[+]": ["mathtools", "boldsymbol", "color", "html", "cancel", "textmacros"]},
+                    "macros": macros, "tags": "none", "processEscapes": True, "processEnvironments": True,
+                    "inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]},
+            "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"},
+            "chtml": {"scale": 1.0},
+        }
+        return "window.MathJax = " + json.dumps(cfg, ensure_ascii=False, indent=1) + ";\n"
+
+    def search_data(self) -> str:
+        return json.dumps(self.result_rows(), ensure_ascii=False)

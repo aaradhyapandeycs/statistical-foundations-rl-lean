@@ -1,0 +1,60 @@
+name: Book reader site
+
+# Rebuilds and republishes whenever Lean statements, proofs, ledgers or the
+# reader change on main, and on demand from the Actions tab. Nothing is
+# published until the maintainer enables GitHub Pages for the repository.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "Formalization/**"
+      - "docs/named-result-status.json"
+      - "docs/COVERAGE.md"
+      - "docs/SOURCE-ISSUES.md"
+      - "docs/source-inventory.json"
+      - "site/**"
+      - ".github/workflows/pages.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Restore and verify the pinned arXiv source
+        run: python3 scripts/fetch_source.py
+      - name: Install PDF figure converter
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends poppler-utils
+      - name: Build the reader (no Lean, reads committed files only)
+        run: python3 site/build.py --rev HEAD
+      - name: Check the site against the arXiv PDF and TeX
+        run: python3 site/check_fidelity.py
+      - name: Refuse publisher formatting files and local paths
+        run: |
+          bad=$(find site/_build \( -name '*.cls' -o -name '*.sty' -o -name '*.cfg' -o -name '*.tar' -o -name '*.tex' \) -print)
+          if [ -n "$bad" ]; then echo "publisher or source files in output: $bad"; exit 1; fi
+          if grep -rIlE '/Users/|/home/runner' site/_build; then echo "local paths in output"; exit 1; fi
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        with:
+          path: site/_build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
