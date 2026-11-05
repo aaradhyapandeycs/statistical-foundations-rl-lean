@@ -229,6 +229,8 @@ passed focused, working-tree and clean-copy compilation and axiom checks.
 It does not encode the complete estimator infimum in the manuscript. See the
 [source and evidence review](critic-robust-chi-singleton-action-v5.md).
 
+<a id="C8"></a>
+
 ## Candidate C8: undefined zero-visit bonus in UCBVI and MVP
 
 **Source:** Algorithm `alg:main-ucbvi`, `onlineRL.tex:285–345`, and its
@@ -312,35 +314,34 @@ endpoint clarification, not a counterexample to the existential theorem at
 zero. The theorem already requires `S > 12` and constructs two actions, so the
 singleton-domain obstructions do not apply. See the [source review](critic-offline-lower-bound-domain.md).
 
+<a id="C10"></a>
 ## Candidate C10: discount endpoint in the offline VI-LCB lemma
 
 **Source:** Lemma 6.2, `lem:monotone-contraction`,
-`offlineRL.tex:872–890`; its appendix proof uses `γ ≥ 1/2` at
+`chapters/offlineRL.tex:872–890`; its proof uses `γ ≥ 1/2` at
 `offlineRL.tex:3341–3343`. The preliminary MDP definition permits
-`γ ∈ [0,1)`, and no narrower chapter-wide assumption was found before the
-lemma. The subsequent main Theorem 6.3 explicitly assumes `γ ≥ 1/2`.
+`γ ∈ [0,1)`, and no narrower chapter-wide assumption precedes the lemma.
 
-There is a source-level counterexample to the standalone lemma at `γ=0`.
-Take two states, one action, rewards `0.9` and `0.1`, and `N=2n` samples,
-with `n` visits to each state. Let the first empirical row be deterministic
-and the second have equal mass on the two states. These rows and counts are
-realizable by an offline dataset. Fix `δ ∈ (0,1)` and any `c_b > 0`, and
-write `κ = c_b log(N/δ)/n`. For sufficiently large even `n`, both `κ` and
-`5/N` are small enough that the following updates are untruncated.
+A fully specified source counterexample uses `γ = 0.1`, `c_b = 1`, `δ = 0.5`,
+three states `A,H,L`, and one action. The rewards are `r(A)=r(H)=1`, `r(L)=0`;
+the true rows are `A→(H,L)` with probabilities `(1/2,1/2)`, `H→H`, and
+`L→L`. With `N=200800`, take 400 observed `A→H` transitions, 400 `A→L`, and
+200000 `H→H`, with no `L` observations. This dataset has positive probability
+under the source iid sampling model with behavior probabilities
+`d(A)=800/N`, `d(H)=200000/N`, and `d(L)=0`. The source uniform unseen-row rule
+is used at L. The source equations give an explicit fixed point `Q̄` with
+`Q̄(A)≈0.9846901842`; the literal update gives `Q̂₂(A)≈0.9862186757`.
+If the printed theorem's uniqueness clause held, its fixed-point witness would
+have to equal `Q̄`, contradicting the theorem's iterate-order clause at `τ=2`
+by about `0.0015284915`. This refutes the printed conjunction for this instance;
+it is a counterexample at `c_b=1` and does not establish failure for every
+`c_b`. The printed sup-norm rate is not refuted by this instance.
 
-From `Q₀=0`, the penalty at both states is `d=2κ+5/N`, so
-`Q₁=(0.9−d, 0.1−d)`. Its second-row variance is `0.16`. For sufficiently
-small `κ`, the second state's next penalty is `0.4 sqrt(κ)+5/N > d`, so
-`Q₂` differs from `Q₁`. But the lemma's error bound at `τ=1`, `γ=0` is zero:
-it would force `Q₁` to be the fixed point and hence `Q₂=Q₁`. Its separate
-iteration threshold also contains `log(1/γ)`, which needs an endpoint
-interpretation at `γ=0`.
-
-This is an independently checked mathematical counterexample, not yet a Lean
-proof or author-approved erratum. Restricting the helper to the main theorem's
-`γ ≥ 1/2` domain avoids this example and matches the cited appendix step; it
-is not by itself a formal proof of the restricted lemma. The example does not
-refute Theorem 6.3, whose displayed assumptions exclude `γ=0`.
+The corrected formalized Lemma 6.2 adds `γ ≥ 1/2`, the condition used by the
+appendix proof. This is a restricted corrected result, not a proof of the
+unrestricted lemma. It does **not** refute parent Theorem 6.3, whose assumptions
+already require `γ ≥ 1/2`, and it establishes no failure of Theorem 6.3's rate
+or sample threshold.
 
 ## Candidate C12: one-episode endpoints of auxiliary online bounds
 
@@ -664,5 +665,33 @@ per-stage row-rank identities and sequential transcript-law transport.
 `StatisticalRL.Statements.MVP_regret_corrected` consume that corrected bridge
 without assuming its conclusion or probability. This does not validate the
 printed terminal-H program or add a Lean execution witness for the printed
-counterexample above. See [independent review](critic-online-MVP-main-decoupling.md)
+counterexample above. The related final regret statement is Theorem 5.10, source label
+`thm-mvp-regret` (`onlineRL.tex:1339–1352`); this auxiliary identity issue does
+not refute it. See [independent review](critic-online-MVP-main-decoupling.md)
 and [verification](online-MVP-main-decoupling-verification.md).
+
+<a id="C18"></a>
+## Candidate C18: zero-count branch in the offline LCB algorithm
+
+**Source:** Algorithm `alg:MAB-LCB`, `chapters/offlineRL.tex:400–443`, and
+Theorem 6.1, `thm:MAB_LCB_upper`, `:456–471`. The active pseudocode evaluates
+a radius with denominator `N_a`; it does not define the zero-count case. A
+commented-out branch at `:429–430` instead assigns empirical mean `0` and
+radius `1`. The Lean identity `x / 0 = 0` gives radius `0`, so it does not
+represent that commented branch either.
+
+The formalized result is explicitly the commented-fallback variant, under the
+actual action/noise law and the printed sample assumptions. It is not a proof of
+the active undefined pseudocode. No author-intended convention is inferred.
+
+<a id="C19"></a>
+## Candidate C19: positive sample count in the offline sample-splitting lemma
+
+**Source:** Lemma 6.5, `lem:sample-split-infinite`,
+`chapters/offlineRL.tex:1104–1115`, under the iid triple sampling model
+`:28–37`. The standalone statement does not state `N ≥ 2`; the formalized
+sample-splitting result uses `N ≥ 2` for its union-bound endpoint. The parent
+Theorem 6.3 sample-size regime implies this condition. The release statement
+therefore labels this as a restricted auxiliary result; this observation is not
+a counterexample to the parent theorem or a claim that its sample regime is
+insufficient.

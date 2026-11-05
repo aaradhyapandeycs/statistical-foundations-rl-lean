@@ -1,6 +1,6 @@
 # Independent audit: exact Q-comparison source parameters
 
-Reviewed exact staged `.local/QLearningChiSourceParametersDraft.lean`, SHA-256 `f59901a3a4893d67f1df9f064b40c1aecd5c27c9ac7cbaae2903175e93b09e4e`, against its imported residual closure and the source. The builder note `docs/builder-q-learning-chi-source-parameters-draft.md` contains stale earlier hashes/status paragraphs; this review binds only to the exact SHA above. Source review, fresh staged compile, and all-eight-export axiom probes are complete.
+Reviewed exact staged `QLearningChiSourceParametersDraft.lean` (private staged draft, not shipped), SHA-256 `f59901a3a4893d67f1df9f064b40c1aecd5c27c9ac7cbaae2903175e93b09e4e`, against its imported residual closure and the source. The builder note `docs/builder-q-learning-chi-source-parameters-draft.md` contains stale earlier hashes/status paragraphs; this review binds only to the exact SHA above. Source review, fresh staged compile, and all-eight-export axiom probes are complete.
 
 ## Formula and domain audit
 
@@ -20,9 +20,9 @@ These declarations consume the source parameter choices only in the deterministi
 
 ## Fresh exact-source compile and axioms
 
-Exact target source compiled with exit 0 and no diagnostics into `.local/q-chi-source-parameters-independent-audit/QLearningChiSourceParametersDraft.olean`. It was compiled against the separately rebuilt exact residual closure `.local/q-chi-residual-independent-audit`, whose top source was SHA `e61a93ba98ba2a83575adcb16dd4c40bc1a7121c2a74a370c53deef4c71c01da`. The exact target compile log is empty at `.local/q-chi-source-parameters-independent-audit/compile.log`.
+Exact target source compiled with exit 0 and no diagnostics into `QLearningChiSourceParametersDraft.olean` (in an isolated local audit directory, not shipped). It was compiled against the separately rebuilt exact residual closure (built in an isolated local audit directory, not shipped), whose top source was SHA `e61a93ba98ba2a83575adcb16dd4c40bc1a7121c2a74a370c53deef4c71c01da`. The exact target compile log is empty at `compile.log` (in an isolated local audit directory, not shipped).
 
-The fresh `ImportAudit.lean` probes all eight exports: envelope positivity, radius positivity, reward-shift identity, plus and minus generic source substitutions, envelope cap, reward-shift positivity, and actual-comparator source consumption. Every transitive axiom result is limited to `propext`, `Classical.choice`, and `Quot.sound`; output is `.local/q-chi-source-parameters-independent-audit/axioms.log`.
+The fresh `ImportAudit.lean` probes all eight exports: envelope positivity, radius positivity, reward-shift identity, plus and minus generic source substitutions, envelope cap, reward-shift positivity, and actual-comparator source consumption. Every transitive axiom result is limited to `propext`, `Classical.choice`, and `Quot.sound`; output is `axioms.log` (in an isolated local audit directory, not shipped).
 
 This is staged-source evidence only. Production integration and the stochastic/source theorem closure remain separate.
 

@@ -2,8 +2,8 @@
 
 Reviewed the builder's final exact sources:
 
-- `.local/QLearningIndicatorCondExpDraft.lean`, SHA-256 `37defd8793aee4b50fcee3e16c576659411a98a51b7601506d041c1ef813936d`.
-- `.local/QLearningConditionalPulloutDraft.lean`, SHA-256 `38362fac2b5eceea7d38dac6bb90b9b2f70b54d8001ceb69e0cc7d2d70efa939`.
+- `QLearningIndicatorCondExpDraft.lean` (private staged draft, not shipped), SHA-256 `37defd8793aee4b50fcee3e16c576659411a98a51b7601506d041c1ef813936d`.
+- `QLearningConditionalPulloutDraft.lean` (private staged draft, not shipped), SHA-256 `38362fac2b5eceea7d38dac6bb90b9b2f70b54d8001ceb69e0cc7d2d70efa939`.
 
 The exact staged dependency chain rebuilt in this audit was: Q iterate `594b96eede407a268bad69041146728a7456478c39c53990c53bef006a5b207e`; Q sampling `70dccffe5af0e7f824226c1d235257f4b0ea8e4ff7a5f9aaf8d9d1e06a830937`; causality `3eade75e34d1dc7c5a2f6e809e0fe2f8e7fe197ca2b288761df2078067276d37`; conditional-moment definitions `ac450a4871fedcd8320e36c00d1379c2beaa385369b5fab08e709bbf4596176a`; prefix filtration `266f86ca30a206f0bb471742970ca49013f04cf6326a29fd7d6ac0e02f26d30c`; indicator decomposition `60daddba566a81f0d6ae72421153b0104bbde30e7efed60f0d0f1bc59dccdfc7`; and scalar indicator sigma/strong measurability `2dc13db7db500f5128a9207e41dd98288a6df14c009d1799103726ad3ef03c76`. The actual probability layer is production `Formalization.Probability.EmpiricalRow`.
 
@@ -17,7 +17,7 @@ For predictable coefficients `c x`, the pullout theorem assumes only strong meas
 
 ## Fresh exact-source compile and axiom audit
 
-The hash-pinned script `.local/audit-q-learning-conditional-indicators-independent.sh` rebuilt all nine modules in dependency order under `.local/q-learning-conditional-indicators-independent-audit`. All compiled successfully. The three new final declarations and their exact staged dependency exports were included in a 51-declaration `#print axioms` probe; every declaration used only `propext`, `Classical.choice`, and `Quot.sound` (or a subset). Compiler output contained only the handoff's noted unused-instance/unused-simp-argument linter warnings.
+The hash-pinned private audit script `audit-q-learning-conditional-indicators-independent.sh` (not shipped) rebuilt all nine modules in dependency order under an isolated local audit directory (not shipped). All compiled successfully. The three new final declarations and their exact staged dependency exports were included in a 51-declaration `#print axioms` probe; every declaration used only `propext`, `Classical.choice`, and `Quot.sound` (or a subset). Compiler output contained only the handoff's noted unused-instance/unused-simp-argument linter warnings.
 
 ## Limits
 

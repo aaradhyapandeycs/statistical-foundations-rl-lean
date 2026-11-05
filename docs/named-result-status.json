@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-05T04:46:02.608031+00:00",
+  "updated_at": "2026-11-05",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -475,6 +475,54 @@
       "supporting_evidence": [
         "docs/online-MVP-main-decoupling-verification.md"
       ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 6.1 (commented zero-count fallback variant)",
+      "source_label": "thm:MAB_LCB_upper",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "456–471",
+      "lean_export": "StatisticalRL.OfflineRL.lcbFallback_regret_probability",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_1_zeroCountFallback_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_1_zeroCountFallback_corrected_holds",
+      "statement_scope": "Uses the separately commented zero-count convention mean 0/radius 1 at lines 429–430; the active pseudocode is undefined at zero count and Lean division gives radius 0. Actual action/noise law and printed sample assumptions retained. SOURCE-ISSUES C18.",
+      "evidence": "docs/ch6-corrected-variants-evidence.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.2 (restricted corrected variant)",
+      "source_label": "lem:monotone-contraction",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "872–890",
+      "lean_export": "StatisticalRL.OfflineVILCB.Input.lem_monotone_contraction_corrected",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_2_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_2_corrected_holds",
+      "statement_scope": "Adds γ≥1/2, used in the appendix proof. The unrestricted standalone claim has a checked counterexample at γ=0.1 and c_b=1; parent Theorem 6.3 already assumes γ≥1/2 and is not refuted. SOURCE-ISSUES C10.",
+      "evidence": "docs/ch6-corrected-variants-evidence.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.4 (parent-theorem regime)",
+      "source_label": "lem:offline-prelim",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "1078–1094",
+      "lean_export": "StatisticalRL.OfflineVILCB.Input.exists_fixed_point_preliminary_facts",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_4",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_4_holds",
+      "statement_scope": "Source discount and stopping conditions are explicit. The fixed point and value/bonus error estimates are proved; this auxiliary result does not prove the parent policy guarantee.",
+      "evidence": "docs/ch6-corrected-variants-evidence.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.5 (restricted sample-splitting variant)",
+      "source_label": "lem:sample-split-infinite",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "1104–1115",
+      "lean_export": "StatisticalRL.OfflineRL.SampleSplitActual.sampleSplit_count_lower_of_jointLaw",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_5_sampleSplit_actualData_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_5_sampleSplit_actualData_corrected_holds",
+      "statement_scope": "Adds N≥2 for the union-bound endpoint. Uses the actual iid triple law and derived row projection; the parent theorem sample-size regime implies N≥2. SOURCE-ISSUES C19.",
+      "evidence": "docs/ch6-corrected-variants-evidence.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

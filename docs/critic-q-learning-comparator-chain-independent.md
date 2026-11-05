@@ -6,10 +6,10 @@ Status: source review plus fresh isolated compile and transitive axiom probe com
 
 | Artifact | SHA-256 |
 |---|---|
-| `.local/QLearningComparatorRecursionDraft.lean` | `5afb53aed98e0ff2e4997c9b30b4388804b454b55e601b9ec1644241a08ae2dd` |
-| `.local/QLearningComparatorUnrollDraft.lean` | `bca8f09ad4448dfefb72345eefb062e1178b71a2dff8b0fd32a472117dfee72d` |
-| `.local/QLearningComparatorSandwichDraft.lean` | `681229bc763fce35a7f8317f27e544c597000c4071372cd85f46e2d26841ef60` |
-| `.local/QLearningComparatorSameDataDraft.lean` | `efbb587d08efabe00fa574b0b95692aeddc1bf156c6f6df2437d17ead17abe7b` |
+| `QLearningComparatorRecursionDraft.lean` (private staged draft, not shipped) | `5afb53aed98e0ff2e4997c9b30b4388804b454b55e601b9ec1644241a08ae2dd` |
+| `QLearningComparatorUnrollDraft.lean` (private staged draft, not shipped) | `bca8f09ad4448dfefb72345eefb062e1178b71a2dff8b0fd32a472117dfee72d` |
+| `QLearningComparatorSandwichDraft.lean` (private staged draft, not shipped) | `681229bc763fce35a7f8317f27e544c597000c4071372cd85f46e2d26841ef60` |
+| `QLearningComparatorSameDataDraft.lean` (private staged draft, not shipped) | `efbb587d08efabe00fa574b0b95692aeddc1bf156c6f6df2437d17ead17abe7b` |
 | `Formalization/ModelFree/QLearningChiSourceRadiusUnion.lean` | `945cdc19f6fdf9a9755df5997f70c2a555ddcff45334ee2a4d66cc6a46c72948` |
 | `Formalization/ModelFree/QLearningChiStochasticInterface.lean` | `6333498b596ebea6fa5792a104926a75e9d2935e2b1665f171114cfef587c71e` |
 | `Formalization/ModelFree/QLearningSourceReindex.lean` | `f20d7d4ee17df8051ef0ad275d3b9bae0850292ce134abc004e307b18165a113` |
@@ -17,7 +17,7 @@ Status: source review plus fresh isolated compile and transitive axiom probe com
 | Source `source/upstream/tex/chapters/generative_model_model_free.tex` | `7f4eb058e00480bc0694cac93ac41e22f4cfe48aa58a00c4ccf909f805e60b22` |
 | Builder handoff `docs/builder-q-learning-comparator-same-data-draft.md` | `5ef3dcc33667acdf801dc15ae5bd47c4dfb05f61f8911fe1d216f3321d69e39f` |
 
-A fresh serial build of all four exact staged Lean sources succeeded with exit 0 and empty logs. The outputs and logs are isolated in `.local/q-chi-comparator-chain-independent-efbb587d/`; no production artifact was overwritten. The fresh import audit imports the final SameData module and probes all 20 public exports across the four local layers. Each declaration reports exactly `[propext, Classical.choice, Quot.sound]`. The source files contain no `sorry`, `admit`, or `axiom` declaration. The final SameData source includes one proof-only reassociation repair (`ring` after the active-layer reindex simplification); no statement, assumption, sample coordinate, event, or confidence parameter changed.
+A fresh serial build of all four exact staged Lean sources succeeded with exit 0 and empty logs. The outputs and logs are isolated in a local audit directory (not shipped); no production artifact was overwritten. The fresh import audit imports the final SameData module and probes all 20 public exports across the four local layers. Each declaration reports exactly `[propext, Classical.choice, Quot.sound]`. The source files contain no `sorry`, `admit`, or `axiom` declaration. The final SameData source includes one proof-only reassociation repair (`ring` after the active-layer reindex simplification); no statement, assumption, sample coordinate, event, or confidence parameter changed.
 
 ## Source and mathematical review
 

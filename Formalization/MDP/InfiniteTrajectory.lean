@@ -1,3 +1,4 @@
+import Formalization.Probability.FiniteSampleDefinitions
 import Formalization.MDP.DiscountedFiniteTrajectory
 import Mathlib.Probability.Kernel.IonescuTulcea.Traj
 import Mathlib.Probability.ProbabilityMassFunction.Constructions
@@ -28,14 +29,6 @@ def DecisionStage.stepDistribution (stage : DecisionStage State Action) (s : Sta
     rw [Fintype.sum_prod_type]
     simp_rw [← Finset.mul_sum, FiniteDistribution.sum_prob, mul_one]
     exact (stage.policy s).sum_prob
-
-/-- Conversion from the project's real-valued finite probability law into a
-Mathlib probability mass function; no mass or normalization is changed. -/
-noncomputable def FiniteDistribution.toPMF {Ω : Type*} [Fintype Ω]
-    (d : FiniteDistribution Ω) : PMF Ω :=
-  PMF.ofFintype (fun x ↦ ENNReal.ofReal (d.prob x)) (by
-    rw [← ENNReal.ofReal_sum_of_nonneg (fun x _ ↦ d.prob_nonneg x), d.sum_prob]
-    exact ENNReal.ofReal_one)
 
 @[simp]
 theorem FiniteDistribution.toPMF_apply {Ω : Type*} [Fintype Ω]

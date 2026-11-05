@@ -1,6 +1,6 @@
 # Independent source review: synchronous Q-learning iterate bounds
 
-Reviewed `.local/QLearningIterateBounds.lean`, SHA-256 `594b96eede407a268bad69041146728a7456478c39c53990c53bef006a5b207e`, against `source/upstream/tex/chapters/generative_model_model_free.tex`, Lemma `lemma:non-negativity-Qt-Vt` (lines 1052–1068) and its proof (Appendix B, lines 2508–2530). The later compiler audit verified this same current hash; there were no source changes after the review.
+Reviewed `QLearningIterateBounds.lean` (private staged draft, not shipped), SHA-256 `594b96eede407a268bad69041146728a7456478c39c53990c53bef006a5b207e`, against `source/upstream/tex/chapters/generative_model_model_free.tex`, Lemma `lemma:non-negativity-Qt-Vt` (lines 1052–1068) and its proof (Appendix B, lines 2508–2530). The later compiler audit verified this same current hash; there were no source changes after the review.
 
 ## Verdict
 
@@ -18,9 +18,7 @@ This module does not establish the generative sampling law, fresh-time independe
 
 Compiled the exact staged source with:
 
-```sh
-bash scripts/lean-local.sh -o .local/q-learning-iterate-independent-audit/QLearningIterateBounds.olean .local/QLearningIterateBounds.lean
-```
+> *Historical command, omitted from the public copy.* It ran the pinned Lean compiler on a private staged source and wrote to an isolated local output directory; neither path is shipped, so it cannot be rerun from this checkout. The recorded result is unchanged.
 
 Compilation exited successfully without diagnostics. An isolated import probe checked all six public declarations (`qLearningValue`, `qLearningIterate`, and the four bound/error theorems). Every export used only `propext`, `Classical.choice`, and `Quot.sound`. The production integration/export audit remains a separate check.
 

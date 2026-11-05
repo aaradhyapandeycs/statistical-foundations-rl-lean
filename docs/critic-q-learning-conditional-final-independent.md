@@ -9,15 +9,15 @@ explicit premise. No production module was changed.
 
 | Item | SHA-256 |
 |---|---|
-| `.local/QLearningComparatorRecursionDraft.lean` | `5afb53aed98e0ff2e4997c9b30b4388804b454b55e601b9ec1644241a08ae2dd` |
-| `.local/QLearningComparatorUnrollDraft.lean` | `bca8f09ad4448dfefb72345eefb062e1178b71a2dff8b0fd32a472117dfee72d` |
-| `.local/QLearningComparatorSandwichDraft.lean` | `681229bc763fce35a7f8317f27e544c597000c4071372cd85f46e2d26841ef60` |
-| `.local/QLearningComparatorSameDataDraft.lean` | `efbb587d08efabe00fa574b0b95692aeddc1bf156c6f6df2437d17ead17abe7b` |
-| `.local/QLearningFinalRateArithmeticDraft.lean` | `f73511348bb282488d048ed3543cd1d2e1a3e6e6bbe33c152e820490e372a408` |
-| `.local/QLearningFinalSampleBudgetDraft.lean` | `d1a4de44468a3011a02740e751a53d7015fb73e5ef03af56367ed0ea089d9171` |
-| `.local/QLearningFinalBudgetConsequencesDraft.lean` | `2666f637c7046b929cd95ff160b45b11051398b36fb9e46a5186c33ecd3fdc84` |
-| `.local/QLearningConditionalFinalAssemblyDraft.lean` | `6321dfcf7efe900b191f1bfce387b31f2928066be5f9a4795ceda506b8ce8b9a` |
-| `.local/QLearningConditionalUniversalConstantsDraft.lean` | `d03b576cbff63b78050762b624bcabd2a2a0a4ddb67dec93b2055ddba9be4cb5` |
+| `QLearningComparatorRecursionDraft.lean` (private staged draft, not shipped) | `5afb53aed98e0ff2e4997c9b30b4388804b454b55e601b9ec1644241a08ae2dd` |
+| `QLearningComparatorUnrollDraft.lean` (private staged draft, not shipped) | `bca8f09ad4448dfefb72345eefb062e1178b71a2dff8b0fd32a472117dfee72d` |
+| `QLearningComparatorSandwichDraft.lean` (private staged draft, not shipped) | `681229bc763fce35a7f8317f27e544c597000c4071372cd85f46e2d26841ef60` |
+| `QLearningComparatorSameDataDraft.lean` (private staged draft, not shipped) | `efbb587d08efabe00fa574b0b95692aeddc1bf156c6f6df2437d17ead17abe7b` |
+| `QLearningFinalRateArithmeticDraft.lean` (private staged draft, not shipped) | `f73511348bb282488d048ed3543cd1d2e1a3e6e6bbe33c152e820490e372a408` |
+| `QLearningFinalSampleBudgetDraft.lean` (private staged draft, not shipped) | `d1a4de44468a3011a02740e751a53d7015fb73e5ef03af56367ed0ea089d9171` |
+| `QLearningFinalBudgetConsequencesDraft.lean` (private staged draft, not shipped) | `2666f637c7046b929cd95ff160b45b11051398b36fb9e46a5186c33ecd3fdc84` |
+| `QLearningConditionalFinalAssemblyDraft.lean` (private staged draft, not shipped) | `6321dfcf7efe900b191f1bfce387b31f2928066be5f9a4795ceda506b8ce8b9a` |
+| `QLearningConditionalUniversalConstantsDraft.lean` (private staged draft, not shipped) | `d03b576cbff63b78050762b624bcabd2a2a0a4ddb67dec93b2055ddba9be4cb5` |
 | `Formalization/MDP/OptimalTrajectoryValue.lean` | `d3fbac88b1bec5e29ad93e9432d6a491f72fb3d9ada243f3a954950b47af21d7` |
 | `Formalization/ModelFree/QLearningLateRateSchedule.lean` | `984d87bdfada63b31da1ca967bbfe90fdbcef2587e7dcdd2da30d4c324637c1d` |
 | Source `generative_model_model_free.tex` | `7f4eb058e00480bc0694cac93ac41e22f4cfe48aa58a00c4ccf909f805e60b22` |
@@ -72,8 +72,8 @@ error; both robust-comparator distance bounds remain in its theorem type.
 ## Independent build and axiom evidence
 
 The nine exact staged files above were compiled in dependency order into fresh
-isolated output `.local/q-learning-final-conditional-independent-d03b576c/`
-using pinned `.local/lean`. All nine compile logs are empty. The conditional
+isolated output in a local audit directory (not shipped)
+using the pinned Lean executable. All nine compile logs are empty. The conditional
 assembly artifact SHA-256 is
 `a8f605dccd1f02ca6536f0ff051364fe64ce766d36a007041a8e97807e665e4b`; the
 universal-wrapper artifact SHA-256 is

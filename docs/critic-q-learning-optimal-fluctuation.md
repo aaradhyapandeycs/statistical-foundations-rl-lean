@@ -2,8 +2,8 @@
 
 The source review was followed by an independent exact-source compilation. Exact current staged hashes match the builder handoff:
 
-- `.local/QLearningOptimalFluctuationDraft.lean`: `2bfbc447af7d3ca3616cd1c6abce92acf3d2fdacbf85655bcaa73923f2b14655`.
-- `.local/QLearningOptimalFluctuationMomentsDraft.lean`: `c2fc20dace8514ce247f8928e8bcc3a138736b8bc77ce6a77d8a882a04707d97`.
+- `QLearningOptimalFluctuationDraft.lean` (private staged draft, not shipped): `2bfbc447af7d3ca3616cd1c6abce92acf3d2fdacbf85655bcaa73923f2b14655`.
+- `QLearningOptimalFluctuationMomentsDraft.lean` (private staged draft, not shipped): `c2fc20dace8514ce247f8928e8bcc3a138736b8bc77ce6a77d8a882a04707d97`.
 
 ## Source and indexing
 
@@ -25,6 +25,6 @@ This `V*` fluctuation corresponds to the monograph's loose error decomposition, 
 
 ## Independent compilation and axiom evidence
 
-Rebuilt `.local/QLearningOptimalFluctuationDraft.lean` and `.local/QLearningOptimalFluctuationMomentsDraft.lean` into `.local/q-optimal-fluctuation-independent-audit`, using the previously audited exact Q-learning conditional-pullout closure. The target and dependency hashes were checked; both target builds succeeded. All 11 target definitions/theorems were import-probed and use only `propext`, `Classical.choice`, and `Quot.sound`. This remains staged compiler evidence, not production-module integration/export validation.
+Rebuilt `QLearningOptimalFluctuationDraft.lean` (private staged draft, not shipped) and `QLearningOptimalFluctuationMomentsDraft.lean` (private staged draft, not shipped) into an isolated local audit directory (not shipped), using the previously audited exact Q-learning conditional-pullout closure. The target and dependency hashes were checked; both target builds succeeded. All 11 target definitions/theorems were import-probed and use only `propext`, `Classical.choice`, and `Quot.sound`. This remains staged compiler evidence, not production-module integration/export validation.
 
 Production integration: the reviewed source declarations and proofs compile in the project export with qualified production imports and updated staging-only comments where applicable. The full project audit checked 2,970 declarations, allowing only `propext`, `Classical.choice`, and `Quot.sound`.

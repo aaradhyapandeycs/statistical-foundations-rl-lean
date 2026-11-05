@@ -48,7 +48,7 @@ concentration, variance-budget, or T8 premise.
 ## Canonicalization and focused evidence
 
 The 30-module canonical provider mapping is
-`.local/online-MVP-t6-production-preview-v1/mapping.json` (SHA
+`mapping.json` in a private production-preview directory (not shipped) (SHA
 `8e574a5b2d07374de5f699cdfd422837c2fe18ebfa524bef64d11af0a66bd459`). It
 records the selected raw source snapshots and their canonical qualified
 modules; imports and instance names are adapted to the public namespace, while

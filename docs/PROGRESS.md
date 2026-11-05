@@ -1,5 +1,12 @@
 # Whole-monograph progress
 
+Latest checked batch: the Chapter 6 scoped variants passed a fresh full
+938-module build and the axiom audit for 8,414 declarations on 2026-11-05.
+See [the verification and scope record](ch6-corrected-variants-evidence.md)
+for the exact manifest, restrictions and reproduction command. The complete
+monograph remains incomplete; the named-result ledger distinguishes original
+results from corrected or restricted variants.
+
 Status: **active; incomplete**. Source: arXiv:2610.41903v1, 326 PDF pages.
 
 No whole-paper or chapter completion is certified. Source-level claims need

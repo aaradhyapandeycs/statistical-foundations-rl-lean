@@ -2,9 +2,9 @@
 
 ## Exact source and validation
 
-Reviewed `.local/QLearningIncrementCapsDraft.lean`, SHA-256 `ca8a29d2bb7c1d60a8d52924da97df4d9011e5660eeb62be36d2df25edc154e1`, matching the current builder handoff. Its direct staged dependency `.local/QLearningHistoryAdaptationDraft.lean` is SHA-256 `766309449c858a91456f82499c75e4de9c2af11fc8d6268f37f4e59815562c4f`; that artifact was freshly built with the exact 12-module natural-history dependency chain in `.local/q-learning-natural-history-independent-audit`.
+Reviewed `QLearningIncrementCapsDraft.lean` (private staged draft, not shipped), SHA-256 `ca8a29d2bb7c1d60a8d52924da97df4d9011e5660eeb62be36d2df25edc154e1`, matching the current builder handoff. Its direct staged dependency `QLearningHistoryAdaptationDraft.lean` (private staged draft, not shipped) is SHA-256 `766309449c858a91456f82499c75e4de9c2af11fc8d6268f37f4e59815562c4f`; that artifact was freshly built with the exact 12-module natural-history dependency chain in an isolated local audit directory (not shipped).
 
-Freshly compiled the exact increment-cap source to `.local/q-learning-increment-caps-independent-audit`. All four public exports were probed; each reports only `propext`, `Classical.choice`, and `Quot.sound`. No compilation repairs were required.
+Freshly compiled the exact increment-cap source to an isolated local audit directory (not shipped). All four public exports were probed; each reports only `propext`, `Classical.choice`, and `Quot.sound`. No compilation repairs were required.
 
 ## Statement review
 

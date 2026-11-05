@@ -6,10 +6,10 @@ Reviewed the four exact staged sources at the supplied hashes:
 
 | Draft | SHA-256 |
 |---|---|
-| `.local/QLearningChiFixedValueFreedmanDraft.lean` | `8b578842cb8dc020c7f9115a542f374a14cc84f6fe15825634be55ceeae639c9` |
-| `.local/QLearningChiFixedValueUnionDraft.lean` | `ce8eb1eb355b5e9e5609f3a5916f70da6ce6a7817deb3d28c719763da06b8f28` |
-| `.local/QLearningChiSourceRadiusDraft.lean` | `de81a6b1b1db00bc7a887430871615b18968c92dd13f49b2ec94a8790152745b` |
-| `.local/QLearningChiSourceRadiusUnionDraft.lean` | `794fbda069f78d05b226eadb2bc7116ad85d26e31ec994ecb0b96a2984f1f777` |
+| `QLearningChiFixedValueFreedmanDraft.lean` (private staged draft, not shipped) | `8b578842cb8dc020c7f9115a542f374a14cc84f6fe15825634be55ceeae639c9` |
+| `QLearningChiFixedValueUnionDraft.lean` (private staged draft, not shipped) | `ce8eb1eb355b5e9e5609f3a5916f70da6ce6a7817deb3d28c719763da06b8f28` |
+| `QLearningChiSourceRadiusDraft.lean` (private staged draft, not shipped) | `de81a6b1b1db00bc7a887430871615b18968c92dd13f49b2ec94a8790152745b` |
+| `QLearningChiSourceRadiusUnionDraft.lean` (private staged draft, not shipped) | `794fbda069f78d05b226eadb2bc7116ad85d26e31ec994ecb0b96a2984f1f777` |
 
 The authoritative source is `source/upstream/tex/chapters/generative_model_model_free.tex`, SHA-256 `7f4eb058e00480bc0694cac93ac41e22f4cfe48aa58a00c4ccf909f805e60b22`, especially the Q-comparison parameters and weights at lines 1090–1110, rho and reward shift around 1390–1410, comparator range at 1490–1540, and fluctuation/radius/absorption calculation at lines 1618–1684. The project indexing and sampling semantics are those in `Formalization/ModelFree/QLearningCausality.lean` and the qualified production Q-learning stochastic chain.
 
@@ -36,7 +36,7 @@ I found no target-shaped assumption supplying a probability bound, variance budg
 
 ## Independent fresh isolated build and axiom probe
 
-All four exact sources compiled serially with exit 0 and empty per-module compile logs into `.local/q-chi-comparator-probability-independent-review/`. The first draft imports the qualified production module `Formalization.ModelFree.QLearningChiFixedValueVariance`; this avoids mixing same-named staged variance declarations with production declarations. The three consumers import only the local probability drafts. The imported dependencies were the current built project oleans; this review did not rebuild the entire production dependency chain.
+All four exact sources compiled serially with exit 0 and empty per-module compile logs into an isolated local audit directory (not shipped). The first draft imports the qualified production module `Formalization.ModelFree.QLearningChiFixedValueVariance`; this avoids mixing same-named staged variance declarations with production declarations. The three consumers import only the local probability drafts. The imported dependencies were the current built project oleans; this review did not rebuild the entire production dependency chain.
 
 Fresh output hashes:
 
@@ -47,7 +47,7 @@ Fresh output hashes:
 | `QLearningChiSourceRadiusDraft.olean` | `96e9af128129989aeb3b2eaf14b55b0d2d65f197d88e0fc99307f4c974b1472a` |
 | `QLearningChiSourceRadiusUnionDraft.olean` | `4dd8a3ebd9957a1a5d646f76acc126d129268517665cf2cdeed25f71b402cb91` |
 
-The combined fresh audit `.local/q-chi-comparator-probability-independent-review/CombinedAudit.lean`, SHA `88dd241c62488dfab580b12491b234dfc52fe5c2fcfcf1685bb5cba64f8c2970`, imports both union branches together and probes all sixteen exports. Its `.olean` SHA is `48c34da21ffcedc34be810db5f9c429a860ab25a116cd000fd4dbdf6b06ab045`; the probe output SHA is `376a7a8711a25e4650defc3dcc3cccca0c1e782bae68ebd3c3e192594661afa3`. All sixteen declarations depend only on `[propext, Classical.choice, Quot.sound]`. The source drafts contain no `sorry`, `admit`, or custom `axiom` declaration. This probe covers the sixteen named exports and their transitive dependencies, not every declaration in the project.
+The combined fresh audit `CombinedAudit.lean` (in an isolated local audit directory, not shipped), SHA `88dd241c62488dfab580b12491b234dfc52fe5c2fcfcf1685bb5cba64f8c2970`, imports both union branches together and probes all sixteen exports. Its `.olean` SHA is `48c34da21ffcedc34be810db5f9c429a860ab25a116cd000fd4dbdf6b06ab045`; the probe output SHA is `376a7a8711a25e4650defc3dcc3cccca0c1e782bae68ebd3c3e192594661afa3`. All sixteen declarations depend only on `[propext, Classical.choice, Quot.sound]`. The source drafts contain no `sorry`, `admit`, or custom `axiom` declaration. This probe covers the sixteen named exports and their transitive dependencies, not every declaration in the project.
 
 The independent variance-helper fresh build/probe evidence has also been added to `docs/critic-td-variance-pairwise-source.md`.
 

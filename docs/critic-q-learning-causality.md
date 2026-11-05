@@ -1,6 +1,6 @@
 # Independent review: Q-learning finite-prefix causality bridge
 
-Reviewed `.local/QLearningCausalityDraft.lean`, SHA-256 `3eade75e34d1dc7c5a2f6e809e0fe2f8e7fe197ca2b288761df2078067276d37`, against `docs/builder-q-learning-causality.md`, the synchronous update in `source/upstream/tex/chapters/generative_model_model_free.tex:794–870`, and the exact staged sampling/iterate dependencies (hashes `70dccffe5af0e7f824226c1d235257f4b0ea8e4ff7a5f9aaf8d9d1e06a830937` and `594b96eede407a268bad69041146728a7456478c39c53990c53bef006a5b207e`). The handoff SHA matches the current source.
+Reviewed `QLearningCausalityDraft.lean` (private staged draft, not shipped), SHA-256 `3eade75e34d1dc7c5a2f6e809e0fe2f8e7fe197ca2b288761df2078067276d37`, against `docs/builder-q-learning-causality.md`, the synchronous update in `source/upstream/tex/chapters/generative_model_model_free.tex:794–870`, and the exact staged sampling/iterate dependencies (hashes `70dccffe5af0e7f824226c1d235257f4b0ea8e4ff7a5f9aaf8d9d1e06a830937` and `594b96eede407a268bad69041146728a7456478c39c53990c53bef006a5b207e`). The handoff SHA matches the current source.
 
 ## Source and semantic review
 
@@ -12,7 +12,7 @@ At `T=0`, `Fin 0` and the past index set are empty, Q₀ depends on no samples, 
 
 ## Fresh exact-source compile and axiom audit
 
-Verified the three exact staged hashes and ran `.local/audit-q-learning-causality-independent.sh`, which rebuilt Q-iterate bounds, synchronous sampling, then the causality source in `.local/q-learning-causality-independent-audit`. All compiled successfully without diagnostics. The import probe covered 25 declarations across the three modules; every declaration used only `propext`, `Classical.choice`, and `Quot.sound` (the singleton-index definition used a subset). This independently confirms the builder's focused staged compile claim.
+Verified the three exact staged hashes and ran the private audit script `audit-q-learning-causality-independent.sh` (not shipped), which rebuilt Q-iterate bounds, synchronous sampling, then the causality source in an isolated local audit directory (not shipped). All compiled successfully without diagnostics. The import probe covered 25 declarations across the three modules; every declaration used only `propext`, `Classical.choice`, and `Quot.sound` (the singleton-index definition used a subset). This independently confirms the builder's focused staged compile claim.
 
 ## Remaining scope
 

@@ -4,11 +4,11 @@
 
 | File | SHA-256 |
 |---|---|
-| `.local/QLearningChiLowerDraft.lean` | `7c3c610082d13523ac7f34f89dded65e96ba5e9eeb630ae200d7cea5aa35e4e8` |
-| `.local/QLearningChiUpperDraft.lean` | `a1a11cbd1debd8e26bd3bcedd0f13339cd0ae8858d7ab3f6823f23e33d7e2280` |
-| `.local/QLearningRobustComparatorDraft.lean` | `f4523b6f7400791447a3969c87be112c90f87c7eb64ba5a0ce9bbfc14ddfaa70` |
+| `QLearningChiLowerDraft.lean` (private staged draft, not shipped) | `7c3c610082d13523ac7f34f89dded65e96ba5e9eeb630ae200d7cea5aa35e4e8` |
+| `QLearningChiUpperDraft.lean` (private staged draft, not shipped) | `a1a11cbd1debd8e26bd3bcedd0f13339cd0ae8858d7ab3f6823f23e33d7e2280` |
+| `QLearningRobustComparatorDraft.lean` (private staged draft, not shipped) | `f4523b6f7400791447a3969c87be112c90f87c7eb64ba5a0ce9bbfc14ddfaa70` |
 
-These hashes were checked immediately before an independent fresh build. The audit output is isolated under `.local/q-chi-lower-independent-audit/`; no production Lean file was modified.
+These hashes were checked immediately before an independent fresh build. The audit output is isolated in a local audit directory (not shipped); no production Lean file was modified.
 
 ## Source and mathematical review
 
@@ -33,13 +33,9 @@ No target-shaped optimizer or nonzero-variance premise is smuggled in. The gener
 
 The exact-hash dependency closure compiled successfully into the isolated audit directory, bottom-up: Comparator, ChiUpper, ChiLower. Commands used the existing project dependencies and did not request any dependency rebuild:
 
-```text
-LEAN_PATH="$PWD/.local/q-chi-lower-independent-audit:$(lake env printenv LEAN_PATH)" .local/lean -o .local/q-chi-lower-independent-audit/QLearningRobustComparatorDraft.olean .local/QLearningRobustComparatorDraft.lean
-LEAN_PATH="$PWD/.local/q-chi-lower-independent-audit:$(lake env printenv LEAN_PATH)" .local/lean -o .local/q-chi-lower-independent-audit/QLearningChiUpperDraft.olean .local/QLearningChiUpperDraft.lean
-LEAN_PATH="$PWD/.local/q-chi-lower-independent-audit:$(lake env printenv LEAN_PATH)" .local/lean -o .local/q-chi-lower-independent-audit/QLearningChiLowerDraft.olean .local/QLearningChiLowerDraft.lean
-```
+> *Historical command, omitted from the public copy.* It ran the pinned Lean compiler on a private staged source and wrote to an isolated local output directory; neither path is shipped, so it cannot be rerun from this checkout. The recorded result is unchanged.
 
-A separate probe imported the isolated lower output and ran `#print axioms` on all nine declarations in the lower draft, including the simp theorem for `qChiTilt_prob`. Every declaration reports exactly `propext`, `Classical.choice`, and `Quot.sound`. The probe is `.local/q-chi-lower-independent-audit/Probe.lean`.
+A separate probe imported the isolated lower output and ran `#print axioms` on all nine declarations in the lower draft, including the simp theorem for `qChiTilt_prob`. Every declaration reports exactly `propext`, `Classical.choice`, and `Quot.sound`. The probe is `Probe.lean` (in an isolated local audit directory, not shipped).
 
 This is independent evidence for this staged source hash only. The draft remains quarantined and is not a production export.
 

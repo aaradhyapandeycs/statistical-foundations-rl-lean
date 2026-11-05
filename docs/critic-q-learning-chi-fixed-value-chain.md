@@ -6,14 +6,14 @@ This review covers the five staged sources listed below, at the exact SHA-256 va
 
 | Draft | Reviewed source SHA-256 |
 |---|---|
-| `.local/QLearningChiResidualUpperDraft.lean` | `8ffc72ddee531e1eabfd87d6a4b929b23cfd8d60024aa1318aa07d5db6a90dca` |
-| `.local/QLearningChiStochasticInterfaceDraft.lean` | `473970b3fea18f59461bfb59db99c20c6441289961864ed614da963e6ed87040` |
-| `.local/QLearningChiFixedValueMomentsDraft.lean` | `2ecb71cc994ac48b5853c99e471574a61fec7b91493b02e02f8ec9f26dfc5857` |
-| `.local/QLearningChiFixedValueHistoryDraft.lean` | `e0503045ad5f3a5d36df2e7f9fb2e69487d9813fb5bb50877086671345d21ace` |
-| `.local/QLearningChiFixedValueVarianceDraft.lean` | `4941863e949b8f8c5661cbd2ff386406f99e828f6a1c6f89493bd2dac162f15b` |
+| `QLearningChiResidualUpperDraft.lean` (private staged draft, not shipped) | `8ffc72ddee531e1eabfd87d6a4b929b23cfd8d60024aa1318aa07d5db6a90dca` |
+| `QLearningChiStochasticInterfaceDraft.lean` (private staged draft, not shipped) | `473970b3fea18f59461bfb59db99c20c6441289961864ed614da963e6ed87040` |
+| `QLearningChiFixedValueMomentsDraft.lean` (private staged draft, not shipped) | `2ecb71cc994ac48b5853c99e471574a61fec7b91493b02e02f8ec9f26dfc5857` |
+| `QLearningChiFixedValueHistoryDraft.lean` (private staged draft, not shipped) | `e0503045ad5f3a5d36df2e7f9fb2e69487d9813fb5bb50877086671345d21ace` |
+| `QLearningChiFixedValueVarianceDraft.lean` (private staged draft, not shipped) | `4941863e949b8f8c5661cbd2ff386406f99e828f6a1c6f89493bd2dac162f15b` |
 
 Source hash: `7f4eb058e00480bc0694cac93ac41e22f4cfe48aa58a00c4ccf909f805e60b22`.
-The imported source-parameter bridge compiled in the fresh audit at `.local/QLearningChiSourceParametersDraft.lean`, SHA `f59901a3a4893d67f1df9f064b40c1aecd5c27c9ac7cbaae2903175e93b09e4e`.
+The imported source-parameter bridge compiled in the fresh audit at `QLearningChiSourceParametersDraft.lean` (private staged draft, not shipped), SHA `f59901a3a4893d67f1df9f064b40c1aecd5c27c9ac7cbaae2903175e93b09e4e`.
 
 ## Source correspondence
 
@@ -43,7 +43,7 @@ No forbidden placeholders (`sorry`, `admit`, or custom `axiom`) occur in the fiv
 
 ## Independent isolated build and axiom probe
 
-A fresh serial build was performed in `.local/q-fixed-value-independent-review/`, using its private output directory and the previously isolated reviewed dependencies. The source-parameter bridge and all five exact target files compiled with exit status 0. Fresh `.olean` SHA-256 values:
+A fresh serial build was performed in an isolated local audit directory (not shipped), using its private output directory and the previously isolated reviewed dependencies. The source-parameter bridge and all five exact target files compiled with exit status 0. Fresh `.olean` SHA-256 values:
 
 | Module | Isolated output SHA-256 |
 |---|---|
@@ -54,7 +54,7 @@ A fresh serial build was performed in `.local/q-fixed-value-independent-review/`
 | `QLearningChiFixedValueHistoryDraft` | `1cb00642a727cad1faeedb4a5c22261acb27fb63dee9531ed1cb915bfc0c4c79` |
 | `QLearningChiFixedValueVarianceDraft` | `f81c2e8f97d23e80e0f50737b20a86b6241e373061de9f8dd12e9519e72a8fb9` |
 
-The fresh import-only probe is `.local/q-fixed-value-independent-review/QLearningChiFixedValueChainImportAudit.lean`, SHA `e755cb69784ef4d9dff2b0fa5213182099f854abb5e6470e1e35c82ab98d59a8`. It imports the variance module and probes all 27 exports across the chain. The resulting `axioms.log` SHA is `6f5afcda259c302ef08671779ad2bc4fee968dedf12c8acdc418932958cf4c0a`; every listed declaration depends only on `[propext, Classical.choice, Quot.sound]`. This independent probe covers the exports printed by that audit file; it is not a blanket audit of every transitive project declaration.
+The fresh import-only probe is `QLearningChiFixedValueChainImportAudit.lean` (in an isolated local audit directory, not shipped), SHA `e755cb69784ef4d9dff2b0fa5213182099f854abb5e6470e1e35c82ab98d59a8`. It imports the variance module and probes all 27 exports across the chain. The resulting `axioms.log` SHA is `6f5afcda259c302ef08671779ad2bc4fee968dedf12c8acdc418932958cf4c0a`; every listed declaration depends only on `[propext, Classical.choice, Quot.sound]`. This independent probe covers the exports printed by that audit file; it is not a blanket audit of every transitive project declaration.
 
 ## Disposition
 

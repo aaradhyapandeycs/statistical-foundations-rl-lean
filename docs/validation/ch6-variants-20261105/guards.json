@@ -1,0 +1,20 @@
+{
+  "scope": "Fresh project rebuild using pinned, existing read-only dependency artifacts; no project artifact reuse",
+  "source_map_sha256": "3030346076d014f55990f03cb91c69b52eecaf1ddcfe5ac2454368504d37a5ad",
+  "source_pre_post_equal": true,
+  "dependency_metadata_pre_post_equal": true,
+  "dependency_guard_kind": "path, size and modification-time metadata; not a dependency byte seal",
+  "compiler_sha256": "2974847fff2e2621502841f4c2dbac4035b4847d6060a4f2087cbc0d04005e37",
+  "checker_sha256": "ed18e20a8311b90afd5bcdd07d16b4f1fd2036d82f9902156574cd37302655fb",
+  "lean_local_sha256": "e2b98b57a7e59621e10ec1d8976c1dfe66b9b9d4a900e86e838659692dac9401",
+  "module_count": 938,
+  "check_exit": 0,
+  "audit_declarations": 8414,
+  "allowed_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "completed_utc": "2026-11-05T16:27:51.696331+00:00",
+  "wall_seconds": 7074.383928917
+}
