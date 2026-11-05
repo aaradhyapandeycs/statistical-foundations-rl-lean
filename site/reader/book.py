@@ -159,11 +159,16 @@ class Book:
         if src is None:
             self.warn(f"figure file not in the arXiv source: {path}")
             return f'<span class="missing-figure">Figure file <code>{esc(path)}</code> is not in the arXiv source.</span>'
-        name = src.stem + ".png"
+        # Some figures in the arXiv source are PNG or JPEG files named *.pdf;
+        # pdfTeX and macOS accept them, poppler does not. Trust the contents.
+        magic = src.read_bytes()[:4]
+        kind = ("png" if magic == b"\x89PNG" else "jpg" if magic[:2] == b"\xff\xd8"
+                else "pdf" if magic == b"%PDF" else src.suffix.lower().lstrip("."))
+        name = src.stem + (".jpg" if kind == "jpg" else ".png")
         dest = self.out / "figures" / name
         if name not in self.images:
             dest.parent.mkdir(parents=True, exist_ok=True)
-            if src.suffix.lower() == ".pdf":
+            if kind == "pdf":
                 if shutil.which("pdftoppm"):  # Linux CI (poppler-utils)
                     cmd = ["pdftoppm", "-png", "-r", "216", "-singlefile", str(src), str(dest.with_suffix(""))]
                 elif shutil.which("sips"):  # macOS
@@ -173,7 +178,8 @@ class Book:
                     cmd = None
                 r = subprocess.run(cmd, capture_output=True, text=True) if cmd else None
                 if r is None or r.returncode != 0 or not dest.exists():
-                    self.warn(f"could not convert {src.name} to PNG")
+                    why = (r.stderr or r.stdout).strip().splitlines()[-1:] if r else ["no converter found"]
+                    self.warn(f"could not convert {src.name} to PNG: {' '.join(why) or 'no output file'}")
                     return f'<span class="missing-figure">Figure <code>{esc(path)}</code> could not be converted.</span>'
             else:
                 shutil.copyfile(src, dest)
