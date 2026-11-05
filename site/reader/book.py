@@ -173,7 +173,8 @@ class Book:
                     cmd = None
                 r = subprocess.run(cmd, capture_output=True, text=True) if cmd else None
                 if r is None or r.returncode != 0 or not dest.exists():
-                    self.warn(f"could not convert {src.name} to PNG")
+                    why = (r.stderr or r.stdout).strip().splitlines()[-1:] if r else ["no converter found"]
+                    self.warn(f"could not convert {src.name} to PNG: {' '.join(why) or 'no output file'}")
                     return f'<span class="missing-figure">Figure <code>{esc(path)}</code> could not be converted.</span>'
             else:
                 shutil.copyfile(src, dest)

@@ -45,7 +45,9 @@ def letters(t: str) -> str:
 
 def pdf_text() -> str:
     if shutil.which("pdftotext"):
-        return subprocess.run(["pdftotext", "-enc", "UTF-8", str(PDF), "-"], capture_output=True,
+        # -raw keeps content-stream order, which follows the typeset order of the
+        # TeX; poppler's default reading-order heuristic reorders math and floats.
+        return subprocess.run(["pdftotext", "-raw", "-enc", "UTF-8", str(PDF), "-"], capture_output=True,
                               text=True, check=True).stdout
     if shutil.which("swift"):
         return subprocess.run(["swift", str(HERE / "tools/pdftext.swift"), str(PDF)], capture_output=True,
@@ -250,6 +252,7 @@ def annotate(failures: int) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--build", default=str(HERE / "_build"))
+    ap.add_argument("--dump-pdf-text", help="also write the extracted PDF text here, for debugging")
     args = ap.parse_args()
     build = Path(args.build)
     failures = 0
@@ -261,6 +264,8 @@ def main() -> int:
     everything_l = letters(" ".join(html.unescape(Path(f).read_text()) for f in glob.glob(str(build / "*.html"))))
 
     raw = pdf_text()
+    if args.dump_pdf_text:
+        Path(args.dump_pdf_text).write_text(raw)
     raw = re.sub(r"(?m)^\d+\s+Chapter\s+\d+\..*$", " ", raw)
     raw = re.sub(r"(?m)^\d+(?:\.\d+)+\.?\s[^\n]{3,90}?\s\d{1,3}$", " ", raw)
     raw = re.sub(r"-\n", "", raw)
