@@ -1,4 +1,5 @@
 import Formalization.MDP.Basic
+import Formalization.Probability.VarianceDefinitions
 
 /-!
 # Finite transition variance and its perturbation bound
@@ -24,10 +25,6 @@ theorem abs_sq_sub_sq_le {x y B ε : ℝ} (hε : 0 ≤ ε)
 namespace FiniteDistribution
 
 variable {Ω : Type*} [Fintype Ω]
-
-/-- Variance under the real finite probability simplex. -/
-def variance (d : FiniteDistribution Ω) (f : Ω → ℝ) : ℝ :=
-  d.expectation (fun x ↦ f x ^ 2) - (d.expectation f) ^ 2
 
 /-- The second-moment expression equals the expectation of the actual centered square. -/
 theorem variance_eq_expectation_centered_sq (d : FiniteDistribution Ω) (f : Ω → ℝ) :

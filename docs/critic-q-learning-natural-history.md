@@ -4,10 +4,10 @@
 
 The current staged sources do not match the older hashes in `builder-q-learning-natural-history.md`:
 
-- `.local/QLearningNaturalHistoryDraft.lean`: `841361faa2ba6d092b6f46ccb15e0bcda03d591e147f74b1f6d611de334b7ffd`.
-- `.local/QLearningHistoryAdaptationDraft.lean`: `766309449c858a91456f82499c75e4de9c2af11fc8d6268f37f4e59815562c4f`.
+- `QLearningNaturalHistoryDraft.lean` (private staged draft, not shipped): `841361faa2ba6d092b6f46ccb15e0bcda03d591e147f74b1f6d611de334b7ffd`.
+- `QLearningHistoryAdaptationDraft.lean` (private staged draft, not shipped): `766309449c858a91456f82499c75e4de9c2af11fc8d6268f37f4e59815562c4f`.
 
-I independently compiled the current exact sources and their ten staged dependencies in dependency order to `.local/q-learning-natural-history-independent-audit`. The build completed successfully. An import-only probe checked all nine public declarations from the two target modules; every declaration reported only `propext`, `Classical.choice`, and `Quot.sound`. There were three benign linter warnings in upstream Q-learning modules (unused section instances and an unused simp argument); no errors or admissions.
+I independently compiled the current exact sources and their ten staged dependencies in dependency order to an isolated local audit directory (not shipped). The build completed successfully. An import-only probe checked all nine public declarations from the two target modules; every declaration reported only `propext`, `Classical.choice`, and `Quot.sound`. There were three benign linter warnings in upstream Q-learning modules (unused section instances and an unused simp argument); no errors or admissions.
 
 ## Source and semantic findings
 

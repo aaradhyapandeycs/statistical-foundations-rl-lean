@@ -60,3 +60,7 @@ with their CC BY 4.0 and third-party notices. The project also consults the
 
 Original Lean code and project tooling use the Apache License 2.0. The paper,
 skill collection, and any third-party material retain their respective licenses.
+
+## Errata and deviations
+
+For the pinned source arXiv:2610.41903v1, the release record lists **5 errata and 13 deviations**. Errata include the standalone TD step-size bound, the `K=1` endpoints of auxiliary online bounds, the signed-square variance coefficient, the discount domain of Lemma 6.2, and a false fixed-profile value-identification step. The deviations disclose the positive-sample and causal-planner scopes, finite zero-count conventions, the power-of-two MVP trigger interpretation, corrected profile and confidence constructions, the commented fallback used for Theorem 6.1, and explicit Chapter 4 constant witnesses. See [the full record](docs/ERRATA-AND-DEVIATIONS.md).

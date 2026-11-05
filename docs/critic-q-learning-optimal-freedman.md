@@ -2,8 +2,8 @@
 
 Reviewed the final staged sources reported by `docs/builder-q-learning-optimal-freedman-plan.md`:
 
-- `.local/QLearningOptimalPredictableVarianceDraft.lean`, SHA-256 `195ecfb780926c2072d2d0770284fefb1cf5129e46469ad81859c6c6b967eee5`.
-- `.local/QLearningOptimalFreedmanDraft.lean`, SHA-256 `4d9b33160de315f6fe613f0b8fca20359e104132798685ed2aa8073799c2f8bb`.
+- `QLearningOptimalPredictableVarianceDraft.lean` (private staged draft, not shipped), SHA-256 `195ecfb780926c2072d2d0770284fefb1cf5129e46469ad81859c6c6b967eee5`.
+- `QLearningOptimalFreedmanDraft.lean` (private staged draft, not shipped), SHA-256 `4d9b33160de315f6fe613f0b8fca20359e104132798685ed2aa8073799c2f8bb`.
 
 The current sources match those handoff hashes. This is an independent source review; fresh compilation and axiom probing are now complete and recorded below.
 
@@ -56,7 +56,7 @@ The staged build order is:
 
 The qualified production dependency `Formalization.Probability.FreedmanNaturalHistory` was already present in the project's production build and should be reused, not replaced by the similarly named unqualified staged draft. Its source SHA-256 is `7e1e189566bc48cd8551e8ce83c156d154f3c0cd07bf00bf9b78cdd410821b23`; it imports production `Formalization.Probability.FreedmanExactAssembly` (SHA-256 `8914080eb48351a84b53d23d361430e6b9b5beff9feda4b3af483517b56a5c4c`) and `Formalization.Probability.FreedmanVariancePeeling` (SHA-256 `010f97d59be568ea443fe38f40e51ac83b4cd95ebcde8f118bb3fb76935b15da`).
 
-The exact target hashes were rechecked before compilation. All 24 staged modules compiled in the order above in `.local/q-optimal-freedman-audit-195ecfb7/`. All nine target declarations/definitions were probed; each reports only `propext`, `Classical.choice`, and `Quot.sound`. The qualified production Freedman imports were reused from existing project artifacts and not rebuilt. This focused check is not production integration.
+The exact target hashes were rechecked before compilation. All 24 staged modules compiled in the order above in an isolated local audit directory (not shipped). All nine target declarations/definitions were probed; each reports only `propext`, `Classical.choice`, and `Quot.sound`. The qualified production Freedman imports were reused from existing project artifacts and not rebuilt. This focused check is not production integration.
 
 Exact staged-source hashes used in the rebuild:
 

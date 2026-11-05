@@ -1,3 +1,4 @@
+import Formalization.Probability.FiniteSampleDefinitions
 import Formalization.MDP.InfiniteTrajectory
 import Mathlib.Probability.Independence.Basic
 import Mathlib.MeasureTheory.Constructions.Pi
@@ -22,17 +23,9 @@ variable {State : Type*} [Fintype State]
 local instance empiricalRowStateMeasurable : MeasurableSpace State := ⊤
 noncomputable local instance empiricalRowStateDecidable : DecidableEq State := Classical.decEq State
 
-/-- The probability measure of one draw from the actual transition row. -/
-noncomputable def rowMeasure (d : FiniteDistribution State) : Measure State :=
-  d.toPMF.toMeasure
-
 instance rowMeasure_isProbabilityMeasure (d : FiniteDistribution State) :
     IsProbabilityMeasure d.rowMeasure := inferInstanceAs
       (IsProbabilityMeasure d.toPMF.toMeasure)
-
-/-- The genuine independent product law for `N` observations of one row. -/
-noncomputable def sampleMeasure (d : FiniteDistribution State) (N : ℕ) :
-    Measure (Fin N → State) := Measure.pi (fun _ ↦ d.rowMeasure)
 
 instance sampleMeasure_isProbabilityMeasure (d : FiniteDistribution State) (N : ℕ) :
     IsProbabilityMeasure (d.sampleMeasure N) := by
@@ -57,18 +50,6 @@ theorem sampleMeasure_coordinate_singleton (d : FiniteDistribution State)
 theorem sampleMeasure_independent (d : FiniteDistribution State) (N : ℕ) :
     iIndepFun (fun i (ω : Fin N → State) ↦ ω i) (d.sampleMeasure N) := by
   exact iIndepFun_pi (fun _ ↦ measurable_id.aemeasurable)
-
-/-- The empirical frequency row of an observed sample, for positive `N`. -/
-noncomputable def empiricalRow (N : ℕ) (hN : 0 < N) (ω : Fin N → State) :
-    FiniteDistribution State where
-  prob s := (N : ℝ)⁻¹ * ∑ i, if ω i = s then 1 else 0
-  prob_nonneg s := mul_nonneg (inv_nonneg.mpr (Nat.cast_nonneg N))
-    (Finset.sum_nonneg (fun _ _ ↦ by split <;> norm_num))
-  sum_prob := by
-    simp_rw [Finset.mul_sum]
-    rw [Finset.sum_comm]
-    simp only [← Finset.mul_sum]
-    simp [ne_of_gt hN]
 
 /-- Evaluating the frequency row at `V` equals the empirical sample mean. -/
 theorem empiricalRow_expectation (N : ℕ) (hN : 0 < N) (ω : Fin N → State)

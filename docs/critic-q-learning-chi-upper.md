@@ -2,7 +2,7 @@
 
 ## Reviewed artifact and scope
 
-Reviewed `.local/QLearningChiUpperDraft.lean`, SHA-256
+Reviewed `QLearningChiUpperDraft.lean` (private staged draft, not shipped), SHA-256
 `a1a11cbd1debd8e26bd3bcedd0f13339cd0ae8858d7ab3f6823f23e33d7e2280`.
 The associated builder note is
 `docs/builder-q-learning-chi-upper-draft.md`. This review checks the stated
@@ -29,7 +29,7 @@ exactly the positive-`p` coordinates, and stores the zero-support condition
 separately in `qChiBall`. This is the correct discrete expansion of
 `∫(dq/dp−1)^2 dp`; no mass is admitted off nominal support and no totalized
 division at a zero denominator is used. That dependency is
-`.local/QLearningRobustComparatorDraft.lean`, SHA-256
+`QLearningRobustComparatorDraft.lean` (private staged draft, not shipped), SHA-256
 `f4523b6f7400791447a3969c87be112c90f87c7eb64ba5a0ce9bbfc14ddfaa70`.
 
 The five declarations in the reviewed file form a faithful proof chain for
@@ -83,14 +83,10 @@ is not discharged here.
 After rechecking the source SHA above, I compiled the exact target source to a
 new isolated directory, with the staged comparator dependency supplied from
 its already audited isolated output. The output path was
-`.local/q-chi-upper-independent-audit-a1a11cbd/`; no production module or
+an isolated local audit directory (not shipped); no production module or
 production `.olean` was written. The command was:
 
-```sh
-LEAN_PATH="$(pwd)/.local/ql-robust-contraction-independent-audit-f4523b6f:$(pwd)/.local/q-chi-upper-independent-audit-a1a11cbd:<project-and-pinned-package Lean paths>" \
-  .local/lean -o .local/q-chi-upper-independent-audit-a1a11cbd/QLearningChiUpperDraft.olean \
-  .local/QLearningChiUpperDraft.lean
-```
+> *Historical command, omitted from the public copy.* It ran the pinned Lean compiler on a private staged source and wrote to an isolated local output directory; neither path is shipped, so it cannot be rerun from this checkout. The recorded result is unchanged.
 
 The actual project and pinned package paths were assembled from
 `.lake/build/lib/lean` and each `.lake/packages/*/.lake/build/lib/lean`.
@@ -99,7 +95,7 @@ artifact SHA-256 is
 `1e2c9314321fbb92ea0e30e96d98daf637ca50a9dcd52db76e5a019013cafc1d`.
 
 A fresh import-only probe at
-`.local/q-chi-upper-independent-audit-a1a11cbd/ImportAudit.lean` imported the
+`ImportAudit.lean` (in an isolated local audit directory, not shipped) imported the
 new artifact and ran `#print axioms` for all five exported declarations. The
 probe exited successfully; each reports exactly `propext`, `Classical.choice`,
 and `Quot.sound`. Probe source SHA-256:

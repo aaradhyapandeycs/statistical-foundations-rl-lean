@@ -4,10 +4,10 @@
 
 | File | SHA-256 |
 |---|---|
-| `.local/QLearningChiComparisonDraft.lean` | `d92b11e3aa6ba74249ec3d18f83fb0bf73ff2829fc597f1b8c687ac6ec7620c0` |
-| `.local/QLearningChiLowerDraft.lean` | `7c3c610082d13523ac7f34f89dded65e96ba5e9eeb630ae200d7cea5aa35e4e8` |
-| `.local/QLearningChiUpperDraft.lean` | `a1a11cbd1debd8e26bd3bcedd0f13339cd0ae8858d7ab3f6823f23e33d7e2280` |
-| `.local/QLearningRobustComparatorDraft.lean` | `f4523b6f7400791447a3969c87be112c90f87c7eb64ba5a0ce9bbfc14ddfaa70` |
+| `QLearningChiComparisonDraft.lean` (private staged draft, not shipped) | `d92b11e3aa6ba74249ec3d18f83fb0bf73ff2829fc597f1b8c687ac6ec7620c0` |
+| `QLearningChiLowerDraft.lean` (private staged draft, not shipped) | `7c3c610082d13523ac7f34f89dded65e96ba5e9eeb630ae200d7cea5aa35e4e8` |
+| `QLearningChiUpperDraft.lean` (private staged draft, not shipped) | `a1a11cbd1debd8e26bd3bcedd0f13339cd0ae8858d7ab3f6823f23e33d7e2280` |
+| `QLearningRobustComparatorDraft.lean` (private staged draft, not shipped) | `f4523b6f7400791447a3969c87be112c90f87c7eb64ba5a0ce9bbfc14ddfaa70` |
 
 These exact hashes were rechecked immediately before the isolated fresh build. No production Lean source was modified.
 
@@ -47,12 +47,12 @@ sample-complexity theorem, or production integration.
 ## Independent isolated build and axiom probe
 
 The exact-hash dependency closure compiled successfully bottom-up into
-`.local/q-chi-comparison-independent-audit/`: RobustComparator, ChiUpper,
+an isolated local audit directory (not shipped): RobustComparator, ChiUpper,
 ChiLower, then ChiComparison. Existing project/package dependencies were
 used; no dependency rebuild was requested. A separate import probe checked
 all seven declarations in the comparison wrapper. Each reports exactly
 `propext`, `Classical.choice`, and `Quot.sound`. The probe source is
-`.local/q-chi-comparison-independent-audit/Probe.lean`.
+`Probe.lean` (in an isolated local audit directory, not shipped).
 
 This is independent evidence for the staged hashes above; the wrapper remains
 quarantined and is not a production export.

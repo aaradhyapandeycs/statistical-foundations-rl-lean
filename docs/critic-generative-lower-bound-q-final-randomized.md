@@ -4,12 +4,12 @@
 
 The final wrapper and its reconstruction bridge match the builder handoff:
 
-- `.local/GenerativeLowerBoundQMixtureFinalRandomized.lean`, SHA-256 `a4bc1dae5f190955e12a345d39ce74041e24fcdd3bd7c515a9595012e47d69b8`.
-- `.local/GenerativeLowerBoundQRandomReconstruct.lean`, SHA-256 `2b3368a89fc42a4b952bf9ca4378ad8949c1a83d4d2ee2c419d39c17fa95238a`.
+- `GenerativeLowerBoundQMixtureFinalRandomized.lean` (private staged draft, not shipped), SHA-256 `a4bc1dae5f190955e12a345d39ce74041e24fcdd3bd7c515a9595012e47d69b8`.
+- `GenerativeLowerBoundQRandomReconstruct.lean` (private staged draft, not shipped), SHA-256 `2b3368a89fc42a4b952bf9ca4378ad8949c1a83d4d2ee2c419d39c17fa95238a`.
 
-I independently rebuilt the exact 40-module deterministic Q-mixture closure and the 10-module randomized extension in `.local/q-mixture-final-randomized-fresh-audit`, after checking every source hash against the pinned manifest. Lean compiled all 50 modules. A generated audit module ran `#print axioms` over 205 declarations; the final wrapper, the reconstruction-event transfer, and the other theorem exports used only `propext`, `Classical.choice`, and `Quot.sound` (one non-theorem declaration reported no axioms). No `sorryAx` or other nonstandard axiom appeared. Lean emitted only unused-variable/style linter warnings, including the known unused `hsize`.
+I independently rebuilt the exact 40-module deterministic Q-mixture closure and the 10-module randomized extension in an isolated local audit directory (not shipped), after checking every source hash against the pinned manifest. Lean compiled all 50 modules. A generated audit module ran `#print axioms` over 205 declarations; the final wrapper, the reconstruction-event transfer, and the other theorem exports used only `propext`, `Classical.choice`, and `Quot.sound` (one non-theorem declaration reported no axioms). No `sorryAx` or other nonstandard axiom appeared. Lean emitted only unused-variable/style linter warnings, including the known unused `hsize`.
 
-Reproduction script: `.local/audit-q-mixture-final-randomized-fresh.sh`.
+Reproduction script: the private audit script `audit-q-mixture-final-randomized-fresh.sh` (not shipped).
 
 ## Statement and semantic review
 

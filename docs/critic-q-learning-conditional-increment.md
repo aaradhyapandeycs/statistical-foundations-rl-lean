@@ -1,6 +1,6 @@
 # Independent review: Q-learning conditional centering and true-row variance
 
-Reviewed `.local/QLearningConditionalIncrementDraft.lean`, SHA-256 `37819b3b3e5114e277de9a124f2f5bdddffe0dfd679b92aa3948de30fb5483ab`, against the final handoff `docs/builder-q-learning-conditional-increment.md` and exact audited indicator/prefix dependencies in `docs/critic-q-learning-indicator-conditional.md` and `docs/critic-q-learning-prefix-filtration.md`.
+Reviewed `QLearningConditionalIncrementDraft.lean` (private staged draft, not shipped), SHA-256 `37819b3b3e5114e277de9a124f2f5bdddffe0dfd679b92aa3948de30fb5483ab`, against the final handoff `docs/builder-q-learning-conditional-increment.md` and exact audited indicator/prefix dependencies in `docs/critic-q-learning-indicator-conditional.md` and `docs/critic-q-learning-prefix-filtration.md`.
 
 ## Source/semantic review
 
@@ -12,7 +12,7 @@ For the square identity, the centered increment is expanded pathwise as a finite
 
 ## Fresh exact-source compilation and axiom audit
 
-Verified the final staged hash and rebuilt the exact 10-module chain in `.local/q-learning-conditional-increment-independent-audit`: Q iterate, sampling law, causality, conditional-moment definitions, prefix filtration, pathwise indicator expansions, indicator sigma algebra, conditional indicator bridge, predictable-sum pullout, and the final increment specialization. Compilation completed successfully; only unused-instance/simp-argument linter warnings appeared. The import audit probed 55 declarations; every export used only `propext`, `Classical.choice`, and `Quot.sound` (or a subset).
+Verified the final staged hash and rebuilt the exact 10-module chain in an isolated local audit directory (not shipped): Q iterate, sampling law, causality, conditional-moment definitions, prefix filtration, pathwise indicator expansions, indicator sigma algebra, conditional indicator bridge, predictable-sum pullout, and the final increment specialization. Compilation completed successfully; only unused-instance/simp-argument linter warnings appeared. The import audit probed 55 declarations; every export used only `propext`, `Classical.choice`, and `Quot.sound` (or a subset).
 
 ## Remaining scope
 

@@ -1,6 +1,6 @@
 # Independent source review: synchronous Q-learning sampling
 
-Reviewed `.local/QLearningSynchronousSampling.lean`, SHA-256 `70dccffe5af0e7f824226c1d235257f4b0ea8e4ff7a5f9aaf8d9d1e06a830937`, against the source algorithm in `source/upstream/tex/chapters/generative_model_model_free.tex:794–870` and the compiled iterate module `.local/QLearningIterateBounds.lean` / `Formalization/ModelFree/QLearningIterateBounds.lean`, both SHA-256 `594b96eede407a268bad69041146728a7456478c39c53990c53bef006a5b207e`. The later independent compile audit verified this same hash; there were no changes after source review.
+Reviewed `QLearningSynchronousSampling.lean` (private staged draft, not shipped), SHA-256 `70dccffe5af0e7f824226c1d235257f4b0ea8e4ff7a5f9aaf8d9d1e06a830937`, against the source algorithm in `source/upstream/tex/chapters/generative_model_model_free.tex:794–870` and the compiled iterate module `QLearningIterateBounds.lean` (private staged draft, not shipped) / `Formalization/ModelFree/QLearningIterateBounds.lean`, both SHA-256 `594b96eede407a268bad69041146728a7456478c39c53990c53bef006a5b207e`. The later independent compile audit verified this same hash; there were no changes after source review.
 
 ## Verdict
 
@@ -20,6 +20,6 @@ The module does not itself prove a prefix-independence/causality interface for t
 
 ## Independent compiler and axiom audit
 
-Verified the exact staged source hash above and compiled it into `.local/q-learning-sampling-independent-audit/QLearningSynchronousSampling.olean` with the already audited Q-iterate artifact first on the isolated search path. Compilation exited successfully without diagnostics. The import probe checked all ten public declarations, from `qSamplingLaw` through `qSampledIterate_error_ae`; each depends only on `propext`, `Classical.choice`, and `Quot.sound`. Production integration and a production import/export audit remain separate.
+Verified the exact staged source hash above and compiled it into `QLearningSynchronousSampling.olean` (in an isolated local audit directory, not shipped) with the already audited Q-iterate artifact first on the isolated search path. Compilation exited successfully without diagnostics. The import probe checked all ten public declarations, from `qSamplingLaw` through `qSampledIterate_error_ae`; each depends only on `propext`, `Classical.choice`, and `Quot.sound`. Production integration and a production import/export audit remain separate.
 
 Production integration: the reviewed source body compiles in the project export with qualified imports; the Q-learning causality file has been given the production module name `QLearningCausality`. The full project check audited 2,755 declarations, allowing only `propext`, `Classical.choice`, and `Quot.sound`.

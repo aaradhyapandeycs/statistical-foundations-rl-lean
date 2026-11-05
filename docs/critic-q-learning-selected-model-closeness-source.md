@@ -8,9 +8,9 @@ not change the coverage ledger.
 
 | File | SHA-256 |
 |---|---|
-| `.local/QLearningComparatorDistanceReductionDraft.lean` | `3c3a244d94bb9ddca753fdfe604bca217f156284aad1e7fa338b74d90bd5cdda` |
-| `.local/QLearningComparatorDistanceEndpointsDraft.lean` | `c2888f9bb23376ae8c95db1fe68e9912e3d134317e6d704b02cecf9b9f73ed5a` |
-| `.local/QLearningComparatorConditionalClosenessDraft.lean` | `dbc879282a61ca9de10285a9fd4cbf7b1f6ebea988af32e9e44749a802281518` |
+| `QLearningComparatorDistanceReductionDraft.lean` (private staged draft, not shipped) | `3c3a244d94bb9ddca753fdfe604bca217f156284aad1e7fa338b74d90bd5cdda` |
+| `QLearningComparatorDistanceEndpointsDraft.lean` (private staged draft, not shipped) | `c2888f9bb23376ae8c95db1fe68e9912e3d134317e6d704b02cecf9b9f73ed5a` |
+| `QLearningComparatorConditionalClosenessDraft.lean` (private staged draft, not shipped) | `dbc879282a61ca9de10285a9fd4cbf7b1f6ebea988af32e9e44749a802281518` |
 | `Formalization/ModelFree/QLearningRobustRange.lean` | `46747fa497696120ece406e477f5a00034e9407b9bd48e3777bc7567f255a7c3` |
 | `Formalization/ModelFree/QLearningRobustAttainment.lean` | `8a8d666c6a3eb1cfad7a9626f7361ae5c05c483cc112f505345c101e419150b5` |
 | `Formalization/MDP/OptimalTrajectoryValue.lean` | `d3fbac88b1bec5e29ad93e9432d6a491f72fb3d9ada243f3a954950b47af21d7` |
@@ -79,8 +79,8 @@ separately named stability hypothesis.
 ## Independent fresh build and axiom probe
 
 The three exact staged sources above were independently compiled bottom-up
-with `.local/lean` into
-`.local/q-comparator-distance-independent-20261103/out/`, with this output
+with the pinned Lean executable into
+an isolated local audit directory (not shipped), with this output
 first on `LEAN_PATH`, followed by the project build and pinned Mathlib
 outputs. All three focused compiles succeeded. Fresh output hashes were:
 
@@ -90,7 +90,7 @@ outputs. All three focused compiles succeeded. Fresh output hashes were:
 | `QLearningComparatorDistanceEndpointsDraft.olean` | `c7ef68ac1551385431fe571c900cb9c05affd9acc6ecbdea25ae5d126fa8868b` |
 | `QLearningComparatorConditionalClosenessDraft.olean` | `5e3ffe7052f051822f084a6a60c82f420ae9f2b065aa18a93f44702c188b857a` |
 
-The combined probe `.local/q-comparator-distance-independent-20261103/AxiomProbe.lean`, SHA-256 `8e43af78ffcd778953bef845c7c9e1d84264a73c1882e2b54211f51564b18dd9`, imports the final conditional-closeness module and prints axioms for all 15 exports (7 reduction, 6 endpoint, 2 conditional). Every export reports exactly `[propext, Classical.choice, Quot.sound]`. No source or production file was edited for this verification.
+The combined probe `AxiomProbe.lean` (in an isolated local audit directory, not shipped), SHA-256 `8e43af78ffcd778953bef845c7c9e1d84264a73c1882e2b54211f51564b18dd9`, imports the final conditional-closeness module and prints axioms for all 15 exports (7 reduction, 6 endpoint, 2 conditional). Every export reports exactly `[propext, Classical.choice, Quot.sound]`. No source or production file was edited for this verification.
 
 The fresh build confirms elaboration and the probe confirms the transitive
 axioms for these exact staged exports. The source-level conclusions above

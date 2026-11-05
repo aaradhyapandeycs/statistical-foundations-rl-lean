@@ -1,6 +1,6 @@
 # Independent audit: one-step trajectory KL chain rule
 
-Reviewed exact staged source `.local/QLearningTrajectoryKLDraft.lean`, SHA-256 `a15d69448bdb00eb75e31ee9d09e92278b7fb8a4e98ca40c05567ef2e83cfba2`. The source review, isolated compile and export axiom probes are complete. This is a generic one-step Markov-law identity; it is not the finite-horizon policy trajectory chain rule or the geometric stopping-time result.
+Reviewed exact staged source `QLearningTrajectoryKLDraft.lean` (private staged draft, not shipped), SHA-256 `a15d69448bdb00eb75e31ee9d09e92278b7fb8a4e98ca40c05567ef2e83cfba2`. The source review, isolated compile and export axiom probes are complete. This is a generic one-step Markov-law identity; it is not the finite-horizon policy trajectory chain rule or the geometric stopping-time result.
 
 ## Source semantics, normalization, and KL orientation
 
@@ -22,13 +22,11 @@ The draft establishes one step only. To obtain the source's conditional-on-τ=k 
 
 ## Fresh isolated compile and transitive axioms
 
-Exact source `.local/QLearningTrajectoryKLDraft.lean` compiled with exit 0 and no diagnostics to `.local/q-trajectory-kl-source-independent/QLearningTrajectoryKLDraft.olean` using the repository's pinned Lean runner:
+Exact source `QLearningTrajectoryKLDraft.lean` (private staged draft, not shipped) compiled with exit 0 and no diagnostics to `QLearningTrajectoryKLDraft.olean` (in an isolated local audit directory, not shipped) using the repository's pinned Lean runner:
 
-```text
-bash scripts/lean-local.sh -o "$PWD/.local/q-trajectory-kl-source-independent/QLearningTrajectoryKLDraft.olean" .local/QLearningTrajectoryKLDraft.lean
-```
+> *Historical command, omitted from the public copy.* It ran the pinned Lean compiler on a private staged source and wrote to an isolated local output directory; neither path is shipped, so it cannot be rerun from this checkout. The recorded result is unchanged.
 
-Fresh `ImportAudit.lean` probes `qMarkovStepLaw` and `qMarkovStep_finiteKL_chainRule`. Both transitive axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`; see `.local/q-trajectory-kl-source-independent/axioms.log`.
+Fresh `ImportAudit.lean` probes `qMarkovStepLaw` and `qMarkovStep_finiteKL_chainRule`. Both transitive axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`; see `axioms.log` (in an isolated local audit directory, not shipped).
 
 The draft imports production `Formalization.MDP.Basic` and production `Formalization.Generative.GenerativeLowerBoundFiniteKLDataProcessing` (SHA `471ec68b7d653a1bdace8e73097dbd5f85c5d7f9c5e6f4d714759a52b1c88aa9`). Its related production source hashes at audit time are `GenerativeLowerBoundFiniteDataProcessing.lean` `9022df9d0638c5d1624c4f83934a1b72739021f5a49d82eddb19817ba05904e7` and `GenerativeLowerBoundKLAffinity.lean` `15a65644d6489fec79dc127efe58ba00cb33ff03b0a3dfc9483e5c9daf35bded`. Compilation consumed existing project dependency artifacts and did not rebuild shared packages.
 

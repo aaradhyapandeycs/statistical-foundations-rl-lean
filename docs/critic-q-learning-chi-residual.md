@@ -1,6 +1,6 @@
 # Independent source review: chi-square residual consumption
 
-Status: source/semantic review only; no compiler invocation in this review. Exact staged source: `.local/QLearningChiResidualDraft.lean`, SHA-256 `e61a93ba98ba2a83575adcb16dd4c40bc1a7121c2a74a370c53deef4c71c01da`. The builder handoff is `docs/builder-q-learning-chi-residual.md`. The source currently pinned in the checkout is `source/upstream/tex/chapters/generative_model_model_free.tex`.
+Status: source/semantic review only; no compiler invocation in this review. Exact staged source: `QLearningChiResidualDraft.lean` (private staged draft, not shipped), SHA-256 `e61a93ba98ba2a83575adcb16dd4c40bc1a7121c2a74a370c53deef4c71c01da`. The builder handoff is `docs/builder-q-learning-chi-residual.md`. The source currently pinned in the checkout is `source/upstream/tex/chapters/generative_model_model_free.tex`.
 
 ## Source formulas and comparison
 
@@ -26,7 +26,7 @@ No source/statement mismatch found in the definitions, both sign branches, resid
 
 ## Fresh isolated dependency rebuild and export audit
 
-The reviewed top-level source remained exactly SHA `e61a93ba98ba2a83575adcb16dd4c40bc1a7121c2a74a370c53deef4c71c01da`. I rebuilt its full staged import closure in dependency order into `.local/q-chi-residual-independent-audit`, using the pinned project `.local/lean` executable and the already-built project/Mathlib dependency artifacts (no dependency rebuild):
+The reviewed top-level source remained exactly SHA `e61a93ba98ba2a83575adcb16dd4c40bc1a7121c2a74a370c53deef4c71c01da`. I rebuilt its full staged import closure in dependency order into an isolated local audit directory (not shipped), using the pinned project Lean executable and the already-built project/Mathlib dependency artifacts (no dependency rebuild):
 
 1. `QLearningRobustComparatorDraft` — `f4523b6f7400791447a3969c87be112c90f87c7eb64ba5a0ce9bbfc14ddfaa70`
 2. `QLearningRobustContractionDraft` — `91de4ee4c14cb9a9f9d90bea6381bb8aadeadbc8ea348c4e1f39568568b7a574`
@@ -38,7 +38,7 @@ The reviewed top-level source remained exactly SHA `e61a93ba98ba2a83575adcb16dd4
 8. `QLearningChiComparisonDraft` — `d92b11e3aa6ba74249ec3d18f83fb0bf73ff2829fc597f1b8c687ac6ec7620c0`
 9. `QLearningChiResidualDraft` — `e61a93ba98ba2a83575adcb16dd4c40bc1a7121c2a74a370c53deef4c71c01da`
 
-Every final module log is empty and each output `.olean` exists. Import audit `.local/q-chi-residual-independent-audit/ImportAudit.lean` uses `#print axioms` on all seven public declarations: the three parameter definitions, both generic sign residual bounds, actual comparator consumption, and scalar slack domination. Each reports only `propext`, `Classical.choice`, and `Quot.sound`. The complete axiom output is `.local/q-chi-residual-independent-audit/axioms.log`. This confirms exact staged compilation and transitive axiom closure for the reviewed closure; it does not claim production integration, source-domain parameter positivity, the probability event, or the full source theorem.
+Every final module log is empty and each output `.olean` exists. Import audit `ImportAudit.lean` (in an isolated local audit directory, not shipped) uses `#print axioms` on all seven public declarations: the three parameter definitions, both generic sign residual bounds, actual comparator consumption, and scalar slack domination. Each reports only `propext`, `Classical.choice`, and `Quot.sound`. The complete axiom output is `axioms.log` (in an isolated local audit directory, not shipped). This confirms exact staged compilation and transitive axiom closure for the reviewed closure; it does not claim production integration, source-domain parameter positivity, the probability event, or the full source theorem.
 
 ## Production integration
 

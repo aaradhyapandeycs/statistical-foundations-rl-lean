@@ -2,9 +2,9 @@
 
 ## Exact source and validation
 
-Reviewed `.local/QLearningOptimalFluctuationHistoryDraft.lean`, SHA-256 `d05c9a25d561fc7d0df694e9eee00c979f1e3e964f8ab23e0672c63bb1693d6f`, matching the stable builder handoff. It depends on the previously reviewed fixed-terminal fluctuation/moment pair (`2bfbc447af7d3ca3616cd1c6abce92acf3d2fdacbf85655bcaa73923f2b14655`, `c2fc20dace8514ce247f8928e8bcc3a138736b8bc77ce6a77d8a882a04707d97`), iterate-dependent increment caps (`ca8a29d2bb7c1d60a8d52924da97df4d9011e5660eeb62be36d2df25edc154e1`), and natural-history bridge (`841361faa2ba6d092b6f46ccb15e0bcda03d591e147f74b1f6d611de334b7ffd`, `766309449c858a91456f82499c75e4de9c2af11fc8d6268f37f4e59815562c4f`). Those exact dependency artifacts were produced by the preceding independent staged audits.
+Reviewed `QLearningOptimalFluctuationHistoryDraft.lean` (private staged draft, not shipped), SHA-256 `d05c9a25d561fc7d0df694e9eee00c979f1e3e964f8ab23e0672c63bb1693d6f`, matching the stable builder handoff. It depends on the previously reviewed fixed-terminal fluctuation/moment pair (`2bfbc447af7d3ca3616cd1c6abce92acf3d2fdacbf85655bcaa73923f2b14655`, `c2fc20dace8514ce247f8928e8bcc3a138736b8bc77ce6a77d8a882a04707d97`), iterate-dependent increment caps (`ca8a29d2bb7c1d60a8d52924da97df4d9011e5660eeb62be36d2df25edc154e1`), and natural-history bridge (`841361faa2ba6d092b6f46ccb15e0bcda03d591e147f74b1f6d611de334b7ffd`, `766309449c858a91456f82499c75e4de9c2af11fc8d6268f37f4e59815562c4f`). Those exact dependency artifacts were produced by the preceding independent staged audits.
 
-Freshly compiled the exact target into `.local/q-optimal-fluctuation-history-independent-audit`. All seven public theorems were axiom-probed; each reports only `propext`, `Classical.choice`, and `Quot.sound`.
+Freshly compiled the exact target into an isolated local audit directory (not shipped). All seven public theorems were axiom-probed; each reports only `propext`, `Classical.choice`, and `Quot.sound`.
 
 ## Source and semantic findings
 

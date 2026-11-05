@@ -1,6 +1,6 @@
 # Independent audit: fixed-`V*` Q-learning row/time Freedman union
 
-Reviewed exact staged source `.local/QLearningOptimalFreedmanUnionReviewDraft.lean`, SHA-256 `a38749f251d4411118d15a5eee13e4ab2f09aa58b0ecf26388fa0f0c9ac7c407`. Source review and a fresh isolated compile/axiom probe are complete. This proves only the staged union result and its actual imported fixed-row result; it is not the source's printed Azuma theorem or the final Q-learning error theorem.
+Reviewed exact staged source `QLearningOptimalFreedmanUnionReviewDraft.lean` (private staged draft, not shipped), SHA-256 `a38749f251d4411118d15a5eee13e4ab2f09aa58b0ecf26388fa0f0c9ac7c407`. Source review and a fresh isolated compile/axiom probe are complete. This proves only the staged union result and its actual imported fixed-row result; it is not the source's printed Azuma theorem or the final Q-learning error theorem.
 
 ## Source and semantics
 
@@ -10,17 +10,15 @@ The reviewed draft unions the already established actual-law self-normalized Fre
 
 For each tuple in `State × Action × Fin T`, the bad-event allowance is `epsilon=delta/(S*A*T)`. Non-late terminal tuples get the empty bad event. There are exactly `S*A*T` tuples; the finite union bound gives total failure at most `delta`, without assuming any independence among overlapping events. The MDP supplies nonempty finite state/action carriers, and `T≥2`, `0<delta<1` imply `0<epsilon<1`. The fixed-row Freedman result additionally retains `c1,c2>0`, the exact source rate schedule, `u≤T`, `K>0`, and its explicit confidence-domain assumptions. The row event preserves the exact `log(2K/epsilon)` threshold and predictable-variance term; no unsupported simplification of its radius is made.
 
-The reviewed source is a repaired copy of `.local/QLearningOptimalFreedmanUnionDraft.lean` (earlier SHA `742d3329e0c5c3929a3f0ee4615646d9ff8db5e95f3422115c59edb0459a18ee`). The only proof changes normalize the finite product cardinality from `S*(A*T)` to the source denominator `(S*A)*T` with `ring`, and provide the established nonzero denominator to `field_simp`. The exact final theorem assumptions, event, confidence allocation, and underlying fixed-row radius are preserved.
+The reviewed source is a repaired copy of `QLearningOptimalFreedmanUnionDraft.lean` (private staged draft, not shipped) (earlier SHA `742d3329e0c5c3929a3f0ee4615646d9ff8db5e95f3422115c59edb0459a18ee`). The only proof changes normalize the finite product cardinality from `S*(A*T)` to the source denominator `(S*A)*T` with `ring`, and provide the established nonzero denominator to `field_simp`. The exact final theorem assumptions, event, confidence allocation, and underlying fixed-row radius are preserved.
 
 ## Fresh isolated compile and axiom evidence
 
-The exact final source compiled with exit 0 and no diagnostics to `.local/q-optimal-union-independent-audit/QLearningOptimalFreedmanUnionReviewDraft.olean` using:
+The exact final source compiled with exit 0 and no diagnostics to `QLearningOptimalFreedmanUnionReviewDraft.olean` (in an isolated local audit directory, not shipped) using:
 
-```text
-bash scripts/lean-local.sh -o "$PWD/.local/q-optimal-union-independent-audit/QLearningOptimalFreedmanUnionReviewDraft.olean" .local/QLearningOptimalFreedmanUnionReviewDraft.lean
-```
+> *Historical command, omitted from the public copy.* It ran the pinned Lean compiler on a private staged source and wrote to an isolated local output directory; neither path is shipped, so it cannot be rerun from this checkout. The recorded result is unchanged.
 
-A fresh import-only audit at `.local/q-optimal-union-independent-audit/ImportAudit.lean` probes the good-event definition and union theorem. Both transitive `#print axioms` outputs contain only `propext`, `Classical.choice`, and `Quot.sound`; see `.local/q-optimal-union-independent-audit/axioms.log`.
+A fresh import-only audit at `ImportAudit.lean` (in an isolated local audit directory, not shipped) probes the good-event definition and union theorem. Both transitive `#print axioms` outputs contain only `propext`, `Classical.choice`, and `Quot.sound`; see `axioms.log` (in an isolated local audit directory, not shipped).
 
 The reviewed wrapper's production import is `Formalization.ModelFree.QLearningOptimalFreedman`, exact source SHA `c96904f5c9d16f7081a1aa6a9aabb4f87c5674244617bbefeb65f972980c6b7c`; it imports `QLearningOptimalPredictableVariance`, SHA `c7841d56a63715ff3ed18de06664acb0916168cfbbaae305f45f5d32f6eb5bda`. This compile consumed their existing project artifacts and did not rebuild dependencies. The exact wrapper source remains hash-pinned above.
 

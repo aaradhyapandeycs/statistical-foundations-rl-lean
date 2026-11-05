@@ -1,8 +1,8 @@
 # Independent review: Q-learning whole-layer prefix filtration
 
-Current reviewed source `.local/QLearningPrefixFiltrationDraft.lean`, SHA-256 `266f86ca30a206f0bb471742970ca49013f04cf6326a29fd7d6ac0e02f26d30c`, matches the builder handoff `docs/builder-q-learning-prefix-filtration.md`. This is a new exact-source review after the earlier predecessor hash `4a5b39c9d54a356d31528d94e71b6444b4c0b7cc5e8da8ccdb76046b2b534626`; the current source's `qValue_stronglyMeasurable_past` proof now explicitly factors through the finite prefix code rather than relying on an unverified measurable-maximum tactic.
+Current reviewed source `QLearningPrefixFiltrationDraft.lean` (private staged draft, not shipped), SHA-256 `266f86ca30a206f0bb471742970ca49013f04cf6326a29fd7d6ac0e02f26d30c`, matches the builder handoff `docs/builder-q-learning-prefix-filtration.md`. This is a new exact-source review after the earlier predecessor hash `4a5b39c9d54a356d31528d94e71b6444b4c0b7cc5e8da8ccdb76046b2b534626`; the current source's `qValue_stronglyMeasurable_past` proof now explicitly factors through the finite prefix code rather than relying on an unverified measurable-maximum tactic.
 
-The dependencies independently rebuilt here were `.local/QLearningConditionalMomentsDraft.lean` (SHA `ac450a4871fedcd8320e36c00d1379c2beaa385369b5fab08e709bbf4596176a`), `.local/QLearningCausalityDraft.lean` (SHA `3eade75e34d1dc7c5a2f6e809e0fe2f8e7fe197ca2b288761df2078067276d37`), `.local/QLearningSynchronousSampling.lean` (SHA `70dccffe5af0e7f824226c1d235257f4b0ea8e4ff7a5f9aaf8d9d1e06a830937`), and `.local/QLearningIterateBounds.lean` (SHA `594b96eede407a268bad69041146728a7456478c39c53990c53bef006a5b207e`). The source algorithm is in `source/upstream/tex/chapters/generative_model_model_free.tex:794–870`.
+The dependencies independently rebuilt here were `QLearningConditionalMomentsDraft.lean` (private staged draft, not shipped) (SHA `ac450a4871fedcd8320e36c00d1379c2beaa385369b5fab08e709bbf4596176a`), `QLearningCausalityDraft.lean` (private staged draft, not shipped) (SHA `3eade75e34d1dc7c5a2f6e809e0fe2f8e7fe197ca2b288761df2078067276d37`), `QLearningSynchronousSampling.lean` (private staged draft, not shipped) (SHA `70dccffe5af0e7f824226c1d235257f4b0ea8e4ff7a5f9aaf8d9d1e06a830937`), and `QLearningIterateBounds.lean` (private staged draft, not shipped) (SHA `594b96eede407a268bad69041146728a7456478c39c53990c53bef006a5b207e`). The source algorithm is in `source/upstream/tex/chapters/generative_model_model_free.tex:794–870`.
 
 ## Source/semantic review
 
@@ -12,7 +12,7 @@ The actual full product law establishes independence of the past and current-lay
 
 ## Fresh exact-source compilation and axiom audit
 
-Verified the five exact hashes above and ran `.local/audit-q-learning-prefix-filtration-independent.sh`, rebuilding iterate, sampling, causality, conditional-moment definitions, and current prefix source in dependency order under `.local/q-learning-prefix-filtration-independent-audit`. All compiled successfully without diagnostics. `#print axioms` covered 38 declarations; every export uses only `propext`, `Classical.choice`, and `Quot.sound` (or a subset).
+Verified the five exact hashes above and ran the private audit script `audit-q-learning-prefix-filtration-independent.sh` (not shipped), rebuilding iterate, sampling, causality, conditional-moment definitions, and current prefix source in dependency order under an isolated local audit directory (not shipped). All compiled successfully without diagnostics. `#print axioms` covered 38 declarations; every export uses only `propext`, `Classical.choice`, and `Quot.sound` (or a subset).
 
 ## Remaining scope
 
