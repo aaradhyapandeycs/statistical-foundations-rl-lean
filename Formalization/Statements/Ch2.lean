@@ -1,3 +1,4 @@
+import Formalization.MDP.PolicyMatrixDefinitions
 import Formalization.MDP.CoreDefinitions
 import Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic
 import Mathlib.MeasureTheory.Measure.Real
@@ -6,7 +7,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 /-! Source-facing statement index for Chapter 2. -/
 
 open MeasureTheory
-open scoped BigOperators
+open scoped BigOperators Matrix
 
 namespace StatisticalRL.Statements
 universe u v
@@ -62,5 +63,31 @@ def Lemma2_8 : Prop :=
     ∀ (n : ℕ) (δ : ℝ), 0 < δ → δ < 1 →
     1 - δ < μ.real {ω | |∑ k ∈ Finset.range n, X k ω| ≤
       Real.sqrt (2 * (∑ k ∈ Finset.range n, (B k)^2) * Real.log (2/δ))}
+
+/-- Lemma 2.3, `lem:basic-property-matrix-notation-inf`,
+`chapters/prelim.tex:544–574`, for both policy transition matrices.
+The matrix norm follows the book's explicit definition at
+`chapters/intro.tex:204–209`: the maximum row-wise absolute sum. The Pi norm
+below takes that maximum of the nonnegative row sums. Policies include all
+stationary randomized policies, as defined at prelim.tex:66; discount zero is included.
+-/
+noncomputable def Lemma2_3 : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action),
+    letI := Classical.decEq State
+    letI := Classical.decEq Action
+    let P : Matrix State State ℝ := fun s t =>
+      ∑ a, (π s).prob a * (M.transition s a).prob t
+    let Q : Matrix (State × Action) (State × Action) ℝ := fun sa tb =>
+      (M.transition sa.1 sa.2).prob tb.1 * (π tb.1).prob tb.2
+    let γ := M.discount
+    ((1 - γ • P)⁻¹ = 1 + ∑' n : ℕ, (γ • P)^(n + 1) ∧
+      (1 - γ • P)⁻¹ *ᵥ (fun _ => 1) = (fun _ => 1 / (1 - γ)) ∧
+      ‖fun s => ∑ t, |((1 - γ • P)⁻¹) s t|‖ = 1 / (1 - γ) ∧
+      ∀ s t, 0 ≤ ((1 - γ • P)⁻¹) s t) ∧
+    ((1 - γ • Q)⁻¹ = 1 + ∑' n : ℕ, (γ • Q)^(n + 1) ∧
+      (1 - γ • Q)⁻¹ *ᵥ (fun _ => 1) = (fun _ => 1 / (1 - γ)) ∧
+      ‖fun sa => ∑ tb, |((1 - γ • Q)⁻¹) sa tb|‖ = 1 / (1 - γ) ∧
+      ∀ sa tb, 0 ≤ ((1 - γ • Q)⁻¹) sa tb)
 
 end StatisticalRL.Statements

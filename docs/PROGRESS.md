@@ -6,6 +6,21 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Chapter 2 policy-matrix resolvent lemma verified
+
+- Original Lemma 2.3 is proved for every stationary randomized policy and
+  both policy transition matrices, including discount zero. The inverse is
+  proved to exist, has the printed Neumann expansion, maps the all-ones vector
+  to the geometric horizon, has the book's maximum row-wise absolute-sum norm,
+  and has nonnegative entries. The full statement and applying wrapper are in Ch2.
+- Qualification compiled four providers and both index modules and probed
+  14 actual exports. Affected integration rebuilt 8 modules and verified
+  reuse of 829, for 837 total; 7,616 declarations passed the standard-axiom
+  audit. This is an affected check with retained ancestry, not a fresh clean build.
+- Size: 84,866 Lean lines including comments/blanks. The ledger now has
+  22 original-result entries, including existing disclosed restrictions, plus
+  10 corrected variants. No chapter or whole-monograph completion is claimed.
+
 ## Chapter 2 Azuma–Hoeffding inequality verified
 
 - Original Lemma 2.8 is proved for arbitrary probability spaces, deterministic

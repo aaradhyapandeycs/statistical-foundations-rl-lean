@@ -548,3 +548,7 @@ import Formalization.Probability.AzumaSumMGF
 import Formalization.Probability.AzumaStrictTail
 import Formalization.Probability.AzumaStrictTwoSided
 import Formalization.Probability.AzumaNaturalHistory
+import Formalization.Analysis.StochasticResolventSeries
+import Formalization.Analysis.StochasticResolventOrder
+import Formalization.MDP.PolicyMatrixDefinitions
+import Formalization.MDP.PolicyMatrixResolvent

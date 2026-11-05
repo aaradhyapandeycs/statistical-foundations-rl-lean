@@ -1,3 +1,4 @@
+import Formalization.MDP.PolicyMatrixResolvent
 import Formalization.Probability.AzumaNaturalHistory
 import Formalization.Statements.Ch2
 import Formalization.Probability.Variance
@@ -22,5 +23,13 @@ theorem Lemma2_9_holds : Lemma2_9 := by
 theorem Lemma2_8_holds : Lemma2_8 := by
   intro Ω _ μ _ X B hX hb hc n δ hδ hδ1
   exact azuma_natural_history_source μ X B hX hb hc n δ hδ hδ1
+
+theorem Lemma2_3_holds : Lemma2_3 := by
+  intro State Action _ _ M π
+  classical
+  rcases M.policyMatrices_resolvent_properties π with
+    ⟨⟨_, hP⟩, ⟨_, hQ⟩⟩
+  simpa only [DiscountedMDP.policyStateTransitionMatrix,
+    DiscountedMDP.policyStateActionTransitionMatrix] using And.intro hP hQ
 
 end StatisticalRL.Statements
