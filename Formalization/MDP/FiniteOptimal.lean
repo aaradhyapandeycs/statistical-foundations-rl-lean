@@ -1,3 +1,4 @@
+import Formalization.MDP.PointMassDefinitions
 import Formalization.MDP.FiniteQTrajectory
 
 /-!
@@ -82,13 +83,6 @@ theorem greedyAction_max (e : EnvironmentStage State Action) (V : State → ℝ)
       actionMaximum (e.qBackup V s) := by
   letI : Nonempty Action := e.action_nonempty
   exact Classical.choose_spec (exists_maximizer (e.qBackup V s))
-
-/-- The probability vector concentrated on a specified action. -/
-noncomputable def pointMass (a : Action) : FiniteDistribution Action := by
-  classical
-  exact ⟨fun b ↦ if b = a then 1 else 0,
-    fun b ↦ by dsimp; split <;> norm_num,
-    by simp⟩
 
 @[simp]
 theorem expectation_pointMass (a : Action) (f : Action → ℝ) :

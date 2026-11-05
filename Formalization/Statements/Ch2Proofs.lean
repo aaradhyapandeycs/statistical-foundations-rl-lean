@@ -1,3 +1,4 @@
+import Formalization.MDP.PolicyIteration
 import Formalization.MDP.PolicyMatrixResolvent
 import Formalization.Probability.AzumaNaturalHistory
 import Formalization.Statements.Ch2
@@ -31,5 +32,13 @@ theorem Lemma2_3_holds : Lemma2_3 := by
     ⟨⟨_, hP⟩, ⟨_, hQ⟩⟩
   simpa only [DiscountedMDP.policyStateTransitionMatrix,
     DiscountedMDP.policyStateActionTransitionMatrix] using And.intro hP hQ
+
+theorem Lemma2_1_holds : Lemma2_1 := by
+  intro State Action _ _ M
+  constructor
+  · intro Q₀ k _
+    exact M.value_iteration_error Q₀ k
+  · intro π f hupdate hmax k _
+    exact M.arbitraryGreedyPolicyIteration_error π f hupdate hmax k
 
 end StatisticalRL.Statements

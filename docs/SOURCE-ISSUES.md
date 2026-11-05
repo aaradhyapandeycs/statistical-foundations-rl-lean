@@ -277,7 +277,7 @@ It also discloses the C13 power-of-two trigger interpretation, C16 reciprocal
 confidence allocation and fixed deterministic greedy tie. No fictitious
 observation or independence-at-random-count premise is introduced. This is
 not an author-approved correction or a proof of the literal zero division;
-fixed-profile decoupling and full MVP regret remain open. See the
+corrected fixed-profile decoupling and main MVP regret are now proved separately. See the
 [MVP review](critic-online-MVP-actual-optimism.md) and
 [verification](online-MVP-actual-optimism-verification.md).
 
@@ -287,8 +287,8 @@ bonus at positive stored counts and an explicit analysis charge H at zero.
 The printed bonus divides by the zero stored count; no equivalence to an
 unwritten max-one denominator convention is asserted. The final export
 contains no assumed T8 tail, decomposition or variance certificate. C13,
-C16 and fixed deterministic ties remain disclosed; Lemma 5.14 and full MVP
-regret remain open. See [review](critic-online-MVP-t6.md) and
+C16 and fixed deterministic ties remain disclosed; corrected Lemma 5.14 and
+main MVP regret are now proved separately. See [review](critic-online-MVP-t6.md) and
 [verification](online-MVP-t6-verification.md).
 
 The corrected actual MVP T2 and T5 displayed bounds also use the positive-count
@@ -655,3 +655,14 @@ actual profile/kernel/value bridge, including initial and zero-count
 cases. Changing the terminal line alone is not a proof of that bridge.
 This issue is separate from C16's generic concentration counterexample.
 See [independent review](critic-online-MVP-uniform-confidence.md).
+
+
+The terminal-zero repair has now been implemented and proved through the
+actual retained-history learner, future-dependent family membership,
+per-stage row-rank identities and sequential transcript-law transport.
+`StatisticalRL.Statements.Lemma5_14_corrected` and
+`StatisticalRL.Statements.MVP_regret_corrected` consume that corrected bridge
+without assuming its conclusion or probability. This does not validate the
+printed terminal-H program or add a Lean execution witness for the printed
+counterexample above. See [independent review](critic-online-MVP-main-decoupling.md)
+and [verification](online-MVP-main-decoupling-verification.md).

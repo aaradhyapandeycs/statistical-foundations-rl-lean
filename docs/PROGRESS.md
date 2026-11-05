@@ -6,6 +6,37 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Original VI/PI and corrected MVP main result verified
+
+- Original Lemma 2.1 now has its complete two-clause Chapter 2 Prop and
+  applying wrapper: arbitrary VI initialization, arbitrary initial stationary
+  randomized PI policy, all maximizing greedy ties and the printed γ^k rate.
+  Proved trajectory/fixed-point and optimality identities justify the value
+  representation. Genuine definition extraction preserves existing theorem
+  signatures and proof bodies.
+- Corrected Lemma 5.14 now proves all three displayed decoupling inequalities
+  on one actual-law event, including K=1. Actual learner-family membership,
+  corrected terminal-zero values, per-stage row/rank sums, transcript laws
+  and event transfer are proved, rather than confidence premises.
+- Corrected MVP main regret holds for every positive H,K and 0<δ<1:
+  R ≤100 max(1,I) min(√(SAH³K),HK) with probability at least 1−δ.
+  C=100 is universal, c₁=4,c₂=16, I and reciprocal δ′ are explicit.
+  Small regimes and K=1 are direct; the large regime discharges the actual
+  decoupling probability and source eligibility internally.
+- The zero-count rule, trigger convention, confidence allocation, ceiling
+  profile cover, auxiliary terminal zero and one fixed tie remain explicit
+  corrections or proof-scope repairs (C8/C12/C13/C15/C16/C17).
+- A fresh project-only `python3 scripts/check.py` rebuilt all 913 modules
+  with zero project-artifact reuse. The audit checked 8,162 declarations
+  with only propext, Classical.choice and Quot.sound. Pinned dependency
+  caches were used without rebuilding; path/size/mtime metadata matched
+  before and after. No package-byte seal or dependency clean build is claimed.
+- Size: 92,344 Lean lines including comments/blanks. The ledger has
+  23 original-result entries including existing disclosed restrictions, plus
+  12 corrected variants. No whole chapter or monograph is certified.
+- Next: remaining Chapter 2 concentration statements and the other open
+  source environments throughout the monograph. Private drafts stay uncounted.
+
 ## Chapter 2 policy-matrix resolvent lemma verified
 
 - Original Lemma 2.3 is proved for every stationary randomized policy and

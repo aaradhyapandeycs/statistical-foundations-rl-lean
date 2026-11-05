@@ -1,3 +1,6 @@
+import Formalization.MDP.OptimalityOperatorDefinitions
+import Formalization.MDP.PointMassDefinitions
+import Formalization.MDP.FixedPointDefinitions
 import Formalization.MDP.PolicyMatrixDefinitions
 import Formalization.MDP.CoreDefinitions
 import Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic
@@ -89,5 +92,26 @@ noncomputable def Lemma2_3 : Prop :=
       (1 - γ • Q)⁻¹ *ᵥ (fun _ => 1) = (fun _ => 1 / (1 - γ)) ∧
       ‖fun sa => ∑ tb, |((1 - γ • Q)⁻¹) sa tb|‖ = 1 / (1 - γ) ∧
       ∀ sa tb, 0 ≤ ((1 - γ • Q)⁻¹) sa tb)
+
+/-- Linear convergence of value iteration and policy iteration,
+`chapters/prelim.tex:319–343`, equations `eq:value_iteration` and
+`eq:policy_iteration`. Fixed points denote actual trajectory values by the separately proved
+trajectory identification and optimality theorems;
+policy iteration permits arbitrary maximizing tie choices at each update. -/
+def Lemma2_1 : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action),
+    (∀ (Q₀ : State → Action → ℝ) (k : ℕ), 1 ≤ k →
+      ‖M.qOptimality^[k] Q₀ - M.optimalityFixedPoint‖ ≤
+        M.discount ^ k * ‖Q₀ - M.optimalityFixedPoint‖) ∧
+    (∀ (π : ℕ → StationaryPolicy State Action) (f : ℕ → State → Action),
+      (∀ n, π (n + 1) = fun s ↦ EnvironmentStage.pointMass (f n s)) →
+      (letI : Nonempty Action := M.action_nonempty
+       ∀ n s, M.policyFixedPoint (π n) s (f n s) =
+         actionMaximum (M.policyFixedPoint (π n) s)) →
+      ∀ (k : ℕ), 1 ≤ k →
+        ‖M.policyFixedPoint (π k) - M.optimalityFixedPoint‖ ≤
+          M.discount ^ k *
+            ‖M.policyFixedPoint (π 0) - M.optimalityFixedPoint‖)
 
 end StatisticalRL.Statements

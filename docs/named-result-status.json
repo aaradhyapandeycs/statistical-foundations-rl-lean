@@ -1,9 +1,26 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-05T01:56:28.919051+00:00",
+  "updated_at": "2026-11-05T04:46:02.608031+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
+    {
+      "name": "Lemma 2.1",
+      "source_label": null,
+      "source_inventory_id": "ch2-lemma-2.1",
+      "source_file": "chapters/prelim.tex",
+      "source_lines": "339–343",
+      "source_context_lines": "319–336 (value-iteration and policy-iteration equations)",
+      "lean_export": "StatisticalRL.DiscountedMDP.value_iteration_error and StatisticalRL.DiscountedMDP.arbitraryGreedyPolicyIteration_error",
+      "lean_statement": "StatisticalRL.Statements.Lemma2_1",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma2_1_holds",
+      "statement_scope": "Printed two-clause convergence claim, arbitrary Q initialization and initial stationary randomized policy, all maximizing greedy tie choices, k>=1 and discount zero included. Fixed-point values are identified with actual trajectory Q by proved characterization and optimality theorems; no semantic certificate is assumed. The source lemma has no LaTeX label.",
+      "evidence": "docs/critic-ch2-vi-pi.md",
+      "supporting_evidence": [
+        "docs/ch2-vi-pi-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
     {
       "name": "Lemma 2.2",
       "source_label": "lem:variance-perturbation-var-P-V",
@@ -408,7 +425,7 @@
       "lean_export": "StatisticalRL.FiniteHorizonGenerative.mvp_corrected_sourceUniform_full",
       "lean_statement": "StatisticalRL.Statements.Lemma5_13_confidence_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_13_confidence_corrected_holds",
-      "statement_scope": "Full two-clause simultaneous concentration under the actual expanded transition-product law, for K>=1 and K>=SAH log₂K. Corrected δ′=δ/(100S²A²H²K²), replacing printed numerator 100 (C16). Explicit bounded continuation family at h+1, including terminal endpoint; no terminal-zero premise. Proved for the stronger full strictly-future sample dependence and monotone ceiling cover (C15). Printed coefficient 40000, sample batches, both displayed inequalities and all profile/level/vector choices retained. Cardinality, logarithmic and variance estimates are proved, not assumed. This does not establish membership of the actual learner values or the MVP regret theorem.",
+      "statement_scope": "Full two-clause simultaneous concentration under the actual expanded transition-product law, for K>=1 and K>=SAH log₂K. Corrected δ′=δ/(100S²A²H²K²), replacing printed numerator 100 (C16). Explicit bounded continuation family at h+1, including terminal endpoint; no terminal-zero premise. Proved for the stronger full strictly-future sample dependence and monotone ceiling cover (C15). Printed coefficient 40000, sample batches, both displayed inequalities and all profile/level/vector choices retained. Cardinality, logarithmic and variance estimates are proved, not assumed. Actual learner-family membership, corrected decoupling and corrected main regret are established separately by the later entries; this generic concentration theorem alone does not imply them.",
       "evidence": "docs/critic-online-MVP-corrected-uniform.md",
       "supporting_evidence": [
         "docs/online-MVP-corrected-uniform-verification.md"
@@ -423,10 +440,40 @@
       "lean_export": "StatisticalRL.OnlineRL.mvpActualT6_source_confidence",
       "lean_statement": "StatisticalRL.Statements.Lemma5_15_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_15_corrected_holds",
-      "statement_scope": "Actual retained-table sequential law; K≥1, C8 zero-count analysis charge H with positive-count source bonus, C13 power-of-two trigger, C16 reciprocal confidence allocation, fixed deterministic greedy tie. Corrected variant; source Lemma 5.14 and MVP regret remain open.",
+      "statement_scope": "Actual retained-table sequential law; K≥1, C8 zero-count analysis charge H with positive-count source bonus, C13 power-of-two trigger, C16 reciprocal confidence allocation, fixed deterministic greedy tie. Corrected variant; corrected Lemma 5.14 and the corrected main MVP regret result are established separately by the later entries.",
       "evidence": "docs/critic-online-MVP-t6.md",
       "supporting_evidence": [
         "docs/online-MVP-t6-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.14, corrected actual-law MVP decoupling",
+      "source_label": "lemma:decouple",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "1722–1744",
+      "lean_export": "StatisticalRL.OnlineRL.mvp_actualDecouplingEvent_sourceConfidence",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_14_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_14_corrected_holds",
+      "statement_scope": "Full three-clause strict-confidence event under the actual sequential reset/transition law, all positive H,K, 0<delta<=1, c1>=4, c2>=c1^2 and printed K>=SAH log2 K eligibility. Corrected reciprocal delta-prime, finite zero-count rule/analysis charge, power-of-two triggers, ceiling profile cover, terminal-zero auxiliary family and one fixed maximizing tie (C8/C13/C15/C16/C17). K=1 is proved directly with I=0 and actual H transitions. Final export assumes no concentration, transcript-law, family-membership or event-transfer certificate.",
+      "evidence": "docs/critic-online-MVP-main-decoupling.md",
+      "supporting_evidence": [
+        "docs/online-MVP-main-decoupling-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "MVP main regret (corrected algorithm and confidence allocation)",
+      "source_label": "thm-mvp-regret",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "1339–1352",
+      "lean_export": "StatisticalRL.OnlineRL.mvpSourceRegretCorrected_holds",
+      "lean_statement": "StatisticalRL.Statements.MVP_regret_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.MVP_regret_corrected_holds",
+      "statement_scope": "Universal C=100 before all environment parameters, all positive H,K and 0<delta<1: actual true-policy regret <=100 max(1,I) min(sqrt(SAH^3K),HK) with probability >=1-delta under the same sequential law and pre-episode greedy planner, fixed universal c1=4,c2=16. I=40000(log2 K)^3 log(3SAH) log(1/delta-prime), delta-prime=delta/(100S^2A^2H^2K^2). Direct K=1/small branches; large branch internally proves eligibility and consumes the actual decoupling probability. Corrections C8/C12/C13/C15/C16/C17 and fixed tie are explicit; no hdecProb or intermediate-bound premise. No unverified theorem ordinal is assigned.",
+      "evidence": "docs/critic-online-MVP-main-decoupling.md",
+      "supporting_evidence": [
+        "docs/online-MVP-main-decoupling-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
     }

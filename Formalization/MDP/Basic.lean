@@ -1,3 +1,4 @@
+import Formalization.MDP.OptimalityOperatorDefinitions
 import Formalization.MDP.CoreDefinitions
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Algebra.BigOperators.Ring.Finset
@@ -105,11 +106,6 @@ theorem deterministic_policy_eq_of_subsingleton {State Action : Type*} [Subsingl
   funext s
   exact Subsingleton.elim (π₁ s) (π₂ s)
 
-/-- The genuine maximum over a nonempty finite action set. -/
-noncomputable def actionMaximum {Action : Type*} [Fintype Action] [Nonempty Action]
-    (f : Action → ℝ) : ℝ :=
-  Finset.univ.sup' Finset.univ_nonempty f
-
 theorem le_actionMaximum {Action : Type*} [Fintype Action] [Nonempty Action]
     (f : Action → ℝ) (a : Action) : f a ≤ actionMaximum f :=
   Finset.le_sup' f (Finset.mem_univ a)
@@ -158,12 +154,6 @@ def valueBellman (M : DiscountedMDP State Action) (π : StationaryPolicy State A
     (V : State → ℝ) (s : State) : ℝ :=
   (π s).expectation (M.reward s) +
     M.discount * (M.policyTransition π s).expectation V
-
-/-- The source's Bellman optimality operator, `eq:bellman_optimality_operator`. -/
-noncomputable def qOptimality (M : DiscountedMDP State Action)
-    (Q : State → Action → ℝ) (s : State) (a : Action) : ℝ :=
-  letI : Nonempty Action := M.action_nonempty
-  M.reward s a + M.discount * (M.transition s a).expectation (fun t ↦ actionMaximum (Q t))
 
 /-- Exact pointwise uniform-modulus form of the policy Q-Bellman contraction bound. -/
 theorem abs_qBellman_sub_le (M : DiscountedMDP State Action)

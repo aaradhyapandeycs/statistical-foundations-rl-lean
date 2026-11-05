@@ -2,9 +2,9 @@ import Formalization.Online.Regret.MVP.MVPModelDefinitions
 import Formalization.Online.Regret.Definitions
 import Formalization.Online.Regret.W1.W1Definitions
 
-/-! Uncompiled actual-path definitions for the MVP T6 variance chain.
+/-! Actual-path definitions for the MVP variance chain.
 All four sums use the same sequential outcome path, source retained-batch
-planner and completed-history table. The final theorem is not asserted here. -/
+planner and completed-history table. -/
 namespace StatisticalRL.OnlineRL
 open scoped BigOperators
 variable {State Action : Type*} [Fintype State] [Fintype Action]

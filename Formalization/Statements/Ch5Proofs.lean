@@ -19,6 +19,11 @@ import Formalization.Online.Regret.NonnegativeTelescope
 import Formalization.Online.Regret.W1.OnlineW1RestrictedSourceBudget
 import Formalization.Online.Regret.Joint.OnlineW123Final
 
+import Formalization.Online.Regret.MVP.Main.MVPMainSourceRegret
+import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPActualDecouplingSourceConfidence
+import Formalization.Online.Regret.MVP.MVPProfileDefinitions
+import Formalization.Online.SourceOptimism.SourceOptimismAllocation
+
 namespace StatisticalRL.Statements
 open StatisticalRL.OnlineRL
 
@@ -325,5 +330,44 @@ theorem MVP_T234_K2_corrected_holds : MVP_T234_K2_corrected := by
   rw [← hevent]
   exact h
 
+
+/-- Apply the reviewed source-regret confidence bridge to its indexed
+statement. -/
+theorem MVP_regret_corrected_holds : MVP_regret_corrected := by
+  exact StatisticalRL.OnlineRL.mvpSourceRegretCorrected_holds
+
+/-- Apply the actual-law decoupling confidence result to the indexed
+Lemma 5.14 statement. -/
+theorem Lemma5_14_corrected_holds : Lemma5_14_corrected := by
+  intro State Action instS instA H K hH hK E ρ fallback δ c₁ c₂
+    hδ hδone hc₁ hc₂ hbudget
+  let δp := δ / (100 * (Fintype.card State : ℝ)^2 *
+    (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+  let I := 40000 * (Real.log K / Real.log 2)^3 *
+    Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) *
+      Real.log (1 / δp)
+  have hrowcard : (Fintype.card (Fin H × (State × Action)) : ℝ) =
+      (Fintype.card State : ℝ) * Fintype.card Action * H := by
+    simp only [Fintype.card_prod, Fintype.card_fin, Nat.cast_mul]
+    ring
+  have hbudget' : (K : ℝ) ≥
+      (Fintype.card (Fin H × (State × Action)) : ℝ) * StatisticalRL.OnlineRL.MVPProfile.logTwoReal K := by
+    rw [hrowcard]
+    simpa [StatisticalRL.OnlineRL.MVPProfile.logTwoReal] using hbudget
+  have hlogcard : Real.log (3 * (Fintype.card (Fin H × (State × Action)) : ℝ)) =
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) := by
+    congr 1
+    rw [hrowcard]
+    ring
+  have hlogcard' : Real.log (3 * ((H : ℝ) *
+      ((Fintype.card State : ℝ) * Fintype.card Action))) =
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) := by
+    congr 1
+    ring
+  have hmain := mvp_actualDecouplingEvent_sourceConfidence
+    H K hH hK E ρ fallback δ c₁ c₂ hδ hδone hc₁ hc₂ hbudget'
+  simpa [δp, I, onlineSourceOptimismDeltaPrime, StatisticalRL.OnlineRL.MVPProfile.logTwoReal, hlogcard, hlogcard',
+    mvpActualDecouplingEvent, mvpActualT1, mvpVarianceW4, mvpVarianceT6UCB,
+    mvpActualW3, mvpVarianceHistory, mvpVarianceContinuation] using hmain
 
 end StatisticalRL.Statements

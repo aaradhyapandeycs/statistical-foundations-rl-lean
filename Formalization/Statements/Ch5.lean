@@ -699,4 +699,98 @@ noncomputable def MVP_T234_K2_corrected : Prop :=
                 (sample.1 k))| ≤ Real.sqrt ((K : ℝ)*(H : ℝ)^2*I))}
 
 
+
+universe uMvpRegret vMvpRegret
+
+/-- Corrected explicit form of the MVP regret theorem, `thm-mvp-regret`,
+`chapters/onlineRL.tex:1339–1352`. The source soft-O rate is made explicit
+with a universal constant and the source polylogarithmic factor `max 1 I`.
+This includes K=1 directly, where the printed proof factor I vanishes (C12).
+Universal bonus witnesses are c₁=4,c₂=16; one fixed maximizing tie is used.
+The algorithm uses the finite zero-count completion (C8), power-of-two
+triggers (C13), and reciprocal confidence δp (C16), replacing the printed
+numerator-100 allocation. The ceiling profile cover and terminal-zero
+auxiliary family repair the proof gaps C15/C17. These disclosed corrections
+and source-scope notes are recorded in `docs/SOURCE-ISSUES.md`. The true value
+of the same completed-history deployed policy defines each regret term. -/
+noncomputable def MVP_regret_corrected : Prop :=
+  ∃ C : ℝ, 0<C ∧
+    ∀ (State : Type uMvpRegret) (Action : Type vMvpRegret)
+      [Fintype State] [Fintype Action] (H K : ℕ) (hH : 0<H),
+      0<K → ∀ (E : Fin H → EnvironmentStage State Action)
+        (ρ : FiniteDistribution State) (δ : ℝ),
+      0<δ → δ<1 →
+      ∃ c₁ c₂ : ℝ, c₁=4 ∧ c₂=16 ∧ 0<c₁ ∧ 0<c₂ ∧
+        let fallback : State := Classical.choice (E ⟨0,hH⟩).state_nonempty
+        let S := Fintype.card State
+        let A := Fintype.card Action
+        let δp := δ/(100*(S:ℝ)^2*(A:ℝ)^2*(H:ℝ)^2*(K:ℝ)^2)
+        let I := 40000*(Real.log K/Real.log 2)^3*
+          Real.log (3*(S:ℝ)*A*H)*Real.log (1/δp)
+        let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) c₁ c₂
+        1-δ ≤ (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure.real
+          {sample : (Fin K → State) × OnlineOutcomePath.{uMvpRegret,0} State (K*H) |
+            let history := onlineSequentialPathHistory
+              (onlineEpisodicChoose H K hH sample.1 fallback planner) (K*H) [] sample.2
+            (∑ k : Fin K,
+              (DecisionStage.trajectoryValue (EnvironmentStage.greedyStages (List.ofFn E)) (sample.1 k) -
+                DecisionStage.trajectoryValue
+                  (List.ofFn (fun h : Fin H => (E h).withPolicy
+                    (fun s => EnvironmentStage.pointMass (planner (history.take (k.val*H)) h s))))
+                  (sample.1 k))) ≤
+              C*max 1 I*min (Real.sqrt ((S:ℝ)*A*(H:ℝ)^3*K)) ((H:ℝ)*K)}
+
+/-- Corrected Lemma 5.14, `lemma:decouple`,
+`source/upstream/tex/chapters/onlineRL.tex:1722–1744`. The event is stated on
+the actual sequential experiment with iid episode resets and conditional
+transition sampling, and uses the retained empirical row, completed
+pre-episode history, and fixed maximizing tie. It includes the K=1 endpoint.
+The zero-count rule (C8), trigger convention (C13), confidence allocation
+(C16), profile cover (C15), and terminal-zero family (C17) are documented
+corrections or proof-scope repairs in `docs/SOURCE-ISSUES.md`. -/
+noncomputable def Lemma5_14_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
+    (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+    (fallback : State) (δ c₁ c₂ : ℝ),
+    0 < δ → δ ≤ 1 → 4 ≤ c₁ → c₁^2 ≤ c₂ →
+    (Fintype.card State : ℝ)*Fintype.card Action*H*
+      (Real.log K/Real.log 2) ≤ (K : ℝ) →
+    let δp := δ / (100 * (Fintype.card State : ℝ)^2 *
+      (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let I := 40000 * (Real.log K / Real.log 2)^3 *
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) * Real.log (1/δp)
+    let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) c₁ c₂
+    1 - δp <
+      (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
+          let history := onlineSequentialPathHistory
+            (onlineEpisodicChoose H K hH sample.1 fallback planner) (K*H) [] sample.2
+          let U := fun (h : Fin H) (k : Fin K) =>
+            onlineCappedBackwardValueAt (H : ℝ) (Real.log (1/δp)) c₁ c₂
+              (onlineMVPHistoryPlanningStages hH E fallback (history.take (k.val*H))) (h.val+1)
+          let sa := fun (h : Fin H) (k : Fin K) =>
+            onlineActualStageRowSequence H K hH sample.1 fallback planner sample.2 h k.val
+          let stage := fun (h : Fin H) (k : Fin K) =>
+            let hist := history.take (k.val*H)
+            letI : Nonempty State := (E h).state_nonempty
+            onlineMVPActualPlanningStage E (onlineMVPHistoryRowAt hH E fallback hist)
+              (onlineMVPHistoryNextAt fallback hist) hist.length h
+          let err := fun (h : Fin H) (k : Fin K) =>
+            (onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).expectation (U h k) -
+              ((E h).transition (sa h k).1 (sa h k).2).expectation (U h k)
+          let errSq := fun (h : Fin H) (k : Fin K) =>
+            (onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).expectation
+                (fun s => (U h k s)^2) -
+              ((E h).transition (sa h k).1 (sa h k).2).expectation (fun s => (U h k s)^2)
+          let T6 := ∑ h : Fin H, ∑ k : Fin K,
+            ((E h).transition (sa h k).1 (sa h k).2).variance (U h k)
+          let d := (Fintype.card State : ℝ)*Fintype.card Action*H
+          ((∑ h : Fin H, ∑ k : Fin K, err h k) ≤
+            (∑ h : Fin H, ∑ k : Fin K, max (err h k) 0)) ∧
+          ((∑ h : Fin H, ∑ k : Fin K, max (err h k) 0) ≤
+            Real.sqrt (d*I*T6)+d*(H : ℝ)*I) ∧
+          ((∑ h : Fin H, ∑ k : Fin K, errSq h k) ≤
+            Real.sqrt (d*(H : ℝ)^2*I*T6)+d*(H : ℝ)^2*I)}
+
 end StatisticalRL.Statements
