@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-04T19:20:40.657862+00:00",
+  "updated_at": "2026-11-05T01:01:27.406937+00:00",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -14,6 +14,20 @@
       "coverage": "docs/COVERAGE.md",
       "lean_statement": "StatisticalRL.Statements.Lemma2_2",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma2_2_holds"
+    },
+    {
+      "name": "Lemma 2.8",
+      "source_label": "lem:azuma-hoeffding",
+      "source_file": "chapters/prelim.tex",
+      "source_lines": "1038–1052",
+      "lean_export": "StatisticalRL.azuma_natural_history_source",
+      "lean_statement": "StatisticalRL.Statements.Lemma2_8",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma2_8_holds",
+      "evidence": "docs/critic-ch2-azuma.md",
+      "supporting_evidence": [
+        "docs/ch2-azuma-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     },
     {
       "name": "Theorem 3.1",

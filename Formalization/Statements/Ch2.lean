@@ -45,4 +45,22 @@ def Lemma2_9 : Prop :=
         (σ ^ 2 / (2 : ℝ) ^ K) * Real.log (2 * K / δ)) +
         (4 / 3) * B * Real.log (2 * K / δ)}
 
+/-- Azuma–Hoeffding Lemma 2.8, `lem:azuma-hoeffding`,
+`chapters/prelim.tex:1038–1052`. The increments and deterministic bounds
+are indexed from zero, corresponding to the printed indexing from one.
+Each conditional mean is taken given exactly the preceding increments,
+and is an almost-everywhere identity. No finite-space or standard-Borel
+assumption, positive-time assumption or positive variance proxy is imposed.
+-/
+def Lemma2_8 : Prop :=
+  ∀ (Ω : Type u) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (X : ℕ → Ω → ℝ) (B : ℕ → ℝ),
+    (∀ k, Measurable (X k)) →
+    (∀ k ω, |X k ω| ≤ B k) →
+    (∀ k, μ[X k | ⨆ j, ⨆ (_ : j < k), MeasurableSpace.comap (X j) (borel ℝ)]
+      =ᵐ[μ] fun _ ↦ 0) →
+    ∀ (n : ℕ) (δ : ℝ), 0 < δ → δ < 1 →
+    1 - δ < μ.real {ω | |∑ k ∈ Finset.range n, X k ω| ≤
+      Real.sqrt (2 * (∑ k ∈ Finset.range n, (B k)^2) * Real.log (2/δ))}
+
 end StatisticalRL.Statements

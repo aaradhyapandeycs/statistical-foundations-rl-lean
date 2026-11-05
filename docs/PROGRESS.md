@@ -6,6 +6,20 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Chapter 2 Azuma–Hoeffding inequality verified
+
+- Original Lemma 2.8 is proved for arbitrary probability spaces, deterministic
+  varying bounds, natural prior-increment conditioning, strict confidence and
+  zero-time/zero-proxy endpoints. The complete Prop and applying wrapper are
+  in the Chapter 2 statement index.
+- Qualification compiled seven providers and both full index files and probed
+  12 actual exports. Affected integration rebuilt 11 modules and verified
+  reuse of 822, for 833 total; 7,597 declarations passed the standard-axiom
+  audit. This is an affected check with retained ancestry, not a fresh clean build.
+- Size: 84,618 Lean lines including comments/blanks. The numbered ledger is
+  now 21 original results plus 10 corrected variants; no chapter or whole-book
+  completion is claimed.
+
 ## Corrected actual MVP joint T2/T3/T4 displayed bounds verified
 
 - The three source estimates hold on one actual sequential experiment with

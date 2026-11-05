@@ -1,3 +1,4 @@
+import Formalization.Probability.AzumaNaturalHistory
 import Formalization.Statements.Ch2
 import Formalization.Probability.Variance
 import Formalization.Probability.FreedmanNaturalHistory
@@ -17,5 +18,9 @@ theorem Lemma2_9_holds : Lemma2_9 := by
   exact freedman_natural_history μ X hX B (σ ^ 2) hB (sq_nonneg σ)
     (fun k ↦ Filter.Eventually.of_forall (hb k)) hc n K hK
     (Filter.Eventually.of_forall hcap) δ hδ hδ1
+
+theorem Lemma2_8_holds : Lemma2_8 := by
+  intro Ω _ μ _ X B hX hb hc n δ hδ hδ1
+  exact azuma_natural_history_source μ X B hX hb hc n δ hδ hδ1
 
 end StatisticalRL.Statements
