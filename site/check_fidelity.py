@@ -7,7 +7,8 @@ Two independent checks, neither using the site's own converter:
 
 1. Prose, against the arXiv PDF (source/upstream/2610.41903v1.pdf, hash-pinned).
    Every prose word on the site must be found, in order, in the PDF's text, and
-   every dictionary word of the PDF body must be found, in order, on the site.
+   every word of the PDF body that the TeX uses as a prose word must be found,
+   in order, on the site.
    Comparison is letter-level, so PDF line breaks, hyphenation and glued words
    do not matter; chunks are aligned locally, and any residual run is settled
    by an in-order search of the whole other side.
@@ -196,6 +197,29 @@ def tex_formulas() -> list:
     return out
 
 
+KEY_ARGS = r"\\(?:cite[a-z]*|[a-z]*ref|label|input|include|includegraphics|url|href|bibliography[a-z]*)\*?(?:\[[^\]]*\])*\{[^}]*\}"
+
+
+def tex_vocabulary() -> set:
+    """Prose words of the book's TeX: everything outside math, comments,
+    command names and key arguments (citation keys, labels, file names).
+    Used to drop PDF tokens that are glued math or citation text, so the
+    check does not depend on an operating-system word list."""
+    words = set()
+    for f in sorted(glob.glob(str(TEX / "*.tex")) + glob.glob(str(TEX.parent / "*.tex"))):
+        if f.endswith("commands.tex"):
+            continue
+        t = Path(f).read_text()
+        t = re.sub(r"(?<!\\)%[^\n]*", "", t)
+        t = re.sub(r"\\begin\{comment\}.*?\\end\{comment\}", "", t, flags=re.S)
+        t = re.sub(r"\$\$.+?\$\$|(?<!\\)\\\[.+?\\\]|\\begin\{" + ENV + r"\}.+?\\end\{\1\2\}", " ", t, flags=re.S)
+        t = re.sub(r"(?<!\\)\$.+?(?<!\\)\$|\\\(.+?\\\)", " ", t, flags=re.S)
+        t = re.sub(KEY_ARGS, " ", t)
+        t = re.sub(r"\\[A-Za-z]+", " ", t)
+        words.update(w.lower() for w in re.findall(r"[A-Za-z]+", t))
+    return words
+
+
 def site_math(build: Path) -> str:
     parts = []
     for f in glob.glob(str(build / "*.html")):
@@ -251,15 +275,13 @@ def main() -> int:
         out("    " + " ".join(site_words[k] for k in r))
     failures += len(bad)
 
-    # 1b. PDF -> site (body only; dictionary words; bibliography is on its own page)
-    dictionary = set()
-    if Path("/usr/share/dict/words").exists():
-        dictionary = {w.strip().lower() for w in open("/usr/share/dict/words")}
+    # 1b. PDF -> site (body only; TeX prose words; bibliography is on its own page)
+    dictionary = tex_vocabulary()
     out(f"PDF text via {'pdftotext' if shutil.which('pdftotext') else 'PDFKit'}: {len(raw)} chars; "
-        f"dictionary: {len(dictionary)} words")
+        f"TeX prose vocabulary: {len(dictionary)} words")
     tokens = re.findall(r"[A-Za-z]{7,}", unicodedata.normalize("NFKC", raw))
     pdf_words = [w.lower() for w in tokens
-                 if not dictionary or any(w.lower()[:len(w) - k] in dictionary for k in (0, 1, 2, 3))]
+                 if any(w.lower()[:len(w) - k] in dictionary for k in (0, 1, 2, 3))]
     ref_at = next((n for n, w in enumerate(pdf_words) if w == "references" and n > len(pdf_words) * 0.8),
                   len(pdf_words))
     miss2 = [k for k in scan(pdf_words, site_l) if 300 <= k < ref_at]
