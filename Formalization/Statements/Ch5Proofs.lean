@@ -1,3 +1,4 @@
+import Formalization.Online.Regret.MVP.T34.MVPT234SourceBridges
 import Formalization.Online.Regret.MVP.T5.MVPT5AllKConfidence
 import Formalization.Online.Regret.MVP.T2.MVPT2ActualSource
 import Formalization.Online.Regret.MVP.T6.MVPActualT6SourceFinal
@@ -221,6 +222,8 @@ theorem Lemma5_13_confidence_corrected_holds : Lemma5_13_confidence_corrected :=
 
 theorem MVP_optimism_corrected_holds : MVP_optimism_corrected := by
   intro State Action instState instAction H K hH hK E ρ fallback δ c₁ c₂ hδ hδ1 hc₁ hc₂
+  dsimp only
+  intro _hlarge
   letI : Fintype State := instState
   letI : Fintype Action := instAction
   have h := StatisticalRL.OnlineRL.mvp_sourceOptimismCorrected_holds
@@ -247,6 +250,8 @@ theorem Lemma5_15_corrected_holds : Lemma5_15_corrected := by
 
 theorem MVP_T2_K2_corrected_holds : MVP_T2_K2_corrected := by
   intro State Action instState instAction H K hH hK E initial fallback path δ hδ hδ1
+  dsimp only
+  intro _hlarge
   letI : Fintype State := instState
   letI : Fintype Action := instAction
   have h := StatisticalRL.OnlineRL.mvpActualT2_le_sourceBound_fixed
@@ -260,6 +265,8 @@ theorem MVP_T2_K2_corrected_holds : MVP_T2_K2_corrected := by
 
 theorem MVP_T5_corrected_holds : MVP_T5_corrected := by
   intro State Action instState instAction H K hH hK E ρ fallback δ hδ hδ1
+  dsimp only
+  intro _hlarge
   letI : Fintype State := instState
   letI : Fintype Action := instAction
   have h := StatisticalRL.OnlineRL.mvpActualT5_source_confidence H K hH hK E ρ fallback δ hδ hδ1
@@ -268,5 +275,55 @@ theorem MVP_T5_corrected_holds : MVP_T5_corrected := by
     StatisticalRL.OnlineRL.mvpVarianceContinuation, StatisticalRL.OnlineRL.mvpVarianceHistory,
     StatisticalRL.OnlineRL.onlineW1SourceIota, StatisticalRL.OnlineRL.onlineSourceOptimismDeltaPrime,
     StatisticalRL.OnlineRL.onlineRegretAnalysisCharge] using h
+
+/-- Applying wrapper for the private full source-shaped T234 statement.
+Requires `MVPT234SourceBridgesDraft` and the canonical T234 source export.
+Source-only candidate; uncompiled. -/
+theorem MVP_T234_K2_corrected_holds : MVP_T234_K2_corrected := by
+  classical
+  intro State Action instS instA H K hH hK E ρ fallback δ hδ hδ1
+  dsimp only
+  intro _hlarge
+  let p := onlineSourceOptimismDeltaPrime δ (Fintype.card State) (Fintype.card Action) H K
+  let I := onlineW1SourceIota (Fintype.card State) (Fintype.card Action) H K p
+  have h := (mvpActualT234_source_confidence_K2 H K hH hK E ρ fallback δ hδ hδ1).le
+  have hevent : mvpActualT234Event H K hH E fallback p I =
+      {sample : (Fin K → State) × OnlineOutcomePath State (K*H) |
+        let history := onlineSequentialPathHistory
+          (onlineEpisodicChoose H K hH sample.1 fallback
+            (onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/p)) 4 16)) (K*H) [] sample.2
+        let U := fun (h : Fin H) (k : Fin K) => onlineCappedBackwardValueAt (H : ℝ) (Real.log (1/p)) 4 16
+          (onlineMVPHistoryPlanningStages hH E fallback (history.take (k.val*H))) (h.val+1)
+        let sa := fun (h : Fin H) (k : Fin K) => onlineActualStageRowSequence H K hH sample.1 fallback
+          (onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/p)) 4 16) sample.2 h k.val
+        let stage := fun (h : Fin H) (k : Fin K) =>
+          let hist := history.take (k.val*H)
+          letI : Nonempty State := (E h).state_nonempty
+          onlineMVPActualPlanningStage E (onlineMVPHistoryRowAt hH E fallback hist)
+            (onlineMVPHistoryNextAt fallback hist) hist.length h
+        let next := fun (h : Fin H) (k : Fin K) => (history.map Prod.snd).getD (k.val*H+h.val) fallback
+        let T5 := ∑ h : Fin H, ∑ k : Fin K, (onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).variance (U h k)
+        let T6 := ∑ h : Fin H, ∑ k : Fin K, ((E h).transition (sa h k).1 (sa h k).2).variance (U h k)
+        ((∑ h : Fin H, ∑ k : Fin K, if 0 < ((stage h k).observations (sa h k).1 (sa h k).2).length then
+          4*Real.sqrt ((onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).variance (U h k)*Real.log (1/p)/((stage h k).observations (sa h k).1 (sa h k).2).length)+
+          16*(H : ℝ)*Real.log (1/p)/((stage h k).observations (sa h k).1 (sa h k).2).length else H) ≤
+          (1/2 : ℝ)*Real.sqrt ((Fintype.card State : ℝ)*Fintype.card Action*H*T5*I)+
+          (1/2 : ℝ)*(Fintype.card State : ℝ)*Fintype.card Action*(H : ℝ)^2*I) ∧
+        (|∑ h : Fin H, ∑ k : Fin K, (((E h).transition (sa h k).1 (sa h k).2).expectation (U h k)-U h k (next h k))| ≤ Real.sqrt (T6*I)+(H : ℝ)*I) ∧
+        (|∑ k : Fin K, ((∑ h : Fin H, (E h).reward (sa h k).1 (sa h k).2)-
+          DecisionStage.trajectoryValue (List.ofFn (fun h : Fin H => (E h).withPolicy
+            (fun s => EnvironmentStage.pointMass (onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/p)) 4 16 (history.take (k.val*H)) h s)))) (sample.1 k))| ≤
+          Real.sqrt ((K : ℝ)*(H : ℝ)^2*I))} := by
+    ext sample
+    simp only [mvpActualT234Event, Set.mem_setOf_eq]
+    rw [mvpT234_T3_eq_expanded, mvpT234_T4_eq_expanded]
+    rfl
+  change 1-4*(Real.log K/Real.log 2)*p ≤
+    (onlineSequentialEpisodeLaw H K hH E ρ fallback
+      (onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/p)) 4 16) (K*H)).rowMeasure.real _
+  dsimp only [p,I,onlineSourceOptimismDeltaPrime,onlineW1SourceIota] at hevent
+  rw [← hevent]
+  exact h
+
 
 end StatisticalRL.Statements

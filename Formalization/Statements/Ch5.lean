@@ -466,7 +466,8 @@ noncomputable def Lemma5_13_confidence_corrected : Prop :=
 resets and conditionally sampled transitions, and uses a fixed deterministic
 greedy tie rule. C8 gives the finite zero-count update, C13 uses the prose
 power-of-two trigger, and C16 replaces the printed allocation 100δ/(S²A²H²K²) by
-δ/(100S²A²H²K²). See `docs/SOURCE-ISSUES.md`. -/
+δ/(100S²A²H²K²). See `docs/SOURCE-ISSUES.md`. The standing regime K≥SAH·Iota at
+`chapters/onlineRL.tex:1402–1407` is retained in this indexed statement. -/
 noncomputable def MVP_optimism_corrected : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
@@ -475,6 +476,9 @@ noncomputable def MVP_optimism_corrected : Prop :=
     0 < δ → δ < 1 → 4 ≤ c₁ → c₁^2 ≤ c₂ →
     let δp := δ / (100 * (Fintype.card State : ℝ)^2 *
       (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let I := 40000 * (Real.log K / Real.log 2)^3 *
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) * Real.log (1/δp)
+    (Fintype.card State : ℝ)*Fintype.card Action*H*I ≤ (K : ℝ) →
     let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) c₁ c₂
     1 - 2*(Fintype.card State : ℝ)*Fintype.card Action*H*K*δp ≤
       (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure.real
@@ -545,7 +549,8 @@ chosen coefficients are fixed to (4,16), and K≥2. The actual retained-table
 history uses the C8 zero-count analysis charge H and positive-count source
 bonus, C13 power-of-two trigger, C16 reciprocal confidence allocation, and
 one fixed deterministic greedy tie rule. This is a displayed estimate, not a
-separate numbered lemma. -/
+separate numbered lemma. The standing regime K≥SAH·Iota at
+`chapters/onlineRL.tex:1402–1407` is retained in this indexed statement. -/
 noncomputable def MVP_T2_K2_corrected : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H) (hK : 2 ≤ K)
@@ -556,6 +561,7 @@ noncomputable def MVP_T2_K2_corrected : Prop :=
       (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
     let I := 40000 * (Real.log K / Real.log 2)^3 *
       Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) * Real.log (1/δp)
+    (Fintype.card State : ℝ)*Fintype.card Action*H*I ≤ (K : ℝ) →
     let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) 4 16
     let history := onlineSequentialPathHistory
       (onlineEpisodicChoose H K hH initial fallback planner) (K*H) [] path
@@ -587,7 +593,8 @@ sequential law uses iid resets and conditional transition sampling; K≥1,
 including the direct K=1 case. Coefficients are fixed to (4,16), with the C8
 zero-count analysis charge H, C13 power-of-two trigger, C16 reciprocal confidence
 allocation, and one deterministic greedy tie rule. This displayed estimate is
-not a separate numbered lemma. -/
+not a separate numbered lemma. The standing regime K≥SAH·Iota at
+`chapters/onlineRL.tex:1402–1407` is retained in this indexed statement. -/
 noncomputable def MVP_T5_corrected : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
@@ -597,6 +604,7 @@ noncomputable def MVP_T5_corrected : Prop :=
       (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
     let I := 40000 * (Real.log K / Real.log 2)^3 *
       Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) * Real.log (1/δp)
+    (Fintype.card State : ℝ)*Fintype.card Action*H*I ≤ (K : ℝ) →
     let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) 4 16
     1 - 2 * Real.log (K*H) * δp ≤
       (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure.real
@@ -627,5 +635,68 @@ noncomputable def MVP_T5_corrected : Prop :=
           Real.sqrt ((H : ℝ)^2 * (∑ h : Fin H, ∑ k : Fin K,
             ((E h).transition (sa h k).1 (sa h k).2).variance (U h k)) * I) +
           (K : ℝ)*(H : ℝ)^2*I}
+
+/-- Corrected joint displayed MVP T2/T3/T4 estimates,
+`eq:T2-ub-analysis-mvp`, `eq:T3-ub-analysis-mvp`,
+`eq:T4-ub-analysis-mvp`, `source/upstream/tex/chapters/onlineRL.tex:1793–1802`.
+The actual retained-table planner uses the universal coefficients (4,16),
+the C8 zero-count analysis charge H, the C13 power-of-two trigger, the
+C16 reciprocal confidence allocation, and one fixed maximizing tie.
+K≥2 is explicit for this auxiliary logarithmic event (C12).
+The three inequalities hold on one event under the same sequential law.
+The standing large-K regime at lines 1402–1407 is retained below; C16
+also changes the confidence-dependent Iota in that condition.
+This is a displayed estimate, not a separate numbered source lemma.
+-/
+noncomputable def MVP_T234_K2_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H), 2 ≤ K →
+    ∀ (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+      (fallback : State) (δ : ℝ), 0 < δ → δ ≤ 1 →
+    let δp := δ / (100 * (Fintype.card State : ℝ)^2 *
+      (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let I := 40000 * (Real.log K / Real.log 2)^3 *
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) * Real.log (1/δp)
+    (Fintype.card State : ℝ)*Fintype.card Action*H*I ≤ (K : ℝ) →
+    let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) 4 16
+    1 - 4*(Real.log K/Real.log 2)*δp ≤
+      (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
+          let history := onlineSequentialPathHistory
+            (onlineEpisodicChoose H K hH sample.1 fallback planner) (K*H) [] sample.2
+          let U := fun (h : Fin H) (k : Fin K) =>
+            onlineCappedBackwardValueAt (H : ℝ) (Real.log (1/δp)) 4 16
+              (onlineMVPHistoryPlanningStages hH E fallback (history.take (k.val*H))) (h.val+1)
+          let sa := fun (h : Fin H) (k : Fin K) =>
+            onlineActualStageRowSequence H K hH sample.1 fallback planner sample.2 h k.val
+          let stage := fun (h : Fin H) (k : Fin K) =>
+            let hist := history.take (k.val*H)
+            letI : Nonempty State := (E h).state_nonempty
+            onlineMVPActualPlanningStage E (onlineMVPHistoryRowAt hH E fallback hist)
+              (onlineMVPHistoryNextAt fallback hist) hist.length h
+          let next := fun (h : Fin H) (k : Fin K) =>
+            (history.map Prod.snd).getD (k.val*H+h.val) fallback
+          let T5 := ∑ h : Fin H, ∑ k : Fin K,
+            (onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).variance (U h k)
+          let T6 := ∑ h : Fin H, ∑ k : Fin K,
+            ((E h).transition (sa h k).1 (sa h k).2).variance (U h k)
+          ((∑ h : Fin H, ∑ k : Fin K,
+            if 0 < ((stage h k).observations (sa h k).1 (sa h k).2).length then
+              4 * Real.sqrt ((onlineObservedPlanningRow (stage h k) (sa h k).1 (sa h k).2).variance (U h k) *
+                Real.log (1/δp) / ((stage h k).observations (sa h k).1 (sa h k).2).length) +
+              16*(H : ℝ)*Real.log (1/δp) / ((stage h k).observations (sa h k).1 (sa h k).2).length
+            else H) ≤
+            (1/2 : ℝ)*Real.sqrt ((Fintype.card State : ℝ)*Fintype.card Action*H*T5*I) +
+              (1/2 : ℝ)*(Fintype.card State : ℝ)*Fintype.card Action*(H : ℝ)^2*I) ∧
+          (|∑ h : Fin H, ∑ k : Fin K,
+            (((E h).transition (sa h k).1 (sa h k).2).expectation (U h k) -
+              U h k (next h k))| ≤ Real.sqrt (T6*I)+(H : ℝ)*I) ∧
+          (|∑ k : Fin K,
+            ((∑ h : Fin H, (E h).reward (sa h k).1 (sa h k).2) -
+              DecisionStage.trajectoryValue
+                (List.ofFn (fun h : Fin H => (E h).withPolicy
+                  (fun s => EnvironmentStage.pointMass (planner (history.take (k.val*H)) h s))))
+                (sample.1 k))| ≤ Real.sqrt ((K : ℝ)*(H : ℝ)^2*I))}
+
 
 end StatisticalRL.Statements

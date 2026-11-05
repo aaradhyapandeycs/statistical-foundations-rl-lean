@@ -6,6 +6,25 @@ No whole-paper or chapter completion is certified. Source-level claims need
 an exact Lean statement, all mathematical prerequisites, compilation, an axiom
 audit, and independent correspondence review before promotion.
 
+## Corrected actual MVP joint T2/T3/T4 displayed bounds verified
+
+- The three source estimates hold on one actual sequential experiment with
+  the printed 4 log₂(K) δ′ failure coefficient, K≥2, fixed 4/16 coefficients,
+  C8/C12/C13/C16 and one fixed maximizing tie. Concentration tail parameters
+  vary while the planner remains fixed at the same corrected δ′.
+- The full statement and applying wrapper expose the actual successor and
+  the true value of the deployed episode policy. The displayed source's
+  standing K≥SAH·Iota condition is retained. The optimism/T2/T5 displayed
+  entries also retain it; the stronger library exports are unchanged.
+- Qualification: fourteen providers and twenty-seven actual-export checks,
+  then the source-expression bridge and two full Chapter 5 files. Affected
+  integration: 19 rebuilt + 807 verified reused = 826 modules;
+  7,575 declarations with permitted standard axioms. This is an affected
+  check with retained reuse evidence, not a fresh clean 826-module rebuild.
+- Size: 84,223 Lean lines including comments/blanks. The numbered ledger
+  remains 20 original entries with their existing disclosures plus 10 corrected
+  variants. Lemma 5.14, the main MVP theorem and the whole monograph remain open.
+
 ## Corrected actual MVP T2 and T5 displayed bounds verified
 
 - T2 holds deterministically for K≥2 with fixed c₁=4,c₂=16, using the
