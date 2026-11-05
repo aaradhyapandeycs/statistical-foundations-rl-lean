@@ -5,8 +5,8 @@ name: Book reader site
 # published until the maintainer enables GitHub Pages for the repository.
 on:
   workflow_dispatch:
+  # Branch pushes build and check the site; only main deploys it.
   push:
-    branches: [main]
     paths:
       - "Formalization/**"
       - "docs/named-result-status.json"
@@ -47,6 +47,7 @@ jobs:
           path: site/_build
 
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     permissions:

@@ -28,6 +28,7 @@ import re
 import shutil
 import subprocess
 import sys
+import os
 import unicodedata
 from pathlib import Path
 
@@ -205,6 +206,23 @@ def site_math(build: Path) -> str:
 
 
 # ---------------------------------------------------------------- main
+LOG: list = []
+
+
+def out(line: str) -> None:
+    print(line)
+    LOG.append(line)
+
+
+def annotate(failures: int) -> None:
+    """In GitHub Actions, repeat the report as an annotation: annotations are
+    readable through the public API, step logs need a signed-in account."""
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        level = "error" if failures else "notice"
+        body = "\n".join(LOG)[:30000].replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+        print(f"::{level} title=Fidelity check::{body}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--build", default=str(HERE / "_build"))
@@ -227,16 +245,18 @@ def main() -> int:
     # 1a. site -> PDF
     miss = scan(site_words, pdf_l)
     bad = [r for r in runs(miss) if not in_order_anywhere([site_words[k] for k in r], pdf_l)]
-    print(f"prose site->PDF: {len(site_words)} words, {len(miss)} not aligned locally, "
+    out(f"prose site->PDF: {len(site_words)} words, {len(miss)} not aligned locally, "
           f"{len(bad)} runs not found in order anywhere in the PDF")
     for r in bad[:20]:
-        print("   ", " ".join(site_words[k] for k in r))
+        out("    " + " ".join(site_words[k] for k in r))
     failures += len(bad)
 
     # 1b. PDF -> site (body only; dictionary words; bibliography is on its own page)
     dictionary = set()
     if Path("/usr/share/dict/words").exists():
         dictionary = {w.strip().lower() for w in open("/usr/share/dict/words")}
+    out(f"PDF text via {'pdftotext' if shutil.which('pdftotext') else 'PDFKit'}: {len(raw)} chars; "
+        f"dictionary: {len(dictionary)} words")
     tokens = re.findall(r"[A-Za-z]{7,}", unicodedata.normalize("NFKC", raw))
     pdf_words = [w.lower() for w in tokens
                  if not dictionary or any(w.lower()[:len(w) - k] in dictionary for k in (0, 1, 2, 3))]
@@ -244,22 +264,23 @@ def main() -> int:
                   len(pdf_words))
     miss2 = [k for k in scan(pdf_words, site_l) if 300 <= k < ref_at]
     bad2 = [r for r in runs(miss2) if len(r) >= 2 and not in_order_anywhere([pdf_words[k] for k in r], everything_l)]
-    print(f"prose PDF->site: {ref_at - 300} body words, {len(miss2)} not aligned locally, "
+    out(f"prose PDF->site: {ref_at - 300} body words, {len(miss2)} not aligned locally, "
           f"{len(bad2)} multi-word runs not found in order anywhere on the site")
     for r in bad2[:20]:
-        print("   ", " ".join(pdf_words[k] for k in r))
+        out("    " + " ".join(pdf_words[k] for k in r))
     failures += len(bad2)
 
     # 2. formulas
     stream = site_math(build)
     formulas = tex_formulas()
     missing = [(f, m) for f, m in formulas if norm_math(m) and norm_math(m) not in stream]
-    print(f"formulas: {len(formulas)} in the TeX, {len(missing)} not found verbatim on the site")
+    out(f"formulas: {len(formulas)} in the TeX, {len(missing)} not found verbatim on the site")
     for f, m in missing[:20]:
-        print(f"    {f}: {m.strip()[:120]!r}")
+        out(f"    {f}: {m.strip()[:120]!r}")
     failures += len(missing)
 
-    print("FIDELITY OK" if not failures else f"FIDELITY PROBLEMS: {failures}")
+    out("FIDELITY OK" if not failures else f"FIDELITY PROBLEMS: {failures}")
+    annotate(failures)
     return 1 if failures else 0
 
 
