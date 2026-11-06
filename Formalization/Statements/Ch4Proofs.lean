@@ -1,3 +1,4 @@
+import Formalization.ModelFree.QLearningHardMDPValues
 import Formalization.ModelFree.QLearningStepSizeSource
 import Formalization.ModelFree.TDStepSizeLate
 import Formalization.Statements.Ch4
@@ -88,5 +89,9 @@ theorem Lemma4_3_corrected_holds : Lemma4_3_corrected := by
 theorem Lemma4_9_holds : Lemma4_9 := by
   intro γ c₁ c₂ T η hT hγ1 hc₁ hc₂ hs
   exact qSource_step_size_weights γ c₁ c₂ T η hT hγ1 hc₁ hc₂ hs
+
+theorem Lemma4_14_holds : Lemma4_14 := by
+  intro γ hγ hγ1
+  exact qHardMDP_optimal_values γ hγ hγ1
 
 end StatisticalRL.Statements.Ch4

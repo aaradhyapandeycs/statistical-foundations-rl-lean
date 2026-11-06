@@ -1,4 +1,6 @@
 import Formalization.Statements.Ch3
+import Formalization.Generative.PolicyLearningVarianceResolventBridge
+import Formalization.Generative.PolicyLearningAnyOptimalPolicy
 import Formalization.Generative.PolicyEvaluationUniversalConstant
 import Formalization.Generative.PolicyLearningMainSample
 import Formalization.Generative.PolicyLearningAbsorbingPreservation
@@ -51,5 +53,14 @@ theorem Thm3_9_causal_positiveN_holds : Thm3_9_causal_positiveN := by
   dsimp only
   intro h
   exact ⟨fun s ↦ ((hd h.val).1 s).2, fun s a ↦ ((hd h.val).2 s a).2⟩
+
+theorem Lemma3_6_holds : Lemma3_6 := by
+  intro State Action _ _ M N hN data f β hβ hf
+  have hV := StatisticalRL.ModelBasedPolicyLearning.empiricallyOptimal_value_eq M N hN data f hf
+  intro H π Vs hrow
+  have hVs : Vs = H.trajectoryExpectedValue π := hV.symm
+  rw [hVs] at hrow ⊢
+  exact StatisticalRL.DiscountedMDP.empiricalPolicyValue_source_residual_bound M H π rfl rfl
+    N hN β hβ hrow
 
 end StatisticalRL.Statements.Ch3

@@ -1,4 +1,5 @@
 import Formalization.Statements.Ch3Definitions
+import Formalization.Probability.VarianceDefinitions
 
 /-! # Chapter 3 statement index
 
@@ -149,5 +150,35 @@ def Thm3_9_causal_positiveN : Prop :=
               EnvironmentStage.optimalQ ((List.ofFn E).drop h.val) s a -
                 StatisticalRL.FiniteHorizonGenerative.policyTrajectoryQSuffix (List.ofFn E) f
                   h.val s a ≤ ε)}
+
+noncomputable local instance statementStateDecidable (State : Type*) : DecidableEq State :=
+  Classical.decEq State
+
+open scoped Matrix in
+/-- Lemma 3.6, `lem:empirical-value-residual`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:1395–1410`, on the event
+`eq:Bernstein-empirical-optimal-value` (lines 1373–1376). `π̂⋆` is any deterministic policy
+`f` that is optimal for the empirical model `P̂` built from `N > 0` samples per state-action pair
+(the source does not fix a tie rule), `V̂⋆` is the empirical optimal value
+(`valueEstimator`), `P_{π̂⋆}` is written out as the matrix `(s,t) ↦ (P_{π̂⋆}(s))(t)` and
+`(I - γ P_{π̂⋆})⁻¹` is its true resolvent. The confidence parameter `β₁` only needs
+`β₁ ≥ 0` here (the source has `β₁ ≥ 4`). -/
+def Lemma3_6 : Prop :=
+  ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
+    (data : StatisticalRL.ModelBasedPolicyLearning.Samples State Action N)
+    (f : State → Action) (β : ℝ), 0 ≤ β →
+    StatisticalRL.ModelBasedPolicyLearning.EmpiricallyOptimal M N hN data f →
+    let H := StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data
+    let π : StationaryPolicy State Action := fun t ↦ EnvironmentStage.pointMass (f t)
+    let Vs := StatisticalRL.ModelBasedPolicyLearning.valueEstimator M N hN data
+    (∀ s, |(H.policyTransition π s).expectation Vs - (M.policyTransition π s).expectation Vs| ≤
+      Real.sqrt (β / N) * Real.sqrt ((M.policyTransition π s).variance Vs) +
+        2 * β / (N * (1 - M.discount))) →
+    M.discount * ‖(1 - M.discount • (Matrix.of fun s t ↦ (M.policyTransition π s).prob t))⁻¹ *ᵥ
+      (fun s ↦ |(H.policyTransition π s).expectation Vs -
+        (M.policyTransition π s).expectation Vs|)‖ ≤
+      2 * Real.sqrt (2 * β / (N * (1 - M.discount) ^ 3)) +
+        6 * β / (N * (1 - M.discount) ^ 2)
 
 end StatisticalRL.Statements.Ch3
