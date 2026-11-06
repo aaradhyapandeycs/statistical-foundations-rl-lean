@@ -1,4 +1,5 @@
 import Formalization.Online.SourceOptimism.SequentialEpisodeLaw
+import Formalization.Online.SourceOptimism.TranscriptRowDefinitions
 
 /-! Direct sequential paths construct consistent
 transcripts injectively; no probability or coupling assumption is supplied. -/
@@ -72,11 +73,6 @@ theorem onlineSequentialPathHistory_injective
   have hm := congrArg (List.map Prod.snd) h
   rw [onlineSequentialPathHistory_outcomes,onlineSequentialPathHistory_outcomes] at hm
   exact onlineOutcomePath_nextStates_injective n (List.append_cancel_left hm)
-
-/-- Every finite transcript has a total row enumeration, without an assumption
-about unrevealed future rows or a change to its observed rows. -/
-def onlineTranscriptRowSequence (fallback : Row) (history : List (Row × Outcome)) (j : ℕ) : Row :=
-  if hj : j<history.length then (history.get ⟨j,hj⟩).1 else fallback
 
 theorem onlineTranscriptRowSequence_agrees (fallback : Row) (history : List (Row × Outcome))
     (j : Fin history.length) :

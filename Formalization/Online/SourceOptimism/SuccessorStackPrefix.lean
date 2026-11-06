@@ -1,3 +1,4 @@
+import Formalization.Online.SourceOptimism.RowOutcomeDefinitions
 import Mathlib.Data.List.Range
 import Mathlib.Data.List.Basic
 
@@ -5,10 +6,6 @@ import Mathlib.Data.List.Basic
 no online sampling-law coupling or concentration theorem is assumed/proved. -/
 namespace StatisticalRL.OnlineRL
 variable {Row Outcome : Type*} [DecidableEq Row]
-
-/-- Chronological outcomes previously revealed from one row. -/
-def onlineRowOutcomes (history : List (Row × Outcome)) (r : Row) : List Outcome :=
-  history.filterMap (fun pair => if pair.1=r then some pair.2 else none)
 
 /-- Choose the next row using only the revealed history, then read exactly
 its next unused successor. Total streams are deterministic inputs here. -/

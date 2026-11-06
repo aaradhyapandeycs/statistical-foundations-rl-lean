@@ -1,5 +1,5 @@
-import Formalization.Probability.Variance
-import Formalization.MDP.FiniteTrajectory
+import Formalization.Probability.VarianceDefinitions
+import Formalization.MDP.TrajectoryDefinitions
 
 /-! Cumulative true transition variance along a controlled finite path. -/
 namespace StatisticalRL.OnlineRL

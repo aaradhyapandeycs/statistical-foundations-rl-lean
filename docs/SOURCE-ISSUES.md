@@ -695,3 +695,39 @@ Theorem 6.3 sample-size regime implies this condition. The release statement
 therefore labels this as a restricted auxiliary result; this observation is not
 a counterexample to the parent theorem or a claim that its sample regime is
 insufficient.
+
+<a id="C20"></a>
+## C20: online Q-learning completion, tie scope and proof repairs
+
+**Source:** Algorithm `alg:main-q-ucb`, `chapters/onlineRL.tex:1930–1979`;
+Theorem 5.16, `thm-ucbq-regret`, `:1911–1922`; and Lemma 5.18,
+`lemma:opt_model_free`, `:2121–2150`. The pinned chapter SHA-256 is
+`393a4d26c228d833a27e54a4913489e499d2143f2f9b80ebf3c55d9a9ccb8c53`.
+
+The algorithm initializes Q to H and the terminal value to zero at line 1943,
+but leaves nonterminal V initialization unstated. The implementation derives
+V=min(H,max Q), hence initially H, and uses one fixed deterministic maximizing
+tie rule for the policy update at line 1947. The proof concerns that completed
+implementation. It does not quantify over every randomized or adaptive
+maximizing selector. These choices are visible in `Lemma5_18_restricted` and
+`Thm5_16_corrected`; neither is advertised as an unrestricted algorithm claim.
+
+The printed beta-sum equality at lines 2245–2247 equates the previsit indices
+0,...,N−1 with 1,...,N. Already for N=1, beta_0=0 and beta_1>0 can differ.
+The formal proof uses the valid inequality derived from beta_0=0 and beta_N≥0.
+The signed stage residuals at lines 2367–2387 retain their deterministic
+geometric weights through the concentration proof; a bound on the weights
+does not justify discarding them from a signed pathwise sum. Two confidence
+events also receive an explicit half-budget allocation. These repairs preserve
+the algorithm's bonus `2 sqrt(H³ log(SAT/delta)/n)`.
+
+The resulting actual-law regret bound is
+`max(1,19 exp(1)) sqrt(S A H⁵ K (1+log(4SAT/delta)))`, with probability
+strictly exceeding 1−delta for every H,K≥1 and 0<delta<1. It implies the printed
+soft-O rate for this implementation. Lemma 5.18 includes both its weighted
+Q-error bound and simultaneous Q/V optimism, with an explicit residual
+constant 8. No refutation of the final printed regret rate is claimed, and no
+claim is made that every printed proof step is valid.
+
+See the [independent source-review record](critic-online-qlearning-source.md)
+and [verification record](online-qlearning-source-verification.md).

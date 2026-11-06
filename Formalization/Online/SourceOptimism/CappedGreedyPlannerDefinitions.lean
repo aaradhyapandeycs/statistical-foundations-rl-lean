@@ -1,4 +1,4 @@
-import Formalization.Online.SourceOptimism.ObservedHistoryPlanningAdapter
+import Formalization.Online.SourceOptimism.HistoryPlanningDefinitions
 
 /-! Definitions of the completed-history table and deterministic greedy planner. -/
 namespace StatisticalRL.OnlineRL
@@ -21,9 +21,11 @@ noncomputable def onlineCappedGreedyPlanner {H : ℕ}
     OnlineEpisodePlanner State Action H :=
   fun history h s =>
     letI : Nonempty Action := (E h).action_nonempty
-    Classical.choose (EnvironmentStage.exists_maximizer
-      (onlineCappedBackwardQAt (H : ℝ) L c₁ c₂
-        (onlineCompletedHistoryPlanningStages E history) h.val s))
+    Classical.choose (by
+      obtain ⟨a, _, ha⟩ := Finset.exists_mem_eq_sup' Finset.univ_nonempty
+        (onlineCappedBackwardQAt (H : ℝ) L c₁ c₂
+        (onlineCompletedHistoryPlanningStages E history) h.val s)
+      exact ⟨a, ha.symm⟩)
 
 
 end StatisticalRL.OnlineRL

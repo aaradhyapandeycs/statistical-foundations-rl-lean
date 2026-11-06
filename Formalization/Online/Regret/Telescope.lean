@@ -1,3 +1,4 @@
+import Formalization.Online.SourceOptimism.GreedySequentialTrajectoryOptimism
 import Formalization.Online.Regret.Definitions
 
 /-! Actual-path UCBVI Telescope; no regret-rate theorem is claimed. -/

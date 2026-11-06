@@ -1,4 +1,6 @@
+import Formalization.MDP.TrajectoryDefinitions
 import Formalization.MDP.FiniteHorizon
+import Formalization.Online.SourceOptimism.FinitePathHistoryDefinitions
 
 /-!
 # Finite trajectory laws and expected episodic return
@@ -19,22 +21,9 @@ namespace StatisticalRL
 
 universe u v
 
-/-- All action/next-state paths of exactly the specified length. The current
-state is supplied separately; each step stores its action and resulting state. -/
-def FinitePath (State : Type u) (Action : Type v) : ℕ → Type (max u v)
-  | 0 => PUnit
-  | n + 1 => Action × State × FinitePath State Action n
-
 namespace FinitePath
 
 variable {State Action : Type*}
-
-instance instFintype [Fintype State] [Fintype Action] :
-    (n : ℕ) → Fintype (FinitePath State Action n)
-  | 0 => inferInstanceAs (Fintype PUnit)
-  | n + 1 => by
-    letI := instFintype n
-    exact inferInstanceAs (Fintype (Action × State × FinitePath State Action n))
 
 /-- The actions actually stored in a trajectory. -/
 def actions : (n : ℕ) → FinitePath State Action n → List Action
@@ -66,22 +55,6 @@ namespace DecisionStage
 
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 
-/-- The joint mass of an actual action/state trajectory from the given state.
-In particular, tail policies are evaluated at the sampled next state. -/
-def pathWeight : (stages : List (DecisionStage State Action)) → State →
-    FinitePath State Action stages.length → ℝ
-  | [], _, _ => 1
-  | stage :: tail, s, path =>
-    (stage.policy s).prob path.1 * (stage.transition s path.1).prob path.2.1 *
-      pathWeight tail path.2.1 path.2.2
-
-/-- The actual undiscounted sum of stage rewards along a finite trajectory. -/
-def pathReward : (stages : List (DecisionStage State Action)) → State →
-    FinitePath State Action stages.length → ℝ
-  | [], _, _ => 0
-  | stage :: tail, s, path =>
-    stage.reward s path.1 + pathReward tail path.2.1 path.2.2
-
 theorem pathWeight_nonneg (stages : List (DecisionStage State Action)) (s : State)
     (path : FinitePath State Action stages.length) : 0 ≤ pathWeight stages s path := by
   induction stages generalizing s with
@@ -104,17 +77,6 @@ theorem sum_pathWeight (stages : List (DecisionStage State Action)) (s : State) 
     rw [Fintype.sum_prod_type]
     simp_rw [Fintype.sum_prod_type, ← Finset.mul_sum, ih, mul_one]
     simp only [← Finset.mul_sum, FiniteDistribution.sum_prob, mul_one]
-
-/-- A normalized finite probability law on actual trajectories of the episode. -/
-def trajectoryLaw (stages : List (DecisionStage State Action)) (s : State) :
-    FiniteDistribution (FinitePath State Action stages.length) where
-  prob := pathWeight stages s
-  prob_nonneg := pathWeight_nonneg stages s
-  sum_prob := sum_pathWeight stages s
-
-/-- Expected cumulative reward under the separately constructed trajectory law. -/
-def trajectoryValue (stages : List (DecisionStage State Action)) (s : State) : ℝ :=
-  (trajectoryLaw stages s).expectation (pathReward stages s)
 
 /-- Finite-sum conditioning on the first actual action and next state. This
 holds for any payoff on whole paths, before specializing to cumulative reward. -/

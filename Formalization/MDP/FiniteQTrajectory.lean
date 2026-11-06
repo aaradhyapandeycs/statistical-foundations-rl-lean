@@ -1,3 +1,4 @@
+import Formalization.MDP.ActionTrajectoryDefinitions
 import Formalization.MDP.FiniteTrajectory
 import Mathlib.Data.List.TakeDrop
 
@@ -19,19 +20,6 @@ namespace StatisticalRL.DecisionStage
 
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 
-/-- The trajectory law with the first state/action supplied rather than sampled.
-Its carrier stores the next state and every remaining action/state pair. -/
-def actionTrajectoryLaw (stage : DecisionStage State Action)
-    (tail : List (DecisionStage State Action)) (s : State) (a : Action) :
-    FiniteDistribution (State × FinitePath State Action tail.length) where
-  prob path := (stage.transition s a).prob path.1 * pathWeight tail path.1 path.2
-  prob_nonneg path :=
-    mul_nonneg ((stage.transition s a).prob_nonneg _) (pathWeight_nonneg tail _ _)
-  sum_prob := by
-    rw [Fintype.sum_prod_type]
-    simp_rw [← Finset.mul_sum, sum_pathWeight, mul_one]
-    exact (stage.transition s a).sum_prob
-
 /-- Arbitrary path payoffs condition by a finite sum over the next state. -/
 theorem actionTrajectoryExpectation (stage : DecisionStage State Action)
     (tail : List (DecisionStage State Action)) (s : State) (a : Action)
@@ -49,14 +37,6 @@ theorem pathWeight_cons_actionTrajectoryLaw (stage : DecisionStage State Action)
     pathWeight (stage :: tail) s (a, path) =
       (stage.policy s).prob a * (actionTrajectoryLaw stage tail s a).prob path := by
   exact mul_assoc _ _ _
-
-/-- Actual cumulative-reward expectation with its initial action held fixed.
-The empty-stage case is the source's terminal `Q = 0` convention. -/
-def trajectoryQ : List (DecisionStage State Action) → State → Action → ℝ
-  | [] => fun _ _ ↦ 0
-  | stage :: tail => fun s a ↦
-    (actionTrajectoryLaw stage tail s a).expectation (fun path ↦
-      stage.reward s a + pathReward tail path.1 path.2)
 
 @[simp]
 theorem trajectoryQ_nil (s : State) (a : Action) :

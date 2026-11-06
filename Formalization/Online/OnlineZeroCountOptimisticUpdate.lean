@@ -1,3 +1,4 @@
+import Formalization.Online.SourceOptimism.ZeroCountUpdateDefinitions
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic.Linarith
@@ -9,13 +10,6 @@ Unvisited rows retain the optimistic cap H; positive visits use the exact
 printed Bernstein backup. This makes the missing N=0 branch explicit. It is a
 proposal, not an author-approved erratum or a completed algorithm theorem. -/
 namespace StatisticalRL.OnlineRL
-
-/-- Total source-compatible scalar Q update: no zero-count bonus is evaluated.
-The empirical row can retain its source uniform initialization when N=0. -/
-noncomputable def onlineZeroCountSafeQUpdate
-    (reward mean variance H L c₁ c₂ : ℝ) (N : ℕ) : ℝ :=
-  if N=0 then H else
-    min (reward+mean+c₁*Real.sqrt (variance*L/N)+c₂*H*L/N) H
 
 /-- The explicit unvisited branch agrees with the source's intended optimistic
 Case1, without interpreting real division by zero as an infinite bonus. -/

@@ -1,6 +1,7 @@
 import Formalization.Online.Regret.MVP.MVPCountDefinitions
-import Formalization.Online.SourceOptimism.CappedBackwardRecursion
+import Formalization.Online.SourceOptimism.CappedPlanningDefinitions
 import Formalization.Online.SourceOptimism.SequentialEpisodeDefinitions
+import Formalization.Probability.EmpiricalRowMeasurableDefinitions
 import Mathlib.Data.List.Range
 
 /-! Definitions of the retained-batch MVP planner from its actual history.
@@ -94,9 +95,11 @@ noncomputable def onlineMVPCommittedGreedyPlanner {H : ℕ}
     (fallback : State) (L c₁ c₂ : ℝ) : OnlineEpisodePlanner State Action H :=
   fun history h s =>
     letI : Nonempty Action := (E h).action_nonempty
-    Classical.choose (EnvironmentStage.exists_maximizer
-      (onlineCappedBackwardQAt (H : ℝ) L c₁ c₂
-        (onlineMVPHistoryPlanningStages hH E fallback history) h.val s))
+    Classical.choose (by
+      obtain ⟨a, _, ha⟩ := Finset.exists_mem_eq_sup' Finset.univ_nonempty
+        (onlineCappedBackwardQAt (H : ℝ) L c₁ c₂
+        (onlineMVPHistoryPlanningStages hH E fallback history) h.val s)
+      exact ⟨a, ha.symm⟩)
 
 end HistoryPlanner
 end StatisticalRL.OnlineRL

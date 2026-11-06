@@ -1,5 +1,8 @@
+import Formalization.MDP.PolicyEnvironmentDefinitions
+import Formalization.MDP.ControlledEnvironmentDefinitions
 import Formalization.MDP.PointMassDefinitions
 import Formalization.MDP.FiniteQTrajectory
+import Formalization.MDP.EnvironmentDefinitions
 
 /-!
 # Finite-horizon optimality
@@ -19,62 +22,13 @@ namespace StatisticalRL
 
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 
-/-- One time step of an environment, before any policy is selected. -/
-structure EnvironmentStage (State Action : Type*) [Fintype State] [Fintype Action] where
-  state_nonempty : Nonempty State
-  action_nonempty : Nonempty Action
-  transition : State → Action → FiniteDistribution State
-  reward : State → Action → ℝ
-  reward_nonneg : ∀ s a, 0 ≤ reward s a
-  reward_le_one : ∀ s a, reward s a ≤ 1
-
 namespace EnvironmentStage
-
-/-- Attach a decision rule without changing the environment. -/
-def withPolicy (e : EnvironmentStage State Action) (π : StationaryPolicy State Action) :
-    DecisionStage State Action where
-  state_nonempty := e.state_nonempty
-  action_nonempty := e.action_nonempty
-  transition := e.transition
-  reward := e.reward
-  reward_nonneg := e.reward_nonneg
-  reward_le_one := e.reward_le_one
-  policy := π
-
-/-- An actual nonstationary randomized policy indexed from the current stage. -/
-def controlled : List (EnvironmentStage State Action) →
-    (ℕ → StationaryPolicy State Action) → List (DecisionStage State Action)
-  | [], _ => []
-  | e :: es, π => e.withPolicy (π 0) :: controlled es (fun n ↦ π (n + 1))
-
-/-- Expected one-step reward and continuation in the policy-independent model. -/
-def qBackup (e : EnvironmentStage State Action) (V : State → ℝ)
-    (s : State) (a : Action) : ℝ :=
-  e.reward s a + (e.transition s a).expectation V
-
-/-- Optimal continuation value, defined by backward induction. -/
-noncomputable def optimalValue : List (EnvironmentStage State Action) → State → ℝ
-  | [] => fun _ ↦ 0
-  | e :: es => fun s ↦
-    letI : Nonempty Action := e.action_nonempty
-    actionMaximum (e.qBackup (optimalValue es) s)
-
-/-- Optimal action-value, including the source's zero terminal convention. -/
-noncomputable def optimalQ : List (EnvironmentStage State Action) → State → Action → ℝ
-  | [] => fun _ _ ↦ 0
-  | e :: es => e.qBackup (optimalValue es)
 
 /-- A maximizing action exists in the finite nonempty action space. -/
 theorem exists_maximizer [Nonempty Action] (f : Action → ℝ) :
     ∃ a, f a = actionMaximum f := by
   obtain ⟨a, _, ha⟩ := Finset.exists_mem_eq_sup' Finset.univ_nonempty f
   exact ⟨a, ha.symm⟩
-
-/-- A maximizing action in each state of a stage. -/
-noncomputable def greedyAction (e : EnvironmentStage State Action)
-    (V : State → ℝ) (s : State) : Action := by
-  letI : Nonempty Action := e.action_nonempty
-  exact Classical.choose (exists_maximizer (e.qBackup V s))
 
 theorem greedyAction_max (e : EnvironmentStage State Action) (V : State → ℝ)
     (s : State) :
@@ -89,13 +43,6 @@ theorem expectation_pointMass (a : Action) (f : Action → ℝ) :
     (pointMass a).expectation f = f a := by
   classical
   simp [pointMass, FiniteDistribution.expectation]
-
-/-- The greedy policy at each stage depends on that stage's optimal continuation. -/
-noncomputable def greedyStages : List (EnvironmentStage State Action) →
-    List (DecisionStage State Action)
-  | [] => []
-  | e :: es => e.withPolicy (fun s ↦ pointMass (e.greedyAction (optimalValue es) s)) ::
-      greedyStages es
 
 /-- The constructed deterministic policy realizes the backward optimal value
 as the expectation of actual cumulative trajectory reward. -/

@@ -1,3 +1,8 @@
+import Formalization.MDP.ActionTrajectoryDefinitions
+import Formalization.MDP.PolicyEnvironmentDefinitions
+import Formalization.Online.QLearning.ActualRegretDefinitions
+import Formalization.Online.QLearning.ActualVisitDefinitions
+import Formalization.Online.QLearning.OptimalQDefinitions
 import Formalization.Online.Regret.MVP.MVPT5Definitions
 import Formalization.Online.Regret.MVP.MVPT2Definitions
 import Formalization.Online.Regret.MVP.MVPVarianceDefinitions
@@ -792,5 +797,69 @@ noncomputable def Lemma5_14_corrected : Prop :=
             Real.sqrt (d*I*T6)+d*(H : ℝ)*I) ∧
           ((∑ h : Fin H, ∑ k : Fin K, errSq h k) ≤
             Real.sqrt (d*(H : ℝ)^2*I*T6)+d*(H : ℝ)^2*I)}
+
+
+local instance qLearningIndexStateMeasurable (State : Type*) : MeasurableSpace State := ⊤
+local instance qLearningIndexPathMeasurable (State : Type u) (K n : ℕ) :
+    MeasurableSpace ((Fin K → State) × OnlineOutcomePath.{u,0} State n) := ⊤
+
+/-- Source Lemma 5.18 (`lemma:opt_model_free`, onlineRL.tex:2121–2150), for
+the explicitly completed Q-learning algorithm: a fixed deterministic greedy tie
+selector and initial nonterminal `V=min(H,max Q)=H`. The universal source
+bonus coefficient is witnessed by `c_b=2`, and the residual constant by `8`.
+The probability is under the actual iid-reset, sequential-transition law;
+all episode indices below are zero-based. The algorithm completion and tie
+restriction are recorded in `docs/SOURCE-ISSUES.md`, C20. -/
+noncomputable def Lemma5_18_restricted : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
+    (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+    (fallback : State) (δ : ℝ),
+    0 < δ → δ < 1 →
+    let L := Real.log ((Fintype.card (OnlineMDPRow State Action H):ℝ)*(K:ℝ)/δ)
+    let bonus := fun i : ℕ => 2*Real.sqrt ((H:ℝ)^3*L/(i:ℝ))
+    let beta := fun t : ℕ => if t=0 then 0 else 4*(2:ℝ)*Real.sqrt ((H:ℝ)^3*L/(t:ℝ))
+    1-δ < (onlineSequentialEpisodeLaw H K hH E ρ fallback
+      (qLearningActualEpisodePlanner hH E bonus) (K*H)).rowMeasure.real
+      {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
+        (beta 0 = 0 ∧ ∀ t : ℕ, 0<t → beta t ≤ 4*(2:ℝ)*Real.sqrt ((H:ℝ)^3*L/(t:ℝ))) ∧
+        (∀ (k : Fin K) (r : OnlineMDPRow State Action H),
+          let visits := qLearningActualVisitEpisodes hH E bonus sample.1 fallback sample.2 k r
+          let t := visits.length
+          let hist := qLearningActualSequentialHistory hH E bonus sample.1 fallback sample.2
+          let gap := ∑ i : Fin t, onlineQRateWeight H t (i.val+1) *
+            (qLearningChronologicalValue hH E
+              (qLearningActualTableAt hH E bonus sample.1 fallback sample.2 ((visits.get i)*H))
+              (r.1.val+1) ((hist.map Prod.snd).getD ((visits.get i)*H+r.1.val) fallback) -
+             qLearningTrueOptimalNext E r ((hist.map Prod.snd).getD ((visits.get i)*H+r.1.val) fallback))
+          0 ≤ (qLearningActualTableAt hH E bonus sample.1 fallback sample.2 (k.val*H)).q r - qLearningTrueOptimalQ E r ∧
+          (qLearningActualTableAt hH E bonus sample.1 fallback sample.2 (k.val*H)).q r - qLearningTrueOptimalQ E r ≤
+            onlineQRateWeight H t 0 * (H:ℝ) + gap +
+              beta t) ∧
+        (∀ (k : Fin K) (h : Fin H) (s : State),
+          EnvironmentStage.optimalValue ((List.ofFn E).drop h.val) s ≤
+            qLearningChronologicalValue hH E
+              (qLearningActualTableAt hH E bonus sample.1 fallback sample.2 (k.val*H)) h.val s)}
+
+/-- Source Theorem 5.16 (`thm-ucbq-regret`, onlineRL.tex:1911–1922),
+for the fixed deterministic greedy tie selector and initial nonterminal V=H
+completion. The original bonus uses cb=2 and log(SAT/δ); the explicit soft-O
+rate uses Λ=1+log(4SAT/δ) and universal constant max(1,19e). The proof
+uses the corrected shifted-beta inequality and retains signed stage weights.
+See `docs/SOURCE-ISSUES.md`, C20, for the algorithm completion, tie
+restriction and proof repairs; no literal printed-proof-validity claim is made. -/
+noncomputable def Thm5_16_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
+    (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+    (fallback : State) (δ : ℝ) (hδ : 0 < δ) (hδ1 : δ < 1),
+    let L := Real.log ((Fintype.card (OnlineMDPRow State Action H):ℝ)*(K:ℝ)/δ)
+    let bonus := fun i : ℕ => 2*Real.sqrt ((H:ℝ)^3*L/(i:ℝ))
+    let Λ := 1+Real.log (4*((Fintype.card (OnlineMDPRow State Action H):ℝ)*(K:ℝ))/δ)
+    let μ := (onlineSequentialEpisodeLaw H K hH E ρ fallback
+      (qLearningActualEpisodePlanner hH E bonus) (K*H)).rowMeasure
+    1-δ < μ.real {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
+      qLearningActualRegret hH E bonus sample.1 fallback sample.2 ≤
+        max 1 (19*Real.exp 1)*Real.sqrt ((H:ℝ)^5*(Fintype.card (State×Action):ℝ)*(K:ℝ)*Λ)}
 
 end StatisticalRL.Statements

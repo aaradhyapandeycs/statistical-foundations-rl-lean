@@ -1,0 +1,62 @@
+{
+  "scope": "Fresh full project check; initially empty project artifacts; no project OLean reuse",
+  "project_modules": 1052,
+  "audited_project_declarations": 8873,
+  "compiler": "Lean (version 4.27.0-rc1, arm64-apple-darwin24.6.0, commit 2fcce7258eeb6e324366bc25f9058293b04b7547, Release)",
+  "mathlib_commit": "32d24245c7a12ded17325299fd41d412022cd3fe",
+  "allowed_transitive_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "completed_utc": "2026-11-06T00:47:51.844073+00:00",
+  "wall_seconds": 12707.3510795,
+  "all_project_source_hashes_equal_before_after": true,
+  "all_frozen_public_input_hashes_equal_before_after": true,
+  "compiler_runner_config_hashes_equal_before_after": true,
+  "dependency_packages": 8,
+  "dependency_artifact_paths": 85038,
+  "dependency_path_size_mtime_ctime_equal_before_after": true,
+  "dependency_guard_limit": "Metadata preservation, not a dependency-content byte seal or dependency rebuild",
+  "package_metadata_pre_sha256": "1170c0ebbd23a45039bbcd2eb564c2c460df29d20aa70b17c489e9ac749ae6d9",
+  "package_metadata_post_sha256": "1170c0ebbd23a45039bbcd2eb564c2c460df29d20aa70b17c489e9ac749ae6d9",
+  "manifest_sha256": "1c3c355ed348a347a07ccd65602c2da4a23bee45eedba4ab02d3f4857eba28c0",
+  "audit_log_sha256": "bdb792df7dbb9a81319ebd7319ee3af792f17e9f88bcaacc33df82734381fce1",
+  "source_input_allowlist_sha256": "d1472cdc6bfbb21402a9c8b16d004064d3bdccb1b7ca3b8e40515f23ee64e10a",
+  "full_check_receipt_sha256": "5e16d5a0602fe0d1655b5ff381291026cacb7678fcb8277fd66c51e80797c08f",
+  "full_check_command": "python3 scripts/check.py",
+  "source_inventory_and_eight_scanner_tests": {
+    "passed": true,
+    "records": [
+      {
+        "name": "inventory",
+        "command": [
+          "python3",
+          "scripts/inventory.py",
+          "--check"
+        ],
+        "exit_code": 0,
+        "log_sha256": "55c773aeb54a0ec3e07ab6c778273a13dcfe12ed7f46bf8838d2b2f084d58d66"
+      },
+      {
+        "name": "scanner-tests",
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "scripts/tests",
+          "-p",
+          "test_inventory.py",
+          "-v"
+        ],
+        "exit_code": 0,
+        "log_sha256": "eb785c811a7dece3c7311eb258ee1f248b5e2253b4d18b81ac8e42fa78aca1c8"
+      }
+    ],
+    "verified_source_files": 36,
+    "source_provenance_sha256": "3b7151be66aef083e3de0e1eb58133e39eeecccd80c2762f08a618ce2eec1c51"
+  },
+  "whole_monograph": "INCOMPLETE"
+}

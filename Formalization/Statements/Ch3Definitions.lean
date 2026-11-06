@@ -1,3 +1,4 @@
+import Formalization.Generative.FiniteHorizonSamplingDefinitions
 import Formalization.Probability.EmpiricalRow
 import Formalization.MDP.DiscountedFiniteTrajectory
 import Formalization.MDP.InfiniteReturn
@@ -204,20 +205,10 @@ noncomputable def leaveOneOutBeta (M : DiscountedMDP State Action) (N : ℕ) (δ
 end StatisticalRL.ModelBasedPolicyLearning
 
 namespace StatisticalRL.FiniteHorizonGenerative
+attribute [local instance] ch3FiniteStageStateMeasurable
 variable {State Action : Type*} [Fintype State] [Fintype Action]
-local instance ch3FiniteStageStateMeasurable : MeasurableSpace State := ⊤
 noncomputable local instance ch3FiniteStageStateDecidable : DecidableEq State := Classical.decEq State
 noncomputable local instance ch3FiniteStageActionDecidable : DecidableEq Action := Classical.decEq Action
-
-abbrev SampleIndex (State Action : Type*) (H N : ℕ) := (Fin H × State × Action) × Fin N
-
-abbrev Samples (State Action : Type*) (H N : ℕ) := SampleIndex State Action H N → State
-
-/-- N actual independent next-state observations at every stage/state/action. -/
-noncomputable def samplingLaw {H : ℕ} (E : Fin H → EnvironmentStage State Action) (N : ℕ) :
-    Measure (Samples State Action H N) :=
-  Measure.pi (fun i : SampleIndex State Action H N ↦
-    ((E i.1.1).transition i.1.2.1 i.1.2.2).rowMeasure)
 
 /-- The empirical stage keeps the original known reward exactly. -/
 noncomputable def empiricalStage {H : ℕ} (E : Fin H → EnvironmentStage State Action)

@@ -1,15 +1,13 @@
-import Formalization.Online.SourceOptimism.EpisodicStackSelector
-import Formalization.MDP.FiniteTrajectory
+import Formalization.Online.SourceOptimism.EpisodicSelectorDefinitions
+import Formalization.Online.SourceOptimism.FinitePathHistoryDefinitions
+import Formalization.MDP.PointMassDefinitions
+import Formalization.Probability.FiniteSampleDefinitions
 import Mathlib.Algebra.BigOperators.Ring.Finset
 
 /-! Definitions of the causal sequential online law and realized history. -/
 namespace StatisticalRL.OnlineRL
 open scoped BigOperators
 variable {Row Outcome : Type*} [Fintype Row] [Fintype Outcome]
-
-/-- Dummy singleton actions merely reuse the established finite outcome-path
-carrier; actual selected actions are recorded in the predictable row label. -/
-abbrev OnlineOutcomePath (Outcome : Type*) (n : ℕ) := FinitePath Outcome PUnit n
 
 /-- The direct chronological successor law. At each step choose from the
 revealed history, draw from the true selected row, and recurse from the actual
@@ -36,14 +34,6 @@ noncomputable def onlineSequentialOutcomeLaw
         rw [Fintype.sum_prod_type]
         simp_rw [← Finset.mul_sum,FiniteDistribution.sum_prob,mul_one]
         exact (d (choose history)).sum_prob }
-
-/-- Realized history reconstructed from a direct sequential outcome path. -/
-def onlineSequentialPathHistory
-    (choose : List (Row × Outcome) → Row) :
-    (n : ℕ) → List (Row × Outcome) → OnlineOutcomePath Outcome n → List (Row × Outcome)
-  | 0, history, _ => history
-  | n+1, history, path => onlineSequentialPathHistory choose n
-      (history++[(choose history,path.2.1)]) path.2.2
 
 /-- The independent source reset-vector law, defined without stacks. -/
 noncomputable def onlineInitialVectorLaw {State : Type*} [Fintype State]

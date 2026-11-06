@@ -1,3 +1,4 @@
+import Formalization.Probability.EmpiricalRowMeasurableDefinitions
 import Formalization.Probability.FiniteSampleDefinitions
 import Formalization.MDP.InfiniteTrajectory
 import Mathlib.Probability.Independence.Basic
@@ -19,8 +20,8 @@ open MeasureTheory ProbabilityTheory
 namespace StatisticalRL.FiniteDistribution
 
 variable {State : Type*} [Fintype State]
+attribute [local instance] empiricalRowStateMeasurable
 
-local instance empiricalRowStateMeasurable : MeasurableSpace State := ⊤
 noncomputable local instance empiricalRowStateDecidable : DecidableEq State := Classical.decEq State
 
 instance rowMeasure_isProbabilityMeasure (d : FiniteDistribution State) :

@@ -1,6 +1,5 @@
 import Formalization.Online.Regret.Definitions
-import Formalization.Online.SourceOptimism.GreedySequentialTrajectoryOptimism
-import Formalization.Online.SourceOptimism.SourceOptimismAllocation
+import Formalization.Online.SourceOptimism.TranscriptRowDefinitions
 
 /-! Definitions for the restricted K≥2 corrected-zero-count W₁ statement.
 The fixed deterministic tie rule and actual sequential-history law are retained.

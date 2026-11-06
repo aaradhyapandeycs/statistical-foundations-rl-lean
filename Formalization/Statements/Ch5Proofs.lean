@@ -1,3 +1,5 @@
+import Formalization.Online.QLearning.ActualRegretRate
+import Formalization.Online.QLearning.ActualOptimismConfidence
 import Formalization.Online.Regret.MVP.T34.MVPT234SourceBridges
 import Formalization.Online.Regret.MVP.T5.MVPT5AllKConfidence
 import Formalization.Online.Regret.MVP.T2.MVPT2ActualSource
@@ -238,7 +240,7 @@ theorem MVP_optimism_corrected_holds : MVP_optimism_corrected := by
     StatisticalRL.OnlineRL.onlineSourceOptimismDeltaPrime] using h
 
 
-/-! Private uncompiled wrapper; proof-file imports the qualified final provider. -/
+/-! wrapper; proof-file imports the qualified final provider. -/
 theorem Lemma5_15_corrected_holds : Lemma5_15_corrected := by
   intro State Action instState instAction H K hH hK E ρ fallback δ c₁ c₂ hδ hδ1 hc₁ hc₂
   letI : Fintype State := instState
@@ -281,9 +283,8 @@ theorem MVP_T5_corrected_holds : MVP_T5_corrected := by
     StatisticalRL.OnlineRL.onlineW1SourceIota, StatisticalRL.OnlineRL.onlineSourceOptimismDeltaPrime,
     StatisticalRL.OnlineRL.onlineRegretAnalysisCharge] using h
 
-/-- Applying wrapper for the private full source-shaped T234 statement.
-Requires `MVPT234SourceBridgesDraft` and the canonical T234 source export.
-Source-only candidate; uncompiled. -/
+/-- Applying wrapper for the full source-shaped T234 statement, using the
+canonical T234 source export and its proved bridges. -/
 theorem MVP_T234_K2_corrected_holds : MVP_T234_K2_corrected := by
   classical
   intro State Action instS instA H K hH hK E ρ fallback δ hδ hδ1
@@ -369,5 +370,14 @@ theorem Lemma5_14_corrected_holds : Lemma5_14_corrected := by
   simpa [δp, I, onlineSourceOptimismDeltaPrime, StatisticalRL.OnlineRL.MVPProfile.logTwoReal, hlogcard, hlogcard',
     mvpActualDecouplingEvent, mvpActualT1, mvpVarianceW4, mvpVarianceT6UCB,
     mvpActualW3, mvpVarianceHistory, mvpVarianceContinuation] using hmain
+
+theorem Lemma5_18_restricted_holds : Lemma5_18_restricted := by
+  intro State Action instS instA H K hH hK E ρ fallback δ hδ hδ1
+  have h := qLearning_sourceOptimism_confidence H K hH hK E ρ fallback δ 2 hδ hδ1 (by norm_num)
+  simpa only [qLearningSourceOptimismGood,qLearningSourceBeta] using h
+
+theorem Thm5_16_corrected_holds : Thm5_16_corrected := by
+  intro State Action instS instA H K hH hK E ρ fallback δ hδ hδ1
+  exact qLearning_actualRegret_rate_confidence H K hH hK E ρ fallback δ hδ hδ1
 
 end StatisticalRL.Statements
