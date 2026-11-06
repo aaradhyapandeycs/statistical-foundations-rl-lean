@@ -1,3 +1,4 @@
+import Formalization.Online.QLearning.RateWeights
 import Formalization.Online.QLearning.ActualRegretRate
 import Formalization.Online.QLearning.ActualOptimismConfidence
 import Formalization.Online.Regret.MVP.T34.MVPT234SourceBridges
@@ -379,5 +380,13 @@ theorem Lemma5_18_restricted_holds : Lemma5_18_restricted := by
 theorem Thm5_16_corrected_holds : Thm5_16_corrected := by
   intro State Action instS instA H K hH hK E ρ fallback δ hδ hδ1
   exact qLearning_actualRegret_rate_confidence H K hH hK E ρ fallback δ hδ hδ1
+
+theorem Lemma5_17_holds : Lemma5_17 := by
+  intro H hH
+  refine ⟨fun N hN => ?_, fun n hn => ?_⟩
+  · obtain ⟨h1, h2⟩ := onlineQRateWeight_sqrt_sum_bounds H N hH hN
+    exact ⟨h1, h2, onlineQRateWeight_sq_sum_le H N hH hN⟩
+  · obtain ⟨hs, ht⟩ := onlineQRateWeight_tail_sum H n hH hn
+    exact ht ▸ hs.hasSum
 
 end StatisticalRL.Statements

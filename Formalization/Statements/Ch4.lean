@@ -153,4 +153,52 @@ def Thm4_6 : Prop :=
     1-δ ≤ (qSamplingLaw M T).real {data | ∀ s a,
       |qSampledIterate M η T Q₀ data s a -
         M.trajectoryExpectedQ M.optimalGreedyPolicy s a| ≤ ε}
+/-- Corrected Lemma 4.3, `lemma:TD-step-size`, `chapters/generative_model_model_free.tex:317–327`,
+with the schedule `eq:thm:eta-TD` (lines 182–184) and the weights `η_k^{(t)}` of
+`def:eta-k-t` (lines 307–313) written out (the `k = 0` branch takes precedence at `t = 0`).
+
+Differences from the printed lemma (see `docs/SOURCE-ISSUES.md`, Candidate C5): the printed
+statement omits the γ-dependent sample-size premise `log² T ≤ c₁ (1-γ) T` used by its appendix
+proof, and does not bound `t` by the horizon `T` on which the schedule is constrained; both are
+assumed here, together with `T ≥ 2` so that `log T > 0`. The standing
+discount convention `γ ∈ [0,1)` is made explicit. The printed early-weight bound fails
+without the extra premise (`Formalization/ModelFree/TDStandaloneStepSizeCounterexample.lean`).
+The source's standing `c₁ ≥ c₂` is not needed. The case `0 ≤ k ≤ t/2` is written `2k ≤ t`. -/
+def Lemma4_3_corrected : Prop :=
+  ∀ (γ c₁ c₂ : ℝ) (T : ℕ) (η : ℕ → ℝ),
+    2 ≤ T → 0 ≤ γ → γ < 1 → 0 < c₁ → 0 < c₂ → c₁ * c₂ ≤ 1 / 8 →
+    Real.log (T : ℝ) ^ 2 ≤ c₁ * (1 - γ) * T →
+    (∀ i : ℕ, 1 ≤ i → i ≤ T →
+      1 / (1 + c₁ * (1 - γ) * T / Real.log (T : ℝ) ^ 2) ≤ η i ∧
+      η i ≤ 1 / (1 + c₂ * (1 - γ) * i / Real.log (T : ℝ) ^ 2)) →
+    ∀ (t k : ℕ), t ≤ T → k ≤ t → (T : ℝ) / (c₂ * Real.log (T : ℝ)) ≤ t →
+      let w : ℝ := if k ≤ t then (if k = 0 then 1 else η k) *
+          ∏ i ∈ Finset.Icc (k + 1) t, (1 - η i * (1 - γ)) else 0
+      (2 * k ≤ t → w ≤ 1 / (T : ℝ) ^ 2) ∧
+      (t < 2 * k → w ≤ η k ∧ η k ≤ 2 * Real.log (T : ℝ) ^ 3 / ((1 - γ) * T))
+
+/-- Lemma 4.9, `lemma:Q-step-size`, `chapters/generative_model_model_free.tex:1093–1112`, under
+the learning-rate schedule `eq:thm:infinite-horizaon-eta` (lines 882–886), with
+`η̄ = min{1, 2 log³T / (c₂(1-γ)T)}` of `eq:Q-comparison-parameters` (lines 1087–1089) and the
+weights `η_i^{(t)}` of `def:eta-i-t-simple` (lines 1075–1083) written out; the `i = 0` branch
+takes precedence at `t = 0`. `T / 2` is natural-number division, i.e. `⌊T/2⌋`. The horizon is
+assumed to satisfy `T ≥ 2`, so that `log T > 0` and the schedule is well defined. The source's
+standing `c₁ ≥ c₂` is not needed; the square-sum bound is stated for every `t ≤ T` (it is an
+empty sum when `t ≤ ⌊T/2⌋`). -/
+def Lemma4_9 : Prop :=
+  ∀ (γ c₁ c₂ : ℝ) (T : ℕ) (η : ℕ → ℝ),
+    2 ≤ T → γ < 1 → 0 < c₁ → 0 < c₂ →
+    (∀ k : ℕ, k ≤ T →
+      1 / (1 + c₁ * (1 - γ) * (T : ℝ) / Real.log (T : ℝ) ^ 3) ≤ η k ∧
+      η k ≤ 1 / (1 + c₂ * (1 - γ) * (k : ℝ) / Real.log (T : ℝ) ^ 3)) →
+    let ηbar : ℝ := min 1 (2 * Real.log (T : ℝ) ^ 3 / (c₂ * (1 - γ) * (T : ℝ)))
+    let w : ℕ → ℕ → ℝ := fun t i =>
+      if i = 0 then ∏ j ∈ Finset.Icc 1 t, (1 - η j)
+      else η i * ∏ j ∈ Finset.Icc (i + 1) t, (1 - η j)
+    (∀ i t : ℕ, T / 2 < i → i ≤ t → t ≤ T → 0 ≤ w t i ∧ w t i ≤ η i ∧ η i ≤ ηbar) ∧
+    (∀ t : ℕ, t ≤ T → (∑ i ∈ Finset.Icc (T / 2 + 1) t, (w t i) ^ 2) ≤ ηbar) ∧
+    (∀ τ t : ℕ, 1 ≤ τ → τ ≤ t →
+      (∑ i ∈ Finset.Icc τ t, w t i) = 1 - ∏ j ∈ Finset.Icc τ t, (1 - η j)) ∧
+    (∀ t : ℕ, (∑ i ∈ Finset.Icc 0 t, w t i) = 1)
+
 end StatisticalRL.Statements.Ch4

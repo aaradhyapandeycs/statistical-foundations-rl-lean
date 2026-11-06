@@ -1,5 +1,21 @@
 # Whole-monograph progress
 
+## Statement index: five more chapter results
+
+Five source results now have full statement-index entries with applying wrappers:
+Lemma 2.7 (Bernoulli tails), Lemma 2.13 (Bernoulli KL bounds), corrected Lemma 4.3
+(TD step-size weights, [C5](SOURCE-ISSUES.md#candidate-c5-missing-premise-in-td-step-size-lemma-43)),
+Lemma 4.9 (Q-learning step-size weights) and Lemma 5.17 (online Q-learning rate
+properties). Lemmas 2.7, 4.3 and 5.17 index results that were already proved; Lemma 2.13
+adds a proof of the comparison KL(p‖q) ≤ KL(q‖p) for 1/2 ≤ q < p < 1, and Lemma 4.9
+assembles the existing weight bounds into the full printed lemma. Each entry passed an
+independent source-fidelity review. The changed modules and their dependents were
+recompiled against the previously verified build, and the axiom audit passed for 8,905
+declarations with only `propext`, `Classical.choice` and `Quot.sound`; CI repeats the full
+build. The named-result ledger now has 46 covered entries out of 90 inventoried
+environments, including disclosed corrected or restricted variants. This is not a
+percentage of all work needed. The complete monograph remains **INCOMPLETE**.
+
 ## Online Q-learning source proof verified
 
 The actual online Q-learning regret and joint optimism/error results now have
