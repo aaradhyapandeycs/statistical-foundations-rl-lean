@@ -1,3 +1,4 @@
+import Formalization.Online.QLearning.RateWeightDefinitions
 import Formalization.MDP.ActionTrajectoryDefinitions
 import Formalization.MDP.PolicyEnvironmentDefinitions
 import Formalization.Online.QLearning.ActualRegretDefinitions
@@ -861,5 +862,21 @@ noncomputable def Thm5_16_corrected : Prop :=
     1-δ < μ.real {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
       qLearningActualRegret hH E bonus sample.1 fallback sample.2 ≤
         max 1 (19*Real.exp 1)*Real.sqrt ((H:ℝ)^5*(Fintype.card (State×Action):ℝ)*(K:ℝ)*Λ)}
+
+/-- Lemma 5.17, `lemma:property_lr`, `chapters/onlineRL.tex:2020–2041`, for the
+learning rates `η_n = (H+1)/(H+n)` of `eq:learning_rate_ucbq` (`chapters/onlineRL.tex:1898–1904`).
+`onlineQRateWeight H N n` is the source weight `η_n^N`. For every horizon `H ≥ 1` and
+`N ≥ 1`: the two `1/√n`-weighted bounds and the square bound; and for every `n ≥ 1` the
+tail series `∑_{N ≥ n} η_n^N` converges to `1 + 1/H` (re-indexed as `N = n + k`). -/
+def Lemma5_17 : Prop :=
+  ∀ (H : ℕ), 0 < H →
+    (∀ (N : ℕ), 0 < N →
+      1 / Real.sqrt (N : ℝ) ≤
+          (∑ n ∈ Finset.Icc 1 N, onlineQRateWeight H N n / Real.sqrt (n : ℝ)) ∧
+        (∑ n ∈ Finset.Icc 1 N, onlineQRateWeight H N n / Real.sqrt (n : ℝ)) ≤
+          2 / Real.sqrt (N : ℝ) ∧
+        (∑ n ∈ Finset.Icc 1 N, (onlineQRateWeight H N n) ^ 2) ≤ 2 * (H : ℝ) / (N : ℝ)) ∧
+    (∀ (n : ℕ), 0 < n →
+      HasSum (fun k : ℕ => onlineQRateWeight H (n + k) n) (1 + 1 / (H : ℝ)))
 
 end StatisticalRL.Statements

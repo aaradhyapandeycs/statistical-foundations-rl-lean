@@ -1,3 +1,6 @@
+import Formalization.Probability.BernoulliKLComparison
+import Formalization.Generative.GenerativeLowerBoundBernoulli
+import Formalization.Probability.BernoulliTailProofs
 import Formalization.MDP.PolicyIteration
 import Formalization.MDP.PolicyMatrixResolvent
 import Formalization.Probability.AzumaNaturalHistory
@@ -40,5 +43,18 @@ theorem Lemma2_1_holds : Lemma2_1 := by
     exact M.value_iteration_error Q₀ k
   · intro π f hupdate hmax k _
     exact M.arbitraryGreedyPolicyIteration_error π f hupdate hmax k
+
+theorem Lemma2_7_holds.{w} : Lemma2_7.{w} :=
+  StatisticalRL.Probability.bernoulliTailBound_source.{w}
+
+theorem Lemma2_13_holds : Lemma2_13 := by
+  refine ⟨fun p q hp hp1 hq hq1 => ?_, fun p q hq hqp hp1 => ⟨?_, ?_⟩⟩
+  · exact StatisticalRL.GenerativeLowerBound.bernoulliKLExpression_le_quadratic p q hq hq1 hp hp1
+  · exact StatisticalRL.Probability.bernoulliKL_le_reverse p q hq hqp hp1
+  · have h := StatisticalRL.GenerativeLowerBound.bernoulliKLExpression_le_quadratic q p
+      (by linarith) hp1 (by linarith) (by linarith)
+    have hsq : (q - p) ^ 2 = (p - q) ^ 2 := by ring
+    rw [hsq] at h
+    exact h
 
 end StatisticalRL.Statements

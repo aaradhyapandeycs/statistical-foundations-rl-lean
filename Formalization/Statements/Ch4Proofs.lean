@@ -1,3 +1,5 @@
+import Formalization.ModelFree.QLearningStepSizeSource
+import Formalization.ModelFree.TDStepSizeLate
 import Formalization.Statements.Ch4
 import Formalization.ModelFree.TDIterateBounds
 import Formalization.ModelFree.TDSquareEnergy
@@ -78,4 +80,13 @@ theorem Thm4_6_holds : Thm4_6 := by
   obtain ⟨c₁, c₂, c₃, hc₂, horder, _, hc₃, h⟩ :=
     qLearning_exists_universal_constants_source_accuracy
   exact ⟨c₁, c₂, c₃, hc₂, horder, hc₃, h⟩
+theorem Lemma4_3_corrected_holds : Lemma4_3_corrected := by
+  intro γ c₁ c₂ T η hT hγ hγ1 hc₁ hc₂ hcprod hlarge hs t k htT hkt htime
+  exact tdRateWeight_corrected_step_size γ c₁ c₂ T η hT hγ hγ1 hc₁ hc₂ hcprod hlarge hs
+    t k htT hkt htime
+
+theorem Lemma4_9_holds : Lemma4_9 := by
+  intro γ c₁ c₂ T η hT hγ1 hc₁ hc₂ hs
+  exact qSource_step_size_weights γ c₁ c₂ T η hT hγ1 hc₁ hc₂ hs
+
 end StatisticalRL.Statements.Ch4

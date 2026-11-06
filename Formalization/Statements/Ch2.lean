@@ -1,3 +1,4 @@
+import Formalization.Probability.BernoulliTailDefinitions
 import Formalization.MDP.OptimalityOperatorDefinitions
 import Formalization.MDP.PointMassDefinitions
 import Formalization.MDP.FixedPointDefinitions
@@ -113,5 +114,40 @@ def Lemma2_1 : Prop :=
         ‖M.policyFixedPoint (π k) - M.optimalityFixedPoint‖ ≤
           M.discount ^ k *
             ‖M.policyFixedPoint (π 0) - M.optimalityFixedPoint‖)
+
+/-- Lemma 2.7, `lem:tail-bound-sum-Bernoulli`, `chapters/prelim.tex:1001–1015`.
+`Z_1,…,Z_n` are independent real random variables on an arbitrary probability space,
+each with the Bernoulli(`p`) law on `{0,1}` (`0 < p ≤ 1`). Lower tail: for every `a > 0`,
+`P(∑ (Z_i - E Z_i) < -a n) ≤ exp(-a² n / (2p))`; upper tail: for every `τ ≥ 2pn`,
+`P(∑ Z_i > τ) ≤ 2 exp(-0.19 τ)`. -/
+def Lemma2_7 : Prop :=
+  ∀ (Ω : Type u) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (p : ℝ) (hp : 0 < p) (hp1 : p ≤ 1),
+    ∀ (n : ℕ) (Z : Fin n → Ω → ℝ),
+      (∀ i, Measurable (Z i)) → ProbabilityTheory.iIndepFun Z μ →
+      (∀ i, ProbabilityTheory.HasLaw (Z i)
+        (StatisticalRL.Probability.bernoulliRealLaw p hp.le hp1) μ) →
+      (∀ a : ℝ, 0 < a →
+        μ.real {ω | (∑ i : Fin n,
+          (Z i ω - ∫ ω', Z i ω' ∂μ)) <
+            -(a * (n : ℝ))} ≤ Real.exp (-(a ^ 2 * (n : ℝ) / (2 * p))) ) ∧
+      (∀ τ : ℝ, 2 * p * (n : ℝ) ≤ τ →
+        μ.real {ω | (∑ i : Fin n, Z i ω) > τ} ≤
+          2 * Real.exp (-(0.19 : ℝ) * τ))
+
+/-- Lemma 2.13, `lem:KL-quadratic-lower-bound`, `chapters/prelim.tex:1335–1346`, with the
+Bernoulli KL divergence of `eq:defn-KL-bern` written out:
+`KL(p ‖ q) = p log(p/q) + (1-p) log((1-p)/(1-q))`. For all `0 < p, q < 1`,
+`KL(p ‖ q) ≤ (p-q)²/(q(1-q))`; and if `1/2 ≤ q < p < 1`, then
+`KL(p ‖ q) ≤ KL(q ‖ p) ≤ (p-q)²/(p(1-p))`. -/
+def Lemma2_13 : Prop :=
+  (∀ p q : ℝ, 0 < p → p < 1 → 0 < q → q < 1 →
+    p * Real.log (p / q) + (1 - p) * Real.log ((1 - p) / (1 - q)) ≤
+      (p - q) ^ 2 / (q * (1 - q))) ∧
+  (∀ p q : ℝ, (1 : ℝ) / 2 ≤ q → q < p → p < 1 →
+    (p * Real.log (p / q) + (1 - p) * Real.log ((1 - p) / (1 - q)) ≤
+      q * Real.log (q / p) + (1 - q) * Real.log ((1 - q) / (1 - p))) ∧
+    (q * Real.log (q / p) + (1 - q) * Real.log ((1 - q) / (1 - p)) ≤
+      (p - q) ^ 2 / (p * (1 - p))))
 
 end StatisticalRL.Statements
