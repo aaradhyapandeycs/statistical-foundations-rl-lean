@@ -1,5 +1,19 @@
 # Whole-monograph progress
 
+## Statement index: Lemmas 3.6 and 4.14
+
+Lemma 3.6 (empirical value residual, on the event `eq:Bernstein-empirical-optimal-value`, for
+every empirically optimal deterministic policy) now has its statement entry and applying wrapper
+over the existing self-bounding proof. Lemma 4.14 (optimal values of the 4-state Q-learning hard
+MDP) is newly proved: the source construction is defined in
+`ModelFree/QLearningHardMDPDefinitions.lean`, with the source's state-dependent action sets encoded
+by two actions per state (copies at single-action states), and all printed V⋆/Q⋆ values are
+derived for every 1/4 < γ < 1. Both entries passed independent source-fidelity reviews; the
+changed modules and dependents were recompiled and the axiom audit passed for 8,938 declarations
+with only `propext`, `Classical.choice` and `Quot.sound`. The named-result ledger now has 48
+covered entries out of 90 inventoried environments. The complete monograph remains
+**INCOMPLETE**.
+
 ## Statement index: five more chapter results
 
 Five source results now have full statement-index entries with applying wrappers:

@@ -1,3 +1,4 @@
+import Formalization.ModelFree.QLearningHardMDPDefinitions
 import Formalization.ModelFree.TDConditionalMomentDefinitions
 import Formalization.ModelFree.TDSourceFixedTerminalProxyDefinitions
 import Formalization.ModelFree.TDSourceSamplingDefinitions
@@ -200,5 +201,25 @@ def Lemma4_9 : Prop :=
     (∀ τ t : ℕ, 1 ≤ τ → τ ≤ t →
       (∑ i ∈ Finset.Icc τ t, w t i) = 1 - ∏ j ∈ Finset.Icc τ t, (1 - η j)) ∧
     (∀ t : ℕ, (∑ i ∈ Finset.Icc 0 t, w t i) = 1)
+
+/-- Lemma 4.14, `lem:optimal-V-Q-hardMDP`, `chapters/generative_model_model_free.tex:2797–2811`,
+for the hard MDP `M_hard` of lines 2735–2781 with `p = (4γ-1)/(3γ)` (`defn-parameter-p-Q-lower`, lines 2784–2788).
+`qHardMDP γ` has states `Fin 4` and actions `Bool`: the source's state-dependent action sets
+(`A₁ = {1,2}`, all others `{1}`) are encoded by giving every state two actions, which at states
+0, 2 and 3 are copies of the single source action; claims about `Q⋆(s,1)` are stated for every
+action. `V⋆` and `Q⋆` are the trajectory values of the optimal greedy policy. The statement is
+proved for every `1/4 < γ < 1` (where `0 < p < 1`), which contains the source's lower-bound
+regime `3/4 ≤ γ < 1`. -/
+def Lemma4_14 : Prop :=
+  ∀ (γ : ℝ) (hγ : (1 : ℝ) / 4 < γ) (hγ1 : γ < 1),
+    let M := qHardMDP γ hγ hγ1
+    let p : ℝ := (4 * γ - 1) / (3 * γ)
+    let Vs := M.trajectoryExpectedValue M.optimalGreedyPolicy
+    let Qs := M.trajectoryExpectedQ M.optimalGreedyPolicy
+    (Vs 0 = 0 ∧ ∀ a, Qs 0 a = 0) ∧
+    (Vs 1 = 1 / (1 - γ * p) ∧ (∀ a, Qs 1 a = 1 / (1 - γ * p)) ∧
+      Vs 2 = 1 / (1 - γ * p) ∧ (∀ a, Qs 2 a = 1 / (1 - γ * p)) ∧
+      1 / (1 - γ * p) = 3 / (4 * (1 - γ))) ∧
+    (Vs 3 = 1 / (1 - γ) ∧ ∀ a, Qs 3 a = 1 / (1 - γ))
 
 end StatisticalRL.Statements.Ch4
