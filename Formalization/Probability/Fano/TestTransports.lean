@@ -117,11 +117,10 @@ theorem testError_eq_identityError_of_map (P : I → Measure Ω)
   rw [Measure.map_apply ψ.2 ((measurableSet_singleton i).compl)]
   rfl
 
-/-- ADDED BY CLAUDE (not in Data's frozen input): pushing a probability law
-through an actual measurable test is a probability law. The frozen statement of
-`averageTestError_eq_pushed_identityError` requires this instance for the pushed
-family and does not elaborate without it. `IsProbabilityMeasure` is a `Prop`, so
-this instance does not change the meaning of any statement. -/
+/-- Pushing a probability law through an actual measurable test is a probability law.
+The statement of `averageTestError_eq_pushed_identityError` needs this instance for
+the pushed family and does not elaborate without it. `IsProbabilityMeasure` is a
+`Prop`, so this instance does not change the meaning of any statement. -/
 instance measurableTest_map_isProbabilityMeasure {μ : Measure Ω} [IsProbabilityMeasure μ]
     (ψ : MeasurableTest (Ω := Ω) (I := I)) : IsProbabilityMeasure (μ.map ψ.1) :=
   Measure.isProbabilityMeasure_map ψ.2.aemeasurable

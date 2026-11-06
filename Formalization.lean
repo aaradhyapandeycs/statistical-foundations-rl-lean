@@ -102,6 +102,15 @@ import Formalization.OfflineRL.OccupancyWeightedVariance
 import Formalization.OfflineRL.OccupancyWeightedVarianceMDP
 import Formalization.OfflineRL.LowerBoundFamilyDefinitions
 import Formalization.OfflineRL.LowerBoundFamilyValues
+import Formalization.OfflineRL.LowerBoundFamilyKL
+import Formalization.OfflineRL.LCBQUsefulSeries
+import Formalization.PrelimKL.KLBinaryProductRNDerivative
+import Formalization.PrelimKL.KLBinaryProductLLRAdd
+import Formalization.PrelimKL.KLBinaryProductFinite
+import Formalization.PrelimKL.KLBinaryProductAllValues
+import Formalization.PrelimKL.KLMeasurableEquiv
+import Formalization.PrelimKL.KLFinitePi
+import Formalization.PrelimKL.KLArbitraryFinitePi
 import Formalization.Probability.BernoulliPinsker
 import Formalization.Probability.Fano.FiniteValuedMapDefinitions
 import Formalization.Probability.Fano.FinitePartitionRestriction
@@ -112,6 +121,7 @@ import Formalization.Probability.Fano.ReverseTestDefinitions
 import Formalization.Probability.Fano.BernoulliPinskerLaw
 import Formalization.Probability.Fano.ReverseTest
 import Formalization.Probability.Fano.ReverseFanoInfimum
+import Formalization.Probability.Fano.FanoLemma
 import Formalization.Probability.EmpiricalBernsteinSharp.BennettPositiveRemainder
 import Formalization.Probability.EmpiricalBernsteinSharp.BennettNegativeRemainder
 import Formalization.Probability.EmpiricalBernsteinSharp.BennettExactRowMGF

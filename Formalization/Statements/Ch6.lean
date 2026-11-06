@@ -5,6 +5,7 @@ import Formalization.MDP.OptimalTrajectoryValue
 import Formalization.Probability.VarianceDefinitions
 import Formalization.OfflineRL.LowerBoundFamilyDefinitions
 import Formalization.Probability.FiniteSampleDefinitions
+import Mathlib.InformationTheory.KullbackLeibler.Basic
 import Mathlib.Probability.Independence.Basic
 
 /-! Chapter 6 source-facing statements. Corrected variants are labeled explicitly;
@@ -162,5 +163,52 @@ def Lemma6_14_restricted : Prop :=
     (0 < ε → ∀ i, (M.optimalGreedyPolicy (some i)).prob (θ i) = 1) ∧
     Vs none = 4 / (7 * (1 - γ)) ∧
     ∀ i, Vs (some i) = (1 + γ * (1 - p) * (1 - C⁻¹) * Vs none) / (1 - γ * (p + (1 - p) * C⁻¹))
+
+/-- **Lemma 6.15** (`lem:transition-KL-bound-infinite`, `chapters/offlineRL.tex:2835–2865`; proof
+`:5680ff`) for the hard family of Lemma 6.14 (`lbMDP`, same encoding and standing assumptions).
+For every `θ, θ̃ ∈ {0,1}^{S-1}` (in particular for the source's `Θ`), every positive state and
+every action, the KL divergence between the two next-state laws vanishes when `θ_s = θ̃_s` and is
+at most `c₃(1-γ)³ε²` otherwise, for one universal constant `c₃` (here `c₃ = 16 · 336²` works).
+Next-state laws are the actual transition rows as probability measures on the finite state
+space. -/
+def Lemma6_15 : Prop :=
+  ∃ c₃ : ℝ, 0 < c₃ ∧
+    ∀ (m : ℕ) (hm : 1 ≤ m) (γ ε C : ℝ) (hγ : 2 / 3 ≤ γ) (hγ1 : γ < 1) (hε : 0 ≤ ε)
+      (hεmax : 224 * (1 - γ) * ε / γ ≤ 1 / 2) (hC : 2 < C) (θ θ' : Fin m → Bool) (i : Fin m)
+      (a : Bool),
+      let M := StatisticalRL.OfflineRL.LowerBound.lbMDP m hm γ ε C hγ hγ1 hε hεmax hC θ
+      let M' := StatisticalRL.OfflineRL.LowerBound.lbMDP m hm γ ε C hγ hγ1 hε hεmax hC θ'
+      (θ i = θ' i →
+        InformationTheory.klDiv (M.transition (some i) a).rowMeasure
+          (M'.transition (some i) a).rowMeasure = 0) ∧
+      (θ i ≠ θ' i →
+        InformationTheory.klDiv (M.transition (some i) a).rowMeasure
+          (M'.transition (some i) a).rowMeasure ≤ ENNReal.ofReal (c₃ * (1 - γ) ^ 3 * ε ^ 2))
+
+/-- **Lemma 6.11, restricted** (`lemma:useful`, `chapters/offlineRL.tex:2292–2300`; proof
+`:4674–4785`), with `H = ⌈4 log(SAT/δ)/(1-γ)⌉` (`eq:defn-H-lcbq-stepsize-proof`, `:1667–1672`),
+`κ = γ(1+1/H)³` (`eq:defn-kappa-proof-lcbq`) and the source's `≲` made explicit as one universal
+constant `C`. `ρᵀ P_π^j` is the actual time-`j` state law of the policy `π⋆` (the optimal greedy
+policy) started from `ρ`, `d_ρ^⋆` its discounted occupancy and `‖W‖` the sup norm; `S = |𝒮|`.
+The printed lemma is false without a premise of this kind: `κ < 1` can fail, and even with
+`κ < 1` no universal constant works when `log(SAT/δ)` is small (candidate C22). This entry
+assumes `log(SAT/δ) ≥ 1`, a sufficient condition. Theorem 6.8's hypotheses do not imply it. In
+the remaining corner `δ > SAT/e` they give, for `c₂ ≥ 32`, `κ ≤ 1/2` and `δ/(ST⁴) > 1/(8e)`,
+which yield the conclusion, so that theorem is unaffected; this entry does not cover that
+corner. See
+[`SOURCE-ISSUES.md#statement-index-scope-disclosures`](../../docs/SOURCE-ISSUES.md#statement-index-scope-disclosures). -/
+def Lemma6_11_restricted : Prop :=
+  ∃ C : ℝ, 0 < C ∧
+    ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
+      (ρ : FiniteDistribution S) (δ : ℝ) (T : ℕ) (W : S → ℝ),
+      0 < δ → δ < 1 → 1 ≤ T →
+      1 ≤ Real.log ((Fintype.card S : ℝ) * Fintype.card A * T / δ) →
+      (∀ s, 0 ≤ W s) →
+      let γ := M.discount
+      let H : ℕ := ⌈4 / (1 - γ) * Real.log ((Fintype.card S : ℝ) * Fintype.card A * T / δ)⌉₊
+      let κ := γ * (1 + 1 / (H : ℝ)) ^ 3
+      ∑' j : ℕ, κ ^ j * ∑ s, M.occupancyStateAt M.optimalGreedyPolicy ρ j s * W s ≤
+        C * ((∑ s, M.discountedStateOccupancy M.optimalGreedyPolicy ρ s * W s) / (1 - γ) +
+          δ * ‖W‖ / ((Fintype.card S : ℝ) * (T : ℝ) ^ 4 * (1 - γ)))
 
 end StatisticalRL.Statements.Ch6

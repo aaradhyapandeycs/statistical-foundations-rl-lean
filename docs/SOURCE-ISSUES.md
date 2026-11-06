@@ -389,7 +389,15 @@ literal all-K auxiliary claim. No author-approved erratum is asserted. See the
 ## Statement-index scope disclosures
 
 These are limitations of the currently proved formalizations, not asserted
-errors in the manuscript.
+errors in the manuscript. Where an item links to a source-issue candidate, that
+candidate records the asserted error.
+
+- Lemma 6.11 (`lemma:useful`, `offlineRL.tex:2292–2300`) is indexed as
+  `Lemma6_11_restricted`, with the source's `≲` made explicit (constant 84) and the added
+  premise `log(SAT/δ) ≥ 1`, which is sufficient for `κ = γ(1+1/H)³ < 1`. The premise is not
+  implied by Theorem 6.8's sample-size condition, so the entry does not formally cover that
+  theorem's uses with `δ > SAT/e`; see [C22](#C22) for the source error and why Theorem 6.8 is
+  unaffected.
 
 - Lemma 6.14 (`lemma:value-policy-LB-inf`, `offlineRL.tex:2544–2583`) is indexed as
   `Lemma6_14_restricted`. All values, the policy upper bound with equality at `π⋆` and
@@ -746,3 +754,76 @@ claim is made that every printed proof step is valid.
 
 See the [independent source-review record](critic-online-qlearning-source.md)
 and [verification record](online-qlearning-source-verification.md).
+
+<a id="C21"></a>
+## Candidate C21: mis-cited Bernoulli KL step in the offline transition KL lemma
+
+**Source:** `chapters/offlineRL.tex`, proof of `lem:transition-KL-bound-infinite`
+(lemma at lines 2835–2865, proof from line 5680), display
+`eq:KL-single-action-bound-infinite-proof`.
+
+The proof bounds `KL(Bern(u) ‖ Bern(v))` by `(u−v)²/(u(1−v))` for `u > v ≥ 1/2`,
+citing `lem:KL-quadratic-lower-bound` (Lemma 2.13). Lemma 2.13 gives
+`(u−v)²/(v(1−v))` (first clause) or `(u−v)²/(u(1−u))` (second clause); both are at
+least `(u−v)²/(u(1−v))`, and the cited inequality is false as a general statement
+(for `u = 0.99`, `v = 0.5`: `KL ≈ 0.637 > 0.485`). Whether the cited inequality
+holds on the proof's actual parameter region is not established here; the formal proof
+does not use it. The lemma's conclusion is unaffected: using the first clause of Lemma 2.13 with reference
+parameter `v` gives the same `(p−q)²`-type bound, and the formal proof
+(`Formalization/OfflineRL/LowerBoundFamilyKL.lean`) takes that route with the explicit
+universal constant `c₃ = 16 · 336²`. This is a printed-proof gap, not an error in the
+lemma's statement.
+
+<a id="C22"></a>
+## Candidate C22: weighted propagation lemma fails when log(SAT/δ) is small
+
+**Source:** `chapters/offlineRL.tex`, `lemma:useful` (Lemma 6.11, lines 2292–2300), with
+`H = ⌈4 log(SAT/δ)/(1−γ)⌉` from `eq:defn-H-lcbq-stepsize-proof` (lines 1667–1672) and
+`κ = γ(1+1/H)³` from `eq:defn-kappa-proof-lcbq` (lines 2284–2289).
+
+The lemma is stated for every `0 < δ < 1`, and the text before it says `κ < 1` follows
+"immediately" from the choice of `H`. That holds when `log(SAT/δ) ≥ 1` (equivalently
+`δ ≤ SAT/e`), but not in general; failures need `SAT ≤ 2`, since `SAT ≥ 3` gives
+`log(SAT/δ) > 1` for every `δ < 1`.
+Counterexample: `S = A = T = 1`, `δ = 0.9`, `γ = 0.3`. Then `4 log(1/δ)/(1−γ) ≈ 0.60`, so
+`H = 1` and `κ = 0.3 · 2³ = 2.4`. With `W ≡ 1` the left side `∑_j κ^j` diverges while the
+right side is finite. The lemma also fails with `κ < 1`, because no universal constant works:
+with the same `S, A, T, δ` and `γ = 1/8 − η` for `0 < η < 1/8`, `κ = 1 − 8η`, the left side is
+`1/(8η)` while the right side stays below about `2.2·C` (with the normalised occupancy `d_ρ^⋆`).
+
+The premise is not implied by the sample-size condition of Theorem 6.8
+(`eq:sample-size-lcbq-T-thm`, line 1767): for `S = A = T = 1`, `γ = 0`, `C⋆ = ε = 1` the
+condition holds for every `δ ≥ e^{−1/c₂}`, where `log(SAT/δ) < 1`. This is not a counterexample
+to Theorem 6.8. In the corner `δ > SAT/e` we have `SAT ≤ 2`, so `T ≤ 2`; with
+`ε ≤ 1/(1−γ)`, `S, C⋆ ≥ 1` and `log(SAT/((1−γ)δ)) ≥ log(1/(1−γ)) ≥ γ`, the condition gives
+`γ ≤ T/c₂ ≤ 2/c₂`. For `c₂ ≥ 32` this makes `κ ≤ 8γ ≤ 1/2`, and since
+`δ/(ST⁴) > A/(eT³) ≥ 1/(8e)`, the lemma's conclusion holds there with a constant below 84.
+So, for `c₂ ≥ 32`, `κ < 1` holds on all of Theorem 6.8's hypotheses and the lemma's conclusion holds in the corner, and the theorem is unaffected.
+
+**Proposed correction:** add the premise `log(SAT/δ) ≥ 1` (equivalently `δ ≤ SAT/e`) to the
+lemma, or state it under Theorem 6.8's hypotheses. The formal statement `Lemma6_11_restricted`
+states the lemma with this premise and an existential universal constant; its proof supplies
+`C = 84`. **Open (formal coverage only):** the corner `δ > SAT/e` of Theorem 6.8's uses is not
+covered by `Lemma6_11_restricted`; the argument above is not yet formalized.
+
+<a id="C23"></a>
+## Candidate C23: covering-set size in the offline Bernstein leave-one-out proof assumes N ≥ 5
+
+**Source:** `chapters/offlineRL.tex`, proof of Lemma 6.6 `lem:Bernstein-infinite` (statement at lines
+1147–1163; proof from line 3630), Step 3: `u_max` and `U_cover` at lines 3873–3895, their size bound in
+`eq:defn-Ucover-infinite-Bernstein-cardinality` at lines 3898–3909, used in the union bound at lines 3969–3990.
+
+The proof bounds `|U_cover| ≤ N u_max ≤ N/(1−γ) + 5 + N ≤ 2N/(1−γ)` "given that N ≥ 5 and γ ≥ 1/2"
+(line 3898). `γ ≥ 1/2` is a hypothesis of Lemma 6.6; `N ≥ 5` is not, and the proof does not derive it. The
+printed bound can fail only when `N ≤ 4`, and it does: for `N = 1` and every `γ ∈ [1/2, 2/3)`. Example:
+`N = 1`, `γ = 1/2`, `c_b = 1`, `δ = 0.1` gives `u_max = 8` and `|U_cover| = 8 > 4 = 2N/(1−γ)`, so the union bound
+gives a per-pair failure of `2δ` instead of the claimed `δ/N` (line 3974). The worst accounting factors for
+`N = 2, 3, 4` are `1.375`, `1.167` and `1.0625`; a parameter sweep finds no violation for `N ≥ 5`.
+
+The lemma's statement is unaffected. When `N ≤ 4`, every count is at most 4, and both conclusions hold
+deterministically for every pair with `1 ≤ N_{s,a} ≤ 26` and every `Ṽ` with `‖Ṽ‖∞ ≤ 1/(1−γ)`: since `γ ≥ 1/2` and
+`δ < 1`, `ℓ = log(4N/((1−γ)δ)) > 2`, so `|(P̂_{s,a} − P_{s,a})Ṽ| ≤ 2/(1−γ) < 26ℓ/((1−γ)N_{s,a})` and
+`Var_{P̂_{s,a}}(Ṽ) ≤ 1/(1−γ)² < 24ℓ/((1−γ)²N_{s,a})`. A repaired proof splits cases: if `N ≤ 4` the conclusions
+hold surely; otherwise Steps 3–5 apply unchanged. Within Theorem 6.3 the sample-size condition (line 911) already
+forces `N ≥ 6` once `c₁ ≥ 4`. This is a printed-proof gap, not an error in the lemma's statement; Lemma 6.18
+`lem:Bernstein-infinite-proof` is not involved.

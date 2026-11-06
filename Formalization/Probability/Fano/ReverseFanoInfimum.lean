@@ -4,12 +4,10 @@ import Formalization.Probability.Fano.TestTransports
 /-!
 # Reverse-Fano bound for the source testing-error infima
 
-Proposed exact translation of `lem:reverse-Fano-bound`
-(`prelim.tex:1209–1229`) for the actual average/minimax error infima over
-measurable tests, with the square-root term rearranged into `ℝ≥0∞` so that an
-infinite KL sum is meaningful (the bound is then trivial) rather than collapsed
-by `toReal`. Independent source audit and integration are still required.
-Private Claude builder draft.
+Translation of `lem:reverse-Fano-bound` (`chapters/prelim.tex:1209–1229`) for
+the actual average/minimax error infima over measurable tests, with the
+square-root term rearranged into `ℝ≥0∞` so that an infinite KL sum is meaningful
+(the bound is then trivial) rather than collapsed by `toReal`.
 -/
 
 open MeasureTheory ProbabilityTheory

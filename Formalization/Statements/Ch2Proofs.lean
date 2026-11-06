@@ -1,5 +1,7 @@
+import Formalization.PrelimKL.KLArbitraryFinitePi
 import Formalization.Probability.EmpiricalBernsteinSharp.EmpiricalBernsteinRandomFamily
 import Formalization.Probability.Fano.ReverseFanoInfimum
+import Formalization.Probability.Fano.FanoLemma
 import Formalization.Probability.BernoulliKLComparison
 import Formalization.Generative.GenerativeLowerBoundBernoulli
 import Formalization.Probability.BernoulliTailProofs
@@ -105,5 +107,41 @@ theorem Lemma2_6_holds : Lemma2_6 := by
   exact h.trans_le (measureReal_mono hsubset (measure_ne_top μ _))
 
 end Lemma2_6
+
+section Lemma2_4_5
+open StatisticalRL.FiniteDistribution MeasureTheory ProbabilityTheory
+
+theorem Lemma2_4_holds : Lemma2_4 := by
+  intro State _ Ω _ μ _ d N hN δ hδ hδ1
+  letI : MeasurableSpace State := ⊤
+  intro draw hdraw hlaw family hfamily hindep hV
+  exact d.randomBorelFamily_empiricalRow_success_gt μ N hN δ hδ hδ1 draw hdraw hlaw family
+    hfamily hindep (Filter.Eventually.of_forall hV)
+
+theorem Lemma2_5_holds : Lemma2_5 := by
+  refine ⟨?_, ?_⟩
+  · intro State _ Ω _ μ _ d N hN δ hδ hδ1
+    letI : MeasurableSpace State := ⊤
+    intro draw hdraw hlaw family hfamily hindep hV
+    exact d.randomBorelFamily_bernstein_source μ N hN δ hδ hδ1 draw hdraw hlaw family
+      hfamily hindep (Filter.Eventually.of_forall hV)
+  · intro State Action _ _ _ _ Ω _ μ _ d N hN δ hδ hδ1
+    letI : MeasurableSpace State := ⊤
+    intro draw hdraw hrowlaw family hfamily hindep hV
+    exact randomBorelFamily_matrixBernstein_of_rowMarginals μ d N hN δ hδ hδ1 draw hdraw
+      hrowlaw family hfamily hindep (Filter.Eventually.of_forall hV)
+
+end Lemma2_4_5
+
+theorem Lemma2_12_holds : Lemma2_12.{u, v} := by
+  intro ι hι α hα P Q hP hQ
+  exact StatisticalRL.PrelimKL.klDiv_pi_eq_sum α P Q
+
+theorem Lemma2_10_holds : Lemma2_10.{u} := by
+  refine ⟨?_, ?_⟩
+  · intro Ω _ P _ β hfin hβ
+    exact StatisticalRL.PrelimFano.fano_binary_infimum_lower P β hfin hβ
+  · intro Ω _ M P _ β hM hβ0 hβ1 hKL
+    exact StatisticalRL.PrelimFano.fano_multi_infimum_lower M P β hM hβ0 hβ1 hKL
 
 end StatisticalRL.Statements
