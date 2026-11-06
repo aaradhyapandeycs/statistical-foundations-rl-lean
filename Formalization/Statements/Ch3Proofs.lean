@@ -8,6 +8,7 @@ import Formalization.Generative.PolicyLearningAbsorbingPreservation
 import Formalization.Generative.PolicyLearningAbsorbingGrid
 import Formalization.Generative.PolicyLearningSourcePointwise
 import Formalization.Generative.FiniteHorizonMainSample
+import Formalization.Generative.GenerativeLowerBoundTheorem37Fin
 
 /-! Proofs of the source-facing Chapter 3 entries using the existing exports. -/
 open MeasureTheory
@@ -74,5 +75,8 @@ theorem Lemma3_8_holds : Lemma3_8 := by
   simp only at h0 h1 ⊢
   rw [h0, h1]
   exact StatisticalRL.GenerativeLowerBound.source_parameters_scalar_separation γ ε hγ hγ1 hε hεmax
+
+theorem Thm3_7_corrected_holds : Thm3_7_corrected :=
+  ⟨1 / 32768, by norm_num, StatisticalRL.GenerativeLowerBound.theorem37_corrected_fin_carriers⟩
 
 end StatisticalRL.Statements.Ch3
