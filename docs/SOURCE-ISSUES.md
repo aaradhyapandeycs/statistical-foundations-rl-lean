@@ -391,6 +391,21 @@ literal all-K auxiliary claim. No author-approved erratum is asserted. See the
 These are limitations of the currently proved formalizations, not asserted
 errors in the manuscript.
 
+- Lemma 6.14 (`lemma:value-policy-LB-inf`, `offlineRL.tex:2544–2583`) is indexed as
+  `Lemma6_14_restricted`. All values, the policy upper bound with equality at `π⋆` and
+  `π⋆(0|0) = 1` are proved for every `ε ≥ 0`; the claim `π⋆(θ_s|s) = 1` is proved for `ε > 0`
+  only. Theorem 6.13 allows `ε ≤ 1/(672(1−γ))` without excluding `ε = 0`, where `p = q`, both
+  actions at `s > 0` are optimal, and the formal optimal greedy policy (a fixed tie rule) need
+  not select `θ_s`.
+
+- Lemma 6.7 (`lem:sum-d-Var-UB`, `offlineRL.tex:1529–1537`) is indexed as
+  `Lemma6_7_restricted`. The source states it for the VI-LCB output `V̂` and penalty
+  `b⋆` inside the proof of Theorem 6.3, where `0 ≤ V̂ ≤ 1/(1−γ)` and the residual bound
+  `eq:infinite-v-lower` hold on the theorem's high-probability event. The entry proves the
+  bound for every `V` and `b ≥ 0` satisfying those displayed premises (with `γ > 0`), using
+  the actual optimal-greedy transition rows and discounted occupancy; deriving the premises
+  for `V̂` on the event is not part of this result.
+
 - Theorem 3.2 (`Thm:sample-compl-main`,
   `generative_model_model_based.tex:900–923`) and Lemma 3.5
   (`lem:policy-learning-evaluation`, lines 1306–1326) have an explicit `N > 0`

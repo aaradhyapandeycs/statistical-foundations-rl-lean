@@ -1,4 +1,5 @@
 import Formalization.Statements.Ch3
+import Formalization.Generative.GenerativeLowerBoundTwoStateMDP
 import Formalization.Generative.PolicyLearningVarianceResolventBridge
 import Formalization.Generative.PolicyLearningAnyOptimalPolicy
 import Formalization.Generative.PolicyEvaluationUniversalConstant
@@ -62,5 +63,16 @@ theorem Lemma3_6_holds : Lemma3_6 := by
   rw [hVs] at hrow ⊢
   exact StatisticalRL.DiscountedMDP.empiricalPolicyValue_source_residual_bound M H π rfl rfl
     N hN β hβ hrow
+
+theorem Lemma3_8_holds : Lemma3_8 := by
+  intro γ ε hγ hγ1 hε hεmax
+  refine ⟨StatisticalRL.GenerativeLowerBound.source_parameters_admissible γ ε hγ hγ1 hε hεmax,
+    fun hγ0 hp0 hp1 hq0 hq1 => ?_,
+    StatisticalRL.GenerativeLowerBound.source_parameters_squared_ratio γ ε hγ hγ1 hε⟩
+  have h0 := StatisticalRL.GenerativeLowerBound.hardMDP_optimalQ_true γ _ hγ0 hγ1 hp0 hp1
+  have h1 := StatisticalRL.GenerativeLowerBound.hardMDP_optimalQ_true γ _ hγ0 hγ1 hq0 hq1
+  simp only at h0 h1 ⊢
+  rw [h0, h1]
+  exact StatisticalRL.GenerativeLowerBound.source_parameters_scalar_separation γ ε hγ hγ1 hε hεmax
 
 end StatisticalRL.Statements.Ch3

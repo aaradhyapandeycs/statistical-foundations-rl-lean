@@ -1,4 +1,5 @@
 import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.GenerativeLowerBoundTwoStateDefinitions
 import Formalization.Probability.VarianceDefinitions
 
 /-! # Chapter 3 statement index
@@ -180,5 +181,25 @@ def Lemma3_6 : Prop :=
         (M.policyTransition π s).expectation Vs|)‖ ≤
       2 * Real.sqrt (2 * β / (N * (1 - M.discount) ^ 3)) +
         6 * β / (N * (1 - M.discount) ^ 2)
+
+/-- Lemma 3.8, `lem:properties-M01-lower-generative`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:1747–1767`, for the parameters
+`p = (4γ-1)/(3γ)` and `α = 32(1-γ)²ε/(9γ²)` of `eq:choise-p-alpha-lower-bound-generative`
+(lines 1731–1734). `M₀` and `M₁` are the source two-state, one-action MDPs with `p_M = p` and
+`p_M = p + α` (`hardMDP`, state `true` = `s₁`); `Q⋆(s₁, a)` is the trajectory Q-value of the
+optimal greedy policy at the single action `()`. Clause (ii) is stated for any proofs that `p`
+and `p + α` lie in `[0,1]`, which clause (i) supplies. -/
+def Lemma3_8 : Prop :=
+  ∀ (γ ε : ℝ), (2 : ℝ) / 3 ≤ γ → ∀ (hγ1 : γ < 1), 0 < ε → ε < 1 / (32 * (1 - γ)) →
+    let p : ℝ := (4 * γ - 1) / (3 * γ)
+    let α : ℝ := 32 * (1 - γ) ^ 2 * ε / (9 * γ ^ 2)
+    (1 / 2 ≤ p ∧ p < p + α ∧ p + α < 1 ∧ 2 * α ≤ 1 - p) ∧
+    (∀ (hγ0 : 0 ≤ γ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (hq0 : 0 ≤ p + α) (hq1 : p + α ≤ 1),
+      let M₀ := StatisticalRL.GenerativeLowerBound.hardMDP γ p hγ0 hγ1 hp0 hp1
+      let M₁ := StatisticalRL.GenerativeLowerBound.hardMDP γ (p + α) hγ0 hγ1 hq0 hq1
+      2 * ε < M₁.trajectoryExpectedQ M₁.optimalGreedyPolicy true () -
+        M₀.trajectoryExpectedQ M₀.optimalGreedyPolicy true ()) ∧
+    (α ^ 2 / (1 - p) = 32 ^ 2 * (1 - γ) ^ 3 * ε ^ 2 / (27 * γ ^ 3) ∧
+      α ^ 2 / (1 - p) ≤ 128 * (1 - γ) ^ 3 * ε ^ 2)
 
 end StatisticalRL.Statements.Ch3

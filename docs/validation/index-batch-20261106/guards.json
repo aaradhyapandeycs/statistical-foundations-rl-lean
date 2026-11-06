@@ -1,0 +1,22 @@
+{
+  "scope": "Fresh full project check (python3 scripts/check.py) from initially empty project build artifacts; dependency packages unchanged",
+  "project_modules": 1115,
+  "audited_project_declarations": 9328,
+  "allowed_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "compiler": "Lean (version 4.27.0-rc1, arm64-apple-darwin24.6.0, commit 2fcce7258eeb6e324366bc25f9058293b04b7547, Release)",
+  "started_utc": "2026-11-06T06:31:18Z",
+  "finished_utc": "2026-11-06T08:14:58Z",
+  "result": "Checked 1115 project modules; Axiom audit passed for 9328 project declarations",
+  "new_results": [
+    "Lemma3_8",
+    "Lemma6_7_restricted",
+    "Lemma2_11",
+    "Lemma2_6",
+    "Lemma6_14_restricted"
+  ],
+  "independent_reviews": "Builder-distinct Claude critic subagents; each PASS_WITH_NOTES with no blockers"
+}
