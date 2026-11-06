@@ -1,4 +1,6 @@
 import Formalization.Statements.Ch6
+import Formalization.OfflineRL.LCBQUsefulSeries
+import Formalization.OfflineRL.LowerBoundFamilyKL
 import Formalization.OfflineRL.LowerBoundFamilyValues
 import Formalization.OfflineRL.OccupancyWeightedVarianceMDP
 import Formalization.OfflineRL.LCBFallbackApplication
@@ -91,5 +93,13 @@ theorem Lemma6_7_restricted_holds : Lemma6_7_restricted := by
 theorem Lemma6_14_restricted_holds : Lemma6_14_restricted := by
   intro m hm γ ε C hγ hγ1 hε hεmax hC θ
   exact StatisticalRL.OfflineRL.LowerBound.lb_value_policy m hm γ ε C hγ hγ1 hε hεmax hC θ
+
+theorem Lemma6_15_holds : Lemma6_15 :=
+  ⟨16 * 336 ^ 2, by norm_num, fun m hm γ ε C hγ hγ1 hε hεmax hC θ θ' i a =>
+    StatisticalRL.OfflineRL.LowerBound.lb_transition_kl m hm γ ε C hγ hγ1 hε hεmax hC θ θ' i a⟩
+
+theorem Lemma6_11_restricted_holds : Lemma6_11_restricted :=
+  ⟨84, by norm_num, fun S A _ _ M ρ δ T W hδ hδ1 hT hι hW =>
+    StatisticalRL.OfflineRL.LCBQ.lcbq_useful M M.optimalGreedyPolicy ρ δ T W hδ hδ1 hT hι hW⟩
 
 end StatisticalRL.Statements.Ch6

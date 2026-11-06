@@ -1,5 +1,21 @@
 # Whole-monograph progress
 
+## Fano's lemma (Lemma 2.10)
+
+Lemma 2.10 (`lem:fano`, both parts) is newly proved in `Formalization/Probability/Fano/FanoLemma.lean` over the existing test-risk definitions and indexed as `Lemma2_10`; it was reviewed by an independent source critic with no blocking, major or minor findings. The named-result ledger now has 59 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
+## Statement index: Lemmas 2.4, 2.5, 2.12, 6.15 and restricted Lemma 6.11
+
+Lemmas 2.4 (Hoeffding) and 2.5 (Bernstein, both displays) are indexed over existing proofs; the
+whole-matrix clause holds for any cross-row dependence. Lemma 2.12 (KL tensorization for finitely
+many probability measures on arbitrary measurable spaces) is ported from its independently
+reviewed private proof. Lemma 6.15 (transition KL bound for the offline hard family) is newly
+proved with explicit universal constant `c₃ = 16·336²`; the printed proof's mis-cited Bernoulli
+KL step is recorded as [C21](SOURCE-ISSUES.md#candidate-c21-mis-cited-bernoulli-kl-step-in-the-offline-transition-kl-lemma).
+Lemma 6.11 (`lemma:useful`) is newly proved with explicit constant 84 under the premise
+`log(SAT/δ) ≥ 1`, disclosed as a restricted variant; the printed lemma is false without some such premise ([C22](SOURCE-ISSUES.md#C22)). The named-result ledger now has 58 covered
+entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Statement index: Lemmas 2.6 and 2.11, restricted Lemmas 6.7 and 6.14, and the occupancy flow equation
 
 The discounted state occupancy now has a proved flow equation `d = (1−γ)ρ + γ dᵀP_π`
