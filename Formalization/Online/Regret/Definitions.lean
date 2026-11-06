@@ -1,4 +1,7 @@
-import Formalization.Online.SourceOptimism.GreedySequentialTrajectoryOptimism
+import Formalization.Online.SourceOptimism.CappedGreedyPlannerDefinitions
+import Formalization.Online.SourceOptimism.SequentialEpisodeDefinitions
+import Formalization.MDP.TrajectoryDefinitions
+import Formalization.MDP.PolicyEnvironmentDefinitions
 
 /-! Actual-path quantities for the corrected zero-count, fixed-tie UCBVI planner. -/
 namespace StatisticalRL.OnlineRL
@@ -135,8 +138,19 @@ noncomputable def onlineActualEpisodeRegret
     let action : ℕ → Action := fun n =>
       if hn : n < H then
         (history.get ⟨k.val * H + n, by
-          have hlen := onlineSequentialPathHistory_length
-            (onlineEpisodicChoose H K hH initial fallback planner) (K * H) [] path
+          have hlength : ∀ (n : ℕ) (history : List (OnlineMDPRow State Action H × State))
+              (p : OnlineOutcomePath State n),
+              (onlineSequentialPathHistory
+                (onlineEpisodicChoose H K hH initial fallback planner) n history p).length =
+                history.length+n := by
+            intro n history p
+            induction n generalizing history with
+            | zero => simp [onlineSequentialPathHistory]
+            | succ n ih =>
+              rw [onlineSequentialPathHistory,ih]
+              simp only [List.length_append,List.length_singleton]
+              omega
+          have hlen := hlength (K * H) [] path
           rw [hlen]
           simp only [List.length_nil, zero_add]
           calc
@@ -165,8 +179,19 @@ noncomputable def onlineActualEpisodeRegretTerms
     let action : ℕ → Action := fun n =>
       if hn : n < H then
         (history.get ⟨k.val * H + n, by
-          have hlen := onlineSequentialPathHistory_length
-            (onlineEpisodicChoose H K hH initial fallback planner) (K * H) [] path
+          have hlength : ∀ (n : ℕ) (history : List (OnlineMDPRow State Action H × State))
+              (p : OnlineOutcomePath State n),
+              (onlineSequentialPathHistory
+                (onlineEpisodicChoose H K hH initial fallback planner) n history p).length =
+                history.length+n := by
+            intro n history p
+            induction n generalizing history with
+            | zero => simp [onlineSequentialPathHistory]
+            | succ n ih =>
+              rw [onlineSequentialPathHistory,ih]
+              simp only [List.length_append,List.length_singleton]
+              omega
+          have hlen := hlength (K * H) [] path
           rw [hlen]
           simp only [List.length_nil, zero_add]
           calc
@@ -226,8 +251,19 @@ noncomputable def onlineActualEpisodeW1
     let action : ℕ → Action := fun n =>
       if hn : n < H then
         (history.get ⟨k.val * H + n, by
-          have hlen := onlineSequentialPathHistory_length
-            (onlineEpisodicChoose H K hH initial fallback planner) (K * H) [] path
+          have hlength : ∀ (n : ℕ) (history : List (OnlineMDPRow State Action H × State))
+              (p : OnlineOutcomePath State n),
+              (onlineSequentialPathHistory
+                (onlineEpisodicChoose H K hH initial fallback planner) n history p).length =
+                history.length+n := by
+            intro n history p
+            induction n generalizing history with
+            | zero => simp [onlineSequentialPathHistory]
+            | succ n ih =>
+              rw [onlineSequentialPathHistory,ih]
+              simp only [List.length_append,List.length_singleton]
+              omega
+          have hlen := hlength (K * H) [] path
           rw [hlen]
           simp only [List.length_nil, zero_add]
           calc
@@ -254,8 +290,19 @@ noncomputable def onlineActualEpisodeW2
     let action : ℕ → Action := fun n =>
       if hn : n < H then
         (history.get ⟨k.val * H + n, by
-          have hlen := onlineSequentialPathHistory_length
-            (onlineEpisodicChoose H K hH initial fallback planner) (K * H) [] path
+          have hlength : ∀ (n : ℕ) (history : List (OnlineMDPRow State Action H × State))
+              (p : OnlineOutcomePath State n),
+              (onlineSequentialPathHistory
+                (onlineEpisodicChoose H K hH initial fallback planner) n history p).length =
+                history.length+n := by
+            intro n history p
+            induction n generalizing history with
+            | zero => simp [onlineSequentialPathHistory]
+            | succ n ih =>
+              rw [onlineSequentialPathHistory,ih]
+              simp only [List.length_append,List.length_singleton]
+              omega
+          have hlen := hlength (K * H) [] path
           rw [hlen]
           simp only [List.length_nil, zero_add]
           calc

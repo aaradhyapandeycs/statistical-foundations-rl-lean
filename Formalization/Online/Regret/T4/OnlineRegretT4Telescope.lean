@@ -1,3 +1,4 @@
+import Formalization.Online.SourceOptimism.FixedPolicyDefinitions
 import Formalization.Online.Regret.Telescope
 
 /-! deterministic T4 return/noise identities. Source:
@@ -6,12 +7,6 @@ These declarations make no conditional-expectation or concentration claim. -/
 namespace StatisticalRL.OnlineRL
 open scoped BigOperators
 variable {State Action : Type*} [Fintype State] [Fintype Action]
-
-/-- The same environment controlled by a fixed deterministic stage policy. -/
-noncomputable def onlineFixedPolicyStages {H : ℕ}
-    (E : Fin H → EnvironmentStage State Action) (g : Fin H → State → Action) :
-    List (DecisionStage State Action) :=
-  List.ofFn (fun h => (E h).withPolicy (fun s => EnvironmentStage.pointMass (g h s)))
 
 /-- The actual trajectory value obeys Bellman evaluation for that policy. -/
 theorem onlineFixedPolicyValue_step {H : ℕ}

@@ -524,6 +524,38 @@
       "statement_scope": "Adds N≥2 for the union-bound endpoint. Uses the actual iid triple law and derived row projection; the parent theorem sample-size regime implies N≥2. SOURCE-ISSUES C19.",
       "evidence": "docs/ch6-corrected-variants-evidence.md",
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "source_file": "chapters/onlineRL.tex",
+      "evidence": "docs/critic-online-qlearning-source.md",
+      "supporting_evidence": [
+        "docs/online-qlearning-source-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md",
+      "name": "Theorem 5.16, completed fixed-tie online Q-learning",
+      "source_label": "thm-ucbq-regret",
+      "source_inventory_id": "label:thm-ucbq-regret",
+      "source_lines": "1911–1922",
+      "lean_export": "StatisticalRL.OnlineRL.qLearning_actualRegret_rate_confidence",
+      "lean_statement": "StatisticalRL.Statements.Thm5_16_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Thm5_16_corrected_holds",
+      "statement_scope": "Every positive H,K and 0<delta<1, actual iid-reset/sequential-transition law and true deployed-policy regret, fixed deterministic maximizing tie and initial nonterminal V=H. Original cb=2/log(SAT/delta) bonus; explicit universal max(1,19e) sqrt(SAH^5K[1+log(4SAT/delta)]) rate with strict success >1-delta. C20 discloses initialization/tie scope and repaired beta, signed-weight and confidence proof steps. No unproved event, law or correctness premise; no all-selector claim."
+    },
+    {
+      "source_file": "chapters/onlineRL.tex",
+      "evidence": "docs/critic-online-qlearning-source.md",
+      "supporting_evidence": [
+        "docs/online-qlearning-source-verification.md"
+      ],
+      "coverage": "docs/COVERAGE.md",
+      "name": "Lemma 5.18, completed fixed-tie online Q-learning optimism",
+      "source_label": "lemma:opt_model_free",
+      "source_inventory_id": "label:lemma:opt_model_free",
+      "source_lines": "2121–2150",
+      "lean_export": "StatisticalRL.OnlineRL.qLearning_sourceOptimism_confidence",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_18_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_18_restricted_holds",
+      "statement_scope": "Both source clauses on one actual-law event: simultaneous nonnegative Q-error with the weighted prior-visit continuation-gap bound, plus all-stage V optimism, strict success >1-delta, H,K>=1, 0<delta<1, cb=2 and residual constant8. Fixed deterministic maximizing tie and initial nonterminal V=H are disclosed in C20. Observed successor/count law and uniform concentration are proved, not additional hypotheses."
     }
   ]
 }

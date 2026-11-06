@@ -1,3 +1,5 @@
+import Formalization.Online.SourceOptimism.CappedBackwardRecursion
+import Formalization.Probability.Variance
 import Formalization.Online.Regret.T3.OnlineRegretT3PaddedProcess
 import Formalization.Online.Predictable.OnlinePredictableTestFunction
 

@@ -1,6 +1,30 @@
 # Whole-monograph progress
 
-Latest checked batch: the Chapter 6 scoped variants passed a fresh full
+## Online Q-learning source proof verified
+
+The actual online Q-learning regret and joint optimism/error results now have
+their full Chapter 5 statements and applying wrappers, independent source
+reviews, and a fresh full project check. All 20 previous Chapter 5 wrappers
+are preserved. Definitions are separated from proof imports without changing
+the mathematical declarations.
+
+The exact scope is one fixed deterministic maximizing tie and initial
+nonterminal V=H. Theorem 5.16 retains cb=2 and the original bonus logarithm,
+with an explicit universal soft-O rate; Lemma 5.18 retains both clauses.
+[C20](SOURCE-ISSUES.md#C20) explains the completion and printed-proof repairs.
+The unmodified `python3 scripts/check.py` compiled all 1,052 project modules
+from empty project artifacts and audited 8,873 declarations with only
+`propext`, `Classical.choice` and `Quot.sound`. No project OLeans were reused;
+the pinned dependency artifact metadata and all source hashes were preserved.
+See the [verification and scope record](online-qlearning-source-verification.md).
+
+Size: 101,188 physical project Lean lines including comments and blank lines,
+6,065 more than the preceding published main. The named-result ledger has
+41 covered entries out of 90 inventoried environments, including disclosed
+corrected or restricted variants. This is not a percentage of all work needed.
+The complete monograph remains **INCOMPLETE**.
+
+Previous checked batch: the Chapter 6 scoped variants passed a fresh full
 938-module build and the axiom audit for 8,414 declarations on 2026-11-05.
 See [the verification and scope record](ch6-corrected-variants-evidence.md)
 for the exact manifest, restrictions and reproduction command. The complete

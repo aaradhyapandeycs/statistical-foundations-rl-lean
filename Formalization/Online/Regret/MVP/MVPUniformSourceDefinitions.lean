@@ -1,4 +1,4 @@
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.FiniteHorizonSamplingDefinitions
 import Formalization.Online.Regret.MVP.MVPProfileDefinitions
 import Mathlib.Data.Nat.Log
 import Mathlib.Tactic
