@@ -1,3 +1,11 @@
+import Mathlib.MeasureTheory.Constructions.Pi
+import Mathlib.Probability.Independence.Basic
+import Formalization.Probability.FiniteSampleDefinitions
+import Formalization.Probability.RandomFamilyBorel
+import Formalization.Probability.EmpiricalHoeffdingRandomFamily
+import Mathlib.InformationTheory.KullbackLeibler.Basic
+import Formalization.Probability.Fano.TestRiskDefinitions
+import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 import Formalization.Probability.BernoulliTailDefinitions
 import Formalization.MDP.OptimalityOperatorDefinitions
 import Formalization.MDP.PointMassDefinitions
@@ -149,5 +157,50 @@ def Lemma2_13 : Prop :=
       q * Real.log (q / p) + (1 - q) * Real.log ((1 - q) / (1 - p))) ∧
     (q * Real.log (q / p) + (1 - q) * Real.log ((1 - q) / (1 - p)) ≤
       (p - q) ^ 2 / (p * (1 - p))))
+
+/-- Lemma 2.11, `lem:reverse-Fano-bound`, `chapters/prelim.tex:1209–1229`
+(error definitions 1113–1128). For any probability laws `P 0, …, P M` on an
+arbitrary measurable space, the minimax error infimum dominates the average
+error infimum over the same measurable tests, and
+`p̄_e ≥ 1 − 1/(M+1) − √(M/(2(M+1)²) · ∑_{j=1}^M KL(P₀‖P_j))`, written in
+`ℝ≥0∞` by moving the square-root term to the right; an infinite KL sum makes the
+bound trivially true rather than being truncated by `toReal`. All `M`, including
+`M = 0`, are covered. -/
+def Lemma2_11 : Prop :=
+  ∀ {Ω : Type u} [MeasurableSpace Ω]
+    (M : ℕ) (P : Fin (M+1) → Measure Ω) [∀ j, IsProbabilityMeasure (P j)],
+    StatisticalRL.PrelimFano.averageErrorInfimum P ≤
+        StatisticalRL.PrelimFano.minimaxErrorInfimum P ∧
+      ENNReal.ofReal (1 - 1 / ((M : ℝ)+1)) ≤
+        ENNReal.ofReal (StatisticalRL.PrelimFano.averageErrorInfimum P) +
+          (ENNReal.ofReal ((M : ℝ) / (2 * ((M : ℝ)+1)^2)) *
+            ∑ j : Fin M, InformationTheory.klDiv (P 0) (P j.succ)) ^ (1/2 : ℝ)
+
+open StatisticalRL.FiniteDistribution ProbabilityTheory in
+/-- Empirical Bernstein inequality, `empirical bernstein`,
+`chapters/prelim.tex:916–927,985–997`. The unordered finite random family is
+measurable in the finite-enumeration quotient-Borel structure and independent
+of the empirical row. The family may be empty and its vectors may have zero
+norm or empirical variance. -/
+noncomputable def Lemma2_6 : Prop :=
+  ∀ (State : Type u) [Fintype State] (Ω : Type v) [MeasurableSpace Ω]
+    (μ : Measure Ω) [IsProbabilityMeasure μ] (d : FiniteDistribution State)
+    (N : ℕ) (hN2 : 2 ≤ N) (δ : ℝ), 0 < δ → δ < 1 →
+    letI : MeasurableSpace State := ⊤
+    let hN : 0 < N := Nat.lt_of_lt_of_le (by decide : 0 < 2) hN2
+    ∀ (draw : Ω → Fin N → State), Measurable draw → μ.map draw = d.sampleMeasure N →
+    ∀ (family : Ω → Finset (State → ℝ)),
+      (letI : MeasurableSpace (Finset (State → ℝ)) := finiteFamilyBorel
+       Measurable family) →
+      (letI : MeasurableSpace (Finset (State → ℝ)) := finiteFamilyBorel
+       letI : MeasurableSpace (FiniteDistribution State) := rowVectorSpace
+       IndepFun family (fun ω ↦ empiricalRow N hN (draw ω)) μ) →
+      (∀ ω V, V ∈ family ω → ∀ s, 0 ≤ V s) →
+      1 - δ < μ.real {ω | ∀ V ∈ family ω,
+        |(empiricalRow N hN (draw ω)).expectation V - d.expectation V| ≤
+          Real.sqrt (2 * Real.log (4 * (family ω).card / δ) / ((N : ℝ) - 1)) *
+            Real.sqrt ((empiricalRow N hN (draw ω)).expectation (fun s ↦ V s ^ 2) -
+              ((empiricalRow N hN (draw ω)).expectation V)^2) +
+          7 * ‖V‖ * Real.log (4 * (family ω).card / δ) / (3 * ((N : ℝ) - 1))}
 
 end StatisticalRL.Statements

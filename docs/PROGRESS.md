@@ -1,5 +1,33 @@
 # Whole-monograph progress
 
+## Statement index: Lemmas 2.6 and 2.11, restricted Lemmas 6.7 and 6.14, and the occupancy flow equation
+
+The discounted state occupancy now has a proved flow equation `d = (1−γ)ρ + γ dᵀP_π`
+(`MDP/DiscountedOccupancyFlow.lean`). With it, the variance-propagation bound of Lemma 6.7 is
+proved for the actual optimal-greedy rows and occupancy, for every value vector and penalty
+satisfying the premises the source proof uses; this is indexed as `Lemma6_7_restricted` and
+disclosed in SOURCE-ISSUES, since deriving those premises for the VI-LCB output on the
+Theorem 6.3 event remains open. Lemma 2.11 (reverse Fano bound) and Lemma 2.6 (empirical Bernstein inequality) are ported from
+their independently reviewed private proofs together with their provider modules (10 and 43).
+Lemma 6.14 (values and optimal policies of the offline hard family) is newly proved by a
+Bellman-optimality fixed-point verification, which also supplies the source's final attainment
+step; it is indexed as `Lemma6_14_restricted` because the optimal action at s>0 is identified
+only for ε>0 (at ε=0 the two actions tie; disclosed in SOURCE-ISSUES). Each entry passed
+an independent review. A fresh full `python3 scripts/check.py` from empty project build artifacts
+compiled all 1,115 project modules and the axiom audit passed for 9,328 declarations with only
+`propext`, `Classical.choice` and `Quot.sound` ([evidence](validation/index-batch-20261106/)). The named-result ledger now has 53 covered entries out of 90.
+The complete monograph remains **INCOMPLETE**.
+
+## Statement index: Lemma 3.8
+
+Lemma 3.8 (properties of the two hard generative-model instances) now has its full entry: the
+parameter relations, the strict optimal-Q separation for the actual two-state source MDPs and the
+ratio identity, applying existing proofs. To keep the Chapter 3 statement file definition-only,
+`hardRow` and `hardMDP` moved verbatim to `Generative/GenerativeLowerBoundTwoStateDefinitions.lean`;
+all 50 dependent modules were recompiled. An independent review passed; the axiom audit passed
+for 8,946 declarations with only `propext`, `Classical.choice` and `Quot.sound`. The named-result
+ledger now has 49 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Statement index: Lemmas 3.6 and 4.14
 
 Lemma 3.6 (empirical value residual, on the event `eq:Bernstein-empirical-optimal-value`, for
