@@ -20,6 +20,9 @@ import Formalization.Online.SourceOptimism.CappedGreedyPlannerDefinitions
 import Formalization.Online.Regret.Definitions
 import Formalization.Online.Regret.W1.W1Definitions
 import Formalization.Online.Regret.Joint.W123Definitions
+import Formalization.Online.LowerBound.FamilyDefinitions
+import Formalization.Online.LowerBound.BanditDefinitions
+import Formalization.Online.LowerBound.RegretDefinitions
 
 /-! Corrected source-facing Chapter 5 statement index. -/
 open scoped BigOperators
@@ -878,5 +881,63 @@ def Lemma5_17 : Prop :=
         (∑ n ∈ Finset.Icc 1 N, (onlineQRateWeight H N n) ^ 2) ≤ 2 * (H : ℝ) / (N : ℝ)) ∧
     (∀ (n : ℕ), 0 < n →
       HasSum (fun k : ℕ => onlineQRateWeight H (n + k) n) (1 + 1 / (H : ℝ)))
+
+open StatisticalRL.OnlineLowerBound in
+/-- `lem:Vh-star-Vhpi-gap-lower-bound-online-final`, `chapters/onlineRL.tex:2654–2668` (Lemma 5.20).
+For every MDP `M_i` of the two-state family `C^sub_mdp` and every nonstationary randomized Markov
+policy `π`, `V⋆_1(1) − V^π_1(1) ≥ ∑_{h=1}^H ε₀(H−h)/(16H²)(1 − π_h(a⋆_h | 1))`.
+Encodings: the source's 1-based step `h` is `(h : Fin H) + 1`; the source's arms `1, …, A` are
+`Fin A` with arm `1` the index `0` (`onlineLBq` follows the printed case split of
+`eqn:prob-astar-a-1`); the absorbing state `0` has the action set `Fin A` with all actions identical,
+which meets the source's singleton action set there; `0 < ε ≤ H/2` is the construction's standing
+range (`:2602`), passed as arguments of `onlineLBSubStages`. Values are the project's
+backward-induction optimal value and actual trajectory value. -/
+def Lemma5_20 : Prop :=
+  ∀ (H A : ℕ) (hH : 2 ≤ H) (ε : ℝ) (hε : 0 < ε) (hεH : ε ≤ (H : ℝ) / 2)
+    (i : Fin H → Fin A) (π : ℕ → StationaryPolicy (Fin 2) (Fin A)),
+    ∑ h : Fin H, ε * ((H : ℝ) - ((h : ℕ) + 1)) / (16 * (H : ℝ) ^ 2) *
+        (1 - (π h 1).prob (i h)) ≤
+      EnvironmentStage.optimalValue (List.ofFn (onlineLBSubStages H ε hH hε hεH i)) 1 -
+        DecisionStage.trajectoryValue
+          (EnvironmentStage.controlled (List.ofFn (onlineLBSubStages H ε hH hε hεH i)) π) 1
+
+open StatisticalRL.OnlineLowerBound in
+/-- `lem:online-lb-testing`, `chapters/onlineRL.tex:2709–2721` (Lemma 5.21). For `A ≥ 3`, `H ≥ 2`,
+`0 < ε₀ ≤ H/2` and every round `t ≤ H³A/(18ε₀²)`, every online bandit algorithm satisfies
+`(1/A) ∑_i P_{B_i}(a_{t+1} ≠ i) ≥ 1/3` (the infimum over algorithms is written as `∀ L`).
+Encodings: arm `1` is the index `0`; rewards are `Bool` with `P_i(R = true | a) = 1 − q_i(a)`;
+`banditNextArmErrorProb` draws the history of the first `t` rounds from the adaptive interaction law
+of `B_i` and the next arm from the learner's rule at round index `t`. `BanditLearner` allows an
+internal random seed with a finite law (a seed-free learner is a one-point seed), so the class is at
+least as large as the printed one. The printed proof's unlabelled KL chain rule is
+`AdaptiveKL.interactionLaw_klDiv`; see `docs/SOURCE-ISSUES.md` for the recorded proof-level notes. -/
+def Lemma5_21 : Prop :=
+  ∀ (A H : ℕ), 3 ≤ A → ∀ (hH : 2 ≤ H) (ε : ℝ) (hε : 0 < ε) (hεH : ε ≤ (H : ℝ) / 2) (t : ℕ),
+    (t : ℝ) ≤ (H : ℝ) ^ 3 * A / (18 * ε ^ 2) →
+    ∀ L : BanditLearner A,
+      (1 : ℝ) / 3 ≤ (1 / (A : ℝ)) * ∑ i : Fin A, banditNextArmErrorProb L H ε hH hε hεH i t
+
+open StatisticalRL.OnlineLowerBound in
+/-- `thm:minimax-lower-online`, `chapters/onlineRL.tex:2443–2456` (Theorem 5.19). There is a universal
+`c₀ > 0` such that for all `S ≥ 2`, `A ≥ 3`, `H ≥ 2`, `K ≥ 1` some finite family of horizon-`H`
+nonstationary MDPs on `Fin S` with actions `Fin A`, and an initial law `ρ`, force every online learner
+to expected regret `E[∑_{k=1}^K (V⋆_1(ρ) − V^{π^k}_1(ρ))] ≥ c₀ min{√(H³SAK), HK}` on some member (the
+`inf sup` over the finite family is written as `∀ L, ∃ i`).
+Encodings: exactly `A` actions per state meets "at most `A` actions per state"; `OnlineLearner`
+selects before episode `k` a nonstationary randomized Markov policy from the previous episodes and an
+internal random seed with a finite law (a seed-free learner is a one-point seed), at least as strong as
+printed; episode records `(s₁, (a_h, s_{h+1})_{h<H})` include the final state and omit rewards, which
+the learner can recompute since rewards are state-determined for the hard family; each episode starts
+at `s₁ ∼ ρ` independently of the past. The library proof (witness `c₀ = 1/1536`) uses the general-`S`
+family with odd `S` padded by an unreachable absorbing state and a direct adaptive-KL argument in place
+of the printed induced-algorithm reduction and binomial case analysis; these proof-level gaps of the
+printed argument are recorded in `docs/SOURCE-ISSUES.md` (C25–C27). -/
+def Thm5_19 : Prop :=
+  ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ (S A H K : ℕ), 2 ≤ S → 3 ≤ A → 2 ≤ H → 1 ≤ K →
+    ∃ (I : Type) (_ : Fintype I) (E : I → Fin H → EnvironmentStage (Fin S) (Fin A))
+      (ρ : FiniteDistribution (Fin S)),
+      ∀ L : OnlineLearner (Fin S) (Fin A) H, ∃ i : I,
+        c₀ * min (Real.sqrt ((H : ℝ) ^ 3 * S * A * K)) ((H : ℝ) * K) ≤
+          onlineExpectedRegret (E i) ρ L K
 
 end StatisticalRL.Statements

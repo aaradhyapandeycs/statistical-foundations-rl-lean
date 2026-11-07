@@ -1,3 +1,6 @@
+import Formalization.Online.LowerBound.ValueGap
+import Formalization.Online.LowerBound.BanditTesting
+import Formalization.Online.LowerBound.MinimaxRegret
 import Formalization.Online.QLearning.RateWeights
 import Formalization.Online.QLearning.ActualRegretRate
 import Formalization.Online.QLearning.ActualOptimismConfidence
@@ -388,5 +391,11 @@ theorem Lemma5_17_holds : Lemma5_17 := by
     exact ⟨h1, h2, onlineQRateWeight_sq_sum_le H N hH hN⟩
   · obtain ⟨hs, ht⟩ := onlineQRateWeight_tail_sum H n hH hn
     exact ht ▸ hs.hasSum
+
+theorem Lemma5_20_holds : Lemma5_20 := OnlineLowerBound.onlineLBSub_value_gap
+
+theorem Lemma5_21_holds : Lemma5_21 := OnlineLowerBound.bandit_testing
+
+theorem Thm5_19_holds : Thm5_19 := OnlineLowerBound.minimax_lower_online
 
 end StatisticalRL.Statements

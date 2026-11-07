@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Online minimax lower bound (Theorem 5.19, Lemmas 5.20, 5.21)
+
+Theorem 5.19 and Lemmas 5.20–5.21 are proved as printed, using a new finite adaptive-data KL chain rule (`Formalization/Probability/AdaptiveKL.lean`) in place of the printed reductions; proof gaps in the printed argument are recorded as C25–C27. All independently source-reviewed. The named-result ledger now has 66 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Lemmas 6.6, 6.18 and corrected Theorem 3.7; source issue C24
 
 Lemma 6.18 is proved in conditional-on-counts form and Lemma 6.6 for sampled pairs (zero-count case disclosed; the printed covering step is repaired, C23). Theorem 3.7 is indexed as `Thm3_7_corrected` on the weakest domain the counterexamples allow (C1, C2). Theorem 6.8 is recorded as false as printed (C24, needs log²). All independently source-reviewed. The named-result ledger now has 63 covered entries out of 90 (3.7 as a corrected variant). The complete monograph remains **INCOMPLETE**.

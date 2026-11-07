@@ -868,3 +868,18 @@ The printed condition `T ≥ c₂ S C⋆ log(SAT/((1−γ)δ))/((1−γ)⁵ε²)
 
 **Proposed correction:** replace `log(SAT/((1−γ)δ))` by `log²(SAT/((1−γ)δ))` in `eq:sample-size-lcbq-T-thm`, and add `log(SAT/δ) ≥ 1` to Lemma 6.12, or state it under that premise. A formal entry should be `Thm6_8_corrected`, not `Thm6_8`.
 
+
+<a id="C25"></a>
+## Candidate C25: Theorem 5.19 proof omits odd S
+
+`chapters/onlineRL.tex:2443–2456` states the bound for every `S ≥ 2`, but the proof (`:3004–3290`) assumes `S` even ("for simplicity", `:3015–3016`) and never treats odd `S`. Repair: take `⌊S/2⌋ ≥ S/3` copies and one extra absorbing zero-reward state with zero initial mass; only the universal constant changes. The formalization uses this construction (`onlineLBStages`, `onlineLBRho`). The statement stays as printed; this is a proof gap.
+
+<a id="C26"></a>
+## Candidate C26: Theorem 5.19 proof, Case 1 tail bound
+
+`chapters/onlineRL.tex:3205–3218`: (a) the cited `lem:tail-bound-sum-Bernoulli` (`chapters/prelim.tex:1010–1014`) gives `P(K_j > τ) ≤ 2exp(−0.19τ)`, but the first term is bounded by `(100K/S) exp(−19K/S)` without the factor `2`; (b) the step `≤ (111K/S) exp(−19K/S)` requires `K/S ≥ (2/0.19)/11 ≈ 0.957` and fails for `S/2 ≤ K < 0.957S` (at `K/S = 1/2`: `4.53e−3 > 4.15e−3`); (c) with the factor 2 restored, the final `≤ 0.01K/S` fails near `K/S = 1/2` (`8.27e−3 > 5e−3`). Repair: use `0.02K/S` (giving `0.99 ε₀K/192`) or the multiplicative Chernoff bound. Theorem 5.19 is unaffected. The formalization avoids the step (it bounds expected visit counts directly).
+
+<a id="C27"></a>
+## Candidate C27: Theorem 5.19 proof, omitted reductions
+
+`chapters/onlineRL.tex:2759–2765, 2850–2858, 3085–3110`: the reduction from the MDP learner to a Lemma 5.21 bandit algorithm, and the conditioning on the initial-state sequence `J`, are asserted in prose only. The induced algorithm keeps persistent internal state (simulated steps and components), while Lemma 5.21's class is `π^t(·|x_{t−1})`, so a mixed-to-behavioral reduction is implicitly used. Both steps are true. The formalization instead proves the coordinatewise testing bound directly from the adaptive KL chain rule on the episode-history law (`HistoryKL.history_sum_KL_le`).

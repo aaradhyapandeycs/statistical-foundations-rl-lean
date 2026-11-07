@@ -719,3 +719,13 @@ import Formalization.Online.Regret.MVP.Main.MVPMainSourceConfidence
 import Formalization.Online.Regret.MVP.Main.MVPMainSourceRegret
 import Formalization.Statements.Ch6
 import Formalization.Statements.Ch6Proofs
+import Formalization.Probability.AdaptiveKLDefinitions
+import Formalization.Probability.AdaptiveKL
+import Formalization.Online.LowerBound.FamilyDefinitions
+import Formalization.Online.LowerBound.ValueGap
+import Formalization.Online.LowerBound.BanditDefinitions
+import Formalization.Online.LowerBound.TestingTools
+import Formalization.Online.LowerBound.BanditTesting
+import Formalization.Online.LowerBound.RegretDefinitions
+import Formalization.Online.LowerBound.HistoryKL
+import Formalization.Online.LowerBound.MinimaxRegret
