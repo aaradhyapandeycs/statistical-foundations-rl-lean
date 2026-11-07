@@ -202,4 +202,46 @@ def Lemma3_8 : Prop :=
     (α ^ 2 / (1 - p) = 32 ^ 2 * (1 - γ) ^ 3 * ε ^ 2 / (27 * γ ^ 3) ∧
       α ^ 2 / (1 - p) ≤ 128 * (1 - γ) ^ 3 * ε ^ 2)
 
+/-- Corrected Theorem 3.7, `theorem:azar`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:1443–1464` (proof 1838–2173).
+The printed theorem is false on its displayed domain; see `docs/SOURCE-ISSUES.md`, entries
+"Candidate C1: singleton actions in Theorem 3.7(i)", "Candidate C2: one state and known rewards
+in Theorem 3.7" and "Candidate repair of Theorem 3.7". This entry differs from the print in
+exactly three ways:
+1. `S ≥ 2` is assumed in both parts (both parts fail for `S = 1` under the known-reward
+   convention, C2);
+2. `A ≥ 2` is assumed in part (i) only (part (i) fails for `A = 1`, C1); part (ii) covers every
+   `A` with `SA ≥ 16`;
+3. the estimators are deterministic: `piHat` and `QHat` are arbitrary functions of the known
+   reward table, the known discount (source conventions, `generative_model_model_based.tex:31`,
+   `prelim.tex:42`) and the `N`-per-state-action sample array (`samplingLaw`, independent draws
+   from the true transition rows). Randomized estimators are not covered by this entry; library
+   versions for them exist only for `S, A ≥ 2` (`sourcePolicyAndQ_risk_quarter_with_common_constant`).
+The witness MDP has states `Fin S`, actions `Fin A` and discount `γ`, and is chosen after the
+estimator, separately in each part. `Q^π̂` is the actual forced-first-action trajectory Q of the
+returned deterministic policy, `Q⋆` the trajectory Q of the optimal greedy policy (equal to the
+optimality fixed point, so tie-independent), `‖·‖` the sup norm, and the events are strict
+(`> ε`). The constant `c_N` is chosen before all other quantities (the proof uses `1/32768`);
+`N = 0` is allowed. -/
+def Thm3_7_corrected : Prop :=
+  ∃ c_N : ℝ, 0 < c_N ∧
+    ∀ (S A N : ℕ) (γ ε : ℝ),
+      2 ≤ S → 16 ≤ S * A →
+      (2 : ℝ) / 3 ≤ γ → γ < 1 → 0 < ε → ε < 1 / (32 * (1 - γ)) →
+      (N : ℝ) ≤ c_N * Real.log ((S : ℝ) * (A : ℝ)) / ((1 - γ) ^ 3 * ε ^ 2) →
+      (2 ≤ A →
+        ∀ piHat : (Fin S → Fin A → ℝ) → ℝ →
+            StatisticalRL.ModelBasedPolicyLearning.Samples (Fin S) (Fin A) N → Fin S → Fin A,
+          ∃ M : DiscountedMDP (Fin S) (Fin A), M.discount = γ ∧
+            (1 : ℝ) / 4 ≤ (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
+              {data | ε < ‖M.trajectoryExpectedQ
+                  (fun s ↦ EnvironmentStage.pointMass (piHat M.reward M.discount data s)) -
+                M.trajectoryExpectedQ M.optimalGreedyPolicy‖}) ∧
+      (∀ QHat : (Fin S → Fin A → ℝ) → ℝ →
+            StatisticalRL.ModelBasedPolicyLearning.Samples (Fin S) (Fin A) N → Fin S → Fin A → ℝ,
+          ∃ M : DiscountedMDP (Fin S) (Fin A), M.discount = γ ∧
+            (1 : ℝ) / 4 ≤ (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
+              {data | ε < ‖QHat M.reward M.discount data -
+                M.trajectoryExpectedQ M.optimalGreedyPolicy‖})
+
 end StatisticalRL.Statements.Ch3

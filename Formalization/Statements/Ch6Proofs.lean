@@ -7,6 +7,8 @@ import Formalization.OfflineRL.LCBFallbackApplication
 import Formalization.OfflineRL.MonotoneContractionCorrected
 import Formalization.OfflineRL.SampleSplitActual
 import Formalization.OfflineRL.PreliminaryFacts
+import Formalization.OfflineRL.LowerBoundMinimax
+import Formalization.OfflineRL.BernsteinInfiniteData
 
 open MeasureTheory ProbabilityTheory
 
@@ -101,5 +103,31 @@ theorem Lemma6_15_holds : Lemma6_15 :=
 theorem Lemma6_11_restricted_holds : Lemma6_11_restricted :=
   ⟨84, by norm_num, fun S A _ _ M ρ δ T W hδ hδ1 hT hι hW =>
     StatisticalRL.OfflineRL.LCBQ.lcbq_useful M M.optimalGreedyPolicy ρ δ T W hδ hδ1 hT hι hW⟩
+
+/-- Apply the library theorem `offline_minimax_lower_bound`; no new proof. -/
+theorem Thm6_13_holds : Thm6_13 :=
+  StatisticalRL.OfflineRL.LowerBound.offline_minimax_lower_bound
+
+section BernsteinInfinite
+
+universe u v w
+
+/-- Apply the Lemma 6.18 library export; the strict bound is weakened to the printed `≥`. -/
+theorem Lemma6_18_holds : Lemma6_18.{u, v} := by
+  intro S _ Ω _ μ _ d γ _ hγ1 δ hδ hδ8 n hn
+  letI : MeasurableSpace S := ⊤
+  intro draw hdraw hlaw V hV hindep hrange
+  exact (StatisticalRL.OfflineVILCB.BernsteinInfinite.bernsteinInfinite_fixedRow μ d γ hγ1 δ hδ hδ8
+    n hn draw hdraw hlaw V hV hindep hrange).le
+
+/-- Apply the Lemma 6.6 library export with the event level set to the penalty's `δ`. -/
+theorem Lemma6_6_holds : Lemma6_6.{u, v, w} := by
+  intro S A _ _ _ _ ρ P p hγ Ω _ μ _
+  letI : MeasurableSpace ((S × A) × S) := ⊤
+  intro X hX hind hmarg
+  exact StatisticalRL.OfflineVILCB.LeaveOneOut.bernsteinInfinite_iid p hγ ρ P μ p.δ p.δ_pos
+    p.δ_lt_one X hX hind hmarg
+
+end BernsteinInfinite
 
 end StatisticalRL.Statements.Ch6

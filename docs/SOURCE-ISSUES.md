@@ -69,6 +69,10 @@ No author-approved correction or ruling is assumed.
 
 ## Candidate repair of Theorem 3.7
 
+**Formal corrected entry (2026-11-06).** Theorem 3.7 is false as printed (C1: part (i) at `A=1`; C2: both parts at `S=1` under the source's known-reward convention). `Thm3_7_corrected` proves the printed conclusion, with probability `≥1/4`, the printed γ and ε ranges, the printed sample bound and a uniform constant (witness `c_N=1/32768`), on the domain `S≥2`, `SA≥16`, with `A≥2` required only in part (i). Each estimator is a deterministic map from the known reward table, the known discount and the full `N`-per-pair sample array. Both added conditions are necessary, by C1 and C2; part (ii) is proved for `A=1` as well. This is a corrected variant, not the printed theorem, and not an author-approved erratum. The older proposal below adds `A ≥ 2` to both parts; the formal entry needs it only for part (i).
+
+**Sharpening (independently re-derived 2026-11-06).** The separation claim in the proof (`generative_model_model_based.tex:2073–2079`), `Q^⋆(s,π^⋆(s)) − Q^⋆(s,a) > 2ε`, is false at every admissible `(γ,ε)`. With the printed `p, α` and `x=4(1−γ)/3`, the true gap is `γα/(1−γ(p+α)) = 2xε/(γ−2xε) < (16/21)·2ε`; the displayed suboptimal value `1/(1−γp)` should be `(1−γα)/(1−γ(p+α))`. The data-free estimator equal to the midpoint `(H+L)/2` on active states and `0` at the absorber has error `< (8/21)ε` on every member of the printed family, so that family cannot witness part (ii). Part (i)'s reduction survives with corrected values. The formal proof of part (ii) uses a baseline-versus-one-row family instead.
+
 A [proposed correction](critic-theorem37-correction.md) adds `S ≥ 2` and
 `A ≥ 2` to the combined statement and supplies a conservative constant
 `c_N = 1/8192`, with separate arguments for policy learning and Q estimation.
@@ -314,6 +318,11 @@ endpoint clarification, not a counterexample to the existential theorem at
 zero. The theorem already requires `S > 12` and constructs two actions, so the
 singleton-domain obstructions do not apply. See the [source review](critic-offline-lower-bound-domain.md).
 
+**Formal handling (2026-11-06):** `Thm6_13` keeps the printed hypotheses (no added `ε > 0`). For `ε < 0` the
+event is certain; at `ε = 0` Lean's `x/0 = 0` makes the threshold `N ≤ 0`, and the entry holds via the hard
+family built at the positive accuracy `1/(672(1−γ))`. The reading of the `ε = 0` threshold as "every `N`" is
+not covered.
+
 <a id="C10"></a>
 ## Candidate C10: discount endpoint in the offline VI-LCB lemma
 
@@ -398,6 +407,22 @@ candidate records the asserted error.
   implied by Theorem 6.8's sample-size condition, so the entry does not formally cover that
   theorem's uses with `δ > SAT/e`; see [C22](#C22) for the source error and why Theorem 6.8 is
   unaffected.
+
+- Lemma 6.6 (`lem:Bernstein-infinite`, `offlineRL.tex:1147–1163`) is indexed as `Lemma6_6` with the
+  premise `0 < N_{s,a}` on each pair. The printed bounds divide by `N_{s,a}`; the source proof
+  (`:3632`) declares the `N_{s,a} = 0` case trivial, which holds only when the right-hand sides are
+  read as `+∞`. Under Lean's `x/0 = 0` the printed inequalities are false for unseen pairs (for
+  example, a never-sampled pair whose uniform row `1/S` sees two states with different `V̂⋆_pe`
+  values), so the entry states exactly the positive-count content. The penalty and event share
+  the parameter `δ`; `V̂⋆_pe` is any fixed point of `T_pess`, which exists and is unique for
+  `γ ≥ 1/2` (corrected Lemma 6.2, [C10](#C10)). The printed proof's covering-set bound assumes `N ≥ 5`
+  ([C23](#C23)); the formal proof instead treats pairs with `N_{s,a} ≤ 26` deterministically and
+  applies the grid argument only when `N_{s,a} ≥ 27`.
+
+- Lemma 6.18 (`lem:Bernstein-infinite-proof`, `offlineRL.tex:3635–3662`) is indexed as `Lemma6_18`
+  in its conditional-on-counts form: for a fixed `n = N_{s,a} > 0`, `P̂_{s,a}` is the empirical row of
+  `n` iid draws from `P_{s,a}` on an arbitrary probability space, and `V` is independent of that row
+  (`:1126–1128`, `:3970–3972`).
 
 - Lemma 6.14 (`lemma:value-policy-LB-inf`, `offlineRL.tex:2544–2583`) is indexed as
   `Lemma6_14_restricted`. All values, the policy upper bound with equality at `π⋆` and
@@ -827,3 +852,19 @@ deterministically for every pair with `1 ≤ N_{s,a} ≤ 26` and every `Ṽ` wit
 hold surely; otherwise Steps 3–5 apply unchanged. Within Theorem 6.3 the sample-size condition (line 911) already
 forces `N ≥ 6` once `c₁ ≥ 4`. This is a printed-proof gap, not an error in the lemma's statement; Lemma 6.18
 `lem:Bernstein-infinite-proof` is not involved.
+
+**Formal handling:** the formal proof splits per pair. When `1 ≤ N_{s,a} ≤ 26`, both conclusions hold surely (`lem66_small_count`). When `N_{s,a} ≥ 27`, the inequality `N ≥ 27 ≥ 5` validates the printed grid bound (`uGrid_card_le`).
+
+<a id="C24"></a>
+## Candidate C24: Theorem 6.8 sample-size condition needs log² (and Lemma 6.12 needs log(SAT/δ) ≥ 1)
+
+**Source:** `chapters/offlineRL.tex`, Theorem 6.8 `theorem:lcbq` (lines 1754–1772), condition `eq:sample-size-lcbq-T-thm` (line 1767); penalty `eq:penalty-offlineQ` and `H` (lines 1663–1689); proof Step 6 (lines 2328–2352); Lemma 6.12 `lem:lcbq-alpha-xi-psi-phi-bound` (lines 2309–2324), θ bound step (iii) in `eq:theta-bound-offlineQ`.
+
+The printed condition `T ≥ c₂ S C⋆ log(SAT/((1−γ)δ))/((1−γ)⁵ε²)` has one logarithm, but the proof's final step `√(C⋆Sι²/((1−γ)⁵T)) ≤ ε` needs `T ≳ C⋆Sι²/((1−γ)⁵ε²)` with `ι = log(SAT/δ)`. The penalty `b_n = c_b√(Hι/(n(1−γ)²))` with `H ≍ ι/(1−γ)` is of order `ι/√n`, so the extra log is real.
+
+**Counterexample (statement):** fix any `c_b, c₂ > 0`. Take one state, two actions, `γ = 0`, `r(a⋆) = 1`, `r(a₂) = 1/2`, `ε = 1/4`, `d^b(a⋆) = p = c₂/(64c_b²⌈4ι⌉)` (so `C⋆ = 1/p`), `T = ⌈c₂ι/(pε²)⌉` and `δ = 2Te^{−ι}` with `ι` large (`ι ≳ 2.8c₂/c_b²`). With `γ = 0` one has `Q(a) = r(a) − Σ_i η_i^n b_i ∈ [r(a) − 2b_n, r(a) − b_n]`. On `{N⋆ ≤ 2pT}` (probability ≥ 1/2 by Markov) we get `sup_t Q_t(a⋆) < Q_T(a₂)` and `Q_T(a₂) > 0`, so the last strict `V` increase selects `a₂`, whatever the initial policy and tie rule. The gap is `1/2 > ε` with probability `≥ 1/2 > δ`. Exact simulations (for example `c_b = c₂ = 1`, `T ≈ 3.7·10⁶`) return `a₂` in every run, even at 8 times the single-log threshold. Failure persists for `T ≲ c·c_b²C⋆ι²/ε²`, so `ι²` is necessary for this algorithm and sufficient given the proof's lemmas.
+
+**Lemma 6.12:** as printed, the lemma fails when `log(SAT/δ) < 1` (only possible when `SAT ≤ 2`). With `S = A = T = 1`, `γ = 0` and `ι ≤ 1/4`: `H = 1` and `θ = min{3c_b√ι, 1}`, which is not `≲ ι`. With `γ = 1/2` and `ι ≤ 1/8`: `κ = 4`, so `α = ξ = ∞`. Under `ι ≥ 1` one has `κ < 1` and `H ≍ ι/(1−γ)`. The corner does not affect Theorem 6.8: either `A = 1`, where the theorem is trivial, or the sample-size condition is infeasible for `c₂ > 1/log 2`. Related: C22 (Lemma 6.11).
+
+**Proposed correction:** replace `log(SAT/((1−γ)δ))` by `log²(SAT/((1−γ)δ))` in `eq:sample-size-lcbq-T-thm`, and add `log(SAT/δ) ≥ 1` to Lemma 6.12, or state it under that premise. A formal entry should be `Thm6_8_corrected`, not `Thm6_8`.
+

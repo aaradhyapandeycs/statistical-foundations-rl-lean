@@ -5,6 +5,7 @@ import Formalization.MDP.OptimalTrajectoryValue
 import Formalization.Probability.VarianceDefinitions
 import Formalization.OfflineRL.LowerBoundFamilyDefinitions
 import Formalization.Probability.FiniteSampleDefinitions
+import Formalization.OfflineRL.VILCBDatasetDefinitions
 import Mathlib.InformationTheory.KullbackLeibler.Basic
 import Mathlib.Probability.Independence.Basic
 
@@ -210,5 +211,133 @@ def Lemma6_11_restricted : Prop :=
       ∑' j : ℕ, κ ^ j * ∑ s, M.occupancyStateAt M.optimalGreedyPolicy ρ j s * W s ≤
         C * ((∑ s, M.discountedStateOccupancy M.optimalGreedyPolicy ρ s * W s) / (1 - γ) +
           δ * ‖W‖ / ((Fintype.card S : ℝ) * (T : ℝ) ^ 4 * (1 - γ)))
+
+/-- **Theorem 6.13** (`thm:infinite-lwoer-bound`, `chapters/offlineRL.tex:2367–2402`; hard
+instances `:2432–2634`, proof `:2638–2927`, Appendix C `:5498–5933`). There is a universal
+`c₂ > 0` such that for every `γ ∈ [2/3, 1)`, `S > 12`, `C⋆ > 2` and `ε ≤ 1/(672(1-γ))` there are
+a class `{M_θ : θ ∈ Θ}` of MDPs with `S` states and 2 actions (finite `Θ`, shared discount `γ`,
+shared rewards), a test distribution `ρ` and a data distribution `d^b` whose single-policy
+concentrability coefficient `C⋆_ρ = max_{(s,a)} d⋆(s,a;ρ)/d^b(s,a)` (`eq:concentrate-infinite-simple`,
+`:128–140`) lies in `[C⋆, 2C⋆]` for every `θ`, such that for every `N ≤ c₂ S C⋆/((1-γ)³ε²)` and
+every policy estimator `π̂` (a deterministic map from datasets to stationary randomized policies;
+estimators using external randomness are not covered literally, though the Fano argument extends) some `θ` has
+`P_θ(V⋆_θ(ρ) - V^π̂_θ(ρ) > ε) ≥ 1/4`. This `∃ θ` for every `π̂` is the printed
+`inf_π̂ max_θ ≥ 1/4`.
+
+Conventions: `d⋆` is the discounted joint occupancy of the optimal greedy (deterministic) policy
+started from `ρ`. The ratio is taken in `ℝ≥0∞`, so `0/0 = 0` and `x/0 = ∞`. `V(ρ) = ∑_s ρ(s) V(s)`.
+The dataset is `N` iid triples `((s,a),s')` with `(s,a) ~ d^b` and `s' ~ P_θ(·|s,a)`
+(`eq:sampling-offline-inf-iid`, `:31–39`). Its law is the `N`-fold product of the displayed finite
+sum of point masses on the discrete σ-algebra.
+
+Accuracy endpoint (`docs/SOURCE-ISSUES.md#C9`): the printed hypotheses are kept. `ε > 0` is not
+assumed. For `ε < 0` the event holds with probability one. At `ε = 0` the printed threshold
+divides by zero; with Lean's `x/0 = 0` it reads `N ≤ 0`, and the statement then holds by a
+construction at a positive admissible accuracy. This entry does not cover a reading of the
+`ε = 0` threshold as "every `N`". -/
+def Thm6_13 : Prop :=
+  ∃ c₂ : ℝ, 0 < c₂ ∧
+    ∀ (γ : ℝ) (S : ℕ) (Cstar ε : ℝ), 2 / 3 ≤ γ → γ < 1 → 12 < S → 2 < Cstar →
+      ε ≤ 1 / (672 * (1 - γ)) →
+      ∃ (State : Type) (_ : Fintype State) (Θ : Type) (_ : Fintype Θ)
+        (M : Θ → DiscountedMDP State Bool) (ρ : FiniteDistribution State)
+        (db : FiniteDistribution (State × Bool)),
+        Fintype.card State = S ∧
+        (∀ θ, (M θ).discount = γ) ∧
+        (∀ θ θ', (M θ).reward = (M θ').reward) ∧
+        (∀ θ,
+          ENNReal.ofReal Cstar ≤
+              ⨆ sa : State × Bool,
+                ENNReal.ofReal
+                    ((M θ).discountedJointOccupancy (M θ).optimalGreedyPolicy ρ sa.1 sa.2) /
+                  ENNReal.ofReal (db.prob sa) ∧
+            (⨆ sa : State × Bool,
+                ENNReal.ofReal
+                    ((M θ).discountedJointOccupancy (M θ).optimalGreedyPolicy ρ sa.1 sa.2) /
+                  ENNReal.ofReal (db.prob sa)) ≤ ENNReal.ofReal (2 * Cstar)) ∧
+        ∀ N : ℕ, (N : ℝ) ≤ c₂ * S * Cstar / ((1 - γ) ^ 3 * ε ^ 2) →
+          letI : MeasurableSpace ((State × Bool) × State) := ⊤
+          ∀ πhat : (Fin N → (State × Bool) × State) → StationaryPolicy State Bool,
+            ∃ θ, (1 : ℝ) / 4 ≤
+              (Measure.pi fun _ : Fin N =>
+                  ∑ t : (State × Bool) × State,
+                    ENNReal.ofReal (db.prob t.1 * ((M θ).transition t.1.1 t.1.2).prob t.2) •
+                      Measure.dirac t).real
+                {D | ε < ∑ s, ρ.prob s *
+                    ((M θ).trajectoryExpectedValue (M θ).optimalGreedyPolicy s -
+                      (M θ).trajectoryExpectedValue (πhat D) s)}
+
+section BernsteinInfinite
+
+universe w
+
+/-- **Lemma 6.18** (`lem:Bernstein-infinite-proof`, `chapters/offlineRL.tex:3635–3662`; proof
+`:4339–4405`). Conditional-on-counts encoding: for a fixed pair `(s,a)` with
+`n = N_{s,a} > 0`, the source probability is conditional on the visitation counts, and under that
+conditioning `P̂_{s,a}` is the empirical row of `n` iid draws from `P_{s,a}` (`:1126–1128`). This
+entry quantifies over every probability space carrying such draws (`draw`, with law
+`d.sampleMeasure n`, `d = P_{s,a}`) and a random vector `V` that is measurable, independent of that
+empirical row (discrete σ-algebra on rows) and satisfies `0 ≤ V ≤ 1/(1-γ)`. With probability at
+least `1 - 8δ`, both printed inequalities hold. -/
+def Lemma6_18 : Prop :=
+  ∀ (S : Type u) [Fintype S] (Ω : Type v) [MeasurableSpace Ω] (μ : Measure Ω)
+    [IsProbabilityMeasure μ] (d : StatisticalRL.FiniteDistribution S) (γ : ℝ), 0 ≤ γ → γ < 1 →
+    ∀ δ : ℝ, 0 < δ → δ < 1 / 8 →
+    ∀ (n : ℕ) (hn : 0 < n),
+    letI : MeasurableSpace S := ⊤
+    ∀ draw : Ω → Fin n → S, Measurable draw → μ.map draw = d.sampleMeasure n →
+    ∀ V : Ω → S → ℝ, Measurable V →
+      (letI : MeasurableSpace (StatisticalRL.FiniteDistribution S) := ⊤
+       IndepFun V (fun ω => StatisticalRL.FiniteDistribution.empiricalRow n hn (draw ω)) μ) →
+      (∀ ω s, 0 ≤ V ω s ∧ V ω s ≤ 1 / (1 - γ)) →
+      1 - 8 * δ ≤ μ.real {ω |
+        |(StatisticalRL.FiniteDistribution.empiricalRow n hn (draw ω)).expectation (V ω) -
+            d.expectation (V ω)| ≤
+          Real.sqrt (4 * (StatisticalRL.FiniteDistribution.empiricalRow n hn (draw ω)).variance (V ω) *
+            Real.log (1 / δ) / n) + 5 * Real.log (1 / δ) / ((1 - γ) * n) ∧
+        (StatisticalRL.FiniteDistribution.empiricalRow n hn (draw ω)).variance (V ω) ≤
+          2 * d.variance (V ω) + 5 * Real.log (1 / δ) / (3 * (1 - γ) ^ 2 * n)}
+
+/-- **Lemma 6.6** (`lem:Bernstein-infinite`, `chapters/offlineRL.tex:1147–1163`; proof
+`:3630–4273`). Data: `N` iid triples with `(s,a) ~ ρ` and `s' ~ P(·|s,a)` (`:28–37`), with counts
+`N_{s,a}` and empirical rows `P̂` (the uniform row when `N_{s,a} = 0`) as in `:672–695`, and the
+penalty of `def:bonus-Bernstein-infinite` (`:808–824`) with parameters `p.cb`, `p.δ`.
+`V̂⋆_pe` is the value of any fixed point `Q̂⋆_pe` of `T_pess` for the realized data; for
+`γ ≥ 1/2` such a fixed point exists and is unique (corrected Lemma 6.2, `docs/SOURCE-ISSUES.md#C10`).
+As printed, the same `δ` appears in the penalty and in the probability `1 - δ`.
+
+Scope disclosure: the entry carries the premise `0 < N_{s,a}`. The printed right-hand sides divide
+by `N_{s,a}`; the source's claim that the zero-count case is "trivial" (`:3632`) holds only when
+those right sides are read as `+∞`, and is false under Lean's `x / 0 = 0` (the uniform row differs
+from `P_{s,a}`). The printed proof's covering-set bound assumes `N ≥ 5` (`docs/SOURCE-ISSUES.md#C23`);
+the formal proof splits per pair: pairs with `N_{s,a} ≤ 26` satisfy both bounds surely, and the
+union bound runs over pairs with `N_{s,a} ≥ 27`. -/
+def Lemma6_6 : Prop :=
+  ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] [Nonempty S] [Nonempty A]
+    (ρ : StatisticalRL.FiniteDistribution (S × A))
+    (P : S → A → StatisticalRL.FiniteDistribution S)
+    (p : StatisticalRL.OfflineVILCB.Params S A), 1 / 2 ≤ p.γ →
+    ∀ (Ω : Type w) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ],
+    letI : MeasurableSpace ((S × A) × S) := ⊤
+    ∀ X : Ω → Fin p.N → (S × A) × S, Measurable X →
+      iIndepFun (fun i ω => X ω i) μ →
+      (∀ i, μ.map (fun ω => X ω i) =
+        ∑ t : (S × A) × S, ENNReal.ofReal (ρ.prob t.1 * (P t.1.1 t.1.2).prob t.2) • Measure.dirac t) →
+      1 - p.δ ≤ μ.real {ω |
+        ∀ Qstar : S → A → ℝ, (p.input (X ω)).pess Qstar = Qstar →
+        ∀ (s : S) (a : A), 0 < (p.input (X ω)).count s a →
+        ∀ Vt : S → ℝ,
+          (∀ t, |Vt t - StatisticalRL.OfflineVILCB.Input.value Qstar t| ≤ 1 / p.N) →
+          (∀ t, |Vt t| ≤ 1 / (1 - p.γ)) →
+          |((p.input (X ω)).Phat s a).expectation Vt - (P s a).expectation Vt| ≤
+              Real.sqrt (8 * Real.log (4 * p.N / ((1 - p.γ) * p.δ)) / (p.input (X ω)).count s a *
+                ((p.input (X ω)).Phat s a).variance Vt) +
+              26 * Real.log (4 * p.N / ((1 - p.γ) * p.δ)) / ((1 - p.γ) * (p.input (X ω)).count s a) ∧
+          ((p.input (X ω)).Phat s a).variance Vt ≤
+              2 * (P s a).variance Vt +
+              24 * Real.log (4 * p.N / ((1 - p.γ) * p.δ)) /
+                ((1 - p.γ) ^ 2 * (p.input (X ω)).count s a)}
+
+end BernsteinInfinite
 
 end StatisticalRL.Statements.Ch6

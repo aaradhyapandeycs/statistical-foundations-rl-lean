@@ -1,5 +1,13 @@
 # Whole-monograph progress
 
+## Lemmas 6.6, 6.18 and corrected Theorem 3.7; source issue C24
+
+Lemma 6.18 is proved in conditional-on-counts form and Lemma 6.6 for sampled pairs (zero-count case disclosed; the printed covering step is repaired, C23). Theorem 3.7 is indexed as `Thm3_7_corrected` on the weakest domain the counterexamples allow (C1, C2). Theorem 6.8 is recorded as false as printed (C24, needs log²). All independently source-reviewed. The named-result ledger now has 63 covered entries out of 90 (3.7 as a corrected variant). The complete monograph remains **INCOMPLETE**.
+
+## Offline minimax lower bound (Theorem 6.13)
+
+Theorem 6.13 (`thm:infinite-lwoer-bound`) is newly proved with its printed hypotheses (Gilbert–Varshamov packing, value gap, concentrability, dataset KL chain rule, Fano), indexed as `Thm6_13` and independently source-reviewed (no blocking or major findings). The named-result ledger now has 60 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Fano's lemma (Lemma 2.10)
 
 Lemma 2.10 (`lem:fano`, both parts) is newly proved in `Formalization/Probability/Fano/FanoLemma.lean` over the existing test-risk definitions and indexed as `Lemma2_10`; it was reviewed by an independent source critic with no blocking, major or minor findings. The named-result ledger now has 59 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
