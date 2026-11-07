@@ -526,6 +526,15 @@ import Formalization.Ch7Rest.VPOIllPosed712
 import Formalization.Ch7Rest.FedGeneric710
 import Formalization.Ch7Rest.LowerBound710
 import Formalization.Ch7Rest.InnerConstant710
+import Formalization.Ch7Rest.Marl78Defs
+import Formalization.Ch7Rest.Marl78Values
+import Formalization.Ch7Rest.Marl78Hard
+import Formalization.Ch7Rest.Marl78Testing
+import Formalization.Ch7Rest.Marl78HardTesting
+import Formalization.Ch7Rest.Marl78Bayes
+import Formalization.Ch7Rest.Marl78Product
+import Formalization.Ch7Rest.Marl78Statement
+import Formalization.Ch7Rest.Marl78Main
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope
