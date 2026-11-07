@@ -501,6 +501,12 @@ import Formalization.RobustRL.TVSourceMaximum
 import Formalization.Statements.Ch7
 import Formalization.Statements.Ch7Proofs
 import Formalization.RobustRL.ChiSquaredSourceMaximum
+import Formalization.RobustRL.Ch7.Ch7Definitions
+import Formalization.RobustRL.Ch7.Ch7PrintedStatements
+import Formalization.RobustRL.Ch7.SingletonAction73
+import Formalization.RobustRL.Ch7.TrapInstance
+import Formalization.RobustRL.Ch7.TrapCore
+import Formalization.RobustRL.Ch7.HorizonTrap
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope
