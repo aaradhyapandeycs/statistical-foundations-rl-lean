@@ -23,6 +23,7 @@ import Formalization.Online.Regret.Joint.W123Definitions
 import Formalization.Online.LowerBound.FamilyDefinitions
 import Formalization.Online.LowerBound.BanditDefinitions
 import Formalization.Online.LowerBound.RegretDefinitions
+import Formalization.Online.Bandit.UCBDefinitions
 
 /-! Corrected source-facing Chapter 5 statement index. -/
 open scoped BigOperators
@@ -1015,5 +1016,37 @@ def Thm5_19 : Prop :=
       ∀ L : OnlineLearner (Fin S) (Fin A) H, ∃ i : I,
         c₀ * min (Real.sqrt ((H : ℝ) ^ 3 * S * A * K)) ((H : ℝ) * K) ≤
           onlineExpectedRegret (E i) ρ L K
+
+open StatisticalRL.Bandit in
+/-- Restricted `thm:bandit-pure-ucb` (Theorem 5.1), `chapters/bandits.tex:258–277`; model
+`:9–83`, Algorithm 5.1 `:207–251`, proof `:387–501`.
+
+For `A` arms with mean rewards `r a ∈ [0,1]`, horizon `T` with `2 ≤ A ≤ T`, and `0 < δ < 1`, let
+`L = log(T²/δ)`, `r⋆ = max_a r a` (written `⨆ a, r a`) and `Δ(a) = r⋆ - r a`. The noise table
+`z : Fin T → Fin A → ℝ` (`z t a` is the noise of arm `a` at round `t`) has independent `N(0,1)`
+entries (`:37–42`). UCB (Algorithm 5.1) pulls at each round an arm of maximal index
+`r^sum(a)/N(a) + √(2L/N(a))`, the index being `+∞` when `N(a) = 0` (the convention of `:387`).
+Rounds are 0-indexed. The pseudo-regret `T r⋆ - Σ_t r(a_t)` (`:67–72`) is integrable, and its
+expectation over the noise satisfies (5.1a) `≤ 8 √(A T L)` and (5.1b)
+`≤ 10 L Σ_{a : Δ(a) > 0} 1/Δ(a)`.
+
+Restricted variant: the printed algorithm leaves the choice inside the argmax unspecified
+(`:232`). This entry covers every deterministic rule `tie t s ∈ s` that depends only on the round
+and the argmax set. It does not cover history-dependent or randomized tie-breaking. Both printed
+bounds and constants, and all printed hypotheses, are unchanged. See
+`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures` for the scope and
+`docs/SOURCE-ISSUES.md#C36` for the repair of the printed proof's Step 1. -/
+def Thm5_1_restricted : Prop :=
+  ∀ (A T : ℕ) (r : Fin A → ℝ) (δ : ℝ) (tie : ℕ → Finset (Fin A) → Fin A),
+    (∀ t s, s.Nonempty → tie t s ∈ s) → 2 ≤ A → A ≤ T →
+    (∀ a, r a ∈ Set.Icc (0 : ℝ) 1) → 0 < δ → δ < 1 →
+    let L := Real.log ((T : ℝ) ^ 2 / δ)
+    let rstar := ⨆ a, r a
+    let Δ := fun a => rstar - r a
+    let regret := fun z : Fin T → Fin A → ℝ => (T : ℝ) * rstar - ∑ t, r (ucbAction tie L r z t)
+    Integrable regret (gaussianNoiseTable T A) ∧
+    ∫ z, regret z ∂gaussianNoiseTable T A ≤ 8 * Real.sqrt (A * T * L) ∧
+    ∫ z, regret z ∂gaussianNoiseTable T A
+      ≤ 10 * L * ∑ a ∈ Finset.univ.filter (fun a => 0 < Δ a), 1 / Δ a
 
 end StatisticalRL.Statements

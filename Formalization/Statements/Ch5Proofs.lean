@@ -19,6 +19,7 @@ import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
 import Formalization.Online.Regret.Joint.OnlineT234Joint
 import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
 import Formalization.Statements.Ch5
+import Formalization.Online.Bandit.UCBRegret
 import Formalization.Online.Regret.Counts.OnlineReciprocalSource
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
 import Formalization.Online.Regret.NonnegativeTelescope
@@ -403,5 +404,9 @@ theorem Lemma5_20_holds : Lemma5_20 := OnlineLowerBound.onlineLBSub_value_gap
 theorem Lemma5_21_holds : Lemma5_21 := OnlineLowerBound.bandit_testing
 
 theorem Thm5_19_holds : Thm5_19 := OnlineLowerBound.minimax_lower_online
+
+theorem Thm5_1_restricted_holds : Thm5_1_restricted :=
+  fun A T r δ tie htie hA hAT hr hδ0 hδ1 =>
+    Bandit.ucb_regret_bounds A T r δ tie htie hA hAT hr hδ0 hδ1
 
 end StatisticalRL.Statements

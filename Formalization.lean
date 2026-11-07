@@ -762,6 +762,13 @@ import Formalization.Statements.Ch6
 import Formalization.Statements.Ch6Proofs
 import Formalization.Probability.AdaptiveKLDefinitions
 import Formalization.Probability.AdaptiveKL
+import Formalization.Online.Bandit.UCBDefinitions
+import Formalization.Online.Bandit.GaussianPredictableExp
+import Formalization.Online.Bandit.UCBPath
+import Formalization.Online.Bandit.UCBMeasurability
+import Formalization.Online.Bandit.UCBChernoff
+import Formalization.Online.Bandit.UCBCountBound
+import Formalization.Online.Bandit.UCBRegret
 import Formalization.Online.LowerBound.FamilyDefinitions
 import Formalization.Online.LowerBound.ValueGap
 import Formalization.Online.LowerBound.BanditDefinitions
