@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Restricted Theorem 5.1 (UCB bandit regret)
+
+Both printed regret bounds of Theorem 5.1 are proved with the printed hypotheses, for every deterministic tie rule that depends on the round and the argmax set (history-dependent and randomized ties are not covered). The printed Step 1 argument is invalid under adaptive sampling (C36); the formal proof replaces it with an adaptive Gaussian exponential-martingale tail. Independently source-reviewed. The named-result ledger now has 76 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Corrected Theorem 4.13 (finite-horizon Q-learning)
 
 Theorem 4.13 is proved with the single added premise T ≥ 2; the printed statement without it is false in Lean (machine-checked counterexample at T = 1). The monograph cites the proof externally; the formal proof is self-contained from monograph tools. Independently source-reviewed. The named-result ledger now has 75 covered entries out of 90. The complete monograph remains **INCOMPLETE**.

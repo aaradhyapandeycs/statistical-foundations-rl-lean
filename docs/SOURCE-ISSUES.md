@@ -425,6 +425,7 @@ candidate records the asserted error.
   (`:1126–1128`, `:3970–3972`).
 
 - Lemma 6.12 (`lem:lcbq-alpha-xi-psi-phi-bound`, `offlineRL.tex:2309–2324`) is indexed as `Lemma6_12_restricted`. It has the added premise `log(SAT/δ) ≥ 1`, which is sufficient for `κ < 1` and `H ≍ ι/(1−γ)`; the printed lemma fails for small `ι` (see [C24](#C24)). The premise is not minimal: any `ι ≥ c > 3/4` would do with a larger constant, and the excluded band requires `SAT ≤ 2`. The source's `c_b` "sufficiently large" is stated as `∃ c_b₀, ∀ c_b ≥ c_b₀` (`c_b₀ = 4`, as in [C28](#C28)). The `≲` constant is an existential `C` that depends only on `c_b` (`C = 400000 + 5600 c_b`). `α = 0` is stated as `α_j → 0`; `ξ, θ, ψ, φ` are stated as `HasSum` limits. The `θ` and `ψ+φ` bounds are stated under `C⋆ < ∞`, since otherwise the printed right sides are `+∞`. No sample-size condition on `T` is assumed, although the printed proof uses Theorem 6.8's. The hypotheses that `π⋆` is optimal and that ties are broken by a maximiser are carried as in the source but are not used.
+- Theorem 5.1 (`thm:bandit-pure-ucb`, `bandits.tex:258–277`) is indexed as `Thm5_1_restricted`. Both printed bounds and all printed hypotheses (2 ≤ A ≤ T, means in [0,1], 0 < δ < 1) are kept unchanged. The restriction is the tie rule: the algorithm (`:232`) leaves the choice inside the argmax unspecified, and the entry quantifies over every deterministic rule that depends only on the round and the argmax set. History-dependent and randomized tie-breaking are not covered; the mathematical repair ([C36](#C36)) extends to any non-anticipating rule, but that is not formalized. Reading conventions: an unpulled arm has index +∞ (`:387`); rounds are 0-indexed; the noise is the iid N(0,1) table over (round, arm); regret is the pseudo-regret T r⋆ − Σ r(a_t) with r⋆ = max_a r(a), integrated over the noise; integrability is proved as an extra conclusion.
 
 - Lemma 6.14 (`lemma:value-policy-LB-inf`, `offlineRL.tex:2544–2583`) is indexed as
   `Lemma6_14_restricted`. All values, the policy upper bound with equality at `π⋆` and
@@ -1020,6 +1021,33 @@ E N_T(a) ≤ 1 + 8L/Δ² + δ(T−A)(T−A+1)/T² ≤ 8L/Δ² + 2, the printed i
 conclusions are unchanged. Classification: invalid argument, true conclusion; no corrected statement is needed.
 Exposition only: the algorithm (`:234`) divides by N(a) = 0 before the ∞ convention appears (`:387`), and no tie rule is
 given (harmless: Step 1's comparison is strict).
+Formal route (addendum): the Lean proof takes the union over counts 1 ≤ n ≤ t at 0-indexed round t (count ≤ t), without using the
+initialization phase, so β = δ(T−1)/T ≤ δ and E N_T(a) ≤ ⌊8L/Δ²⌋ + 1 + δ ≤ 8L/Δ² + 2; the n ≤ t−A+1 route above is an equally valid,
+tighter alternative. The tie-rule scope of the formal entry is disclosed under statement-index scope disclosures.
+
+<a id="C37"></a>
+## Candidate C37: Theorems 7.2 and 7.4 iterate DRVI too few times (iteration count lacks 1/(1−γ))
+
+Theorems 7.2 and 7.4 (`robust_RL.tex:342–359`, `:437–450`) run DRVI for T = C1 log(N/(1−γ)) iterations (`:345`, `:438`),
+with no 1/(1−γ) factor, from Q̂₀ = 0 (`:245`). The output clause is then false for every choice of universal constants.
+A deterministic chain MDP (A = 2, S = T+3) puts reward 1 more than T steps away from s0 and a small bail reward b at s0.
+The empirical kernel is exact surely, and the χ² ball around a point mass is a singleton (`intro.tex:234`; Lemma 7.1),
+so Q̂_T(s0, chain) = 0 < b and DRVI bails, while the robust gap is ≥ (γ(1−σ))^{T+1}/(1−γ(1−σ)) − b, which exceeds ε with
+probability 1 for γ near 1 at the least admissible N. Checked in exact arithmetic for C1, C2 ≤ 10⁶ by two independent
+source checks; no Lean counterexample yet. The book uses (1/(1−γ)) log(N/(1−γ)) iterations elsewhere
+(`generative_model_model_based.tex:943`, `offlineRL.tex:901`). Proposed correction: T ≥ C1 log(N/(1−γ))/(1−γ).
+The theorems themselves are cited (shi2024curious), not proved in the monograph. Not author-approved.
+
+<a id="C38"></a>
+## Candidate C38: Theorem 7.3 admits A = 1 (and S = 1 under the known-reward convention)
+
+Theorem 7.3 (`robust_RL.tex:377–391`) quantifies over any (S, A, γ, σ, ε) with no restriction on S or A. For A = 1 every
+estimator outputs the unique policy, so both error probabilities are 0 < 1/8. An admissible witness is c0 = 1/8,
+γ = 1/2, σ = 1/2, ε = 1/1024 (the upper endpoint), N = 1 (the N-bound is 128 ln 2 ≈ 88.7); A = 1 fails for every c0.
+Under the known-reward convention (`generative_model_model_based.tex:31`), S = 1 is also degenerate (constant data;
+argmax r is optimal), the same mechanism as [C7](#C7) for Theorem 7.5. Proposed correction: A ≥ 2 and S ≥ 2, with M0
+and M1 on S states and A actions; this excludes the degenerate cases but does not prove the cited bound. Confirmed by
+two independent source checks; no Lean counterexample yet. Not author-approved.
 
 ```
 
