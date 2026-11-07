@@ -943,3 +943,92 @@ Source: Appendix C, `generative_model_model_free.tex:2707–3956`; `lem:lower-bo
 None of (1)–(5) changes the printed statements of Theorem 4.7 (ii) or Lemma 4.15; they change only the unnamed constants `c`, `c_lb` and the size of `c₃`.
 
 Note to C31 item 5 (2026-11-07): the copied-action encoding `qHardMDP` in `QLearningHardMDPDefinitions.lean` (used by Lemma 4.14) is fine for optimal values but unsuitable for Q-learning dynamics; Theorem 4.7 and Lemma 4.15 use `qLbMDP` with dominated dummy actions (`qLbMDP_optimal_values`).
+
+<a id="C32"></a>
+## Candidate C32: Theorem 6.16 relies on an algorithm and proof outside the monograph
+
+**Source:** `chapters/offlineRL.tex`, Theorem 6.16 `thm:finite-VI-LCB` (finite-horizon VI-LCB, around line 3095).
+The monograph states the result for a "variant" of VI-LCB that it does not define, and gives no proof; it cites
+li2024settling. The statement can therefore not be checked against the book alone, and a formal proof requires
+reconstructing the cited algorithm and argument. No counterexample is claimed. Status: deferred; any formal entry
+must first pin the cited source and have its statement shape independently audited.
+
+<a id="C33"></a>
+## Candidate C33: Theorem 6.17 relies on an outside proof and an under-specified algorithm
+
+Theorem 6.17 `thm:lcbq` (`offlineRL.tex:3176–3192`) relies on shi2022pessimistic for its proof. Its algorithm
+(`:3126–3148`) leaves the initialisation, the value update `V_{h+1}`, the output/tie rule, and the constant and
+log power of the Θ̃ penalty `eq:lcb-q-penalty` unspecified. The algorithm box is commented out with an
+`\yc{to update}` marker (`:3150–3173`). If Θ̃ hides `ι²` or more, the statement is false: in an H = 1, two-arm
+instance the pessimistic bias at the optimal arm is `≳ c_b ε√ι/√c_a`. With the natural completion (`Q ≡ V ≡ 0`,
+monotone V, strict-increase policy rule from `alg:q-infinite-lcb`, `b_n = c_b √(H³ι²/n)`), the C24 log²
+obstruction does not apply, since `log³ ≥ log²`. Status: deferred.
+
+Note: the counterexample for penalties hiding ι² or more is from a design preflight and has not yet been independently re-derived.
+
+<a id="C34"></a>
+## Candidate C34: Theorem 4.12 fails at T = 1 and needs μ_min > 0; proof outside the monograph
+
+Source: `thm:infinite-horizon-asyn`, `generative_model_model_free.tex:2062–2086`; rate `:2054–2058`;
+Assumption `assump:ergodicity-asyncQ` `:2012–2016`; `mumin` `:2024–2028`.
+
+(1) T = 1: log³T = 0, so the rate is η = 0 and the first term of the T-condition vanishes. With S = A = 1,
+γ = 1/2, r = 1, Q₀ = 0, ε = 1, μ_min = 1, t_mix ≤ 1 and δ ≥ exp(−1/√(2c₂)), the T-condition holds at T = 1, but
+Q₁ = 0 while Q⋆ = 2. (Read with η_t ∈ (0,1) from `:1951`, the instance is instead ill-posed.) T ≥ 2 is needed.
+(2) Uniform ergodicity does not give μ_min > 0 (e.g. a behavior policy that never plays some action). The rate and
+the T-condition divide by μ_min; with μ_min = 0 the unvisited pair is never updated and the claim fails.
+μ_min > 0 must be a hypothesis.
+(3) The proof is only sketched (`:2124–2127`) and relies on li2024q and on Markov-chain concentration
+(paulin2015concentration, Thm 3.14), neither of which is stated in the monograph.
+Status: deferred. Any formal entry must be `_corrected`/`_restricted` with 2 ≤ T and 0 < μ_min.
+```
+
+```
+<a id="C35"></a>
+## Candidate C35: Theorem 4.13 needs T ≥ 2; its proof is outside the monograph
+
+Source: `thm:finite-horizon-simple-Q-generative`, `generative_model_model_free.tex:2215–2236`; schedule
+`eq:thm:finite-horizaon-eta` `:2203–2209`; algorithm `:2181–2200`.
+
+(1) The schedule divides by H log²T, which is 0 at T = 1, while the T-condition (log³T = 0) admits T = 1. Theorem 4.6
+states T ≥ 2 (`:896`); Theorem 4.13 omits it. With junk division the schedule forces η₁ = 1, contradicting 0 < η_t < 1;
+without that constraint the claim fails at T = 1 (H = 2, one action, P₁ uniform on two states with terminal
+rewards 1/0: Q_{1,1} ∈ {0,1} vs Q⋆₁ = 1/2). Without `2 ≤ T` the Lean transcription of the printed statement is false;
+this is machine-checked (`FiniteQLearning.not_thm4_13_from_one`, same instance). The index entry is `Thm4_13_corrected`,
+which adds only 2 ≤ T.
+(2) The update leaves Q_{t,H+1} implicit; the formalization uses Q_{t,H+1} ≡ 0.
+(3) The monograph cites li2021tightening-icml and gives no proof. The formal proof
+(`FiniteQLearning.finiteQLearning_sample_complexity`) is self-contained from monograph tools: Freedman with K₀ = 1
+along each (h,s,a) coordinate, robust χ²-ball comparators V^± (finite-horizon form of `lemma:Q-comparison-facts`),
+absorption of the fluctuation into the Bellman residual, and a triangular propagation recursion with
+super-solution H·2^k·∏_{(T/2,t]}(1−η_j/2). The χ² stability step is proved deterministically with the
+total-variance potential Ψ = 2K V⋆ − (V⋆)², not via a trajectory KL chain rule and Pinsker. Constants: every
+c₁ ∈ (0, 1/64] and c₂ ∈ (0, c₁] work with c₃ = 8000/c₂. The good event has probability ≥ 1 − δ/2, so the printed
+strict bound "> 1 − δ" holds. A ≥ 2 and 0 < η_t < 1 are not assumed; the schedule is used only for 1 ≤ t ≤ T.
+
+<a id="C36"></a>
+## Candidate C36: Theorem 5.1 proof Step 1 applies fixed-count tails at a random count (conclusion true)
+
+Source: `thm:bandit-pure-ucb`, `bandits.tex:258–277`; proof `:387–501`, Step 1 `:400–429`.
+
+The proof applies fixed-count Gaussian tails (`:188–199`) at the random count N_t(a), relying on
+"r̄_t(a)−r(a) = N(0,1/N_t(a))" (`:180`, repeated at `:328`). This identity fails under adaptive sampling (A = 2, T = 3,
+equal means: E[√N₃(1)(r̄₃(1)−r(1))] = (1/√2−1)/(2√π) ≠ 0), so the per-round bound (`:427`) is unjustified (not
+refuted). Repair: for each fixed n an exponential-martingale bound gives P(the n-th pull exists and the first-n mean
+deviates by more than √(2L/n)) ≤ δ/T²; a union over n ≤ t−A+1 at each t gives
+E N_T(a) ≤ 1 + 8L/Δ² + δ(T−A)(T−A+1)/T² ≤ 8L/Δ² + 2, the printed intermediate bound. Steps 2–4 and both printed
+conclusions are unchanged. Classification: invalid argument, true conclusion; no corrected statement is needed.
+Exposition only: the algorithm (`:234`) divides by N(a) = 0 before the ∞ convention appears (`:387`), and no tie rule is
+given (harmless: Step 1's comparison is strict).
+
+```
+
+---------------------------------------------------------------------------------------------------
+
+
+Note to C16 (Claim 5.1, `claim:PV-l-UB`, onlineRL.tex:4340–4353, 2026-11-07): `Claim5_1_corrected` uses the
+reciprocal allocation `δ′ = δ/(100S²A²H²K²)`. For this claim (with the learner's own value family) the printed
+allocation is neither proved nor refuted here; C16 refutes only the generic Lemma 5.13 allocation. The printed proof
+is also incomplete at level `l = 1`: it applies Lemma 5.13 at `l = 1` (:4464), but that lemma covers only
+`2 ≤ l ≤ log₂K + 1`. The formal proof treats `l = 1` deterministically (each term ≤ H, total ≤ dH ≤ dHI/(2x)).
+The fixed committed tie rule is a restriction of the claim to that tie rule.

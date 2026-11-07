@@ -1,5 +1,13 @@
 # Whole-monograph progress
 
+## Corrected Theorem 4.13 (finite-horizon Q-learning)
+
+Theorem 4.13 is proved with the single added premise T ≥ 2; the printed statement without it is false in Lean (machine-checked counterexample at T = 1). The monograph cites the proof externally; the formal proof is self-contained from monograph tools. Independently source-reviewed. The named-result ledger now has 75 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
+## Corrected Claim 5.1 (`claim:PV-l-UB`)
+
+Claim 5.1 (the per-level decoupling bound inside the proof of Lemma 5.14) is proved as a disclosed corrected restricted variant on the actual sequential MVP experiment: reciprocal confidence allocation (the printed allocation is neither proved nor refuted), one fixed committed tie rule, and a deterministic treatment of level l = 1 where the printed proof misapplies Lemma 5.13. Independently source-reviewed. The named-result ledger now has 74 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## VI-LCB main theorem (Theorem 6.3)
 
 Theorem 6.3 is proved as printed (constants read as ∃c_b₀ ∀c_b ∃c₁), combining Lemmas 6.2 (corrected), 6.4, 6.5 (corrected), 6.6 and the Lemma 6.7 provider with its premises discharged for the algorithm output. Independently source-reviewed. The named-result ledger now has 73 covered entries out of 90. The complete monograph remains **INCOMPLETE**.

@@ -27,6 +27,7 @@ import Formalization.Online.Regret.Joint.OnlineW123Final
 
 import Formalization.Online.Regret.MVP.Main.MVPMainSourceRegret
 import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPActualDecouplingSourceConfidence
+import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPClaimPVSource
 import Formalization.Online.Regret.MVP.MVPProfileDefinitions
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
 
@@ -374,6 +375,11 @@ theorem Lemma5_14_corrected_holds : Lemma5_14_corrected := by
   simpa [δp, I, onlineSourceOptimismDeltaPrime, StatisticalRL.OnlineRL.MVPProfile.logTwoReal, hlogcard, hlogcard',
     mvpActualDecouplingEvent, mvpActualT1, mvpVarianceW4, mvpVarianceT6UCB,
     mvpActualW3, mvpVarianceHistory, mvpVarianceContinuation] using hmain
+
+/-- Apply the actual-law Claim 5.1 confidence result to its indexed statement. -/
+theorem Claim5_1_corrected_holds : Claim5_1_corrected := by
+  intro State Action instS instA H K hH hK E ρ fallback δ c₁ c₂ hδ hδ1 hc₁ hc₂ hbudget
+  exact claimPV_eventConfidence H K hH hK E ρ fallback δ c₁ c₂ hδ hδ1 hc₁ hc₂ hbudget
 
 theorem Lemma5_18_restricted_holds : Lemma5_18_restricted := by
   intro State Action instS instA H K hH hK E ρ fallback δ hδ hδ1

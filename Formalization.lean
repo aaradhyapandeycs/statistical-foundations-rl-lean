@@ -476,6 +476,18 @@ import Formalization.RobustRL.ChiSquaredWeakDuality
 import Formalization.RobustRL.ChiSquaredPrimalDualWeakBridge
 import Formalization.RobustRL.SingletonActionCounterexample
 
+import Formalization.ModelFree.FiniteQ.Definitions
+import Formalization.ModelFree.FiniteQ.Unfolding
+import Formalization.ModelFree.FiniteQ.IterateBounds
+import Formalization.ModelFree.FiniteQ.Weights
+import Formalization.ModelFree.FiniteQ.Comparators
+import Formalization.ModelFree.FiniteQ.Stability
+import Formalization.ModelFree.FiniteQ.Propagation
+import Formalization.ModelFree.FiniteQ.CoordFreedman
+import Formalization.ModelFree.FiniteQ.GoodEvent
+import Formalization.ModelFree.FiniteQ.Arithmetic
+import Formalization.ModelFree.FiniteQ.Main
+import Formalization.ModelFree.FiniteQ.CounterexampleT1
 import Formalization.Statements.Ch2
 import Formalization.Statements.Ch2Proofs
 import Formalization.Statements.Ch3
@@ -722,6 +734,8 @@ import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPActualDecouplingEvent
 import Formalization.Online.Regret.MVP.Decoupling.DecouplingImageTransport
 import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPStackRankEventPairBounds
 import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPActualDecouplingSourceConfidence
+import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPClaimPVSlotIdentity
+import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPClaimPVSource
 import Formalization.Online.Regret.MVP.Main.MVPActualEpisodeTelescope
 import Formalization.Online.Regret.MVP.Main.MVPActualRegret
 import Formalization.Online.Regret.MVP.Main.MVPActualRegretDecomposition

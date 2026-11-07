@@ -6,6 +6,7 @@ import Formalization.ModelFree.TDSourceSamplingDefinitions
 import Formalization.ModelFree.QLearningSamplingDefinitions
 import Formalization.ModelFree.QLearningComparisonDefinitions
 import Formalization.ModelFree.QLearningRobustDefinitions
+import Formalization.ModelFree.FiniteQ.Definitions
 
 /-! Source-facing statement index for Chapter 4. -/
 open MeasureTheory ProbabilityTheory
@@ -283,5 +284,42 @@ def Lemma4_15 : Prop :=
         c / (Real.sqrt ((1 - γ) ^ 2 * T) * Real.log T) ≤
           ∫ data, qLbXiMax γ η (qSamplesExtend (qLbMDP γ (by linarith) hγ1) N data) t
             ∂qSamplingLaw (qLbMDP γ (by linarith) hγ1) N
+
+/-- Corrected Theorem 4.13, `thm:finite-horizon-simple-Q-generative`,
+`source/upstream/tex/chapters/generative_model_model_free.tex:2215–2236`, with the schedule
+`eq:thm:finite-horizaon-eta` (lines 2203–2209), the sample-size condition `eq:thm:finite-horizon-T`
+(lines 2220–2223) and synchronous Q-learning `eqn:q-learning-finite` with its empirical Bellman
+operator (lines 2181–2200).
+
+The only change from the printed result is the premise `2 ≤ T`. The printed schedule divides by
+`H log² T`, which is `0` at `T = 1`. Without the premise the Lean statement is false, not merely
+ill-posed: at `T = 1` the junk values `Real.log 1 = 0` and `x / 0 = 0` force `η_1 = 1` and make the
+sample-size condition `0 ≤ 1`, and a two-stage instance is never `1/4`-accurate
+(`StatisticalRL.FiniteQLearning.not_thm4_13_from_one`). See
+[`SOURCE-ISSUES.md#C35`](../../docs/SOURCE-ISSUES.md#C35).
+
+"Sufficiently small universal constants `c₁ ≥ c₂ > 0`" and "sufficiently large `c₃`" are read as:
+there is `c₀ > 0` such that every `0 < c₂ ≤ c₁ ≤ c₀` admits a universal `c₃ > 0`, chosen before the
+model, `δ`, `ε` and `T`. Stage `h : Fin H` is the source step `h + 1`, so the initialization bound
+`H + 1 - (h + 1)` is `H - h`. The terminal convention `Q_{t,H+1} ≡ 0`, left implicit in the source,
+is built into `FiniteQLearning.sampledIterate`. Iteration `t` uses the `t`-th of the `T`
+independent draws `s_{t,h}(s,a) ~ P_h(·|s,a)` of `FiniteHorizonGenerative.samplingLaw`. The
+probability is strictly greater than `1 - δ`, as printed. Neither `A ≥ 2` nor `0 < η_t < 1` is
+assumed. -/
+def Thm4_13_corrected : Prop :=
+  ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ c₂ : ℝ, 0 < c₂ → c₂ ≤ c₁ → c₁ ≤ c₀ → ∃ c₃ : ℝ, 0 < c₃ ∧
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H : ℕ) (E : Fin H → EnvironmentStage State Action) (η : ℕ → ℝ) (δ ε : ℝ) (T : ℕ),
+    2 ≤ T → 0 < δ → δ < 1 → 0 < ε → ε ≤ 1 →
+    (∀ t, t ≤ T →
+      1 / (1 + c₁ * T / (H * Real.log (T : ℝ) ^ 2)) ≤ η t ∧
+      η t ≤ 1 / (1 + c₂ * t / (H * Real.log (T : ℝ) ^ 2))) →
+    c₃ * (H : ℝ) ^ 4 * Real.log (T : ℝ) ^ 3 *
+      Real.log ((Fintype.card State : ℝ) * (Fintype.card Action : ℝ) * T / δ) / ε ^ 2 ≤ T →
+    ∀ Q₀ : Fin H → State → Action → ℝ,
+    (∀ h s a, 0 ≤ Q₀ h s a ∧ Q₀ h s a ≤ (H : ℝ) - h) →
+    1 - δ < (FiniteHorizonGenerative.samplingLaw E T).real {data | ∀ h s a,
+      |FiniteQLearning.sampledIterate E η T Q₀ data h s a -
+        EnvironmentStage.optimalQ ((List.ofFn E).drop h.val) s a| ≤ ε}
 
 end StatisticalRL.Statements.Ch4
