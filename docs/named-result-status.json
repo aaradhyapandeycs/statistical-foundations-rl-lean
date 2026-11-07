@@ -1091,6 +1091,23 @@
         "docs/critic-thm7-8-plan-check.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 6.16 (restricted to one explicit VI-LCB variant)",
+      "source_label": "thm:finite-VI-LCB",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "3093–3112",
+      "source_context_lines": "3020–3062 (algorithm sketch)",
+      "lean_export": "StatisticalRL.FiniteVILCB.finite_vilcb_restricted, with the bridges StatisticalRL.FiniteVILCB.isOptimal_of_optimal, StatisticalRL.FiniteVILCB.concentrability_eq_library and StatisticalRL.FiniteVILCB.gap_bridge",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_16_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_16_restricted_holds",
+      "statement_scope": "Restricted: the monograph states the result for an undefined variant of VI-LCB and cites li2024settling (C32). Proved for one explicitly defined variant (two-fold sample splitting with first-half-determined subsampling, backward pessimistic value iteration with a Bernstein-style penalty clipped at the next-stage value norm), which is not asserted to be li2024settling's algorithm. It keeps the printed rate K ≥ c_k H³ S C⋆ log(KH/δ)/ε² with c_k = 69120·c_b for any c_b ≥ 16: with probability ≥ 1−δ every greedy output is ε-optimal, for every optimal π⋆. Values and occupancies are the library objects. Adds only the domain conditions 0 < K and C⋆ < ∞. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm6-16.md",
+      "supporting_evidence": [
+        "docs/critic-thm6-16-integration.md",
+        "docs/critic-thm6-16-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }

@@ -13,6 +13,8 @@ import Formalization.OfflineRL.PreliminaryFacts
 import Formalization.OfflineRL.LowerBoundMinimax
 import Formalization.OfflineRL.BernsteinInfiniteData
 import Formalization.OfflineRL.VILCBTheorem
+import Formalization.OfflineRL.FiniteVILCB.Theorem
+import Formalization.OfflineRL.FiniteVILCB.LibraryBridge
 
 open MeasureTheory ProbabilityTheory
 
@@ -188,5 +190,27 @@ theorem Thm6_3_holds : Thm6_3.{u, v, w} :=
         hhalf τmax hτ ρ πstar hopt ε hε hε1 hC hN Ω μ⟩⟩
 
 end VILCBTheorem
+
+section FiniteVILCBTheorem
+
+universe u v w
+
+/-- Apply the library export `FiniteVILCB.finite_vilcb_restricted` with `c_b₀ = 16` and
+`c_k = 69120 c_b`, through the library bridges (`isOptimal_of_optimal`,
+`concentrability_eq_library`, `gap_bridge`); no new proof of the result. -/
+theorem Thm6_16_restricted_holds : Thm6_16_restricted.{u, v, w} := by
+  refine ⟨16, by norm_num, fun cb hcb ↦ ⟨69120 * cb, by linarith, ?_⟩⟩
+  intro S A _ _ _ _ H hH E πb ρb ρ πs hopt ε δ hε hεH hδ hδ1 K hK Cstar hC hKc Ω _ μ _ X hX hind
+    hlaw
+  have hconc : Cstar = FiniteVILCB.concentrability E πb ρb ρ πs :=
+    (FiniteVILCB.concentrability_eq_library E πb ρb ρ πs).symm
+  rw [hconc] at hC hKc
+  have h := FiniteVILCB.finite_vilcb_restricted H hH E πb ρb ρ πs
+    (FiniteVILCB.isOptimal_of_optimal E πs hopt) cb hcb ε δ hε hεH hδ hδ1 K hK hC hKc μ X hX hind
+    hlaw
+  simp only [FiniteVILCB.gap_bridge] at h
+  exact h
+
+end FiniteVILCBTheorem
 
 end StatisticalRL.Statements.Ch6

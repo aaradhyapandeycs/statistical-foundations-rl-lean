@@ -9,6 +9,8 @@ import Formalization.OfflineRL.VILCBDatasetDefinitions
 import Mathlib.InformationTheory.KullbackLeibler.Basic
 import Mathlib.Probability.Independence.Basic
 import Formalization.OfflineRL.LCBQDefinitions
+import Formalization.OfflineRL.FiniteVILCB.Definitions
+import Formalization.MDP.FiniteOccupancy
 
 /-! Chapter 6 source-facing statements. Corrected variants are labeled explicitly;
 this index does not claim that the full monograph is complete. -/
@@ -602,5 +604,76 @@ def Thm6_3 : Prop :=
             ≤ ε}
 
 end VILCBTheorem
+
+section FiniteVILCBTheorem
+
+universe w
+
+/-- **Theorem 6.16, restricted to one explicit variant** (`thm:finite-VI-LCB`,
+`chapters/offlineRL.tex:3093–3112`; setting `:2943–2973`, `C⋆` `:2983–2993`, algorithm
+`:3020–3062`). See `docs/SOURCE-ISSUES.md#C32`. The book asserts the guarantee for an undefined
+"variant of VI-LCB" and gives no proof. This entry is instantiated with one explicit variant,
+`FiniteVILCB.qhat`. It is our reconstruction; it is not asserted to be li2024settling's algorithm
+(that paper was not consulted), and no claim is made about that paper's algorithm or constants.
+* Two-fold split. Trajectories `k < ⌊K/2⌋` (auxiliary) only determine the trimmed counts
+  `m_h(s) = ⌊X_a(h,s)/4⌋` if `X_a(h,s) > 16ι`, and `0` otherwise. From the remaining (main)
+  trajectories, only the first `m_h(s)` visits to `(h,s)` (in index order) are used. Reading
+  `:3061` ("two-fold sample splitting") as aux-determined subsampling of the main half is ours.
+* Backward VI-LCB `Q̂_h = max{r_h + P̂_h V̂_{h+1} - b_h, 0}`, `V̂_H = 0` (stages `0,…,H-1`, the
+  paper's `h+1`), with `ι = log(16HK/δ)`. The penalty is `‖V̂_{h+1}‖` at zero count, and otherwise
+  `min{max{√(c_b ι Var_{P̂}(V̂_{h+1})/N), c_b H ι/N}, ‖V̂_{h+1}‖}` with `‖V‖ = max_s V(s)`; the
+  empirical row is uniform at zero count. The clip at `‖V̂_{h+1}‖` (mirroring the `1/(1-γ)` clip of
+  `def:bonus-Bernstein-infinite`, `:811–822`) gives `b ≡ 0` at the last stage, which is not
+  literally `Θ̃(H/N)` there and not strictly decreasing in `N`.
+* Output: the claim holds simultaneously for every greedy `π̂` (every tie rule).
+The algorithm reads only `c_b`, `δ`, the rewards and the data.
+
+Readings:
+* Constants: `c_b₀ = 16`, `c_k = 69120 c_b` (the printed existential constant).
+* `0 < K` is the domain of `log(KH/δ)`. At `K = 0`, Lean's `log 0 = 0` would make the condition
+  hold while the claim fails.
+* `C⋆ = max_{h,s,a} d⋆_h(s,a;ρ)/d^b_h(s,a)` is computed in `ℝ≥0∞` (`0/0 = 0`) from the library's
+  `stateActionOccupancy`. The premise `C⋆ ≠ ⊤` is essential: the printed condition cannot hold
+  otherwise, and `⊤.toReal = 0`.
+* `π⋆` is any deterministic policy optimal at every stage and state (`prelim.tex:740–745`), with
+  `C⋆` computed from it.
+* `V⋆` is `EnvironmentStage.optimalValue`; `V^{π̂}` is `DecisionStage.trajectoryValue` of the
+  deterministic `π̂`.
+* Data: `K` iid trajectories `s_0 ~ ρ^b`, `a_h ~ π^b_h(·|s_h)`, `s_{h+1} ~ P_h(·|s_h,a_h)`
+  (`eq:finite-batch-size-def`, law `FiniteVILCB.trajMeasure`). -/
+def Thm6_16_restricted : Prop :=
+  ∃ cb₀ : ℝ, 0 < cb₀ ∧ ∀ cb : ℝ, cb₀ ≤ cb → ∃ ck : ℝ, 0 < ck ∧
+    ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] [Nonempty S] [Nonempty A]
+      (H : ℕ), 0 < H →
+      ∀ (E : Fin H → EnvironmentStage S A) (πb : Fin H → StationaryPolicy S A)
+        (ρb ρ : FiniteDistribution S) (πs : Fin H → S → A),
+      (∀ (h : Fin H) (s : S), DecisionStage.trajectoryValue
+          (EnvironmentStage.controlled ((List.ofFn E).drop h.val)
+            (fun j ↦ FiniteVILCB.extPolicy (FiniteVILCB.detPolicy πs) (h.val + j))) s =
+        EnvironmentStage.optimalValue ((List.ofFn E).drop h.val) s) →
+      ∀ ε δ : ℝ, 0 < ε → ε ≤ H → 0 < δ → δ < 1 →
+      ∀ K : ℕ, 0 < K →
+      let Cstar : ENNReal := ⨆ (h : Fin H) (s : S) (a : A),
+        ENNReal.ofReal (DecisionStage.stateActionOccupancy
+            (EnvironmentStage.controlled (List.ofFn E)
+              (FiniteVILCB.extPolicy (FiniteVILCB.detPolicy πs))) ρ
+            (FiniteVILCB.stageIndex E (FiniteVILCB.extPolicy (FiniteVILCB.detPolicy πs)) h) s a) /
+          ENNReal.ofReal (DecisionStage.stateActionOccupancy
+            (EnvironmentStage.controlled (List.ofFn E) (FiniteVILCB.extPolicy πb)) ρb
+            (FiniteVILCB.stageIndex E (FiniteVILCB.extPolicy πb) h) s a)
+      Cstar ≠ ⊤ →
+      ck * (H : ℝ) ^ 3 * Fintype.card S * Cstar.toReal * Real.log (K * H / δ) / ε ^ 2 ≤ K →
+      ∀ (Ω : Type w) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ],
+      letI : MeasurableSpace (FiniteVILCB.Traj S A H) := ⊤
+      ∀ X : Ω → Fin K → FiniteVILCB.Traj S A H, Measurable X → iIndepFun (fun k ω ↦ X ω k) μ →
+      (∀ k, μ.map (fun ω ↦ X ω k) = FiniteVILCB.trajMeasure E πb ρb) →
+      1 - δ ≤ μ.real {ω | ∀ πhat : Fin H → S → A,
+        (∀ h s a, FiniteVILCB.qhat cb δ (fun h ↦ (E h).reward) (X ω) h s a ≤
+          FiniteVILCB.qhat cb δ (fun h ↦ (E h).reward) (X ω) h s (πhat h s)) →
+        ρ.expectation (EnvironmentStage.optimalValue (List.ofFn E)) -
+          ρ.expectation (DecisionStage.trajectoryValue (EnvironmentStage.controlled (List.ofFn E)
+            (FiniteVILCB.extPolicy (FiniteVILCB.detPolicy πhat)))) ≤ ε}
+
+end FiniteVILCBTheorem
 
 end StatisticalRL.Statements.Ch6

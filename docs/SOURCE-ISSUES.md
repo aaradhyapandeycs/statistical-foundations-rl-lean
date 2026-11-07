@@ -962,8 +962,9 @@ Note to C31 item 5 (2026-11-07): the copied-action encoding `qHardMDP` in `QLear
 **Source:** `chapters/offlineRL.tex`, Theorem 6.16 `thm:finite-VI-LCB` (finite-horizon VI-LCB, around line 3095).
 The monograph states the result for a "variant" of VI-LCB that it does not define, and gives no proof; it cites
 li2024settling. The statement can therefore not be checked against the book alone, and a formal proof requires
-reconstructing the cited algorithm and argument. No counterexample is claimed. Status: deferred; any formal entry
-must first pin the cited source and have its statement shape independently audited.
+reconstructing the cited algorithm and argument. No counterexample is claimed.
+
+Restricted result (2026-11-07). Instead of pinning the cited source, the project defines one explicit variant and proves the printed guarantee for it from scratch (`Thm6_16_restricted`, `Formalization/OfflineRL/FiniteVILCB/`): two-fold sample splitting in which the first half fixes, per (stage, state), how many visits of the second half are used (our reading of `:3061`), backward pessimistic value iteration with a Bernstein-style penalty clipped at the norm of the next-stage value (so the last-stage penalty is zero), first-visit ranks, a uniform row and penalty `‖V̂_{h+1}‖` at zero count. The entry is restricted to this variant and does not assert that it is li2024settling's algorithm. It keeps the printed rate `K ≥ c_k H³ S C⋆ log(KH/δ)/ε²` with `c_k = 69120·c_b`, holds for every greedy output and every optimal π⋆, and adds only the domain conditions `0 < K` (the logarithm's domain) and `C⋆ < ∞`. Values and occupancies are the library's objects. Independently plan-checked and source-reviewed. Not author-approved.
 
 <a id="C33"></a>
 ## Candidate C33: Theorem 6.17 relies on an outside proof and an under-specified algorithm
@@ -971,12 +972,11 @@ must first pin the cited source and have its statement shape independently audit
 Theorem 6.17 `thm:lcbq` (`offlineRL.tex:3176–3192`) relies on shi2022pessimistic for its proof. Its algorithm
 (`:3126–3148`) leaves the initialisation, the value update `V_{h+1}`, the output/tie rule, and the constant and
 log power of the Θ̃ penalty `eq:lcb-q-penalty` unspecified. The algorithm box is commented out with an
-`\yc{to update}` marker (`:3150–3173`). If Θ̃ hides `ι²` or more, the statement is false: in an H = 1, two-arm
-instance the pessimistic bias at the optimal arm is `≳ c_b ε√ι/√c_a`. With the natural completion (`Q ≡ V ≡ 0`,
-monotone V, strict-increase policy rule from `alg:q-infinite-lcb`, `b_n = c_b √(H³ι²/n)`), the C24 log²
-obstruction does not apply, since `log³ ≥ log²`. Status: deferred.
+`\yc{to update}` marker (`:3150–3173`).
 
-Note: the counterexample for penalties hiding ι² or more is from a design preflight and has not yet been independently re-derived.
+Classification (two independent source checks, 2026-11-07): the printed statement is under-specified, not false. Write the penalty as `b_n = c_b √(H³L/n)` with `ι = log(SAK/δ)`. If the hidden factor is `L = ι^{2a}` with `a > 3/2`, the statement fails for every choice of constants: an H = 1, two-arm instance with a suitably small exit gap `p ∝ ι^{-(2a−3)}` makes the algorithm output the wrong arm (gap 1/2) with probability ≈ 1, for every initial policy and tie rule. At `a = 3/2` it fails exactly when `c_a < c_b²/32`. So reading Θ̃ as "any such penalty" is false, while reading it as "some such penalty" is true (proof planned for every `ι ≤ L ≤ ι³`). No Lean evidence yet.
+
+Planned restricted entry `Thm6_17_restricted`: one explicit completion (zero initialisation, arbitrary initial policy, forward stage order within an episode, rate `(H+1)/(H+n)`, penalty `c_b √(H³L/n)` for any `ι ≤ L ≤ ι³`, monotone value, policy changed only on a strict value increase as in `alg:q-infinite-lcb` rather than the literal "greedy w.r.t. the final Q" of `:3145`, C⋆ defined with a deterministic optimal policy). Whether the final-greedy output or backward stage order also work is open. Not author-approved.
 
 <a id="C34"></a>
 ## Candidate C34: Theorem 4.12 fails at T = 1 and needs μ_min > 0; proof outside the monograph
