@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Restricted Theorem 6.16 (finite-horizon VI-LCB)
+
+Theorem 6.16, which the monograph states for an undefined variant of VI-LCB and cites without proof, is proved from scratch for one explicit variant at the printed rate, with library value and occupancy objects (C32). The named-result ledger now has 81 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Corrected Theorem 7.8 (multi-agent lower bound)
 
 Theorem 7.8, which the monograph states without proof, is proved in a corrected form from scratch: under the known-shared-reward convention, with m, S, H, max A ≥ 2 and estimators allowed to output correlated joint policies, every adaptive randomized learner below the printed sample budget fails with probability at least 1/4 (Assouad-style hidden-action construction, explicit constants). The named-result ledger now has 80 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
