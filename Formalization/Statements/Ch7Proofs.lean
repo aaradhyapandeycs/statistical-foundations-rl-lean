@@ -1,6 +1,7 @@
 import Formalization.Statements.Ch7
 import Formalization.RobustRL.TVSourceMaximum
 import Formalization.RobustRL.ChiSquaredSourceMaximum
+import Formalization.Ch7Rest.LowerBound710
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -135,5 +136,16 @@ theorem Lemma7_1_holds : Lemma7_1 := by
     simpa [StatisticalRL.RobustRL.ChiSquaredPrimalDualWeakBridge.dualObjective,
       StatisticalRL.FiniteDistribution.variance,
       StatisticalRL.FiniteDistribution.expectation] using hmax'
+
+
+/-- `Thm7_10` from `lowerBound_of_fewRounds_onRange` with `c₀ = 1`, `C_γ = lbConst 1 γ`. -/
+theorem Thm7_10_holds : Thm7_10 := by
+  refine ⟨1, one_pos, StatisticalRL.Ch7Rest.FedGeneric.lbConst 1, fun γ hγ hγ1 ↦
+    ⟨StatisticalRL.Ch7Rest.FedGeneric.lbConst_pos 1 γ (by linarith) hγ1, ?_⟩⟩
+  intro State Action _ _ hS hA T B 𝒞 η hT _ hB _ hT𝒞 hη hround
+  obtain ⟨M, hM, hK⟩ := StatisticalRL.Ch7Rest.FedGeneric.lowerBound_of_fewRounds_onRange 1 γ
+    (by linarith) hγ1 State Action (by omega) (by omega) T B 𝒞 η hT hB hT𝒞
+    (StatisticalRL.Ch7Rest.FedGeneric.printedRates_mem_Icc γ hγ1 T η hη) hround
+  exact ⟨M, hM, fun K hK2 ↦ hK K (by omega)⟩
 
 end StatisticalRL.Statements.Ch7

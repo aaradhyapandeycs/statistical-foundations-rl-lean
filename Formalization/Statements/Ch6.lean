@@ -365,13 +365,15 @@ Tie rule: the arg max in the policy update is `sel` applied to the current Q-row
 with the arg-max property. This covers every deterministic tie rule that depends only on the
 Q-row (for example any rule on the arg-max set). It does not cover tie rules that depend on the
 state, the iteration or the history.
+Because the printed algorithm leaves the arg-max tie rule unspecified, this entry is indexed as
+`Lemma6_9_restricted` (`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`).
 Proof route: the printed proof applies Azuma–Hoeffding at random visit times without a filtration
 (`docs/SOURCE-ISSUES.md#C28`, part 2). The formal proof instead conditions on the state-action
 labels; given them the successors are independent, the visit ranks are fixed and the run is causal.
 It applies Azuma–Hoeffding to each `(s,a,n)` and takes a union bound with radius
 `2√(H log(2SAT/δ)/(n(1-γ)²))`, which is absorbed for `c_b ≥ 4` (at `T = 1` the martingale term is
 `0`). This is an alternative proof, not a validation of the printed step. -/
-def Lemma6_9 : Prop :=
+def Lemma6_9_restricted : Prop :=
   ∃ cb₀ : ℝ, 0 < cb₀ ∧ ∀ cb : ℝ, cb₀ ≤ cb →
     ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
       (db : FiniteDistribution (S × A)) (sel : (A → ℝ) → A), (∀ (f : A → ℝ) (a : A), f a ≤ f (sel f)) →
@@ -447,7 +449,7 @@ def Lemma6_10_restricted : Prop :=
 /-- **Lemma 6.12, restricted variant** (`lem:lcbq-alpha-xi-psi-phi-bound`,
 `chapters/offlineRL.tex:2309–2324`; proof `:4786–5496`). The five sequences are `eq:dj-offlineQ` and
 `eq:five-sequence-def-offlineQ` (`:1970–2015`), and their limits `α, ξ, θ, ψ, φ` are those of
-`eq:five-terms-def-offlineQ` (`:2276`). The algorithm, data model and `C⋆` are as in `Lemma6_9`,
+`eq:five-terms-def-offlineQ` (`:2276`). The algorithm, data model and `C⋆` are as in `Lemma6_9_restricted`,
 and `C⋆` refers to the deterministic policy `πstar`.
 
 Difference from the printed lemma: it adds the premise `log(SAT/δ) ≥ 1`. This premise is
@@ -497,7 +499,7 @@ def Lemma6_12_restricted : Prop :=
 
 /-- **Theorem 6.8, corrected** (`theorem:lcbq`, `chapters/offlineRL.tex:1754–1772`; sample-size
 condition `eq:sample-size-lcbq-T-thm` at `:1767`; proof `:1804–2357`). The algorithm, data model and
-`C⋆` are as in `Lemma6_9`. `π̂ = π_T` is the output policy of `OfflineRL.LCBQ.run` on the `T` iid
+`C⋆` are as in `Lemma6_9_restricted`. `π̂ = π_T` is the output policy of `OfflineRL.LCBQ.run` on the `T` iid
 triples. `V⋆(ρ) − V^{π̂}(ρ)` is computed with the actual trajectory values, with `ρ` the test
 distribution.
 
