@@ -941,3 +941,5 @@ Source: Appendix C, `generative_model_model_free.tex:2707–3956`; `lem:lower-bo
 (5) Encoding note: "S = 4, A = 2" uses state-dependent action sets. Padding states 0, 2, 3 by duplicating their action is not harmless at state 2 (Q-learning would take a max of two independently sampled copies); a dominated dummy action (reward 0, deterministic move to state 0) leaves every recursion and `V⋆` unchanged.
 
 None of (1)–(5) changes the printed statements of Theorem 4.7 (ii) or Lemma 4.15; they change only the unnamed constants `c`, `c_lb` and the size of `c₃`.
+
+Note to C31 item 5 (2026-11-07): the copied-action encoding `qHardMDP` in `QLearningHardMDPDefinitions.lean` (used by Lemma 4.14) is fine for optimal values but unsuitable for Q-learning dynamics; Theorem 4.7 and Lemma 4.15 use `qLbMDP` with dominated dummy actions (`qLbMDP_optimal_values`).

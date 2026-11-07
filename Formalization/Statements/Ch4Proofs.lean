@@ -1,4 +1,5 @@
 import Formalization.ModelFree.QLearningHardMDPValues
+import Formalization.ModelFree.QLearningLowerBoundTheorem
 import Formalization.ModelFree.QLearningStepSizeSource
 import Formalization.ModelFree.TDStepSizeLate
 import Formalization.Statements.Ch4
@@ -93,5 +94,9 @@ theorem Lemma4_9_holds : Lemma4_9 := by
 theorem Lemma4_14_holds : Lemma4_14 := by
   intro γ hγ hγ1
   exact qHardMDP_optimal_values γ hγ hγ1
+
+theorem Thm4_7_restricted_holds : Thm4_7_restricted := qLb_thm47_constantRate
+
+theorem Lemma4_15_holds : Lemma4_15 := qLb_lemma415
 
 end StatisticalRL.Statements.Ch4

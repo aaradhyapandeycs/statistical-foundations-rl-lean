@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Q-learning lower bound: restricted Theorem 4.7 and Lemma 4.15; source issues C30, C31
+
+Theorem 4.7 is indexed as `Thm4_7_restricted` (constant learning rates; the rescaled-linear case is not proved in the source, C30) and Lemma 4.15 as printed, with printed-proof slips repaired (C31). Both independently source-reviewed. The named-result ledger now has 72 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## LCB-Q: Lemma 6.9, restricted Lemmas 6.10 and 6.12, corrected Theorem 6.8; source issues C28, C29
 
 The LCB-Q algorithm is modelled (`Formalization/OfflineRL/LCBQ*.lean`). Lemma 6.9 is proved as printed; Lemma 6.10 is indexed as `Lemma6_10_restricted` because the printed lemma omits the large-c_b premise and is false without it (C28). Lemma 6.12 is indexed as `Lemma6_12_restricted` under the sufficient premise log(SAT/δ) ≥ 1 (C24), with printed-proof gaps repaired (C29). Theorem 6.8 is indexed as `Thm6_8_corrected` (log² in the sample-size condition, C24). All independently source-reviewed. The named-result ledger now has 70 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
