@@ -424,6 +424,8 @@ candidate records the asserted error.
   `n` iid draws from `P_{s,a}` on an arbitrary probability space, and `V` is independent of that row
   (`:1126–1128`, `:3970–3972`).
 
+- Lemma 6.12 (`lem:lcbq-alpha-xi-psi-phi-bound`, `offlineRL.tex:2309–2324`) is indexed as `Lemma6_12_restricted`. It has the added premise `log(SAT/δ) ≥ 1`, which is sufficient for `κ < 1` and `H ≍ ι/(1−γ)`; the printed lemma fails for small `ι` (see [C24](#C24)). The premise is not minimal: any `ι ≥ c > 3/4` would do with a larger constant, and the excluded band requires `SAT ≤ 2`. The source's `c_b` "sufficiently large" is stated as `∃ c_b₀, ∀ c_b ≥ c_b₀` (`c_b₀ = 4`, as in [C28](#C28)). The `≲` constant is an existential `C` that depends only on `c_b` (`C = 400000 + 5600 c_b`). `α = 0` is stated as `α_j → 0`; `ξ, θ, ψ, φ` are stated as `HasSum` limits. The `θ` and `ψ+φ` bounds are stated under `C⋆ < ∞`, since otherwise the printed right sides are `+∞`. No sample-size condition on `T` is assumed, although the printed proof uses Theorem 6.8's. The hypotheses that `π⋆` is optimal and that ties are broken by a maximiser are carried as in the source but are not used.
+
 - Lemma 6.14 (`lemma:value-policy-LB-inf`, `offlineRL.tex:2544–2583`) is indexed as
   `Lemma6_14_restricted`. All values, the policy upper bound with equality at `π⋆` and
   `π⋆(0|0) = 1` are proved for every `ε ≥ 0`; the claim `π⋆(θ_s|s) = 1` is proved for `ε > 0`
@@ -831,6 +833,8 @@ states the lemma with this premise and an existential universal constant; its pr
 `C = 84`. **Open (formal coverage only):** the corner `δ > SAT/e` of Theorem 6.8's uses is not
 covered by `Lemma6_11_restricted`; the argument above is not yet formalized.
 
+**Formal coverage (Theorem 6.8):** closed by a different route. `Thm6_8_corrected` does not apply Lemma 6.11 in the corner `δ > SAT/e`. The theorem's own hypotheses (log² condition, `c₂ ≥ 16`) force `|A| = 1` there, and the claim then holds surely (see C24). The `γ ≤ 2/c₂`, `κ ≤ 1/2`, constant-84 argument above concerns the printed single-log condition and is not formalized. It is no longer needed, because the printed Theorem 6.8 is itself refuted (C24). Lemma 6.11 as printed still fails in the corner; `Lemma6_11_restricted` remains the formal entry.
+
 <a id="C23"></a>
 ## Candidate C23: covering-set size in the offline Bernstein leave-one-out proof assumes N ≥ 5
 
@@ -864,10 +868,12 @@ The printed condition `T ≥ c₂ S C⋆ log(SAT/((1−γ)δ))/((1−γ)⁵ε²)
 
 **Counterexample (statement):** fix any `c_b, c₂ > 0`. Take one state, two actions, `γ = 0`, `r(a⋆) = 1`, `r(a₂) = 1/2`, `ε = 1/4`, `d^b(a⋆) = p = c₂/(64c_b²⌈4ι⌉)` (so `C⋆ = 1/p`), `T = ⌈c₂ι/(pε²)⌉` and `δ = 2Te^{−ι}` with `ι` large (`ι ≳ 2.8c₂/c_b²`). With `γ = 0` one has `Q(a) = r(a) − Σ_i η_i^n b_i ∈ [r(a) − 2b_n, r(a) − b_n]`. On `{N⋆ ≤ 2pT}` (probability ≥ 1/2 by Markov) we get `sup_t Q_t(a⋆) < Q_T(a₂)` and `Q_T(a₂) > 0`, so the last strict `V` increase selects `a₂`, whatever the initial policy and tie rule. The gap is `1/2 > ε` with probability `≥ 1/2 > δ`. Exact simulations (for example `c_b = c₂ = 1`, `T ≈ 3.7·10⁶`) return `a₂` in every run, even at 8 times the single-log threshold. Failure persists for `T ≲ c·c_b²C⋆ι²/ε²`, so `ι²` is necessary for this algorithm and sufficient given the proof's lemmas.
 
-**Lemma 6.12:** as printed, the lemma fails when `log(SAT/δ) < 1` (only possible when `SAT ≤ 2`). With `S = A = T = 1`, `γ = 0` and `ι ≤ 1/4`: `H = 1` and `θ = min{3c_b√ι, 1}`, which is not `≲ ι`. With `γ = 1/2` and `ι ≤ 1/8`: `κ = 4`, so `α = ξ = ∞`. Under `ι ≥ 1` one has `κ < 1` and `H ≍ ι/(1−γ)`. The corner does not affect Theorem 6.8: either `A = 1`, where the theorem is trivial, or the sample-size condition is infeasible for `c₂ > 1/log 2`. Related: C22 (Lemma 6.11).
+**Lemma 6.12:** as printed, the lemma fails when `log(SAT/δ) < 1` (only possible when `SAT ≤ 2`). With `S = A = T = 1`, `γ = 0` and `ι ≤ 1/4`: `H = 1` and `θ = min{3c_b√ι, 1}`, which is not `≲ ι`. With `γ = 1/2` and `ι ≤ 1/8`: `κ = 4`, so `α = ξ = ∞`. Under `ι ≥ 1` one has `κ < 1` and `H ≍ ι/(1−γ)`. The corner does not affect Theorem 6.8: either `A = 1`, where the theorem is trivial, or the sample-size condition is infeasible for `c₂ > 1/(log 2)²` (under log²; `2/(log 2)²` for all of `SAT = 2`). Related: C22 (Lemma 6.11).
 
 **Proposed correction:** replace `log(SAT/((1−γ)δ))` by `log²(SAT/((1−γ)δ))` in `eq:sample-size-lcbq-T-thm`, and add `log(SAT/δ) ≥ 1` to Lemma 6.12, or state it under that premise. A formal entry should be `Thm6_8_corrected`, not `Thm6_8`.
 
+
+**Formal entry:** `Thm6_8_corrected` (`Formalization/Statements/Ch6.lean`) states Theorem 6.8 with `log²(SAT/((1−γ)δ))` in place of `log(SAT/((1−γ)δ))` in `eq:sample-size-lcbq-T-thm`, quantified as `∃ c_b₀ > 0, ∀ c_b ≥ c_b₀, ∃ c₂ > 0` (the proof gives `c_b₀ = 4`, `c₂ = 16(400000 + 5600c_b)²`; `c₂` must grow with `c_b`, per the counterexample above). Other explicit hypotheses: `1 ≤ T`, `C⋆ < ∞` (when `C⋆ = ∞` the printed condition cannot hold, so nothing is lost), `π⋆` any Q⋆-greedy deterministic policy used in `C⋆`, `0 < ε ≤ 1/(1−γ)`, i.i.d. samples from `d^b ⊗ P`, conclusion with probability strictly greater than `1−δ` for the output `π_T`. Scope: arg-max ties are broken by a deterministic selector that depends only on the Q-row `Q(s,·)`; the source allows any deterministic rule. The corner `log(SAT/δ) < 1` is handled inside the proof: it forces `SAT ≤ 2`; `SAT = 2` contradicts the log² condition for `c₂ ≥ 16` (since then `T ≤ 2` and `log(SAT/((1−γ)δ)) > log 2`), and `SAT = 1` gives `|A| = 1`, where the gap is 0. (The `1/log 2` threshold above refers to the printed single-log condition; under log² the nontrivial case `S = T = 1, A = 2` is infeasible for `c₂ > 1/(log 2)²`.)
 
 <a id="C25"></a>
 ## Candidate C25: Theorem 5.19 proof omits odd S
@@ -883,3 +889,55 @@ The printed condition `T ≥ c₂ S C⋆ log(SAT/((1−γ)δ))/((1−γ)⁵ε²)
 ## Candidate C27: Theorem 5.19 proof, omitted reductions
 
 `chapters/onlineRL.tex:2759–2765, 2850–2858, 3085–3110`: the reduction from the MDP learner to a Lemma 5.21 bandit algorithm, and the conditioning on the initial-state sequence `J`, are asserted in prose only. The induced algorithm keeps persistent internal state (simulated steps and components), while Lemma 5.21's class is `π^t(·|x_{t−1})`, so a mixed-to-behavioral reduction is implicitly used. Both steps are true. The formalization instead proves the coordinatewise testing bound directly from the adaptive KL chain rule on the episode-history law (`HistoryKL.history_sum_KL_le`).
+
+<a id="C28"></a>
+
+## Candidate C28: Lemma 6.10 omits the c_b premise; Lemma 6.9 proof applies Azuma at undefined random visit times
+
+**Source:** `chapters/offlineRL.tex`, Lemma 6.9 `lemma:Q-recursion-pessimistic-Q` (:1866–1893, proof :4415–4528) and Lemma 6.10 `lemma:pessimistic-Q` (:1907–1916, proof :4530–4672).
+
+(1) Lemma 6.10 does not repeat Lemma 6.9's requirement that `c_b` be large enough, and its proof depends on Lemma 6.9. As a standalone claim for an arbitrary universal `c_b > 0`, it fails. Counterexample: `S = {0,1}`, one action, `P(·|0) = (½,½)`, `P(·|1) = δ_1`, `r = (0,1)`, `γ = ½`, `d^b` uniform, `T = 3`, `δ = 0.01`. Exact enumeration gives `P(∃t: Q_t ≰ Q⋆) = 1/16 > δ` for `c_b ≤ 10⁻³`. The premise is the standing assumption of Theorem 6.8 (:1764). The formal entry states it as `∃ c_b₀, ∀ c_b ≥ c_b₀` (`c_b₀ = 4`).
+
+(2) The proof of Lemma 6.9 (:4476–4491) applies Azuma–Hoeffding "for fixed ℓ" to `Σ_{i≤ℓ} η_i^ℓ (P_{s,a} − P_{k_i})V_{k_i−1}`. It names no filtration, and `k_i` is undefined when `i` exceeds the number of visits within `T` iterations. The step can be repaired, by zero-padding with optional sampling or by conditioning on the state-action labels. The latter is the formal route, with the union over `(s,a,n)` at radius `2√(H log(2SAT/δ)/(n(1−γ)²))`. Separately, the absorption `log(2SAT²/δ) ≲ ι` fails for `S = A = T = 1`, `δ > ½`; the conclusion still holds there because the martingale term vanishes at `T = 1`.
+
+Neither point changes Lemma 6.9 or Theorem 6.8.
+
+
+<a id="C29"></a>
+## Candidate C29: Lemma 6.12 proof — confidence budget, φ on poorly covered pairs, Freedman on a non-predictable event
+
+Source: proof of `lem:lcbq-alpha-xi-psi-phi-bound`, `offlineRL.tex:4786–5496`.
+
+(1) The proof combines the Lemma 6.10 event, the prefix-count event (`eq:prefix-count-lower-bound-lcbq`) and two Freedman events, each at confidence `1−δ`, but concludes `1−δ`. Rescaling is not free, because `δ` enters `H` and `b_n`. Repair: run each event at `δ/5`, absorb `log 5` into `ι ≥ 1`, and take `c_b` large enough for Lemma 6.9 at `δ/5`.
+
+(2) The `φ` bound is omitted as "analogous" (`:5483–5485`), but the sign that disposes of poorly covered pairs in `κ₁` is reversed in `φ`. The sampled term `g_t(X_t)` enters positively, with envelope `≲ C⋆/(1−γ)² + δ/(ST⁴(1−γ)²d^b)`, which is unbounded as `d^b → 0`, because `d̃` can exceed `d⋆/(1−γ)` by `(1+1/H)^{3J}` at depth `J ≫ H`. Repair: intersect with the event that no sample hits a pair `(s,π⋆(s))` with `d^b < δ/(5ST)` (probability `≥ 1−δ/5`).
+
+(3) Freedman (`lem:Freedman-prelim`) is applied with the conditional-variance bound `E[Z_t²|F_{t−1}] ≲ C⋆(1−γ)^{-2} E f_{t−1}`. That bound uses `Δ ≥ 0`, which holds only on the Lemma 6.10 event, not predictably. The cited lemma also conditions on the summands' own past rather than on `F_{t−1}`. Repair: gate each summand by the `F_{t−1}`-measurable predicate `V_v ≤ V⋆ ∀ v ≤ t−1` and apply Freedman with the data filtration; on the pessimism event, gated equals ungated.
+
+The statement of Lemma 6.12 (under `ι ≥ 1`) is unaffected. The formal proof follows these repairs and needs no sample-size condition (its Freedman peeling uses `log(2T/(δ/5)) ≤ 4ι`).
+
+<a id="C30"></a>
+## Candidate C30: Theorem 4.7 case (i) (rescaled linear learning rates) is not proved in the source
+
+Source: `thm:LB-example-Q-generative`, `generative_model_model_free.tex:969–982`; proof scope sentence `:2711`.
+
+The theorem covers (i) `η_t = 1/(1+c_η(1−γ)t)` for any constant `c_η > 0` and (ii) constant `η_t ≡ η ∈ (0,1)`. Appendix C proves only (ii); (i) is deferred to li2024q ("similar"). The constant-rate argument does not transfer verbatim: Steps 3–5 use the closed forms `η_k^{(t)} = η(1−η(1−γp))^{t−k}`, the regime split of a single `η` against `4/((1−γ)T)` and `1/((1−γ)²T)`, and the window `t−1/η`. For order-one `c_η`, `η_T ≍ 1/(c_η(1−γ)T)`, so the state-2 variance route gives only `≍ 1/(c_η(1−γ)³T)`, and the over-estimation argument with time-varying weights is required. The printed text also makes `c_lb` "universal" while `c_η` is arbitrary; whether `c_lb` can be chosen independently of `c_η` is not settled by the source.
+
+Formal entry: `Thm4_7_restricted` (case (ii) only). Case (i) remains an open obligation.
+
+<a id="C31"></a>
+## Candidate C31: Theorem 4.7 proof (constant rates) and Lemma 4.15 proof — constant slips, an off-by-one, an unused WLOG
+
+Source: Appendix C, `generative_model_model_free.tex:2707–3956`; `lem:lower-bound-E-xi-lower-Q` `:3429–3449`.
+
+(1) WLOG `eq:logT_ub` (`:2711–2716`) is justified by comparison with the minimax bound of `theorem:azar`, which concerns a worst case over an MDP family under a different criterion and does not bound Q-learning on this instance. It is never used afterwards; the formal proof does not assume it.
+
+(2) Step 4 (`:3227–3252`): the factor is `81(1−γ)²`, not `81(1−γ)²/4` (only `V⋆(2) − E V_{τ−1}(2) > 1/(4(1−γ))` is available); the bound `≤ 1/2` still holds. The final constant `(4γ−1)/192 ≥ 1/86` needs `γ ≥ 139/172`; at `γ = 3/4` it is `1/96`. The sum over `k = τ+2,…,T` needs `τ ≤ T−2`, which holds (`η_0^{(T−2)} ≤ (9/4)/100`).
+
+(3) Lemma 4.15 proof: in `eq:square-zeta` (i) the coefficient is `(4γ−1)/(144(1−γ))`, which equals `1/(72(1−γ))` at `γ = 3/4` and is below `1/(48(1−γ))` for every `γ < 1`; (ii) becomes `η/(1728(1−γ))`. `eqn:tail-bunny` does not follow from `lem:Freedman-prelim` (K₀ = 1) with the stated variance cap `2S/(3(1−γ))`: the square-root term is `√(16 S log(2/δ)/(3(1−γ)))`, a factor `√2` larger. `τ′ = max{t − 1/η, 1}` is not an integer; summing over integers `k ≥ τ′` keeps both bounds of `eq:sum-LB-1/8-890`.
+
+(4) Step 5.4 (`:3477–3510`): with `x_{τ̂} = 0` the closed form is `x_T = c′(1 − ρ^{T−τ̂})/(1−γp)`, `ρ = 1−η(1−γp)`, not `ρ^{T−τ̂+1}`. Maximality of `τ̂` gives `ρ^{T−τ̂} > 6/7`, so the printed `≥ 1/7` fails for every instance. Repair: `1 − ρ^{T−τ̂} ≥ 1 − (6/7)/ρ ≥ 0.137` when `c₃ ≥ 50`. The comparison `E Δ_{T,max} ≥ x_T` is valid but needs `E Δ_{t,max} ≥ 0` for all `t` (induction from `Δ₀ = 0` and `E ξ_{t,max} ≥ 0`).
+
+(5) Encoding note: "S = 4, A = 2" uses state-dependent action sets. Padding states 0, 2, 3 by duplicating their action is not harmless at state 2 (Q-learning would take a max of two independently sampled copies); a dominated dummy action (reward 0, deterministic move to state 0) leaves every recursion and `V⋆` unchanged.
+
+None of (1)–(5) changes the printed statements of Theorem 4.7 (ii) or Lemma 4.15; they change only the unnamed constants `c`, `c_lb` and the size of `c₃`.

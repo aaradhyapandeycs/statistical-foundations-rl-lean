@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## LCB-Q: Lemma 6.9, restricted Lemmas 6.10 and 6.12, corrected Theorem 6.8; source issues C28, C29
+
+The LCB-Q algorithm is modelled (`Formalization/OfflineRL/LCBQ*.lean`). Lemma 6.9 is proved as printed; Lemma 6.10 is indexed as `Lemma6_10_restricted` because the printed lemma omits the large-c_b premise and is false without it (C28). Lemma 6.12 is indexed as `Lemma6_12_restricted` under the sufficient premise log(SAT/δ) ≥ 1 (C24), with printed-proof gaps repaired (C29). Theorem 6.8 is indexed as `Thm6_8_corrected` (log² in the sample-size condition, C24). All independently source-reviewed. The named-result ledger now has 70 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Online minimax lower bound (Theorem 5.19, Lemmas 5.20, 5.21)
 
 Theorem 5.19 and Lemmas 5.20–5.21 are proved as printed, using a new finite adaptive-data KL chain rule (`Formalization/Probability/AdaptiveKL.lean`) in place of the printed reductions; proof gaps in the printed argument are recorded as C25–C27. All independently source-reviewed. The named-result ledger now has 66 covered entries out of 90. The complete monograph remains **INCOMPLETE**.

@@ -8,6 +8,7 @@ import Formalization.Probability.FiniteSampleDefinitions
 import Formalization.OfflineRL.VILCBDatasetDefinitions
 import Mathlib.InformationTheory.KullbackLeibler.Basic
 import Mathlib.Probability.Independence.Basic
+import Formalization.OfflineRL.LCBQDefinitions
 
 /-! Chapter 6 source-facing statements. Corrected variants are labeled explicitly;
 this index does not claim that the full monograph is complete. -/
@@ -339,5 +340,207 @@ def Lemma6_6 : Prop :=
                 ((1 - p.γ) ^ 2 * (p.input (X ω)).count s a)}
 
 end BernsteinInfinite
+
+
+section LCBQ
+
+universe w
+
+/-- **Lemma 6.9** (`lemma:Q-recursion-pessimistic-Q`, `chapters/offlineRL.tex:1866–1893`; proof
+`:4415–4528`). For some `c_b₀ > 0` and every `c_b ≥ c_b₀` ("provided that the constant `c_b` is
+large enough", `:1884`), with probability at least `1 − δ`, simultaneously for all `1 ≤ t ≤ T`, all
+`(s,a)` and all deterministic `π` (including data-dependent ones), `eq:qstar-recursion-lcbq` and
+`eq:uniform-policy-pessimism-recursion` hold. `β_n = 3c_b√(Hι/(n(1-γ)²))` for `n ≥ 1`; `β_0 = +∞`
+is encoded by stating (a) only for `0 < n`. The proof supplies `c_b₀ = 4`.
+
+Model (`alg:q-infinite-lcb`, `chapters/offlineRL.tex:1701–1745`, parameters
+`eq:stepsize-penalty-offlineQ` `:1663–1689`): `OfflineRL.LCBQ.run` runs the algorithm on the `T` data
+triples `X ω`, which are iid with `(s,a) ~ d^b` and `s' ~ P(·|s,a)` (`eq:sampling-offline-inf-iid`,
+`:28–39`), from `Q ≡ 0`, `V ≡ 0`, `n ≡ 0` and an arbitrary initial deterministic policy `π₀`.
+`ι = log(SAT/δ)` and `H = ⌈4ι/(1-γ)⌉`. `visitTime (X ω) (s,a) i` is the zero-based index of the
+`(i+1)`-st visit, so `(it (k i)).V` is the source's `V_{k_{i+1}(s,a)-1}`. `Q⋆` is the optimality
+Bellman fixed point and `V⋆` is the trajectory value of the optimal greedy policy; `Q^π, V^π` are the
+actual trajectory Q and V of the deterministic policy `π`.
+Tie rule: the arg max in the policy update is `sel` applied to the current Q-row, for every `sel`
+with the arg-max property. This covers every deterministic tie rule that depends only on the
+Q-row (for example any rule on the arg-max set). It does not cover tie rules that depend on the
+state, the iteration or the history.
+Proof route: the printed proof applies Azuma–Hoeffding at random visit times without a filtration
+(`docs/SOURCE-ISSUES.md#C28`, part 2). The formal proof instead conditions on the state-action
+labels; given them the successors are independent, the visit ranks are fixed and the run is causal.
+It applies Azuma–Hoeffding to each `(s,a,n)` and takes a union bound with radius
+`2√(H log(2SAT/δ)/(n(1-γ)²))`, which is absorbed for `c_b ≥ 4` (at `T = 1` the martingale term is
+`0`). This is an alternative proof, not a validation of the printed step. -/
+def Lemma6_9 : Prop :=
+  ∃ cb₀ : ℝ, 0 < cb₀ ∧ ∀ cb : ℝ, cb₀ ≤ cb →
+    ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
+      (db : FiniteDistribution (S × A)) (sel : (A → ℝ) → A), (∀ (f : A → ℝ) (a : A), f a ≤ f (sel f)) →
+      ∀ (π₀ : S → A) (T : ℕ) (δ : ℝ), 0 < δ → δ < 1 →
+      ∀ (Ω : Type w) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ],
+      letI : MeasurableSpace ((S × A) × S) := ⊤
+      ∀ X : Ω → Fin T → (S × A) × S, Measurable X → iIndepFun (fun i ω => X ω i) μ →
+      (∀ i, μ.map (fun ω => X ω i) = ∑ x : (S × A) × S,
+        ENNReal.ofReal (db.prob x.1 * (M.transition x.1.1 x.1.2).prob x.2) • Measure.dirac x) →
+      1 - δ ≤ μ.real {ω | ∀ t, 1 ≤ t → t ≤ T → ∀ (s : S) (a : A),
+        let γ := M.discount
+        let ι := OfflineRL.LCBQ.iota S A T δ
+        let H := OfflineRL.LCBQ.horizon γ ι
+        let it := OfflineRL.LCBQ.run M cb δ sel π₀ (X ω)
+        let k := OfflineRL.LCBQ.visitTime (X ω) (s, a)
+        let n := (it t).count s a
+        (0 < n → M.optimalityFixedPoint s a - (it t).Q s a ≤
+            γ * ∑ i ∈ Finset.range n, OnlineRL.onlineQRateWeight H n (i + 1) *
+              (M.transition s a).expectation (fun s' =>
+                M.trajectoryExpectedValue M.optimalGreedyPolicy s' - (it (k i)).V s') +
+            3 * cb * Real.sqrt (H * ι / (n * (1 - γ) ^ 2))) ∧
+        ∀ π : S → A,
+          γ * ∑ i ∈ Finset.range n, OnlineRL.onlineQRateWeight H n (i + 1) *
+              (M.transition s a).expectation (fun s' =>
+                M.trajectoryExpectedValue (fun x => EnvironmentStage.pointMass (π x)) s' -
+                  (it (k i)).V s') ≤
+            M.trajectoryExpectedQ (fun x => EnvironmentStage.pointMass (π x)) s a - (it t).Q s a}
+
+/-- **Lemma 6.10, restricted variant** (`lemma:pessimistic-Q`, `chapters/offlineRL.tex:1907–1916`;
+proof `:4530–4672`). With probability exceeding `1 − δ`, `Q_t ≤ Q⋆` and `V_t ≤ V^{π_t} ≤ V⋆` for all
+`(s,a)` and all `1 ≤ t ≤ T` (`eq:pessimistic-lcbq`), where `π_t` is the policy iterate
+(`eq:analysis-policy-lcbq`, `:1825–1831`).
+Difference from the printed lemma: it adds the premise `∃ c_b₀ > 0, ∀ c_b ≥ c_b₀`. The printed
+lemma states no condition on `c_b`, and for small `c_b` it is false (exact counterexample in
+`docs/SOURCE-ISSUES.md#C28`). The premise is the standing assumption of Lemma 6.9 (`:1884`) and of
+Theorem 6.8 (`:1764`), whose proof uses this lemma. The proof supplies `c_b₀ = 4`.
+
+Model (`alg:q-infinite-lcb`, `chapters/offlineRL.tex:1701–1745`, parameters
+`eq:stepsize-penalty-offlineQ` `:1663–1689`): `OfflineRL.LCBQ.run` runs the algorithm on the `T` data
+triples `X ω`, which are iid with `(s,a) ~ d^b` and `s' ~ P(·|s,a)` (`eq:sampling-offline-inf-iid`,
+`:28–39`), from `Q ≡ 0`, `V ≡ 0`, `n ≡ 0` and an arbitrary initial deterministic policy `π₀`.
+`ι = log(SAT/δ)` and `H = ⌈4ι/(1-γ)⌉`. `visitTime (X ω) (s,a) i` is the zero-based index of the
+`(i+1)`-st visit, so `(it (k i)).V` is the source's `V_{k_{i+1}(s,a)-1}`. `Q⋆` is the optimality
+Bellman fixed point and `V⋆` is the trajectory value of the optimal greedy policy; `Q^π, V^π` are the
+actual trajectory Q and V of the deterministic policy `π`.
+Tie rule: the arg max in the policy update is `sel` applied to the current Q-row, for every `sel`
+with the arg-max property. This covers every deterministic tie rule that depends only on the
+Q-row (for example any rule on the arg-max set). It does not cover tie rules that depend on the
+state, the iteration or the history.
+Proof route: the printed proof applies Azuma–Hoeffding at random visit times without a filtration
+(`docs/SOURCE-ISSUES.md#C28`, part 2). The formal proof instead conditions on the state-action
+labels; given them the successors are independent, the visit ranks are fixed and the run is causal.
+It applies Azuma–Hoeffding to each `(s,a,n)` and takes a union bound with radius
+`2√(H log(2SAT/δ)/(n(1-γ)²))`, which is absorbed for `c_b ≥ 4` (at `T = 1` the martingale term is
+`0`). This is an alternative proof, not a validation of the printed step. -/
+def Lemma6_10_restricted : Prop :=
+  ∃ cb₀ : ℝ, 0 < cb₀ ∧ ∀ cb : ℝ, cb₀ ≤ cb →
+    ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
+      (db : FiniteDistribution (S × A)) (sel : (A → ℝ) → A), (∀ (f : A → ℝ) (a : A), f a ≤ f (sel f)) →
+      ∀ (π₀ : S → A) (T : ℕ) (δ : ℝ), 0 < δ → δ < 1 →
+      ∀ (Ω : Type w) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ],
+      letI : MeasurableSpace ((S × A) × S) := ⊤
+      ∀ X : Ω → Fin T → (S × A) × S, Measurable X → iIndepFun (fun i ω => X ω i) μ →
+      (∀ i, μ.map (fun ω => X ω i) = ∑ x : (S × A) × S,
+        ENNReal.ofReal (db.prob x.1 * (M.transition x.1.1 x.1.2).prob x.2) • Measure.dirac x) →
+      1 - δ < μ.real {ω | ∀ t, 1 ≤ t → t ≤ T →
+        let it := OfflineRL.LCBQ.run M cb δ sel π₀ (X ω) t
+        (∀ s a, it.Q s a ≤ M.optimalityFixedPoint s a) ∧
+        ∀ s, it.V s ≤ M.trajectoryExpectedValue (fun x => EnvironmentStage.pointMass (it.policy x)) s ∧
+          M.trajectoryExpectedValue (fun x => EnvironmentStage.pointMass (it.policy x)) s ≤
+            M.trajectoryExpectedValue M.optimalGreedyPolicy s}
+
+/-- **Lemma 6.12, restricted variant** (`lem:lcbq-alpha-xi-psi-phi-bound`,
+`chapters/offlineRL.tex:2309–2324`; proof `:4786–5496`). The five sequences are `eq:dj-offlineQ` and
+`eq:five-sequence-def-offlineQ` (`:1970–2015`), and their limits `α, ξ, θ, ψ, φ` are those of
+`eq:five-terms-def-offlineQ` (`:2276`). The algorithm, data model and `C⋆` are as in `Lemma6_9`,
+and `C⋆` refers to the deterministic policy `πstar`.
+
+Difference from the printed lemma: it adds the premise `log(SAT/δ) ≥ 1`. This premise is
+sufficient (it gives `κ < 1` and `H ≍ ι/(1-γ)`). It is not the exact region where the printed
+lemma fails. The printed lemma fails when `ι` is small, see `docs/SOURCE-ISSUES.md#C24`.
+
+The following are faithful readings, not restrictions:
+- "`c_b` large enough" is `∃ c_b₀, ∀ c_b ≥ c_b₀`, and `≲` is a constant `C` that depends only on
+  `c_b`. The proof gives `c_b₀ = 4` and `C = 400000 + 5600 c_b`.
+- `α = 0` is stated as `α_j → 0`. `ξ, θ, ψ, φ` are `HasSum` limits.
+- The `θ` and `ψ + φ` bounds are guarded by `C⋆ ≠ ⊤`; when `C⋆ = ⊤` the printed right-hand sides
+  are `+∞`.
+- No sample-size condition on `T` is assumed, although the printed proof uses that of Theorem 6.8.
+- The hypotheses that `πstar` is `Q⋆`-greedy and that `sel` maximises are carried as in the
+  source. The proof does not use them.
+
+The printed proof has gaps: the confidence budget, `φ` on poorly covered pairs, and Freedman on a
+non-predictable event. See `docs/SOURCE-ISSUES.md#C29`. The formal proof repairs them: each of
+five events is run at `δ/5`, there is a no-poorly-covered-sample event, and the Freedman tests are
+gated. -/
+def Lemma6_12_restricted : Prop :=
+  ∃ cb₀ : ℝ, 0 < cb₀ ∧ ∀ cb : ℝ, cb₀ ≤ cb → ∃ C : ℝ, 0 < C ∧
+    ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
+      (db : FiniteDistribution (S × A)) (sel : (A → ℝ) → A), (∀ (f : A → ℝ) (a : A), f a ≤ f (sel f)) →
+      ∀ (π₀ : S → A) (T : ℕ) (δ : ℝ), 0 < δ → δ < 1 →
+      ∀ (ρ : FiniteDistribution S) (πstar : S → A),
+      (∀ s, letI : Nonempty A := M.action_nonempty
+        M.optimalityFixedPoint s (πstar s) = actionMaximum (M.optimalityFixedPoint s)) →
+      1 ≤ OfflineRL.LCBQ.iota S A T δ →
+      ∀ (Ω : Type w) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ],
+      letI : MeasurableSpace ((S × A) × S) := ⊤
+      ∀ X : Ω → Fin T → (S × A) × S, Measurable X → iIndepFun (fun i ω => X ω i) μ →
+      (∀ i, μ.map (fun ω => X ω i) = ∑ x : (S × A) × S,
+        ENNReal.ofReal (db.prob x.1 * (M.transition x.1.1 x.1.2).prob x.2) • Measure.dirac x) →
+      1 - δ ≤ μ.real {ω |
+        let γ := M.discount
+        let ι := OfflineRL.LCBQ.iota S A T δ
+        let Cs := OfflineRL.LCBQ.concentrability M ρ πstar db
+        Filter.Tendsto (OfflineRL.LCBQ.alphaSeq M cb δ sel π₀ (X ω) ρ πstar) Filter.atTop
+          (nhds 0) ∧
+        (∃ ξ, HasSum (OfflineRL.LCBQ.xiSeq M cb δ sel π₀ (X ω) ρ πstar) ξ ∧ ξ ≤ C / (1 - γ) ^ 2) ∧
+        (∃ θ, HasSum (OfflineRL.LCBQ.thetaSeq M cb δ sel π₀ (X ω) ρ πstar) θ ∧
+          (Cs ≠ ⊤ → θ ≤ C * Real.sqrt (Cs.toReal * Fintype.card S * T * ι ^ 2 / (1 - γ) ^ 5))) ∧
+        (∃ ψ φ, HasSum (OfflineRL.LCBQ.psiSeq M cb δ sel π₀ (X ω) ρ πstar db) ψ ∧
+          HasSum (OfflineRL.LCBQ.phiSeq M cb δ sel π₀ (X ω) ρ πstar db) φ ∧
+          (Cs ≠ ⊤ → ψ + φ ≤ C * Cs.toReal * ι ^ 2 / (1 - γ) ^ 3))}
+
+/-- **Theorem 6.8, corrected** (`theorem:lcbq`, `chapters/offlineRL.tex:1754–1772`; sample-size
+condition `eq:sample-size-lcbq-T-thm` at `:1767`; proof `:1804–2357`). The algorithm, data model and
+`C⋆` are as in `Lemma6_9`. `π̂ = π_T` is the output policy of `OfflineRL.LCBQ.run` on the `T` iid
+triples. `V⋆(ρ) − V^{π̂}(ρ)` is computed with the actual trajectory values, with `ρ` the test
+distribution.
+
+The only mathematical change from the printed theorem is in the sample-size condition: it uses
+`log²(SAT/((1-γ)δ))` where the print has `log(SAT/((1-γ)δ))`. As printed, the theorem is false; see
+`docs/SOURCE-ISSUES.md#C24`.
+
+The guards are faithful readings:
+- `1 ≤ T` is the well-definedness condition for `ι` and `H`.
+- `C⋆ ≠ ⊤` encodes "`C⋆` finite". With `C⋆ = ∞` the printed condition cannot be met, but Lean's
+  `⊤.toReal = 0` would make it trivially true.
+- `c_b` sufficiently large is read as `∃ c_b₀, ∀ c_b ≥ c_b₀, ∃ c₂`. The proof gives `c_b₀ = 4` and
+  `c₂ = 16 (400000 + 5600 c_b)²`.
+- `π⋆` may be any `Q⋆`-greedy deterministic policy.
+- `0 < ε ≤ 1/(1-γ)`, and the probability bound is strict, as printed.
+
+Tie-rule scope: the source allows an arbitrary deterministic tie rule. Here the arg max in the
+policy update is `sel` applied to the current Q-row only, so rules that depend on the state, the
+iteration or the history are not covered. The corner `δ > SAT/e`, that is `log(SAT/δ) < 1`, is
+handled inside the proof from the theorem's own hypotheses: it forces `|A| = 1`, where the gap is
+`0`. See `docs/SOURCE-ISSUES.md#C22`. -/
+def Thm6_8_corrected : Prop :=
+  ∃ cb₀ : ℝ, 0 < cb₀ ∧ ∀ cb : ℝ, cb₀ ≤ cb → ∃ c₂ : ℝ, 0 < c₂ ∧
+    ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
+      (db : FiniteDistribution (S × A)) (sel : (A → ℝ) → A), (∀ (f : A → ℝ) (a : A), f a ≤ f (sel f)) →
+      ∀ (π₀ : S → A) (T : ℕ) (δ : ℝ), 0 < δ → δ < 1 → 1 ≤ T →
+      ∀ (ρ : FiniteDistribution S) (πstar : S → A),
+      (∀ s, letI : Nonempty A := M.action_nonempty
+        M.optimalityFixedPoint s (πstar s) = actionMaximum (M.optimalityFixedPoint s)) →
+      ∀ ε : ℝ, 0 < ε → ε ≤ 1 / (1 - M.discount) →
+      OfflineRL.LCBQ.concentrability M ρ πstar db ≠ ⊤ →
+      c₂ * Fintype.card S * (OfflineRL.LCBQ.concentrability M ρ πstar db).toReal *
+          Real.log ((Fintype.card S : ℝ) * Fintype.card A * T / ((1 - M.discount) * δ)) ^ 2 /
+          ((1 - M.discount) ^ 5 * ε ^ 2) ≤ T →
+      ∀ (Ω : Type w) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ],
+      letI : MeasurableSpace ((S × A) × S) := ⊤
+      ∀ X : Ω → Fin T → (S × A) × S, Measurable X → iIndepFun (fun i ω => X ω i) μ →
+      (∀ i, μ.map (fun ω => X ω i) = ∑ x : (S × A) × S,
+        ENNReal.ofReal (db.prob x.1 * (M.transition x.1.1 x.1.2).prob x.2) • Measure.dirac x) →
+      1 - δ < μ.real {ω | ρ.expectation (M.trajectoryExpectedValue M.optimalGreedyPolicy) -
+        ρ.expectation (M.trajectoryExpectedValue (fun x => EnvironmentStage.pointMass
+          ((OfflineRL.LCBQ.run M cb δ sel π₀ (X ω) T).policy x))) ≤ ε}
+
+end LCBQ
 
 end StatisticalRL.Statements.Ch6
