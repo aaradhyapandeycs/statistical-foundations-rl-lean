@@ -513,6 +513,9 @@ import Formalization.Ch7Rest.FedPrinted79
 import Formalization.Ch7Rest.LargeStep79
 import Formalization.Ch7Rest.RlhfPrinted712
 import Formalization.Ch7Rest.VPOIllPosed712
+import Formalization.Ch7Rest.FedGeneric710
+import Formalization.Ch7Rest.LowerBound710
+import Formalization.Ch7Rest.InnerConstant710
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope

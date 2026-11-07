@@ -140,7 +140,7 @@ section LCBQ
 universe u v w
 
 /-- Apply the library export `lemma69_prob` (with `c_b₀ = 4`); no new proof. -/
-theorem Lemma6_9_holds : Lemma6_9.{u, v, w} := by
+theorem Lemma6_9_restricted_holds : Lemma6_9_restricted.{u, v, w} := by
   refine ⟨4, by norm_num, fun cb hcb S A _ _ M db sel _ π₀ T δ hδ hδ1 Ω _ μ _ => ?_⟩
   intro X hX hind hmarg
   have h := OfflineRL.LCBQ.lemma69_prob M cb δ sel π₀ hcb db T hδ hδ1 μ X hX hind hmarg

@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Theorem 7.10 (federated lower bound) and Chapter 7 source issues
+
+Theorem 7.10 is proved as printed under the reading with the universal constant c₀ quantified first, and refuted in Lean under the reading with c₀ inside the hypothesis (C42); the printed statement is degenerate (doubly exponentially small constant). Printed Theorems 7.2, 7.3, 7.4, 7.8 and 7.9 are refuted in Lean and 7.12 is shown ill-posed (C37, C38, C40, C41, C44); these refutations are not counted as proved results. Lemma 6.9 is now indexed as `Lemma6_9_restricted` (tie-rule scope). The named-result ledger now has 77 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Restricted Theorem 5.1 (UCB bandit regret)
 
 Both printed regret bounds of Theorem 5.1 are proved with the printed hypotheses, for every deterministic tie rule that depends on the round and the argmax set (history-dependent and randomized ties are not covered). The printed Step 1 argument is invalid under adaptive sampling (C36); the formal proof replaces it with an adaptive Gaussian exponential-martingale tail. Independently source-reviewed. The named-result ledger now has 76 covered entries out of 90. The complete monograph remains **INCOMPLETE**.

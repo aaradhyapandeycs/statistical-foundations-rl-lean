@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-05",
+  "updated_at": "2026-11-07",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -297,6 +297,176 @@
         "docs/online-MVP-counts-profiles-verification.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 2.4",
+      "source_label": "lem:Hoeffding-prelim",
+      "source_file": "chapters/prelim.tex",
+      "source_lines": "939–950",
+      "lean_export": "StatisticalRL.FiniteDistribution.randomBorelFamily_empiricalRow_success_gt",
+      "lean_statement": "StatisticalRL.Statements.Lemma2_4",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma2_4_holds",
+      "statement_scope": "Printed Hoeffding bound for N>0 i.i.d. draws and 0<δ<1, uniformly over a finite (possibly empty) random family of nonnegative vectors that is measurable and independent of the empirical row; the bound holds for every member with probability greater than 1−δ.",
+      "evidence": "docs/critic-lemma2-4-hoeffding.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 2.5",
+      "source_label": "lem:Bernstein-prelim",
+      "source_file": "chapters/prelim.tex",
+      "source_lines": "956–978",
+      "lean_export": "StatisticalRL.FiniteDistribution.randomBorelFamily_bernstein_source and StatisticalRL.FiniteDistribution.randomBorelFamily_matrixBernstein_of_rowMarginals",
+      "lean_statement": "StatisticalRL.Statements.Lemma2_5",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma2_5_holds",
+      "statement_scope": "Both printed displays: the single-row Bernstein bound and the whole-matrix bound over all (s,a) with 4SA|𝒱|/δ, for rows with the correct i.i.d. law (any cross-row dependence allowed, so the independent generative model is included) and a random family independent of the empirical matrix. Trivially satisfied Nonempty premises are stated explicitly.",
+      "evidence": "docs/critic-lemma2-5-bernstein.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 2.10",
+      "source_label": "lem:fano",
+      "source_file": "chapters/prelim.tex",
+      "source_lines": "1141–1168",
+      "source_context_lines": "1140–1202 (full lemma environment)",
+      "lean_export": "StatisticalRL.PrelimFano.fano_binary_infimum_lower and StatisticalRL.PrelimFano.fano_multi_infimum_lower",
+      "lean_statement": "StatisticalRL.Statements.Lemma2_10",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma2_10_holds",
+      "statement_scope": "Both printed parts, each with both inequalities of its chain, for probability laws on an arbitrary measurable space, with p_e and p̄_e as infima over deterministic measurable tests. Part (iii) is commented out in the source. The printed premise β<1 is kept although unused.",
+      "evidence": "docs/critic-lemma2-10-fano.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 2.12",
+      "source_label": "lem:KL-tensorize",
+      "source_file": "chapters/prelim.tex",
+      "source_lines": "1313–1319",
+      "lean_export": "StatisticalRL.PrelimKL.klDiv_pi_eq_sum",
+      "lean_statement": "StatisticalRL.Statements.Lemma2_12",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma2_12_holds",
+      "statement_scope": "KL divergence of finite product measures equals the sum of the coordinate KL divergences in ℝ≥0∞, for finitely many probability measures on arbitrary measurable spaces (indexed by any finite type, which includes the printed Fin n case and infinite values).",
+      "evidence": "docs/critic-lemma2-12-kl-tensorize.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 4.15",
+      "source_label": "lem:lower-bound-E-xi-lower-Q",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "3429–3449",
+      "lean_export": "StatisticalRL.QLearning.qLb_lemma415",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_15",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_15_holds",
+      "statement_scope": "Printed lower bound on E ξ with its Step-5 context written out and the existence of τ̂ part of the statement, for all t ≥ τ̂. Proved by a moment route instead of the printed Freedman step (C31).",
+      "evidence": "docs/critic-thm4-7-lemma4-15.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 5.19",
+      "source_label": "thm:minimax-lower-online",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "2443–2456",
+      "lean_export": "StatisticalRL.OnlineLowerBound.minimax_lower_online",
+      "lean_statement": "StatisticalRL.Statements.Thm5_19",
+      "lean_statement_proof": "StatisticalRL.Statements.Thm5_19_holds",
+      "statement_scope": "Printed statement: ∃ c₀>0 (witness 1/1536) such that for S≥2, A≥3, H≥2, K≥1 a finite family of episodic MDPs forces expected regret ≥ c₀·min{√(H³SAK), HK} for every history-dependent learner with a finite internal seed. Printed-proof gaps are recorded as C25–C27; the formal proof uses a direct adaptive-data KL chain rule.",
+      "evidence": "docs/critic-thm5-19-lemmas5-20-5-21.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.20",
+      "source_label": "lem:Vh-star-Vhpi-gap-lower-bound-online-final",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "2654–2668",
+      "lean_export": "StatisticalRL.OnlineLowerBound.onlineLBSub_value_gap",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_20",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_20_holds",
+      "statement_scope": "Printed value-gap bound for the printed hard sub-MDP, H≥2 and 0<ε≤H/2 (the source's standing range).",
+      "evidence": "docs/critic-thm5-19-lemmas5-20-5-21.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 5.21",
+      "source_label": "lem:online-lb-testing",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "2709–2721",
+      "lean_export": "StatisticalRL.OnlineLowerBound.bandit_testing",
+      "lean_statement": "StatisticalRL.Statements.Lemma5_21",
+      "lean_statement_proof": "StatisticalRL.Statements.Lemma5_21_holds",
+      "statement_scope": "Printed testing bound: for A≥3 and t≤H³A/(18ε²), average next-arm error ≥1/3 for every history-dependent learner with a finite seed (a learner class containing the source's).",
+      "evidence": "docs/critic-thm5-19-lemmas5-20-5-21.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.6",
+      "source_label": "lem:Bernstein-infinite",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "1147–1163",
+      "lean_export": "StatisticalRL.OfflineVILCB.LeaveOneOut.bernsteinInfinite_iid",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_6",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_6_holds",
+      "statement_scope": "Printed leave-one-out Bernstein bounds with printed constants for γ≥1/2, i.i.d. triples, every fixed point of T_pess, every pair with N_{s,a}>0 and every Ṽ in the printed ball, with probability ≥1−δ. The zero-count case is excluded because the printed bounds divide by N_{s,a} (statement-index scope disclosure); the printed-proof gap is repaired as in C23.",
+      "evidence": "docs/critic-lemma6-6-6-18.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.18",
+      "source_label": "lem:Bernstein-infinite-proof",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "3635–3662",
+      "lean_export": "StatisticalRL.OfflineVILCB.BernsteinInfinite.bernsteinInfinite_fixedRow",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_18",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_18_holds",
+      "statement_scope": "Printed fixed-row Bernstein bounds in conditional-on-counts form: for n=N_{s,a}>0 i.i.d. draws and V independent of the empirical row with 0≤V≤1/(1−γ), both bounds hold with probability ≥1−8δ for 0<δ<1/8.",
+      "evidence": "docs/critic-lemma6-6-6-18.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.15",
+      "source_label": "lem:transition-KL-bound-infinite",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "2835–2865",
+      "lean_export": "StatisticalRL.OfflineRL.LowerBound.lb_transition_kl",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_15",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_15_holds",
+      "statement_scope": "Printed transition KL bound with explicit universal constant c₃=16·336² for every θ, θ̃, positive state and action under the construction's standing assumptions: 0 when θ_s=θ̃_s and at most c₃(1−γ)³ε² otherwise. The printed mis-citation of the Bernoulli KL step is recorded as C21; the conclusion is unaffected.",
+      "evidence": "docs/critic-lemma6-15.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 6.13",
+      "source_label": "thm:infinite-lwoer-bound",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "2367–2402",
+      "lean_export": "StatisticalRL.OfflineRL.LowerBound.offline_minimax_lower_bound",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_13",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_13_holds",
+      "statement_scope": "Printed hypotheses and conclusion: ∃ c₂>0 such that for γ∈[2/3,1), S>12, C⋆>2, ε≤1/(672(1−γ)) there are S-state two-action instances with concentrability in [C⋆,2C⋆] on which every estimator (deterministic map from N i.i.d. samples to a stationary policy) has ρ-gap >ε with probability ≥1/4 when N≤c₂SC⋆/((1−γ)³ε²). ε≤0 is handled as in C9; externally randomized estimators are not covered literally.",
+      "evidence": "docs/critic-thm6-13.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 6.3",
+      "source_label": "thm:infinite-offline",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "899–920",
+      "lean_export": "StatisticalRL.OfflineVILCB.Theorem63.vilcb_infinite_offline",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_3",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_3_holds",
+      "statement_scope": "Printed theorem under its only coherent quantifier reading ∃c_b₀ ∀c_b≥c_b₀ ∃c₁ (witnesses 96 and 10⁴c_b; a c₁ uniform in c_b is false): for γ∈[1/2,1), C⋆<∞, any Q⋆-greedy π⋆ and the printed sample-size condition, every greedy output policy is ε-optimal on ρ with probability ≥1−2δ. Lemma 6.7's restricted premises, Lemma 6.6's positive-count scope and C10/C19/C23 are discharged inside the proof.",
+      "evidence": "docs/critic-thm6-3.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.10",
+      "source_label": "thm:lower_bound",
+      "source_file": "chapters/federated_RL.tex",
+      "source_lines": "227–239",
+      "source_context_lines": "166–220 (Algorithm 7.3)",
+      "lean_export": "StatisticalRL.Ch7Rest.FedGeneric.lowerBound_of_fewRounds_onRange",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_10",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_10_holds",
+      "statement_scope": "Printed lower bound under the natural reading with the universal constant c₀ quantified first, for every schedule with few communication rounds, both printed learning-rate families and K≥2 agents; with c₀ inside the hypothesis the statement is refuted (not_thm7_10_innerConstant). Only exact averaging is modelled, not an arbitrary distributed mean-estimation routine, and the constant C_γ is doubly exponentially small, so the discussion after the theorem is not established (C42).",
+      "evidence": "docs/critic-thm7-10.md",
+      "coverage": "docs/COVERAGE.md"
     }
   ],
   "proved_variants": [
@@ -556,6 +726,131 @@
       "lean_statement": "StatisticalRL.Statements.Lemma5_18_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_18_restricted_holds",
       "statement_scope": "Both source clauses on one actual-law event: simultaneous nonnegative Q-error with the weighted prior-visit continuation-gap bound, plus all-stage V optimism, strict success >1-delta, H,K>=1, 0<delta<1, cb=2 and residual constant8. Fixed deterministic maximizing tie and initial nonterminal V=H are disclosed in C20. Observed successor/count law and uniform concentration are proved, not additional hypotheses."
+    },
+    {
+      "name": "Theorem 3.7 (corrected variant)",
+      "source_label": "theorem:azar",
+      "source_file": "chapters/generative_model_model_based.tex",
+      "source_lines": "1443–1464",
+      "lean_export": "StatisticalRL.GenerativeLowerBound.theorem37_corrected_fin_carriers",
+      "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_7_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_7_corrected_holds",
+      "statement_scope": "Corrected: the printed theorem is false (C1, C2). Proved for S≥2 and SA≥16 with A≥2 for part (i) only, the printed γ/ε ranges and sample bound, a uniform constant (witness 1/32768), probability ≥1/4, deterministic estimators given the known reward and discount, and witness MDPs on Fin S × Fin A. This does not certify the printed theorem.",
+      "evidence": "docs/critic-thm3-7-corrected.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 4.7, case (ii) (restricted variant)",
+      "source_label": "thm:LB-example-Q-generative",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "969–982",
+      "lean_export": "StatisticalRL.QLearning.qLb_thm47_constantRate",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_7_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_7_restricted_holds",
+      "statement_scope": "Restricted to case (ii) (constant learning rates): ∃c₃, c_lb (16, e^{−16}) such that for γ∈[3/4,1), T≥c₃/(1−γ)² and η∈(0,1) a 4-state 2-action MDP with dominated dummy actions has E[(V̂_T(s)−V⋆(s))²] ≥ c_lb/((1−γ)⁴T log²T) at some s. Case (i) is not proved in the source and stays open (C30); printed-proof slips are repaired as in C31.",
+      "evidence": "docs/critic-thm4-7-lemma4-15.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 4.13 (corrected variant, T≥2)",
+      "source_label": "thm:finite-horizon-simple-Q-generative",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "2215–2236",
+      "source_context_lines": "2181–2209 (algorithm and schedule)",
+      "lean_export": "StatisticalRL.FiniteQLearning.finiteQLearning_sample_complexity",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_13_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_13_corrected_holds",
+      "statement_scope": "Corrected: the printed statement with only 2≤T added; without it the statement is false (not_thm4_13_from_one). With probability >1−δ the sampled Q-learning iterates are ε-accurate at every stage, for ∃c₀ ∀0<c₂≤c₁≤c₀ ∃c₃ (c₀=1/64, c₃=8000/c₂). The stability step is deterministic rather than via KL/Pinsker (C35).",
+      "evidence": "docs/critic-thm4-13-corrected.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Claim 5.1 (corrected restricted variant)",
+      "source_label": "claim:PV-l-UB",
+      "source_file": "chapters/onlineRL.tex",
+      "source_lines": "4340–4353",
+      "lean_export": "StatisticalRL.OnlineRL.claimPV_eventConfidence",
+      "lean_statement": "StatisticalRL.Statements.Claim5_1_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Claim5_1_corrected_holds",
+      "statement_scope": "Corrected and restricted: on the actual sequential MVP experiment both per-level bounds hold for every 1≤l≤log₂K with probability >1−δ′, using the reciprocal allocation δ′=δ/(100S²A²H²K²) and one fixed committed maximizing tie rule, with the C8, C13, C15 and C17 repairs. The claim at the printed allocation is neither proved nor refuted; the printed proof's use of Lemma 5.13 at l=1 is replaced by a deterministic argument (C16).",
+      "evidence": "docs/critic-claim5-1-corrected.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 5.1 (restricted tie-rule variant)",
+      "source_label": "thm:bandit-pure-ucb",
+      "source_file": "chapters/bandits.tex",
+      "source_lines": "258–277",
+      "lean_export": "StatisticalRL.Bandit.ucb_regret_bounds",
+      "lean_statement": "StatisticalRL.Statements.Thm5_1_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Thm5_1_restricted_holds",
+      "statement_scope": "Restricted: both printed bounds, E Regret ≤ 8√(AT log(T²/δ)) and ≤ 10 log(T²/δ) Σ_{Δ(a)>0} 1/Δ(a), with exactly the printed hypotheses (2≤A≤T, means in [0,1], 0<δ<1) and i.i.d. N(0,1) noise, for deterministic tie rules depending on the round and the argmax set only; history-dependent and randomized ties are not covered. The printed Step 1 is invalid under adaptive sampling and is replaced by an adaptive Gaussian exponential-martingale tail (C36).",
+      "evidence": "docs/critic-thm5-1-restricted.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.9 (restricted tie-rule variant)",
+      "source_label": "lemma:Q-recursion-pessimistic-Q",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "1866–1893",
+      "lean_export": "StatisticalRL.OfflineRL.LCBQ.lemma69_prob",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_9_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_9_restricted_holds",
+      "statement_scope": "Restricted: for c_b≥4, with probability ≥1−δ both printed recursions hold for all 1≤t≤T, all (s,a) and every deterministic π, for every arg-max tie rule depending only on the Q-row; tie rules depending on the state, iteration or history are not covered (renamed from Lemma6_9 on 2026-11-07 for this scope; statement content unchanged). The proof conditions on the label sequence instead of the printed Azuma step (C28).",
+      "evidence": "docs/critic-lemma6-9-6-10.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.10 (restricted variant, c_b large)",
+      "source_label": "lemma:pessimistic-Q",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "1907–1916",
+      "lean_export": "StatisticalRL.OfflineRL.LCBQ.lemma610_prob",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_10_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_10_restricted_holds",
+      "statement_scope": "Restricted: the printed lemma omits the requirement that c_b be large and is false for small c_b (C28). With ∃c_b₀ ∀c_b≥c_b₀ (the standing assumption of Lemma 6.9 and Theorem 6.8), Q_t≤Q⋆ and V_t≤V^{π_t}≤V⋆ hold with probability >1−δ, for tie rules depending only on the Q-row.",
+      "evidence": "docs/critic-lemma6-9-6-10.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.11 (restricted variant, log(SAT/δ)≥1)",
+      "source_label": "lemma:useful",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "2292–2300",
+      "lean_export": "StatisticalRL.OfflineRL.LCBQ.lcbq_useful",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_11_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_11_restricted_holds",
+      "statement_scope": "Restricted: with explicit universal constant 84 for the actual time-j state laws and discounted occupancy of the optimal greedy policy, every 0<δ<1, T≥1 and W≥0, under the added sufficient premise log(SAT/δ)≥1. The printed lemma is false without some such premise (C22); its uses with δ>SAT/e are not covered by this entry, and Theorem 6.8 handles that corner inside its own proof.",
+      "evidence": "docs/critic-lemma6-11-restricted.md",
+      "supporting_evidence": [
+        "docs/critic-c22-lemma6-11-disclosure.md",
+        "docs/critic-c22-lemma6-11-disclosure-followup.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Lemma 6.12 (restricted variant, log(SAT/δ)≥1)",
+      "source_label": "lem:lcbq-alpha-xi-psi-phi-bound",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "2309–2324",
+      "lean_export": "StatisticalRL.OfflineRL.LCBQ.lemma612_prob",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_12_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_12_restricted_holds",
+      "statement_scope": "Restricted: under the added sufficient premise log(SAT/δ)≥1 (C24), for c_b≥4 with constant C=400000+5600c_b, with probability ≥1−δ: α_j→0, ξ≤C/(1−γ)², θ≤C√(C⋆STι²/(1−γ)⁵) and ψ+φ≤C·C⋆ι²/(1−γ)³ (C⋆<∞), with no sample-size condition. Printed-proof gaps are repaired as in C29.",
+      "evidence": "docs/critic-lemma6-12-restricted.md",
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 6.8 (corrected variant)",
+      "source_label": "theorem:lcbq",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "1754–1772",
+      "lean_export": "StatisticalRL.OfflineRL.LCBQ.thm68_corrected_prob",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_8_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_8_corrected_holds",
+      "statement_scope": "Corrected: the printed theorem is false (C24). With log²(SAT/((1−γ)δ)) in the sample-size condition (the only change), c_b≥4, c₂=16(400000+5600c_b)², T≥1, C⋆<∞, any Q⋆-greedy π⋆ and ε∈(0,1/(1−γ)], the output policy is ε-optimal on ρ with probability >1−δ, for tie rules depending only on the Q-row. The δ>SAT/e corner is handled inside the proof (C22). This does not certify the printed theorem.",
+      "evidence": "docs/critic-thm6-8-corrected.md",
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }
