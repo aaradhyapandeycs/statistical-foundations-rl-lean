@@ -12,6 +12,7 @@ import Formalization.OfflineRL.SampleSplitActual
 import Formalization.OfflineRL.PreliminaryFacts
 import Formalization.OfflineRL.LowerBoundMinimax
 import Formalization.OfflineRL.BernsteinInfiniteData
+import Formalization.OfflineRL.VILCBTheorem
 
 open MeasureTheory ProbabilityTheory
 
@@ -173,5 +174,19 @@ theorem Thm6_8_corrected_holds : Thm6_8_corrected.{u, v, w} := by
     ε hε hεx hcond μ X hX hind hmarg
 
 end LCBQ
+
+section VILCBTheorem
+
+universe u v w
+
+/-- Apply the library export `vilcb_infinite_offline` with `c_b₀ = 96` and `c₁ = 10⁴ c_b`;
+no new proof. -/
+theorem Thm6_3_holds : Thm6_3.{u, v, w} :=
+  ⟨96, by norm_num, fun cb hcb => ⟨10000 * cb, by positivity,
+    fun S A _ _ _ _ M db p hγ hr hpcb hhalf τmax hτ ρ πstar hopt ε hε hε1 hC hN Ω _ μ _ =>
+      StatisticalRL.OfflineVILCB.Theorem63.vilcb_infinite_offline cb hcb S A M db p hγ hr hpcb
+        hhalf τmax hτ ρ πstar hopt ε hε hε1 hC hN Ω μ⟩⟩
+
+end VILCBTheorem
 
 end StatisticalRL.Statements.Ch6

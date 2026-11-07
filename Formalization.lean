@@ -136,6 +136,11 @@ import Formalization.OfflineRL.BernsteinInfiniteFixedRow
 import Formalization.OfflineRL.VILCBAuxiliaryAbsorbing
 import Formalization.OfflineRL.BernsteinInfiniteCover
 import Formalization.OfflineRL.BernsteinInfiniteData
+import Formalization.OfflineRL.VILCBPenaltyDominance
+import Formalization.OfflineRL.VILCBPessimism
+import Formalization.OfflineRL.VILCBBonusSumScalar
+import Formalization.OfflineRL.VILCBDeterministic
+import Formalization.OfflineRL.VILCBTheorem
 import Formalization.PrelimKL.KLBinaryProductRNDerivative
 import Formalization.PrelimKL.KLBinaryProductLLRAdd
 import Formalization.PrelimKL.KLBinaryProductFinite
