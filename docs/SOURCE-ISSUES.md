@@ -1033,8 +1033,13 @@ with no 1/(1−γ) factor, from Q̂₀ = 0 (`:245`). The output clause is then f
 A deterministic chain MDP (A = 2, S = T+3) puts reward 1 more than T steps away from s0 and a small bail reward b at s0.
 The empirical kernel is exact surely, and the χ² ball around a point mass is a singleton (`intro.tex:234`; Lemma 7.1),
 so Q̂_T(s0, chain) = 0 < b and DRVI bails, while the robust gap is ≥ (γ(1−σ))^{T+1}/(1−γ(1−σ)) − b, which exceeds ε with
-probability 1 for γ near 1 at the least admissible N. Checked in exact arithmetic for C1, C2 ≤ 10⁶ by two independent
-source checks; no Lean counterexample yet. The book uses (1/(1−γ)) log(N/(1−γ)) iterations elsewhere
+probability 1 for γ near 1. Checked in exact arithmetic for C1, C2 ≤ 10⁶ by two independent source checks, and
+machine-checked in Lean (`Formalization/RobustRL/Ch7/HorizonTrap.lean`): `not_thm7_2_printed` (TV) and `not_thm7_4_printed`
+(χ²) refute the printed statements for every choice of constants and every rounding of T within distance < 1, both when
+every greedy output must succeed and when some tie rule may be chosen (`not_thm7_2_printed_exists_tie`,
+`not_thm7_4_printed_exists_tie`). Lean witness: bail reward 1/2, goal reward 1, γ = 1 − 1/k², σ = (1−γ)², δ = 1/2, ε = 1,
+N = k¹⁰, S = ⌈12 C1 log k⌉ + 3, A = 2, for k large. Only the printed iteration count is refuted, in an extreme regime;
+the corrected count and the statistical rate are neither proved nor refuted. The book uses (1/(1−γ)) log(N/(1−γ)) iterations elsewhere
 (`generative_model_model_based.tex:943`, `offlineRL.tex:901`). Proposed correction: T ≥ C1 log(N/(1−γ))/(1−γ).
 The theorems themselves are cited (shi2024curious), not proved in the monograph. Not author-approved.
 
@@ -1047,7 +1052,75 @@ estimator outputs the unique policy, so both error probabilities are 0 < 1/8. An
 Under the known-reward convention (`generative_model_model_based.tex:31`), S = 1 is also degenerate (constant data;
 argmax r is optimal), the same mechanism as [C7](#C7) for Theorem 7.5. Proposed correction: A ≥ 2 and S ≥ 2, with M0
 and M1 on S states and A actions; this excludes the degenerate cases but does not prove the cited bound. Confirmed by
-two independent source checks; no Lean counterexample yet. Not author-approved.
+two independent source checks and machine-checked in Lean (`Formalization/RobustRL/Ch7/SingletonAction73.lean`):
+`not_thm7_3_printed`, `not_thm7_3_exists_c0` and `not_thm7_3_printed_small` cover the ∀c₀, ∃c₀ and "c₀ sufficiently small"
+readings (witness S = 2, A = 1, γ = σ = 1/2, ε = c₀/128, N = 1). This shows only that A ≥ 2 is missing; it says nothing
+about the cited bound for A ≥ 2. Not author-approved.
+
+<a id="C39"></a>
+## Candidate C39: Theorem 7.7 is not self-contained
+
+Theorem 7.7 (`marl.tex:441–467`) asserts the existence of an algorithm
+(Q-FTRL) whose description is omitted (`marl.tex:432`) and states its sample complexity only up to Õ(·). The symbol A
+in the two-player bound (`marl.tex:454`) is never defined (presumably max{A_1,A_2} or A_1 + A_2). Without the algorithm
+and an explicit form of Õ, the printed statement cannot be checked against the monograph. Proposed correction: define
+A and state the algorithm and the hidden logarithmic factors, or cite the source theorem as an external input.
+Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
+
+<a id="C40"></a>
+## Candidate C40: Theorem 7.8 admits A_i = 1 (and S = 1 or H = 1 with known reward); "m-player zero-sum" is undefined
+
+Theorem 7.8 (`marl.tex:487–503`) places no range on S, H or A_i. If every A_i = 1, each player has one policy, so
+gap(π̂) = 0 (`marl.tex:332–340`) and P{gap > ε} = 0 < 1/4 at sample size 0, for every c1, c2. With the known-reward
+convention (`generative_model_model_based.tex:31`), S = 1 or H = 1 makes the game known, and a stage-game Nash
+equilibrium gives gap 0 with no samples. "m-player zero-sum" is defined only for m = 2 (`marl.tex:50–54`); read as
+Σ_i r_{i,h} = 0 with r_{i,h} ∈ [0,1] (`marl.tex:41–43`), all rewards vanish and the bound fails for all parameters.
+Proposed correction: max_i A_i ≥ 2, S ≥ 2, H ≥ 2 (or larger constants), and an explicit zero-sum convention.
+No proof or citation is given in the monograph. Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
+
+<a id="C41"></a>
+## Candidate C41: Theorem 7.9's learning rate can exceed 1
+
+The algorithm requires 0 < η < 1 (`federated_RL.tex:51,76`),
+but the prescribed η = c_η K(1−γ)⁴ε²/log(SAKT/δ) (`federated_RL.tex:114`) is unbounded in K (and large as δ → 1).
+Witness, for any constants c_T, c_η: S = A = 1, r ≡ 1, Q_0 = 0, τ = T = 1, γ = 1/2, ε = 1, δ = 1/2 and K large;
+then (112–113) holds, the run is deterministic with Q_T = η, and ‖Q_T − Q*‖∞ = η − 2 > ε, so the success
+probability is 0. Proposed correction: add the hypothesis c_η K(1−γ)⁴ε² < log(SAKT/δ) (the printed η lies in (0,1)),
+and γ ∈ (0,1). The corrected statement is cited (woo2023blessing), not proved in the monograph. Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
+
+<a id="C42"></a>
+## Candidate C42: Theorem 7.10 is vacuous in N as printed; the placement of c0 matters
+
+In Theorem 7.10
+(`federated_RL.tex:227–239`), C_round ≥ 1 (`federated_RL.tex:196`) and the hypothesis C_round ≤ c0/((1−γ)log²N)
+force log²N ≤ c0/(1−γ). So N is bounded in terms of γ and the bound follows with C_γ exponentially small in that
+bound, from the r ≡ 1 instance (error ≥ γ^T/(1−γ)). This is weaker than the discussion at `federated_RL.tex:244`.
+If "for some c0" is read inside the hypothesis, the hypothesis is vacuous and the statement is false (full
+synchronization with K → ∞ gives error ≤ (1−η(1−γ))^T/(1−γ)). Proposed reading: a universal c0 quantified first,
+with an explicit C_γ. Found by a source preflight; the reading dependence was established by an independent source check; no Lean evidence yet. Not author-approved.
+
+<a id="C43"></a>
+## Candidate C43: Theorem 7.11's covariance Γ omits the reward variance across actions
+
+Γ_{s,s} (`inference.tex:115`) uses
+an undefined r(s) and averages only over s′ ∼ P_π. With rewards r(s,a) (`inference.tex:62`) and r(s) = r_π(s), it
+omits Var_{a∼π(·|s)} r(s,a). The book's own estimator Γ̂ (`inference.tex:166–169`) targets the per-sample noise
+covariance. Example: S = 2, uniform μ and π, r(1,·) = (0,1), r(2,·) = 0, uniform P, γ = 1/2 gives
+Γ_printed = diag(1/128, 1/128) and the true noise covariance diag(17/128, 1/128). Given the classical CLT, the convex
+distance tends to at least 0.57, so the printed bound fails as T → ∞. Γ must also be nonsingular (it is 0 when S = 1).
+Proposed correction: Γ_{s,s} = μ(s)E_{a∼π(·|s), s′∼P(·|s,a)}[(V^π(s) − r(s,a) − γV^π(s′))²], with Γ ≻ 0 assumed.
+Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
+
+<a id="C44"></a>
+## Candidate C44: Theorem 7.12 is ill-posed at T = 1 and its VPO update may have no minimizer
+
+In Theorem 7.12
+(`RLHF.tex:208–215`), α divides by min{d log T, T} = 0 when T = 1. The online update (`RLHF.tex:194–198`) can be
+unbounded below. Example: Y = {y1, y2}, d = 1, φ(y1) = 1, φ(y2) = 0, π_cal = π_ref uniform; along Gibbs policies with
+θ → ∞ the objective tends to −∞ for any number of y1 ≻ y2 comparisons, including none. Hence π^{(t+1)} is undefined,
+and the hypothesis ‖θ^{(t)}‖ ≤ r_max constrains iterates that need not exist. δ appears in neither the bound nor α.
+Proposed correction: T ≥ 2, minimization over {θ : ‖θ‖₂ ≤ r_max}, and an explicit δ-dependence. The result is
+cited (cen2025vpo), not proved in the monograph. Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
 
 ```
 
