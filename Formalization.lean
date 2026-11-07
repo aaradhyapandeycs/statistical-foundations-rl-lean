@@ -507,6 +507,12 @@ import Formalization.RobustRL.Ch7.SingletonAction73
 import Formalization.RobustRL.Ch7.TrapInstance
 import Formalization.RobustRL.Ch7.TrapCore
 import Formalization.RobustRL.Ch7.HorizonTrap
+import Formalization.Ch7Rest.MarlPrinted78
+import Formalization.Ch7Rest.SingletonAction78
+import Formalization.Ch7Rest.FedPrinted79
+import Formalization.Ch7Rest.LargeStep79
+import Formalization.Ch7Rest.RlhfPrinted712
+import Formalization.Ch7Rest.VPOIllPosed712
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope
