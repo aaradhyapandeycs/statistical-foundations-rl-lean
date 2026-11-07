@@ -1,4 +1,7 @@
 import Formalization.Statements.Ch6
+import Formalization.OfflineRL.LCBQMartingale
+import Formalization.OfflineRL.LCBQLemma612
+import Formalization.OfflineRL.LCBQDecomposition
 import Formalization.OfflineRL.LCBQUsefulSeries
 import Formalization.OfflineRL.LowerBoundFamilyKL
 import Formalization.OfflineRL.LowerBoundFamilyValues
@@ -129,5 +132,46 @@ theorem Lemma6_6_holds : Lemma6_6.{u, v, w} := by
     p.δ_lt_one X hX hind hmarg
 
 end BernsteinInfinite
+
+
+section LCBQ
+
+universe u v w
+
+/-- Apply the library export `lemma69_prob` (with `c_b₀ = 4`); no new proof. -/
+theorem Lemma6_9_holds : Lemma6_9.{u, v, w} := by
+  refine ⟨4, by norm_num, fun cb hcb S A _ _ M db sel _ π₀ T δ hδ hδ1 Ω _ μ _ => ?_⟩
+  intro X hX hind hmarg
+  have h := OfflineRL.LCBQ.lemma69_prob M cb δ sel π₀ hcb db T hδ hδ1 μ X hX hind hmarg
+  refine h.le.trans (measureReal_mono ?_)
+  intro ω hω t ht1 htT s a
+  exact ⟨hω.1 t ht1 htT s a, hω.2 t ht1 htT s a⟩
+
+/-- Apply the library export `lemma610_prob` (with `c_b₀ = 4`); no new proof. -/
+theorem Lemma6_10_restricted_holds : Lemma6_10_restricted.{u, v, w} := by
+  refine ⟨4, by norm_num, fun cb hcb S A _ _ M db sel hsel π₀ T δ hδ hδ1 Ω _ μ _ => ?_⟩
+  intro X hX hind hmarg
+  exact OfflineRL.LCBQ.lemma610_prob M cb δ sel π₀ hcb hsel db T hδ hδ1 μ X hX hind hmarg
+
+/-- Apply the library export `lemma612_prob` (`c_b₀ = 4`, `C = lemma612Const c_b`); no new
+proof. -/
+theorem Lemma6_12_restricted_holds : Lemma6_12_restricted.{u, v, w} := by
+  refine ⟨4, by norm_num, fun cb hcb => ⟨OfflineRL.LCBQ.lemma612Const cb, by
+    unfold OfflineRL.LCBQ.lemma612Const; linarith,
+    fun S A _ _ M db sel _ π₀ T δ hδ hδ1 ρ πstar _ hι Ω _ μ _ => ?_⟩⟩
+  intro X hX hind hmarg
+  exact OfflineRL.LCBQ.lemma612_prob M cb δ sel π₀ ρ πstar db hcb T hδ hδ1 hι μ X hX hind hmarg
+
+/-- Apply the library export `thm68_corrected_prob` (`c_b₀ = 4`, `c₂ = thm68Const c_b`); no new
+proof. -/
+theorem Thm6_8_corrected_holds : Thm6_8_corrected.{u, v, w} := by
+  refine ⟨4, by norm_num, fun cb hcb => ⟨OfflineRL.LCBQ.thm68Const cb, by
+    unfold OfflineRL.LCBQ.thm68Const OfflineRL.LCBQ.lemma612Const; positivity,
+    fun S A _ _ M db sel hsel π₀ T δ hδ hδ1 hT ρ πstar hopt ε hε hεx hCs hcond Ω _ μ _ => ?_⟩⟩
+  intro X hX hind hmarg
+  exact OfflineRL.LCBQ.thm68_corrected_prob M cb δ sel π₀ ρ πstar db hcb hsel hopt T hT hδ hδ1 hCs
+    ε hε hεx hcond μ X hX hind hmarg
+
+end LCBQ
 
 end StatisticalRL.Statements.Ch6
