@@ -10,6 +10,7 @@ import Mathlib.InformationTheory.KullbackLeibler.Basic
 import Mathlib.Probability.Independence.Basic
 import Formalization.OfflineRL.LCBQDefinitions
 import Formalization.OfflineRL.FiniteVILCB.Definitions
+import Formalization.OfflineRL.FiniteLCBQ.Definitions
 import Formalization.MDP.FiniteOccupancy
 
 /-! Chapter 6 source-facing statements. Corrected variants are labeled explicitly;
@@ -675,5 +676,89 @@ def Thm6_16_restricted : Prop :=
             (FiniteVILCB.extPolicy (FiniteVILCB.detPolicy πhat)))) ≤ ε}
 
 end FiniteVILCBTheorem
+
+section FiniteLCBQTheorem
+
+universe w
+
+/-- **Theorem 6.17, restricted to one explicit variant** (`thm:lcbq`,
+`chapters/offlineRL.tex:3176–3192`; setting `:2943–2973`, `C⋆` `:2983–2993`, algorithm prose
+`:3126–3148`, penalty `eq:lcb-q-penalty` `:3141–3143`). See `docs/SOURCE-ISSUES.md#C33`. The book
+cites the result without proof, its algorithm box (`:3150–3173`) is commented out, and the prose
+leaves the algorithm under-specified. This entry is instantiated with one explicit completion,
+`LCBQFinite.output` (our reconstruction; the cited paper was not consulted):
+* zero initialisation of `Q`, `V`, the counts, terminal `V_H ≡ 0`, arbitrary initial policy `π₀`
+  (universally quantified);
+* one pass over the episodes in index order; inside an episode the stages are processed in
+  **forward** order `h = 0, …, H-1` (the natural reading of `:3132`; the commented box runs
+  backward), so the stage-`h` update reads `V_{h+1}` from the previous episode;
+* `η_n = (H+1)/(H+n)` (`:3139`) and the Hoeffding-style penalty **restricted** to
+  `b_n = c_b √(H³ L / n)`, for every `L` with `ι ≤ L ≤ max(ι, ι³)`, `ι = log(SAK/δ)` (this is
+  `[ι, ι³]` when `ι ≥ 1`; `L = ι, ι², ι³` give the log powers `1/2, 1, 3/2` outside the root).
+  The L-range is never empty (when `ι < 1` it is `{ι}`); for `|A| ≥ 2` the printed size
+  condition already forces `ι ≥ 1`, so the widening adds content only when `|A| = 1`. The upper end `ι³` is
+  sharp (C33: for `L = ι^{2a}`, `a > 3/2`, the claim fails for every `c_a`); the lower end is
+  what the proof needs. The reading "any `Θ̃(√(H³/n))` penalty works" is **false** (C33);
+* monotone `V_h(s) ← max{V_h(s), max_a Q_h(s,a)}`;
+* **output rule**: `π̂_h(s)` changes only on a strict increase of `V_h(s)`, to `sel(Q_h(s,·))`,
+  where `sel` is any deterministic selector of a maximizer (universally quantified); this is the
+  rule of `alg:q-infinite-lcb` (`:1726–1731`). It **departs** from the literal reading of `:3145`
+  (greedy with respect to the final `Q`), for which the claim is not proved here.
+The algorithm reads only `c_b`, `L`, `sel`, `π₀`, the rewards and the data.
+
+Readings:
+* Constants: the quantifier shape is `∃ c_b₀ > 0, ∀ c_b ≥ c_b₀, ∃ c_a > 0` (the printed `c_a` is
+  existential and must depend on `c_b`); the proof gives `c_b₀ = 5`, `c_a = 10⁶ c_b²`.
+* `0 < K` is the domain of `log(SAK/δ)`. At `K = 0`, Lean's `log 0 = 0` would make the size
+  condition hold while the claim fails.
+* `C⋆ = max_{h,s,a} d⋆_h(s,a;ρ)/d^b_h(s,a)` is computed in `ℝ≥0∞` (`0/0 = 0`) from the library's
+  `stateActionOccupancy`, with `d⋆` the occupancy of a **deterministic** optimal policy `π⋆`
+  (any deterministic policy optimal at every stage and state, `prelim.tex:740–745`); a stochastic
+  optimal policy can have a smaller `C⋆`, so this is a mild restriction of
+  `assumption:concentrate-finite`, which does not say which optimal policy defines `d⋆`. The
+  premise `C⋆ ≠ ⊤` is essential: the printed condition cannot hold otherwise, and `⊤.toReal = 0`.
+* `V⋆` is `EnvironmentStage.optimalValue`; `V^{π̂}` is `DecisionStage.trajectoryValue` of the
+  deterministic `π̂`.
+* Data: `K` iid trajectories `s_0 ~ ρ^b`, `a_h ~ π^b_h(·|s_h)`, `s_{h+1} ~ P_h(·|s_h,a_h)`
+  (`eq:finite-batch-size-def`, law `FiniteVILCB.trajMeasure`). -/
+def Thm6_17_restricted : Prop :=
+  ∃ cb₀ : ℝ, 0 < cb₀ ∧ ∀ cb : ℝ, cb₀ ≤ cb → ∃ ca : ℝ, 0 < ca ∧
+    ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] [Nonempty S] [Nonempty A]
+      (H : ℕ), 0 < H →
+      ∀ (E : Fin H → EnvironmentStage S A) (πb : Fin H → StationaryPolicy S A)
+        (ρb ρ : FiniteDistribution S) (πs : Fin H → S → A),
+      (∀ (h : Fin H) (s : S), DecisionStage.trajectoryValue
+          (EnvironmentStage.controlled ((List.ofFn E).drop h.val)
+            (fun j ↦ FiniteVILCB.extPolicy (FiniteVILCB.detPolicy πs) (h.val + j))) s =
+        EnvironmentStage.optimalValue ((List.ofFn E).drop h.val) s) →
+      ∀ ε δ : ℝ, 0 < ε → ε ≤ H → 0 < δ → δ < 1 →
+      ∀ K : ℕ, 0 < K →
+      ∀ L : ℝ, Real.log (Fintype.card S * Fintype.card A * K / δ) ≤ L →
+      L ≤ max (Real.log (Fintype.card S * Fintype.card A * K / δ))
+        (Real.log (Fintype.card S * Fintype.card A * K / δ) ^ 3) →
+      ∀ sel : (A → ℝ) → A, (∀ (f : A → ℝ) (a : A), f a ≤ f (sel f)) →
+      ∀ π₀ : Fin H → S → A,
+      let Cstar : ENNReal := ⨆ (h : Fin H) (s : S) (a : A),
+        ENNReal.ofReal (DecisionStage.stateActionOccupancy
+            (EnvironmentStage.controlled (List.ofFn E)
+              (FiniteVILCB.extPolicy (FiniteVILCB.detPolicy πs))) ρ
+            (FiniteVILCB.stageIndex E (FiniteVILCB.extPolicy (FiniteVILCB.detPolicy πs)) h) s a) /
+          ENNReal.ofReal (DecisionStage.stateActionOccupancy
+            (EnvironmentStage.controlled (List.ofFn E) (FiniteVILCB.extPolicy πb)) ρb
+            (FiniteVILCB.stageIndex E (FiniteVILCB.extPolicy πb) h) s a)
+      Cstar ≠ ⊤ →
+      ca * (H : ℝ) ^ 5 * Fintype.card S * Cstar.toReal *
+          Real.log (Fintype.card S * Fintype.card A * K / δ) ^ 3 / ε ^ 2 ≤ K →
+      ∀ (Ω : Type w) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ],
+      letI : MeasurableSpace (FiniteVILCB.Traj S A H) := ⊤
+      ∀ X : Ω → Fin K → FiniteVILCB.Traj S A H, Measurable X → iIndepFun (fun k ω ↦ X ω k) μ →
+      (∀ k, μ.map (fun ω ↦ X ω k) = FiniteVILCB.trajMeasure E πb ρb) →
+      1 - δ ≤ μ.real {ω |
+        ρ.expectation (EnvironmentStage.optimalValue (List.ofFn E)) -
+          ρ.expectation (DecisionStage.trajectoryValue (EnvironmentStage.controlled (List.ofFn E)
+            (FiniteVILCB.extPolicy (FiniteVILCB.detPolicy
+              (LCBQFinite.output cb L sel π₀ (fun h ↦ (E h).reward) (X ω)))))) ≤ ε}
+
+end FiniteLCBQTheorem
 
 end StatisticalRL.Statements.Ch6

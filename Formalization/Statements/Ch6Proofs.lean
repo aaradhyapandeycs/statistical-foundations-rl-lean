@@ -15,6 +15,7 @@ import Formalization.OfflineRL.BernsteinInfiniteData
 import Formalization.OfflineRL.VILCBTheorem
 import Formalization.OfflineRL.FiniteVILCB.Theorem
 import Formalization.OfflineRL.FiniteVILCB.LibraryBridge
+import Formalization.OfflineRL.FiniteLCBQ.Export
 
 open MeasureTheory ProbabilityTheory
 
@@ -212,5 +213,32 @@ theorem Thm6_16_restricted_holds : Thm6_16_restricted.{u, v, w} := by
   exact h
 
 end FiniteVILCBTheorem
+
+section FiniteLCBQTheorem
+
+universe u v w
+
+/-- Apply the library export `LCBQFinite.lcbqFinite_restricted` with `c_b₀ = 5` and
+`c_a = 10⁶ c_b²`, through the library bridges (`isOptimal_of_optimal`,
+`concentrability_eq_library`, `gap_bridge`). The export assumes the L-form size condition; the
+library lemma `LCBQFinite.printed_size_imp_export_size` derives it (or `|A| = 1`) from the printed
+`log³` condition and `L ≤ max(ι, ι³)`. No new proof of the result. -/
+theorem Thm6_17_restricted_holds : Thm6_17_restricted.{u, v, w} := by
+  refine ⟨5, by norm_num, fun cb hcb ↦ ⟨10 ^ 6 * cb ^ 2, by
+    have : 0 < cb := by linarith
+    positivity, ?_⟩⟩
+  intro S A _ _ _ _ H hH E πb ρb ρ πs hopt ε δ hε hεH hδ hδ1 K hK L hL hL3 sel hsel π₀ Cstar hC
+    hKc Ω _ μ _ X hX hind hlaw
+  have hconc : Cstar = FiniteVILCB.concentrability E πb ρb ρ πs :=
+    (FiniteVILCB.concentrability_eq_library E πb ρb ρ πs).symm
+  rw [hconc] at hC hKc
+  have h := LCBQFinite.lcbqFinite_restricted cb hcb H hH E πb ρb ρ πs
+    (FiniteVILCB.isOptimal_of_optimal E πs hopt) ε δ hε hεH hδ hδ1 K hK L hL sel hsel π₀ hC
+    (LCBQFinite.printed_size_imp_export_size cb hcb H hH E πb ρb ρ πs hC ε δ hε hεH hδ hδ1 K hK L hL3
+      hKc) μ X hX hind hlaw
+  simp only [FiniteVILCB.gap_bridge] at h
+  exact h
+
+end FiniteLCBQTheorem
 
 end StatisticalRL.Statements.Ch6

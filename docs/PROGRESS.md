@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Restricted Theorem 6.17 (finite-horizon LCB-Q)
+
+Theorem 6.17, whose algorithm the monograph leaves under-specified and whose proof it cites, is proved from scratch for one explicit completion at the printed rate; the reading "for any penalty hiding a log power above 3/2" is false (C33). The named-result ledger now has 82 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Restricted Theorem 6.16 (finite-horizon VI-LCB)
 
 Theorem 6.16, which the monograph states for an undefined variant of VI-LCB and cites without proof, is proved from scratch for one explicit variant at the printed rate, with library value and occupancy objects (C32). The named-result ledger now has 81 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
