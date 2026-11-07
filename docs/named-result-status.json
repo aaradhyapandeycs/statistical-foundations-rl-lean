@@ -1059,6 +1059,38 @@
         "docs/critic-thm7-5-corrected.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.8 (corrected variant, zero-sum reading)",
+      "source_label": "thm:lower-marl",
+      "source_file": "chapters/marl.tex",
+      "source_lines": "487–503",
+      "lean_export": "StatisticalRL.Ch7Rest.Marl.thm7_8_corrected",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_8_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_8_corrected_holds",
+      "statement_scope": "Corrected: \"Zero-sum\" for m ≥ 3 is read as rewards summing to 0, all in [−1,1], with player 1 in [0,1] (the book defines zero-sum only for m = 2); with c₁ = 1/2048 and c₂ = 2⁻³², every adaptive randomized learner (any discrete, countably supported seed law; outputs may be correlated joint Markov policies) fails, with gap > ε with probability ≥ 1/4, on some game of a family with a known shared reward (the book's convention) once N < c₂H⁴S·max_iA_i/ε², under the added hypotheses m ≥ 2, S ≥ 2, H ≥ 2 and max_iA_i ≥ 2. The printed statement is false when every A_i = 1 (not_thm7_8_printed); necessity of S, H, m ≥ 2 and max A ≥ 2 for the corrected statement is argued in prose only. Measurable output kernels into the continuous policy space are not literally covered, and the conclusion is vacuous if some A_j = 0 (C40). Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-8-corrected.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-8-integration.md",
+        "docs/critic-thm7-8-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.8 (corrected variant, constant-sum reading)",
+      "source_label": "thm:lower-marl",
+      "source_file": "chapters/marl.tex",
+      "source_lines": "487–503",
+      "lean_export": "StatisticalRL.Ch7Rest.Marl.thm7_8_corrected_constSum",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_8_corrected_constSum",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_8_corrected_constSum_holds",
+      "statement_scope": "Corrected: \"Zero-sum\" for m ≥ 3 is read as normalised constant-sum rewards (the book defines zero-sum only for m = 2); with c₁ = 1/2048 and c₂ = 2⁻³², every adaptive randomized learner (any discrete, countably supported seed law; outputs may be correlated joint Markov policies) fails, with gap > ε with probability ≥ 1/4, on some game of a family with a known shared reward (the book's convention) once N < c₂H⁴S·max_iA_i/ε², under the added hypotheses m ≥ 2, S ≥ 2, H ≥ 2 and max_iA_i ≥ 2. The printed statement is false when every A_i = 1 (not_thm7_8_printed); necessity of S, H, m ≥ 2 and max A ≥ 2 for the corrected statement is argued in prose only. Measurable output kernels into the continuous policy space are not literally covered, and the conclusion is vacuous if some A_j = 0 (C40). Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-8-corrected.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-8-integration.md",
+        "docs/critic-thm7-8-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }
