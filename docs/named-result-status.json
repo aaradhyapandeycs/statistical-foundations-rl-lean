@@ -1108,6 +1108,22 @@
         "docs/critic-thm6-16-plan-check.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 6.17 (restricted to one explicit LCB-Q completion)",
+      "source_label": "thm:lcbq",
+      "source_file": "chapters/offlineRL.tex",
+      "source_lines": "3176–3192",
+      "source_context_lines": "3126–3148 (algorithm prose)",
+      "lean_export": "StatisticalRL.LCBQFinite.lcbqFinite_restricted and StatisticalRL.LCBQFinite.printed_size_imp_export_size, with the bridges StatisticalRL.FiniteVILCB.isOptimal_of_optimal, StatisticalRL.FiniteVILCB.concentrability_eq_library and StatisticalRL.FiniteVILCB.gap_bridge",
+      "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_17_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_17_restricted_holds",
+      "statement_scope": "Restricted: the printed algorithm is under-specified and the proof is cited (C33). Proved for one explicit completion (zero initialisation, arbitrary initial policy, forward stage order within an episode, rate (H+1)/(H+n), penalty c_b√(H³L/n) for every L in [ι, max(ι, ι³)] with ι = log(SAK/δ), monotone value, policy changed only on a strict value increase, C⋆ defined with a deterministic optimal policy). It keeps the printed size condition c_a H⁵ S C⋆ ι³/ε² ≤ K with c_a = 10⁶c_b² for any c_b ≥ 5: with probability ≥ 1−δ the output is ε-optimal, for every optimal π⋆. Values and occupancies are the library objects. Adds only the domain conditions 0 < K and C⋆ < ∞. The reading of Θ̃ as \"any such penalty\" is false. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm6-17.md",
+      "supporting_evidence": [
+        "docs/critic-thm6-17-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }
