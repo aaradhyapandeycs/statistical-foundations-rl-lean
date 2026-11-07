@@ -92,9 +92,9 @@ theorem Lemma6_4_holds : Lemma6_4 := by
   exact M.exists_fixed_point_preliminary_facts hγ τ hτ
 
 theorem Lemma6_7_restricted_holds : Lemma6_7_restricted := by
-  intro S A _ _ M ρ V b hγ hV0 hV1 hb hres
+  intro S A _ _ M π ρ V b hγ hV0 hV1 hb hres
   exact StatisticalRL.OfflineRL.BonusSummation.occupancyWeightedVariance_mdp M
-    M.optimalGreedyPolicy ρ V b hγ hV0 hV1 hb hres
+    π ρ V b hγ hV0 hV1 hb hres
 
 theorem Lemma6_14_restricted_holds : Lemma6_14_restricted := by
   intro m hm γ ε C hγ hγ1 hε hεmax hC θ

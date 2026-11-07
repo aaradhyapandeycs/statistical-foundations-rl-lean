@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Corrected Theorems 7.3 and 7.5 (robust RL lower bounds)
+
+The robust TV (7.3) and χ² (7.5) minimax lower bounds, which the monograph cites without proof, are proved in Lean by self-contained two-point constructions with the printed constants. Each has two indexed forms: a minimal correction adding only A ≥ 2 (estimators do not see the reward), and a known-reward form with S ≥ 2, A ≥ 2 and shared reward, the faithful reading under the book's convention (C7, C38). The named-result ledger now has 79 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Theorem 7.10 (federated lower bound) and Chapter 7 source issues
 
 Theorem 7.10 is proved as printed under the reading with the universal constant c₀ quantified first, and refuted in Lean under the reading with c₀ inside the hypothesis (C42); the printed statement is degenerate (doubly exponentially small constant). Printed Theorems 7.2, 7.3, 7.4, 7.8 and 7.9 are refuted in Lean and 7.12 is shown ill-posed (C37, C38, C40, C41, C44); these refutations are not counted as proved results. Lemma 6.9 is now indexed as `Lemma6_9_restricted` (tie-rule scope). The named-result ledger now has 77 covered entries out of 90. The complete monograph remains **INCOMPLETE**.

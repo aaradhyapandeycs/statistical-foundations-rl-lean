@@ -2,6 +2,8 @@ import Formalization.Statements.Ch7
 import Formalization.RobustRL.TVSourceMaximum
 import Formalization.RobustRL.ChiSquaredSourceMaximum
 import Formalization.Ch7Rest.LowerBound710
+import Formalization.RobustRL.Ch7.LowerBound73
+import Formalization.RobustRL.Ch7.LowerBound75
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -147,5 +149,23 @@ theorem Thm7_10_holds : Thm7_10 := by
     (by linarith) hγ1 State Action (by omega) (by omega) T B 𝒞 η hT hB hT𝒞
     (StatisticalRL.Ch7Rest.FedGeneric.printedRates_mem_Icc γ hγ1 T η hη) hround
   exact ⟨M, hM, fun K hK2 ↦ hK K (by omega)⟩
+
+/-- `Thm7_3_corrected` from `StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected`. -/
+theorem Thm7_3_corrected_holds : Thm7_3_corrected :=
+  StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected
+
+/-- `Thm7_3_corrected_knownReward` from
+`StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected_knownReward`. -/
+theorem Thm7_3_corrected_knownReward_holds : Thm7_3_corrected_knownReward :=
+  StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected_knownReward
+
+/-- `Thm7_5_corrected` from `StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected`. -/
+theorem Thm7_5_corrected_holds : Thm7_5_corrected :=
+  StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected
+
+/-- `Thm7_5_corrected_knownReward` from
+`StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward`. -/
+theorem Thm7_5_corrected_knownReward_holds : Thm7_5_corrected_knownReward :=
+  StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward
 
 end StatisticalRL.Statements.Ch7
