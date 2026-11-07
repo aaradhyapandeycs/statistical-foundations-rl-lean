@@ -543,4 +543,61 @@ def Thm6_8_corrected : Prop :=
 
 end LCBQ
 
+section VILCBTheorem
+
+universe w
+
+/-- **Theorem 6.3** (`thm:infinite-offline`, `chapters/offlineRL.tex:899–920`; proof `:1031–1623`,
+using the appendix proofs of Lemma 6.4 `:3489–`, Lemma 6.5 `:3541–`, Lemma 6.6 `:3630–` and
+Lemma 6.7 `:4277–4342`). Algorithm `alg:vi-lcb-infinite` (`:827–852`) with the Bernstein penalty
+`def:bonus-Bernstein-infinite` (`:808–824`), run for `τmax` iterations on `N` iid triples
+`((s_i,a_i),s_i')` with `(s_i,a_i) ~ d^b` and `s_i' ~ P(·|s_i,a_i)` (`eq:sampling-offline-inf-iid`,
+`:28–39`). This is the printed result, not a corrected or restricted variant.
+
+Readings:
+- "`c_b` sufficiently large … for some large enough universal constant `c₁`" is read as
+  `∃ c_b₀, ∀ c_b ≥ c_b₀, ∃ c₁` (`c₁` depends on `c_b` only). The proof gives `c_b₀ = 96` and
+  `c₁ = 10⁴ c_b`. A `c₁` uniform in `c_b` is false: with one state, two actions (`r = 1, 0`, self-loop),
+  `γ = 1/2`, `d^b` on the rewarding action, a fixed `c₁` and `c_b` large enough that every penalty is
+  clipped to `1/(1-γ) + 5/N`, every iterate is `Q̂ ≡ 0`, so the bad action is greedy and the gap is
+  `2 > ε = 1` surely.
+- `C⋆` (`assumption:concentrate-infinite-simple`, `:127–137`) is computed in `ℝ≥0∞` with `0/0 = 0` and
+  `x/0 = ∞` for `x > 0`; the premise `C⋆ ≠ ⊤` only removes the case where the printed sample condition
+  cannot hold (and blocks Lean's `⊤.toReal = 0`). `C⋆ ≥ 1` is proved, not assumed.
+- `π⋆` is any deterministic policy greedy for `Q⋆` at every state, with `C⋆` computed from it; the event
+  holds simultaneously for every greedy output `π̂` (every tie rule).
+- `N ≥ 1` comes from `Params` (`p.N_pos`); `N ≥ 2` (`docs/SOURCE-ISSUES.md#C19`) is derived from the
+  sample-size condition. The same `δ` (`p.δ`) appears in the penalty, the events and `1 - 2δ`.
+- `V⋆(ρ)` is the trajectory value of the library's optimal greedy policy `M.optimalGreedyPolicy`;
+  `V^{π̂}` is the trajectory value of the deterministic policy `π̂`.
+- The restricted premises of `Lemma6_7_restricted` are discharged inside this proof for `V̂`, `b⋆` and
+  `π⋆` on the event, as are the positive-count scope of `Lemma6_6` (C23) and the `γ ≥ 1/2` domain of
+  `Lemma6_2_corrected` (C10). -/
+def Thm6_3 : Prop :=
+  ∃ cb₀ : ℝ, 0 < cb₀ ∧ ∀ cb : ℝ, cb₀ ≤ cb → ∃ c₁ : ℝ, 0 < c₁ ∧
+    ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] [Nonempty S] [Nonempty A]
+      (M : DiscountedMDP S A) (db : FiniteDistribution (S × A))
+      (p : StatisticalRL.OfflineVILCB.Params S A),
+      p.γ = M.discount → p.r = M.reward → p.cb = cb → 1 / 2 ≤ M.discount →
+      ∀ τmax : ℕ, (1 / (1 - M.discount)) * Real.log (p.N / (1 - M.discount)) ≤ τmax →
+      ∀ (ρ : FiniteDistribution S) (πstar : S → A),
+      (∀ s, M.optimalityFixedPoint s (πstar s) = actionMaximum (M.optimalityFixedPoint s)) →
+      ∀ ε : ℝ, 0 < ε → ε ≤ 1 / (1 - M.discount) →
+      OfflineRL.LCBQ.concentrability M ρ πstar db ≠ ⊤ →
+      c₁ * Fintype.card S * (OfflineRL.LCBQ.concentrability M ρ πstar db).toReal *
+          Real.log (p.N * Fintype.card S / ((1 - M.discount) * p.δ)) /
+          ((1 - M.discount) ^ 3 * ε ^ 2) ≤ p.N →
+      ∀ (Ω : Type w) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ],
+      letI : MeasurableSpace ((S × A) × S) := ⊤
+      ∀ X : Ω → Fin p.N → (S × A) × S, Measurable X → iIndepFun (fun i ω => X ω i) μ →
+      (∀ i, μ.map (fun ω => X ω i) = ∑ x : (S × A) × S,
+        ENNReal.ofReal (db.prob x.1 * (M.transition x.1.1 x.1.2).prob x.2) • Measure.dirac x) →
+      1 - 2 * p.δ ≤ μ.real {ω | ∀ πhat : S → A,
+        (∀ s a, (p.input (X ω)).iter τmax s a ≤ (p.input (X ω)).iter τmax s (πhat s)) →
+        ρ.expectation (M.trajectoryExpectedValue M.optimalGreedyPolicy) -
+          ρ.expectation (M.trajectoryExpectedValue (fun x => EnvironmentStage.pointMass (πhat x)))
+            ≤ ε}
+
+end VILCBTheorem
+
 end StatisticalRL.Statements.Ch6

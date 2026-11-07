@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## VI-LCB main theorem (Theorem 6.3)
+
+Theorem 6.3 is proved as printed (constants read as ∃c_b₀ ∀c_b ∃c₁), combining Lemmas 6.2 (corrected), 6.4, 6.5 (corrected), 6.6 and the Lemma 6.7 provider with its premises discharged for the algorithm output. Independently source-reviewed. The named-result ledger now has 73 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Q-learning lower bound: restricted Theorem 4.7 and Lemma 4.15; source issues C30, C31
 
 Theorem 4.7 is indexed as `Thm4_7_restricted` (constant learning rates; the rescaled-linear case is not proved in the source, C30) and Lemma 4.15 as printed, with printed-proof slips repaired (C31). Both independently source-reviewed. The named-result ledger now has 72 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
