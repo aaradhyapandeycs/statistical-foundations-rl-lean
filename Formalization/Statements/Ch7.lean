@@ -1,6 +1,7 @@
 import Formalization.RobustRL.TVWeakDefinitions
 import Formalization.ModelFree.QLearningRobustDefinitions
 import Formalization.Ch7Rest.FedGeneric710
+import Formalization.RobustRL.Ch7.Ch7Definitions
 
 /-! Full source-facing statement of robust_RL.tex:302–324, label
 `lemma:dual-form`.  The two source choices of discrepancy are recorded as
@@ -120,5 +121,161 @@ def Thm7_10 : Prop :=
             Cγ γ / (Real.sqrt ((B : ℝ) * T) * Real.log ((B : ℝ) * T) ^ 3) ≤
               ∫ data, supError (genericOutput M η K B 𝒞 (fedSamplesExtend M T K B data) T)
                 M.optimalityFixedPoint ∂fedSamplingLaw M T K B
+
+section Thm7_3
+
+/-- Every finite carrier gets the discrete σ-algebra (as in the printed transcriptions of
+`Formalization/RobustRL/Ch7/Ch7PrintedStatements.lean`); the generative sampling law is the
+product of the nominal rows over all `((s,a), i)`. -/
+local instance ch7StatementStateMeasurable (State : Type*) : MeasurableSpace State := ⊤
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Corrected Theorem 7.3, `thm:l1-lower-bound`, `chapters/robust_RL.tex:377–391` (TV-robust
+MDP `:19–157`, generative sampling `:135–147`, `:206–215`), corrected by adding the single
+hypothesis `A ≥ 2` (`docs/SOURCE-ISSUES.md#C38`: the printed result is false at `A = 1`).
+For every constant `0 < c₀ ≤ 1/8`, all `S` (the state type), `A ≥ 2`, `σ ∈ (0, 1-c₀]`,
+`γ ∈ [1/2, 1)`, `ε ∈ (0, c₀/(256(1-γ))]` and `N ≤ c₀ log 2 / (8192 (1-γ)² max(1-γ,σ) ε²)`,
+there are two RMDPs `M₀, M₁` on the given states and actions (discount `γ`, rewards in
+`[0,1]`, `(s,a)`-rectangular TV balls of radius `σ` around the nominal kernel) and an initial
+distribution `μ` such that every estimator (a map from the `N` samples per state-action pair
+to a stationary randomized policy) has `max_i P_i(V_i^{⋆,σ}(μ) - V_i^{π̂,σ}(μ) > ε) ≥ 1/8`.
+
+Disclosure on the estimator class. `M₀` and `M₁` may have different rewards, and the
+estimators see the samples only, not the reward.
+* The `S = 1` case holds only because the estimators cannot see the reward (proof: a shared
+  self-loop kernel with rewards `1[a = a_j]`). Under the book's known-reward convention
+  (`generative_model_model_based.tex:31`; `robust_RL.tex:25`, `robust_RL.tex:206–215`) the
+  printed claim is false at `S = 1`: with one state the data are uninformative, the reward is
+  known, and `argmax r` is robust-optimal (C38).
+* For `S ≥ 2` the proof uses two models with one shared reward that differ only in the
+  nominal rows at `(s₀, a₀)` and `(s₀, a₁)`; the known-reward reading is `Thm7_3_corrected_knownReward`. -/
+def Thm7_3_corrected : Prop :=
+  ∀ c₀ : ℝ, 0 < c₀ → c₀ ≤ 1 / 8 →
+  ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
+    [Nonempty Action] (γ σ ε : ℝ) (N : ℕ),
+    2 ≤ Fintype.card Action →
+    0 < σ → σ ≤ 1 - c₀ → 1 / 2 ≤ γ → γ < 1 → 0 < ε → ε ≤ c₀ / (256 * (1 - γ)) →
+    (N : ℝ) ≤ c₀ * Real.log 2 / (8192 * (1 - γ) ^ 2 * max (1 - γ) σ * ε ^ 2) →
+    ∃ (M₀ M₁ : DiscountedMDP State Action) (μ : FiniteDistribution State),
+      M₀.discount = γ ∧ M₁.discount = γ ∧
+      ∀ est : ModelBasedPolicyLearning.Samples State Action N → StationaryPolicy State Action,
+        1 / 8 ≤ max
+          ((ModelBasedPolicyLearning.samplingLaw M₀ N).real
+            {data | ε < robustOptimalValueAt tvBall M₀ σ μ -
+              robustPolicyValueAt tvBall M₀ σ (est data) μ})
+          ((ModelBasedPolicyLearning.samplingLaw M₁ N).real
+            {data | ε < robustOptimalValueAt tvBall M₁ σ μ -
+              robustPolicyValueAt tvBall M₁ σ (est data) μ})
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Corrected Theorem 7.3 under the book's known-reward convention: `thm:l1-lower-bound`,
+`chapters/robust_RL.tex:377–391`, read with the convention that the reward is known to the
+learner (`generative_model_model_based.tex:31`; `robust_RL.tex:25`, `robust_RL.tex:206–215`),
+encoded by requiring the two RMDPs to share their reward (`M₀.reward = M₁.reward`), so that
+only the nominal kernel is unknown. This is the faithful reading of the printed result under
+that convention. It is corrected by adding the hypotheses `S ≥ 2` and `A ≥ 2`
+(`docs/SOURCE-ISSUES.md#C38`): both are needed there, since `A = 1` is refuted in Lean (for the printed statement, which this conclusion implies) and
+`S = 1` makes the printed claim false under known rewards (paper argument, not machine-checked:
+`argmax r` is then robust-optimal). Every other constant, range and the conclusion are
+as printed (see `Thm7_3_corrected`). The two models of the proof differ only in the nominal
+rows at `(s₀, a₀)` and `(s₀, a₁)`. -/
+def Thm7_3_corrected_knownReward : Prop :=
+  ∀ c₀ : ℝ, 0 < c₀ → c₀ ≤ 1 / 8 →
+  ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
+    [Nonempty Action] (γ σ ε : ℝ) (N : ℕ),
+    2 ≤ Fintype.card State → 2 ≤ Fintype.card Action →
+    0 < σ → σ ≤ 1 - c₀ → 1 / 2 ≤ γ → γ < 1 → 0 < ε → ε ≤ c₀ / (256 * (1 - γ)) →
+    (N : ℝ) ≤ c₀ * Real.log 2 / (8192 * (1 - γ) ^ 2 * max (1 - γ) σ * ε ^ 2) →
+    ∃ (M₀ M₁ : DiscountedMDP State Action) (μ : FiniteDistribution State),
+      M₀.discount = γ ∧ M₁.discount = γ ∧ M₀.reward = M₁.reward ∧
+      ∀ est : ModelBasedPolicyLearning.Samples State Action N → StationaryPolicy State Action,
+        1 / 8 ≤ max
+          ((ModelBasedPolicyLearning.samplingLaw M₀ N).real
+            {data | ε < robustOptimalValueAt tvBall M₀ σ μ -
+              robustPolicyValueAt tvBall M₀ σ (est data) μ})
+          ((ModelBasedPolicyLearning.samplingLaw M₁ N).real
+            {data | ε < robustOptimalValueAt tvBall M₁ σ μ -
+              robustPolicyValueAt tvBall M₁ σ (est data) μ})
+
+end Thm7_3
+
+section Thm7_5
+
+/-- Every finite carrier gets the discrete σ-algebra (as in the printed transcriptions of
+`Formalization/RobustRL/Ch7/Ch7PrintedStatements.lean`); the generative sampling law is the
+product of the nominal rows over all `((s,a), i)`. -/
+local instance ch7StatementStateMeasurable75 (State : Type*) : MeasurableSpace State := ⊤
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Corrected Theorem 7.5, `thm:chi2-lower-bound`, `chapters/robust_RL.tex:461–480` (χ²-robust
+MDP `:19–157`, χ² divergence `intro.tex:228–234` with `q ≪ p`, generative sampling `:135–147`,
+`:206–215`), corrected by adding the single hypothesis `A ≥ 2`
+(`docs/SOURCE-ISSUES.md#C7`: the printed result is false at `A = 1`). There are universal
+constants `c₃, c₄ > 0` such that for all `S` (the state type), `A ≥ 2`, `γ ∈ [3/4, 1)`,
+`σ ∈ (0, ∞)`, `ε ≤ c₃/(1-γ)` and `N ≤ c₄/((1-γ)³ε²)·(1 + σ/(1-γ))`, there are two RMDPs
+`M₀, M₁` on the given states and actions (discount `γ`, rewards in `[0,1]`,
+`(s,a)`-rectangular χ² balls of radius `σ` around the nominal kernel) and an initial
+distribution `μ` such that every estimator (a map from the `N` samples per state-action pair
+to a stationary randomized policy) has `max_i P_i(V_i^{⋆,σ}(μ) - V_i^{π̂,σ}(μ) > ε) ≥ 1/8`.
+No `ε > 0` is added: for `ε < 0` the claim is trivial; at `ε = 0` the Lean value `c₄/0 = 0`
+forces `N = 0`, and the instance also holds for every `N` under the reading `c₄/0 = ∞`.
+
+Disclosure on the estimator class. `M₀` and `M₁` may have different rewards, and the
+estimators see the samples only, not the reward.
+* The `S = 1` case holds only because the estimators cannot see the reward (proof: a shared
+  self-loop kernel with rewards `1[a = a_j]`). Under the book's known-reward convention
+  (`generative_model_model_based.tex:31`; `robust_RL.tex:25`, `robust_RL.tex:206–215`) the
+  printed claim is false at `S = 1` (machine-checked: `argmax r` is robust-optimal, C7).
+* For `S ≥ 2` the proof uses two models with one shared reward that differ only in the
+  nominal rows at `(s₀, a₀)` and `(s₀, a₁)`; the known-reward reading is
+  `Thm7_5_corrected_knownReward`. -/
+def Thm7_5_corrected : Prop :=
+  ∃ c₃ c₄ : ℝ, 0 < c₃ ∧ 0 < c₄ ∧
+  ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
+    [Nonempty Action] (γ σ ε : ℝ) (N : ℕ),
+    2 ≤ Fintype.card Action →
+    3 / 4 ≤ γ → γ < 1 → 0 < σ → ε ≤ c₃ / (1 - γ) →
+    (N : ℝ) ≤ c₄ / ((1 - γ) ^ 3 * ε ^ 2) * (1 + σ / (1 - γ)) →
+    ∃ (M₀ M₁ : DiscountedMDP State Action) (μ : FiniteDistribution State),
+      M₀.discount = γ ∧ M₁.discount = γ ∧
+      ∀ est : ModelBasedPolicyLearning.Samples State Action N → StationaryPolicy State Action,
+        1 / 8 ≤ max
+          ((ModelBasedPolicyLearning.samplingLaw M₀ N).real
+            {data | ε < robustOptimalValueAt chiBall M₀ σ μ -
+              robustPolicyValueAt chiBall M₀ σ (est data) μ})
+          ((ModelBasedPolicyLearning.samplingLaw M₁ N).real
+            {data | ε < robustOptimalValueAt chiBall M₁ σ μ -
+              robustPolicyValueAt chiBall M₁ σ (est data) μ})
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Corrected Theorem 7.5 under the book's known-reward convention: `thm:chi2-lower-bound`,
+`chapters/robust_RL.tex:461–480`, read with the convention that the reward is known to the
+learner (`generative_model_model_based.tex:31`; `robust_RL.tex:25`, `robust_RL.tex:206–215`),
+encoded by requiring the two RMDPs to share their reward (`M₀.reward = M₁.reward`), so that
+only the nominal kernel is unknown. This is the faithful reading of the printed result under
+that convention. It is corrected by adding the hypotheses `S ≥ 2` and `A ≥ 2`
+(`docs/SOURCE-ISSUES.md#C7`); both are needed there, and both necessities are machine-checked
+(with one of them dropped the statement is false for every `c₃, c₄ > 0`). No `ε > 0` is added.
+Every other constant, range and the conclusion are as printed (see `Thm7_5_corrected`). The
+two models of the proof differ only in the nominal rows at `(s₀, a₀)` and `(s₀, a₁)`. -/
+def Thm7_5_corrected_knownReward : Prop :=
+  ∃ c₃ c₄ : ℝ, 0 < c₃ ∧ 0 < c₄ ∧
+  ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
+    [Nonempty Action] (γ σ ε : ℝ) (N : ℕ),
+    2 ≤ Fintype.card State → 2 ≤ Fintype.card Action →
+    3 / 4 ≤ γ → γ < 1 → 0 < σ → ε ≤ c₃ / (1 - γ) →
+    (N : ℝ) ≤ c₄ / ((1 - γ) ^ 3 * ε ^ 2) * (1 + σ / (1 - γ)) →
+    ∃ (M₀ M₁ : DiscountedMDP State Action) (μ : FiniteDistribution State),
+      M₀.discount = γ ∧ M₁.discount = γ ∧ M₀.reward = M₁.reward ∧
+      ∀ est : ModelBasedPolicyLearning.Samples State Action N → StationaryPolicy State Action,
+        1 / 8 ≤ max
+          ((ModelBasedPolicyLearning.samplingLaw M₀ N).real
+            {data | ε < robustOptimalValueAt chiBall M₀ σ μ -
+              robustPolicyValueAt chiBall M₀ σ (est data) μ})
+          ((ModelBasedPolicyLearning.samplingLaw M₁ N).real
+            {data | ε < robustOptimalValueAt chiBall M₁ σ μ -
+              robustPolicyValueAt chiBall M₁ σ (est data) μ})
+
+end Thm7_5
 
 end StatisticalRL.Statements.Ch7

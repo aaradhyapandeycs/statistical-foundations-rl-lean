@@ -174,6 +174,10 @@ proof passed a focused check under a draft header; the current source passed
 working-tree and clean-copy compilation and axiom checks. It does
 not assert that the main theorem's sample budget holds for this witness.
 
+Minimality: the counterexample shows only that some sample-size premise of this kind is needed;
+the retained premise `log²T ≤ c₁(1−γ)T` (with `T ≥ 2` and `t ≤ T`) is the one the appendix proof uses
+and is not claimed to be minimal.
+
 ## Candidate C6: confidence factor in the UCBVI optimism proof
 
 **Source:** arXiv:2610.41903v1, `chapters/onlineRL.tex`,
@@ -201,6 +205,8 @@ leaves its zero-count update undefined. Full working and clean integration
 builds and axiom audits passed. This is an alternative proof for the corrected
 implementation; the source's factor discrepancy remains documented.
 
+<a id="C7"></a>
+
 ## Candidate C7: degenerate domains in the robust chi-squared lower bound
 
 **Source:** Theorem 7.5, `thm:chi2-lower-bound`,
@@ -217,12 +223,14 @@ conditions for any positive constants. Under the known-reward convention,
 reward-maximizing action is known. See the [source audit](critic-robust-chi-square-lower-bound-degenerate-domains.md)
 and [independent check](critic-robust-chi-square-lower-bound-degenerate-independent.md).
 
-A transparent proposed correction makes `S ≥ 2`, `A ≥ 2`, and `ε > 0`
-explicit. These exclusions address the displayed singleton cases; they do not
-prove the cited lower bound on the remaining domain. The source's general
-large-dimension discussion may indicate intended scope, but no numerical
-restriction appears in the theorem. This is not an author-approved erratum,
-and no complete Lean proof of the corrected robust theorem is claimed. A
+Originally proposed correction (superseded): make `S ≥ 2`, `A ≥ 2` and `ε > 0` explicit.
+
+Corrected result (2026-11-07). The cited bound is proved in Lean with explicit constants (`c₃ = 1/512`, `c₄ = 1/5308416`, hence every smaller pair) and the printed shape of the ε and N conditions, by a self-contained two-point construction (the cited paper was not used; `Formalization/RobustRL/Ch7/LowerBound75.lean`; index entries in `Statements/Ch7.lean`):
+- `Thm7_5_corrected`: the printed statement with only `2 ≤ A` added. Estimators map samples to policies and do not see the reward; the S = 1 case holds only for that reason. `ε > 0` is not needed: for ε < 0 the claim is trivial, and at ε = 0 the Lean value `c₄/0 = 0` forces N = 0 (the instance also holds for every N if `c₄/0` is read as ∞).
+- `Thm7_5_corrected_knownReward`: the faithful form under the book's known-reward convention: `2 ≤ S`, `2 ≤ A`, shared reward. Both hypotheses are shown necessary in Lean (`knownReward_needs_two_states`, `knownReward_needs_two_actions`), and the printed statement is refuted for every pair of positive constants (`printed_at_fails`).
+Independently reviewed in two rounds. Not author-approved. The earlier evidence below concerns the singleton-action case.
+
+Earlier evidence: a
 [stationary-policy robust-value foundation](../Formalization/RobustRL/ChiSquaredPolicyValue.lean)
 constructs actual trajectory-value infima and proves the singleton-action
 zero-gap mechanism in that policy class; see its [review](critic-robust-chi-policy-value-independent-review.md).
@@ -440,8 +448,10 @@ candidate records the asserted error.
   `b⋆` inside the proof of Theorem 6.3, where `0 ≤ V̂ ≤ 1/(1−γ)` and the residual bound
   `eq:infinite-v-lower` hold on the theorem's high-probability event. The entry proves the
   bound for every `V` and `b ≥ 0` satisfying those displayed premises (with `γ > 0`), using
-  the actual optimal-greedy transition rows and discounted occupancy; deriving the premises
-  for `V̂` on the event is not part of this result.
+  the transition rows and actual discounted occupancy of an arbitrary stationary policy (so every
+  optimal deterministic policy `π⋆` and every tie rule among optimal actions is covered; generalized
+  on 2026-11-07 from the single optimal-greedy tie rule after an independent review); deriving the
+  premises for `V̂` on the event is not part of this result.
 
 - Theorem 3.2 (`Thm:sample-compl-main`,
   `generative_model_model_based.tex:900–923`) and Lemma 3.5
@@ -1051,12 +1061,16 @@ Theorem 7.3 (`robust_RL.tex:377–391`) quantifies over any (S, A, γ, σ, ε) w
 estimator outputs the unique policy, so both error probabilities are 0 < 1/8. An admissible witness is c0 = 1/8,
 γ = 1/2, σ = 1/2, ε = 1/1024 (the upper endpoint), N = 1 (the N-bound is 128 ln 2 ≈ 88.7); A = 1 fails for every c0.
 Under the known-reward convention (`generative_model_model_based.tex:31`), S = 1 is also degenerate (constant data;
-argmax r is optimal), the same mechanism as [C7](#C7) for Theorem 7.5. Proposed correction: A ≥ 2 and S ≥ 2, with M0
-and M1 on S states and A actions; this excludes the degenerate cases but does not prove the cited bound. Confirmed by
+argmax r is optimal), the same mechanism as [C7](#C7) for Theorem 7.5. Originally proposed correction: A ≥ 2 and S ≥ 2, with M0
+and M1 on S states and A actions (superseded by the proved corrections below). Confirmed by
 two independent source checks and machine-checked in Lean (`Formalization/RobustRL/Ch7/SingletonAction73.lean`):
 `not_thm7_3_printed`, `not_thm7_3_exists_c0` and `not_thm7_3_printed_small` cover the ∀c₀, ∃c₀ and "c₀ sufficiently small"
-readings (witness S = 2, A = 1, γ = σ = 1/2, ε = c₀/128, N = 1). This shows only that A ≥ 2 is missing; it says nothing
-about the cited bound for A ≥ 2. Not author-approved.
+readings (witness S = 2, A = 1, γ = σ = 1/2, ε = c₀/128, N = 1).
+
+Corrected result (2026-11-07). The cited bound is now proved in Lean with the printed constants, by a self-contained construction (the cited paper was not used), in two forms (`Formalization/RobustRL/Ch7/LowerBound73.lean`; index entries in `Statements/Ch7.lean`):
+- `Thm7_3_corrected`: the printed statement with only `2 ≤ A` added. Here estimators map samples to policies and do not see the reward, and the two hard models may differ in reward; the S = 1 case holds only for that reason.
+- `Thm7_3_corrected_knownReward`: the faithful form under the book's known-reward convention: `2 ≤ S`, `2 ≤ A`, and the two hard models share their reward. Under that convention the printed claim is false at S = 1 (`argmax r` is robust-optimal; a paper argument, not machine-checked), so S ≥ 2 is needed there.
+Both passed independent reviews. Not author-approved.
 
 <a id="C39"></a>
 ## Candidate C39: Theorem 7.7 is not self-contained

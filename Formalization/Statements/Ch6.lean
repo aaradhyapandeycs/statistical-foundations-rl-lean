@@ -112,8 +112,9 @@ def Lemma6_4 : Prop :=
             M.bonus s a (StatisticalRL.OfflineVILCB.Input.value (M.iter τ))| ≤ 2 / M.N
 
 /-- **Lemma 6.7, restricted to its displayed premises** (`lem:sum-d-Var-UB`,
-`chapters/offlineRL.tex:1529–1537`; proof `:4277–4335`). `π⋆` is the optimal greedy policy,
-`P⋆` its transition rows (`eq:P-b-star-infinite`, `:1038–1045`) and `d⋆_ρ` its actual discounted
+`chapters/offlineRL.tex:1529–1537`; proof `:4277–4335`). The source's `π⋆` is the optimal
+deterministic policy (`:138`); the entry quantifies over every stationary policy `π`, so it covers
+every optimal deterministic policy and every tie rule among them. `P⋆` is the policy's transition rows (`eq:P-b-star-infinite`, `:1038–1045`) and `d⋆_ρ` its actual discounted
 state occupancy. The source proves the lemma for the VI-LCB output `V̂` and penalty `b⋆` inside
 the proof of Theorem 6.3, on its high-probability event; this entry instead assumes the facts that
 the source's proof consumes: `0 ≤ V ≤ 1/(1-γ)`, `b ≥ 0` and `0 ≤ V - γ P⋆ V + 2b`
@@ -122,16 +123,16 @@ with `γ > 0`. It does not derive those facts for `V̂`. See
 [`SOURCE-ISSUES.md#statement-index-scope-disclosures`](../../docs/SOURCE-ISSUES.md#statement-index-scope-disclosures). -/
 def Lemma6_7_restricted : Prop :=
   ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
-    (ρ : FiniteDistribution S) (V b : S → ℝ),
+    (π : StationaryPolicy S A) (ρ : FiniteDistribution S) (V b : S → ℝ),
     0 < M.discount →
     (∀ s, 0 ≤ V s) → (∀ s, V s ≤ 1 / (1 - M.discount)) → (∀ s, 0 ≤ b s) →
     (∀ s, 0 ≤ V s - M.discount *
-      (M.policyTransition M.optimalGreedyPolicy s).expectation V + 2 * b s) →
-    ∑ s, M.discountedStateOccupancy M.optimalGreedyPolicy ρ s *
-        (M.policyTransition M.optimalGreedyPolicy s).variance V ≤
+      (M.policyTransition π s).expectation V + 2 * b s) →
+    ∑ s, M.discountedStateOccupancy π ρ s *
+        (M.policyTransition π s).variance V ≤
       2 / (M.discount ^ 2 * (1 - M.discount)) +
         (4 / (M.discount ^ 2 * (1 - M.discount))) *
-          ∑ s, M.discountedStateOccupancy M.optimalGreedyPolicy ρ s * b s
+          ∑ s, M.discountedStateOccupancy π ρ s * b s
 
 /-- **Lemma 6.14, restricted optimal-action clause** (`lemma:value-policy-LB-inf`, `chapters/offlineRL.tex:2544–2583`; proof
 `:5502–5679`) for the hard family `M_θ` of `:2432–2516` (`lbMDP`): states `{0,…,S-1}` are
