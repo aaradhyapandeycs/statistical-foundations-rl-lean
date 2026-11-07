@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Corrected Theorem 7.8 (multi-agent lower bound)
+
+Theorem 7.8, which the monograph states without proof, is proved in a corrected form from scratch: under the known-shared-reward convention, with m, S, H, max A ≥ 2 and estimators allowed to output correlated joint policies, every adaptive randomized learner below the printed sample budget fails with probability at least 1/4 (Assouad-style hidden-action construction, explicit constants). The named-result ledger now has 80 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Corrected Theorems 7.3 and 7.5 (robust RL lower bounds)
 
 The robust TV (7.3) and χ² (7.5) minimax lower bounds, which the monograph cites without proof, are proved in Lean by self-contained two-point constructions with the printed constants. Each has two indexed forms: a minimal correction adding only A ≥ 2 (estimators do not see the reward), and a known-reward form with S ≥ 2, A ≥ 2 and shared reward, the faithful reading under the book's convention (C7, C38). The named-result ledger now has 79 covered entries out of 90. The complete monograph remains **INCOMPLETE**.

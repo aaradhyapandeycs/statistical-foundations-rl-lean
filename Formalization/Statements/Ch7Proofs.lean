@@ -4,6 +4,7 @@ import Formalization.RobustRL.ChiSquaredSourceMaximum
 import Formalization.Ch7Rest.LowerBound710
 import Formalization.RobustRL.Ch7.LowerBound73
 import Formalization.RobustRL.Ch7.LowerBound75
+import Formalization.Ch7Rest.Marl78Main
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -167,5 +168,13 @@ theorem Thm7_5_corrected_holds : Thm7_5_corrected :=
 `StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward`. -/
 theorem Thm7_5_corrected_knownReward_holds : Thm7_5_corrected_knownReward :=
   StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward
+
+/-- `Thm7_8_corrected` from `StatisticalRL.Ch7Rest.Marl.thm7_8_corrected`. -/
+theorem Thm7_8_corrected_holds : Thm7_8_corrected :=
+  StatisticalRL.Ch7Rest.Marl.thm7_8_corrected
+
+/-- `Thm7_8_corrected_constSum` from `StatisticalRL.Ch7Rest.Marl.thm7_8_corrected_constSum`. -/
+theorem Thm7_8_corrected_constSum_holds : Thm7_8_corrected_constSum :=
+  StatisticalRL.Ch7Rest.Marl.thm7_8_corrected_constSum
 
 end StatisticalRL.Statements.Ch7
