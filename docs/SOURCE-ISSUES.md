@@ -1076,7 +1076,7 @@ convention (`generative_model_model_based.tex:31`), S = 1 or H = 1 makes the gam
 equilibrium gives gap 0 with no samples. "m-player zero-sum" is defined only for m = 2 (`marl.tex:50–54`); read as
 Σ_i r_{i,h} = 0 with r_{i,h} ∈ [0,1] (`marl.tex:41–43`), all rewards vanish and the bound fails for all parameters.
 Proposed correction: max_i A_i ≥ 2, S ≥ 2, H ≥ 2 (or larger constants), and an explicit zero-sum convention.
-No proof or citation is given in the monograph. Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
+No proof or citation is given in the monograph. Found by a source preflight and confirmed by an independent source check. Machine-checked in Lean for the A_i = 1 part only (`Formalization/Ch7Rest/SingletonAction78.lean`: `not_thm7_8_printed` for every zero-sum admissibility predicate, also with size-dependent constants and the sum-zero / sum-constant readings); this shows only that a hypothesis such as max_i A_i ≥ 2 is missing and says nothing about the lower bound. The S = 1 / H = 1 and vanishing-reward cases have no Lean evidence. Not author-approved.
 
 <a id="C41"></a>
 ## Candidate C41: Theorem 7.9's learning rate can exceed 1
@@ -1086,7 +1086,7 @@ but the prescribed η = c_η K(1−γ)⁴ε²/log(SAKT/δ) (`federated_RL.tex:11
 Witness, for any constants c_T, c_η: S = A = 1, r ≡ 1, Q_0 = 0, τ = T = 1, γ = 1/2, ε = 1, δ = 1/2 and K large;
 then (112–113) holds, the run is deterministic with Q_T = η, and ‖Q_T − Q*‖∞ = η − 2 > ε, so the success
 probability is 0. Proposed correction: add the hypothesis c_η K(1−γ)⁴ε² < log(SAKT/δ) (the printed η lies in (0,1)),
-and γ ∈ (0,1). The corrected statement is cited (woo2023blessing), not proved in the monograph. Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
+and γ ∈ (0,1). The corrected statement is cited (woo2023blessing), not proved in the monograph. Found by a source preflight and confirmed by an independent source check. Machine-checked in Lean (`Formalization/Ch7Rest/LargeStep79.lean`: `not_thm7_9_at`, `not_thm7_9_printed`): false under the literal reading, in which the algorithm's input range η ∈ (0,1) (`:51`, `:76`) is not a hypothesis of the theorem; if that range is read as tacitly assumed, the theorem is vacuous for large K rather than false. Only K depends on the constants, so constants depending on (δ, ε, Q₀, τ, T, γ, S, A) but not on K are also refuted (by inspection, not formalized). Not author-approved.
 
 <a id="C42"></a>
 ## Candidate C42: Theorem 7.10 is vacuous in N as printed; the placement of c0 matters
@@ -1120,7 +1120,7 @@ unbounded below. Example: Y = {y1, y2}, d = 1, φ(y1) = 1, φ(y2) = 0, π_cal = 
 θ → ∞ the objective tends to −∞ for any number of y1 ≻ y2 comparisons, including none. Hence π^{(t+1)} is undefined,
 and the hypothesis ‖θ^{(t)}‖ ≤ r_max constrains iterates that need not exist. δ appears in neither the bound nor α.
 Proposed correction: T ≥ 2, minimization over {θ : ‖θ‖₂ ≤ r_max}, and an explicit δ-dependence. The result is
-cited (cen2025vpo), not proved in the monograph. Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
+cited (cen2025vpo), not proved in the monograph. Found by a source preflight and confirmed by an independent source check. Machine-checked in Lean (`Formalization/Ch7Rest/VPOIllPosed712.lean`): the printed α formula is undefined at T = 1 (`vpoAlpha_T_one`, `not_vpoAlpha_T_one_pos`; Lean's 0 is the junk value of x/0), and the update has no minimizer over full-support policies (`no_vpoMinimizer`, `not_vpoUpdate_exists_printed`, `no_vpoMinimizer_gibbs`). Over the closed simplex with log 0 = −∞ the value −∞ is attained at a boundary policy that no real θ induces, so ‖θ^{(t)}‖ ≤ r_max fails; the status is ill-posed or vacuous, not false. The regret bound itself is neither transcribed nor refuted. Not author-approved.
 
 ```
 
