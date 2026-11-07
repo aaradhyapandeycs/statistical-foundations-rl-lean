@@ -802,6 +802,82 @@ noncomputable def Lemma5_14_corrected : Prop :=
           ((∑ h : Fin H, ∑ k : Fin K, errSq h k) ≤
             Real.sqrt (d*(H : ℝ)^2*I*T6)+d*(H : ℝ)^2*I)}
 
+noncomputable local instance ch5Claim51StateDecidableEq {State : Type*} : DecidableEq State :=
+  Classical.decEq State
+noncomputable local instance ch5Claim51ActionDecidableEq {Action : Type*} : DecidableEq Action :=
+  Classical.decEq Action
+
+/-- Corrected Claim 5.1, `claim:PV-l-UB`,
+`source/upstream/tex/chapters/onlineRL.tex:4340–4353` (proved in the book at
+`:4406–4476`, inside the proof of Lemma 5.14). Stated on the actual sequential
+experiment (iid episode resets, conditional transition sampling) for the MVP
+learner with completed pre-episode history, with the premises of
+`Lemma5_14_corrected` (`4 ≤ c₁`, `c₁² ≤ c₂`, the source standing premise
+`SAH·log₂K ≤ K`). Differences from the printed claim, recorded in
+`docs/SOURCE-ISSUES.md` (C8, C13, C15, C16 and its Claim 5.1 note, C17):
+(i) the confidence allocation is the reciprocal `δ′ = δ/(100S²A²H²K²)` with
+`δ ≤ 1` instead of the printed `100δ/(S²A²H²K²)`; the claim at the printed
+allocation is neither proved nor refuted here (C16 refutes only the generic
+Lemma 5.13 allocation); (ii) the claim is restricted to one fixed committed
+maximizing tie rule; (iii) the algorithm uses the zero-count completion (C8)
+and power-of-two triggers (C13), and the proof uses the profile cover and
+terminal-zero auxiliary family repairs (C15, C17); (iv) the printed proof
+applies Lemma 5.13 at level `l = 1` (`:4464`), which that lemma does not cover;
+the formal proof treats `l = 1` deterministically (each term ≤ `H`, total
+`≤ dH ≤ dHI/(2 log₂K)`). Reading conventions (not corrections): the sum over
+`(s,a,h)` at episode `k_{l,j,s,a,h}` is written over stages `h` and zero-based
+episodes `k` whose stage-`h` pair has exactly `2^(l-1)+j-1` earlier visits
+(each pair has at most one such episode; a pair with no such visit contributes
+`0`, the source's `V^k = 0` for `k > K`); `V^k_{h+1}` is the capped backward
+value `U h k` built from the history before episode `k`; `P̂^{(l)}_{s,a,h}` is
+the empirical row of the successors of `(h,s,a)` at its zero-based visits
+`2^(l-2),…,2^(l-1)-1` (`l ≥ 2`) or its first visit (`l = 1`), read from the
+completed history (the `fallback` default is never read at an actual visit);
+`log₂K = log K / log 2` and `l` ranges over naturals `1 ≤ l ≤ log₂K`. The event
+holds with probability strictly exceeding `1 − δ′`. -/
+noncomputable def Claim5_1_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
+    (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+    (fallback : State) (δ c₁ c₂ : ℝ),
+    0 < δ → δ ≤ 1 → 4 ≤ c₁ → c₁^2 ≤ c₂ →
+    (Fintype.card State : ℝ)*Fintype.card Action*H*
+      (Real.log K/Real.log 2) ≤ (K : ℝ) →
+    let δp := δ / (100 * (Fintype.card State : ℝ)^2 *
+      (Fintype.card Action : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+    let I := 40000 * (Real.log K / Real.log 2)^3 *
+      Real.log (3 * (Fintype.card State : ℝ) * Fintype.card Action * H) * Real.log (1/δp)
+    let planner := onlineMVPCommittedGreedyPlanner hH E fallback (Real.log (1/δp)) c₁ c₂
+    1 - δp <
+      (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K*H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
+          let history := onlineSequentialPathHistory
+            (onlineEpisodicChoose H K hH sample.1 fallback planner) (K*H) [] sample.2
+          let U := fun (h : Fin H) (k : Fin K) =>
+            onlineCappedBackwardValueAt (H : ℝ) (Real.log (1/δp)) c₁ c₂
+              (onlineMVPHistoryPlanningStages hH E fallback (history.take (k.val*H))) (h.val+1)
+          let sa := fun (h : Fin H) (e : ℕ) =>
+            onlineActualStageRowSequence H K hH sample.1 fallback planner sample.2 h e
+          let cnt := fun (h : Fin H) (k : Fin K) =>
+            ((Finset.range k.val).filter (fun e => sa h e = sa h k.val)).card
+          let Phat := fun (l : ℕ) (h : Fin H) (k : Fin K) =>
+            FiniteDistribution.empiricalRow (2^(l-2)) (by positivity)
+              (fun q : Fin (2^(l-2)) => (onlineRowOutcomes history (h, sa h k.val)).getD
+                ((if l = 1 then 0 else 2^(l-2)) + q.val) fallback)
+          let d := (Fintype.card State : ℝ)*Fintype.card Action*H
+          let x := Real.log K / Real.log 2
+          ∀ l : ℕ, 1 ≤ l → (l : ℝ) ≤ x → ∀ j : ℕ, 1 ≤ j → j ≤ 2^(l-1) →
+            (∑ h : Fin H, ∑ k : Fin K,
+              if cnt h k = 2^(l-1)+j-1 then
+                (Phat l h k).expectation (U h k) -
+                  ((E h).transition (sa h k.val).1 (sa h k.val).2).expectation (U h k)
+              else 0) ≤
+            Real.sqrt (d*I/(2^l*x) * ∑ h : Fin H, ∑ k : Fin K,
+                if cnt h k = 2^(l-1)+j-1 then
+                  ((E h).transition (sa h k.val).1 (sa h k.val).2).variance (U h k)
+                else 0) +
+              d*(H : ℝ)*I/(2^l*x)}
+
 
 local instance qLearningIndexStateMeasurable (State : Type*) : MeasurableSpace State := ⊤
 local instance qLearningIndexPathMeasurable (State : Type u) (K n : ℕ) :

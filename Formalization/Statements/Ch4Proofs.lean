@@ -3,6 +3,7 @@ import Formalization.ModelFree.QLearningLowerBoundTheorem
 import Formalization.ModelFree.QLearningStepSizeSource
 import Formalization.ModelFree.TDStepSizeLate
 import Formalization.Statements.Ch4
+import Formalization.ModelFree.FiniteQ.Main
 import Formalization.ModelFree.TDIterateBounds
 import Formalization.ModelFree.TDSquareEnergy
 import Formalization.ModelFree.TDSourceVarianceProxyUniversal
@@ -98,5 +99,11 @@ theorem Lemma4_14_holds : Lemma4_14 := by
 theorem Thm4_7_restricted_holds : Thm4_7_restricted := qLb_thm47_constantRate
 
 theorem Lemma4_15_holds : Lemma4_15 := qLb_lemma415
+
+theorem Thm4_13_corrected_holds : Thm4_13_corrected := by
+  refine ⟨1 / 64, by norm_num, fun c₁ c₂ hc₂ hc₂₁ hc₁ ↦ ⟨8000 / c₂, by positivity, ?_⟩⟩
+  intro State Action _ _ H E η δ ε T hT hδ hδ1 hε hε1 hη hbudget Q₀ hQ₀
+  exact FiniteQLearning.finiteQLearning_sample_complexity c₁ c₂ hc₂ hc₂₁ hc₁ H E η δ ε T hT hδ
+    hδ1 hε hε1 (fun k _ hk ↦ hη k hk) Q₀ hQ₀ hbudget
 
 end StatisticalRL.Statements.Ch4
