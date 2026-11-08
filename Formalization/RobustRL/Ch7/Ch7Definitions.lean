@@ -17,6 +17,9 @@ Source: arXiv:2610.41903v1, `chapters/robust_RL.tex`.
   `QLearning.qChiBall`, which imposes the support condition explicitly).
 * Robust value `V^{π,σ}(s) = inf_{P ∈ U^σ(P^0)} V^{π,P}(s)` (:71–84), with
   `V^{π,P}` the actual infinite-trajectory value of the stationary policy.
+* Robust Q-function `Q^{π,σ}(s,a) = inf_{P ∈ U^σ(P^0)} Q^{π,P}(s,a)` (:77), with
+  `Q^{π,P}` the actual forced-first-action infinite-trajectory value
+  (`DiscountedMDP.trajectoryExpectedQ`, `defn:Qpi-inf-horizon`); static adversary (:78).
 * Optimal robust value `V^{⋆,σ}(s) = max_π V^{π,σ}(s)` (:88–98), represented
   as the supremum over stationary randomized policies (no attainment assumed).
 * Robust Bellman operator (:118–131, empirical version :230–236) with the inner
@@ -77,6 +80,13 @@ noncomputable def robustPolicyValue (ball : RowBall State) (M : DiscountedMDP St
     (σ : ℝ) (π : StationaryPolicy State Action) (s : State) : ℝ :=
   sInf {v | ∃ K, RobustAdmissible ball M σ K ∧
     v = (withKernel M K).trajectoryExpectedValue π s}
+
+/-- Robust Q-function `Q^{π,σ}(s,a) = inf_{P ∈ U^σ(P^0)} Q^{π,P}(s,a)` (`robust_RL.tex:77`),
+the infimum of actual forced-first-action infinite-trajectory values over admissible kernels. -/
+noncomputable def robustPolicyQ (ball : RowBall State) (M : DiscountedMDP State Action)
+    (σ : ℝ) (π : StationaryPolicy State Action) (s : State) (a : Action) : ℝ :=
+  sInf {v | ∃ K, RobustAdmissible ball M σ K ∧
+    v = (withKernel M K).trajectoryExpectedQ π s a}
 
 /-- Optimal robust value `V^{⋆,σ}(s) = max_π V^{π,σ}(s)` (`robust_RL.tex:94–96`),
 as a supremum over stationary randomized policies. -/

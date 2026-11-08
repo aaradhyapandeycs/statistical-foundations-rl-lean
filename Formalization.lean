@@ -17,6 +17,7 @@ import Formalization.MDP.ForcedActionTrajectory
 import Formalization.MDP.ForcedActionReturn
 import Formalization.MDP.ForcedPrefixBridge
 import Formalization.MDP.OptimalTrajectoryValue
+import Formalization.MDP.RewardPerturbation
 import Formalization.MDP.PolicyIteration
 import Formalization.MDP.PlanningIterationCount
 import Formalization.MDP.DiscountedOccupancy
@@ -110,6 +111,13 @@ import Formalization.ModelFree.QLearningLowerBoundModerate
 import Formalization.ModelFree.QLearningLowerBoundPathwise
 import Formalization.ModelFree.QLearningLowerBoundState2
 import Formalization.ModelFree.QLearningLowerBoundTheorem
+import Formalization.ModelFree.QLearningLowerBoundRescaledRates
+import Formalization.ModelFree.QLearningLowerBoundVaryingDefinitions
+import Formalization.ModelFree.QLearningLowerBoundVaryingPathwise
+import Formalization.ModelFree.QLearningLowerBoundVaryingState2
+import Formalization.ModelFree.QLearningLowerBoundVaryingMoments
+import Formalization.ModelFree.QLearningLowerBoundVaryingOverestimation
+import Formalization.ModelFree.QLearningLowerBoundRescaledTheorem
 import Formalization.Generative.GenerativeLowerBoundTwoStateDefinitions
 import Formalization.MDP.DiscountedOccupancyFlow
 import Formalization.OfflineRL.OccupancyWeightedVariance
@@ -534,6 +542,8 @@ import Formalization.ModelFree.AsyncQ.Epoch
 import Formalization.ModelFree.AsyncQ.Arith
 import Formalization.ModelFree.AsyncQ.Prep
 import Formalization.ModelFree.AsyncQ.Path
+import Formalization.ModelFree.MeanError
+import Formalization.ModelFree.AsyncQ.MeanError
 import Formalization.ModelFree.AsyncQ.Main
 import Formalization.ModelFree.FiniteQ.CounterexampleT1
 import Formalization.Statements.Ch2
@@ -568,6 +578,7 @@ import Formalization.RobustRL.Ch7.LowerBound75Necessity
 import Formalization.RobustRL.DRVI.RowSets
 import Formalization.RobustRL.DRVI.PolicyEvaluation
 import Formalization.RobustRL.DRVI.Optimality
+import Formalization.RobustRL.DRVI.RobustQ
 import Formalization.RobustRL.DRVI.Planning
 import Formalization.RobustRL.DRVI.WorstKernel
 import Formalization.RobustRL.DRVI.TVSpan
@@ -585,6 +596,9 @@ import Formalization.RobustRL.DRVI.Statement
 import Formalization.RobustRL.DRVI.Thm72Numerics
 import Formalization.RobustRL.DRVI.Thm72
 import Formalization.RobustRL.DRVI.Thm72Main
+import Formalization.RobustRL.DRVI.OraclePlanner
+import Formalization.RobustRL.DRVI.OraclePlannerNumerics
+import Formalization.RobustRL.DRVI.OraclePlannerMain
 import Formalization.RobustRL.DRVI.Thm74Numerics
 import Formalization.RobustRL.DRVI.Thm74
 import Formalization.RobustRL.DRVI.Thm74Main
@@ -951,3 +965,13 @@ import Formalization.Online.LowerBound.BanditTesting
 import Formalization.Online.LowerBound.RegretDefinitions
 import Formalization.Online.LowerBound.HistoryKL
 import Formalization.Online.LowerBound.MinimaxRegret
+import Formalization.Online.LowerBound.GaussianBanditMeasurability
+import Formalization.Online.LowerBound.GaussianBanditShift
+import Formalization.Online.LowerBound.GaussianBanditChangeOfMeasure
+import Formalization.Online.LowerBound.GaussianBanditKL
+import Formalization.Online.LowerBound.GaussianBanditMinimax
+import Formalization.Online.LowerBound.GaussianBanditUCBOptimal
+import Formalization.Online.RegretToPAC.Definitions
+import Formalization.Online.RegretToPAC.StartState
+import Formalization.Online.RegretToPAC.Corrected
+import Formalization.Online.RegretToPAC.PrintedRefutation

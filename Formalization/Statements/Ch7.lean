@@ -481,6 +481,49 @@ def Thm7_4_corrected : Prop :=
           {data | ∀ s, robustOptimalValue chiBall M σ s -
             robustPolicyValue chiBall M σ (detPolicy (pick data)) s ≤ ε}
 
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Restricted Remark 7.1, `remark:tv-upper`, `chapters/robust_RL.tex:361–372` (with
+`eq:oracle_requirement`, :365–369), for Theorem 7.2 `thm:l1-upper-bound` (:342–359): the guarantee
+of Theorem 7.2 holds for any planner run on the empirical RMDP (nominal kernel `P̂⁰`, TV ball of
+radius `σ`) whose output `π̂` obeys `‖V̂^{⋆,σ} − V̂^{π̂,σ}‖∞ ≤ Õ((1−γ)²/N)`.
+
+Reading: the `Õ` is `c_opt (1−γ)² log(SAN/((1−γ)δ)) / N` for an arbitrary constant `c_opt ≥ 0` (the
+logarithmic factor is the one commented out at :367); the universal `C₂` may depend on `c_opt` (`∀
+c_opt ∃ C₂`). Two supporting claims are paper arguments (plan check §3), not formalized: the reverse
+order is false, since a huge `c_opt` admits arbitrarily bad planners; and higher powers of the
+logarithm cannot be admitted, since the remark would then fail as `δ → 0`. The ℓ∞ requirement is
+written coordinatewise with `|·|`; since `V̂^{⋆,σ} ≥ V̂^{π̂,σ}` always, it is equivalent to the
+one-sided form. The DRVI iteration count (`docs/SOURCE-ISSUES.md#C37`) does not enter. Premises on
+`γ, σ, δ, ε, N` are those of `Thm7_2_corrected` (with `N > 0`). `V̂^{⋆,σ}`, `V̂^{π̂,σ}` are the
+robust values of the empirical model `ModelBasedPolicyLearning.empiricalModel M N hN data`;
+`V^{⋆,σ}` is the supremum over stationary randomized policies, as in `Thm7_2_corrected`.
+
+Restriction (`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`): planner outputs are
+deterministic stationary policies `detPolicy f`; randomized and history-dependent outputs are not
+covered. The event does not depend on the planner: with probability at least `1−δ`, every `f`
+meeting the requirement on the realized data set is `ε`-optimal, so any data-dependent planner is
+covered without a measurability assumption. -/
+def Remark7_1_restricted : Prop :=
+  ∀ c_opt : ℝ, 0 ≤ c_opt → ∃ C₂ : ℝ, 0 < C₂ ∧
+    ∀ (State Action : Type) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (σ δ ε : ℝ) (N : ℕ) (hN : 0 < N),
+      1 / 4 ≤ M.discount → 0 < σ → σ < 1 → 0 < δ → δ < 1 → 0 < ε →
+      ε ≤ Real.sqrt (1 / max (1 - M.discount) σ) →
+      C₂ / ((1 - M.discount) ^ 2 * max (1 - M.discount) σ * ε ^ 2) *
+          Real.log (Fintype.card State * Fintype.card Action * N /
+            ((1 - M.discount) * δ)) ≤ N →
+      1 - δ ≤ (ModelBasedPolicyLearning.samplingLaw M N).real
+        {data | ∀ f : State → Action,
+          (∀ s, |robustOptimalValue tvBall
+                (ModelBasedPolicyLearning.empiricalModel M N hN data) σ s -
+              robustPolicyValue tvBall
+                (ModelBasedPolicyLearning.empiricalModel M N hN data) σ (detPolicy f) s| ≤
+            c_opt * (1 - M.discount) ^ 2 / N *
+              Real.log (Fintype.card State * Fintype.card Action * N /
+                ((1 - M.discount) * δ))) →
+          ∀ s, robustOptimalValue tvBall M σ s -
+            robustPolicyValue tvBall M σ (detPolicy f) s ≤ ε}
+
 end Thm7_2_7_4
 
 section Thm7_12
@@ -731,5 +774,51 @@ def Thm7_7_restricted : Prop :=
           (if gap (⟨P, rew⟩ : MarkovGame 2 S H A) (out hist) ≤ ε then 1 else 0))
 
 end Thm7_7
+
+section Eq_mdp_value_Q
+universe v
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Unnumbered display `eq:mdp-value-Q`, `chapters/robust_RL.tex:88–98` ("there exists at least
+one deterministic policy that maximizes the robust value function (resp. robust Q-function)
+simultaneously across all states (resp. state-action pairs)"). This is a displayed claim; it
+adds no numbered-ledger entry.
+
+Objects: RMDP `{S, A, γ, U^σ(P^0), r}` with finite `S`, `A`, reward in `[0,1]`, `0 ≤ γ < 1`
+(`:24–28`; a `DiscountedMDP` whose `transition` is the nominal kernel `P^0`); the
+`(s,a)`-rectangular set `U^σ(P^0)` of complete kernels whose rows lie in the TV ball
+(half-L1 distance, `tvBall`) or the support-aware χ² ball (`chiBall`) of radius `σ > 0`
+around the nominal rows (`:31–52`); `V^{π,σ}(s) = inf_P V^{π,P}(s)` and
+`Q^{π,σ}(s,a) = inf_P Q^{π,P}(s,a)` (`:76–84`), where `V^{π,P}`, `Q^{π,P}` are the actual
+infinite-trajectory value and forced-first-action Q-value in the MDP with kernel `P`
+(static adversary: one kernel for the whole trajectory, `:78`). The policy class of `max_π` is
+the book's class of stationary randomized policies `π : S → Δ(A)` (`prelim.tex:66`).
+
+For each of the two balls separately: there is a single deterministic `f : S → A` whose policy
+`s ↦ δ_{f(s)}` dominates every stationary randomized policy in robust value at every state and
+in robust Q-value at every state-action pair. Since `detPolicy f` is itself such a policy, this
+is `V^{π⋆,σ}(s) = max_π V^{π,σ}(s)` and `Q^{π⋆,σ}(s,a) = max_π Q^{π,σ}(s,a)` with the maxima
+attained.
+
+Disclosures (none is a source issue): (a) one `f` serves both the value and the Q clause,
+whereas the source's "resp." would allow separate policies; (b) `DiscountedMDP` allows `γ = 0`;
+(c) the proof needs only `σ ≥ 0`. The statement concerns stationary randomized policies and the
+book's static adversary only; history-dependent policies (and dynamic adversaries) are not
+claimed. -/
+def Eq_mdp_value_Q : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (σ : ℝ), 0 < σ →
+    (∃ f : State → Action,
+      (∀ (π : StationaryPolicy State Action) (s : State),
+        robustPolicyValue tvBall M σ π s ≤ robustPolicyValue tvBall M σ (detPolicy f) s) ∧
+      (∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
+        robustPolicyQ tvBall M σ π s a ≤ robustPolicyQ tvBall M σ (detPolicy f) s a)) ∧
+    (∃ f : State → Action,
+      (∀ (π : StationaryPolicy State Action) (s : State),
+        robustPolicyValue chiBall M σ π s ≤ robustPolicyValue chiBall M σ (detPolicy f) s) ∧
+      (∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
+        robustPolicyQ chiBall M σ π s a ≤ robustPolicyQ chiBall M σ (detPolicy f) s a))
+
+end Eq_mdp_value_Q
 
 end StatisticalRL.Statements.Ch7

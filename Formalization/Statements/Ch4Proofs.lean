@@ -1,5 +1,6 @@
 import Formalization.ModelFree.QLearningHardMDPValues
 import Formalization.ModelFree.QLearningLowerBoundTheorem
+import Formalization.ModelFree.QLearningLowerBoundRescaledTheorem
 import Formalization.ModelFree.QLearningStepSizeSource
 import Formalization.ModelFree.TDStepSizeLate
 import Formalization.Statements.Ch4
@@ -13,6 +14,8 @@ import Formalization.ModelFree.QLearningStabilityInfinityNorm
 import Formalization.ModelFree.QLearningRobustContraction
 import Formalization.ModelFree.QLearningSourceTheoremClosure
 import Formalization.ModelFree.AsyncQ.Main
+import Formalization.ModelFree.MeanError
+import Formalization.ModelFree.AsyncQ.MeanError
 
 /-! Proofs of the Chapter 4 statement index from the existing exports. -/
 namespace StatisticalRL.Statements.Ch4
@@ -99,6 +102,10 @@ theorem Lemma4_14_holds : Lemma4_14 := by
 
 theorem Thm4_7_restricted_holds : Thm4_7_restricted := qLb_thm47_constantRate
 
+theorem Thm4_7_holds : Thm4_7 := qLb_thm47
+
+theorem Thm4_7_case_i_holds : Thm4_7_case_i := qLb_thm47_rescaledLinear
+
 theorem Lemma4_15_holds : Lemma4_15 := qLb_lemma415
 
 theorem Thm4_13_corrected_holds : Thm4_13_corrected := by
@@ -114,5 +121,13 @@ theorem Thm4_12_corrected_holds : Thm4_12_corrected := by
   intro S A _ _ M πb μ μmin tmix s₀ δ ε T hγ hst _ htmix hμmin _ hμ0 hT1 hT2 hδ hδ1 hε hε1 hbud
     Q₀ h₀
   exact h S A M πb μ μmin tmix s₀ δ ε T hγ hst htmix.1 hμmin hμ0 hT1 hT2 hδ hδ1 hε hε1 hbud Q₀ h₀
+
+theorem Remark4_1_holds : Remark4_1 := tdSource_meanError_exists_universal_constants
+
+theorem Remark4_2_holds : Remark4_2 := qLearning_meanError_exists_universal_constants
+
+open Classical in
+theorem Remark4_3_corrected_holds : Remark4_3_corrected :=
+  AsyncQ.asyncQ_meanError_exists_constants
 
 end StatisticalRL.Statements.Ch4

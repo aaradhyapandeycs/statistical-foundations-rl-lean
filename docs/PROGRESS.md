@@ -1,5 +1,25 @@
 # Whole-monograph progress
 
+## Regret-to-PAC conversion: printed constant refuted, corrected version proved
+
+The online-RL conversion from expected regret to a PAC guarantee is false as printed: its constant C_{S,A,H+1} fails even for one algorithm on every class with strictly positive constants (machine-checked, C46). The conclusion is proved with C_{S,A,H}, and with the printed constant whenever C is nondecreasing in H. A displayed claim, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.
+
+## Small results: reward perturbation, mean-error remarks, oracle planners
+
+The reward-perturbation bounds of the preliminaries (eq 2.27, 2.28), the mean-error Remarks 4.1 and 4.2, Remark 4.3 (corrected under the premises of C34) and Remark 7.1 (Theorem 7.2 for any sufficiently accurate deterministic planner, restricted) are proved. Displayed claims and remarks, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.
+
+## Remark 5.12: Gaussian-bandit minimax lower bound
+
+The remark that the Lemma 5.21 argument adapts to Gaussian bandits is proved in its formal reading: every learner has expected regret at least (1/16)√(AT) on some instance of a fixed family, and UCB is minimax-optimal up to the factor 128√log(T²/δ) (inheriting Theorem 5.1's tie-rule restriction). A remark, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.
+
+## Robust optimality of deterministic policies (value and Q)
+
+The robust-RL claim that one deterministic policy maximizes both the robust value and the robust Q-function, for the TV and χ² uncertainty sets, is proved as printed (stationary policies, static adversary); the robust Q-function of a policy is now defined in the library. A displayed claim, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.
+
+## Theorem 4.7 proved as printed
+
+Both cases of the Q-learning lower bound (Theorem 4.7) are now proved exactly as printed, with universal constants: the case with rescaled linear learning rates, which the monograph leaves without proof (C30, now resolved), has a self-contained Lean proof. The named-result ledger records Theorem 4.7 as certified instead of restricted; the count of covered named results is unchanged at 89 of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Theorem 3.2 with approximate planners
 
 The prose claim after Theorem 3.2 is proved: any planner that is 1/(N(1−γ))-optimal in the empirical model satisfies the theorem’s guarantees with the same universal constant, and empirical value and policy iteration reach that accuracy in O(log(N/(1−γ))/(1−γ)) iterations. These are prose claims, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.

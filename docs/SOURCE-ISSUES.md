@@ -435,6 +435,12 @@ candidate records the asserted error.
 - Lemma 6.12 (`lem:lcbq-alpha-xi-psi-phi-bound`, `offlineRL.tex:2309–2324`) is indexed as `Lemma6_12_restricted`. It has the added premise `log(SAT/δ) ≥ 1`, which is sufficient for `κ < 1` and `H ≍ ι/(1−γ)`; the printed lemma fails for small `ι` (see [C24](#C24)). The premise is not minimal: any `ι ≥ c > 3/4` would do with a larger constant, and the excluded band requires `SAT ≤ 2`. The source's `c_b` "sufficiently large" is stated as `∃ c_b₀, ∀ c_b ≥ c_b₀` (`c_b₀ = 4`, as in [C28](#C28)). The `≲` constant is an existential `C` that depends only on `c_b` (`C = 400000 + 5600 c_b`). `α = 0` is stated as `α_j → 0`; `ξ, θ, ψ, φ` are stated as `HasSum` limits. The `θ` and `ψ+φ` bounds are stated under `C⋆ < ∞`, since otherwise the printed right sides are `+∞`. No sample-size condition on `T` is assumed, although the printed proof uses Theorem 6.8's. The hypotheses that `π⋆` is optimal and that ties are broken by a maximiser are carried as in the source but are not used.
 - Lemma 6.9 (`lemma:Q-recursion-pessimistic-Q`, `offlineRL.tex:1866–1893`) is indexed as `Lemma6_9_restricted` (renamed from `Lemma6_9` on 2026-11-07 for consistency with the tie-rule convention used for Theorem 5.1). The printed algorithm (`alg:q-infinite-lcb`, `:1701–1745`) leaves the arg-max tie rule unspecified; the entry covers every deterministic tie rule that depends only on the current Q-row (for example any rule on the arg-max set), not rules depending on the state, the iteration or the history. The same tie scope applies to `Lemma6_10_restricted`, `Lemma6_12_restricted` and `Thm6_8_corrected`.
 - Theorem 5.1 (`thm:bandit-pure-ucb`, `bandits.tex:258–277`) is indexed as `Thm5_1_restricted`. Both printed bounds and all printed hypotheses (2 ≤ A ≤ T, means in [0,1], 0 < δ < 1) are kept unchanged. The restriction is the tie rule: the algorithm (`:232`) leaves the choice inside the argmax unspecified, and the entry quantifies over every deterministic rule that depends only on the round and the argmax set. History-dependent and randomized tie-breaking are not covered; the mathematical repair ([C36](#C36)) extends to any non-anticipating rule, but that is not formalized. Reading conventions: an unpulled arm has index +∞ (`:387`); rounds are 0-indexed; the noise is the iid N(0,1) table over (round, arm); regret is the pseudo-regret T r⋆ − Σ r(a_t) with r⋆ = max_a r(a), integrated over the noise; integrability is proved as an extra conclusion.
+- Remark 5.12 (unlabeled, `onlineRL.tex:2725–2729`; numbered by the per-chapter remark counter) is an informal claim and is indexed as its formal reading. `Remark5_12_lowerBound` (unrestricted): an Ω(√(AT)) minimax lower bound, constant 1/16 and range 2 ≤ A ≤ T chosen by us, learners = seed from any probability space (`Seed : Type`) plus arm maps measurable in (seed, past (arm, reward) pairs). `Remark5_12_restricted`: the UCB optimality comparison (factor 128√log(T²/δ)) inherits the deterministic tie-rule restriction of `Thm5_1_restricted` above. No source error.
+- The regret-to-PAC conversion (`onlineRL.tex:113–141`, [C46](#C46)) is indexed as `Eq_PAC_from_regret_conversion_corrected` and `Eq_PAC_from_regret_conversion_restricted`. Algorithm class: internal randomness with finite support and deployed policies that are deterministic Markov given the seed and the completed history; the source allows randomized deployed policies, which are not covered. Only `δ > 0` is assumed, as printed.
+- Remark 7.1 (`remark:tv-upper`, `robust_RL.tex:361–372`) is indexed as `Remark7_1_restricted`: Õ((1−γ)²/N) is read
+  as c_opt(1−γ)²log(SAN/((1−γ)δ))/N with ∀ c_opt ∃ C₂; only deterministic stationary planner outputs are covered
+  (randomized or history-dependent outputs are not), and N > 0 is assumed as in `Thm7_2_corrected`. The event is
+  uniform over all such outputs, so no measurability of the planner is needed.
 
 - Lemma 6.14 (`lemma:value-policy-LB-inf`, `offlineRL.tex:2544–2583`) is indexed as
   `Lemma6_14_restricted`. All values, the policy upper bound with equality at `π⋆` and
@@ -941,6 +947,8 @@ The theorem covers (i) `η_t = 1/(1+c_η(1−γ)t)` for any constant `c_η > 0` 
 
 Formal entry: `Thm4_7_restricted` (case (ii) only). Case (i) remains an open obligation.
 
+Resolved (2026-11-08). The source omits the argument for case (i); the printed statement is true as printed, with constants independent of c_η (c₃ = 16, c_lb = 10⁻⁹). Formal proof: `qLb_thm47_rescaledLinear` (`Formalization/ModelFree/QLearningLowerBoundRescaledTheorem.lean`), combined with case (ii) in the printed entry `Thm4_7`. No statement correction. Independently plan-checked and source-reviewed. Not author-approved.
+
 <a id="C31"></a>
 ## Candidate C31: Theorem 4.7 proof (constant rates) and Lemma 4.15 proof — constant slips, an off-by-one, an unused WLOG
 
@@ -1000,6 +1008,9 @@ Corrected result (2026-11-07). `Thm4_12_corrected` (`Formalization/ModelFree/Asy
 ```
 
 ```
+
+Remark 4.3 (`:2088–2090`, no displayed formula) is indexed as `Remark4_3_corrected`: read like Remarks 4.1/4.2 (δ = ε(1−γ)/2 in the budget, E[max|Q_T−Q⋆|] ≤ ε(1−δ)+δ/(1−γ) ≤ 2ε), it fails under the printed premises by the same T = 1 instance (ε = 1/2: mean error 2 > 1) and is proved with exactly the premises of `Thm4_12_corrected` (c₁ = 1, c₂ = max(c₂⁰, 1)); the counterexample is a paper computation.
+
 <a id="C35"></a>
 ## Candidate C35: Theorem 4.13 needs T ≥ 2; its proof is outside the monograph
 
@@ -1200,6 +1211,59 @@ Restricted result (2026-11-08): `Thm7_6_restricted` (C₁ = 400) proves the prin
 joint), adding the domain binders 0 < S, 0 < A_i, 0 < N. The CCE clause is shown non-vacuous in Lean by a causal backward-induction CCE planner
 (stage-CCE existence via Hahn–Banach separation). Nash existence is not in the pinned Mathlib, so the NE and joint clauses are proved for every
 causal NE oracle but not shown non-vacuous in Lean. Independently plan-checked and source-reviewed. Not author-approved.
+
+<a id="C46"></a>
+## Candidate C46: regret-to-PAC conversion has the wrong constant `C_{S,A,H+1}`
+
+Source: `eq:PAC-from-regret-conversion` (`-regret`, `-pac`) and `eq:uniform-policy-pihat`,
+`chapters/onlineRL.tex:113–141` (labels :116, :122, :129, :138), proof :145–183; protocol
+`eq:generation-s1k-shk-online` :17–41; known reward :20, rewards in [0,1] `prelim.tex:682–683`.
+
+**Printed claim.** If an online algorithm satisfies `E[Regret(K)] ≤ C_{S,A,H} K^{1−α}` for any MDP with S states,
+A actions and horizon H, and `π̂ ~ Unif(π¹,…,π^K)`, then w.p. ≥ 1−δ,
+`V₁⋆(ρ) − V₁^{π̂}(ρ) ≤ C_{S,A,H+1} K^{−α} δ^{−1}`.
+
+**Counterevidence (machine-checked).** Primary: `StatisticalRL.OnlineRL.RegretToPAC.not_Eq_PAC_from_regret_conversion_printed`
+(Prop `Eq_PAC_from_regret_conversion_printed`): one algorithm family on every finite carrier pair, the regret
+hypothesis for every carrier pair, H > 0, K > 0, MDP and ρ, and strictly positive constants. Secondary:
+`not_Eq_PAC_from_regret_conversion_printed_fixedCarrier`, whose hypothesis covers only the instance's carriers
+(the fixed-class reading).
+- Algorithm: deterministic and seedless (it ignores the seed, K, the history and the carriers), so the restricted
+  algorithm class of the Lean propositions (finite seed, deterministic deployed policies) does not weaken the
+  refutation; it only weakens the refuted proposition. It knows H and the reward and plays a reward-minimizing
+  action when H = 1 and a reward-maximizing action at every step otherwise.
+- Hypothesis: with one state, myopic play is optimal, so the regret is ≤ 0 for H ≥ 2; otherwise it is ≤ KH since
+  rewards lie in [0,1]. So the hypothesis holds on every class with α = 0 and the strictly positive constants
+  `C_{1,A,H} = 1/4` (H ≠ 1), `C_{S,A,H} = H + 1` otherwise.
+- Instance: S = 1, A = 2, H = 1, r = (1, 0), K = 1, δ = 1/2. Every deployed policy has gap 1, but the printed
+  conclusion requires gap ≤ `C_{1,2,2}/δ = 1/2` with probability ≥ 1/2.
+- More generally, with `C_{1,2,H} = η` for H ≥ 2 the claim fails for every δ ∈ (η, 1).
+- The refutation exploits a constant that is **not monotone in H** (`C_{1,2,2} = 1/4 < 2 = C_{1,2,1}`,
+  `printedCexConst_two_lt_one`) together with deliberately bad H = 1 behaviour. The construction uses the
+  known-reward convention (`onlineRL.tex:20`, `prelim.tex:682–683`) and rewards in [0,1]; whether the printed
+  constant fails with unknown rewards is not determined here.
+
+**Proof flaws.** (1) Run identity: the statement's π̂ comes from the run on the given MDP; the proof applies the
+algorithm "to the augmented MDP without modification", so its π̂ comes from a different run (the augmented-run
+reading is a proof artifact, not a reading of the statement). (2) A fresh state s₀ gives S+1 states and hence
+`C_{S+1,A,H+1}`; the augmented MDP stays in the class only if s₀ reuses an existing state. (3) "a single action
+a₀" must be read as A identical actions to stay in the class with A actions.
+
+**The augmentation is unnecessary.** Under protocol (i)–(ii), `s₁ᵏ` is independent of `πᵏ`
+(`onlineEpisode_startState_independent`), so Markov's inequality on the uniform mixture gives the bound with the
+constant at the actual (S, A, H).
+
+**True versions (Lean, statement index Ch5).**
+- `Eq_PAC_from_regret_conversion_corrected`: constant `C_{S,A,H}`; regret hypothesis only at the instance; direct
+  proof.
+- `Eq_PAC_from_regret_conversion_restricted`: printed constant `C_{S,A,H+1}` under `C_{S,A,H} ≤ C_{S,A,H+1}`
+  (C nondecreasing in H), which covers the book's Õ(√(SAH³K)) use (:184–198).
+
+**Scope.** Both true versions cover finitely supported internal randomness and deployed policies that are
+deterministic Markov given the seed and the completed history; randomized πᵏ (:35–38) are not covered.
+`δ > 0` only, as printed. The follow-up at :184–198 (δ = 1/log(SAH), K = Θ̃(SAH³/ε²), and the slip `V₁⋆(s)` for
+`V₁⋆(ρ)`) is not covered. Independently plan-checked, critic-reviewed and the primary refutation separately reviewed ([review](critic-regret-pac.md), [refutation review](review-regret-pac-all-carriers.md)). Not
+author-approved.
 
 ```
 

@@ -1049,4 +1049,179 @@ def Thm5_1_restricted : Prop :=
     ∫ z, regret z ∂gaussianNoiseTable T A
       ≤ 10 * L * ∑ a ∈ Finset.univ.filter (fun a => 0 < Δ a), 1 / Δ a
 
+open StatisticalRL.Bandit StatisticalRL.GaussianBanditLB in
+/-- Remark 5.12 (`chapters/onlineRL.tex:2725–2729`, unlabeled; numbered by the per-chapter remark
+counter), lower-bound part. This is the formal reading of an informal remark: the argument of
+Lemma 5.21 (`lem:online-lb-testing`, `:2709–2721`), with the Bernoulli KL replaced by the Gaussian
+one, gives a minimax lower bound of order `√(AT)` for the Gaussian bandit of `sec:bandits-UCB`
+(`chapters/bandits.tex:15–48`; pseudo-regret `:66–70`), matching Theorem 5.1 up to logarithmic
+factors (`:296`). The remark gives no constant; `1/16` is ours.
+
+For `2 ≤ A ≤ T` there is a family of `A` mean vectors `μ i ∈ [0,1]^A`, fixed before the learner,
+such that every learner incurs expected pseudo-regret at least `(1/16)√(AT)` on some member.
+A learner is a seed `σ` from an arbitrary probability space `(Seed, ν)`, independent of the noise,
+and arm maps `arm t σ h` of the seed and the history `h : Fin t → Fin A × ℝ` of past (arm, reward)
+pairs. Requirement disclosed: each `(σ, h) ↦ arm t σ h` is measurable (`Fin A` carries the
+discrete σ-algebra); this is needed for the expected regret to be defined. Every randomized
+history-dependent algorithm with measurable rules is of this form, and UCB with a deterministic
+tie rule is the case `Seed = Unit`. The noise table has independent `N(0,1)` entries
+(`:37–42`), and the regret is shown integrable, so the integral is not a junk value. This is the
+fixed-family (inf–sup over learners after the family) form, which implies the `∀ L ∃ μ` form.
+Disclosure: the seed space is quantified as `Seed : Type` (universe 0); this covers every seed space
+used in practice, e.g. `ℕ → unitInterval` for per-round uniforms. -/
+def Remark5_12_lowerBound : Prop :=
+  ∀ (A T : ℕ), 2 ≤ A → A ≤ T →
+    ∃ μ : Fin A → Fin A → ℝ, (∀ i a, μ i a ∈ Set.Icc (0 : ℝ) 1) ∧
+      ∀ (Seed : Type) [MeasurableSpace Seed] (ν : Measure Seed) [IsProbabilityMeasure ν]
+        (arm : (t : ℕ) → Seed → (Fin t → Fin A × ℝ) → Fin A),
+        (∀ t, Measurable (Function.uncurry (arm t))) →
+        ∃ i : Fin A,
+          Integrable (fun ω : Seed × (Fin T → Fin A → ℝ) => regret arm (μ i) T ω.1 ω.2)
+            (ν.prod (gaussianNoiseTable T A)) ∧
+          (1 / 16 : ℝ) * Real.sqrt ((A : ℝ) * T) ≤
+            ∫ ω, regret arm (μ i) T ω.1 ω.2 ∂(ν.prod (gaussianNoiseTable T A))
+
+open StatisticalRL.Bandit StatisticalRL.GaussianBanditLB in
+/-- Restricted Remark 5.12 (`chapters/onlineRL.tex:2725–2729`): minimax optimality of UCB up to
+logarithmic factors (the notion of `chapters/bandits.tex:296`) for the Gaussian bandit of
+`sec:bandits-UCB`. Formal reading of an informal remark.
+
+For `2 ≤ A ≤ T`, `0 < δ < 1` and `L = log(T²/δ)`: there is a family of mean vectors in `[0,1]^A`
+such that for every learner (as in `Remark5_12_lowerBound`: a seed from an arbitrary probability
+space plus arm maps `arm t` measurable in `(σ, h)`) some member `μ i` satisfies both
+`(1/16)√(AT) ≤ E_{μ i}[Regret_L]` and, for every mean vector `r ∈ [0,1]^A`, the expected
+pseudo-regret of UCB (Algorithm 5.1, `:207–251`) on `r` is integrable and at most
+`128 √L · E_{μ i}[Regret_L]`. Since this holds for every learner, UCB's worst-case regret over
+`[0,1]^A` is within the factor `128√L` of the minimax value over `[0,1]^A` (the best worst-case
+regret of any learner). The seed space is quantified as `Seed : Type` (universe 0), as in
+`Remark5_12_lowerBound`.
+
+Restricted variant: the UCB part inherits the tie-rule restriction of `Thm5_1_restricted`. It
+covers every deterministic tie rule `tie t s ∈ s` depending only on the round and the argmax set.
+See `docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`. -/
+def Remark5_12_restricted : Prop :=
+  ∀ (A T : ℕ) (δ : ℝ) (tie : ℕ → Finset (Fin A) → Fin A),
+    (∀ t s, s.Nonempty → tie t s ∈ s) → 2 ≤ A → A ≤ T → 0 < δ → δ < 1 →
+    let L := Real.log ((T : ℝ) ^ 2 / δ)
+    ∃ μ : Fin A → Fin A → ℝ, (∀ i a, μ i a ∈ Set.Icc (0 : ℝ) 1) ∧
+      ∀ (Seed : Type) [MeasurableSpace Seed] (ν : Measure Seed) [IsProbabilityMeasure ν]
+        (arm : (t : ℕ) → Seed → (Fin t → Fin A × ℝ) → Fin A),
+        (∀ t, Measurable (Function.uncurry (arm t))) →
+        ∃ i : Fin A,
+          Integrable (fun ω : Seed × (Fin T → Fin A → ℝ) => regret arm (μ i) T ω.1 ω.2)
+            (ν.prod (gaussianNoiseTable T A)) ∧
+          (1 / 16 : ℝ) * Real.sqrt ((A : ℝ) * T) ≤
+            ∫ ω, regret arm (μ i) T ω.1 ω.2 ∂(ν.prod (gaussianNoiseTable T A)) ∧
+          ∀ r : Fin A → ℝ, (∀ a, r a ∈ Set.Icc (0 : ℝ) 1) →
+            Integrable (fun z : Fin T → Fin A → ℝ =>
+                (T : ℝ) * (⨆ a, r a) - ∑ t, r (ucbAction tie L r z t))
+              (gaussianNoiseTable T A) ∧
+            ∫ z, ((T : ℝ) * (⨆ a, r a) - ∑ t, r (ucbAction tie L r z t))
+                ∂gaussianNoiseTable T A ≤
+              128 * Real.sqrt L *
+                ∫ ω, regret arm (μ i) T ω.1 ω.2 ∂(ν.prod (gaussianNoiseTable T A))
+
+/-- Corrected regret-to-PAC conversion, `eq:PAC-from-regret-conversion` (`-regret`, `-pac`) with
+`eq:uniform-policy-pihat`, `chapters/onlineRL.tex:113–141`; protocol `chapters/onlineRL.tex:17–41`.
+Differs from the printed result in the constant: `C`, the regret constant at the actual
+`(S, A, H)`, replaces the printed `C_{S,A,H+1}`, which is false (regret-to-PAC entry in
+`docs/SOURCE-ISSUES.md`; refutation `RegretToPAC.not_Eq_PAC_from_regret_conversion_printed`).
+The regret hypothesis is assumed only at the given instance `(H, K, E, ρ)`, which is weaker than
+the printed "for any MDP with S states, A actions and horizon H". Algorithm class (restricted):
+finitely supported internal randomness (`ν` on a finite `Seed`) and deployed policies that are
+deterministic Markov given the seed and the completed history; the source also allows
+randomized deployed policies (:35–38), which are not covered. `π̂ = π^J` with `J` uniform and
+independent; the joint (seed, run, J) probability is written as the seed- and J-average.
+`0 < H`, `0 < K`, `0 < δ`; `α ∈ [0,1]` as printed. The printed proof (:145–183) runs the
+algorithm on an augmented MDP; this entry is proved directly (the episode-k start state is
+independent of `πᵏ`). -/
+def Eq_PAC_from_regret_conversion_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (Seed : Type) [Fintype Seed] (H K : ℕ) (hH : 0 < H), 0 < K →
+    ∀ (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
+      (fallback : State) (ν : FiniteDistribution Seed)
+      (planner : Seed → OnlineEpisodePlanner State Action H) (C α δ : ℝ),
+    0 ≤ α → α ≤ 1 → 0 < δ →
+    let law : Seed →
+        FiniteDistribution ((Fin K → State) × OnlineOutcomePath.{u, 0} State (K * H)) :=
+      fun ω ↦ onlineSequentialEpisodeLaw H K hH E ρ fallback (planner ω) (K * H)
+    let πk : Seed → (Fin K → State) × OnlineOutcomePath.{u, 0} State (K * H) →
+        Fin K → Fin H → State → Action :=
+      fun ω sample k ↦ planner ω ((onlineSequentialPathHistory
+        (onlineEpisodicChoose H K hH sample.1 fallback (planner ω)) (K * H) [] sample.2).take
+          (k.val * H))
+    let V : (Fin H → State → Action) → State → ℝ := fun f ↦
+      DecisionStage.trajectoryValue
+        (List.ofFn (fun h : Fin H ↦ (E h).withPolicy (fun t ↦ EnvironmentStage.pointMass (f h t))))
+    let Vstar : State → ℝ :=
+      DecisionStage.trajectoryValue (EnvironmentStage.greedyStages (List.ofFn E))
+    ν.expectation (fun ω ↦ (law ω).expectation (fun sample ↦
+        ∑ k : Fin K, (Vstar (sample.1 k) - V (πk ω sample k) (sample.1 k)))) ≤
+      C * (K : ℝ) ^ (1 - α) →
+    1 - δ ≤ ν.expectation (fun ω ↦ (1 / (K : ℝ)) * ∑ k : Fin K,
+      (law ω).rowMeasure.real {sample |
+        ρ.expectation Vstar - ρ.expectation (V (πk ω sample k)) ≤ C * (K : ℝ) ^ (-α) / δ})
+
+/-- Restricted regret-to-PAC conversion with the printed constant `C_{S,A,H+1}`,
+`eq:PAC-from-regret-conversion`, `chapters/onlineRL.tex:113–141`; protocol
+`chapters/onlineRL.tex:17–41`. The printed statement with one added premise: the regret constant
+is nondecreasing in the horizon at the instance's `(S, A)`, `C_{S,A,H} ≤ C_{S,A,H+1}` (without it
+the printed statement is false; regret-to-PAC entry in `docs/SOURCE-ISSUES.md`). The algorithm
+(seed law `ν H K`, planner `alg H K r ω`) sees the horizon, `K`, the known reward table and its
+seed, not the transitions or `ρ`; the regret hypothesis is over every MDP on the given carriers
+with `0 < H`, `0 < K`. Same restricted algorithm class as
+`Eq_PAC_from_regret_conversion_corrected`. -/
+def Eq_PAC_from_regret_conversion_restricted : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (Seed : Type) [Fintype Seed] (ν : ℕ → ℕ → FiniteDistribution Seed)
+    (alg : (H : ℕ) → ℕ → (Fin H → State → Action → ℝ) → Seed →
+      OnlineEpisodePlanner State Action H)
+    (C : ℕ → ℕ → ℕ → ℝ) (α : ℝ), 0 ≤ α → α ≤ 1 →
+    (∀ H : ℕ, C (Fintype.card State) (Fintype.card Action) H ≤
+      C (Fintype.card State) (Fintype.card Action) (H + 1)) →
+    (∀ (H K : ℕ) (hH : 0 < H), 0 < K →
+      ∀ (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State),
+      let fallback : State := Classical.choice (E ⟨0, hH⟩).state_nonempty
+      let planner : Seed → OnlineEpisodePlanner State Action H :=
+        alg H K (fun h ↦ (E h).reward)
+      let law : Seed →
+          FiniteDistribution ((Fin K → State) × OnlineOutcomePath.{u, 0} State (K * H)) :=
+        fun ω ↦ onlineSequentialEpisodeLaw H K hH E ρ fallback (planner ω) (K * H)
+      let πk : Seed → (Fin K → State) × OnlineOutcomePath.{u, 0} State (K * H) →
+          Fin K → Fin H → State → Action :=
+        fun ω sample k ↦ planner ω ((onlineSequentialPathHistory
+          (onlineEpisodicChoose H K hH sample.1 fallback (planner ω)) (K * H) [] sample.2).take
+            (k.val * H))
+      let V : (Fin H → State → Action) → State → ℝ := fun f ↦
+        DecisionStage.trajectoryValue
+          (List.ofFn (fun h : Fin H ↦ (E h).withPolicy (fun t ↦ EnvironmentStage.pointMass (f h t))))
+      let Vstar : State → ℝ :=
+        DecisionStage.trajectoryValue (EnvironmentStage.greedyStages (List.ofFn E))
+      (ν H K).expectation (fun ω ↦ (law ω).expectation (fun sample ↦
+          ∑ k : Fin K, (Vstar (sample.1 k) - V (πk ω sample k) (sample.1 k)))) ≤
+        C (Fintype.card State) (Fintype.card Action) H * (K : ℝ) ^ (1 - α)) →
+    ∀ (H K : ℕ) (hH : 0 < H), 0 < K →
+      ∀ (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State) (δ : ℝ),
+      0 < δ →
+      let fallback : State := Classical.choice (E ⟨0, hH⟩).state_nonempty
+      let planner : Seed → OnlineEpisodePlanner State Action H :=
+        alg H K (fun h ↦ (E h).reward)
+      let law : Seed →
+          FiniteDistribution ((Fin K → State) × OnlineOutcomePath.{u, 0} State (K * H)) :=
+        fun ω ↦ onlineSequentialEpisodeLaw H K hH E ρ fallback (planner ω) (K * H)
+      let πk : Seed → (Fin K → State) × OnlineOutcomePath.{u, 0} State (K * H) →
+          Fin K → Fin H → State → Action :=
+        fun ω sample k ↦ planner ω ((onlineSequentialPathHistory
+          (onlineEpisodicChoose H K hH sample.1 fallback (planner ω)) (K * H) [] sample.2).take
+            (k.val * H))
+      let V : (Fin H → State → Action) → State → ℝ := fun f ↦
+        DecisionStage.trajectoryValue
+          (List.ofFn (fun h : Fin H ↦ (E h).withPolicy (fun t ↦ EnvironmentStage.pointMass (f h t))))
+      let Vstar : State → ℝ :=
+        DecisionStage.trajectoryValue (EnvironmentStage.greedyStages (List.ofFn E))
+      1 - δ ≤ (ν H K).expectation (fun ω ↦ (1 / (K : ℝ)) * ∑ k : Fin K,
+        (law ω).rowMeasure.real {sample |
+          ρ.expectation Vstar - ρ.expectation (V (πk ω sample k)) ≤
+            C (Fintype.card State) (Fintype.card Action) (H + 1) * (K : ℝ) ^ (-α) / δ})
+
 end StatisticalRL.Statements
