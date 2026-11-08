@@ -3,6 +3,8 @@ import Formalization.ModelFree.QLearningRobustDefinitions
 import Formalization.Ch7Rest.FedGeneric710
 import Formalization.RobustRL.Ch7.Ch7Definitions
 import Formalization.Ch7Rest.Marl78Defs
+import Formalization.Ch7Rest.VPODefs712
+import Formalization.Ch7Rest.Marl76Defs
 
 /-! Full source-facing statement of robust_RL.tex:302–324, label
 `lemma:dual-form`.  The two source choices of discrepancy are recorded as
@@ -480,5 +482,179 @@ def Thm7_4_corrected : Prop :=
             robustPolicyValue chiBall M σ (detPolicy (pick data)) s ≤ ε}
 
 end Thm7_2_7_4
+
+section Thm7_12
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- Corrected Theorem 7.12, `thm_online`, `chapters/RLHF.tex:208–215` (online VPO,
+Algorithm `alg:online_RBMLE` :182–203; setup :21–59, :92–102, linear rewards
+`assump:linear` :146–153; `docs/SOURCE-ISSUES.md#C44`). Corrected, well-posed variant.
+
+Setting: finite prompts `X` with probability vector `ρ`, finite answers `Y`, reference policy
+`π_ref` with full support, calibration policy `π_cal` (any conditional policy), features
+`φ : X → Y → ℝ^d` with `‖φ‖₂ ≤ 1` and `d ≥ 1`, true parameter `θ⋆` with `‖θ⋆‖₂ ≤ r_max`,
+`β, r_max, α, δ > 0`, horizon `T ≥ 1`. Round `t` (0-indexed `k = t − 1` in Lean) draws
+`x ∼ ρ`, `y₁, y₂ ∼ π^{(t)}(·|x)` independently and a Bradley–Terry label with reward
+`r⋆ = ⟪φ, θ⋆⟫`; `π^{(t)}` is the Gibbs policy of `sel (D^{(t−1)})`, where `D^{(t−1)}` lists the
+comparisons of rounds `1..t−1` (:162, :196). The law of the `T` rounds is the finite product
+`vpoTrajWeight`, and the probability of an event is the weighted sum over all trajectories; the
+weights are nonnegative and sum to one (`StatisticalRL.Ch7Rest.Rlhf.vpoTrajWeight_nonneg`,
+`StatisticalRL.Ch7Rest.Rlhf.vpoTrajWeight_sum`).
+`Regret = ∑_{t=1}^{T} [J⋆(r⋆; π_cal) − J(r⋆, π^{(t)}; π_cal)]` with `J` the calibrated value
+(:92–96) and `J⋆` its supremum over all conditional policies (:99–102);
+`κ = sup_{x,y} π_cal(y|x)/π_ref(y|x)` (:214).
+
+Conclusion: (a) a ball-constrained selection rule exists; (b) for every such rule and every
+`α > 0`, with probability at least `1 − δ`, `Regret ≤ T·B′/α + K·Γ·α`, where
+`B′ = 2 log(2T/δ) + 2d log⌈2 r_max T √d⌉₊ + 4`, `Γ = (e/(e−1)) (2d log(1 + T/d) + log(2/δ))`,
+`K = 2κ e^{4 r_max + 2 r_max/β}`.
+
+Differences from the printed statement:
+(i) the update is the printed VPO objective (:194–198, `vpoObjective`) minimized over the Gibbs
+policies `{π_θ : ‖θ‖₂ ≤ r_max}` (any minimizer; `IsBallSelection`), because the printed argmin
+over all policies need not exist (C44). This covers every printed run whose iterates exist with
+`‖θ^{(t)}‖ ≤ r_max`: the rule "the unconstrained Gibbs minimizer if one exists in the ball, else
+any ball minimizer" is an admissible selection rule, and the statement quantifies over every rule
+(when the printed argmin's tie-breaking is a deterministic function of the dataset; the objective
+is not convex in `θ`, so ties are possible, and randomized or external tie-breaking is not covered.
+This subsumption is an informal remark, not part of the formal statement; only its dataset-level
+extension step was machine-checked, in an independent review probe);
+(ii) `X` and `Y` are finite (the source allows a general prompt distribution `ρ`);
+(iii) any `α > 0` and `T ≥ 1` (the printed `α` (:214) is undefined at `T = 1` and is one
+admissible instance for `T ≥ 2`);
+(iv) `δ` appears explicitly in the bound;
+(v) the conclusion is the explicit bound above, which at the tuned `α` is
+`O(e^{2 r_max + r_max/β} d √(κT) · log)` (informal arithmetic, not formalized). The printed rate `Õ(e^{2 r_max + r_max/β} √(κ d T))` is
+neither proved nor refuted here. -/
+def Thm7_12_corrected : Prop :=
+  ∀ (X Y : Type) [Fintype X] [Fintype Y] (d T : ℕ) (ρ : X → ℝ) (π_ref π_cal : X → Y → ℝ)
+    (φ : X → Y → EuclideanSpace ℝ (Fin d)) (θstar : EuclideanSpace ℝ (Fin d))
+    (β r_max α δ : ℝ),
+    0 < d → 1 ≤ T → (∀ x, 0 ≤ ρ x) → ∑ x, ρ x = 1 →
+    IsPositivePolicy π_ref → IsCondPolicy π_cal → (∀ x y, ‖φ x y‖ ≤ 1) →
+    0 < β → 0 < r_max → ‖θstar‖ ≤ r_max → 0 < α → 0 < δ →
+    (∃ sel, IsBallSelection ρ π_ref π_cal φ α β r_max sel) ∧
+    ∀ sel, IsBallSelection ρ π_ref π_cal φ α β r_max sel →
+      1 - δ ≤ ∑ h : Fin T → X × Y × Y × Bool, vpoTrajWeight ρ π_ref φ θstar β sel h *
+        (if vpoRegret ρ π_ref π_cal φ θstar β sel h ≤
+            T * (2 * Real.log (2 * T / δ) +
+                2 * d * Real.log ⌈2 * r_max * T * Real.sqrt (d : ℝ)⌉₊ + 4) / α +
+              2 * vpoKappa π_ref π_cal * Real.exp (4 * r_max + 2 * r_max / β) *
+                (Real.exp 1 / (Real.exp 1 - 1) *
+                  (2 * d * Real.log (1 + T / d) + Real.log (2 / δ))) * α
+          then 1 else 0)
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- Corrected Theorem 7.12, local-curvature form (`thm_online`, `chapters/RLHF.tex:208–215`;
+`docs/SOURCE-ISSUES.md#C44`). Same setting, hypotheses and differences (i)–(iv) as
+`Thm7_12_corrected`; the conclusion (b) is instead the bound
+`Regret ≤ (e^{4 r_max/β}/(4β)) · (16 r_max² + 16 e^{4 r_max} (B′ + 4 r_max α)) · Γ`
+(with the same `B′`, `Γ`), which does not involve `κ`. Informally (arithmetic on this bound, not
+formalized), at the printed `α` (`T ≥ 2`) its `(d, T)` scaling is `Õ(√(dT))` once `T ≳ d³`, with
+constants (`e^{2 r_max + 3 r_max/β} r_max/β` and an additive `e^{4 r_max + 4 r_max/β} d² log² T/β`)
+different from the printed ones. The printed rate
+`Õ(e^{2 r_max + r_max/β} √(κ d T))` is neither proved nor refuted here. -/
+def Thm7_12_corrected_local : Prop :=
+  ∀ (X Y : Type) [Fintype X] [Fintype Y] (d T : ℕ) (ρ : X → ℝ) (π_ref π_cal : X → Y → ℝ)
+    (φ : X → Y → EuclideanSpace ℝ (Fin d)) (θstar : EuclideanSpace ℝ (Fin d))
+    (β r_max α δ : ℝ),
+    0 < d → 1 ≤ T → (∀ x, 0 ≤ ρ x) → ∑ x, ρ x = 1 →
+    IsPositivePolicy π_ref → IsCondPolicy π_cal → (∀ x y, ‖φ x y‖ ≤ 1) →
+    0 < β → 0 < r_max → ‖θstar‖ ≤ r_max → 0 < α → 0 < δ →
+    (∃ sel, IsBallSelection ρ π_ref π_cal φ α β r_max sel) ∧
+    ∀ sel, IsBallSelection ρ π_ref π_cal φ α β r_max sel →
+      1 - δ ≤ ∑ h : Fin T → X × Y × Y × Bool, vpoTrajWeight ρ π_ref φ θstar β sel h *
+        (if vpoRegret ρ π_ref π_cal φ θstar β sel h ≤
+            Real.exp (4 * r_max / β) / (4 * β) *
+              (16 * r_max ^ 2 + 16 * Real.exp (4 * r_max) *
+                ((2 * Real.log (2 * T / δ) +
+                  2 * d * Real.log ⌈2 * r_max * T * Real.sqrt (d : ℝ)⌉₊ + 4) + 4 * r_max * α)) *
+              (Real.exp 1 / (Real.exp 1 - 1) *
+                (2 * d * Real.log (1 + T / d) + Real.log (2 / δ)))
+          then 1 else 0)
+
+end Thm7_12
+
+section Thm7_6
+
+open StatisticalRL StatisticalRL.Ch7Rest.Marl StatisticalRL.Ch7Rest.Marl76
+
+/-- Theorem 7.6 restricted (`thm:sample-complexity-plug-in-marl`, `chapters/marl.tex:384–399`;
+`docs/SOURCE-ISSUES.md#C45`).
+
+There is a universal constant `C₁ > 0` such that for every general-sum `m`-player Markov game `G`
+with `S` states, horizon `H`, `A_i` actions and rewards in `[0,1]` at steps `1..H`, every `N`,
+`δ ∈ (0,1)` and `0 < ε ≤ √H` with `N ≥ C₁ H³ ε⁻² log(S H N ∏_i A_i / δ)` (the printed threshold,
+`N` inside the logarithm), the model-based plug-in estimator (`N` independent generative samples per
+`(s, a, h)`, empirical game `empiricalGame G N hN data` with the true reward, `marl.tex:355–374`)
+satisfies, under the sampling law `gameSamplingLaw`:
+(a) for every causal planning oracle returning a CCE (`eq:defn-CCE`, step 1) of every empirical
+game, `gap(π̂_CCE) ≤ ε` with probability at least `1 − δ`;
+(b) the same for every causal oracle returning a product Nash equilibrium (`eq:defn-Nash-E`,
+step-1 equality) of every empirical game, with the product-policy gap;
+(c) the printed joint conclusion `gap(π̂_NE) ≤ ε ∧ gap(π̂_CCE) ≤ ε` with probability at least
+`1 − δ` for any such pair of oracles.
+
+Differences from the printed statement:
+* Causal oracles (C45): the step-`h` output depends only on the rewards and kernels at steps
+  `≥ h` (as for backward induction, cf. `generative_model_model_based.tex:2549`). The printed
+  statement with an unspecified oracle is false (`not_thm7_6_printed`, counterexample CE2). This is a
+  restriction matching the backward-induction planners named at `marl.tex:377`; no claim is made
+  that it is the least restrictive repair.
+* Added binders: `0 < S` and `∀ i, 0 < A_i` (the sampling law needs them) and `0 < N` (implicit
+  convention, the empirical kernel needs it).
+* Oracles are deterministic maps of the empirical game, and the equilibrium property is required
+  for every data set (`∀ data`).
+* Non-vacuity: clause (a) is non-vacuous in Lean (a causal backward-induction CCE planner is
+  constructed, `causalCCEOracle_exists`). Clauses (b) and (c) are not shown non-vacuous in Lean:
+  a causal NE oracle for general-sum games needs Nash's existence theorem, which is not in Mathlib.
+The constant proved is `C₁ = 400`. -/
+def Thm7_6_restricted : Prop :=
+  ∃ C₁ : ℝ, 0 < C₁ ∧
+  ∀ (m S H : ℕ) (A : Fin m → ℕ) (hS : 0 < S) (hA : ∀ i, 0 < A i) (G : MarkovGame m S H A),
+    (∀ i h s a, 1 ≤ h → h ≤ H → 0 ≤ G.reward i h s a ∧ G.reward i h s a ≤ 1) →
+  ∀ (N : ℕ) (hN : 0 < N) (δ ε : ℝ), 0 < δ → δ < 1 → 0 < ε → ε ≤ Real.sqrt H →
+    C₁ * (H : ℝ) ^ 3 / ε ^ 2 *
+        Real.log ((S : ℝ) * H * N * (∏ i, (A i : ℝ)) / δ) ≤ N →
+    -- (a) CCE clause
+    (∀ Occe : MarkovGame m S H A → JointPolicy m S A,
+      (∀ (G₁ G₂ : MarkovGame m S H A) (h : ℕ),
+        (∀ t, h ≤ t → G₁.transition t = G₂.transition t ∧ ∀ i, G₁.reward i t = G₂.reward i t) →
+        Occe G₁ h = Occe G₂ h) →
+      (∀ data, ∀ (s : Fin S) (i : Fin m),
+        bestResponseValueJ (empiricalGame G N hN data) (Occe (empiricalGame G N hN data)) i s ≤
+          valueJ (empiricalGame G N hN data) (Occe (empiricalGame G N hN data)) i 1 H s) →
+      1 - δ ≤ (gameSamplingLaw G hS hA N).real
+        {data | gapJ G (Occe (empiricalGame G N hN data)) ≤ ε}) ∧
+    -- (b) NE clause
+    (∀ One : MarkovGame m S H A → ProductPolicy m S A,
+      (∀ (G₁ G₂ : MarkovGame m S H A) (h : ℕ),
+        (∀ t, h ≤ t → G₁.transition t = G₂.transition t ∧ ∀ i, G₁.reward i t = G₂.reward i t) →
+        ∀ i, One G₁ i h = One G₂ i h) →
+      (∀ data, ∀ (s : Fin S) (i : Fin m),
+        value (empiricalGame G N hN data) (One (empiricalGame G N hN data)) i 1 H s =
+          bestResponseValue (empiricalGame G N hN data) (One (empiricalGame G N hN data)) i s) →
+      1 - δ ≤ (gameSamplingLaw G hS hA N).real
+        {data | gap G (One (empiricalGame G N hN data)) ≤ ε}) ∧
+    -- (c) joint clause (the printed conclusion)
+    (∀ (One : MarkovGame m S H A → ProductPolicy m S A)
+        (Occe : MarkovGame m S H A → JointPolicy m S A),
+      (∀ (G₁ G₂ : MarkovGame m S H A) (h : ℕ),
+        (∀ t, h ≤ t → G₁.transition t = G₂.transition t ∧ ∀ i, G₁.reward i t = G₂.reward i t) →
+        ∀ i, One G₁ i h = One G₂ i h) →
+      (∀ (G₁ G₂ : MarkovGame m S H A) (h : ℕ),
+        (∀ t, h ≤ t → G₁.transition t = G₂.transition t ∧ ∀ i, G₁.reward i t = G₂.reward i t) →
+        Occe G₁ h = Occe G₂ h) →
+      (∀ data, ∀ (s : Fin S) (i : Fin m),
+        value (empiricalGame G N hN data) (One (empiricalGame G N hN data)) i 1 H s =
+          bestResponseValue (empiricalGame G N hN data) (One (empiricalGame G N hN data)) i s) →
+      (∀ data, ∀ (s : Fin S) (i : Fin m),
+        bestResponseValueJ (empiricalGame G N hN data) (Occe (empiricalGame G N hN data)) i s ≤
+          valueJ (empiricalGame G N hN data) (Occe (empiricalGame G N hN data)) i 1 H s) →
+      1 - δ ≤ (gameSamplingLaw G hS hA N).real
+        {data | gap G (One (empiricalGame G N hN data)) ≤ ε ∧
+          gapJ G (Occe (empiricalGame G N hN data)) ≤ ε})
+
+end Thm7_6
 
 end StatisticalRL.Statements.Ch7

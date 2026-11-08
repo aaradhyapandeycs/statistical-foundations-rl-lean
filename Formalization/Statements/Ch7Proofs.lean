@@ -7,6 +7,8 @@ import Formalization.RobustRL.Ch7.LowerBound75
 import Formalization.Ch7Rest.Marl78Main
 import Formalization.Ch7Rest.FedSync79Main
 import Formalization.RobustRL.DRVI.Thm74Main
+import Formalization.Ch7Rest.VPOMain712
+import Formalization.Ch7Rest.Marl76Restricted
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -196,5 +198,35 @@ theorem Thm7_2_corrected_holds : Thm7_2_corrected :=
 (`c₁ = 2`, `c₂ = 10⁶`). -/
 theorem Thm7_4_corrected_holds : Thm7_4_corrected :=
   StatisticalRL.RobustRL.DRVI.thm7_4_corrected_holds
+
+section Thm7_12
+
+open StatisticalRL.Ch7Rest.Rlhf in
+theorem Thm7_12_corrected_holds : Thm7_12_corrected := by
+  intro X Y _ _ d T ρ π_ref π_cal φ θstar β r_max α δ hd hT hρ hρ1 href hcal hφ hβ hR hθs hα hδ
+  refine ⟨exists_ballSelection ρ href π_cal hcal.2 φ α hβ hR.le, fun sel hsel ↦ ?_⟩
+  refine le_trans (vpo_regret_both ρ π_ref π_cal φ θstar hd hT hρ hρ1 href hcal hφ hβ hR hθs hα
+    hδ sel hsel) (Finset.sum_le_sum fun h _ ↦ mul_le_mul_of_nonneg_left ?_
+      (vpoTrajWeight_nonneg ρ π_ref φ θstar β sel hρ href h))
+  split_ifs with h1 h2 <;> first | exact absurd h1.1 h2 | norm_num
+
+open StatisticalRL.Ch7Rest.Rlhf in
+theorem Thm7_12_corrected_local_holds : Thm7_12_corrected_local := by
+  intro X Y _ _ d T ρ π_ref π_cal φ θstar β r_max α δ hd hT hρ hρ1 href hcal hφ hβ hR hθs hα hδ
+  refine ⟨exists_ballSelection ρ href π_cal hcal.2 φ α hβ hR.le, fun sel hsel ↦ ?_⟩
+  refine le_trans (vpo_regret_both ρ π_ref π_cal φ θstar hd hT hρ hρ1 href hcal hφ hβ hR hθs hα
+    hδ sel hsel) (Finset.sum_le_sum fun h _ ↦ mul_le_mul_of_nonneg_left ?_
+      (vpoTrajWeight_nonneg ρ π_ref φ θstar β sel hρ href h))
+  split_ifs with h1 h2 <;> first | exact absurd h1.2 h2 | norm_num
+
+end Thm7_12
+
+section Thm7_6
+
+/-- `Thm7_6_restricted` from `StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted` (`C₁ = 400`). -/
+theorem Thm7_6_restricted_holds : Thm7_6_restricted :=
+  StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted
+
+end Thm7_6
 
 end StatisticalRL.Statements.Ch7

@@ -1187,6 +1187,54 @@
         "docs/critic-thm7-2-7-4-plan-check.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.12 (corrected well-posed VPO variant)",
+      "source_label": "thm_online",
+      "source_file": "chapters/RLHF.tex",
+      "source_lines": "208–215",
+      "source_context_lines": "182–203 (Algorithm alg:online_RBMLE)",
+      "lean_export": "StatisticalRL.Ch7Rest.Rlhf.vpo_regret_both and StatisticalRL.Ch7Rest.Rlhf.exists_ballSelection",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_12_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_12_corrected_holds",
+      "statement_scope": "Corrected: The printed statement is ill-posed: α is undefined at T = 1 and the VPO update may have no minimizer (C44). For finite context and response sets, linear Bradley–Terry rewards with ‖θ⋆‖ ≤ r_max, and the printed VPO objective minimized over Gibbs policies with parameter in the ball ‖θ‖₂ ≤ r_max (any minimizer; one exists by compactness), with probability ≥ 1−δ the realized regret satisfies Regret ≤ T·B′/α + K·Γ·α (order d√(κT) at tuned α, informal arithmetic), for every α > 0 and T ≥ 1, with B′ = 2 log(2T/δ) + 2d log⌈2r_max T√d⌉ + 4, Γ = (e/(e−1))(2d log(1 + T/d) + log(2/δ)) and K = 2κe^{4r_max + 2r_max/β}; δ appears explicitly. The printed Õ(e^{2r_max + r_max/β}√(κdT)) rate is neither proved nor refuted. That the ball-selection rule covers every printed run whose iterates exist is an informal remark that needs the argmin's tie-breaking to be a deterministic function of the data; only its dataset-level extension step is machine-checked. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-12.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-12-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.12 (corrected well-posed VPO variant, local-curvature bound)",
+      "source_label": "thm_online",
+      "source_file": "chapters/RLHF.tex",
+      "source_lines": "208–215",
+      "source_context_lines": "182–203 (Algorithm alg:online_RBMLE)",
+      "lean_export": "StatisticalRL.Ch7Rest.Rlhf.vpo_regret_both and StatisticalRL.Ch7Rest.Rlhf.exists_ballSelection",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_12_corrected_local",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_12_corrected_local_holds",
+      "statement_scope": "Corrected: The printed statement is ill-posed: α is undefined at T = 1 and the VPO update may have no minimizer (C44). For finite context and response sets, linear Bradley–Terry rewards with ‖θ⋆‖ ≤ r_max, and the printed VPO objective minimized over Gibbs policies with parameter in the ball ‖θ‖₂ ≤ r_max (any minimizer; one exists by compactness), with probability ≥ 1−δ the realized regret satisfies the local-curvature bound Regret ≤ (e^{4r_max/β}/(4β))·(16r_max² + 16e^{4r_max}(B′ + 4r_max α))·Γ, which does not involve κ and scales as √(dT) for large T (informal arithmetic), for every α > 0 and T ≥ 1, with B′ = 2 log(2T/δ) + 2d log⌈2r_max T√d⌉ + 4, Γ = (e/(e−1))(2d log(1 + T/d) + log(2/δ)) and K = 2κe^{4r_max + 2r_max/β}; δ appears explicitly. The printed Õ(e^{2r_max + r_max/β}√(κdT)) rate is neither proved nor refuted. That the ball-selection rule covers every printed run whose iterates exist is an informal remark that needs the argmin's tie-breaking to be a deterministic function of the data; only its dataset-level extension step is machine-checked. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-12.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-12-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.6 (restricted to causal planning oracles)",
+      "source_label": "thm:sample-complexity-plug-in-marl",
+      "source_file": "chapters/marl.tex",
+      "source_lines": "384–399",
+      "source_context_lines": "355–377 (model-based plug-in algorithm and planning oracle)",
+      "lean_export": "StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted, with the refutations StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed, StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_ne and StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_cce and the non-vacuity witnesses StatisticalRL.Ch7Rest.Marl76.causalCCEOracle_exists and StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted_ccePlanner",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_6_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_6_restricted_holds",
+      "statement_scope": "Restricted: the printed statement, which allows any equilibrium-returning planning oracle, is false for every C₁ (not_thm7_6_printed, also in NE-only and CCE-only forms; C45). With C₁ = 400, at the printed sample size N ≥ C₁H³ε⁻² log(SHN∏A_i/δ) (N inside the logarithm), δ ∈ (0,1) and 0 < ε ≤ √H, the model-based plug-in estimator (N generative samples per (s, a, h), empirical game with the true reward) satisfies, with probability ≥ 1−δ, gap ≤ ε for the returned CCE, for the returned product NE, and jointly for both, for every causal planning oracle (the step-h output depends only on the empirical kernels and rewards from step h on), given as a deterministic map of the empirical game whose output is an equilibrium of every empirical game. Adds the domain binders 0 < S, 0 < A_i and 0 < N. The causal restriction matches the backward-induction planners named at marl.tex:377 and is not claimed to be the least restrictive repair. The CCE clause is shown non-vacuous in Lean by a causal backward-induction CCE planner (stage-CCE existence by Hahn–Banach separation); Nash existence is not in the pinned Mathlib, so the NE and joint clauses hold for every causal NE oracle but are not shown non-vacuous in Lean. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-6.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-6-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }
