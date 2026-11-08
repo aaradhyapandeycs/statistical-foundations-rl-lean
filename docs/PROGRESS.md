@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Corrected Theorem 7.9 (federated Q-learning)
+
+Theorem 7.9, whose prescribed learning rate can exceed 1 (C41) and whose proof the monograph cites, is proved from scratch with the single added hypothesis η < 1, under the true sampling law, with linear speedup in the number of agents. The named-result ledger now has 84 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Corrected Theorem 4.12 (asynchronous Q-learning)
 
 Theorem 4.12, whose proof the monograph omits, is proved from scratch in corrected form (adding 0 < μ_min and 2 ≤ T ∨ 2 ≤ SA), with the needed finite Markov-chain mixing theory built in Lean. The named-result ledger now has 83 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
