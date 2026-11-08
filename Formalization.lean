@@ -657,6 +657,14 @@ import Formalization.Ch7Rest.TDInferenceZeroNoise711
 import Formalization.Ch7Rest.TDInferenceSomeInitVariants711
 import Formalization.Ch7Rest.TDInferencePathMarginals711
 import Formalization.Ch7Rest.TDInferenceAnyInit711
+import Formalization.Probability.WeightedL2
+import Formalization.Analysis.StepSizeCubeRoot
+import Formalization.Ch7Rest.TDInferenceStepSize711
+import Formalization.Ch7Rest.TDInferenceNoise711
+import Formalization.Ch7Rest.TDInferenceMartingale711
+import Formalization.Ch7Rest.TDInferenceOperator711
+import Formalization.Ch7Rest.TDInferencePolyakRuppert711
+import Formalization.Ch7Rest.TDInferencePRRemainder711
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope
