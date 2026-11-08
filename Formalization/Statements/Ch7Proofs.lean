@@ -5,6 +5,7 @@ import Formalization.Ch7Rest.LowerBound710
 import Formalization.RobustRL.Ch7.LowerBound73
 import Formalization.RobustRL.Ch7.LowerBound75
 import Formalization.Ch7Rest.Marl78Main
+import Formalization.Ch7Rest.FedSync79Main
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -176,5 +177,13 @@ theorem Thm7_8_corrected_holds : Thm7_8_corrected :=
 /-- `Thm7_8_corrected_constSum` from `StatisticalRL.Ch7Rest.Marl.thm7_8_corrected_constSum`. -/
 theorem Thm7_8_corrected_constSum_holds : Thm7_8_corrected_constSum :=
   StatisticalRL.Ch7Rest.Marl.thm7_8_corrected_constSum
+
+/-- `Thm7_9_corrected` from `StatisticalRL.Ch7Rest.FedSync.fedSynQ_error_le_of_eta_le_one`
+(constants `c_T = 10⁴`, `c_η = 1/216`; `η < 1` gives the export's `η ≤ 1`). -/
+theorem Thm7_9_corrected_holds : Thm7_9_corrected :=
+  ⟨10000, 1 / 216, by norm_num, by norm_num,
+    fun _State _Action _ _ M K τ T δ ε Q₀ hK hτ hT _hτT _hγ hδ hδ1 hε hεH hQ₀ η hη hη1 hτc hTc =>
+      StatisticalRL.Ch7Rest.FedSync.fedSynQ_error_le_of_eta_le_one M K τ T δ ε Q₀ hK hτ hT hδ
+        hδ1 hε hεH hQ₀ η hη hη1.le hτc hTc⟩
 
 end StatisticalRL.Statements.Ch7

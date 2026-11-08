@@ -579,6 +579,11 @@ import Formalization.Ch7Rest.Marl78Bayes
 import Formalization.Ch7Rest.Marl78Product
 import Formalization.Ch7Rest.Marl78Statement
 import Formalization.Ch7Rest.Marl78Main
+import Formalization.Ch7Rest.FedSync79Pathwise
+import Formalization.Ch7Rest.FedSync79Noise
+import Formalization.Ch7Rest.FedSync79Event
+import Formalization.Ch7Rest.FedSync79Rate
+import Formalization.Ch7Rest.FedSync79Main
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope

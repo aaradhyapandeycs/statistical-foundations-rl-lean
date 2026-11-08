@@ -1140,6 +1140,21 @@
         "docs/critic-thm4-12-plan-check.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.9 (corrected variant, η < 1)",
+      "source_label": "thm:dist-syncq-local",
+      "source_file": "chapters/federated_RL.tex",
+      "source_lines": "99–117",
+      "lean_export": "StatisticalRL.Ch7Rest.FedSync.fedSynQ_error_le_of_eta_le_one",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_9_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_9_corrected_holds",
+      "statement_scope": "Corrected: the printed statement with exactly one added hypothesis, that the prescribed learning rate is below 1 (c_η K(1−γ)⁴ε² < log(SAKT/δ)); the printed statement is false under the literal reading (not_thm7_9_printed, C41). Stated under the true generative sampling law and with the true optimal Q-function, for universal constants c_η = 1/216 and c_T = 10⁴: with probability ≥ 1−δ the averaged output is ε-accurate, with linear speedup in K. γ > 0 is kept as a definedness convention for the τ condition and τ ∣ T as the source's standing convention; the export uses neither. Whether η < 1 is the minimal correction is not claimed. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-9.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-9-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }

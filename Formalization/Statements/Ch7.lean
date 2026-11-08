@@ -353,4 +353,63 @@ def Thm7_8_corrected_constSum : Prop :=
 
 end Thm7_8
 
+section Thm7_9
+
+open StatisticalRL.Ch7Rest in
+/-- Theorem 7.9 corrected (`thm:dist-syncq-local`, `chapters/federated_RL.tex:99–117`; FedSynQ,
+algorithm :35–90, setup and sampling :19–29; `docs/SOURCE-ISSUES.md#C41`).
+
+There are universal constants `c_T, c_η > 0` such that for every finite MDP (`S = |State|`,
+`A = |Action|`, rewards in `[0,1]`, `0 < γ < 1`), every `K ≥ 1` agents, period `τ ≥ 1`, horizon
+`T ≥ 1` with `τ ∣ T`, every `δ ∈ (0,1)`, `ε ∈ (0, 1/(1-γ)]` and initialization
+`0 ≤ Q₀ ≤ 1/(1-γ)`: if `η = c_η K(1-γ)⁴ε² / log(SAKT/δ)` (114), `η < 1`,
+`τ ≤ 1 + η⁻¹ min{(1-γ)/(8γ), 1/K}` (106) and
+`T ≥ c_T/(K(1-γ)⁵ε²) · log³(SAKT/(δε(1-γ)²))` (112–113), then with probability at least `1-δ`
+the FedSynQ output `Q_T = (1/K) Σ_k Q_T^k` (:68) satisfies `|Q_T(s,a) - Q⋆(s,a)| ≤ ε` for all
+`(s,a)`. Here `Q_t^k` is `Fed.fedRun` (local update (47–49), averaging when `t ≡ 0 mod τ`
+(59–64), `Q_0^k = Q₀`), the draws `s_t^k(s,a)` are read from the data by
+`FedGeneric.fedSamplesExtend … 0`, and `log` is the natural logarithm.
+
+Differences from the printed statement. It differs from the printed statement in hypotheses only
+by the added hypothesis `η < 1`, i.e. `c_η K (1-γ)⁴ ε² < log(SAKT/δ)`: the printed `η` (114) is
+never constrained to the algorithm's input range `0 < η < 1` (:51, :76), and under the literal
+reading the printed statement is false (`Fed.Thm7_9_printed`, refuted by
+`not_thm7_9_printed` in `Formalization/Ch7Rest/LargeStep79.lean`; C41). Beyond that hypothesis
+the entry fixes or strengthens:
+* the probability is under the true independent generative law
+  `FedGeneric.fedSamplingLaw M T K 1` (:23–26), and `Q⋆` is the true optimal Q-function
+  `M.optimalityFixedPoint` (the printed-reading Prop `Fed.Thm7_9_at` chooses both existentially);
+* the constants `c_T, c_η` are universal and quantified before every other quantity (the source
+  names them after `δ, ε, Q₀, τ`); the proof gives `c_η = 1/216`, `c_T = 10⁴`. The entry is
+  existential in `(c_T, c_η)`: the alternative reading "for every sufficiently small `c_η`, with
+  `c_T` fixed (and every sufficiently large `c_T`)" is not claimed here;
+* `γ > 0` is kept as the definedness convention for the τ condition (106), which divides by `γ`:
+  without it Lean's `1/0 = 0` would collapse (106) to `τ ≤ 1 + η⁻¹ min{0, 1/K}`, which is not the
+  printed condition;
+* `K, τ, T ≥ 1` are implicit in the source (:21, :56, :74). `τ ∣ T` is not a hypothesis of the
+  printed theorem but the source's stated standing convention (:70, "Without loss of generality,
+  we assume that `T` is divisible by the synchronization period `τ`"), so it is kept; the library
+  export does not use it. -/
+def Thm7_9_corrected : Prop :=
+  ∃ c_T c_η : ℝ, 0 < c_T ∧ 0 < c_η ∧
+  ∀ (State Action : Type) [Fintype State] [Fintype Action] (M : DiscountedMDP State Action)
+    (K τ T : ℕ) (δ ε : ℝ) (Q₀ : State → Action → ℝ),
+    1 ≤ K → 1 ≤ τ → 1 ≤ T → τ ∣ T → 0 < M.discount →
+    0 < δ → δ < 1 → 0 < ε → ε ≤ 1 / (1 - M.discount) →
+    (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ 1 / (1 - M.discount)) →
+    ∀ η : ℝ,
+    η = c_η * K * (1 - M.discount) ^ 4 * ε ^ 2 /
+      Real.log (Fintype.card State * Fintype.card Action * K * T / δ) →
+    η < 1 →
+    (τ : ℝ) ≤ 1 + 1 / η * min ((1 - M.discount) / (8 * M.discount)) (1 / (K : ℝ)) →
+    c_T / (K * (1 - M.discount) ^ 5 * ε ^ 2) *
+        Real.log (Fintype.card State * Fintype.card Action * K * T /
+          (δ * ε * (1 - M.discount) ^ 2)) ^ 3 ≤ T →
+    1 - δ ≤ (FedGeneric.fedSamplingLaw M T K 1).real {data | ∀ s a,
+      |Fed.fedOutput M η K τ Q₀
+          (fun t k s a ↦ FedGeneric.fedSamplesExtend M T K 1 data t k s a 0) T s a -
+        M.optimalityFixedPoint s a| ≤ ε}
+
+end Thm7_9
+
 end StatisticalRL.Statements.Ch7
