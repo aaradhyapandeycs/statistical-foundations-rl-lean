@@ -4,6 +4,8 @@ import Formalization.Generative.PolicyLearningVarianceResolventBridge
 import Formalization.Generative.PolicyLearningAnyOptimalPolicy
 import Formalization.Generative.PolicyEvaluationUniversalConstant
 import Formalization.Generative.PolicyLearningMainSample
+import Formalization.Generative.PolicyLearningApproxPlannerMain
+import Formalization.Generative.PlanningEmpirical
 import Formalization.Generative.PolicyLearningAbsorbingPreservation
 import Formalization.Generative.PolicyLearningAbsorbingGrid
 import Formalization.Generative.PolicyLearningSourcePointwise
@@ -78,5 +80,15 @@ theorem Lemma3_8_holds : Lemma3_8 := by
 
 theorem Thm3_7_corrected_holds : Thm3_7_corrected :=
   ⟨1 / 32768, by norm_num, StatisticalRL.GenerativeLowerBound.theorem37_corrected_fin_carriers⟩
+
+theorem Thm3_2_approxPlanner_positiveN_holds : Thm3_2_approxPlanner_positiveN := by
+  obtain ⟨c, hc, hmain⟩ :=
+    StatisticalRL.ModelBasedPolicyLearning.mainSample_policyLearning_approx_universal_constant
+  refine ⟨c, hc, ?_⟩
+  intro State Action _ _ M N hN δ ε hδ hδ1 hε hεmax hsize
+  exact (hmain State Action M N hN δ ε hδ hδ1 hε hεmax hsize).le
+
+theorem Thm3_2_planningIterations_holds : Thm3_2_planningIterations :=
+  StatisticalRL.ModelBasedPolicyLearning.empirical_planningIterations
 
 end StatisticalRL.Statements.Ch3

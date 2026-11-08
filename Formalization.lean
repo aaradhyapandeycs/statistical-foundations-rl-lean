@@ -18,6 +18,7 @@ import Formalization.MDP.ForcedActionReturn
 import Formalization.MDP.ForcedPrefixBridge
 import Formalization.MDP.OptimalTrajectoryValue
 import Formalization.MDP.PolicyIteration
+import Formalization.MDP.PlanningIterationCount
 import Formalization.MDP.DiscountedOccupancy
 import Formalization.MDP.OptimalDiscountedOccupancy
 import Formalization.MDP.OccupancyBridge
@@ -90,6 +91,9 @@ import Formalization.Generative.PolicyLearningJointEvaluation
 import Formalization.Generative.PolicyLearningSourcePointwise
 import Formalization.Generative.PolicyLearningMainSampleArithmetic
 import Formalization.Generative.PolicyLearningMainSample
+import Formalization.Generative.PolicyLearningApproxPlanner
+import Formalization.Generative.PolicyLearningApproxPlannerMain
+import Formalization.Generative.PlanningEmpirical
 import Formalization.Generative.GenerativeLowerBoundParameters
 import Formalization.Generative.GenerativeLowerBoundBernoulli
 import Formalization.Probability.BernoulliKLComparison
