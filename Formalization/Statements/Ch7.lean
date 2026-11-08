@@ -412,4 +412,73 @@ def Thm7_9_corrected : Prop :=
 
 end Thm7_9
 
+section Thm7_2_7_4
+
+/-- Discrete σ-algebra on every finite carrier, as in the printed transcriptions of
+`Formalization/RobustRL/Ch7/Ch7PrintedStatements.lean`. -/
+local instance ch7StatementStateMeasurable72 (State : Type*) : MeasurableSpace State := ⊤
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Corrected Theorem 7.2, `thm:l1-upper-bound`, `chapters/robust_RL.tex:342–359` (TV-robust
+MDP `:19–157`, DRVI = Algorithm `alg:cvi-dro-infinite` `:243–289`, generative sampling
+`:135–147`, `:206–215`). It differs from the printed result only in the iteration count
+(`docs/SOURCE-ISSUES.md#C37`): DRVI may run for any `T ∈ ℕ` with
+`T ≥ C₁ log(N/(1−γ))/(1−γ)` instead of `T = C₁ log(N/(1−γ))` (`:345`). This is a minimal edit
+of the printed formula: the factor `1/(1−γ)` is necessary (C37 horizon trap), but tightness of
+the `log(N/(1−γ))` factor is not shown.
+
+For universal constants `C₁, C₂ > 0` (proved with `C₁ = 2`, `C₂ = 10⁶`), every finite `S`, `A`,
+every RMDP with discount `γ ∈ [1/4, 1)`, TV radius `σ ∈ (0,1)`, `δ ∈ (0,1)`,
+`ε ∈ (0, √(1/max{1−γ,σ})]`, `N > 0` with
+`N ≥ C₂ log(SAN/((1−γ)δ)) / ((1−γ)² max{1−γ,σ} ε²)`, every such `T` and every greedy selector
+`π̂` of `Q̂_T` (ties unspecified, `:254–258`): with probability at least `1−δ` over the samples,
+`V^{⋆,σ}(s) − V^{π̂,σ}(s) ≤ ε` for all `s`. Robust values are infima of actual trajectory
+values over `(s,a)`-rectangular kernels; `V^{⋆,σ}` is the supremum over stationary randomized
+policies. Not covered: the oracle-planner Remark (`:361–372`) and history-dependent policies. -/
+def Thm7_2_corrected : Prop :=
+  ∃ C₁ C₂ : ℝ, 0 < C₁ ∧ 0 < C₂ ∧
+    ∀ (State Action : Type) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (σ δ ε : ℝ) (N : ℕ) (hN : 0 < N),
+      1 / 4 ≤ M.discount → 0 < σ → σ < 1 → 0 < δ → δ < 1 → 0 < ε →
+      ε ≤ Real.sqrt (1 / max (1 - M.discount) σ) →
+      C₂ / ((1 - M.discount) ^ 2 * max (1 - M.discount) σ * ε ^ 2) *
+          Real.log (Fintype.card State * Fintype.card Action * N /
+            ((1 - M.discount) * δ)) ≤ N →
+      ∀ T : ℕ, C₁ * Real.log (N / (1 - M.discount)) / (1 - M.discount) ≤ T →
+      ∀ pick : ModelBasedPolicyLearning.Samples State Action N → State → Action,
+        (∀ data, IsGreedy (empiricalDRVI tvBall M σ N hN data T) (pick data)) →
+        1 - δ ≤ (ModelBasedPolicyLearning.samplingLaw M N).real
+          {data | ∀ s, robustOptimalValue tvBall M σ s -
+            robustPolicyValue tvBall M σ (detPolicy (pick data)) s ≤ ε}
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Corrected Theorem 7.4, `thm:l2-upper-bound`, `chapters/robust_RL.tex:437–450` (χ²-robust
+MDP with the support-aware χ² ball, `intro.tex:228–234`). It differs from the printed result only
+in the iteration count (`docs/SOURCE-ISSUES.md#C37`): any `T ∈ ℕ` with
+`T ≥ c₁ log(N/(1−γ))/(1−γ)` instead of `T = c₁ log(N/(1−γ))` (`:438`). This is a minimal edit
+of the printed formula; tightness of the log factor is not shown.
+
+For universal constants `c₁, c₂ > 0` (proved with `c₁ = 2`, `c₂ = 10⁶`), every finite `S`, `A`,
+every RMDP with `σ > 0`, `γ ∈ [1/4, 1)`, `δ ∈ (0,1)`, `ε ∈ (0, 1/(1−γ)]`, `N > 0` with
+`N ≥ c₂ (1 + max{√σ,σ}/(1−γ)) log(SAN/δ) / ((1−γ)³ ε²)`, every such `T` and every greedy
+selector `π̂` of `Q̂_T`: with probability at least `1−δ`, `V^{⋆,σ}(s) − V^{π̂,σ}(s) ≤ ε` for all
+`s`. Not covered: the oracle-planner Remark (`:453–457`) and history-dependent policies. -/
+def Thm7_4_corrected : Prop :=
+  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
+    ∀ (State Action : Type) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (σ δ ε : ℝ) (N : ℕ) (hN : 0 < N),
+      0 < σ → 1 / 4 ≤ M.discount → 0 < δ → δ < 1 → 0 < ε →
+      ε ≤ 1 / (1 - M.discount) →
+      c₂ / ((1 - M.discount) ^ 3 * ε ^ 2) *
+          (1 + max (Real.sqrt σ) σ / (1 - M.discount)) *
+          Real.log (Fintype.card State * Fintype.card Action * N / δ) ≤ N →
+      ∀ T : ℕ, c₁ * Real.log (N / (1 - M.discount)) / (1 - M.discount) ≤ T →
+      ∀ pick : ModelBasedPolicyLearning.Samples State Action N → State → Action,
+        (∀ data, IsGreedy (empiricalDRVI chiBall M σ N hN data T) (pick data)) →
+        1 - δ ≤ (ModelBasedPolicyLearning.samplingLaw M N).real
+          {data | ∀ s, robustOptimalValue chiBall M σ s -
+            robustPolicyValue chiBall M σ (detPolicy (pick data)) s ≤ ε}
+
+end Thm7_2_7_4
+
 end StatisticalRL.Statements.Ch7

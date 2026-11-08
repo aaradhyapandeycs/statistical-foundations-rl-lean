@@ -6,6 +6,7 @@ import Formalization.RobustRL.Ch7.LowerBound73
 import Formalization.RobustRL.Ch7.LowerBound75
 import Formalization.Ch7Rest.Marl78Main
 import Formalization.Ch7Rest.FedSync79Main
+import Formalization.RobustRL.DRVI.Thm74Main
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -185,5 +186,15 @@ theorem Thm7_9_corrected_holds : Thm7_9_corrected :=
     fun _State _Action _ _ M K τ T δ ε Q₀ hK hτ hT _hτT _hγ hδ hδ1 hε hεH hQ₀ η hη hη1 hτc hTc =>
       StatisticalRL.Ch7Rest.FedSync.fedSynQ_error_le_of_eta_le_one M K τ T δ ε Q₀ hK hτ hT hδ
         hδ1 hε hεH hQ₀ η hη hη1.le hτc hTc⟩
+
+/-- `Thm7_2_corrected` from `StatisticalRL.RobustRL.DRVI.thm7_2_corrected_holds`
+(`C₁ = 2`, `C₂ = 10⁶`). -/
+theorem Thm7_2_corrected_holds : Thm7_2_corrected :=
+  StatisticalRL.RobustRL.DRVI.thm7_2_corrected_holds
+
+/-- `Thm7_4_corrected` from `StatisticalRL.RobustRL.DRVI.thm7_4_corrected_holds`
+(`c₁ = 2`, `c₂ = 10⁶`). -/
+theorem Thm7_4_corrected_holds : Thm7_4_corrected :=
+  StatisticalRL.RobustRL.DRVI.thm7_4_corrected_holds
 
 end StatisticalRL.Statements.Ch7

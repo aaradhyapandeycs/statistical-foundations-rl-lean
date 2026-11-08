@@ -177,7 +177,10 @@ class LeanIndex:
                     exp = e.record.get("component_exports") or e.record.get("lean_export", "")
                     if isinstance(exp, list):
                         exp = " ".join(map(str, exp))
-                    e.exports = [x for x in self.locate_exports(exp) if not x["name"].endswith("_holds")]
+                    # Hide only the statement-index wrappers (Statements.*_holds), not library
+                    # theorems that happen to end in `_holds`.
+                    e.exports = [x for x in self.locate_exports(exp)
+                                 if not (x["name"].endswith("_holds") and ".Statements." in "." + x["name"])]
                 scope = (e.record or {}).get("statement_scope", "") + " " + doc
                 e.issues = [c for c in dict.fromkeys(re.findall(r"\bC(\d+)\b", scope)) if c in self.issue_slugs]
                 self.entries.append(e)
