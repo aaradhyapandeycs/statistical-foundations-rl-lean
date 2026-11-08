@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Theorem 7.11 printed statement refuted (TD inference)
+
+The printed Berry–Esseen bound for Polyak–Ruppert-averaged TD (Theorem 7.11) is shown false in Lean, with no central limit theorem, under the reading with action-dependent rewards and r(s) = r_π(s): a two-state instance has zero TD noise while the printed covariance is nonsingular, so the bound fails both for every initialization and for one fixed initialization per instance (C43). The library gains Gaussian anti-concentration and step-size lemmas. The corrected theorem remains open, so the named-result ledger is unchanged (89 of 90 once Theorem 7.7 lands). The complete monograph remains **INCOMPLETE**.
+
 ## Restricted Theorem 7.7 (sample-efficient multi-agent equilibrium learning)
 
 Theorem 7.7 asserts the existence of an algorithm (Q-FTRL) whose description the monograph omits. The existential claim is proved from scratch at the printed rates, H⁴SΣA_i/ε² for CCE learning and H⁴S·max A/ε² for two-player zero-sum Nash equilibria, with one universal constant and a single logarithmic factor, using an explicit reconstructed optimistic-Hedge algorithm that is not shown to be Q-FTRL and is not model-based (C39). The library gains a second-order Hedge regret bound, adaptive Freedman-type tail bounds and a total-variance lemma for near-supersolutions. The named-result ledger now has 89 covered entries out of 90. The complete monograph remains **INCOMPLETE**.

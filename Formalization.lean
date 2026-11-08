@@ -651,6 +651,12 @@ import Formalization.Ch7Rest.Marl77PathwiseMain
 import Formalization.Ch7Rest.Marl77Core
 import Formalization.Ch7Rest.Marl77ZeroSum
 import Formalization.Ch7Rest.Marl77Main
+import Formalization.Ch7Rest.TDInference711Defs
+import Formalization.Ch7Rest.TDInferencePrinted711
+import Formalization.Ch7Rest.TDInferenceZeroNoise711
+import Formalization.Ch7Rest.TDInferenceSomeInitVariants711
+import Formalization.Ch7Rest.TDInferencePathMarginals711
+import Formalization.Ch7Rest.TDInferenceAnyInit711
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope
@@ -828,6 +834,8 @@ import Formalization.Probability.AzumaStrictTwoSided
 import Formalization.Probability.AzumaNaturalHistory
 import Formalization.Analysis.StochasticResolventSeries
 import Formalization.Analysis.StochasticResolventOrder
+import Formalization.Analysis.StepSizeSums
+import Formalization.Probability.GaussianAntiConcentration
 import Formalization.MDP.PolicyMatrixDefinitions
 import Formalization.MDP.PolicyMatrixResolvent
 import Formalization.MDP.OptimalityOperatorDefinitions
