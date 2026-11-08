@@ -1140,7 +1140,26 @@ unbounded below. Example: Y = {y1, y2}, d = 1, φ(y1) = 1, φ(y2) = 0, π_cal = 
 θ → ∞ the objective tends to −∞ for any number of y1 ≻ y2 comparisons, including none. Hence π^{(t+1)} is undefined,
 and the hypothesis ‖θ^{(t)}‖ ≤ r_max constrains iterates that need not exist. δ appears in neither the bound nor α.
 Proposed correction: T ≥ 2, minimization over {θ : ‖θ‖₂ ≤ r_max}, and an explicit δ-dependence. The result is
-cited (cen2025vpo), not proved in the monograph. Found by a source preflight and confirmed by an independent source check. Machine-checked in Lean (`Formalization/Ch7Rest/VPOIllPosed712.lean`): the printed α formula is undefined at T = 1 (`vpoAlpha_T_one`, `not_vpoAlpha_T_one_pos`; Lean's 0 is the junk value of x/0), and the update has no minimizer over full-support policies (`no_vpoMinimizer`, `not_vpoUpdate_exists_printed`, `no_vpoMinimizer_gibbs`). Over the closed simplex with log 0 = −∞ the value −∞ is attained at a boundary policy that no real θ induces, so ‖θ^{(t)}‖ ≤ r_max fails; the status is ill-posed or vacuous, not false. The regret bound itself is neither transcribed nor refuted. Not author-approved.
+cited (cen2025vpo), not proved in the monograph. Found by a source preflight and confirmed by an independent source check. Machine-checked in Lean (`Formalization/Ch7Rest/VPOIllPosed712.lean`): the printed α formula is undefined at T = 1 (`vpoAlpha_T_one`, `not_vpoAlpha_T_one_pos`; Lean's 0 is the junk value of x/0), and the update has no minimizer over full-support policies (`no_vpoMinimizer`, `not_vpoUpdate_exists_printed`, `no_vpoMinimizer_gibbs`). Over the closed simplex with log 0 = −∞ the value −∞ is attained at a boundary policy that no real θ induces, so ‖θ^{(t)}‖ ≤ r_max fails; the status is ill-posed or vacuous, not false. Corrected result (2026-11-08): `Thm7_12_corrected` and `Thm7_12_corrected_local` (`Formalization/Ch7Rest/VPO*712.lean`) prove, for finite context and response sets, linear Bradley–Terry rewards with ‖θ⋆‖ ≤ r_max, and the VPO update taken over Gibbs policies with parameter in the ball (a minimizer exists by compactness), that with probability ≥ 1−δ the realized regret is at most T·B′/α + K·Γ·α (order d√(κT) at tuned α), and also at most a local-curvature bound with √(dT) scaling for large T, for every α > 0 and T ≥ 1 with explicit constants. The printed Õ(e^{2r_max + r_max/β}√(κdT)) bound is neither proved nor refuted. The ball-selection rule extends any printed run whose argmin breaks ties deterministically from the data (an informal remark; only the dataset-level extension is checked). The update's sum starts at round 1 (`:196`), so the round-0 sample is unused. Proved from scratch (cen2025vpo not used); independently plan-checked and source-reviewed. Not author-approved.
+
+<a id="C45"></a>
+## Candidate C45: Theorem 7.6 is false when the planning oracle may return any equilibrium
+
+Theorem 7.6 (`marl.tex:384–399`) applies an unspecified planning oracle (`:377`) to the empirical Markov game and claims that the
+returned Nash equilibrium (NE) and coarse correlated equilibrium (CCE) both have gap ≤ ε with probability ≥ 1 − δ once
+N ≥ C₁H³ε⁻² log(SHN∏A_i/δ). The NE and CCE definitions constrain only step 1 (`:213–238`). If the oracle may return any such
+equilibrium of the empirical game, the claim is false for every C₁. Machine-checked in Lean (`not_thm7_6_printed`, and separately for the NE-only and
+CCE-only conclusions `not_thm7_6_printed_ne`, `not_thm7_6_printed_cce`; `Formalization/Ch7Rest/Marl76Refutation.lean`): in a coordination game with S = 8N states, H = 2, ε = 1/4, δ = 1/2, an oracle whose output is a
+step-1 product Nash equilibrium (hence also a CCE) of the empirical game for every data set has true gap ≥ 1/3 almost surely, while the printed
+sample condition holds for every C₁ (at N = n², n = ⌈896C₁⌉ + 1). The same output is subgame-perfect and a two-player zero-sum example with a
+dummy player gives gap ≥ 1 − 3N/K; these two points are source checks only, not in Lean. Proposed restriction:
+a causal oracle, whose policy at step h depends only on the empirical kernels from step h onward (as in Nash value iteration or
+backward per-stage LP/no-regret; compare the decoupling remark at `generative_model_model_based.tex:2549`); this is not claimed to be
+the weakest. Separately, `N > 0` is an implicit convention (Lean's `log 0 = 0` would make the condition hold at N = 0).
+Restricted result (2026-11-08): `Thm7_6_restricted` (C₁ = 400) proves the printed rate for causal oracles in three clauses (CCE-only, NE-only,
+joint), adding the domain binders 0 < S, 0 < A_i, 0 < N. The CCE clause is shown non-vacuous in Lean by a causal backward-induction CCE planner
+(stage-CCE existence via Hahn–Banach separation). Nash existence is not in the pinned Mathlib, so the NE and joint clauses are proved for every
+causal NE oracle but not shown non-vacuous in Lean. Independently plan-checked and source-reviewed. Not author-approved.
 
 ```
 

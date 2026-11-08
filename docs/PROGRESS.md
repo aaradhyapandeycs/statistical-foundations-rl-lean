@@ -1,5 +1,13 @@
 # Whole-monograph progress
 
+## Restricted Theorem 7.6 (model-based multi-agent RL)
+
+Theorem 7.6, whose proof the monograph cites, is false as printed when the planning oracle may return any equilibrium of the empirical game; this is machine-checked. It is proved from scratch at the printed sample size for causal planning oracles, with a causal CCE planner showing the CCE clause is non-vacuous (C45). The named-result ledger now has 88 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
+## Corrected Theorem 7.12 (online RLHF regret)
+
+Theorem 7.12, whose printed statement is ill-posed and whose proof the monograph cites, is proved from scratch in a well-posed corrected form with explicit high-probability regret bounds; the printed rate is neither proved nor refuted (C44). The named-result ledger now has 87 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Corrected Theorems 7.2 and 7.4 (robust value iteration upper bounds)
 
 The TV and χ² robust value-iteration upper bounds, which the monograph cites, are proved from scratch at the printed statistical rate once the iteration count carries the missing 1/(1−γ) factor (C37); the library now also has robust Bellman consistency and a deterministic optimal robust policy. The named-result ledger now has 86 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
