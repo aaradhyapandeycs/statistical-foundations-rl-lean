@@ -12,6 +12,7 @@ import Formalization.ModelFree.QLearningIterateBounds
 import Formalization.ModelFree.QLearningStabilityInfinityNorm
 import Formalization.ModelFree.QLearningRobustContraction
 import Formalization.ModelFree.QLearningSourceTheoremClosure
+import Formalization.ModelFree.AsyncQ.Main
 
 /-! Proofs of the Chapter 4 statement index from the existing exports. -/
 namespace StatisticalRL.Statements.Ch4
@@ -105,5 +106,13 @@ theorem Thm4_13_corrected_holds : Thm4_13_corrected := by
   intro State Action _ _ H E η δ ε T hT hδ hδ1 hε hε1 hη hbudget Q₀ hQ₀
   exact FiniteQLearning.finiteQLearning_sample_complexity c₁ c₂ hc₂ hc₂₁ hc₁ H E η δ ε T hT hδ
     hδ1 hε hε1 (fun k _ hk ↦ hη k hk) Q₀ hQ₀ hbudget
+
+open Classical in
+theorem Thm4_12_corrected_holds : Thm4_12_corrected := by
+  obtain ⟨c₂, hc₂, h⟩ := AsyncQ.asyncQ_exists_c₂ 1 one_pos le_rfl
+  refine ⟨1, one_pos, le_rfl, c₂, hc₂, ?_⟩
+  intro S A _ _ M πb μ μmin tmix s₀ δ ε T hγ hst _ htmix hμmin _ hμ0 hT1 hT2 hδ hδ1 hε hε1 hbud
+    Q₀ h₀
+  exact h S A M πb μ μmin tmix s₀ δ ε T hγ hst htmix.1 hμmin hμ0 hT1 hT2 hδ hδ1 hε hε1 hbud Q₀ h₀
 
 end StatisticalRL.Statements.Ch4

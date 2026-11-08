@@ -7,6 +7,7 @@ import Formalization.ModelFree.QLearningSamplingDefinitions
 import Formalization.ModelFree.QLearningComparisonDefinitions
 import Formalization.ModelFree.QLearningRobustDefinitions
 import Formalization.ModelFree.FiniteQ.Definitions
+import Formalization.ModelFree.AsyncQ.Definitions
 
 /-! Source-facing statement index for Chapter 4. -/
 open MeasureTheory ProbabilityTheory
@@ -321,5 +322,60 @@ def Thm4_13_corrected : Prop :=
     1 - δ < (FiniteHorizonGenerative.samplingLaw E T).real {data | ∀ h s a,
       |FiniteQLearning.sampledIterate E η T Q₀ data h s a -
         EnvironmentStage.optimalQ ((List.ofFn E).drop h.val) s a| ≤ ε}
+
+open Classical in
+/-- Corrected Theorem 4.12, `thm:infinite-horizon-asyn`,
+`chapters/generative_model_model_free.tex:2062–2086` (asynchronous Q-learning on one Markovian
+trajectory), with the rate `eq:thm:infinite-horizaon-eta-asyn` (:2054–2058), the sampling model
+(:1898–1906), the algorithm (:1928–1946, :1977–2001), `assump:ergodicity-asyncQ` (:2012–2015),
+`defn:mu-min` (:2024–2028) and `defn-tmix` (:2034–2039). The monograph omits the proof (:2126);
+the library proof is a new, self-contained argument.
+
+Corrections (see `docs/SOURCE-ISSUES.md#C34`): the printed statement is false when `T = 1` and
+`S A = 1` (then `log³T = 0`, `t_mix = 0`, the budget holds and the rate is `0`, so `Q_1 = Q_0`),
+and when `μ_min = 0` (an unvisited pair is never updated). This entry adds `0 < μ_min` and the
+weakest premise `2 ≤ T ∨ 2 ≤ S A` (with `S A ≥ 2` the budget already excludes `T = 1`).
+
+`1 ≤ T` is a domain premise implicit in the source (the iterations run over `t = 1, …, T` and
+`log T` must be defined); it is needed because at `T = 0` the budget collapses to `0 ≤ 0` through
+Lean's `log 0 = 0`.
+
+Reading: the probability is under the law of the state–action path `(s₀,a₀,…,s_T,a_T)` with mass
+`1{s₀' = s₀} π_b(a₀|s₀) ∏_{i<T} P(s_{i+1}|s_i,a_i) π_b(a_{i+1}|s_{i+1})` (the finite marginal of the
+trajectory of :1900–1903; `Q_T` only depends on it). Total variation is `½ ∑ |p - q|`; `t_mix` is
+the least `t ∈ ℕ` (so `t_mix = 0` is allowed) with `max_{(s,a)} TV(P^t(·|s,a), μ) ≤ 1/4`;
+uniform ergodicity is `TV(P^t(·|s,a), μ) ≤ C r^t` with `r < 1`; `μ` is a stationary distribution of
+the pair chain; logarithms are natural. The printed "for some universal constants" is read as
+`∃ c₁ ∃ c₂`. The library export `AsyncQ.asyncQ_exists_c₂` proves more: for every `c₁ ∈ (0,1]`,
+`c₂ = max(e^{32/c₁}, 4096)` works (the wrapper uses `c₁ = 1`), and `c₂` growing like `e^{32/c₁}`
+is a proof artifact. The reversed order `∃ c₂ ∀ c₁` would be false. Fix `c₂`, take `S = A = 1`,
+`r = 1`, `γ = 1/2`, `Q₀ = 0` (so `Q⋆ = 2`) and any `T` satisfying the budget, which does not
+involve `c₁`. Then the error `2(1-η)^T` tends to `2` as `c₁ → 0`. For example, `c₂ = 1.5·10⁵`,
+`T = e^{40}` and `c₁ = 10⁻⁶` give an error of about `1.88 > 1`. This counterexample is a paper
+computation and is not formalized.
+
+Joint satisfiability of the budget for the chosen `c₂` is likewise argued on paper, not
+machine-checked: for fixed instance parameters the right-hand side grows only polylogarithmically
+in `T`, so every large enough `T` satisfies it. -/
+def Thm4_12_corrected : Prop :=
+  ∃ c₁ : ℝ, 0 < c₁ ∧ c₁ ≤ 1 ∧ ∃ c₂ : ℝ, 0 < c₂ ∧
+  ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A]
+    (M : DiscountedMDP S A) (πb : StationaryPolicy S A) (μ : FiniteDistribution (S × A))
+    (μmin : ℝ) (tmix : ℕ) (s₀ : S) (δ ε : ℝ) (T : ℕ),
+    1 / 2 ≤ M.discount →
+    (∀ y, ∑ x, μ.prob x * AsyncQ.pairKernel M πb x y = μ.prob y) →
+    (∃ C r : ℝ, 0 ≤ r ∧ r < 1 ∧ ∀ (t : ℕ) (x : S × A),
+        FiniteMarkov.tvDist (AsyncQ.pairPow M πb t x) μ.prob ≤ C * r ^ t) →
+    IsLeast {t : ℕ | ∀ x : S × A,
+      FiniteMarkov.tvDist (AsyncQ.pairPow M πb t x) μ.prob ≤ 1 / 4} tmix →
+    (∀ x, μmin ≤ μ.prob x) → (∃ x, μ.prob x = μmin) →
+    0 < μmin → 1 ≤ T → (2 ≤ T ∨ 2 ≤ Fintype.card S * Fintype.card A) →
+    0 < δ → δ < 1 → 0 < ε → ε ≤ 1 →
+    c₂ * Real.log ((Fintype.card S : ℝ) * Fintype.card A * T / δ) ^ 2 / μmin *
+        max (Real.log T ^ 3 / ((1 - M.discount) ^ 4 * ε ^ 2)) (tmix / (1 - M.discount)) ≤ T →
+    ∀ Q₀ : S → A → ℝ, (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ M.effectiveHorizon) →
+    1 - δ ≤ (AsyncQ.pathLaw M πb s₀ T).real {x | ∀ s a,
+      |AsyncQ.iterate M (c₁ * Real.log T ^ 3 / ((1 - M.discount) * T * μmin)) Q₀ x T s a -
+        M.trajectoryExpectedQ M.optimalGreedyPolicy s a| ≤ ε}
 
 end StatisticalRL.Statements.Ch4

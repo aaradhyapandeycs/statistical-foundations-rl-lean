@@ -1124,6 +1124,22 @@
         "docs/critic-thm6-17-plan-check.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 4.12 (corrected variant, μ_min > 0 and T or SA at least 2)",
+      "source_label": "thm:infinite-horizon-asyn",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "2062–2086",
+      "source_context_lines": "2012–2028 (ergodicity assumption and μ_min), 2054–2058 (learning rate)",
+      "lean_export": "StatisticalRL.AsyncQ.asyncQ_exists_c₂",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_12_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_12_corrected_holds",
+      "statement_scope": "Corrected: the printed ∃c₁ ∃c₂ statement for asynchronous Q-learning along one Markov trajectory (with probability ≥ 1−δ the final iterate is ε-accurate at the printed learning rate), with exactly two added premises, 0 < μ_min and 2 ≤ T ∨ 2 ≤ S·A, plus the domain premise 1 ≤ T (C34: the printed statement fails at T = 1 and when μ_min = 0). The trajectory is given by its finite path law. The Markov mixing theory (stationarity, mixing-distance decay, window visit counts) is built from scratch, and the proof is new rather than the monograph's cited argument. The library export holds for every c₁ ∈ (0,1] with c₂ = max(e^{32/c₁}, 4096); joint satisfiability of the budget for this c₂ is argued on paper only. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm4-12.md",
+      "supporting_evidence": [
+        "docs/critic-thm4-12-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }
