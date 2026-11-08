@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Theorem 7.11 partial result: smooth-function Gaussian approximation
+
+For smooth test functions, the Polyak–Ruppert-averaged TD estimate is now shown in Lean to be close to the Gaussian with the corrected covariance, with an explicit error of order T^(-1/6); the library gains a multivariate Lindeberg replacement theorem, a standard multivariate Gaussian with moments and stability, and a second-order Taylor bound. This is a partial result, not a restricted variant of Theorem 7.11: the metric, rate and constants differ from the printed statement, so it is not counted. The named-result ledger is unchanged (89 of 90 once Theorem 7.7 lands). The complete monograph remains **INCOMPLETE**.
+
 ## Theorem 7.11 groundwork: linear stochastic approximation for TD
 
 Toward a corrected Theorem 7.11 (still open), the library now proves second-moment bounds for the TD iterates under i.i.d. sampling, the exact covariance A⁻¹ diag(Γ_true) A⁻ᵀ of the leading Polyak–Ruppert term (the corrected covariance of C43, not the printed one), and an explicit L² bound of order T^(-1/6) on the remainder, which therefore tends to 0. These are infrastructure only: the rate is weaker than the T^(-1/3) a proof of the corrected theorem needs, and the constants depend on the initialization and a burn-in. No named-result change. The complete monograph remains **INCOMPLETE**.

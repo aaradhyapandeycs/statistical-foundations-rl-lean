@@ -665,6 +665,10 @@ import Formalization.Ch7Rest.TDInferenceMartingale711
 import Formalization.Ch7Rest.TDInferenceOperator711
 import Formalization.Ch7Rest.TDInferencePolyakRuppert711
 import Formalization.Ch7Rest.TDInferencePRRemainder711
+import Formalization.Analysis.TaylorLipschitzHessian
+import Formalization.Probability.StdGaussianPi
+import Formalization.Probability.LindebergFinite
+import Formalization.Ch7Rest.TDInferenceSmooth711
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope
