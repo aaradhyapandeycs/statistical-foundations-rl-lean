@@ -144,12 +144,15 @@
       "source_label": "Thm:sample-compl-finite",
       "source_file": "chapters/generative_model_model_based.tex",
       "source_lines": "2551–2570",
-      "lean_export": "StatisticalRL.FiniteHorizonGenerative.exists_universal_causalFinitePolicy_sample_constant",
-      "evidence": "docs/critic-finite-horizon-source-theorem.md",
+      "lean_export": "StatisticalRL.FiniteHorizonGenerative.exists_universal_anyEmpiricalOptimalPolicy_sample_constant",
+      "evidence": "docs/critic-thm3-9-any-tie.md",
+      "supporting_evidence": [
+        "docs/critic-finite-horizon-source-theorem.md"
+      ],
       "coverage": "docs/COVERAGE.md",
-      "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_9_causal_positiveN",
-      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_9_causal_positiveN_holds",
-      "statement_scope": "restricted; see docs/SOURCE-ISSUES.md#statement-index-scope-disclosures"
+      "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_9_positiveN",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_9_positiveN_holds",
+      "statement_scope": "restricted (N>0 only); for every deterministic policy optimal for the empirical MDP at every stage and state (no tie rule fixed; prelim.tex:738–739); see docs/SOURCE-ISSUES.md#statement-index-scope-disclosures"
     },
     {
       "name": "Lemma 4.8",

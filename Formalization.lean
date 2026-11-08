@@ -327,6 +327,9 @@ import Formalization.Generative.FiniteHorizonPolicyPerformanceConsumption
 import Formalization.Generative.FiniteHorizonSampleArithmetic
 import Formalization.Generative.FiniteHorizonOneStage
 import Formalization.Generative.FiniteHorizonMainSample
+import Formalization.Generative.FiniteHorizonWorstTiePlanner
+import Formalization.Generative.FiniteHorizonSelectorPipeline
+import Formalization.Generative.FiniteHorizonAnyTieSample
 import Formalization.ModelFree.QLearningIterateBounds
 import Formalization.ModelFree.TDLearningWeights
 import Formalization.Generative.GenerativeLowerBoundQMixtureChiAlgebra
@@ -511,6 +514,11 @@ import Formalization.MDP.StateRelabel
 import Formalization.Generative.StateRelabelSampling
 import Formalization.Generative.GenerativeLowerBoundQMixtureAnyAction
 import Formalization.Generative.GenerativeLowerBoundTheorem37Fin
+import Formalization.Probability.Fano.AssouadWeighted
+import Formalization.Generative.FiniteHorizonSamplingAtoms
+import Formalization.Generative.FiniteHorizonLowerBoundFamily
+import Formalization.Generative.FiniteHorizonLowerBoundBounds
+import Formalization.Generative.FiniteHorizonLowerBoundTheorem
 import Formalization.Online.OnlineZeroCountOptimisticUpdate
 import Formalization.Online.SourceOptimism
 import Formalization.RobustRL.ChiSquaredPolicyValue
@@ -702,6 +710,8 @@ import Formalization.Counterexamples.CenteredSquareVariance
 import Formalization.Counterexamples.CenteredSquareVarianceMeasure
 import Formalization.Online.Regret.MVP.MVPCountDefinitions
 import Formalization.Online.Regret.MVP.OnlineMVPStoredCount
+import Formalization.Online.Regret.MVP.OnlineMVPLiteralTriggerCounterexample
+import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPPrintedTerminalCounterexample
 import Formalization.Online.Regret.MVP.OnlineMVPDyadicTrigger
 import Formalization.Online.Regret.MVP.OnlineMVPStoredClosedForm
 import Formalization.Online.Regret.MVP.OnlineMVPActualVisitRanks

@@ -125,7 +125,10 @@ the concrete deterministic backward-greedy selector with its fixed fallback
 rule. It also states `N > 0` explicitly for the empirical-frequency model.
 See [`SOURCE-ISSUES.md#statement-index-scope-disclosures`](../../docs/SOURCE-ISSUES.md#statement-index-scope-disclosures).
 The assumptions `0 < ε ≤ H` imply `H > 0`, which supplies a deterministic
-fallback action from the first environment stage. -/
+fallback action from the first environment stage. The general result, for every
+deterministic policy that is optimal for the empirical MDP at every stage and state
+(no tie rule fixed), is `Thm3_9_positiveN`; this entry is its special case for the
+concrete backward-greedy tie rule. -/
 def Thm3_9_causal_positiveN : Prop :=
   ∃ c₀ : ℝ, 0 < c₀ ∧
     ∀ (State Action : Type*) [Fintype State] [Fintype Action]
@@ -327,5 +330,127 @@ def Thm3_2_planningIterations : Prop :=
         ‖StatisticalRL.ModelBasedPolicyLearning.valueEstimator M N hN data -
           (StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).trajectoryExpectedValue
             (π k)‖ ≤ 1 / (N * (1 - M.discount)))
+
+/-- Two-state, one-action Q-estimation lower bound, displays
+`eq:N-UB-test-lower-Q-generative-overall` and `eq:P-Mi-Q-inaccurate-lower-generative`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:1541–1556` (proof 1557–1835).
+For every `γ ∈ [2/3, 1)` and `0 < ε < 1/(32(1−γ))` there are two MDPs `M₀, M₁` with states
+`Bool` (`true` is `s₁`) and the single action `()`, sharing the discount `γ` and the known
+reward table, chosen before `N` and the estimator as printed. For every `N` with
+`N ≤ 0.003/((1−γ)³ε²)` (`N = 0` included) and every estimator `Q̂`, some `Mᵢ` has
+`P_{Mᵢ}(|Q̂(s₁,a) − Q⋆_{Mᵢ}(s₁,a)| > ε) > 0.1`. Here `Q⋆` is the trajectory Q function of the
+optimal greedy policy, and the estimator is a function of the full sample array (`N` independent
+generative draws for each state-action pair, both rows, `samplingLaw`). As in the source proof,
+which builds a deterministic test from `Q̂` and applies Fano's lemma over deterministic tests,
+randomized estimators are not part of this entry. The strict `> 0.1` uses the Pinsker branch
+(SOURCE-ISSUES C4 records the omitted strictness step). -/
+def Eq_P_Mi_Q_inaccurate_lower_generative : Prop :=
+  ∀ (γ ε : ℝ), (2 : ℝ) / 3 ≤ γ → γ < 1 → 0 < ε → ε < 1 / (32 * (1 - γ)) →
+    ∃ M₀ M₁ : DiscountedMDP Bool Unit,
+      M₀.discount = γ ∧ M₁.discount = γ ∧ M₀.reward = M₁.reward ∧
+      ∀ N : ℕ, (N : ℝ) ≤ 0.003 / ((1 - γ) ^ 3 * ε ^ 2) →
+      ∀ QHat : StatisticalRL.ModelBasedPolicyLearning.Samples Bool Unit N → ℝ,
+        (1 : ℝ) / 10 < (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M₀ N).real
+            {data | ε < |QHat data - M₀.trajectoryExpectedQ M₀.optimalGreedyPolicy true ()|} ∨
+        (1 : ℝ) / 10 < (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M₁ N).real
+            {data | ε < |QHat data - M₁.trajectoryExpectedQ M₁.optimalGreedyPolicy true ()|}
+
+/-- Matching lower bound behind the prose claim at
+`source/upstream/tex/chapters/generative_model_model_based.tex:2585` (paragraph :2573–2585) that
+the sample size `SAH⁴/ε²` of Theorem 3.9 (`eq:sample-size-finite-horizon-generative`, :2580–2583;
+`Thm:sample-compl-finite`, :2551–2570) "is provably minimax optimal". Formal reading of a prose
+claim; the book states no lower-bound theorem and cites `domingues2021episodic` for it. The proof
+here is our own and uses the book's own online hard family (`chapters/onlineRL.tex:2512–3075`,
+`onlineLBStages`) with generative sampling; it does not establish the cited paper's theorem
+(total, possibly non-uniform or adaptive, sample budget), which is not covered.
+
+Protocol (the book's, :23–30 and :2533–2540): rewards known; the sample array holds `N`
+independent next-state draws from `P_h(·|s,a)` for every stage `h`, state `s` and action `a`
+(non-adaptive, uniform), so the total is `H·S·A·N`. The bound is on the per-tuple count:
+`N ≤ c·H³/ε²`, i.e. total `≤ c·SAH⁴/ε²`. In this protocol the factor `S·A` comes from the protocol
+and is not separately tested: the hard instances use only copy `0` of the family (states `0` and
+`⌊S/2⌋`) and the actions `0, 1`.
+
+Estimators (randomized): a seed from an arbitrary probability space `(Seed, ν)` (universe `0`),
+independent of the samples, and a map `piHat` of the seed, the known reward tables and the sample
+array to a deterministic nonstationary policy (`ℕ → Fin S → Fin A`, step `h` from `0`); for each
+seed value the output is a deterministic policy, so estimators that output a stochastic Markov
+policy are not covered (the book's `π̂⋆` is deterministic). Disclosed requirement: every output
+action is a measurable function of the seed, for every reward table (not only the hard family's),
+data array, step and state; this makes the event below measurable. Deterministic estimators are
+the case `Seed = Unit`.
+
+Conclusion: on some instance `E` (chosen after the estimator), with joint probability at least
+`1/8` over samples and seed, the output policy fails `ε`-optimality at stage `1` (index `0`) at
+some state, i.e. Theorem 3.9's V-guarantee `V_1^{π̂}(s) ≥ V_1⋆(s) − ε` fails. The failure
+probability `1/8` is fixed (no `δ`-dependent lower bound is claimed), and the per-tuple threshold
+`c·H³/ε²` has no logarithmic factor; it matches Theorem 3.9's `H³ log(HSA/δ)/ε²` per tuple up to
+that factor, which is the "up to logarithmic factors" reading of the prose.
+
+Domain (scope disclosure, see `docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`):
+`S, A, H ≥ 2` and `0 < ε ≤ c₁·H` with an existential `c₁`; each exclusion is necessary (for `H = 1`,
+`A = 1`, `S = 1` or `ε ≥ H` zero samples suffice). Witnesses in the proof: `c = 2⁻²⁸`,
+`c₁ = 1/4096`. -/
+def Thm3_9_minimaxLowerBound : Prop :=
+  ∃ c c₁ : ℝ, 0 < c ∧ 0 < c₁ ∧
+    ∀ (S A H N : ℕ) (ε : ℝ), 2 ≤ S → 2 ≤ A → 2 ≤ H → 0 < ε → ε ≤ c₁ * H →
+      (N : ℝ) ≤ c * (H : ℝ) ^ 3 / ε ^ 2 →
+      ∀ (Seed : Type) [MeasurableSpace Seed] (ν : Measure Seed) [IsProbabilityMeasure ν]
+        (piHat : Seed → (Fin H → Fin S → Fin A → ℝ) →
+          StatisticalRL.FiniteHorizonGenerative.Samples (Fin S) (Fin A) H N →
+          ℕ → Fin S → Fin A),
+        (∀ r data h s, Measurable (fun ω ↦ piHat ω r data h s)) →
+        ∃ E : Fin H → EnvironmentStage (Fin S) (Fin A),
+          (1 : ℝ) / 8 ≤ ((StatisticalRL.FiniteHorizonGenerative.samplingLaw E N).prod ν).real
+            {p | ∃ s, ε < EnvironmentStage.optimalValue (List.ofFn E) s -
+              StatisticalRL.FiniteHorizonGenerative.policyTrajectorySuffix (List.ofFn E)
+                (piHat p.2 (fun h s a ↦ (E h).reward s a) p.1) 0 s}
+
+/-- Source `Thm:sample-compl-finite`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:2551–2570` (algorithm at
+lines 2524–2546), for every deterministic policy `f` that is optimal for the empirical MDP
+`M̂` at every stage and state. This is the monograph's notion of an optimal deterministic
+policy, `source/upstream/tex/chapters/prelim.tex:738–739`; the algorithm's step 2 does not
+fix a tie rule. The policy is quantified inside the event, so every data-dependent tie rule,
+causal or not, is covered. Stage `h` is 0-based and `f h` acts at stage `h`; the printed
+`V_h^{π̂⋆}(s) ≥ V_h^⋆(s) − ε` is written as `V_h^⋆(s) − V_h^{f}(s) ≤ ε`.
+
+`N > 0` is explicit for the empirical-frequency model, as in `Thm3_2_positiveN`; see
+[`SOURCE-ISSUES.md#statement-index-scope-disclosures`](../../docs/SOURCE-ISSUES.md#statement-index-scope-disclosures).
+No content is lost: for `N = 0` the printed threshold forces `log(HSA/δ) ≤ 0`, hence
+`δ ≥ HSA ≥ 1`, where the claim is trivial.
+
+Proof route (differs from the source, which decouples the stages through the causality
+of its backward-induction planner, lines 2547–2549): the library proves the statistical
+guarantee for a causal "worst-tie" planner that, among the empirically optimal actions,
+picks one minimizing the true-model continuation. That planner reads the true model, so it
+is an analysis device, not the algorithm. Every empirically optimal `f` dominates it in the
+true model at every stage and state, which transfers the bound to `f`. -/
+def Thm3_9_positiveN : Prop :=
+  ∃ c₀ : ℝ, 0 < c₀ ∧
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (H : ℕ) (E : Fin H → EnvironmentStage State Action)
+      (N : ℕ) (hN : 0 < N) (δ ε : ℝ),
+      0 < δ → 0 < ε → ε ≤ H →
+      c₀ * (H : ℝ) ^ 3 *
+        Real.log ((H : ℝ) * Fintype.card State * Fintype.card Action / δ) / ε ^ 2 ≤ N →
+      1 - δ ≤
+        (StatisticalRL.FiniteHorizonGenerative.samplingLaw E N).real
+          {data | ∀ f : ℕ → State → Action,
+            (∀ h : Fin H, ∀ s,
+              StatisticalRL.FiniteHorizonGenerative.policyTrajectorySuffix
+                  (StatisticalRL.FiniteHorizonGenerative.empiricalStages E N hN data) f h.val s =
+                EnvironmentStage.optimalValue
+                  ((StatisticalRL.FiniteHorizonGenerative.empiricalStages E N hN data).drop
+                    h.val) s) →
+            ∀ h : Fin H,
+              (∀ s,
+                EnvironmentStage.optimalValue ((List.ofFn E).drop h.val) s -
+                  StatisticalRL.FiniteHorizonGenerative.policyTrajectorySuffix (List.ofFn E) f
+                    h.val s ≤ ε) ∧
+              (∀ s a,
+                EnvironmentStage.optimalQ ((List.ofFn E).drop h.val) s a -
+                  StatisticalRL.FiniteHorizonGenerative.policyTrajectoryQSuffix (List.ofFn E) f
+                    h.val s a ≤ ε)}
 
 end StatisticalRL.Statements.Ch3

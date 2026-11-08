@@ -1,5 +1,17 @@
 # Whole-monograph progress
 
+## Theorem 3.9 for every empirically optimal policy
+
+Theorem 3.9 (`Thm3_9_positiveN`) now covers every empirically optimal deterministic policy, not only the causal backward-greedy planner, with the same universal constant 8640; the `N > 0` scope is unchanged, and `Thm3_9_causal_positiveN` is retained as the special case. Independently reviewed ([critic-thm3-9-any-tie.md](critic-thm3-9-any-tie.md)). The existing named-ledger record is repointed, so the named count is unchanged. The complete monograph remains **INCOMPLETE**.
+
+## Minimax optimality of Theorem 3.9 (finite-horizon lower bound)
+
+The prose claim after Theorem 3.9 that its sample size is minimax-optimal is proved in its formal reading (`Thm3_9_minimaxLowerBound`): SAH⁴/ε² samples, up to constants, are necessary in the book's per-(s,a,h) protocol for randomized estimators, with fixed failure probability 1/8 and no log factor. The cited domingues2021episodic total-budget/adaptive theorem is not claimed. Independently reviewed ([critic-fhlb.md](critic-fhlb.md)); no source error. A prose claim, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.
+
+## Two-state Q lower bound; MVP counterexamples C13 and C17 machine-checked
+
+The model-based chapter's displayed two-state, one-action Q-estimation lower bound (`eq:P-Mi-Q-inaccurate-lower-generative`) is proved as printed, for estimators that are functions of the full sample array. The printed-algorithm counterexamples of C13 (literal MVP trigger in Lemma 5.12) and C17 (terminal value H in the fixed-profile auxiliary, `eq:Vk-Itrue`) are now machine-checked; no refutation of the final MVP regret or decoupling conclusion is claimed. A displayed claim and source-issue witnesses, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.
+
 ## Regret-to-PAC conversion: printed constant refuted, corrected version proved
 
 The online-RL conversion from expected regret to a PAC guarantee is false as printed: its constant C_{S,A,H+1} fails even for one algorithm on every class with strictly positive constants (machine-checked, C46). The conclusion is proved with C_{S,A,H}, and with the printed constant whenever C is nondecreasing in H. A displayed claim, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.
