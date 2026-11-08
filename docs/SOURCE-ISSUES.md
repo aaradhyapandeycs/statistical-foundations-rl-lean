@@ -458,6 +458,10 @@ candidate records the asserted error.
   (`lem:policy-learning-evaluation`, lines 1306–1326) have an explicit `N > 0`
   hypothesis in their existing Lean exports. Their statement-index entries
   retain and disclose that restriction.
+  The approximate-planner extension of Theorem 3.2 stated in prose at
+  `generative_model_model_based.tex:943` (`Thm3_2_approxPlanner_positiveN`) keeps the same
+  `N > 0` restriction; the companion iteration-count claim (`Thm3_2_planningIterations`)
+  divides by `N`, so `N > 0` is implicit in the printed claim.
 - Theorem 3.9 (`Thm:sample-compl-finite`,
   `generative_model_model_based.tex:2551–2570`) is proved for the causal
   backward-greedy tie rule implemented by the existing export, with positive

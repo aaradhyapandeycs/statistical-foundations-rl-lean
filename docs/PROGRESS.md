@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Theorem 3.2 with approximate planners
+
+The prose claim after Theorem 3.2 is proved: any planner that is 1/(N(1−γ))-optimal in the empirical model satisfies the theorem’s guarantees with the same universal constant, and empirical value and policy iteration reach that accuracy in O(log(N/(1−γ))/(1−γ)) iterations. These are prose claims, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.
+
 ## Theorem 7.11 partial result: smooth-function Gaussian approximation
 
 For smooth test functions, the Polyak–Ruppert-averaged TD estimate is now shown in Lean to be close to the Gaussian with the corrected covariance, with an explicit error of order T^(-1/6); the library gains a multivariate Lindeberg replacement theorem, a standard multivariate Gaussian with moments and stability, and a second-order Taylor bound. This is a partial result, not a restricted variant of Theorem 7.11: the metric, rate and constants differ from the printed statement, so it is not counted. The named-result ledger is unchanged (89 of 90 once Theorem 7.7 lands). The complete monograph remains **INCOMPLETE**.

@@ -244,4 +244,88 @@ def Thm3_7_corrected : Prop :=
               {data | ε < ‖QHat M.reward M.discount data -
                 M.trajectoryExpectedQ M.optimalGreedyPolicy‖})
 
+/-- Approximate-planner extension of source `Thm:sample-compl-main`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:900–923`,
+as claimed in the prose paragraph at
+`source/upstream/tex/chapters/generative_model_model_based.tex:943`
+(a prose claim, not a numbered result): the guarantee of Theorem 3.2 (both
+the V clause and the Q clause, with the same δ, ε range, budget and
+logarithm) continues to hold, after increasing the universal constant c₀, for
+every deterministic policy `f` whose empirical value is within
+`1 / (N (1 - γ))` of the empirical optimal value `V̂⋆` in sup norm.
+Here `V̂⋆` is `valueEstimator`, the empirical trajectory value of the greedy
+empirical-optimal policy (source MB:1005). The policy `f` is quantified inside
+the event, so the guarantee applies to any data-dependent planner output.
+As for `Thm3_2_positiveN`, the sample count is explicitly positive, see
+[`SOURCE-ISSUES.md#statement-index-scope-disclosures`](../../docs/SOURCE-ISSUES.md#statement-index-scope-disclosures). -/
+def Thm3_2_approxPlanner_positiveN : Prop :=
+  ∃ c₀ : ℝ, 0 < c₀ ∧
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) (δ ε : ℝ),
+    0 < δ → δ < 1 → 0 < ε → ε ≤ 1 / (1 - M.discount) →
+    c₀ * Real.log
+      (Fintype.card State * Fintype.card Action * N /
+        ((1 - M.discount) ^ 2 * ε * δ)) /
+      ((1 - M.discount) ^ 3 * ε ^ 2) ≤ N →
+    1 - δ ≤
+      (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
+        {data | ∀ f : State → Action,
+          ‖StatisticalRL.ModelBasedPolicyLearning.valueEstimator M N hN data -
+            (StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).trajectoryExpectedValue
+              (fun t ↦ EnvironmentStage.pointMass (f t))‖ ≤
+              1 / (N * (1 - M.discount)) →
+            (∀ s, M.trajectoryExpectedValue M.optimalGreedyPolicy s - ε ≤
+              M.trajectoryExpectedValue
+                (fun t ↦ EnvironmentStage.pointMass (f t)) s) ∧
+            (∀ s a, M.trajectoryExpectedQ M.optimalGreedyPolicy s a -
+                M.discount * ε ≤
+              M.trajectoryExpectedQ
+                (fun t ↦ EnvironmentStage.pointMass (f t)) s a)}
+
+/-- Planning-cost claim of the prose paragraph
+`source/upstream/tex/chapters/generative_model_model_based.tex:943`, following
+source `Thm:sample-compl-main`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:900–923`; a prose
+claim, not a numbered result. The source says empirical VI and PI reach the slack
+`‖V̂⋆ − V̂^π̂‖∞ ≤ 1/(N(1−γ))` within `O((1−γ)⁻¹ log(N/(1−γ)))` iterations.
+The `O(·)` is rendered by one universal constant `C` chosen before the model,
+sample count and data. The source does not fix the initialization or tie
+rule; here:
+* VI: any initialization `Q₀` with entries in `[0, 1/(1−γ)]` (e.g. `Q₀ = 0`),
+  `k` applications of the empirical Bellman optimality operator, then any
+  greedy selector `f` of the `k`-th iterate;
+* PI: any initial stationary policy `π 0` and arbitrary greedy tie choices;
+  the guarantee is for the `k`-th policy `π k`, `k ≥ 1`.
+The hypothesis `0 < N` is implicit in the printed claim, which divides by `N`
+(the slack is `1/(N(1−γ))`); no suffix is used. -/
+def Thm3_2_planningIterations : Prop :=
+  ∃ C : ℝ, 0 < C ∧
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
+      (data : StatisticalRL.ModelBasedPolicyLearning.Samples State Action N),
+    letI : Nonempty Action := M.action_nonempty
+    (∀ Q₀ : State → Action → ℝ,
+      (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ 1 / (1 - M.discount)) →
+      ∀ k : ℕ, C / (1 - M.discount) * Real.log (N / (1 - M.discount)) ≤ k →
+      ∀ f : State → Action,
+        (∀ s, ((StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).qOptimality^[k]
+            Q₀) s (f s) =
+          actionMaximum
+            (((StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).qOptimality^[k]
+              Q₀) s)) →
+        ‖StatisticalRL.ModelBasedPolicyLearning.valueEstimator M N hN data -
+          (StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).trajectoryExpectedValue
+            (fun t ↦ EnvironmentStage.pointMass (f t))‖ ≤ 1 / (N * (1 - M.discount))) ∧
+    (∀ (π : ℕ → StationaryPolicy State Action) (g : ℕ → State → Action),
+      (∀ n, π (n + 1) = fun s ↦ EnvironmentStage.pointMass (g n s)) →
+      (∀ n s, (StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).policyFixedPoint
+          (π n) s (g n s) =
+        actionMaximum
+          ((StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).policyFixedPoint
+            (π n) s)) →
+      ∀ k : ℕ, 1 ≤ k → C / (1 - M.discount) * Real.log (N / (1 - M.discount)) ≤ k →
+        ‖StatisticalRL.ModelBasedPolicyLearning.valueEstimator M N hN data -
+          (StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).trajectoryExpectedValue
+            (π k)‖ ≤ 1 / (N * (1 - M.discount)))
+
 end StatisticalRL.Statements.Ch3
