@@ -9,6 +9,7 @@ import Formalization.Ch7Rest.FedSync79Main
 import Formalization.RobustRL.DRVI.Thm74Main
 import Formalization.Ch7Rest.VPOMain712
 import Formalization.Ch7Rest.Marl76Restricted
+import Formalization.Ch7Rest.Marl77Main
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -228,5 +229,13 @@ theorem Thm7_6_restricted_holds : Thm7_6_restricted :=
   StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted
 
 end Thm7_6
+
+section Thm7_7
+
+/-- `Thm7_7_restricted` from `StatisticalRL.Ch7Rest.Marl77.thm7_7_restricted` (`C = 20000`). -/
+theorem Thm7_7_restricted_holds : Thm7_7_restricted :=
+  StatisticalRL.Ch7Rest.Marl77.thm7_7_restricted
+
+end Thm7_7
 
 end StatisticalRL.Statements.Ch7

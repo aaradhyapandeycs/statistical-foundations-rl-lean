@@ -1081,7 +1081,41 @@ Theorem 7.7 (`marl.tex:441–467`) asserts the existence of an algorithm
 in the two-player bound (`marl.tex:454`) is never defined (presumably max{A_1,A_2} or A_1 + A_2). Without the algorithm
 and an explicit form of Õ, the printed statement cannot be checked against the monograph. Proposed correction: define
 A and state the algorithm and the hidden logarithmic factors, or cite the source theorem as an external input.
-Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
+Found by a source preflight and confirmed by an independent source check. Not author-approved.
+
+Restricted result (2026-11-08). The monograph omits Q-FTRL (`marl.tex:432`), so the project proves the
+existential claim of Theorem 7.7 from scratch with an explicit reconstructed witness (`Thm7_7_restricted`,
+`Formalization/Ch7Rest/Marl77*.lean`). The witness works as follows:
+- For each step h = H, …, 1 and state s, it plays T rounds of Hedge (entropic FTRL) for every player.
+- In each round, every pair (player i, action b) issues one generative query (h, s, (b, a₋ᵢ)), with a₋ᵢ drawn
+  from the other players' current weights.
+- It forms optimistic values with a variance bonus, clipped at H − h + 1.
+- The output is the average of the round product policies, a correlated joint Markov policy, for the
+  general-sum CCE claim. For two-player zero-sum games, the algorithm shifts player 2's reward internally, runs
+  at accuracy ε/2, and outputs the product of the marginals. In the zero-sum case, gap(⊗ marginals) ≤ 2·gapJ is
+  proved in Lean.
+
+The witness is not shown to be Q-FTRL. It builds no empirical transition kernel, so "model-based" is not
+claimed.
+
+What is proved: one universal constant C = 20000, quantified before all sizes, such that the following holds for
+every δ ∈ (0,1), ε ∈ (0,H], known reward and every transition kernel, with probability ≥ 1 − δ:
+- N ≤ C·H⁴S·Σ_iA_i·ε⁻²·log(4HSΣ_iA_i/δ) adaptive, randomized generative queries give gap ≤ ε for the joint
+  output (`eq:defn-NE-gap`, CCE);
+- N ≤ C·H⁴S·max(A₁,A₂)·ε⁻²·log(8HS·max(A₁,A₂)/δ) queries give an ε-NE product policy for two-player
+  zero-sum games (r₂ = −r₁, r₁ ∈ [0,1]).
+
+Readings:
+- The query count is deterministic.
+- A is read as max(A₁,A₂), which implies the A₁+A₂ and A₁ = A₂ readings.
+- Õ is read as a universal constant times one log(·/δ) factor, with no ε inside the logarithm.
+- The algorithm sees the reward (`generative_model_model_based.tex:31`) but not P.
+- Added domain conditions are S ≥ 1 and A_i ≥ 1. Rewards are constrained on steps 1..H only.
+- The two bullets are separate existentials sharing C. That one algorithm serves both (by branching on the known
+  reward, with N = 0 on the overlap r ≡ 0) is argued in prose only.
+
+Whether Q-FTRL itself attains the rate is not checked. No falsity of the printed statement is known.
+Independently reviewed. Not author-approved.
 
 <a id="C40"></a>
 ## Candidate C40: Theorem 7.8 admits A_i = 1 (and S = 1 or H = 1 with known reward); "m-player zero-sum" is undefined
@@ -1129,7 +1163,9 @@ covariance. Example: S = 2, uniform μ and π, r(1,·) = (0,1), r(2,·) = 0, uni
 Γ_printed = diag(1/128, 1/128) and the true noise covariance diag(17/128, 1/128). Given the classical CLT, the convex
 distance tends to at least 0.57, so the printed bound fails as T → ∞. Γ must also be nonsingular (it is 0 when S = 1).
 Proposed correction: Γ_{s,s} = μ(s)E_{a∼π(·|s), s′∼P(·|s,a)}[(V^π(s) − r(s,a) − γV^π(s′))²], with Γ ≻ 0 assumed.
-Found by a source preflight and confirmed by an independent source check; no Lean evidence yet. Not author-approved.
+Found by a source preflight and confirmed by an independent source check. Not author-approved.
+
+Machine-checked (2026-11-08, `Formalization/Ch7Rest/TDInferenceZeroNoise711.lean` and `Formalization/Ch7Rest/TDInferenceAnyInit711.lean`): Theorem 7.11 is false under the reading in which rewards depend on (s,a) as printed at `inference.tex:62` and the undefined r(s) in Γ is r_π(s) (`prelim.tex:418`). This holds whether the bound must hold for every initialization V₀ (`not_thm7_11_printed`; also with the constants c and C̃ chosen per instance, `not_thm7_11_printed_instWise`, and over all convex sets, `not_thm7_11_printed_allConvex`) or only for one V₀ chosen per instance, such as V₀ = 0 (`not_thm7_11_printed_someInit` with a universal c, and `not_thm7_11_printed_someInit_instWise` with V₀, c and C̃ all chosen after the instance, the weakest such reading). Instance: S = A = 2, γ = 1/2, μ and π uniform, s′ = a deterministically, r = (1/2, 3/4; 0, 1/4), η₀ = 1/8. Then V^π = (1, 1/2) and r(s,a) + γV^π(s′) = V^π(s) on every sample. From V₀ = V^π the TD iterates never move, so √T Δ̄_T = 0 surely. The printed Γ is diag(1/128, 1/128) ≻ 0 and A = diag(μ)(I − γP_π) is invertible (A⁻¹ = [[3,1],[1,3]]), so N(0, A⁻¹ΓA⁻ᵀ)({0}) = 0 and the convex distance is 1 at every T ≥ 1 (on the closed convex set {0}). From any other fixed V₀, the error satisfies E‖V_t − V^π‖² ≤ ‖V₀ − V^π‖² exp(−(3/8)η₀t^{1/3}), so E|(√T Δ̄_T)(0)| = O(T^{−1/2}). The data law therefore puts mass ≥ 1 − O(T^{−1/2}) on the closed convex slab {x : |x(0)| ≤ 1/20}, while the printed Gaussian gives it mass ≤ 4/(15√π) < 1/4, so the convex distance is ≥ 3/4 − O(T^{−1/2}) (`anyInit_violates`, for every V₀, every η₀ ∈ (0,1] and every real c, C̃). In both cases the printed right-hand side tends to 0 for any finite constants. No CLT is used. The example also shows that the printed Γ omits a cross term as well as the action-reward variance: Γ_true,ss = Γ_printed,ss + μ(s)[Var_a r(s,a) + 2γ Cov(r(s,a), V^π(s′))], and here Γ_true = 0 < Γ_printed. Not refuted by this example: the reading with state-only rewards (or deterministic π), where Γ_printed equals the true noise covariance, and the corrected statement (here Γ_true = 0, so it is vacuous). Independently critic-reviewed. Not author-approved.
 
 <a id="C44"></a>
 ## Candidate C44: Theorem 7.12 is ill-posed at T = 1 and its VPO update may have no minimizer

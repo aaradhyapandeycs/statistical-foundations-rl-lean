@@ -1,5 +1,17 @@
 # Whole-monograph progress
 
+## Theorem 7.11 groundwork: linear stochastic approximation for TD
+
+Toward a corrected Theorem 7.11 (still open), the library now proves second-moment bounds for the TD iterates under i.i.d. sampling, the exact covariance A⁻¹ diag(Γ_true) A⁻ᵀ of the leading Polyak–Ruppert term (the corrected covariance of C43, not the printed one), and an explicit L² bound of order T^(-1/6) on the remainder, which therefore tends to 0. These are infrastructure only: the rate is weaker than the T^(-1/3) a proof of the corrected theorem needs, and the constants depend on the initialization and a burn-in. No named-result change. The complete monograph remains **INCOMPLETE**.
+
+## Theorem 7.11 printed statement refuted (TD inference)
+
+The printed Berry–Esseen bound for Polyak–Ruppert-averaged TD (Theorem 7.11) is shown false in Lean, with no central limit theorem, under the reading with action-dependent rewards and r(s) = r_π(s): a two-state instance has zero TD noise while the printed covariance is nonsingular, so the bound fails both for every initialization and for one fixed initialization per instance (C43). The library gains Gaussian anti-concentration and step-size lemmas. The corrected theorem remains open, so the named-result ledger is unchanged (89 of 90 once Theorem 7.7 lands). The complete monograph remains **INCOMPLETE**.
+
+## Restricted Theorem 7.7 (sample-efficient multi-agent equilibrium learning)
+
+Theorem 7.7 asserts the existence of an algorithm (Q-FTRL) whose description the monograph omits. The existential claim is proved from scratch at the printed rates, H⁴SΣA_i/ε² for CCE learning and H⁴S·max A/ε² for two-player zero-sum Nash equilibria, with one universal constant and a single logarithmic factor, using an explicit reconstructed optimistic-Hedge algorithm that is not shown to be Q-FTRL and is not model-based (C39). The library gains a second-order Hedge regret bound, adaptive Freedman-type tail bounds and a total-variance lemma for near-supersolutions. The named-result ledger now has 89 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Restricted Theorem 7.6 (model-based multi-agent RL)
 
 Theorem 7.6, whose proof the monograph cites, is false as printed when the planning oracle may return any equilibrium of the empirical game; this is machine-checked. It is proved from scratch at the printed sample size for causal planning oracles, with a causal CCE planner showing the CCE clause is non-vacuous (C45). The named-result ledger now has 88 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
