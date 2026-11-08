@@ -1235,6 +1235,22 @@
         "docs/critic-thm7-6-plan-check.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.7 (restricted to an explicit reconstructed witness)",
+      "source_label": "thm:Q-FTRL",
+      "source_file": "chapters/marl.tex",
+      "source_lines": "441–467",
+      "source_context_lines": "423–432 (Q-FTRL description, omitted at :432) and 476 (uniformity over ε)",
+      "lean_export": "StatisticalRL.Ch7Rest.Marl77.thm7_7_restricted, with the main components StatisticalRL.Ch7Rest.Marl77.core_cce (general-sum CCE bound) and StatisticalRL.Ch7Rest.Marl77.gap_margProd_le_two_mul (zero-sum reduction), and the reusable library lemmas StatisticalRL.Online.Hedge.hedge_second_order_regret, StatisticalRL.AdaptiveKL.seqLaw_freedman_tail and StatisticalRL.Ch7Rest.Marl77.evalJ_jvarJ_le",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_7_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_7_restricted_holds",
+      "statement_scope": "Restricted: the printed theorem asserts that a model-based algorithm, namely Q-FTRL, attains the rates, but the monograph omits Q-FTRL (marl.tex:432) and leaves A and Õ undefined (C39). The existential guarantee is proved from scratch with an explicit reconstructed witness: optimistic Hedge (entropic FTRL) with backward induction and per-agent adaptive generative queries. The witness is not shown to be Q-FTRL, and it is not model-based (it builds no empirical transition kernel). With one universal constant C = 20000, quantified before all sizes, for every δ ∈ (0,1), ε ∈ (0,H], known reward (bounded on steps 1..H) and every transition kernel, with probability ≥ 1−δ: (i) N ≤ C·H⁴S·Σ_iA_i·ε⁻²·log(4HSΣ_iA_i/δ) adaptive, randomized generative queries give an ε-CCE (joint output, gap ≤ ε); (ii) for two-player zero-sum games (r₂ = −r₁, r₁ ∈ [0,1]), N ≤ C·H⁴S·A·ε⁻²·log(8HSA/δ) queries give an ε-NE product policy, with A read as max(A₁,A₂), which implies the A₁+A₂ and A₁ = A₂ readings. The query count is deterministic; Õ is read as a universal constant times one log(·/δ) factor with no ε in the logarithm. The algorithm sees the reward but not P. Adds the domain binders S ≥ 1 and A_i ≥ 1. The two clauses are separate existentials sharing C; that one algorithm serves both is argued in prose only. Whether Q-FTRL itself attains the rate is not checked. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-7.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-7-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }

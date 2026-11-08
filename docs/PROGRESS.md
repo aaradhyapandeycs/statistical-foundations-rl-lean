@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Restricted Theorem 7.7 (sample-efficient multi-agent equilibrium learning)
+
+Theorem 7.7 asserts the existence of an algorithm (Q-FTRL) whose description the monograph omits. The existential claim is proved from scratch at the printed rates, H⁴SΣA_i/ε² for CCE learning and H⁴S·max A/ε² for two-player zero-sum Nash equilibria, with one universal constant and a single logarithmic factor, using an explicit reconstructed optimistic-Hedge algorithm that is not shown to be Q-FTRL and is not model-based (C39). The library gains a second-order Hedge regret bound, adaptive Freedman-type tail bounds and a total-variance lemma for near-supersolutions. The named-result ledger now has 89 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Restricted Theorem 7.6 (model-based multi-agent RL)
 
 Theorem 7.6, whose proof the monograph cites, is false as printed when the planning oracle may return any equilibrium of the empirical game; this is machine-checked. It is proved from scratch at the printed sample size for causal planning oracles, with a causal CCE planner showing the CCE clause is non-vacuous (C45). The named-result ledger now has 88 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
