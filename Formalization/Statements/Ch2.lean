@@ -326,4 +326,58 @@ def Lemma2_10 : Prop :=
         (Real.log ((M : ℝ) + 1) - Real.log 2) / Real.log (M : ℝ) - β ≤
           StatisticalRL.PrelimFano.averageErrorInfimum P)
 
+/-- eq. (2.27), `eq:QV-pi-perturbabtion-r-inf` (label typo as in the source), with
+`eq:Q-pi-perturbabtion-r-inf` and `eq:V-pi-perturbabtion-r-inf`,
+`chapters/prelim.tex:613–631`. Two discounted MDPs `M = (S,A,P,r,γ)` and
+`M' = (S,A,P,r̃,γ)` with the same transition kernel and discount, differing only in the
+reward. For every stationary randomized policy `π` (the policy class of `prelim.tex:66`),
+`‖Q^π − Q̃^π‖∞ ≤ ‖r − r̃‖∞/(1−γ)` and `‖V^π − Ṽ^π‖∞ ≤ ‖r − r̃‖∞/(1−γ)`.
+As in `Lemma2_1`, `Q^π` is written as the policy Bellman solution `M.policyFixedPoint π`
+(separately proved equal to the expected infinite-trajectory Q-value,
+`trajectoryExpectedQ_eq_policyFixedPoint`), and `V^π(s) = E_{a∼π(s)} Q^π(s,a)`. The norms are
+the finite sup norms (`‖·‖` on `State → Action → ℝ` and `State → ℝ` is the max of `|·|`). The
+printed intermediate resolvent identities (`(I−γP^π)⁻¹ r` and `‖(I−γP^π)⁻¹‖₁ = 1/(1−γ)`) are
+proof steps and are not restated here; the matrix facts are `Lemma2_3`. -/
+def Eq_QV_pi_perturbation_r_inf : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M M' : DiscountedMDP State Action),
+    M'.transition = M.transition → M'.discount = M.discount →
+    ∀ π : StationaryPolicy State Action,
+      ‖M.policyFixedPoint π - M'.policyFixedPoint π‖ ≤
+          ‖M.reward - M'.reward‖ / (1 - M.discount) ∧
+      ‖(fun s ↦ (π s).expectation (M.policyFixedPoint π s)) -
+          (fun s ↦ (π s).expectation (M'.policyFixedPoint π s))‖ ≤
+          ‖M.reward - M'.reward‖ / (1 - M.discount)
+
+/-- eq. (2.28), `eq:QV-star-perturbabtion-r-inf` (label typo as in the source), with
+`eq:V-star-perturbabtion-r-inf`, `chapters/prelim.tex:633–653`. Same setting as
+`Eq_QV_pi_perturbation_r_inf`. The printed chain
+`‖Q⋆ − Q̃⋆‖∞ = ‖max_π Q^π − max_π Q̃^π‖∞ ≤ max_π ‖Q^π − Q̃^π‖∞ ≤ ‖r − r̃‖∞/(1−γ)` and
+`‖V⋆ − Ṽ⋆‖∞ ≤ ‖r − r̃‖∞/(1−γ)` is stated with `max_π` as the supremum `⨆ π` over stationary
+randomized policies of the policy Bellman solutions (`Q^π = M.policyFixedPoint π`,
+`V^π(s) = E_{a∼π(s)} Q^π(s,a)`). The first conjunct records that these suprema are the optimal
+Bellman solution `optimalityFixedPoint` (the `Q⋆` of `Lemma2_1`) of each model, so the Q-suprema
+are attained (by `optimalGreedyPolicy`); the V-suprema are bounded above by `1/(1−γ)` and the
+norm-supremum by `‖r − r̃‖∞/(1−γ)`, so no `⨆` here is a junk value. -/
+def Eq_QV_star_perturbation_r_inf : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M M' : DiscountedMDP State Action),
+    M'.transition = M.transition → M'.discount = M.discount →
+    ((fun s a ↦ ⨆ π : StationaryPolicy State Action, M.policyFixedPoint π s a) =
+        M.optimalityFixedPoint ∧
+      (fun s a ↦ ⨆ π : StationaryPolicy State Action, M'.policyFixedPoint π s a) =
+        M'.optimalityFixedPoint) ∧
+    ‖(fun s a ↦ ⨆ π : StationaryPolicy State Action, M.policyFixedPoint π s a) -
+        (fun s a ↦ ⨆ π : StationaryPolicy State Action, M'.policyFixedPoint π s a)‖ ≤
+      (⨆ π : StationaryPolicy State Action,
+        ‖M.policyFixedPoint π - M'.policyFixedPoint π‖) ∧
+    (⨆ π : StationaryPolicy State Action,
+        ‖M.policyFixedPoint π - M'.policyFixedPoint π‖) ≤
+      ‖M.reward - M'.reward‖ / (1 - M.discount) ∧
+    ‖(fun s ↦ ⨆ π : StationaryPolicy State Action,
+          (π s).expectation (M.policyFixedPoint π s)) -
+        (fun s ↦ ⨆ π : StationaryPolicy State Action,
+          (π s).expectation (M'.policyFixedPoint π s))‖ ≤
+      ‖M.reward - M'.reward‖ / (1 - M.discount)
+
 end StatisticalRL.Statements

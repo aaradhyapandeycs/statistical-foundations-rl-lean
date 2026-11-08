@@ -1,6 +1,7 @@
 import Formalization.Online.LowerBound.ValueGap
 import Formalization.Online.LowerBound.BanditTesting
 import Formalization.Online.LowerBound.MinimaxRegret
+import Formalization.Online.LowerBound.GaussianBanditUCBOptimal
 import Formalization.Online.QLearning.RateWeights
 import Formalization.Online.QLearning.ActualRegretRate
 import Formalization.Online.QLearning.ActualOptimismConfidence
@@ -19,6 +20,7 @@ import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
 import Formalization.Online.Regret.Joint.OnlineT234Joint
 import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
 import Formalization.Statements.Ch5
+import Formalization.Online.RegretToPAC.Corrected
 import Formalization.Online.Bandit.UCBRegret
 import Formalization.Online.Regret.Counts.OnlineReciprocalSource
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
@@ -408,5 +410,19 @@ theorem Thm5_19_holds : Thm5_19 := OnlineLowerBound.minimax_lower_online
 theorem Thm5_1_restricted_holds : Thm5_1_restricted :=
   fun A T r δ tie htie hA hAT hr hδ0 hδ1 =>
     Bandit.ucb_regret_bounds A T r δ tie htie hA hAT hr hδ0 hδ1
+
+theorem Remark5_12_lowerBound_holds : Remark5_12_lowerBound :=
+  fun A T hA hAT => GaussianBanditLB.minimax_lower_bound A T hA hAT
+
+theorem Remark5_12_restricted_holds : Remark5_12_restricted :=
+  fun A T δ tie htie hA hAT hδ0 hδ1 =>
+    GaussianBanditLB.ucb_minimax_optimal A T δ tie htie hA hAT hδ0 hδ1
+
+theorem Eq_PAC_from_regret_conversion_corrected_holds : Eq_PAC_from_regret_conversion_corrected :=
+  RegretToPAC.eq_PAC_from_regret_conversion_corrected
+
+theorem Eq_PAC_from_regret_conversion_restricted_holds :
+    Eq_PAC_from_regret_conversion_restricted :=
+  RegretToPAC.eq_PAC_from_regret_conversion_restricted
 
 end StatisticalRL.Statements

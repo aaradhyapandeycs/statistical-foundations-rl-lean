@@ -7,9 +7,11 @@ import Formalization.RobustRL.Ch7.LowerBound75
 import Formalization.Ch7Rest.Marl78Main
 import Formalization.Ch7Rest.FedSync79Main
 import Formalization.RobustRL.DRVI.Thm74Main
+import Formalization.RobustRL.DRVI.RobustQ
 import Formalization.Ch7Rest.VPOMain712
 import Formalization.Ch7Rest.Marl76Restricted
 import Formalization.Ch7Rest.Marl77Main
+import Formalization.RobustRL.DRVI.OraclePlannerMain
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -195,6 +197,11 @@ theorem Thm7_9_corrected_holds : Thm7_9_corrected :=
 theorem Thm7_2_corrected_holds : Thm7_2_corrected :=
   StatisticalRL.RobustRL.DRVI.thm7_2_corrected_holds
 
+/-- `Remark7_1_restricted` from `StatisticalRL.RobustRL.DRVI.tv_oracle_planner_guarantee`
+(`C₂ = max(10⁶, 2 c_opt)`). -/
+theorem Remark7_1_restricted_holds : Remark7_1_restricted :=
+  StatisticalRL.RobustRL.DRVI.tv_oracle_planner_guarantee
+
 /-- `Thm7_4_corrected` from `StatisticalRL.RobustRL.DRVI.thm7_4_corrected_holds`
 (`c₁ = 2`, `c₂ = 10⁶`). -/
 theorem Thm7_4_corrected_holds : Thm7_4_corrected :=
@@ -237,5 +244,17 @@ theorem Thm7_7_restricted_holds : Thm7_7_restricted :=
   StatisticalRL.Ch7Rest.Marl77.thm7_7_restricted
 
 end Thm7_7
+
+section Eq_mdp_value_Q
+
+/-- `Eq_mdp_value_Q` from `StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_tv`
+and `exists_det_robust_value_Q_optimal_chi` (`f = optPolicy`, greedy for the robust optimality
+fixed point). -/
+theorem Eq_mdp_value_Q_holds : Eq_mdp_value_Q := by
+  intro State Action _ _ M σ hσ
+  exact ⟨StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_tv M hσ.le,
+    StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_chi M hσ.le⟩
+
+end Eq_mdp_value_Q
 
 end StatisticalRL.Statements.Ch7

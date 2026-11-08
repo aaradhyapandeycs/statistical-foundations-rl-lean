@@ -67,3 +67,58 @@ def ucbAction (tie : ℕ → Finset (Fin A) → Fin A) (L : ℝ) (r : Fin A → 
   ucbArm tie L r (extendNoise z) t
 
 end StatisticalRL.Bandit
+
+/-!
+## Gaussian bandits with a general learner: definitions (Remark 5.12)
+
+Definitions only. They are used by the statement-index entries for Remark 5.12
+(`chapters/onlineRL.tex:2725–2729`), in the Gaussian bandit setting of `sec:bandits-UCB`
+(`chapters/bandits.tex:15–48`).
+
+* A learner is given by a seed `σ` drawn once from an arbitrary probability space, independent of
+  the noise, together with arm maps `arm t σ h : Fin A`, where `h : Fin t → Fin A × ℝ` is the
+  history of the `t` previous (arm, observed reward) pairs. The typing makes the learner causal:
+  the arm at round `t` reads only the seed and the past. Per-round randomization is a special case
+  (take the seed to be a sequence of independent uniforms).
+* Nature's noise is the round-indexed table `ζ t a` of `gaussianNoiseTable`
+  (`chapters/bandits.tex:37–42`). The learner sees only the reward `μ a_t + ζ t a_t` of the pulled
+  arm (`:47–48`).
+* Rounds are `0`-indexed.
+-/
+
+open MeasureTheory Finset
+
+noncomputable section
+
+namespace StatisticalRL.GaussianBanditLB
+
+variable {A : ℕ} {Seed : Type*}
+
+/-- The history of the first `t` rounds (pairs `(a_s, R_s)` for `s < t`) produced by the arm maps
+`arm` with seed `σ`, mean rewards `μ` and noise sequence `ζ`: the reward observed at round `s` is
+`μ a_s + ζ s a_s`. -/
+def history (arm : (t : ℕ) → Seed → (Fin t → Fin A × ℝ) → Fin A) (μ : Fin A → ℝ) (σ : Seed)
+    (ζ : ℕ → Fin A → ℝ) : (t : ℕ) → Fin t → Fin A × ℝ
+  | 0 => Fin.elim0
+  | t + 1 =>
+    Fin.snoc (α := fun _ => Fin A × ℝ) (history arm μ σ ζ t)
+      (arm t σ (history arm μ σ ζ t), μ (arm t σ (history arm μ σ ζ t))
+        + ζ t (arm t σ (history arm μ σ ζ t)))
+
+/-- The arm `a_t` pulled at round `t` (0-indexed). -/
+def armAt (arm : (t : ℕ) → Seed → (Fin t → Fin A × ℝ) → Fin A) (μ : Fin A → ℝ) (σ : Seed)
+    (ζ : ℕ → Fin A → ℝ) (t : ℕ) : Fin A :=
+  arm t σ (history arm μ σ ζ t)
+
+/-- Pseudo-regret `T r⋆ − Σ_{s<T} μ(a_s)` (`chapters/bandits.tex:66–70`) at seed `σ` and noise
+table `z : Fin T → Fin A → ℝ` (extended by zero after the horizon; those rows are never read). -/
+def regret (arm : (t : ℕ) → Seed → (Fin t → Fin A × ℝ) → Fin A) (μ : Fin A → ℝ) (T : ℕ)
+    (σ : Seed) (z : Fin T → Fin A → ℝ) : ℝ :=
+  (T : ℝ) * (⨆ a, μ a) - ∑ s : Fin T, μ (armAt arm μ σ (Bandit.extendNoise z) s)
+
+/-- The hard instance family: arm `0` (index value `0`) has mean `ε/2`, arm `i ≠ 0` has mean `ε` in
+instance `i`, all other arms have mean `0`. Instance `0` is the reference. -/
+def hardMean (ε : ℝ) (i : Fin A) (a : Fin A) : ℝ :=
+  if a = i ∧ i.val ≠ 0 then ε else if a.val = 0 then ε / 2 else 0
+
+end StatisticalRL.GaussianBanditLB

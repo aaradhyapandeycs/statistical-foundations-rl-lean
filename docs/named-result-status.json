@@ -577,6 +577,22 @@
       "statement_scope": "Printed learning-rate properties for η_n=(H+1)/(H+n), every H≥1: both 1/√n-weighted bounds and the square bound for every N≥1, and convergence of the tail series to 1+1/H (as a HasSum) for every n≥1.",
       "evidence": "docs/critic-unreviewed-entries.md",
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 4.7",
+      "source_label": "thm:LB-example-Q-generative",
+      "source_file": "chapters/generative_model_model_free.tex",
+      "source_lines": "969–982",
+      "lean_export": "StatisticalRL.QLearning.qLb_thm47 (combining StatisticalRL.QLearning.qLb_thm47_rescaledLinear and StatisticalRL.QLearning.qLb_thm47_constantRate)",
+      "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_7",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_7_holds",
+      "statement_scope": "Printed statement, both cases: ∃ universal c₃, c_lb (16, 10⁻⁹) such that for γ∈[3/4,1), T≥c₃/(1−γ)², Q₀≡0 and either (i) η_t=1/(1+c_η(1−γ)t) for any c_η>0 or (ii) constant η∈(0,1), a 4-state 2-action MDP has max_s E|V_T(s)−V⋆(s)|² ≥ c_lb/((1−γ)⁴T log²T). Encoding disclosures: dominated dummy actions (C31), ∃s for the max, natural log, T∈ℕ, η 0 unused. Case (i) is not proved in the source; the Lean proof is self-contained (C30, resolved). Case (ii) printed-proof slips repaired as in C31 (statement unchanged). Thm4_7_restricted is implied and retained for history. Independently plan-checked and source-reviewed. Not author-approved.",
+      "evidence": "docs/critic-thm4-7-case-i.md",
+      "supporting_evidence": [
+        "docs/critic-thm4-7-case-i-plan-check.md",
+        "docs/critic-thm4-7-lemma4-15.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ],
   "proved_variants": [
@@ -847,18 +863,6 @@
       "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_7_corrected_holds",
       "statement_scope": "Corrected: the printed theorem is false (C1, C2). Proved for S≥2 and SA≥16 with A≥2 for part (i) only, the printed γ/ε ranges and sample bound, a uniform constant (witness 1/32768), probability ≥1/4, deterministic estimators given the known reward and discount, and witness MDPs on Fin S × Fin A. This does not certify the printed theorem.",
       "evidence": "docs/critic-thm3-7-corrected.md",
-      "coverage": "docs/COVERAGE.md"
-    },
-    {
-      "name": "Theorem 4.7, case (ii) (restricted variant)",
-      "source_label": "thm:LB-example-Q-generative",
-      "source_file": "chapters/generative_model_model_free.tex",
-      "source_lines": "969–982",
-      "lean_export": "StatisticalRL.QLearning.qLb_thm47_constantRate",
-      "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_7_restricted",
-      "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_7_restricted_holds",
-      "statement_scope": "Restricted to case (ii) (constant learning rates): ∃c₃, c_lb (16, e^{−16}) such that for γ∈[3/4,1), T≥c₃/(1−γ)² and η∈(0,1) a 4-state 2-action MDP with dominated dummy actions has E[(V̂_T(s)−V⋆(s))²] ≥ c_lb/((1−γ)⁴T log²T) at some s. Case (i) is not proved in the source and stays open (C30); printed-proof slips are repaired as in C31.",
-      "evidence": "docs/critic-thm4-7-lemma4-15.md",
       "coverage": "docs/COVERAGE.md"
     },
     {

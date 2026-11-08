@@ -232,9 +232,10 @@ def Lemma4_14 : Prop :=
 /-- Restricted Theorem 4.7, `thm:LB-example-Q-generative`,
 `chapters/generative_model_model_free.tex:969–982`; proof Appendix C, lines 2707–3944.
 
-Restriction: only case (ii), constant learning rates `η_t ≡ η ∈ (0,1)`, is stated and proved.
-Case (i) (rescaled linear rates `η_t = 1/(1 + c_η(1-γ)t)`) is not proved in the source (it is
-deferred to li2024q) and remains an open obligation; see `docs/SOURCE-ISSUES.md#C30`.
+Implied by `Thm4_7`; retained for history. It states only case (ii), constant learning rates
+`η_t ≡ η ∈ (0,1)`. The full printed statement, including case (i) (rescaled linear rates
+`η_t = 1/(1 + c_η(1-γ)t)`, which the source defers to li2024q, `docs/SOURCE-ISSUES.md#C30`), is the
+entry `Thm4_7`.
 
 Encoding: `max_s E[|V_T(s) - V⋆(s)|²] ≥ b` is written `∃ s, b ≤ E[…]` (finite state set). The
 MDP has `S = 4` states (`Fin 4`) and `A = 2` actions (`Bool`) at every state, with rewards in
@@ -377,5 +378,179 @@ def Thm4_12_corrected : Prop :=
     1 - δ ≤ (AsyncQ.pathLaw M πb s₀ T).real {x | ∀ s a,
       |AsyncQ.iterate M (c₁ * Real.log T ^ 3 / ((1 - M.discount) * T * μmin)) Q₀ x T s a -
         M.trajectoryExpectedQ M.optimalGreedyPolicy s a| ≤ ε}
+
+
+/-- Theorem 4.7, `thm:LB-example-Q-generative`, `chapters/generative_model_model_free.tex:969–982`,
+as printed: both learning-rate schedules, (i) rescaled linear and (ii) constant.
+
+Proof: case (ii) follows Appendix C (lines 2707–3944) as repaired in `docs/SOURCE-ISSUES.md#C31`
+(the printed Freedman route of Lemma 4.15 and the closed form of Step 5.4 contain constant slips
+and an off-by-one; only the unnamed constants are affected). For case (i) the source gives no
+argument (line 2711 defers it to li2024q; `docs/SOURCE-ISSUES.md#C30`); the formal proof is new
+(`QLearningLowerBoundRescaledTheorem.lean`). The exports use `c₃ = 16` and `c_lb = 10⁻⁹`.
+
+Quantifiers: `c₃` and `c_lb` are universal (chosen first, independent of `γ`, `T`, `c_η`, `η₀`).
+The schedule parameter (`c_η > 0` in case (i), `η₀ ∈ (0,1)` in case (ii)) is quantified after `γ`
+and `T`, and the MDP after the schedule. The schedule is `η : ℕ → ℝ` with `η t` given for every
+`t ≥ 0` as printed; `η 0` is never used, since round `t+1` of Algorithm `alg:q-infinite`
+(`qLearningIterate`) uses `η (t+1)`.
+
+Encoding (as for `Thm4_7_restricted`): `max_s E[|V_T(s) - V⋆(s)|²] ≥ b` is written
+`∃ s, b ≤ E[…]` (finite state set). The MDP has `S = 4` states (`Fin 4`) and `A = 2` actions
+(`Bool`) at every state, with rewards in `[0,1]` and discount `γ` (fields of `DiscountedMDP`).
+`V_T` is the output of Algorithm `alg:q-infinite` (synchronous generative Q-learning,
+`qSampledIterate`) after `T : ℕ` rounds from `Q₀ ≡ 0` under the genuine product sampling law
+`qSamplingLaw M T`. `V⋆` is the trajectory value of the optimal greedy policy (the project
+convention). `log` is the natural logarithm. The proof's witness is the source's `M_hard` with
+dominated dummy actions at states 0, 2, 3 (`qLbMDP γ`, depending only on `γ`), since the source's
+state-dependent action sets must be padded to two actions without changing the Q-learning
+recursions (`docs/SOURCE-ISSUES.md#C31`, item 5). -/
+def Thm4_7 : Prop :=
+  ∃ c₃ c_lb : ℝ, 0 < c₃ ∧ 0 < c_lb ∧
+  ∀ γ : ℝ, 3 / 4 ≤ γ → γ < 1 → ∀ T : ℕ, c₃ / (1 - γ) ^ 2 ≤ T →
+  ∀ η : ℕ → ℝ,
+    ((∃ cη : ℝ, 0 < cη ∧ ∀ t : ℕ, η t = 1 / (1 + cη * (1 - γ) * t)) ∨
+      (∃ η₀ : ℝ, 0 < η₀ ∧ η₀ < 1 ∧ ∀ t : ℕ, η t = η₀)) →
+    ∃ M : DiscountedMDP (Fin 4) Bool, M.discount = γ ∧ ∃ s : Fin 4,
+      c_lb / ((1 - γ) ^ 4 * T * Real.log T ^ 2) ≤
+        ∫ data, (qLearningValue M (qSampledIterate M η T (fun _ _ ↦ 0) data) s -
+          M.trajectoryExpectedValue M.optimalGreedyPolicy s) ^ 2 ∂qSamplingLaw M T
+
+/-- Theorem 4.7, `thm:LB-example-Q-generative`, `chapters/generative_model_model_free.tex:969–982`,
+case (i) alone: rescaled linear learning rates `η_t = 1/(1 + c_η(1-γ)t)` for any `c_η > 0`.
+Implied by `Thm4_7`; stated separately as a reading aid. The source gives no proof of this case
+(`docs/SOURCE-ISSUES.md#C30`). `c₃`, `c_lb` are universal (independent of `c_η`); `c_η` is
+quantified after `γ` and `T`. Encoding as for `Thm4_7` (dummy actions per
+`docs/SOURCE-ISSUES.md#C31` item 5, `∃ s` for the max, `V⋆` = optimal greedy trajectory value,
+natural log, `T : ℕ`, `Q₀ ≡ 0`, `η 0` unused). -/
+def Thm4_7_case_i : Prop :=
+  ∃ c₃ c_lb : ℝ, 0 < c₃ ∧ 0 < c_lb ∧
+  ∀ γ : ℝ, 3 / 4 ≤ γ → γ < 1 → ∀ T : ℕ, c₃ / (1 - γ) ^ 2 ≤ T →
+  ∀ cη : ℝ, 0 < cη →
+    ∃ M : DiscountedMDP (Fin 4) Bool, M.discount = γ ∧ ∃ s : Fin 4,
+      c_lb / ((1 - γ) ^ 4 * T * Real.log T ^ 2) ≤
+        ∫ data, (qLearningValue M (qSampledIterate M (fun t ↦ 1 / (1 + cη * (1 - γ) * t)) T
+          (fun _ _ ↦ 0) data) s -
+          M.trajectoryExpectedValue M.optimalGreedyPolicy s) ^ 2 ∂qSamplingLaw M T
+
+/-- Remark 4.1 (mean estimation guarantee for TD),
+`chapters/generative_model_model_free.tex:226–239`, for Theorem 4.1 `thm:policy-evaluation-TD`
+(:179–224). The constants `c₁, c₂, c₃` are those of Theorem 4.1: the statement quantifies them
+existentially in the same order and with the same side conditions as `Thm4_1`, and the proof reuses
+`Thm4_1`'s witnesses (`c₁ = c₂ = 1/4`, `c₃ = max(4096, e⁴/(log 2)⁴)`) by applying the same export
+`tdSource_policyEvaluation_exactSamples_accuracy_exists_universal_constants`. `δ := ε(1−γ)/2` as
+printed, so `S T/δ = 2 S T/(ε(1−γ))` and the budget is exactly Theorem 4.1's at this `δ`. `max_s` is
+`⨆ s` over the finite nonempty state space. The expectation is the Bochner integral under the actual
+sampling law of the `T` synchronous draws; integrability is concluded, not assumed (it excludes the
+Bochner junk value). The five conjuncts are the printed `δ ∈ (0,1)`, the printed chain `E[…] ≤
+ε(1−δ) + δ/(1−γ) ≤ 2ε`, and integrability. -/
+def Remark4_1 : Prop :=
+  ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (η : ℕ → ℝ) (ε : ℝ) (T : ℕ),
+    1 / 2 ≤ M.discount → M.discount < 1 → 2 ≤ T →
+    0 < ε → ε ≤ 1 / (1 - M.discount) →
+    (∀ t, 1 ≤ t → t ≤ T →
+      1 / (1 + c₁ * (1 - M.discount) * T / Real.log (T : ℝ) ^ 2) ≤ η t ∧
+      η t ≤ 1 / (1 + c₂ * (1 - M.discount) * t / Real.log (T : ℝ) ^ 2)) →
+    ∀ (V₀ : State → ℝ),
+    (∀ s, 0 ≤ V₀ s ∧ V₀ s ≤ 1 / (1 - M.discount)) →
+    c₃ * Real.log (T : ℝ) ^ 3 *
+      Real.log (2 * (Fintype.card State : ℝ) * T / (ε * (1 - M.discount))) /
+        ((1 - M.discount) ^ 3 * ε ^ 2) ≤ (T : ℝ) →
+    let δ := ε * (1 - M.discount) / 2
+    let err := fun data ↦ ⨆ s : State,
+      |tdSourceSampledIterate M π η T V₀ data s - M.trajectoryExpectedValue π s|
+    0 < δ ∧ δ < 1 ∧
+    Integrable err (tdSourceSamplingLaw M π T) ∧
+    ∫ data, err data ∂(tdSourceSamplingLaw M π T) ≤
+      ε * (1 - δ) + 1 / (1 - M.discount) * δ ∧
+    ε * (1 - δ) + 1 / (1 - M.discount) * δ ≤ 2 * ε
+
+/-- Remark 4.2 (mean estimation guarantee for synchronous Q-learning),
+`chapters/generative_model_model_free.tex:914–929`, for Theorem 4.6 `thm:infinite-horizon-simple`
+(:891–912). The constants are those of Theorem 4.6, quantified in the same order and with the same
+side conditions as `Thm4_6` (the proof reuses its witnesses by applying the same export
+`qLearning_exists_universal_constants_source_accuracy`). `δ := ε(1−γ)/2` as printed, so
+`S A T/δ = 2 S A T/(ε(1−γ))`. The premises other than `δ` are those of `Thm4_6`. `max_{(s,a)}` is
+`⨆` over the finite nonempty pair space, `Q⋆` is the actual optimal trajectory Q-function (as in
+`Thm4_6`), and the expectation is the Bochner integral under the actual product sampling law;
+integrability is concluded. Five conjuncts as in `Remark4_1`. -/
+def Remark4_2 : Prop :=
+  ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (η : ℕ → ℝ) (ε : ℝ) (T : ℕ),
+    1/2 ≤ M.discount → 2 ≤ Fintype.card Action → 2 ≤ T →
+    0 < ε → ε ≤ M.effectiveHorizon →
+    (∀ k, k ≤ T →
+      1 / (1 + c₁ * (1 - M.discount) * T / Real.log (T : ℝ) ^ 3) ≤ η k ∧
+      η k ≤ 1 / (1 + c₂ * (1 - M.discount) * k / Real.log (T : ℝ) ^ 3)) →
+    ∀ (Q₀ : State → Action → ℝ),
+    (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ M.effectiveHorizon) →
+    c₃ * Real.log (T : ℝ)^4 * Real.log
+      (2 * (Fintype.card State : ℝ) * (Fintype.card Action : ℝ) * T /
+        (ε * (1 - M.discount))) /
+      ((1-M.discount)^4*ε^2) ≤ T →
+    let δ := ε * (1 - M.discount) / 2
+    let err := fun data ↦ ⨆ p : State × Action,
+      |qSampledIterate M η T Q₀ data p.1 p.2 -
+        M.trajectoryExpectedQ M.optimalGreedyPolicy p.1 p.2|
+    0 < δ ∧ δ < 1 ∧
+    Integrable err (qSamplingLaw M T) ∧
+    ∫ data, err data ∂(qSamplingLaw M T) ≤ ε * (1 - δ) + 1 / (1 - M.discount) * δ ∧
+    ε * (1 - δ) + 1 / (1 - M.discount) * δ ≤ 2 * ε
+
+open Classical in
+/-- Corrected Remark 4.3, `chapters/generative_model_model_free.tex:2088–2090`, for Theorem 4.12
+`thm:infinite-horizon-asyn` (:2062–2086, asynchronous Q-learning). The printed remark has no
+displayed formula: it says the
+high-probability result "can be readily translated into a bound on the expected ℓ∞-based
+estimation error with essentially the same sample complexity" and omits the details. The precise
+reading (confirmed by the independent plan check) mirrors Remarks 4.1/4.2 ("As before"):
+`δ := ε(1−γ)/2` inside Theorem 4.12's budget, so `S A T/δ = 2 S A T/(ε(1−γ))`, and
+`E[max_{(s,a)} |Q_T − Q⋆|] ≤ ε(1−δ) + δ/(1−γ) ≤ 2ε`, with fresh universal constants
+`∃ c₁ ∈ (0,1], ∃ c₂ > 0` in the order of `Thm4_12_corrected` (enlarging `c₂` is within
+"essentially the same").
+
+Correction (`docs/SOURCE-ISSUES.md#C34`): under Theorem 4.12's printed premises this reading is
+false, as Theorem 4.12 itself is. Take `S = A = 1`, `γ = 1/2`, `r = 1`, `Q₀ = 0` (so `Q⋆ = 2`),
+`μ_min = 1`, `t_mix = 0`, `T = 1`, `ε = 1/2` (`δ = 1/8`): `log³ T = 0`, so the budget reads `0 ≤ 1`
+and the rate is `0`, hence `Q₁ = Q₀` and the mean error is `2 > 1 = 2ε`. This counterexample is a
+paper computation and is not formalized; the independent critic machine-checked only its pieces
+(at `T = 1` the rate is `0`, a zero rate leaves every `AsyncQ.iterate` equal to `Q₀`, and the budget
+holds for every `c₂`), not `Q⋆ = 2` or the expectation. (Read with `η_t ∈ (0,1)`
+from :1951 the instance is ill-posed, as noted in C34(1).) If `μ_min = 0` an unvisited pair keeps
+`Q₀ ≠ Q⋆` forever and the mean error can exceed `2ε` (C34(2)). This entry therefore carries
+exactly the C34 premises of `Thm4_12_corrected`: `0 < μ_min`, `1 ≤ T`, `2 ≤ T ∨ 2 ≤ S A`,
+stationarity, uniform ergodicity, `IsLeast … t_mix`, `μ_min` attained, `ε ≤ 1`. The path law,
+total variation, `t_mix` and the rate `c₁ log³T/((1−γ) T μ_min)` are as in `Thm4_12_corrected`. The
+expectation is the Bochner integral under the path law; integrability is concluded. -/
+def Remark4_3_corrected : Prop :=
+  ∃ c₁ : ℝ, 0 < c₁ ∧ c₁ ≤ 1 ∧ ∃ c₂ : ℝ, 0 < c₂ ∧
+  ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A]
+    (M : DiscountedMDP S A) (πb : StationaryPolicy S A) (μ : FiniteDistribution (S × A))
+    (μmin : ℝ) (tmix : ℕ) (s₀ : S) (ε : ℝ) (T : ℕ),
+    1 / 2 ≤ M.discount →
+    (∀ y, ∑ x, μ.prob x * AsyncQ.pairKernel M πb x y = μ.prob y) →
+    (∃ C r : ℝ, 0 ≤ r ∧ r < 1 ∧ ∀ (t : ℕ) (x : S × A),
+        FiniteMarkov.tvDist (AsyncQ.pairPow M πb t x) μ.prob ≤ C * r ^ t) →
+    IsLeast {t : ℕ | ∀ x : S × A,
+      FiniteMarkov.tvDist (AsyncQ.pairPow M πb t x) μ.prob ≤ 1 / 4} tmix →
+    (∀ x, μmin ≤ μ.prob x) → (∃ x, μ.prob x = μmin) →
+    0 < μmin → 1 ≤ T → (2 ≤ T ∨ 2 ≤ Fintype.card S * Fintype.card A) →
+    0 < ε → ε ≤ 1 →
+    c₂ * Real.log (2 * (Fintype.card S : ℝ) * Fintype.card A * T /
+          (ε * (1 - M.discount))) ^ 2 / μmin *
+        max (Real.log T ^ 3 / ((1 - M.discount) ^ 4 * ε ^ 2)) (tmix / (1 - M.discount)) ≤ T →
+    ∀ Q₀ : S → A → ℝ, (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ M.effectiveHorizon) →
+    let δ := ε * (1 - M.discount) / 2
+    let err := fun x ↦ ⨆ p : S × A,
+      |AsyncQ.iterate M (c₁ * Real.log T ^ 3 / ((1 - M.discount) * T * μmin)) Q₀ x T p.1 p.2 -
+        M.trajectoryExpectedQ M.optimalGreedyPolicy p.1 p.2|
+    0 < δ ∧ δ < 1 ∧
+    Integrable err (AsyncQ.pathLaw M πb s₀ T) ∧
+    ∫ x, err x ∂(AsyncQ.pathLaw M πb s₀ T) ≤ ε * (1 - δ) + 1 / (1 - M.discount) * δ ∧
+    ε * (1 - δ) + 1 / (1 - M.discount) * δ ≤ 2 * ε
 
 end StatisticalRL.Statements.Ch4

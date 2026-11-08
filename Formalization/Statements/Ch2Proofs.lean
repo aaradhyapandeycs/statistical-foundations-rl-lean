@@ -11,6 +11,7 @@ import Formalization.Probability.AzumaNaturalHistory
 import Formalization.Statements.Ch2
 import Formalization.Probability.Variance
 import Formalization.Probability.FreedmanNaturalHistory
+import Formalization.MDP.RewardPerturbation
 
 namespace StatisticalRL.Statements
 open MeasureTheory
@@ -143,5 +144,14 @@ theorem Lemma2_10_holds : Lemma2_10.{u} := by
     exact StatisticalRL.PrelimFano.fano_binary_infimum_lower P β hfin hβ
   · intro Ω _ M P _ β hM hβ0 hβ1 hKL
     exact StatisticalRL.PrelimFano.fano_multi_infimum_lower M P β hM hβ0 hβ1 hKL
+
+theorem Eq_QV_pi_perturbation_r_inf_holds : Eq_QV_pi_perturbation_r_inf := by
+  intro State Action _ _ M M' hP hγ π
+  exact ⟨M.policyFixedPoint_sub_norm_le_of_reward M' hP hγ π,
+    M.policyValue_sub_norm_le_of_reward M' hP hγ π⟩
+
+theorem Eq_QV_star_perturbation_r_inf_holds : Eq_QV_star_perturbation_r_inf := by
+  intro State Action _ _ M M' hP hγ
+  exact M.optimal_reward_perturbation M' hP hγ
 
 end StatisticalRL.Statements
