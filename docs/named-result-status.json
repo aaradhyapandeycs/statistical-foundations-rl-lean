@@ -1155,6 +1155,38 @@
         "docs/critic-thm7-9-plan-check.md"
       ],
       "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.2 (corrected iteration count, TV)",
+      "source_label": "thm:l1-upper-bound",
+      "source_file": "chapters/robust_RL.tex",
+      "source_lines": "342–359",
+      "source_context_lines": "243–289 (DRVI, Algorithm alg:cvi-dro-infinite)",
+      "lean_export": "StatisticalRL.RobustRL.DRVI.thm7_2_corrected_holds",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_2_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_2_corrected_holds",
+      "statement_scope": "Corrected (TV-robust MDP): The only change from the printed statement is the iteration count: DRVI may run for any T ≥ C₁ log(N/(1−γ))/(1−γ) instead of the printed T = C₁ log(N/(1−γ)), and this is machine-checked by a definitional comparison. The printed count is refuted in Lean (not_thm7_2_printed, C37). Proved from scratch at the printed statistical rate with C₁ = 2 and C₂ = 10⁶ (the cited shi2024curious was not used): with probability ≥ 1−δ the output is an ε-optimal robust policy at the printed sample size. The change is a minimal edit; tightness of the log factor is not shown. The oracle-planner remarks and history-dependent policies are not covered. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-2-7-4.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-2-7-4-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.4 (corrected iteration count, χ²)",
+      "source_label": "thm:l2-upper-bound",
+      "source_file": "chapters/robust_RL.tex",
+      "source_lines": "437–450",
+      "source_context_lines": "243–289 (DRVI, Algorithm alg:cvi-dro-infinite)",
+      "lean_export": "StatisticalRL.RobustRL.DRVI.thm7_4_corrected_holds",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_4_corrected",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_4_corrected_holds",
+      "statement_scope": "Corrected (χ²-robust MDP with the support-aware χ² ball): The only change from the printed statement is the iteration count: DRVI may run for any T ≥ c₁ log(N/(1−γ))/(1−γ) instead of the printed T = c₁ log(N/(1−γ)), and this is machine-checked by a definitional comparison. The printed count is refuted in Lean (not_thm7_4_printed, C37). Proved from scratch at the printed statistical rate with c₁ = 2 and c₂ = 10⁶ (the cited shi2024curious was not used): with probability ≥ 1−δ the output is an ε-optimal robust policy at the printed sample size. The change is a minimal edit; tightness of the log factor is not shown. The oracle-planner remarks and history-dependent policies are not covered. Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-2-7-4.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-2-7-4-plan-check.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
     }
   ]
 }

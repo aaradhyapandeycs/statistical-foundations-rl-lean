@@ -1050,7 +1050,8 @@ machine-checked in Lean (`Formalization/RobustRL/Ch7/HorizonTrap.lean`): `not_th
 every greedy output must succeed and when some tie rule may be chosen (`not_thm7_2_printed_exists_tie`,
 `not_thm7_4_printed_exists_tie`). Lean witness: bail reward 1/2, goal reward 1, γ = 1 − 1/k², σ = (1−γ)², δ = 1/2, ε = 1,
 N = k¹⁰, S = ⌈12 C1 log k⌉ + 3, A = 2, for k large. Only the printed iteration count is refuted, in an extreme regime;
-the corrected count and the statistical rate are neither proved nor refuted. The book uses (1/(1−γ)) log(N/(1−γ)) iterations elsewhere
+the corrected count and the statistical rate are neither proved nor refuted by the refutation itself.
+Corrected result (2026-11-08). With the iteration count changed to any T ≥ C1 log(N/(1−γ))/(1−γ), both theorems are proved in Lean from scratch at the printed statistical rate (`Thm7_2_corrected` for TV, `Thm7_4_corrected` for χ²; `Formalization/RobustRL/DRVI/`), with C1 = c1 = 2 and C2 = c2 = 10⁶; the cited paper was not used. The statements differ from the printed ones only in the iteration count (machine-checked by a definitional comparison). The change is a minimal edit; tightness of the log factor is not shown. The oracle-planner remarks and history-dependent policies are not covered. Independently plan-checked and source-reviewed. Not author-approved. The book uses (1/(1−γ)) log(N/(1−γ)) iterations elsewhere
 (`generative_model_model_based.tex:943`, `offlineRL.tex:901`). Proposed correction: T ≥ C1 log(N/(1−γ))/(1−γ).
 The theorems themselves are cited (shi2024curious), not proved in the monograph. Not author-approved.
 

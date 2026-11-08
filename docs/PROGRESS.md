@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Corrected Theorems 7.2 and 7.4 (robust value iteration upper bounds)
+
+The TV and χ² robust value-iteration upper bounds, which the monograph cites, are proved from scratch at the printed statistical rate once the iteration count carries the missing 1/(1−γ) factor (C37); the library now also has robust Bellman consistency and a deterministic optimal robust policy. The named-result ledger now has 86 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Corrected Theorem 7.9 (federated Q-learning)
 
 Theorem 7.9, whose prescribed learning rate can exceed 1 (C41) and whose proof the monograph cites, is proved from scratch with the single added hypothesis η < 1, under the true sampling law, with linear speedup in the number of agents. The named-result ledger now has 84 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
