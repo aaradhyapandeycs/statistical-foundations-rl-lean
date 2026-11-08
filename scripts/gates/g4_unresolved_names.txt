@@ -1,0 +1,1 @@
+# G4 frozen cited names not found by the static declaration scan. May only shrink.

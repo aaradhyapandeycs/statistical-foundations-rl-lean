@@ -1,0 +1,1 @@
+# G6 frozen declarations outside namespace StatisticalRL (not audited). May only shrink.

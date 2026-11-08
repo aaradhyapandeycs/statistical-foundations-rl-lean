@@ -1,0 +1,26 @@
+# G2 frozen files with bare `import Mathlib`. May only shrink.
+Formalization/ModelFree/TDSourceFinalScalarArithmetic.lean
+Formalization/ModelFree/TDSourceFinalScalarBudgetBridge.lean
+Formalization/ModelFree/TDSourceFinalScalarBudgetConsumer.lean
+Formalization/OfflineRL/RankedPair.lean
+Formalization/OfflineRL/StackProjection.lean
+Formalization/Online/QLearning/OnlineQRegretAbsorption.lean
+Formalization/Online/QLearning/OnlineQResidualReindex.lean
+Formalization/Online/QLearning/OnlineQStageUnroll.lean
+Formalization/Online/QLearning/OnlineQStageWeights.lean
+Formalization/Online/QLearning/RegretRadiusAlgebra.lean
+Formalization/RobustRL/TVAllRadiusWitness.lean
+Formalization/RobustRL/TVClip.lean
+Formalization/RobustRL/TVClipThresholdIdentity.lean
+Formalization/RobustRL/TVCostLevels.lean
+Formalization/RobustRL/TVCrossingComposition.lean
+Formalization/RobustRL/TVDisaggregation.lean
+Formalization/RobustRL/TVPayoffCertificate.lean
+Formalization/RobustRL/TVPrefixCrossing.lean
+Formalization/RobustRL/TVReverseInequality.lean
+Formalization/RobustRL/TVSortedCrossing.lean
+Formalization/RobustRL/TVSortedStateMass.lean
+Formalization/RobustRL/TVStrongDuality.lean
+Formalization/RobustRL/TVTieFill.lean
+Formalization/RobustRL/TVTransfer.lean
+Formalization/RobustRL/TVWeakBound.lean
