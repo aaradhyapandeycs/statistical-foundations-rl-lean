@@ -992,7 +992,7 @@ the T-condition divide by μ_min; with μ_min = 0 the unvisited pair is never up
 μ_min > 0 must be a hypothesis.
 (3) The proof is only sketched (`:2124–2127`) and relies on li2024q and on Markov-chain concentration
 (paulin2015concentration, Thm 3.14), neither of which is stated in the monograph.
-Status: deferred. Any formal entry must be `_corrected`/`_restricted` with 2 ≤ T and 0 < μ_min.
+Corrected result (2026-11-07). `Thm4_12_corrected` (`Formalization/ModelFree/AsyncQ/`, Markov-chain theory in `Formalization/Probability/FiniteMarkov/`) states the printed ∃c₁ ∃c₂ form with only two added premises, `0 < μ_min` and `2 ≤ T ∨ 2 ≤ S·A` (weaker than `2 ≤ T`; when SA ≥ 2 the budget already excludes T = 1), plus the domain premise `1 ≤ T` (the loop runs over t = 1..T and the budget uses log T). The proof is new and self-contained, not the monograph's: it replaces the cited Markov concentration result by a window-visit lemma proved from stationarity and d(t_mix) ≤ 1/4, from any initial state. The library export holds for every c₁ ∈ (0,1] with c₂ = max(e^{32/c₁}, 4096) and assumes less than the printed statement (no uniform-ergodicity constants). Joint satisfiability of the budget for this c₂ is argued on paper only. Independently plan-checked and source-reviewed. Not author-approved.
 ```
 
 ```

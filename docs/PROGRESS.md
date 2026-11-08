@@ -1,5 +1,9 @@
 # Whole-monograph progress
 
+## Corrected Theorem 4.12 (asynchronous Q-learning)
+
+Theorem 4.12, whose proof the monograph omits, is proved from scratch in corrected form (adding 0 < μ_min and 2 ≤ T ∨ 2 ≤ SA), with the needed finite Markov-chain mixing theory built in Lean. The named-result ledger now has 83 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
+
 ## Restricted Theorem 6.17 (finite-horizon LCB-Q)
 
 Theorem 6.17, whose algorithm the monograph leaves under-specified and whose proof it cites, is proved from scratch for one explicit completion at the printed rate; the reading "for any penalty hiding a log power above 3/2" is false (C33). The named-result ledger now has 82 covered entries out of 90. The complete monograph remains **INCOMPLETE**.
