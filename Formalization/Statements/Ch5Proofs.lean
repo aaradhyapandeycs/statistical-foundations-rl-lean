@@ -33,6 +33,7 @@ import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPActualDecouplingSourc
 import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPClaimPVSource
 import Formalization.Online.Regret.MVP.MVPProfileDefinitions
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
+import Formalization.Online.SourceOptimism.GreedyValueIdentity
 
 namespace StatisticalRL.Statements
 open StatisticalRL.OnlineRL
@@ -424,5 +425,17 @@ theorem Eq_PAC_from_regret_conversion_corrected_holds : Eq_PAC_from_regret_conve
 theorem Eq_PAC_from_regret_conversion_restricted_holds :
     Eq_PAC_from_regret_conversion_restricted :=
   RegretToPAC.eq_PAC_from_regret_conversion_restricted
+
+theorem Remark5_5_corrected_holds : Remark5_5_corrected := by
+  intro State Action _ _ H E L c₁ c₂ history h s
+  exact onlineCappedBackward_greedy_identity E L c₁ c₂ history h s
+
+theorem Eq_regret_asymptotic_ucbvi_corrected_holds : Eq_regret_asymptotic_ucbvi_corrected := by
+  intro State Action _ _ H K hH hK E ρ δ hδ hδone hburn
+  refine ⟨4, 16, rfl, rfl, by norm_num, by norm_num, ?_⟩
+  let fallback : State := Classical.choice (E ⟨0, hH⟩).state_nonempty
+  have hp := onlineUCBVI_actual_regret_burnIn H K hH hK E ρ fallback δ hδ hδone hburn
+  simpa [onlineSourceOptimismDeltaPrime, onlineW1SourceIota, onlineActualEpisodeRegret,
+    onlineCappedEpisodePolicyValue, fallback] using hp.le
 
 end StatisticalRL.Statements

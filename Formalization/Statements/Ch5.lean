@@ -369,6 +369,61 @@ noncomputable def Thm5_2_corrected : Prop :=
                 (sample.1 k))) ≤
           20 * (Real.sqrt ((S : ℝ) * A * H^3 * K) + (S : ℝ)^2 * A * H^3) * (1 + I)}
 
+/-- Remark 5.5, `chapters/onlineRL.tex:790–802` (Algorithm `alg:main-ucbvi` :286–345, greedy
+policy update `line:policy-update-ucbvi` :303), for the Lean UCBVI tables with the C8
+zero-count correction (`docs/SOURCE-ISSUES.md#C8`): `V_1^k(s_1^k) = max_a Q_1^k(s_1^k,a) =
+Q_1^k(s_1^k, π_1^k(s_1^k))` "due to the greedy policy update". Stated for every completed
+history (hence every episode `k`, whose tables are built from the first `k` episodes), every
+stage `h` (the source states `h = 1`; stage `h` is 0-based here), every state `s`, and every
+reals `L, c₁, c₂` in the bonus; `π` is the fixed deterministic greedy planner of
+`Thm5_2_corrected` (`onlineCappedGreedyPlanner`), whose choice at stage `h` is the episode
+policy's action. The remark's remaining sentences explain the proof strategy and are not
+formalized. -/
+noncomputable def Remark5_5_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action] (H : ℕ)
+    (E : Fin H → EnvironmentStage State Action) (L c₁ c₂ : ℝ)
+    (history : List (OnlineMDPRow State Action H × State)) (h : Fin H) (s : State),
+    letI : Nonempty Action := (E h).action_nonempty
+    let stages := onlineCompletedHistoryPlanningStages E history
+    onlineCappedBackwardValueAt (H : ℝ) L c₁ c₂ stages h.val s =
+        actionMaximum (onlineCappedBackwardQAt (H : ℝ) L c₁ c₂ stages h.val s) ∧
+      onlineCappedBackwardValueAt (H : ℝ) L c₁ c₂ stages h.val s =
+        onlineCappedBackwardQAt (H : ℝ) L c₁ c₂ stages h.val s
+          (onlineCappedGreedyPlanner E L c₁ c₂ history h s)
+
+/-- `eq:burn-in-ucbvi` and `eq:regret-asymptotic-ucbvi`, `chapters/onlineRL.tex:491–506`, for
+corrected UCBVI as in `Thm5_2_corrected` (C8 zero-count completion and a fixed deterministic
+maximizing tie rule, `docs/SOURCE-ISSUES.md#C8`; constants `c₁ = 4`, `c₂ = 16`; `I` and `δ'` as
+there). The burn-in `K ≳ S³AH³` is read with constant one, `S³AH³ ≤ K`; under it the lower-order
+term is absorbed (`S²AH³ ≤ √(SAH³K)`), and with probability at least `1 − δ`,
+`Regret(K) ≤ 40 √(SAH³K) (1 + I)`. The `Õ` of the display is made explicit by the factor
+`40 (1 + I)`, with `I` polylogarithmic in `K` and `1/δ'`. -/
+noncomputable def Eq_regret_asymptotic_ucbvi_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H), 0 < K →
+    ∀ (E : Fin H → EnvironmentStage State Action)
+      (ρ : FiniteDistribution State) (δ : ℝ),
+    0 < δ → δ < 1 →
+    (Fintype.card State : ℝ) ^ 3 * Fintype.card Action * (H : ℝ) ^ 3 ≤ K →
+    ∃ c₁ c₂ : ℝ, c₁ = 4 ∧ c₂ = 16 ∧ 0 < c₁ ∧ 0 < c₂ ∧
+      let fallback : State := Classical.choice (E ⟨0, hH⟩).state_nonempty
+      let S := Fintype.card State
+      let A := Fintype.card Action
+      let δ' := δ / (100 * (S : ℝ)^2 * (A : ℝ)^2 * (H : ℝ)^2 * (K : ℝ)^2)
+      let I := 40000 * (Real.log K / Real.log 2)^3 *
+        Real.log (3 * S * A * H : ℝ) * Real.log (1 / δ')
+      let planner := onlineCappedGreedyPlanner E (Real.log (1 / δ')) c₁ c₂
+      1 - δ ≤ (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K * H)).rowMeasure.real
+        {sample : (Fin K → State) × OnlineOutcomePath.{u, 0} State (K * H) |
+          let history := onlineSequentialPathHistory
+            (onlineEpisodicChoose H K hH sample.1 fallback planner) (K * H) [] sample.2
+          (∑ k : Fin K,
+            (DecisionStage.trajectoryValue (EnvironmentStage.greedyStages (List.ofFn E)) (sample.1 k) -
+              DecisionStage.trajectoryValue
+                (EnvironmentStage.controlled (List.ofFn E)
+                  (onlineCappedEpisodePolicy H hH E history k.val (Real.log (1 / δ')) c₁ c₂))
+                (sample.1 k))) ≤
+          40 * Real.sqrt ((S : ℝ) * A * H^3 * K) * (1 + I)}
 
 /-- Lemma 5.22 (`lemma:sqv`, onlineRL.tex:3612–3615), corrected as described
 in `docs/SOURCE-ISSUES.md#C14`: the source coefficient one for centered squares

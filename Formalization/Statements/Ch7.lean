@@ -464,7 +464,8 @@ For universal constants `c₁, c₂ > 0` (proved with `c₁ = 2`, `c₂ = 10⁶`
 every RMDP with `σ > 0`, `γ ∈ [1/4, 1)`, `δ ∈ (0,1)`, `ε ∈ (0, 1/(1−γ)]`, `N > 0` with
 `N ≥ c₂ (1 + max{√σ,σ}/(1−γ)) log(SAN/δ) / ((1−γ)³ ε²)`, every such `T` and every greedy
 selector `π̂` of `Q̂_T`: with probability at least `1−δ`, `V^{⋆,σ}(s) − V^{π̂,σ}(s) ≤ ε` for all
-`s`. Not covered: the oracle-planner Remark (`:453–457`) and history-dependent policies. -/
+`s`. The oracle-planner Remark (`:453–457`) is indexed separately as `Remark7_2_restricted`. Not
+covered: history-dependent policies. -/
 def Thm7_4_corrected : Prop :=
   ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
     ∀ (State Action : Type) [Fintype State] [Fintype Action]
@@ -523,6 +524,50 @@ def Remark7_1_restricted : Prop :=
                 ((1 - M.discount) * δ))) →
           ∀ s, robustOptimalValue tvBall M σ s -
             robustPolicyValue tvBall M σ (detPolicy f) s ≤ ε}
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Restricted Remark 7.2, `remark:chi2-upper`, `chapters/robust_RL.tex:453–457`, for Theorem 7.4
+`thm:l2-upper-bound` (:437–450): the guarantee of Theorem 7.4 holds for any planner run on the
+empirical RMDP (nominal kernel `P̂⁰`, χ² ball of radius `σ`) whose output `π̂` obeys
+`‖V̂^{⋆,σ} − V̂^{π̂,σ}‖∞ ≤ O(log(SAN/((1−γ)δ))/N²)`.
+
+Reading: the `O(·)` is `c_opt · log(SAN/((1−γ)δ)) / N²` for an arbitrary constant `c_opt ≥ 0`, and
+the universal `c₂` may depend on `c_opt` (`∀ c_opt ∃ c₂`, as in `Remark7_1_restricted`; proved with
+`c₂ = 10⁶ + 8 c_opt`). The reverse order (`∃ c₂ ∀ c_opt`) is false for the same reason as in
+Remark 7.1 (a huge `c_opt` admits arbitrarily bad planners); this is a paper argument, not
+formalized. The ℓ∞ requirement is written coordinatewise with `|·|`; since `V̂^{⋆,σ} ≥ V̂^{π̂,σ}`
+always, it is equivalent to the one-sided form. The DRVI iteration count
+(`docs/SOURCE-ISSUES.md#C37`) does not enter. Premises on `σ, γ, δ, ε, N` are those of
+`Thm7_4_corrected` (with `N > 0`), including its sample-size condition with `log(SAN/δ)`.
+`V̂^{⋆,σ}`, `V̂^{π̂,σ}` are the robust values of the empirical model
+`ModelBasedPolicyLearning.empiricalModel M N hN data`; `V^{⋆,σ}` is the supremum over stationary
+randomized policies, as in `Thm7_4_corrected`.
+
+Restriction (`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`): planner outputs are
+deterministic stationary policies `detPolicy f`; randomized and history-dependent outputs are not
+covered. The event does not depend on the planner: with probability at least `1−δ`, every `f`
+meeting the requirement on the realized data set is `ε`-optimal, so any data-dependent planner is
+covered without a measurability assumption. -/
+def Remark7_2_restricted : Prop :=
+  ∀ c_opt : ℝ, 0 ≤ c_opt → ∃ c₂ : ℝ, 0 < c₂ ∧
+    ∀ (State Action : Type) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (σ δ ε : ℝ) (N : ℕ) (hN : 0 < N),
+      0 < σ → 1 / 4 ≤ M.discount → 0 < δ → δ < 1 → 0 < ε →
+      ε ≤ 1 / (1 - M.discount) →
+      c₂ / ((1 - M.discount) ^ 3 * ε ^ 2) *
+          (1 + max (Real.sqrt σ) σ / (1 - M.discount)) *
+          Real.log (Fintype.card State * Fintype.card Action * N / δ) ≤ N →
+      1 - δ ≤ (ModelBasedPolicyLearning.samplingLaw M N).real
+        {data | ∀ f : State → Action,
+          (∀ s, |robustOptimalValue chiBall
+                (ModelBasedPolicyLearning.empiricalModel M N hN data) σ s -
+              robustPolicyValue chiBall
+                (ModelBasedPolicyLearning.empiricalModel M N hN data) σ (detPolicy f) s| ≤
+            c_opt / (N : ℝ) ^ 2 *
+              Real.log (Fintype.card State * Fintype.card Action * N /
+                ((1 - M.discount) * δ))) →
+          ∀ s, robustOptimalValue chiBall M σ s -
+            robustPolicyValue chiBall M σ (detPolicy f) s ≤ ε}
 
 end Thm7_2_7_4
 
@@ -617,6 +662,124 @@ def Thm7_12_corrected_local : Prop :=
           then 1 else 0)
 
 end Thm7_12
+
+section Eq_DPO_VPO
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- Restricted `eq:DPO`, `chapters/RLHF.tex:62–74` (with the reward–policy correspondence
+`eq:reward-policy-eq` :63–66, the Gibbs closed form `eq:RLHF-policy-closed-form` :52–59, the
+cancellation of `Z(r, x)` :74 and the prompt-shift non-identifiability :90). For finite prompts `X`,
+finite answers `Y`, a full-support reference policy `π_ref`, `β > 0` and any dataset `D` of
+comparisons `(x, y₊, y₋)`, with `ℓ(r, D) = −∑ log σ(r(x,y₊) − r(x,y₋))` and
+`DPO(π) = −∑ log σ(β (log π(y₊|x)/π_ref(y₊|x) − log π(y₋|x)/π_ref(y₋|x)))`:
+(i) `DPO(π_r) = ℓ(r, D)` for every reward `r` (`Z` cancels);
+(ii) every full-support policy is a Gibbs policy `π_r` (`r = β log(π/π_ref)`, `eq:reward-policy-eq`);
+(iii) `π_r = π_{r'}` iff `r − r'` depends on the prompt only;
+(iv) a full-support `π` minimizes `DPO` over full-support policies iff `π = π_r` for some
+minimizer `r` of `ℓ(·, D)` (existence of minimizers is not claimed).
+
+Restriction (`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`): the argmin in `eq:DPO` is
+taken over full-support policies (`IsPositivePolicy`), not over all policies. This is the
+substantive restriction: in the source's extended-real reading a policy with `π(y₋|x) = 0` has
+`−log σ(+∞) = 0`, so over all policies the minimum `0` can be attained only at boundary policies,
+which are not Gibbs policies, while over full-support policies the infimum `0` is unattained and no
+reward MLE exists (e.g. a dataset whose only comparison is `(x, y₁, y₂)`); in Lean, `log 0 = 0`
+gives such a boundary policy the junk loss `−log σ(β log(π(y₁|x)/π_ref(y₁|x)))` instead of `0`. The book's derivation works with
+the Gibbs policies `π_r`, which have full support. Also: `π_ref` has full support (implicit in the
+source, where `log π_ref` appears in `eq:reward-policy-eq`), and `X`, `Y` are finite (the source's
+`Z(r, x)` is a finite sum over `Y`). -/
+def Eq_DPO_restricted : Prop :=
+  ∀ (X Y : Type) [Fintype X] [Fintype Y] (π_ref : X → Y → ℝ) (β : ℝ) (D : List (X × Y × Y)),
+    IsPositivePolicy π_ref → 0 < β →
+    let nll : (X → Y → ℝ) → ℝ := fun r ↦
+      -(D.map fun z ↦ Real.log (Real.sigmoid (r z.1 z.2.1 - r z.1 z.2.2))).sum
+    let dpo : (X → Y → ℝ) → ℝ := fun π ↦
+      -(D.map fun z ↦ Real.log (Real.sigmoid
+          (β * (Real.log (π z.1 z.2.1 / π_ref z.1 z.2.1) -
+                Real.log (π z.1 z.2.2 / π_ref z.1 z.2.2))))).sum
+    (∀ r, dpo (gibbsPolicy π_ref r β) = nll r) ∧
+    (∀ π, IsPositivePolicy π → ∃ r, π = gibbsPolicy π_ref r β) ∧
+    (∀ r r', gibbsPolicy π_ref r β = gibbsPolicy π_ref r' β ↔
+      ∃ c : X → ℝ, ∀ x y, r x y = r' x y + c x) ∧
+    (∀ π, IsPositivePolicy π →
+      ((∀ π', IsPositivePolicy π' → dpo π ≤ dpo π') ↔
+        ∃ r, π = gibbsPolicy π_ref r β ∧ ∀ r', nll r ≤ nll r'))
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- Restricted `eq:policy_RBMLE`, `chapters/RLHF.tex:115–141` (`eq:RBMLE` :107–113, `eq:Jstar`
+:116–124, the `π_ref → π_cal` swap and KL identity :137–140). For the VPO objective
+`vpoObjective` with coefficient `sign·α` (`sign ∈ {1, −1}`, `α > 0`, `β > 0`, `ρ ≥ 0`, full-support
+`π_ref`, any conditional policy `π_cal`), and the reward-space objective
+`obj(r) = ℓ(r, D) − sign·α·J⋆(r; π_cal)` with `J⋆` the supremum of the calibrated value over all
+conditional policies (`optCalValue`):
+(i) `obj(r)` equals the VPO objective at the Gibbs policy `π_r` (lines :126–131);
+(ii) a full-support `π` minimizes the VPO objective over full-support policies iff `π = π_r` for
+some minimizer `r` of `obj` (:131–133; existence of minimizers is not claimed);
+(iii) `E_{ρ,π_cal}[log π − log π_cal] = −E_ρ KL(π_cal‖π)` for full-support `π` (:138–140, with
+`0 log 0 = 0`);
+(iv) replacing `π_ref` by `π_cal` in the last term of the objective (DPO part unchanged) shifts the
+objective by a constant `K` independent of `π`, so it does not change the minimizers (:137).
+
+Restricted as `Eq_DPO_restricted` (argmin over full-support policies; full-support `π_ref`; finite
+`X`, `Y`; `docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`). -/
+def Eq_policy_RBMLE_restricted : Prop :=
+  ∀ (X Y : Type) [Fintype X] [Fintype Y] (ρ : X → ℝ) (π_ref π_cal : X → Y → ℝ)
+    (sign α β : ℝ) (D : List (X × Y × Y)),
+    IsPositivePolicy π_ref → (∀ x, 0 ≤ ρ x) → IsCondPolicy π_cal →
+    0 < β → 0 < α → (sign = 1 ∨ sign = -1) →
+    let nll : (X → Y → ℝ) → ℝ := fun r ↦
+      -(D.map fun z ↦ Real.log (Real.sigmoid (r z.1 z.2.1 - r z.1 z.2.2))).sum
+    let obj : (X → Y → ℝ) → ℝ := fun r ↦ nll r - sign * α * optCalValue ρ π_ref π_cal β r
+    (∀ r, obj r = vpoObjective ρ π_ref π_cal (sign * α) β D (gibbsPolicy π_ref r β)) ∧
+    (∀ π, IsPositivePolicy π →
+      ((∀ π', IsPositivePolicy π' →
+          vpoObjective ρ π_ref π_cal (sign * α) β D π ≤
+            vpoObjective ρ π_ref π_cal (sign * α) β D π') ↔
+        ∃ r, π = gibbsPolicy π_ref r β ∧ ∀ r', obj r ≤ obj r')) ∧
+    (∀ π, IsPositivePolicy π →
+      ∑ x, ρ x * ∑ y, π_cal x y * (Real.log (π x y) - Real.log (π_cal x y)) =
+        -∑ x, ρ x * klDiv (π_cal x) (π x)) ∧
+    (∃ K : ℝ, ∀ π, IsPositivePolicy π →
+      vpoObjective ρ π_ref π_cal (sign * α) β D π =
+        (-(D.map fun z ↦ Real.log (Real.sigmoid
+            (β * Real.log (π z.1 z.2.1 / π_ref z.1 z.2.1) -
+              β * Real.log (π z.1 z.2.2 / π_ref z.1 z.2.2)))).sum +
+          sign * α * β * ∑ x, ρ x * ∑ y, π_cal x y *
+            (Real.log (π x y) - Real.log (π_cal x y))) + K)
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- Restricted `eq:online_RBMLE`, `chapters/RLHF.tex:158–198` (reward-learning step
+`eq:RBMLE_online` :163–170, policy-learning step `eq:RLHF-policy` :172–175, the combination claim
+:177, the update :194–198 with `sign = +1`; the dataset `D` is arbitrary, covering `D^{(t)}`).
+For `α, β > 0`, `ρ ≥ 0`, full-support `π_ref`, any conditional policy `π_cal`, and every minimizer
+`r` of `ℓ(r, D) − α J⋆(r; π_cal)` (`J⋆` = supremum of the calibrated value over all conditional
+policies, `optCalValue`):
+(a) the Gibbs policy `π_r` solves the policy-learning step `eq:RLHF-policy`: it maximizes the
+printed KL-regularized value `J(r, π) = E_{x∼ρ, y∼π}[r] − β E_ρ KL(π(·|x)‖π_ref(·|x))` of
+`eq:KL_reward` (:41–45), written inline, over all conditional policies;
+(b) `π_r` minimizes the online VPO objective of `eq:online_RBMLE` over full-support policies
+(`IsVPOMinimizer`).
+Uniqueness (every maximizer of `J(r, ·)` equals `π_r`) is not claimed: it fails off the support
+of `ρ`, and the combination claim does not need it. Existence of a minimizer `r` is not claimed
+(`docs/SOURCE-ISSUES.md#C44`).
+
+Restricted as `Eq_DPO_restricted` (argmin over full-support policies; full-support `π_ref`; finite
+`X`, `Y`; `docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`). -/
+def Eq_online_RBMLE_restricted : Prop :=
+  ∀ (X Y : Type) [Fintype X] [Fintype Y] (ρ : X → ℝ) (π_ref π_cal : X → Y → ℝ)
+    (α β : ℝ) (D : List (X × Y × Y)),
+    IsPositivePolicy π_ref → (∀ x, 0 ≤ ρ x) → IsCondPolicy π_cal → 0 < β → 0 < α →
+    let obj : (X → Y → ℝ) → ℝ := fun r ↦
+      -(D.map fun z ↦ Real.log (Real.sigmoid (r z.1 z.2.1 - r z.1 z.2.2))).sum -
+        α * optCalValue ρ π_ref π_cal β r
+    ∀ r, (∀ r', obj r ≤ obj r') →
+      (∀ π, IsCondPolicy π →
+        ∑ x, ρ x * (∑ y, π x y * r x y - β * klDiv (π x) (π_ref x)) ≤
+          ∑ x, ρ x * (∑ y, gibbsPolicy π_ref r β x y * r x y -
+            β * klDiv (gibbsPolicy π_ref r β x) (π_ref x))) ∧
+      IsVPOMinimizer ρ π_ref π_cal α β D (gibbsPolicy π_ref r β)
+
+end Eq_DPO_VPO
 
 section Thm7_6
 

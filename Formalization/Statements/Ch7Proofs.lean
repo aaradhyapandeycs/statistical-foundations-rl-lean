@@ -12,6 +12,8 @@ import Formalization.Ch7Rest.VPOMain712
 import Formalization.Ch7Rest.Marl76Restricted
 import Formalization.Ch7Rest.Marl77Main
 import Formalization.RobustRL.DRVI.OraclePlannerMain
+import Formalization.RobustRL.DRVI.OraclePlannerChiMain
+import Formalization.Ch7Rest.VPOReparam712
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -202,6 +204,11 @@ theorem Thm7_2_corrected_holds : Thm7_2_corrected :=
 theorem Remark7_1_restricted_holds : Remark7_1_restricted :=
   StatisticalRL.RobustRL.DRVI.tv_oracle_planner_guarantee
 
+/-- `Remark7_2_restricted` from `StatisticalRL.RobustRL.DRVI.chi_oracle_planner_guarantee`
+(`c₂ = 10⁶ + 8 c_opt`). -/
+theorem Remark7_2_restricted_holds : Remark7_2_restricted :=
+  StatisticalRL.RobustRL.DRVI.chi_oracle_planner_guarantee
+
 /-- `Thm7_4_corrected` from `StatisticalRL.RobustRL.DRVI.thm7_4_corrected_holds`
 (`c₁ = 2`, `c₂ = 10⁶`). -/
 theorem Thm7_4_corrected_holds : Thm7_4_corrected :=
@@ -228,6 +235,32 @@ theorem Thm7_12_corrected_local_holds : Thm7_12_corrected_local := by
   split_ifs with h1 h2 <;> first | exact absurd h1.2 h2 | norm_num
 
 end Thm7_12
+
+section Eq_DPO_VPO
+
+open StatisticalRL.Ch7Rest.Rlhf in
+theorem Eq_DPO_restricted_holds : Eq_DPO_restricted := by
+  intro X Y _ _ π_ref β D href hβ
+  exact ⟨fun r ↦ dpoLoss_gibbs href hβ.ne' r D,
+    fun _ hπ ↦ exists_gibbsPolicy_eq href hβ.ne' hπ,
+    gibbsPolicy_eq_iff href hβ.ne',
+    fun _ hπ ↦ dpo_argmin_iff href hβ.ne' D hπ⟩
+
+open StatisticalRL.Ch7Rest.Rlhf in
+theorem Eq_policy_RBMLE_restricted_holds : Eq_policy_RBMLE_restricted := by
+  intro X Y _ _ ρ π_ref π_cal sign α β D href hρ hcal hβ _ _
+  refine ⟨fun r ↦ (vpoObjective_gibbs_optCal ρ hρ href π_cal hcal (sign * α) hβ r D).symm,
+    fun _ hπ ↦ vpo_argmin_iff ρ hρ href π_cal hcal (sign * α) hβ D hπ,
+    fun _ hπ ↦ calShift_eq_neg_kl ρ hcal.1 hπ.1,
+    ⟨sign * α * β * ∑ x, ρ x * ∑ y, π_cal x y * (Real.log (π_cal x y) - Real.log (π_ref x y)),
+      fun π _ ↦ vpoObjective_calSwap ρ π_cal (sign * α) β D π⟩⟩
+
+open StatisticalRL.Ch7Rest.Rlhf in
+theorem Eq_online_RBMLE_restricted_holds : Eq_online_RBMLE_restricted := by
+  intro X Y _ _ ρ π_ref π_cal α β D href hρ hcal hβ _ _ r hr
+  exact online_vpo_step ρ hρ href π_cal hcal α hβ D r hr
+
+end Eq_DPO_VPO
 
 section Thm7_6
 

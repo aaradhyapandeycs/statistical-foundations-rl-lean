@@ -1517,6 +1517,18 @@ audit, and independent correspondence review before promotion.
 | Source builder | `scripts/inventory.py`, `docs/source-inventory.*` | complete source traversal and explicit coverage checklist |
 | MDP builder | `Formalization/MDP/Basic.lean`, `FiniteHorizon.lean` | faithful finite tabular model and Bellman foundations |
 | Independent critic | `docs/critic-initial-review.md` | reconstruct claims from source and challenge semantics and coverage |
+| Trivial-batch plan checker | `docs/critic-trivial-batch-plan-check.md` | done 2026-11-08: batches A (Ch6), B (Ch7), C (Ch2–5) GO WITH FIXES; fixes X1, X2 and per-item fixes routed to the builders |
+| Batch C builder (Ch2–5 small results) | `Formalization/MDP/IterationCount.lean`, `Formalization/MDP/MatrixBellman.lean`, `Formalization/Generative/PolicyEvaluationCrude.lean`, `Formalization/ModelFree/QLearningRateFacts.lean`, `Formalization/Online/SourceOptimism/GreedyValueIdentity.lean`; nine statement entries and wrappers in `Formalization/Statements/Ch2`–`Ch5` (pasted by the lead) | done 2026-11-08: integrated; critic R1 addressed |
+| Batch C critic | `docs/critic-trivial-c.md` | done 2026-11-08: all nine entries ACCEPT or ACCEPT WITH DISCLOSURES; R1 (Theorem 3.9 N = 0 wording) applied |
+| Batch C docs integrator | batch C rows in `docs/COVERAGE.md`, Theorem 3.9 record in `docs/named-result-status.json`, `docs/SOURCE-ISSUES.md` Theorem 3.9 and C8 notes | done 2026-11-08 |
+| Batch B builder (Ch7 small results) | `Formalization/Ch7Rest/VPOReparam712.lean`, `Formalization/RobustRL/DRVI/OraclePlannerChi.lean`, `Formalization/RobustRL/DRVI/OraclePlannerChiNumerics.lean`, `Formalization/RobustRL/DRVI/OraclePlannerChiMain.lean`; four statement entries and wrappers in `Formalization/Statements/Ch7.lean`, `Ch7Proofs.lean` (pasted by the lead) | done: integrated; critic R1 addressed |
+| Batch B critic | `docs/critic-trivial-b.md` | done: all four entries ACCEPT WITH DISCLOSURES; R1 (DPO boundary-minimum wording) applied |
+| Batch A builder (Ch6 small results) | `Formalization/Probability/GaussianTailLower.lean`, `Formalization/OfflineRL/ConcentrabilityFacts.lean`, `Formalization/OfflineRL/VILCBIterationCount.lean`, `Formalization/OfflineRL/BanditExample.lean`; seven statement entries and wrappers in `Formalization/Statements/Ch6.lean`, `Ch6Proofs.lean` (pasted by the lead) | done: integrated; critic R1 (rename to `_restricted`, γ < 1/2 open) and F2 addressed |
+| Batch A critic | `docs/critic-trivial-a.md` | done: seven entries ACCEPT or ACCEPT WITH DISCLOSURES; R1 applied |
+| External-review checker | `docs/critic-audit-findings.md` | done 2026-11-09: findings F1–F4 recorded as C47, C48 (with C13 pointer), C19 addendum and C43 scope note; F5 (Theorem 6.13) left to the lead |
+| Batch A/B and external-review docs integrator | batch A/B rows in `docs/COVERAGE.md`; scope-disclosure bullets, C10/C13/C19/C43 notes and C47/C48 in `docs/SOURCE-ISSUES.md`; no named-result ledger change | done 2026-11-09 |
+| Theorem 6.13 randomized builder | `Formalization/OfflineRL/LowerBoundRandomized.lean`; `Thm6_13_randomized` entry and wrapper in `Formalization/Statements/Ch6.lean`, `Ch6Proofs.lean` (integrated by the lead) | done 2026-11-09: integrated; critic F1 adopted (no measurability premise), R1/R2/F3 applied |
+| Theorem 6.13 randomized critic | `docs/critic-thm6-13-randomized.md` | done 2026-11-09: ACCEPT WITH DISCLOSURES; F2 (refactor) not done |
 
 ## Required coverage
 

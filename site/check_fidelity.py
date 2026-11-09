@@ -81,6 +81,11 @@ def site_prose(build: Path, page: str) -> str:
     return html.unescape(re.sub(r"<[^>]+>", " ", s))
 
 
+def without_lean(page_html: str) -> str:
+    """A page's HTML without the Lean column (cards are not book text)."""
+    return html.unescape(re.sub(r'<aside class="lean-col".*?</aside>', " ", page_html, flags=re.S))
+
+
 # ---------------------------------------------------------------- alignment
 def scan(words: list, stream: str, chunk: int = 40, gap: int = 5000) -> list:
     """Words of each chunk must appear in order near the chunk's rarest long word."""
@@ -261,7 +266,9 @@ def main() -> int:
     pages = [site_prose(build, p) for p in order]
     site_words = [w.lower() for p in pages for w in re.findall(r"[A-Za-z]+", p) if len(w) >= 4]
     site_l = letters(" ".join(pages))
-    everything_l = letters(" ".join(html.unescape(Path(f).read_text()) for f in glob.glob(str(build / "*.html"))))
+    # Fallback stream for PDF words: every page, but not the Lean column. Lean cards are not book text,
+    # and their code ("theorem", "probability", ...) would otherwise capture a greedy in-order search.
+    everything_l = letters(" ".join(without_lean(Path(f).read_text()) for f in glob.glob(str(build / "*.html"))))
 
     raw = pdf_text()
     if args.dump_pdf_text:

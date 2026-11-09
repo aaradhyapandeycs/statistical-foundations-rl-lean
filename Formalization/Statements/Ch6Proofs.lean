@@ -11,11 +11,15 @@ import Formalization.OfflineRL.MonotoneContractionCorrected
 import Formalization.OfflineRL.SampleSplitActual
 import Formalization.OfflineRL.PreliminaryFacts
 import Formalization.OfflineRL.LowerBoundMinimax
+import Formalization.OfflineRL.LowerBoundRandomized
 import Formalization.OfflineRL.BernsteinInfiniteData
 import Formalization.OfflineRL.VILCBTheorem
 import Formalization.OfflineRL.FiniteVILCB.Theorem
 import Formalization.OfflineRL.FiniteVILCB.LibraryBridge
 import Formalization.OfflineRL.FiniteLCBQ.Export
+import Formalization.OfflineRL.ConcentrabilityFacts
+import Formalization.OfflineRL.VILCBIterationCount
+import Formalization.OfflineRL.BanditExample
 
 open MeasureTheory ProbabilityTheory
 
@@ -114,6 +118,10 @@ theorem Lemma6_11_restricted_holds : Lemma6_11_restricted :=
 /-- Apply the library theorem `offline_minimax_lower_bound`; no new proof. -/
 theorem Thm6_13_holds : Thm6_13 :=
   StatisticalRL.OfflineRL.LowerBound.offline_minimax_lower_bound
+
+/-- Apply the library export `offline_minimax_lower_bound_randomized`; no new proof. -/
+theorem Thm6_13_randomized_holds.{u} : Thm6_13_randomized.{u} :=
+  StatisticalRL.OfflineRL.LowerBound.offline_minimax_lower_bound_randomized.{u}
 
 section BernsteinInfinite
 
@@ -240,5 +248,46 @@ theorem Thm6_17_restricted_holds : Thm6_17_restricted.{u, v, w} := by
   exact h
 
 end FiniteLCBQTheorem
+
+section TrivialBatchA
+
+/-- Apply `iSup_pointMass_ratio`. -/
+theorem Eq_defn_Cstar_bandits_holds : Eq_defn_Cstar_bandits := by
+  intro Arm _ _ _ d aStar
+  exact StatisticalRL.OfflineRL.Concentrability.iSup_pointMass_ratio d aStar
+
+/-- Apply `exampleDesign_cstar` and `tendsto_div_sub_one`. -/
+theorem Remark6_4_holds : Remark6_4 :=
+  ⟨fun _ hN ↦ StatisticalRL.OfflineRL.exampleDesign_cstar hN,
+    StatisticalRL.OfflineRL.tendsto_div_sub_one⟩
+
+/-- Apply `DiscountedMDP.cstar_ge_one`. -/
+theorem Remark6_2_holds : Remark6_2 := by
+  intro S A _ _ M π ρ db
+  exact M.cstar_ge_one π ρ db
+
+/-- Apply `cstarClipped_le_cstar`, `exists_cstarClipped_eq_inv_card` and
+`cstarClipped_ge_inv_card`. -/
+theorem Remark6_3_holds : Remark6_3 :=
+  ⟨fun _ _ _ _ M π ρ db ↦ M.cstarClipped_le_cstar π ρ db,
+    fun S A _ _ _ _ ↦ StatisticalRL.DiscountedMDP.exists_cstarClipped_eq_inv_card S A,
+    fun _ _ _ _ M π ρ db ↦ M.cstarClipped_ge_inv_card π ρ db⟩
+
+/-- Apply `Input.iter_iterationCount_restricted`. -/
+theorem Lemma6_2_iterationCount_restricted_holds : Lemma6_2_iterationCount_restricted := by
+  intro S A _ _ M _ hγ
+  exact M.iter_iterationCount_restricted hγ
+
+/-- Apply `exampleDesign_lcb_selects_optimal`. -/
+theorem Remark6_5_holds : Remark6_5 := by
+  intro N δ hN hδ hδ1 hlarge
+  exact StatisticalRL.OfflineRL.exampleDesign_lcb_selects_optimal N δ hN hδ hδ1 hlarge
+
+/-- Apply `exampleDesign_empiricalBest_regret`. -/
+theorem Example6_1_holds : Example6_1 := by
+  intro N hN _ _ sel hsel
+  exact StatisticalRL.OfflineRL.exampleDesign_empiricalBest_regret N hN sel hsel
+
+end TrivialBatchA
 
 end StatisticalRL.Statements.Ch6

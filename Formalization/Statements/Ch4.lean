@@ -161,6 +161,27 @@ def Thm4_6 : Prop :=
     1-δ ≤ (qSamplingLaw M T).real {data | ∀ s a,
       |qSampledIterate M η T Q₀ data s a -
         M.trajectoryExpectedQ M.optimalGreedyPolicy s a| ≤ ε}
+
+/-- Learning-rate discussion after Theorem 4.6 (`thm:infinite-horizon-simple`),
+`chapters/generative_model_model_free.tex:945–953` (schedule `eq:thm:infinite-horizaon-eta`,
+:881–886; iteration condition `eq:thm:infinite-horizon-T`, :896–899): the schedule "permits"
+the constant rate `η ≡ 1/(1 + c₁(1−γ)T/log³T)`, which is `Õ((1−γ)³ε²)` when `T` is at the
+threshold. Stated for all constants `c₁ ≥ c₂ > 0` (in particular for the witnesses of `Thm4_6`):
+(i) the constant rate satisfies both schedule bounds at every `0 ≤ k ≤ T`; (ii) when `T` meets
+the iteration condition with constant `c₃ > 0`, the rate is at most
+`(1−γ)³ε²/(c₁ c₃ log T · log(SAT/δ))`, which makes the `Õ` explicit (the hidden factor is
+`1/(c₁c₃ log T log(SAT/δ))`). The printed "`T ≍` threshold" is used only in its `≥` direction,
+which is what an upper bound on `η` needs. -/
+def Thm4_6_constantRate : Prop :=
+  ∀ (c₁ c₂ c₃ γ ε δ : ℝ) (S A T : ℕ), 0 < c₂ → c₂ ≤ c₁ → 0 < c₃ → 0 ≤ γ → γ < 1 → 0 < ε →
+    0 < δ → δ < 1 → 1 ≤ S → 1 ≤ A → 2 ≤ T →
+    let η : ℝ := 1 / (1 + c₁ * (1 - γ) * T / Real.log (T : ℝ) ^ 3)
+    (∀ k : ℕ, k ≤ T →
+      1 / (1 + c₁ * (1 - γ) * T / Real.log (T : ℝ) ^ 3) ≤ η ∧
+      η ≤ 1 / (1 + c₂ * (1 - γ) * k / Real.log (T : ℝ) ^ 3)) ∧
+    (c₃ * Real.log (T : ℝ) ^ 4 * Real.log ((S : ℝ) * A * T / δ) / ((1 - γ) ^ 4 * ε ^ 2) ≤ T →
+      η ≤ (1 - γ) ^ 3 * ε ^ 2 / (c₁ * c₃ * Real.log (T : ℝ) * Real.log ((S : ℝ) * A * T / δ)))
+
 /-- Under-estimation discussion after Theorem 4.6 (`thm:infinite-horizon-simple`),
 paragraph "Discussion: over-estimation vs. under-estimation",
 `chapters/generative_model_model_free.tex:1869–1881` (display `:1873–1879`; Q-learning
@@ -336,6 +357,52 @@ def Lemma4_15 : Prop :=
           ∫ data, qLbXiMax γ η (qSamplesExtend (qLbMDP γ (by linarith) hγ1) N data) t
             ∂qSamplingLaw (qLbMDP γ (by linarith) hγ1) N
 
+/-- Remark 4.5, `chapters/generative_model_model_free.tex:3455–3457`, in the setting of
+Lemma 4.15 (`lem:lower-bound-E-xi-lower-Q`, :3429–3449): `ξ_t(a)` and `ξ_{t,max}` of
+`eqn:defn-xi-t` (:3405–3411), built from the auxiliary sequence `Q̂`, `V̂` of `eqn:Qhat-schumann`
+(:3316–3324) on the hard instance `qLbMDP γ` with constant rate `η` and `p = (4γ−1)/(3γ)`,
+`P_k(1∣1,a) = qLbStay … 1 k a`, the sample stream of the experiment run to horizon `N ≥ t`.
+The closing sentence ((1−γ)⁻³ vs (1−γ)⁻⁴) is explanatory and is not formalized.
+
+(i) The mechanism of "single action ⇒ `E ξ = 0`": for *any* value process `W` whose value
+`W n` depends only on the state-1 draws at times `1, …, n` (as `V̂` does, whatever the number of
+actions), `E[∑_{k=1}^t η(1−η)^{t−k} γ (P_k(1∣1,a) − p) W_{k−1}] = 0`.
+(ii) The single-action case itself: with only the action `a`, the auxiliary recursion is
+`Q̂_0 = 1/(1−γp)`, `Q̂_{k+1} = (1−η)Q̂_k + η(1 + γ P_{k+1}(1∣1,a) Q̂_k)`, `V̂ = Q̂`, and
+`ξ_{t,max} = ξ_t(a)`; its mean is `0`. The single-action experiment is represented by the
+action-`a` draws at state 1 of the two-action experiment, which have the single-action law
+(`P(1∣1,a) = p`, independent across times).
+(iii) "`E ξ_{t,max}` is strictly positive" is read on Lemma 4.15's range `t ≥ τ̂` and regime
+(`T ≥ c₃/(1−γ)²`, `4/((1−γ)T) < η < 1/((1−γ)²T)`); at `t = 0`, `ξ = 0`, so positivity for every
+`t` is false. -/
+def Remark4_5 : Prop :=
+  (∀ (γ : ℝ) (hγ : 3 / 4 ≤ γ) (hγ1 : γ < 1) (η : ℝ) (N t : ℕ) (a : Bool), t ≤ N →
+    let p : ℝ := (4 * γ - 1) / (3 * γ)
+    (∀ W : ℕ → (ℕ → Fin 4 → Bool → Fin 4) → ℝ,
+      (∀ n samples samples', (∀ k, 1 ≤ k → k ≤ n → ∀ b, samples k 1 b = samples' k 1 b) →
+        W n samples = W n samples') →
+      ∫ data, ∑ k ∈ Finset.Icc 1 t, η * (1 - η) ^ (t - k) * γ *
+          (qLbStay (qSamplesExtend (qLbMDP γ (by linarith) hγ1) N data) 1 k a - p) *
+          W (k - 1) (qSamplesExtend (qLbMDP γ (by linarith) hγ1) N data)
+        ∂qSamplingLaw (qLbMDP γ (by linarith) hγ1) N = 0) ∧
+    (let Qhat : (ℕ → Fin 4 → Bool → Fin 4) → ℕ → ℝ := fun samples n ↦
+        Nat.rec (1 / (1 - γ * p))
+          (fun k q ↦ (1 - η) * q + η * (1 + γ * qLbStay samples 1 (k + 1) a * q)) n
+      ∫ data, ∑ k ∈ Finset.Icc 1 t, η * (1 - η) ^ (t - k) * γ *
+          (qLbStay (qSamplesExtend (qLbMDP γ (by linarith) hγ1) N data) 1 k a - p) *
+          Qhat (qSamplesExtend (qLbMDP γ (by linarith) hγ1) N data) (k - 1)
+        ∂qSamplingLaw (qLbMDP γ (by linarith) hγ1) N = 0)) ∧
+  ∃ c₃ : ℝ, 0 < c₃ ∧
+  ∀ (γ : ℝ) (hγ : 3 / 4 ≤ γ) (hγ1 : γ < 1) (T : ℕ) (η : ℝ),
+    c₃ / (1 - γ) ^ 2 ≤ T → 4 / ((1 - γ) * T) < η → η < 1 / ((1 - γ) ^ 2 * T) →
+    let p : ℝ := (4 * γ - 1) / (3 * γ)
+    let ρ : ℝ := 1 - η * (1 - γ * p)
+    ∀ τhat : ℕ, ρ ^ (T + 1 - τhat) ≤ 6 / 7 →
+      (∀ τ' : ℕ, ρ ^ (T + 1 - τ') ≤ 6 / 7 → τ' ≤ τhat) →
+      ∀ t N : ℕ, τhat ≤ t → t ≤ N →
+        0 < ∫ data, qLbXiMax γ η (qSamplesExtend (qLbMDP γ (by linarith) hγ1) N data) t
+          ∂qSamplingLaw (qLbMDP γ (by linarith) hγ1) N
+
 /-- Corrected Theorem 4.13, `thm:finite-horizon-simple-Q-generative`,
 `source/upstream/tex/chapters/generative_model_model_free.tex:2215–2236`, with the schedule
 `eq:thm:finite-horizaon-eta` (lines 2203–2209), the sample-size condition `eq:thm:finite-horizon-T`
@@ -464,6 +531,27 @@ def Thm4_7 : Prop :=
       c_lb / ((1 - γ) ^ 4 * T * Real.log T ^ 2) ≤
         ∫ data, (qLearningValue M (qSampledIterate M η T (fun _ _ ↦ 0) data) s -
           M.trajectoryExpectedValue M.optimalGreedyPolicy s) ^ 2 ∂qSamplingLaw M T
+
+/-- Iteration-complexity reading of Theorem 4.7 (`thm:LB-example-Q-generative`),
+`chapters/generative_model_model_free.tex:992–1000` (theorem :969–982): within the iteration
+regime of Theorem 4.7 (`3/4 ≤ γ < 1`, `T ≥ c₃/(1−γ)²`) and for either learning-rate family
+(rescaled linear with any `c_η > 0`, or constant `η₀ ∈ (0,1)`), there is an MDP with `S = 4`,
+`A = 2` and discount `γ` on which plain Q-learning (from `Q₀ ≡ 0`) can reach mean-square accuracy
+`max_s E|V_T(s) − V⋆(s)|² ≤ ε²` only if `T log² T ≥ c_lb/((1−γ)⁴ε²)`. The printed `Ω̃` is made
+explicit by the `log² T` factor. `c₃` and `c_lb` are universal; the MDP is chosen after `γ`, `T`
+and the schedule but before `ε`. Encoding of the objects as in `Thm4_7` (dummy actions per
+`docs/SOURCE-ISSUES.md#C31` item 5; `V⋆` is the optimal greedy trajectory value). -/
+def Thm4_7_iterationLowerBound : Prop :=
+  ∃ c₃ c_lb : ℝ, 0 < c₃ ∧ 0 < c_lb ∧
+  ∀ γ : ℝ, 3 / 4 ≤ γ → γ < 1 → ∀ T : ℕ, c₃ / (1 - γ) ^ 2 ≤ T →
+  ∀ η : ℕ → ℝ,
+    ((∃ cη : ℝ, 0 < cη ∧ ∀ t : ℕ, η t = 1 / (1 + cη * (1 - γ) * t)) ∨
+      (∃ η₀ : ℝ, 0 < η₀ ∧ η₀ < 1 ∧ ∀ t : ℕ, η t = η₀)) →
+    ∃ M : DiscountedMDP (Fin 4) Bool, M.discount = γ ∧
+      ∀ ε : ℝ, 0 < ε →
+        (∀ s, ∫ data, (qLearningValue M (qSampledIterate M η T (fun _ _ ↦ 0) data) s -
+            M.trajectoryExpectedValue M.optimalGreedyPolicy s) ^ 2 ∂qSamplingLaw M T ≤ ε ^ 2) →
+        c_lb / ((1 - γ) ^ 4 * ε ^ 2) ≤ T * Real.log T ^ 2
 
 /-- Theorem 4.7, `thm:LB-example-Q-generative`, `chapters/generative_model_model_free.tex:969–982`,
 case (i) alone: rescaled linear learning rates `η_t = 1/(1 + c_η(1-γ)t)` for any `c_η > 0`.

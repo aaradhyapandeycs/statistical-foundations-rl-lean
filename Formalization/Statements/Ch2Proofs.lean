@@ -12,6 +12,8 @@ import Formalization.Statements.Ch2
 import Formalization.Probability.Variance
 import Formalization.Probability.FreedmanNaturalHistory
 import Formalization.MDP.RewardPerturbation
+import Formalization.MDP.IterationCount
+import Formalization.MDP.MatrixBellman
 
 namespace StatisticalRL.Statements
 open MeasureTheory
@@ -153,5 +155,15 @@ theorem Eq_QV_pi_perturbation_r_inf_holds : Eq_QV_pi_perturbation_r_inf := by
 theorem Eq_QV_star_perturbation_r_inf_holds : Eq_QV_star_perturbation_r_inf := by
   intro State Action _ _ M M' hP hγ
   exact M.optimal_reward_perturbation M' hP hγ
+
+theorem Lemma2_1_iterationCount_holds : Lemma2_1_iterationCount := by
+  intro State Action _ _ M ε hε
+  exact ⟨fun Q₀ k hk ↦ M.value_iteration_count ε hε Q₀ k hk,
+    fun π f hupdate hmax k hk ↦
+      M.arbitraryGreedyPolicyIteration_count ε hε π f hupdate hmax k hk⟩
+
+theorem Eq_Qpi_Vpi_matrix_notation_inf_holds : Eq_Qpi_Vpi_matrix_notation_inf := by
+  intro State Action _ _ M π
+  exact M.policyFixedPoint_matrix_forms π
 
 end StatisticalRL.Statements
