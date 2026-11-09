@@ -141,6 +141,8 @@ with `C₀ ≥ 8`, and the one-state boundary. Integrated and clean-copy builds
 and the project axiom audit passed. It does not establish each intermediate inequality
 under the weaker threshold or replace the separate sample-complexity theorem.
 
+<a id="C4"></a>
+
 ## Candidate C4: strictness in the two-state testing reduction
 
 **Source:** `chapters/generative_model_model_based.tex:1790–1835`, with the
@@ -157,9 +159,14 @@ record the argument. A strict testing route is now also consumed by the
 formalized two-point policy-risk result for arbitrary common randomization over
 deterministic stationary policies. Separate corrected randomized policy-risk
 and Q-risk results prove the stronger `≥1/4` bound on the explicit domain
-`S,A≥2`, `SA≥16`. An arbitrary randomized-Q extension of the standalone
-two-state, one-action testing example and the source's wider original domain
-remain separate; the source's strictness omission is not itself a counterexample.
+`S,A≥2`, `SA≥16`. The standalone two-state, one-action example itself
+(`eq:P-Mi-Q-inaccurate-lower-generative`, lines 1541–1556) is now proved with
+the strict `> 0.1` for every estimator that is a function of the full sample
+array: `StatisticalRL.Statements.Ch3.Eq_P_Mi_Q_inaccurate_lower_generative`.
+An extension to randomized Q estimators (via `finiteSeed_test_error_gt_one_tenth`)
+is an optional strengthening, and the source's wider original domain for the
+general theorem remains separate; the source's strictness omission is not
+itself a counterexample.
 
 ## Candidate C5: missing premise in TD step-size Lemma 4.3
 
@@ -469,10 +476,26 @@ candidate records the asserted error.
   `N > 0` restriction; the companion iteration-count claim (`Thm3_2_planningIterations`)
   divides by `N`, so `N > 0` is implicit in the printed claim.
 - Theorem 3.9 (`Thm:sample-compl-finite`,
-  `generative_model_model_based.tex:2551–2570`) is proved for the causal
-  backward-greedy tie rule implemented by the existing export, with positive
-  sample count. The statement index records this scope; it does not claim the
-  result for every possible empirical-optimal tie rule.
+  `generative_model_model_based.tex:2551–2570`) is indexed as `Thm3_9_positiveN`, for every deterministic
+  policy that is optimal for the empirical MDP at every stage and state (no tie rule is fixed), with the
+  sample count `N > 0` stated explicitly for the empirical-frequency model. The positive-sample condition
+  loses no content: for `N = 0` the printed threshold forces `log(HSA/δ) ≤ 0`, hence `δ ≥ HSA ≥ 1`, where the claim is trivial; `N > 0` is needed only to type the empirical model. The earlier
+  entry `Thm3_9_causal_positiveN`, for the concrete backward-greedy tie rule, is retained as a special case.
+- `Thm3_9_minimaxLowerBound` (formal reading of the prose minimax-optimality
+  claim at `generative_model_model_based.tex:2585`, context 2573–2585): domain
+  S, A, H ≥ 2 and 0 < ε ≤ c₁H with existential c₁ (witness 1/4096). Each
+  exclusion is a domain exclusion, not a source error: for H = 1, A = 1, S = 1
+  or ε ≥ H, zero samples already give an ε-optimal policy. The "(0,H]" range of
+  line 2578 belongs to the upper bound. The protocol is the book's uniform
+  per-(s,a,h) non-adaptive one, so the S·A factor is inherited from the
+  protocol, not tested; only copy 0 and actions {0,1} are used. R1: output
+  actions must be measurable in the seed for every reward table. R2: the output
+  is a deterministic nonstationary policy for each seed (seed-randomized
+  estimators); stochastic-policy outputs are not covered. R3: the seed space
+  lives in universe 0. R4: the threshold is H³/ε² per tuple without the
+  log(HSA/δ) factor, with fixed failure probability 1/8; no δ-dependent lower
+  bound is claimed. The cited domingues2021episodic total-budget/adaptive
+  theorem is not established. No source error. See [source review](critic-fhlb.md).
 
 - The full joint Lemma 5.7 (`lem:bound-W1-W2-ucbvi-proof`,
   `onlineRL.tex:925–957`) is formalized for K≥2 with the finite
@@ -527,8 +550,14 @@ However, algorithm line 1280 literally lists the consecutive integers
 `{1,2,...,2^(log₂K)}`, which include every positive count up to K. Under that
 literal reading, one state/action/stage and K=32 give stored size 1 at every
 visit: the inverse-count sum is 32, exceeding the printed 4 log₂32=20.
-This is independently checked source-level arithmetic, not a Lean encoding
-of the literal algorithm. The source prose and displayed trigger conflict;
+Machine-checked: `StatisticalRL.OnlineRL.not_Lemma5_12_literalTrigger_printed`
+refutes `Lemma5_12_literalTrigger_printed`, the printed sum bound for count
+tables that are verbatim copies of the Lean MVP tables with the trigger
+`1 ≤ n ≤ 2^{Nat.log 2 K}`, at S=A=H=1, K=32 (sum 32 > 20). With one state and
+one action the trace is forced, so this is every run of the literal algorithm;
+for K=32 the floor, real and `{1,…,K}` readings agree
+([OnlineMVPLiteralTriggerCounterexample.lean](../Formalization/Online/Regret/MVP/OnlineMVPLiteralTriggerCounterexample.lean),
+[review](critic-small-batch-2a.md)). The source prose and displayed trigger conflict;
 the proved variant explicitly selects the prose-intended dyadic rule.
 
 After a fixed row has been visited three times, the cumulative count is 3.
@@ -720,9 +749,25 @@ value clips to 2 for every episode/profile. Its stage-2 family is {0,2}
 and excludes the actual value. That value is the continuation test at
 stage 1 in the claimed coupling argument.
 
-This independently checked calculation concerns the printed programs and
-their claimed identification step. A complete Lean execution witness for
-these two algorithms has not been added at this checkpoint. The proposed
+This calculation concerns the printed programs and their claimed
+identification step. Machine-checked:
+`StatisticalRL.OnlineRL.printedFixedProfile_lastStage_eq` shows that the
+printed auxiliary's stage-H value is the constant H for every profile,
+expanded sample set and episode (arbitrary rows, arbitrary nonnegative
+rewards, arbitrary real counts n, so the printed n = 2^{j−2} = 1/2 at j = 1 is
+covered), hence X_{H,I} ⊆ {H·1, 0} (`printedFixedProfileFamily_lastStage_subset`).
+`onlineMVP_unit_secondEpisode_lastStage` computes the Lean learner's
+pre-episode value V_2^2 = min{2c₂L, 2} for S=A=1, H=K=2, zero rewards, and
+`not_eq_Vk_Itrue_printed` (with `not_eq_Vk_Itrue_printed_sourceParameters` and
+the parameter lemma `onlineMVP_C17_sourceParameters`, which states K = 2 ≥ SAH·ι;
+its docstring notes SAH·ι ≤ 1 < 2, so K > SAH·ι also holds) shows
+V_2^2 ≠ V_2^{k,I} for every k and V_2^2 ∉ X_{2,I}. This is the H = K = 2
+instance; the auxiliary family is excluded for every K. The Lean learner is
+the C8/C13-corrected one; both corrections are inactive in this instance
+(count 1, no zero-count row, both trigger readings fire at 1). C16 is not
+involved
+([OnlineMVPPrintedTerminalCounterexample.lean](../Formalization/Online/Regret/MVP/Decoupling/OnlineMVPPrintedTerminalCounterexample.lean),
+[review](critic-small-batch-2a.md)). The proposed
 repair sets the auxiliary terminal value to zero and then proves the
 actual profile/kernel/value bridge, including initial and zero-count
 cases. Changing the terminal line alone is not a proof of that bridge.
@@ -736,8 +781,7 @@ per-stage row-rank identities and sequential transcript-law transport.
 `StatisticalRL.Statements.Lemma5_14_corrected` and
 `StatisticalRL.Statements.MVP_regret_corrected` consume that corrected bridge
 without assuming its conclusion or probability. This does not validate the
-printed terminal-H program or add a Lean execution witness for the printed
-counterexample above. The related final regret statement is Theorem 5.10, source label
+printed terminal-H program (the printed counterexample is machine-checked above). The related final regret statement is Theorem 5.10, source label
 `thm-mvp-regret` (`onlineRL.tex:1339–1352`); this auxiliary identity issue does
 not refute it. See [independent review](critic-online-MVP-main-decoupling.md)
 and [verification](online-MVP-main-decoupling-verification.md).

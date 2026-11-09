@@ -10,7 +10,10 @@ import Formalization.Generative.PolicyLearningAbsorbingPreservation
 import Formalization.Generative.PolicyLearningAbsorbingGrid
 import Formalization.Generative.PolicyLearningSourcePointwise
 import Formalization.Generative.FiniteHorizonMainSample
+import Formalization.Generative.FiniteHorizonAnyTieSample
 import Formalization.Generative.GenerativeLowerBoundTheorem37Fin
+import Formalization.Generative.FiniteHorizonLowerBoundTheorem
+import Formalization.Generative.GenerativeLowerBoundObservationLaw
 
 /-! Proofs of the source-facing Chapter 3 entries using the existing exports. -/
 open MeasureTheory
@@ -90,5 +93,31 @@ theorem Thm3_2_approxPlanner_positiveN_holds : Thm3_2_approxPlanner_positiveN :=
 
 theorem Thm3_2_planningIterations_holds : Thm3_2_planningIterations :=
   StatisticalRL.ModelBasedPolicyLearning.empirical_planningIterations
+
+theorem Eq_P_Mi_Q_inaccurate_lower_generative_holds : Eq_P_Mi_Q_inaccurate_lower_generative := by
+  intro γ ε hγ hγ1 hε hεmax
+  refine ⟨StatisticalRL.GenerativeLowerBound.sourceHardMDP γ ε hγ hγ1 hε hεmax false,
+    StatisticalRL.GenerativeLowerBound.sourceHardMDP γ ε hγ hγ1 hε hεmax true,
+    rfl, rfl, rfl, ?_⟩
+  intro N hN QHat
+  have hd : 0 < (1 - γ) ^ 3 * ε ^ 2 := by
+    have : 0 < 1 - γ := by linarith
+    positivity
+  have hN' : (N : ℝ) ≤ 9 / (2560 * (1 - γ) ^ 3 * ε ^ 2) := by
+    have h9 : (9 : ℝ) / (2560 * (1 - γ) ^ 3 * ε ^ 2) = 9 / 2560 / ((1 - γ) ^ 3 * ε ^ 2) := by
+      rw [div_div, mul_assoc]
+    rw [h9]
+    exact hN.trans (div_le_div_of_nonneg_right (by norm_num : (0.003 : ℝ) ≤ 9 / 2560) hd.le)
+  exact StatisticalRL.GenerativeLowerBound.sourceHardMDP_full_Q_estimation_lower
+    γ ε hγ hγ1 hε hεmax N hN' (fun data _ _ ↦ QHat data)
+
+theorem Thm3_9_minimaxLowerBound_holds : Thm3_9_minimaxLowerBound := by
+  refine ⟨1 / 2 ^ 28, 1 / 4096, by norm_num, by norm_num, ?_⟩
+  intro S A H N ε hS hA hH hε hεH hN Seed _ ν _ piHat hmeas
+  exact StatisticalRL.FiniteHorizonLowerBound.minimaxLowerBound S A H N ε hS hA hH hε hεH hN ν
+    piHat fun r data h s a ↦ hmeas r data h s (MeasurableSpace.measurableSet_top (s := {a}))
+
+theorem Thm3_9_positiveN_holds : Thm3_9_positiveN :=
+  StatisticalRL.FiniteHorizonGenerative.exists_universal_anyEmpiricalOptimalPolicy_sample_constant
 
 end StatisticalRL.Statements.Ch3
