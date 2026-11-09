@@ -205,6 +205,9 @@
       "source_lines": "891–912",
       "lean_export": "StatisticalRL.QLearning.qLearning_exists_universal_constants_source_accuracy",
       "evidence": "docs/critic-q-learning-comparison-and-main.md",
+      "supporting_evidence": [
+        "docs/critic-underestimation.md"
+      ],
       "coverage": "docs/COVERAGE.md",
       "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_6",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_6_holds"
