@@ -45,11 +45,34 @@
   chips.forEach(function (c) {
     c.addEventListener("click", function () {
       filter = c.dataset.filter;
-      chips.forEach(function (x) { x.classList.toggle("on", x === c); });
+      chips.forEach(function (x) {
+        x.classList.toggle("on", x === c);
+        x.setAttribute("aria-pressed", x === c ? "true" : "false");
+      });
       apply();
     });
   });
   if (rows.length) apply();
+
+  // Dependency graph: highlight the edges of the node under the pointer or focus.
+  var graph = document.querySelector("svg.depgraph");
+  if (graph) {
+    var edges = graph.querySelectorAll(".gn-edge");
+    var mark = function (id) {
+      graph.classList.toggle("focus", !!id);
+      edges.forEach(function (e) {
+        e.classList.toggle("hl", !!id && (e.dataset.from === id || e.dataset.to === id));
+      });
+    };
+    graph.querySelectorAll(".gn").forEach(function (g) {
+      var on = function () { mark(g.dataset.id); };
+      var off = function () { mark(null); };
+      g.addEventListener("mouseenter", on);
+      g.addEventListener("mouseleave", off);
+      g.parentNode.addEventListener("focus", on);
+      g.parentNode.addEventListener("blur", off);
+    });
+  }
 
   // Open the Lean card or TeX disclosure that a link points at.
   function reveal() {

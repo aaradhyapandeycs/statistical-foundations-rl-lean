@@ -14,6 +14,13 @@ python3 scripts/static_gates.py || status=1
 echo "== static gate tests"
 python3 -m unittest scripts/tests/test_static_gates.py || status=1
 
+echo "== move_modules tests"
+python3 -m unittest scripts/tests/test_move_modules.py || status=1
+
+echo "== generated node graph and NEXT.md are current"
+python3 scripts/gen_nodes.py --check || status=1
+python3 -m unittest scripts/tests/test_gen_nodes.py || status=1
+
 base=""
 for cand in "${1:-}" origin/main main '@{upstream}' HEAD; do
   [ -n "$cand" ] || continue
