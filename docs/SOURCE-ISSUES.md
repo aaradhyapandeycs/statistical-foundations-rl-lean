@@ -1297,10 +1297,22 @@ both rows of P_π uniform, xᵀdiag(μ)(I−γP_π)x = −3/16 at x = (1,3), so 
 unavailable, although diag(μ)(I−γP_π) still has positive eigenvalues; this is a gap in applying the cited argument,
 not a counterexample. Two further differences are **unverified**: the cited analysis (Wu et al.,
 arXiv:2410.16106v6) appears to sample states from the stationary distribution, while the book allows any
-full-support μ (`inference.tex:64`), and its covariance estimator appears to use the running averages, while the
+full-support μ (`inference.tex:67`), and its covariance estimator appears to use the running averages, while the
 book's Γ̂_T evaluates all residuals at V̄_T (`inference.tex:166–169`). These two points were read from a summary of
 the cited paper, not from the cited version itself, and need a direct check. A corrected bound may still hold by
 another argument. Paper calculation, not Lean-checked. Reported by an external review (2026-11-08), independently re-checked ([check](critic-audit-findings.md)). Not author-approved.
+
+**Half-space result (2026-11-09, `Formalization/Ch7Rest/TDInferenceHalfSpace711.lean`, entry
+`Thm7_11_corrected_halfspace`).** The corrected statement is machine-checked on closed half-spaces at the printed
+rate. With Γ replaced by the true residual covariance Γ_true ≻ 0, for every full-support μ, 0 < η₀ ≤ 1 (the entry
+states the printed 0 < η₀ < 1/4) and every V₀, there is an instance-, η₀- and V₀-dependent K with
+sup_{u,b} |P(uᵀ√TΔ̄_T ≤ b) − N(0, A⁻¹Γ_trueA⁻ᵀ)(uᵀx ≤ b)| ≤ K·T^(-1/3) for all T ≥ 1.
+The proof does not use the cited paper. It uses a Chen–Shao nonlinear Stein bound, leave-one-out TD estimates and
+a Gaussian variance comparison, so it does not depend on the unverified stationarity and estimator differences
+noted in the scope note above. Still open: the convex-distance bound over all convex sets; the printed coefficient
+and the polynomial C̃; the state-only-reward reading of the printed statement (Γ_true = Γ_printed there, so the
+half-space result is a restricted case of it under that reading). Independently critic-reviewed
+([review](critic-thm7-11-m9.md)). Not author-approved.
 
 <a id="C44"></a>
 ## Candidate C44: Theorem 7.12 is ill-posed at T = 1 and its VPO update may have no minimizer

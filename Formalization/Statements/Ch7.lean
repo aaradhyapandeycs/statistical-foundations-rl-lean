@@ -5,6 +5,7 @@ import Formalization.RobustRL.Ch7.Ch7Definitions
 import Formalization.Ch7Rest.Marl78Defs
 import Formalization.Ch7Rest.VPODefs712
 import Formalization.Ch7Rest.Marl76Defs
+import Formalization.Ch7Rest.TDInference711Defs
 
 /-! Full source-facing statement of robust_RL.tex:302–324, label
 `lemma:dual-form`.  The two source choices of discrepancy are recorded as
@@ -570,6 +571,44 @@ def Remark7_2_restricted : Prop :=
             robustPolicyValue chiBall M σ (detPolicy f) s ≤ ε}
 
 end Thm7_2_7_4
+
+section Thm7_11
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference in
+/-- Theorem 7.11 (`thm:Berry-Esseen-linear`, `chapters/inference.tex:132–141`), corrected covariance, closed
+half-spaces only, instance constant. Differs from the printed result in three ways.
+(1) `Γ` is the true per-sample TD-noise covariance `trueGamma`,
+`Γ_ss = μ(s) E_{a∼π(·|s), s'∼P(·|s,a)}[(V^π(s) − r(s,a) − γV^π(s'))²]`. The printed `Γ` (:115) averages only over
+`s' ∼ P_π` with an undefined `r(s)`; read as `r_π(s)`, it omits the action-reward variance and the cross term
+`2γCov(r(s,a), V^π(s'))`, and the printed theorem is then false (SOURCE-ISSUES C43). With state-only rewards
+(`r(s,a) = r(s)`) the two coincide.
+(2) The sets are closed half-spaces `{x | ∑ s, u s * x s ≤ b}` (uniformly in `u`, `b`), not all convex sets in
+`ℝ^S`.
+(3) The `T^{-1/3}` constant `K` depends on the instance, `η₀` and `V₀`. It is not shown to be a universal multiple of
+the printed `√(η₀/((1−γ)λ₀))Tr Γ‖Γ⁻¹‖ + √(Sκ(Γ))/((1−γ)λ₀η₀)`, and `C̃T^{-1/2}` is absorbed into `K`, so it is not
+shown polynomial.
+Kept: the printed rate `T^{-1/3}`; `η_t = η₀t^{-2/3}` with `0 < η₀ < 1/4` (:133); i.i.d. sampling with
+full-support `μ` (:51–67); the asynchronous TD update (:72); the Polyak–Ruppert average (:82); every `V₀`; `d = S`.
+`Γ_true ≻ 0` is assumed, since the printed coefficient uses `‖Γ⁻¹‖` and `κ(Γ)`. `lawProb` is the exact i.i.d. law of
+`√TΔ̄_T`. `gaussCov (tdA M π μ) (trueGamma M π μ)` is `N(0, A⁻¹ΓA⁻ᵀ)` with `A = diag(μ)(I − γP_π)` (:106–117).
+Not implied:
+* the convex-distance bound over all convex sets (corrected), which remains open;
+* the printed coefficient, which remains open;
+* any confidence region or interval, in particular with the estimated covariance `Λ̂_T`
+  (SOURCE-ISSUES C47(1)–(4)). -/
+def Thm7_11_corrected_halfspace : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
+    ∃ K : ℝ, 0 < K ∧
+    ∀ T : ℕ, 1 ≤ T → ∀ (u : State → ℝ) (b : ℝ),
+      |lawProb M π μ η₀ V₀ T {x | ∑ s, u s * x s ≤ b} -
+        (gaussCov (tdA M π μ) (trueGamma M π μ)).real {x | ∑ s, u s * x s ≤ b}| ≤
+        K * (T : ℝ) ^ (-(1 / 3 : ℝ))
+
+end Thm7_11
 
 section Thm7_12
 
