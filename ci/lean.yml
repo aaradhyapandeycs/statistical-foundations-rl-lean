@@ -2,16 +2,42 @@ name: Lean and source checks
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
+
+# One run per ref; a newer push to a PR supersedes the older run. Runs on main
+# are never cancelled so every main commit gets a complete verification.
+concurrency:
+  group: lean-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 permissions:
   contents: read
 
 jobs:
-  verify:
+  lint:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Static gate tests
+        run: python3 -m unittest scripts/tests/test_static_gates.py -v
+      - name: Static gates (G1 G2 G3 G4 G6)
+        run: python3 scripts/static_gates.py
+
+  verify:
+    needs: lint
+    # Branch protection requires the `verify` check. A job skipped because a
+    # needed job failed reports as skipped, which branch protection accepts, so
+    # verify always starts (unless cancelled) and fails at once if lint failed.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require the lint job to pass
+        if: ${{ needs.lint.result != 'success' }}
+        run: |
+          echo "lint job result: ${{ needs.lint.result }}"
+          exit 1
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Restore and verify the pinned source
         run: python3 scripts/fetch_source.py
