@@ -108,7 +108,14 @@ entry with no such item falls back to the first block it cites. Every other
 block an entry cites (an algorithm, assumption, definition or display) shows
 a "cited by" link and no status chip; algorithms, assumptions and definitions
 never carry a status. The build fails if a ledger record's card is not at its
-own source item.
+own source item. A card whose item is a display inside an algorithm (or
+another context item) is shown in a row of its own right after that block,
+which links to it.
+
+`check_fidelity.py` looks for PDF words in the book text of the site; its
+whole-site fallback search also skips the Lean column, since Lean code is not
+book text and its words (`theorem`, `probability`, ...) would otherwise
+capture the in-order search.
 
 ## Layout
 

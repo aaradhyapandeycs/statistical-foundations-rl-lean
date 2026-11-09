@@ -206,7 +206,14 @@ class Site:
                 f'form, not the printed statement.{(" " + issues) if issues else ""}</div>')
 
     def lean_column(self, page, top) -> str:
-        out, seen, ledger_seen = [], set(), set()
+        return self.lean_columns(page, top)[0]
+
+    def lean_columns(self, page, top) -> tuple:
+        """(cards beside the block, cards in a row of their own right after it). A card whose item is
+        a display inside an algorithm (or another context item) is not shown beside the algorithm:
+        the algorithm gets a link, and the card follows the algorithm in its own row."""
+        out, after, seen, ledger_seen = [], [], set(), set()
+        context = self.kind_of(top) in CONTEXT_KINDS
         for b in self.units(top):
             entries = self.matches.get(id(b), [])
             home = self.home.get(id(b), [])
@@ -217,7 +224,13 @@ class Site:
                     continue
                 seen.add(e.name)
                 pid, _, top_id, _ = self.placed[e.name]
-                if pid == page.id and top_id == id(top):
+                if pid == page.id and top_id == id(top) and context:
+                    after.append(self.lean.card(e))
+                    out.append(f'<div class="lean-ref">The Lean entry <a href="#lean-{attr(e.name)}"><code>'
+                               f'{esc(e.name)}</code></a> formalizes {esc(self.where_label(e))} inside this '
+                               f'{esc(ENV_NAMES.get(self.kind_of(top), self.kind_of(top)).lower())}; it is shown '
+                               f'right after it.</div>')
+                elif pid == page.id and top_id == id(top):
                     out.append(self.lean.card(e))
                 else:
                     where = self.where_label(e)
@@ -236,7 +249,7 @@ class Site:
                 name = f'{ENV_NAMES.get(b.kind_name, "")} {b.number or ""}'.strip() if b is not top else ""
                 out.append(f'<div class="lean-none"><span class="status {cls}">{esc(word)}</span>'
                            f'{(" " + esc(name)) if name else ""}</div>')
-        return "".join(out)
+        return "".join(out), "".join(after)
 
     def where_label(self, e) -> str:
         nid = self.entry_node.get(e.full)
@@ -270,11 +283,14 @@ class Site:
                 buf.clear()
 
         for b in page.blocks:
-            col = self.lean_column(page, b)
+            col, after = self.lean_columns(page, b)
             if col:
                 flush()
                 rows.append(f'<div class="row paired"><div class="book-col">{self.block_html(b)}</div>'
                             f'<aside class="lean-col" aria-label="Lean">{col}</aside></div>')
+                if after:
+                    rows.append(f'<div class="row paired lean-after"><div class="book-col"></div>'
+                                f'<aside class="lean-col" aria-label="Lean">{after}</aside></div>')
             else:
                 buf.append(self.block_html(b))
         flush()

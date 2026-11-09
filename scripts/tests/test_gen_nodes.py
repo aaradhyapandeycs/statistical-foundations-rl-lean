@@ -297,6 +297,48 @@ class GenNodesTest(unittest.TestCase):
             gn.build(gn.Reader(self.tmp))
 
 
+    def test_card_for_display_inside_algorithm_follows_the_algorithm(self):
+        """A display inside an algorithm (e.g. eq:online_RBMLE in the VPO algorithm): its card is not
+        shown beside the algorithm but in a row of its own right after it, so the algorithm keeps no
+        status and the book text stays contiguous; the algorithm row links to the card."""
+        from reader import render
+        from reader.lean import Entry
+        from types import SimpleNamespace as NS
+        alg = NS(kind="algorithm", kind_name=None, entry={"id": "label:alg:vpo", "labels": ["alg:vpo"]},
+                 labels=["alg:vpo"], children=[], anchor="E-label:alg:vpo", file=None, line_start=None,
+                 number="7.4", in_proof=False, tex="", title="",
+                 html='<div id="E-label:alg:vpo">Obtain the preference <span id="L-eq:upd"></span></div>')
+        para = NS(kind="para", kind_name=None, entry=None, labels=[], children=[], anchor=None, file=None,
+                  line_start=None, number=None, in_proof=False, tex="", title="", html="<p>The next theorem</p>")
+        page = NS(id="ch7-5", blocks=[alg, para])
+        e = Entry("Eq_upd_restricted", "S.Eq_upd_restricted", "F/Ch7.lean", 1, 2, "", ["eq:upd"], [],
+                  status="cov-restricted")
+        site = object.__new__(render.Site)
+        site.book = NS(label_owner={"eq:upd": {}})
+        site.lean = NS(entries=[e], coverage={}, card=lambda e: f'<article id="lean-{e.name}">CARD</article>')
+        site.pages = [page]
+        site.entry_node = {"S.Eq_upd_restricted": "label:eq:upd"}
+        site.inv_by_id = {"label:eq:upd": {"labels": ["eq:upd"], "kind": "display", "number": "7.62"}}
+        site.nodes = {}
+        site.place()
+        self.assertEqual(site.unplaced, [])
+        self.assertEqual(site.statuses(alg), [])
+        body = site.page_body(page)
+        a, c, t = body.find("Obtain the preference"), body.find("CARD"), body.find("The next theorem")
+        self.assertTrue(0 <= a < c < t, body)
+        self.assertIn('row paired lean-after', body)
+        self.assertIn('href="#lean-Eq_upd_restricted"', body[:c])
+        self.assertNotIn("CARD", body[:body.find('row paired lean-after')])
+
+    def test_fidelity_fallback_stream_ignores_lean_cards(self):
+        import check_fidelity
+        page = ('<div class="row"><div class="book-col">outcome</div><aside class="lean-col">theorem foo '
+                '</aside></div><p>theorem assumption</p>')
+        text = check_fidelity.without_lean(page)
+        self.assertNotIn("foo", text)
+        run = ["outcome", "theorem", "assumption"]
+        self.assertTrue(check_fidelity.in_order_anywhere(run, check_fidelity.letters(text)))
+
 
 ROOT = HERE.parents[1]
 
@@ -347,10 +389,25 @@ class ReaderPlacementTest(unittest.TestCase):
         self.assertEqual(n["label:thm:l1-upper-bound"]["issues"], ["C37"])
 
     def test_context_items_carry_no_status(self):
-        for _, b in self.blocks.values():
-            if self.site.kind_of(b) in ("algorithm", "assumption", "definition"):
-                self.assertEqual(self.site.statuses(b), [], b.labels)
-                self.assertNotIn(id(b), self.site.home, b.labels)
+        """Algorithms, assumptions and definitions never carry a status or a card in their own row.
+        They may be the home only of an entry whose item is a display inside them (for example
+        eq:online_RBMLE inside the VPO algorithm); that card is rendered right after the block."""
+        from reader.tex import label_id
+        tops = {id(t): p for p in self.site.pages for t in p.blocks}
+        for page, b in self.blocks.values():
+            if self.site.kind_of(b) not in ("algorithm", "assumption", "definition"):
+                continue
+            self.assertEqual(self.site.statuses(b), [], b.labels)
+            for e in self.site.home.get(id(b), []):
+                inv = self.site.inv_by_id.get(self.site.entry_node.get(e.full, ""), {})
+                self.assertIn(inv.get("kind"), ("display", "subequations"), (b.labels, e.name))
+                self.assertTrue(any(f'id="{label_id(lab)}"' in b.html for lab in inv.get("labels", [])),
+                                (b.labels, e.name))
+            if id(b) in tops:
+                col, after = self.site.lean_columns(page, b)
+                self.assertNotIn('class="lean-card"', col, b.labels)
+                for e in self.site.home.get(id(b), []):
+                    self.assertIn(f'id="lean-{e.name}"', after, (b.labels, e.name))
 
 
 if __name__ == "__main__":
