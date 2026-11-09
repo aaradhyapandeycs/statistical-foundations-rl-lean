@@ -63,6 +63,7 @@ Formalization/Statements/Ch6.lean -> Formalization.Probability.VarianceDefinitio
 Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.FedGeneric710
 Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.Marl76Defs
 Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.Marl78Defs
+Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.TDInference711Defs
 Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.VPODefs712
 Formalization/Statements/Ch7.lean -> Formalization.ModelFree.QLearningRobustDefinitions
 Formalization/Statements/Ch7.lean -> Formalization.RobustRL.Ch7.Ch7Definitions

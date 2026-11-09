@@ -14,6 +14,7 @@ import Formalization.Ch7Rest.Marl77Main
 import Formalization.RobustRL.DRVI.OraclePlannerMain
 import Formalization.RobustRL.DRVI.OraclePlannerChiMain
 import Formalization.Ch7Rest.VPOReparam712
+import Formalization.Ch7Rest.TDInferenceHalfSpace711
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -289,5 +290,17 @@ theorem Eq_mdp_value_Q_holds : Eq_mdp_value_Q := by
     StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_chi M hσ.le⟩
 
 end Eq_mdp_value_Q
+
+section Thm7_11
+
+/-- `Thm7_11_corrected_halfspace` from
+`StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le`
+(the export needs only `η₀ ≤ 1`). -/
+theorem Thm7_11_corrected_halfspace_holds : Thm7_11_corrected_halfspace := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  exact StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le M π μ h0
+    (by linarith) V₀ hμ hΓ
+
+end Thm7_11
 
 end StatisticalRL.Statements.Ch7

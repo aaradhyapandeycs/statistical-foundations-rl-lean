@@ -424,6 +424,7 @@ def classify(name: str, ledger_kind: str, scope: str) -> str:
 # class and every count are unchanged).
 CHIP_OVERRIDES = {
     "Thm7_7_restricted": "Related statement proved: some algorithm attains the rates (not Q-FTRL; see note)",
+    "Thm7_11_corrected_halfspace": "Corrected variant proved on closed half-spaces only (true covariance, instance constant)",
 }
 # Footnote on the restricted count wherever it is shown.
 RESTRICTED_COUNT_NOTE = {
@@ -446,6 +447,15 @@ CARD_NOTES = {
         "(optimistic Hedge with backward induction and adaptive generative queries). Whether Q-FTRL "
         "attains the rates is not checked. The ledger files this under restricted variants; see "
         "[C39](../docs/SOURCE-ISSUES.md#candidate-c39-theorem-77-is-not-self-contained)."),
+    "Thm7_11_corrected_halfspace": (
+        "**Not the printed Theorem 7.11, and not its full corrected form.** The printed statement is refuted "
+        "under the action-dependent-reward reading. What is proved uses the true TD-noise covariance "
+        "Γ_true (assumed nonsingular) in place of the printed Γ, gives the printed T^(-1/3) rate only "
+        "for closed half-spaces {x : uᵀx ≤ b}, and has a constant that depends on the instance, η₀ and "
+        "V₀. Not implied: the convex-distance bound over all convex sets (open); the printed coefficient "
+        "(open); any confidence region or interval, in particular with the estimated covariance Λ̂_T "
+        "(source issue C47). With state-only rewards Γ_true equals the printed Γ "
+        "(source issue C43)."),
 }
 
 

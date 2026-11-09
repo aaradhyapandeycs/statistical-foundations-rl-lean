@@ -40,6 +40,10 @@ Both cases of the Q-learning lower bound (Theorem 4.7) are now proved exactly as
 
 The prose claim after Theorem 3.2 is proved: any planner that is 1/(N(1−γ))-optimal in the empirical model satisfies the theorem’s guarantees with the same universal constant, and empirical value and policy iteration reach that accuracy in O(log(N/(1−γ))/(1−γ)) iterations. These are prose claims, so the named-result ledger is unchanged. The complete monograph remains **INCOMPLETE**.
 
+## Theorem 7.11 corrected on closed half-spaces
+
+With the printed covariance Γ replaced by the true TD-noise covariance (C43, assumed nonsingular), the Polyak–Ruppert-averaged TD estimate is shown in Lean to satisfy the printed T^(-1/3) Berry–Esseen rate uniformly over closed half-spaces, for the printed step sizes, full-support i.i.d. sampling and every initialization, with a constant that depends on the instance, η₀ and V₀ (`Thm7_11_corrected_halfspace`). The proof is self-contained (a Chen–Shao nonlinear Stein bound, leave-one-out TD estimates and a Gaussian variance comparison); it does not use the cited paper. The convex-distance bound over all convex sets, the printed coefficient, and every confidence-set claim with the estimated covariance (C47) remain open; the printed statement stays refuted under the action-dependent-reward reading. The named-result ledger is unchanged in this change: whether to count this variant (a `proved_variants` record, as the critic recommends) awaits the maintainer's decision. Not author-approved. The complete monograph remains **INCOMPLETE**.
+
 ## Theorem 7.11 partial result: smooth-function Gaussian approximation
 
 For smooth test functions, the Polyak–Ruppert-averaged TD estimate is now shown in Lean to be close to the Gaussian with the corrected covariance, with an explicit error of order T^(-1/6); the library gains a multivariate Lindeberg replacement theorem, a standard multivariate Gaussian with moments and stability, and a second-order Taylor bound. This is a partial result, not a restricted variant of Theorem 7.11: the metric, rate and constants differ from the printed statement, so it is not counted. The named-result ledger is unchanged (89 of 90 once Theorem 7.7 lands). The complete monograph remains **INCOMPLETE**.
@@ -1529,6 +1533,9 @@ audit, and independent correspondence review before promotion.
 | Batch A/B and external-review docs integrator | batch A/B rows in `docs/COVERAGE.md`; scope-disclosure bullets, C10/C13/C19/C43 notes and C47/C48 in `docs/SOURCE-ISSUES.md`; no named-result ledger change | done 2026-11-09 |
 | Theorem 6.13 randomized builder | `Formalization/OfflineRL/LowerBoundRandomized.lean`; `Thm6_13_randomized` entry and wrapper in `Formalization/Statements/Ch6.lean`, `Ch6Proofs.lean` (integrated by the lead) | done 2026-11-09: integrated; critic F1 adopted (no measurability premise), R1/R2/F3 applied |
 | Theorem 6.13 randomized critic | `docs/critic-thm6-13-randomized.md` | done 2026-11-09: ACCEPT WITH DISCLOSURES; F2 (refactor) not done |
+| Theorem 7.11 corrected builders (M5–M9) | `Formalization/Analysis/MatrixContractionSup.lean`, `Formalization/Ch7Rest/TDInference{Linearised,Kernel,LinRemainder,LinCov,QuadForm,ZeroNoiseDecay,LeaveOneOut,LeaveOneOutBound,HalfSpace}711.lean`, `Formalization/Probability/{SteinGaussian,BerryEsseenStein,SteinRandomConcentration,ChenShaoNonlinear}.lean` | done 2026-11-09: half-space export `abs_lawProb_halfSpace_sub_gaussCov_le` built and audited |
+| Theorem 7.11 corrected plan checker and critics | `docs/critic-thm7-11-corrected-plan-check.md`, `docs/critic-thm7-11-m5.md`, `-m7.md`, `-m8td.md`, `-m8cs.md`, `-m9.md` | done 2026-11-09: M9 ACCEPT WITH FIXES; R1, R2, R3, R5, F1–F3 applied; R4 (ledger record) awaits the maintainer |
+| Theorem 7.11 corrected integrator | `Thm7_11_corrected_halfspace` entry and wrapper in `Formalization/Statements/Ch7.lean`, `Ch7Proofs.lean`; G2 edge `Statements/Ch7.lean -> Ch7Rest.TDInference711Defs`; Theorem 7.11 row in `docs/COVERAGE.md`; C43 addendum; site chip and card note | done 2026-11-09; no named-result ledger change |
 
 ## Required coverage
 

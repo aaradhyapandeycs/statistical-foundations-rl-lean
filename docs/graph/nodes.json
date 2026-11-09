@@ -17,10 +17,10 @@
   "Formalization/Statements/Ch5Proofs.lean": "ef4c2f9126d042b85fd0b25eaefb09b75ff311387ac31e1b5213a980f02e829b",
   "Formalization/Statements/Ch6.lean": "cdc9a967fa91734a241a723a41bfe2bca5858081603efab12cf3ad60a5c3497d",
   "Formalization/Statements/Ch6Proofs.lean": "9ccedbcd1f900013e1e6e3f70d967ee7c1b4f6c75f27685ac6dd2986c3e0eec3",
-  "Formalization/Statements/Ch7.lean": "7f8d86e56ccb5ed437c1d1032cf977666e11428bf0db6e40ca452a1acb2061f3",
-  "Formalization/Statements/Ch7Proofs.lean": "ba32f8338fd6a308d968db22139eba0d1dd2f1d404b3b8954bdfaafb6c32406d",
-  "docs/COVERAGE.md": "c5c95e382b5b79a80cbb74ec9c0b894a90403e15f85316d04cc5d73106225a15",
-  "docs/SOURCE-ISSUES.md": "fcae3a4e067e543e2e367f7c03abbdeb751ea67a3da984459c26286691ce0e56",
+  "Formalization/Statements/Ch7.lean": "b92229727e740a867529b54d8bd2eae1e7718bd30675e94ca7f6d0183553ea9b",
+  "Formalization/Statements/Ch7Proofs.lean": "0b2c3f713a5178b25db17b217c99964e2b090f33869a38141b7cfee2902354d7",
+  "docs/COVERAGE.md": "955d55f7bbdd5f79047056f26bdccaaaf34267d55ff4ee5554167acb589011c1",
+  "docs/SOURCE-ISSUES.md": "a28f8209a9d44e8f48bfc75f133fd5beac77ea7fd7860ec44fed4baddcaecf87",
   "docs/named-result-status.json": "54ffc4f989e825a3e129fae50ed229637781f010fd0f0279dca119db702b3bac",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
@@ -8489,7 +8489,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 945
+     "line": 984
     }
    ],
    "proof_wrappers": [
@@ -8497,7 +8497,8 @@
    ],
    "library_exports": [
     "StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_tv",
-    "StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_chi"
+    "StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_chi",
+    "StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le"
    ],
    "ledger_records": [],
    "coverage_rows": [
@@ -8536,14 +8537,14 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 17
+     "line": 18
     },
     {
      "name": "StatisticalRL.Statements.Ch7.Lemma7_1",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 40
+     "line": 41
     }
    ],
    "proof_wrappers": [
@@ -8615,7 +8616,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 419
+     "line": 420
     }
    ],
    "proof_wrappers": [
@@ -8681,7 +8682,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 486
+     "line": 487
     }
    ],
    "proof_wrappers": [
@@ -8749,14 +8750,14 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 130
+     "line": 131
     },
     {
      "name": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 174
+     "line": 175
     }
    ],
    "proof_wrappers": [
@@ -8821,7 +8822,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 457
+     "line": 458
     }
    ],
    "proof_wrappers": [
@@ -8887,7 +8888,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 529
+     "line": 530
     }
    ],
    "proof_wrappers": [
@@ -8954,14 +8955,14 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 207
+     "line": 208
     },
     {
      "name": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 254
+     "line": 255
     }
    ],
    "proof_wrappers": [
@@ -9024,7 +9025,7 @@
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 788
+     "line": 827
     }
    ],
    "proof_wrappers": [
@@ -9089,7 +9090,7 @@
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 870
+     "line": 909
     }
    ],
    "proof_wrappers": [
@@ -9150,14 +9151,14 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 286
+     "line": 287
     },
     {
      "name": "StatisticalRL.Statements.Ch7.Thm7_8_corrected_constSum",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 333
+     "line": 334
     }
    ],
    "proof_wrappers": [
@@ -9222,7 +9223,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 361
+     "line": 362
     }
    ],
    "proof_wrappers": [
@@ -9290,7 +9291,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 83
+     "line": 84
     }
    ],
    "proof_wrappers": [
@@ -9380,9 +9381,21 @@
      "line_end": 141
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
-   "library_exports": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Thm7_11_corrected_halfspace",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 578
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Thm7_11_corrected_halfspace_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le"
+   ],
    "ledger_records": [],
    "coverage_rows": [
     26
@@ -9398,7 +9411,7 @@
     "not_thm7_11_printed_someEta_someInit"
    ],
    "partial_lead": false,
-   "refuted_lead": true,
+   "refuted_lead": false,
    "uses": [],
    "statement_status": "refuted",
    "proof_status": "refuted",
@@ -9427,7 +9440,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 669
+     "line": 708
     }
    ],
    "proof_wrappers": [
@@ -9471,7 +9484,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 669
+     "line": 708
     }
    ],
    "proof_wrappers": [
@@ -9517,7 +9530,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 709
+     "line": 748
     }
    ],
    "proof_wrappers": [
@@ -9561,7 +9574,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 709
+     "line": 748
     }
    ],
    "proof_wrappers": [
@@ -9607,7 +9620,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 751
+     "line": 790
     }
    ],
    "proof_wrappers": [
@@ -9653,7 +9666,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 751
+     "line": 790
     }
    ],
    "proof_wrappers": [
@@ -9699,7 +9712,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 751
+     "line": 790
     }
    ],
    "proof_wrappers": [
@@ -9747,14 +9760,14 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 577
+     "line": 616
     },
     {
      "name": "StatisticalRL.Statements.Ch7.Thm7_12_corrected_local",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 636
+     "line": 675
     }
    ],
    "proof_wrappers": [
