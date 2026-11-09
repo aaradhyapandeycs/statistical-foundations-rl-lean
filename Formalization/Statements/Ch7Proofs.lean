@@ -15,6 +15,18 @@ import Formalization.RobustRL.DRVI.OraclePlannerMain
 import Formalization.RobustRL.DRVI.OraclePlannerChiMain
 import Formalization.Ch7Rest.VPOReparam712
 import Formalization.Ch7Rest.TDInferenceHalfSpace711
+import Formalization.Ch7Rest.TDInferenceCLT711
+import Formalization.Ch7Rest.TDInferenceConfInt711
+import Formalization.Ch7Rest.TDInferencePlugin711
+import Formalization.Ch7Rest.TDInferencePluginSingular711
+import Formalization.Ch7Rest.TDInferencePluginConsistency711
+import Formalization.Ch7Rest.TDInferencePluginCorrected711
+import Formalization.Ch7Rest.TDInferencePluginRefute711
+import Formalization.Ch7Rest.TDInferencePluginCoverage711
+import Formalization.RobustRL.DRVI.RobustBellmanDisplays
+import Formalization.Ch7Rest.VPODisplays712
+import Formalization.Ch7Rest.MarlBestResponse
+import Formalization.Ch7Rest.ConvexDistanceTV711
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -263,6 +275,39 @@ theorem Eq_online_RBMLE_restricted_holds : Eq_online_RBMLE_restricted := by
 
 end Eq_DPO_VPO
 
+section RLHFDisplaysProofs
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- `Eq_reward_policy_eq_restricted` from `reward_eq_log_gibbs` (`VPODisplays712.lean`). -/
+theorem Eq_reward_policy_eq_restricted_holds : Eq_reward_policy_eq_restricted := by
+  intro X Y _ _ π_ref β href hβ r x y
+  exact reward_eq_log_gibbs href hβ r x y
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- `Eq_Jstar_restricted` from `optCalValue_printed_lines` (`VPODisplays712.lean`). -/
+theorem Eq_Jstar_restricted_holds : Eq_Jstar_restricted := by
+  intro X Y _ _ ρ π_ref π_cal β href hρ hcal hβ r
+  exact optCalValue_printed_lines ρ hρ href π_cal hcal hβ r
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- `Eq_RLHF_policy_closed_form_restricted` from `gibbsPolicy_isCondPolicy` (`VPOGibbs712.lean`),
+`klValue_le_gibbs` and `isMaximizer_klValue_iff` (`VPODisplays712.lean`). -/
+theorem Eq_RLHF_policy_closed_form_restricted_holds : Eq_RLHF_policy_closed_form_restricted := by
+  intro X Y _ _ ρ π_ref β href hρ hβ r J πr
+  exact ⟨gibbsPolicy_isCondPolicy href r β, fun π hπ ↦ klValue_le_gibbs ρ hρ href hβ r π hπ,
+    fun π hπ ↦ isMaximizer_klValue_iff ρ hρ href hβ r π hπ⟩
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- `Eq_calibrated_value_shiftInvariant_restricted` from `prompt_shift_invariance`
+(`VPODisplays712.lean`). -/
+theorem Eq_calibrated_value_shiftInvariant_restricted_holds :
+    Eq_calibrated_value_shiftInvariant_restricted := by
+  intro X Y _ _ ρ π_ref π_cal β href hρ hcal hβ r₂ c r₁ nll J Jcal
+  obtain ⟨h0, h1, h2, h3, h4⟩ := prompt_shift_invariance ρ hρ href π_cal hcal hβ r₂ c
+  exact ⟨h0, h1, h4, h2, h3⟩
+
+end RLHFDisplaysProofs
+
 section Thm7_6
 
 /-- `Thm7_6_restricted` from `StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted` (`C₁ = 400`). -/
@@ -291,6 +336,52 @@ theorem Eq_mdp_value_Q_holds : Eq_mdp_value_Q := by
 
 end Eq_mdp_value_Q
 
+section RobustBellmanProofs
+universe v
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 StatisticalRL.RobustRL.DRVI in
+/-- `Eq_bellman_equ_infinite_all` from `robustPolicyQ_eq_reward_add_iInf`,
+`sSup_robustPolicyQ_eq_reward_add_iInf`, `robustPolicyValue_eq_optFix_of_dominates`,
+`robustPolicyQ_eq_optQ_of_dominates` (`RobustBellmanDisplays.lean`), with `RowAttains` from
+`tvBall_family_rowAttains` / `chiBall_family_rowAttains`. -/
+theorem Eq_bellman_equ_infinite_all_holds : Eq_bellman_equ_infinite_all.{u, v} := by
+  intro State Action _ _ M σ hσ ball hball
+  have hU : ∀ s a, RowAttains (ball (M.transition s a) σ) := by
+    rcases hball with rfl | rfl
+    · exact tvBall_family_rowAttains M hσ.le
+    · exact chiBall_family_rowAttains M hσ.le
+  refine ⟨robustPolicyQ_eq_reward_add_iInf ball M σ hU,
+    sSup_robustPolicyQ_eq_reward_add_iInf ball M σ hU, fun πs h ↦ ⟨fun s ↦ ?_, fun s a ↦ ?_⟩⟩
+  · rw [robustPolicyValue_eq_optFix_of_dominates ball M σ hU πs h,
+      robustOptimalValue_eq_optFix ball M σ hU]
+  · rw [robustPolicyQ_eq_optQ_of_dominates ball M σ hU πs h, sSup_robustPolicyQ_eq_optQ ball M σ hU]
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 StatisticalRL.RobustRL.DRVI in
+/-- `Eq_robust_bellman_fixedPoint` from `robustPolicyQ_eq_optQ_of_dominates`,
+`robustBellman_optQ`, `eq_optQ_of_robustBellman`, `norm_robustBellman_sub_le`,
+`norm_robustBellman_iterate_sub_le`, `drviIterate_eq_iterate` (`RobustBellmanDisplays.lean`) and
+`drviIterate_error` (`Planning.lean`). -/
+theorem Eq_robust_bellman_fixedPoint_holds : Eq_robust_bellman_fixedPoint.{u, v} := by
+  intro State Action _ _ M σ hσ ball hball πs h T Qs
+  have hU : ∀ s a, RowAttains (ball (M.transition s a) σ) := by
+    rcases hball with rfl | rfl
+    · exact tvBall_family_rowAttains M hσ.le
+    · exact chiBall_family_rowAttains M hσ.le
+  have hT : T = robustBellman ball M σ :=
+    funext fun Q ↦ (robustBellman_eq_inline ball M σ Q).symm
+  have hQs : Qs = optQ (ballFamily ball M σ) M :=
+    robustPolicyQ_eq_optQ_of_dominates ball M σ hU πs h
+  clear_value T Qs
+  subst hT hQs
+  refine ⟨robustBellman_optQ ball M σ, fun Q hQ ↦ eq_optQ_of_robustBellman ball M σ hQ,
+    norm_robustBellman_sub_le ball M σ,
+    fun Q₀ t ↦ norm_robustBellman_iterate_sub_le ball M σ (robustBellman_optQ ball M σ) Q₀ t,
+    fun t s a ↦ ?_⟩
+  rw [← drviIterate_eq_iterate]
+  exact drviIterate_error ball M σ (fun s a ↦ (hU s a).nonempty) t s a
+
+end RobustBellmanProofs
+
 section Thm7_11
 
 /-- `Thm7_11_corrected_halfspace` from
@@ -302,5 +393,104 @@ theorem Thm7_11_corrected_halfspace_holds : Thm7_11_corrected_halfspace := by
     (by linarith) V₀ hμ hΓ
 
 end Thm7_11
+
+section EqClassicCltProofs
+
+/-- `Eq_classic_clt_corrected` from
+`StatisticalRL.Ch7Rest.TDInference.tendsto_sum_pathWeight_bcf_gaussCov` (the export needs only
+`η₀ ≤ 1`). -/
+theorem Eq_classic_clt_corrected_holds : Eq_classic_clt_corrected := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 g
+  exact StatisticalRL.Ch7Rest.TDInference.tendsto_sum_pathWeight_bcf_gaussCov M π μ hμ h0
+    (by linarith) V₀ g
+
+/-- `Eq_classic_clt_restricted` from
+`StatisticalRL.Ch7Rest.TDInference.tendsto_sum_pathWeight_bcf_gaussCov_printed_of_reward_const`. -/
+theorem Eq_classic_clt_restricted_holds : Eq_classic_clt_restricted := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hr hμ h0 h1 g
+  exact StatisticalRL.Ch7Rest.TDInference.tendsto_sum_pathWeight_bcf_gaussCov_printed_of_reward_const
+    M π μ hr hμ h0 (by linarith) V₀ g
+
+end EqClassicCltProofs
+
+section EqConvexCdeltaProofs
+
+/-- `Eq_convex_Cdelta_corrected_oracle` from
+`StatisticalRL.Ch7Rest.TDInference.exists_coverage_oracle_bounds` (the export needs only `η₀ ≤ 1`). -/
+theorem Eq_convex_Cdelta_corrected_oracle_holds : Eq_convex_Cdelta_corrected_oracle := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  exact StatisticalRL.Ch7Rest.TDInference.exists_coverage_oracle_bounds M π μ h0 (by linarith) V₀
+    hμ hΓ
+
+/-- `Eq_convex_Cdelta_corrected_plugin` from
+`StatisticalRL.Ch7Rest.TDInference.plugin_coverage_tendsto` (the export needs only `η₀ ≤ 1`). -/
+theorem Eq_convex_Cdelta_corrected_plugin_holds : Eq_convex_Cdelta_corrected_plugin := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  exact StatisticalRL.Ch7Rest.TDInference.plugin_coverage_tendsto M π μ h0 (by linarith) V₀ hμ hΓ
+
+end EqConvexCdeltaProofs
+
+section EqDefnHatLambdaProofs
+
+/-- `Eq_defn_hat_Lambda_corrected` from
+`StatisticalRL.Ch7Rest.TDInference.eq_defn_hat_Lambda_corrected` (the export needs only `η₀ ≤ 1`). -/
+theorem Eq_defn_hat_Lambda_corrected_holds : Eq_defn_hat_Lambda_corrected := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 ε hε
+  exact StatisticalRL.Ch7Rest.TDInference.eq_defn_hat_Lambda_corrected State Action M π μ η₀ V₀ hμ
+    h0 (by linarith) ε hε
+
+/-- `Eq_defn_hat_Lambda_restricted` from
+`StatisticalRL.Ch7Rest.TDInference.eq_defn_hat_Lambda_restricted` (the export needs only
+`η₀ ≤ 1`). -/
+theorem Eq_defn_hat_Lambda_restricted_holds : Eq_defn_hat_Lambda_restricted := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hr hμ h0 h1 ε hε
+  exact StatisticalRL.Ch7Rest.TDInference.eq_defn_hat_Lambda_restricted M π μ η₀ V₀ hr hμ h0
+    (by linarith) hε
+
+end EqDefnHatLambdaProofs
+
+section MarlEquilibriaProofs
+
+/-- `Marl_bestResponse_exists` from the library exports `valueJ_deviate_le_starValue`,
+`valueJ_brPolicy_eq_starValue` (witness `brPolicy`), `starValue_terminal` and
+`starValue_bellman` (namespace `Marl76`). -/
+theorem Marl_bestResponse_exists_holds : Marl_bestResponse_exists := by
+  intro m S H A G π i hAi
+  exact ⟨fun π' h _ _ s => StatisticalRL.Ch7Rest.Marl76.valueJ_deviate_le_starValue G π i π' h s,
+    ⟨StatisticalRL.Ch7Rest.Marl76.brPolicy G π i hAi, fun h _ hh s =>
+      StatisticalRL.Ch7Rest.Marl76.valueJ_brPolicy_eq_starValue G π i hAi h (by omega) s⟩,
+    fun s => StatisticalRL.Ch7Rest.Marl76.starValue_terminal G π i hAi s,
+    fun h _ hh s => StatisticalRL.Ch7Rest.Marl76.starValue_bellman G π i hAi h hh s⟩
+
+/-- `Marl_NE_isCCE_not_converse` from the library exports `isCCE_of_isNE_of_prob_eq`,
+`coordGame_reward_mem`, `coordPolicy_isCCE` and `coordPolicy_not_product` (namespace `Marl76`). -/
+theorem Marl_NE_isCCE_not_converse_holds : Marl_NE_isCCE_not_converse :=
+  ⟨fun _ _ _ _ G σ π hπ hNE => StatisticalRL.Ch7Rest.Marl76.isCCE_of_isNE_of_prob_eq G σ π hπ hNE,
+    StatisticalRL.Ch7Rest.Marl76.coordGame, StatisticalRL.Ch7Rest.Marl76.coordPolicy,
+    StatisticalRL.Ch7Rest.Marl76.coordGame_reward_mem,
+    StatisticalRL.Ch7Rest.Marl76.coordPolicy_isCCE,
+    StatisticalRL.Ch7Rest.Marl76.coordPolicy_not_product⟩
+
+end MarlEquilibriaProofs
+
+section ConvexDistanceTVProofs
+
+/-- `Eq_convex_distance_le_TV` from the library export `convexDistance_le_tv` (namespace
+`TDInference`), which holds on `ι → ℝ` for any finite `ι`; here `ι = Fin d`. -/
+theorem Eq_convex_distance_le_TV_holds : Eq_convex_distance_le_TV := by
+  intro d P Q hP hQ
+  exact StatisticalRL.Ch7Rest.TDInference.convexDistance_le_tv P Q
+
+end ConvexDistanceTVProofs
+
+section TDWeightsProofs
+
+/-- `Eq_tdWeights_sum` from the library exports `pluginWeight_eq` and `sum_pluginWeight`
+(namespace `TDInference`; `pluginWeight T t` unfolds to `(t + 1) / ∑_u (u + 1)`). -/
+theorem Eq_tdWeights_sum_holds : Eq_tdWeights_sum := fun T hT =>
+  ⟨fun t => StatisticalRL.Ch7Rest.TDInference.pluginWeight_eq T t,
+    StatisticalRL.Ch7Rest.TDInference.sum_pluginWeight hT⟩
+
+end TDWeightsProofs
 
 end StatisticalRL.Statements.Ch7

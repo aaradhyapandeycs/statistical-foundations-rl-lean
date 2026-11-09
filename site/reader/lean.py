@@ -31,11 +31,14 @@ STATUS = {
     "unrecorded": ("Statement entry, no reviewed status recorded", "st-unrecorded"),
     "partial": ("Partial (coverage ledger)", "st-partial"),
     "refuted": ("Printed statement refuted in Lean under one reading; nothing proved", "st-refuted"),
+    "implied": ("Implied by a proved entry (coverage ledger); not separately proved", "st-implied"),
+    "explanatory": ("Explanatory, no mathematical claim (coverage ledger); nothing proved", "st-explanatory"),
+    "cited-out-of-scope": ("Cited result, out of scope by user decision; not proved", "st-outofscope"),
     "ledger": ("Ledger note, not a proved result", "st-ledger"),
     "none": ("Not yet formalized", "st-none"),
 }
 STATUS_ORDER = ["original", "corrected", "restricted", "cov-printed", "cov-corrected", "cov-restricted",
-                "unrecorded", "partial", "refuted", "ledger", "none"]
+                "unrecorded", "partial", "refuted", "implied", "explanatory", "cited-out-of-scope", "ledger", "none"]
 # Statuses that count as a proved Lean statement for a numbered result.
 PROVED = {"original", "corrected", "restricted"}
 
@@ -43,6 +46,9 @@ PROVED = {"original", "corrected", "restricted"}
 def coverage_status(scope: str) -> str:
     """Status of a coverage-ledger row that has no statement entry next to it."""
     lead = (re.match(r"\s*\*\*(.+?)\*\*", scope) or [None, ""])[1].lower()
+    closing = gen_nodes.closing_kind(lead)
+    if closing:
+        return closing
     if gen_nodes.partial_lead(lead):
         return "partial"
     if lead.startswith("printed statement refuted") and "proved" not in lead:
@@ -425,6 +431,9 @@ def classify(name: str, ledger_kind: str, scope: str) -> str:
 CHIP_OVERRIDES = {
     "Thm7_7_restricted": "Related statement proved: some algorithm attains the rates (not Q-FTRL; see note)",
     "Thm7_11_corrected_halfspace": "Corrected variant proved on closed half-spaces only (true covariance, instance constant)",
+    "Eq_classic_clt_corrected": "Corrected display proved (true covariance; qualitative, no rate)",
+    "Eq_convex_Cdelta_corrected_oracle": "Partial: fixed-shape intervals with the oracle covariance only",
+    "Eq_convex_Cdelta_corrected_plugin": "Partial: fixed-shape intervals with the plug-in covariance, limits only (no rate)",
 }
 # Footnote on the restricted count wherever it is shown.
 RESTRICTED_COUNT_NOTE = {
@@ -453,9 +462,29 @@ CARD_NOTES = {
         "Γ_true (assumed nonsingular) in place of the printed Γ, gives the printed T^(-1/3) rate only "
         "for closed half-spaces {x : uᵀx ≤ b}, and has a constant that depends on the instance, η₀ and "
         "V₀. Not implied: the convex-distance bound over all convex sets (open); the printed coefficient "
-        "(open); any confidence region or interval, in particular with the estimated covariance Λ̂_T "
-        "(source issue C47). With state-only rewards Γ_true equals the printed Γ "
-        "(source issue C43)."),
+        "(open); any confidence region with the estimated covariance Λ̂_T, or beyond the oracle-covariance "
+        "half-lines, slabs and Bonferroni box of Eq_convex_Cdelta_corrected_oracle (source issue C47). "
+        "With state-only rewards Γ_true equals the printed Γ (source issue C43)."),
+    "Eq_classic_clt_corrected": (
+        "**Not the printed display.** The printed covariance Γ is replaced by the true TD-noise covariance "
+        "Γ_true; with the printed Γ the display is refuted under the action-dependent-reward reading "
+        "(source issue C43). The result is qualitative convergence in distribution for the step sizes "
+        "η₀t^(-2/3): no rate and no confidence-region claim."),
+    "Eq_convex_Cdelta_corrected_oracle": (
+        "**Not the printed confidence-set rule.** The printed claim for arbitrary convex sets chosen from the "
+        "data is false (source issue C47(1)). What is proved uses the oracle covariance "
+        "Λ = A⁻¹Γ_trueA⁻ᵀ, which is unknown in practice, not the plug-in Λ̂_T, and covers only one- and "
+        "two-sided intervals for a linear functional fixed before the data and a Bonferroni box. The "
+        "plug-in version is Eq_convex_Cdelta_corrected_plugin (limits only); the printed rectangle and the "
+        "ellipsoid remain open."),
+    "Eq_convex_Cdelta_corrected_plugin": (
+        "**Not the printed confidence-set rule.** The printed claim for arbitrary convex sets chosen from the "
+        "data is false (source issue C47(1)). What is proved uses the printed plug-in Λ̂_T, but only for "
+        "one- and two-sided intervals for a linear functional and a Bonferroni box whose direction and level "
+        "are fixed before the data. Coverage is asymptotic only: limits as T → ∞, pointwise in (u, z), not "
+        "uniform, with no rate. Γ_true ≻ 0 is an added non-degeneracy hypothesis. Lean's junk value Λ̂_T = 0 "
+        "on the singular event (some state unsampled) does not affect the limits. The printed rectangle and "
+        "the ellipsoid remain open."),
 }
 
 

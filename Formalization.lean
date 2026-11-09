@@ -26,6 +26,7 @@ import Formalization.MDP.DiscountedOccupancy
 import Formalization.MDP.OptimalDiscountedOccupancy
 import Formalization.MDP.OccupancyBridge
 import Formalization.MDP.PolicyValueQ
+import Formalization.MDP.PrelimDisplays
 import Formalization.Obstructions.SingletonAction
 import Formalization.Obstructions.Theorem37SingletonAction
 import Formalization.Obstructions.OneState
@@ -36,6 +37,7 @@ import Formalization.Obstructions.OneStateExperiment
 import Formalization.Obstructions.OneStatePolicyExperiment
 import Formalization.Obstructions.Theorem37Negation
 import Formalization.Probability.Variance
+import Formalization.Probability.KLChiSquared
 import Formalization.Probability.EmpiricalRow
 import Formalization.Probability.EmpiricalHoeffding
 import Formalization.Probability.EmpiricalHoeffdingFamily
@@ -568,6 +570,8 @@ import Formalization.ModelFree.MeanError
 import Formalization.ModelFree.AsyncQ.MeanError
 import Formalization.ModelFree.AsyncQ.Main
 import Formalization.ModelFree.FiniteQ.CounterexampleT1
+import Formalization.Statements.Ch1
+import Formalization.Statements.Ch1Proofs
 import Formalization.Statements.Ch2
 import Formalization.Statements.Ch2Proofs
 import Formalization.Statements.Ch3
@@ -601,6 +605,7 @@ import Formalization.RobustRL.DRVI.RowSets
 import Formalization.RobustRL.DRVI.PolicyEvaluation
 import Formalization.RobustRL.DRVI.Optimality
 import Formalization.RobustRL.DRVI.RobustQ
+import Formalization.RobustRL.DRVI.RobustBellmanDisplays
 import Formalization.RobustRL.DRVI.Planning
 import Formalization.RobustRL.DRVI.WorstKernel
 import Formalization.RobustRL.DRVI.TVSpan
@@ -645,6 +650,7 @@ import Formalization.Ch7Rest.VPOConfidence712
 import Formalization.Ch7Rest.VPOConcentration712
 import Formalization.Ch7Rest.VPORegret712
 import Formalization.Ch7Rest.VPOMain712
+import Formalization.Ch7Rest.VPODisplays712
 import Formalization.Ch7Rest.VPOReparam712
 import Formalization.Ch7Rest.FedGeneric710
 import Formalization.Ch7Rest.LowerBound710
@@ -727,6 +733,19 @@ import Formalization.Ch7Rest.TDInferenceLeaveOneOutBound711
 import Formalization.Probability.SteinRandomConcentration
 import Formalization.Probability.ChenShaoNonlinear
 import Formalization.Ch7Rest.TDInferenceHalfSpace711
+import Formalization.Probability.WeakConvergenceSmoothTest
+import Formalization.Ch7Rest.TDInferenceCLT711
+import Formalization.Ch7Rest.TDInferenceCLTPrinted711
+import Formalization.Ch7Rest.TDInferenceConfInt711
+import Formalization.Ch7Rest.TDInferenceC47Evidence711
+import Formalization.Ch7Rest.TDInferencePlugin711
+import Formalization.Ch7Rest.TDInferencePluginSingular711
+import Formalization.Ch7Rest.TDInferencePluginConsistency711
+import Formalization.Ch7Rest.TDInferencePluginCorrected711
+import Formalization.Ch7Rest.TDInferencePluginRefute711
+import Formalization.Ch7Rest.TDInferencePluginCoverage711
+import Formalization.Ch7Rest.MarlBestResponse
+import Formalization.Ch7Rest.ConvexDistanceTV711
 import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope
@@ -1019,3 +1038,7 @@ import Formalization.Online.RegretToPAC.Definitions
 import Formalization.Online.RegretToPAC.StartState
 import Formalization.Online.RegretToPAC.Corrected
 import Formalization.Online.RegretToPAC.PrintedRefutation
+import Formalization.Online.SourceOptimism.MonotoneBonusFunction
+import Formalization.Generative.BurnInNecessity
+import Formalization.Online.Bandit.RegretDecompositionDisplay
+import Formalization.ModelFree.QLearningSingleActionTD

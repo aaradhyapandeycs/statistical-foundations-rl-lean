@@ -425,6 +425,47 @@ noncomputable def Eq_regret_asymptotic_ucbvi_corrected : Prop :=
                 (sample.1 k))) ≤
           40 * Real.sqrt ((S : ℝ) * A * H^3 * K) * (1 + I)}
 
+/-- Remark 5.9 (`chapters/onlineRL.tex:1330–1332`), i.e. property `eq:nondecreasing-f-property`
+(`:3307–3311`) of the function `f` of `eq:monotone-function-f-pvn-ucbvi` (`:3299–3305`); source
+proof `:3392–3433`. For every probability vector `p`, every real `c₁`, `H`, every
+`δ' ∈ (0,1]` and positive integer `n`, the function
+`f(v) = ⟨p,v⟩ + max{c₁√(Var_p(v) log(1/δ')/n), c₁²H log(1/δ')/n}` is non-decreasing in each entry
+of `v` on the box `0 ≤ v ≤ H` (second conjunct, as printed), and indeed in `v` for the entrywise
+order (first conjunct). The attribution sentences of the remark are explanatory. The Lean proof
+is derivative-free (variance comparison, both-endpoints bound, intermediate value theorem). -/
+def Remark5_9 : Prop :=
+  ∀ (Ω : Type u) [Fintype Ω] [DecidableEq Ω] (p : FiniteDistribution Ω) (c₁ H δ' : ℝ) (n : ℕ),
+    0 < δ' → δ' ≤ 1 → 0 < n →
+    let f := fun v : Ω → ℝ ↦ p.expectation v +
+      max (c₁ * Real.sqrt (p.variance v * Real.log (1 / δ') / n))
+        (c₁ ^ 2 * H * Real.log (1 / δ') / n)
+    (∀ v w : Ω → ℝ, (∀ s, 0 ≤ v s) → (∀ s, v s ≤ w s) → (∀ s, w s ≤ H) → f v ≤ f w) ∧
+    (∀ (v : Ω → ℝ) (s : Ω) (y z : ℝ), (∀ x, 0 ≤ v x) → (∀ x, v x ≤ H) →
+      0 ≤ y → y ≤ z → z ≤ H → f (Function.update v s y) ≤ f (Function.update v s z))
+
+universe w
+
+/-- Corrected Remark 5.13 (`chapters/onlineRL.tex:3510–3524`, `eq:T6ucb-ub-T6-low-T6-diff`):
+`T₆^ucb ≤ 2T₆^low + 2T₆^diff` and `√T₆^ucb ≤ √(2T₆^low) + √(2T₆^diff)`, with the quantities of
+`eq:defn-T56-proof` (`:879–893`): `T₆^ucb` = `onlineActualT6UCB` (variance of the optimistic
+continuation `V^k_{h+1}` under the true row at the visited pair), `T₆^low` = `onlineActualT6Policy`
+(variance of `V^{π^k}_{h+1}`), `T₆^diff` = `onlineActualT6Difference`
+(`⟨P, (V^k_{h+1} − V^{π^k}_{h+1})²⟩`). The claim is deterministic: it holds for every horizon,
+episode count, environment, initial states, outcome path, `δ`, `c₁`, `c₂`. Corrected because the
+objects are those of the zero-count completion of the algorithm (`docs/SOURCE-ISSUES.md`
+Candidate C8); the printed inequalities are otherwise unchanged. -/
+noncomputable def Remark5_13_corrected : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (H K : ℕ) (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
+    (initial : Fin K → State) (fallback : State)
+    (path : OnlineOutcomePath.{u, w} State (K * H)) (δ c₁ c₂ : ℝ),
+    onlineActualT6UCB H K hH E initial fallback path δ c₁ c₂ ≤
+        2 * onlineActualT6Policy H K hH E initial fallback path δ c₁ c₂ +
+        2 * onlineActualT6Difference H K hH E initial fallback path δ c₁ c₂ ∧
+      Real.sqrt (onlineActualT6UCB H K hH E initial fallback path δ c₁ c₂) ≤
+        Real.sqrt (2 * onlineActualT6Policy H K hH E initial fallback path δ c₁ c₂) +
+        Real.sqrt (2 * onlineActualT6Difference H K hH E initial fallback path δ c₁ c₂)
+
 /-- Lemma 5.22 (`lemma:sqv`, onlineRL.tex:3612–3615), corrected as described
 in `docs/SOURCE-ISSUES.md#C14`: the source coefficient one for centered squares
 fails for signed variables, so both bounds use coefficient four. The probability
@@ -1071,6 +1112,22 @@ def Thm5_19 : Prop :=
       ∀ L : OnlineLearner (Fin S) (Fin A) H, ∃ i : I,
         c₀ * min (Real.sqrt ((H : ℝ) ^ 3 * S * A * K)) ((H : ℝ) * K) ≤
           onlineExpectedRegret (E i) ρ L K
+
+/-- `eqn:regret-decomposition-ucb` with the nonnegativity claim of `eq:regret_bandit`,
+`source/upstream/tex/chapters/bandits.tex:58–82` (regret `:66–69`, "ensures non-negativity of
+regret" `:72`, decomposition `:78–82`). For any finite arm set with mean rewards `r`,
+`r⋆ = max_a r(a)`, `Δ(a) = r⋆ − r(a)` and any realized arm sequence `a_1, …, a_T` (produced by any
+algorithm, on any noise realization), `Regret(T) = T r⋆ − Σ_t r(a_t)` satisfies
+`Regret(T) = Σ_t Δ(a_t) = Σ_a Δ(a)N_T(a)`, with `N_T(a)` the number of rounds with `a_t = a`, and
+`Regret(T) ≥ 0`. Both claims are pathwise. The printed setting `r(a) ∈ [0,1]` is not needed. -/
+def Eqn_regret_decomposition_ucb : Prop :=
+  ∀ (𝒜 : Type u) [Fintype 𝒜] [DecidableEq 𝒜] (r : 𝒜 → ℝ) (T : ℕ) (arm : Fin T → 𝒜),
+    let rstar := ⨆ a, r a
+    let Δ := fun a ↦ rstar - r a
+    let regret := (T : ℝ) * rstar - ∑ t, r (arm t)
+    regret = ∑ t, Δ (arm t) ∧
+      ∑ t, Δ (arm t) = ∑ a, Δ a * ((Finset.univ.filter fun t ↦ arm t = a).card : ℝ) ∧
+      0 ≤ regret
 
 open StatisticalRL.Bandit in
 /-- Restricted `thm:bandit-pure-ucb` (Theorem 5.1), `chapters/bandits.tex:258–277`; model

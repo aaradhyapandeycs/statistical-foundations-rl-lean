@@ -28,10 +28,17 @@ Objects (all concrete; no measurability is needed on the data side):
   weighted sum; `lawProb_univ` proves the data law has total mass `1`.
 * `tdA = diag(μ)(I − γ P_π)`; `printedGamma` is the printed diagonal `Γ_ss` with `r(s)` read as
   `r_π(s)` (`prelim.tex:418`, the only definition of a state-indexed reward), and `trueGamma` is
-  the per-sample TD-noise covariance (not used in M1; it is the C43 correction).
+  the per-sample TD-noise covariance (the C43 correction; the covariance of the corrected CLT
+  limit and of the plug-in target `trueLambda`).
 * `gaussCov A Γ = N(0, A⁻¹ diag(Γ) A⁻ᵀ)` is the law of `A⁻¹ (√Γ ⊙ Z)` with `Z` standard
   Gaussian on `State → ℝ`; `gaussCov_isProbabilityMeasure` and `measurable_gaussMap` show it
   is a genuine probability measure, not the junk `Measure.map` value `0`.
+* Plug-in covariance estimator (`eq:defn-hat-Lambda`, :156–185; lemmas in
+  `TDInferencePlugin711.lean`): `pathProb` (probability of a path event), `sampleAMat` (`A_t`, :166),
+  `sampleB` (`b_t`, :168), `aBar` (`Ā_T`, :166), `pluginWeight` (`w_{t,T}`, :175–177),
+  `pluginResidual`, `gammaHatAt`, `gammaHat` (`Γ̂_T`, :168), `lambdaHat` (`Λ̂_T`, :180–182; Lean's
+  `Matrix.inv` gives the junk value `0` on a singular `Ā_T`, C47(4)), `printedLambda` (printed `Λ⋆`)
+  and `trueLambda` (`A⁻¹ diag(Γ_true) A⁻ᵀ`, C43).
 * `printedRate` is the printed `T^{-1/3}` coefficient. `Γ` is diagonal (:111–117), so
   `‖Γ⁻¹‖ = 1 / min_s Γ_ss` and `κ(Γ) = max_s Γ_ss / min_s Γ_ss`; these are only *defined*
   (finite) when `Γ ≻ 0`, which the statement modules therefore assume (a definedness condition:
@@ -117,7 +124,10 @@ noncomputable def printedGamma (M : DiscountedMDP State Action)
     (M.valueFixedPoint π s - (policyReward M π s + M.discount * M.valueFixedPoint π s')) ^ 2
 
 /-- The per-sample TD-noise covariance (diagonal),
-`μ(s) E_{a∼π(·|s), s'∼P(·|s,a)}[(V^π(s) − r(s,a) − γV^π(s'))²]` (the C43 correction; unused in M1). -/
+`μ(s) E_{a∼π(·|s), s'∼P(·|s,a)}[(V^π(s) − r(s,a) − γV^π(s'))²]` (the C43 correction). It is the
+covariance of the corrected CLT limit `N(0, A⁻¹ diag(Γ_true) A⁻ᵀ)` (`TDInferenceCLT711.lean`), the
+target of the plug-in `Γ̂_T` (`trueLambda` below), and equals `printedGamma` when `r(s,·)` is
+constant on the support of `π(·|s)`. -/
 noncomputable def trueGamma (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (μ : FiniteDistribution State) (s : State) : ℝ :=
   μ.prob s * (π s).expectation fun a ↦ (M.transition s a).expectation fun s' ↦
@@ -150,6 +160,78 @@ noncomputable def printedRate [Nonempty State] (M : DiscountedMDP State Action)
   Real.sqrt (η₀ / ((1 - M.discount) * diagMin μ.prob)) * (∑ s, Γ s) * (1 / diagMin Γ) +
     Real.sqrt (Fintype.card State * (diagMax Γ / diagMin Γ)) /
       ((1 - M.discount) * diagMin μ.prob * η₀)
+
+/-! ## The plug-in covariance estimator `Λ̂_T` (`eq:defn-hat-Lambda`): definitions
+
+Moved here from `TDInferencePlugin711.lean` (same names) so that the statement index can state
+`eq:defn-hat-Lambda` from definition modules only; lemmas stay in `TDInferencePlugin711.lean`. -/
+
+section Plugin
+
+open scoped Matrix
+
+/-- The probability of an event `E` of the sample path under the i.i.d. law (`inference.tex:54–61`). -/
+noncomputable def pathProb (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (T : ℕ) (E : Set (Fin T → Tuple State Action)) : ℝ :=
+  ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω * E.indicator (fun _ ↦ (1 : ℝ)) ω
+
+variable [DecidableEq State]
+
+/-- `A_t = e_{s_t}(e_{s_t} − γ e_{s'_t})ᵀ` (`inference.tex:166`), as a matrix (the operator form
+`v ↦ A_t v` is `sampleA` in `TDInferenceOperator711.lean`). -/
+noncomputable def sampleAMat (M : DiscountedMDP State Action) (x : Tuple State Action) :
+    Matrix State State ℝ :=
+  Matrix.vecMulVec (Pi.single x.1 1 : State → ℝ)
+    ((Pi.single x.1 1 : State → ℝ) - M.discount • (Pi.single x.2.2 1 : State → ℝ))
+
+/-- `b_t = r_t e_{s_t}` with `r_t = r(s_t,a_t)` (`inference.tex:168`). -/
+noncomputable def sampleB (M : DiscountedMDP State Action) (x : Tuple State Action) : State → ℝ :=
+  M.reward x.1 x.2.1 • (Pi.single x.1 (1 : ℝ) : State → ℝ)
+
+/-- `Ā_T = T⁻¹ ∑_{t=1}^T A_t` (`inference.tex:166`). At `T = 0` it is `0`. -/
+noncomputable def aBar (M : DiscountedMDP State Action) {T : ℕ} (ω : Fin T → Tuple State Action) :
+    Matrix State State ℝ :=
+  (T : ℝ)⁻¹ • ∑ t, sampleAMat M (ω t)
+
+/-- The printed weight `w_{t,T} = t / ∑_{t=1}^T t` (`inference.tex:175–177`), indexed 0-based:
+`pluginWeight T t` is the weight of the sample `ω t`, i.e. `w_{t+1,T}`. -/
+noncomputable def pluginWeight (T : ℕ) (t : Fin T) : ℝ :=
+  ((t : ℝ) + 1) / ∑ u : Fin T, ((u : ℝ) + 1)
+
+/-- The residual `A_t V − b_t`. -/
+noncomputable def pluginResidual (M : DiscountedMDP State Action) (V : State → ℝ)
+    (x : Tuple State Action) : State → ℝ :=
+  (sampleAMat M x).mulVec V - sampleB M x
+
+/-- The `Γ̂` formula with residuals at an arbitrary `V`: `∑_t w_{t,T} (A_t V − b_t)(A_t V − b_t)ᵀ`. -/
+noncomputable def gammaHatAt (M : DiscountedMDP State Action) (V : State → ℝ) {T : ℕ}
+    (ω : Fin T → Tuple State Action) : Matrix State State ℝ :=
+  ∑ t, pluginWeight T t • Matrix.vecMulVec (pluginResidual M V (ω t)) (pluginResidual M V (ω t))
+
+/-- `Γ̂_T = ∑_t w_{t,T} (A_t V̄_T − b_t)(A_t V̄_T − b_t)ᵀ` (`inference.tex:168`). -/
+noncomputable def gammaHat (M : DiscountedMDP State Action) (η₀ : ℝ) (V₀ : State → ℝ) {T : ℕ}
+    (ω : Fin T → Tuple State Action) : Matrix State State ℝ :=
+  ∑ t, pluginWeight T t •
+    Matrix.vecMulVec (pluginResidual M (prAverage M η₀ V₀ ω) (ω t))
+      (pluginResidual M (prAverage M η₀ V₀ ω) (ω t))
+
+/-- `Λ̂_T = Ā_T⁻¹ Γ̂_T (Ā_T⁻¹)ᵀ` (`eq:defn-hat-Lambda`, `inference.tex:180–182`). Lean's
+`Matrix.inv` is `0` on a singular `Ā_T` (C47(4)); then `lambdaHat = 0`. -/
+noncomputable def lambdaHat (M : DiscountedMDP State Action) (η₀ : ℝ) (V₀ : State → ℝ) {T : ℕ}
+    (ω : Fin T → Tuple State Action) : Matrix State State ℝ :=
+  (aBar M ω)⁻¹ * gammaHat M η₀ V₀ ω * ((aBar M ω)⁻¹)ᵀ
+
+/-- The printed `Λ⋆ = A⁻¹ΓA⁻ᵀ` (`inference.tex:99–117`) with `r(s) = r_π(s)`. -/
+noncomputable def printedLambda (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) : Matrix State State ℝ :=
+  (tdA M π μ)⁻¹ * Matrix.diagonal (printedGamma M π μ) * ((tdA M π μ)⁻¹)ᵀ
+
+/-- The corrected `Λ = A⁻¹ Γ_true A⁻ᵀ` (SOURCE-ISSUES C43). -/
+noncomputable def trueLambda (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) : Matrix State State ℝ :=
+  (tdA M π μ)⁻¹ * Matrix.diagonal (trueGamma M π μ) * ((tdA M π μ)⁻¹)ᵀ
+
+end Plugin
 
 /-! ## Basic facts: the data law and the Gaussian are genuine probability laws -/
 

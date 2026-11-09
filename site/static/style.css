@@ -159,6 +159,9 @@ pre.lean .c { color: var(--comment); font-style: italic; }
 .st-partial { color: var(--partial); border-style: dashed; }
 .st-ledger { color: var(--ledger); border-style: dotted; }
 .st-none { color: var(--none); border-style: dotted; font-weight: 500; }
+.st-implied { color: var(--ledger); border-style: dotted; }
+.st-explanatory { color: var(--none); border-style: dotted; }
+.st-outofscope { color: var(--partial); border-style: dotted; }
 .st-refuted { color: var(--refuted); border-width: 2px; }
 .scope.caution { border-left: 3px solid var(--corrected); padding-left: 8px; }
 .scope.disclosure { color: var(--fg); }
@@ -240,6 +243,9 @@ svg.depgraph { display: block; font: 11.5px var(--sans); }
 .gn-st-partial rect { stroke: var(--partial); stroke-dasharray: 8 2 2 2; }
 .gn-st-open rect { stroke: var(--muted); stroke-width: 1; }
 .gn-st-prose-claim rect { stroke: var(--none); stroke-width: 1; stroke-dasharray: 3 3; }
+.gn-st-implied rect { stroke: var(--ledger); stroke-width: 1; stroke-dasharray: 1 2; }
+.gn-st-explanatory rect { stroke: var(--none); stroke-width: 1; stroke-dasharray: 1 3; }
+.gn-st-cited-out-of-scope rect { stroke: var(--partial); stroke-width: 1; stroke-dasharray: 4 2; }
 .gn-edge { fill: none; stroke: var(--muted); stroke-opacity: .45; stroke-width: 1; }
 .gn-arrow { fill: var(--muted); }
 .gn-edge.hl { stroke: var(--accent); stroke-opacity: 1; stroke-width: 2; }

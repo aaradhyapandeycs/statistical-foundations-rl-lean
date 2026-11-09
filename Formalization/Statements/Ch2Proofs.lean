@@ -14,6 +14,12 @@ import Formalization.Probability.FreedmanNaturalHistory
 import Formalization.MDP.RewardPerturbation
 import Formalization.MDP.IterationCount
 import Formalization.MDP.MatrixBellman
+import Formalization.MDP.PrelimDisplays
+import Formalization.MDP.ForcedPrefixBridge
+import Formalization.MDP.PrefixValueBridge
+import Formalization.MDP.DiscountedOccupancy
+import Formalization.MDP.FiniteOccupancy
+import Formalization.MDP.FiniteQTrajectory
 
 namespace StatisticalRL.Statements
 open MeasureTheory
@@ -165,5 +171,110 @@ theorem Lemma2_1_iterationCount_holds : Lemma2_1_iterationCount := by
 theorem Eq_Qpi_Vpi_matrix_notation_inf_holds : Eq_Qpi_Vpi_matrix_notation_inf := by
   intro State Action _ _ M π
   exact M.policyFixedPoint_matrix_forms π
+
+theorem Eq_defn_Vpi_inf_holds : Eq_defn_Vpi_inf := by
+  intro State Action _ _ M π s
+  exact ⟨M.integrable_infiniteDiscountedReturn π s, M.trajectoryExpectedValue_bounds π s⟩
+
+theorem Eq_defn_Qpi_inf_horizon_holds : Eq_defn_Qpi_inf_horizon := by
+  intro State Action _ _ M π s a
+  exact ⟨M.integrable_infiniteDiscountedReturn_forced π s a, (M.trajectoryExpectedQ_bounds π s a).1,
+    (M.trajectoryExpectedQ_bounds π s a).2, M.trajectoryExpectedValue_eq_policyAverageQ π s⟩
+
+theorem Eq_optimal_Vstar_Qstar_defn_holds : Eq_optimal_Vstar_Qstar_defn := by
+  intro State Action _ _ M
+  refine ⟨M.exists_stationary_trajectory_optimal, fun f g hf hg ↦ ⟨?_, ?_⟩⟩
+  · funext s a
+    exact le_antisymm (hg _ s a).1 (hf _ s a).1
+  · funext s
+    obtain ⟨a⟩ := M.action_nonempty
+    exact le_antisymm (hg _ s a).2 (hf _ s a).2
+
+theorem Eq_defn_dpi_occupancy_discounted_dist_holds : Eq_defn_dpi_occupancy_discounted_dist := by
+  intro State Action _ _ _ M ρ d dj
+  have hd : ∀ π s, d π s = M.discountedStateOccupancy π ρ s := fun π s ↦
+    (M.discountedStateOccupancy_eq_source π ρ s).symm
+  have hdj : ∀ π s a, dj π s a = M.discountedJointOccupancy π ρ s a := fun π s a ↦
+    (M.discountedJointOccupancy_eq_source π ρ s a).symm
+  refine ⟨fun π ↦ ⟨?_, ?_⟩, fun f s a ↦ ?_⟩
+  · simp only [hd]
+    exact M.discountedStateOccupancy_sum π ρ
+  · simp only [hdj]
+    exact M.discountedJointOccupancy_sum π ρ
+  · rw [hdj, hd, M.discountedJointOccupancy_deterministic]
+    by_cases h : a = f s <;> simp [h]
+
+theorem Eq_bellman_consistency_V_holds : Eq_bellman_consistency_V := by
+  intro State Action _ _ M π Tπ TV
+  refine ⟨M.trajectoryExpectedQ_bellman π, fun Q hQ ↦ ?_, ?_⟩
+  · exact (M.policy_fixedPoint_exists_unique π).unique hQ (M.trajectoryExpectedQ_bellman π)
+  · rw [M.trajectoryExpectedValue_eq_valueFixedPoint π]
+    exact M.valueFixedPoint_spec π
+
+theorem Eq_bellman_fix_point_holds : Eq_bellman_fix_point := by
+  intro State Action _ _ M f hf T
+  have hQ := M.trajectoryExpectedQ_eq_optimalityFixedPoint_of_optimal f (fun π s a ↦ (hf π s a).1)
+  have hT : T = M.qOptimality := funext fun Q ↦ (M.qOptimality_eq_ciSup Q).symm
+  rw [hT, hQ]
+  exact ⟨M.optimalityFixedPoint_spec, fun Q h ↦
+    M.optimality_fixedPoint_exists_unique.unique h M.optimalityFixedPoint_spec⟩
+
+theorem Eq_gamma_contraction_preliminary_inf_holds : Eq_gamma_contraction_preliminary_inf := by
+  intro State Action _ _ M π Q₁ Q₂ Tπ T
+  have hT : T = M.qOptimality := funext fun Q ↦ (M.qOptimality_eq_ciSup Q).symm
+  rw [hT]
+  exact ⟨M.norm_qBellman_sub_le π Q₁ Q₂, M.norm_qOptimality_sub_le Q₁ Q₂⟩
+
+theorem Eq_dh_pi_defn_holds : Eq_dh_pi_defn := by
+  intro State Action _ _ _ _ stages ρ d dj
+  have hd : ∀ i s, d i s = DecisionStage.stateOccupancy stages ρ i s := by
+    intro i s
+    convert (DecisionStage.stateOccupancy_eq_trajectory_event stages ρ i s).symm
+  have hdj : ∀ i s a, dj i s a = DecisionStage.stateActionOccupancy stages ρ i s a := by
+    intro i s a
+    convert (DecisionStage.stateActionOccupancy_eq_trajectory_event stages ρ i s a).symm
+  refine ⟨fun i s a ↦ ?_, fun i hi s ↦ ?_, fun f hf i s a ↦ ?_⟩
+  · rw [hdj, hd]
+    exact DecisionStage.stateActionOccupancy_eq stages ρ i s a
+  · rw [hd]
+    simp only [DecisionStage.stateOccupancy, hi, List.take_zero]
+    rfl
+  · rw [hdj, hd, DecisionStage.stateActionOccupancy_eq, hf i s]
+    by_cases h : a = f i.val s <;> simp [EnvironmentStage.pointMass, h]
+
+theorem Eq_Bellman_finite_pi_holds : Eq_Bellman_finite_pi := by
+  intro State Action _ _ stages
+  refine ⟨fun s ↦ ?_, fun s a ↦ ?_, fun i s a ↦ DecisionStage.trajectory_bellman_at stages i s a⟩
+  · simp [DecisionStage.trajectoryValue_nil]
+  · simp
+
+theorem Eq_Bellman_finite_opt_holds : Eq_Bellman_finite_opt := by
+  intro State Action _ _ _ es V Q det IsOptimal
+  refine ⟨⟨EnvironmentStage.greedyDetSeq es, fun π n s a _ ↦
+    EnvironmentStage.greedyDetSeq_dominates es π n s a⟩, fun f hf ↦ ?_⟩
+  have hopt := EnvironmentStage.finite_det_optimal_eq es f hf
+  have hlen := EnvironmentStage.controlled_length es (det f)
+  refine ⟨fun s ↦ ?_, fun s a ↦ ?_, fun i s a ↦ ⟨?_, ?_⟩⟩
+  · show DecisionStage.trajectoryValue ((EnvironmentStage.controlled es (det f)).drop es.length) s = 0
+    rw [← hlen, List.drop_length]
+    exact DecisionStage.trajectoryValue_nil s
+  · show DecisionStage.trajectoryQ ((EnvironmentStage.controlled es (det f)).drop es.length) s a = 0
+    rw [← hlen, List.drop_length]
+    rfl
+  · let i' : Fin (EnvironmentStage.controlled es (det f)).length := ⟨i.val, by rw [hlen]; exact i.isLt⟩
+    have hb := (DecisionStage.trajectory_bellman_at (EnvironmentStage.controlled es (det f)) i' s a).1
+    have hg : (EnvironmentStage.controlled es (det f)).get i' = (es.get i).withPolicy (det f i.val) := by
+      rw [List.get_eq_getElem, EnvironmentStage.controlled_getElem]
+      rfl
+    rw [hg] at hb
+    exact hb
+  · show DecisionStage.trajectoryValue ((EnvironmentStage.controlled es
+        (fun k x ↦ EnvironmentStage.pointMass (f k x))).drop i.val) s =
+      ⨆ a', DecisionStage.trajectoryQ ((EnvironmentStage.controlled es
+        (fun k x ↦ EnvironmentStage.pointMass (f k x))).drop i.val) s a'
+    rw [(hopt i.val i.isLt).1 s]
+    simp only [(hopt i.val i.isLt).2 s]
+    rw [List.drop_eq_getElem_cons i.isLt]
+    exact actionMaximum_eq_ciSup _
 
 end StatisticalRL.Statements

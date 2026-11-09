@@ -339,6 +339,174 @@ class GenNodesTest(unittest.TestCase):
         run = ["outcome", "theorem", "assumption"]
         self.assertTrue(check_fidelity.in_order_anywhere(run, check_fidelity.letters(text)))
 
+    # -- batch T: closing statuses, wrapper bodies, remark attachment ---------------------------
+
+    def write_inventory(self, extra_entries=(), extra_refs=()):
+        inv = inventory()
+        inv["entries"] += list(extra_entries)
+        inv["labels"] += [{"label": l, "source": {"file": TEX, "line_start": e["source_ranges"][0]["line_start"],
+                                                  "line_end": e["source_ranges"][0]["line_start"]},
+                           "owner_id": e["id"]} for e in extra_entries for l in e["labels"]]
+        inv["references"] += list(extra_refs)
+        (self.tmp / "docs/source-inventory.json").write_text(json.dumps(inv))
+
+    def test_wrapper_body_ends_at_next_command(self):
+        """Regression: names in an `open ... in` line or the next docstring are not exports of the
+        preceding wrapper."""
+        proofs = CH2_PROOFS.replace(
+            "theorem Remark2_1_holds : Remark2_1 := StatisticalRL.Foo.remark\n",
+            "theorem Remark2_1_holds : Remark2_1 := StatisticalRL.Foo.remark\n\n"
+            "open StatisticalRL.Bleed.Namespace in\n"
+            "/-- From `StatisticalRL.Bleed.other_export`. -/\n")
+        (self.tmp / "Formalization/Statements/Ch2Proofs.lean").write_text(proofs)
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["ch2-remark-2.1"]["library_exports"], ["StatisticalRL.Foo.remark"])
+        self.assertEqual(n["label:eq:p"]["library_exports"], ["StatisticalRL.Foo.pq"])
+        text = "theorem A_holds : A := by\n  exact X.y\n-- note X.z\ntheorem B_holds : B := X.w\n"
+        self.assertEqual(text[:gn.wrapper_end(text, 10)], "theorem A_holds : A := by\n  exact X.y\n")
+
+    def test_entry_citing_a_display_inside_its_remark_attaches_to_the_remark(self):
+        self.write_inventory([entry("ch2-remark-2.2", "remark", "2.2", 160, 170),
+                              entry("label:eq:r", "display", "2.7", 163, 165, ["eq:r"])])
+        ch2 = CH2.replace("end StatisticalRL.Statements",
+                          "/-- Remark 2.2 (`chapters/prelim.tex:160–170`; coefficient `eq:r`, `:163–165`). -/\n"
+                          "def Remark2_2 : Prop := True\n\nend StatisticalRL.Statements")
+        (self.tmp / "Formalization/Statements/Ch2.lean").write_text(ch2)
+        (self.tmp / "Formalization/Statements/Ch2Proofs.lean").write_text(CH2_PROOFS.replace(
+            "end StatisticalRL.Statements", "theorem Remark2_2_holds : Remark2_2 := StatisticalRL.Foo.r2\n\n"
+            "end StatisticalRL.Statements"))
+        (self.tmp / "docs/COVERAGE.md").write_text(COVERAGE + "| Remark 2.2, prelim lines 160–170 | x | **Proved** (`Remark2_2`). |\n")
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual([e["name"] for e in n["ch2-remark-2.2"]["statement_entries"]],
+                         ["StatisticalRL.Statements.Remark2_2"])
+        self.assertEqual(n["ch2-remark-2.2"]["proof_status"], "proved")
+        self.assertNotIn("label:eq:r", n)
+
+    def test_long_first_range_does_not_capture_a_numbered_result(self):
+        """The inner-result rule is for remarks only: an entry whose first range is a long span
+        containing a lemma is not attached to that lemma."""
+        ch2 = CH2.replace("end StatisticalRL.Statements",
+                          "/-- Prose claim after the proof, `chapters/prelim.tex:95–115`. -/\n"
+                          "def Lemma2_4_tail : Prop := True\n\nend StatisticalRL.Statements")
+        (self.tmp / "Formalization/Statements/Ch2.lean").write_text(ch2)
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["label:lem:d"]["statement_entries"][0]["name"], "StatisticalRL.Statements.Lemma2_4_tail")
+        # (with a range containing the whole lemma, the lemma is the overlap target as before; the
+        # inner-result shortcut only ever picks remarks)
+
+    def test_joint_entry_attaches_paired_label_confirmed_by_coverage(self):
+        self.write_inventory([entry("label:eq:s", "display", "2.8", 200, 202, ["eq:s"]),
+                              entry("label:eq:t", "display", "2.9", 210, 212, ["eq:t"])])
+        ch2 = CH2.replace("end StatisticalRL.Statements",
+                          "/-- `eq:s`, `chapters/prelim.tex:200–202`, with `eq:t`, `chapters/prelim.tex:209–213`. -/\n"
+                          "def Eq_s : Prop := True\n\nend StatisticalRL.Statements")
+        (self.tmp / "Formalization/Statements/Ch2.lean").write_text(ch2)
+        (self.tmp / "Formalization/Statements/Ch2Proofs.lean").write_text(CH2_PROOFS.replace(
+            "end StatisticalRL.Statements", "theorem Eq_s_holds : Eq_s := StatisticalRL.Foo.s\n\n"
+            "end StatisticalRL.Statements"))
+        (self.tmp / "docs/COVERAGE.md").write_text(COVERAGE + "| `eq:s` and `eq:t` | `Eq_s` | **Proved** (`Eq_s`). |\n")
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["label:eq:t"]["proof_status"], "proved")
+        # a label in parentheses after the item is context, not a confirmation
+        (self.tmp / "docs/COVERAGE.md").write_text(COVERAGE + "| `eq:s` (with `eq:t`) | `Eq_s` | **Proved** (`Eq_s`). |\n")
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["label:eq:t"]["statement_entries"], [])
+        self.assertEqual(n["label:eq:t"]["proof_status"], "open")
+        # without the confirming row the paired label is context only
+        (self.tmp / "docs/COVERAGE.md").write_text(COVERAGE + "| `eq:s` | `Eq_s` | **Proved** (`Eq_s`). |\n")
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertNotIn("label:eq:t", n)
+
+    def closing_fixture(self, rows: str):
+        self.write_inventory(
+            [entry("ch2-remark-2.3", "remark", "2.3", 180, 182, ["rem:o"]),
+             entry("ch2-remark-2.4", "remark", "2.4", 184, 186, ["rem:i"]),
+             entry("ch2-remark-2.5", "remark", "2.5", 188, 190, ["rem:e"]),
+             entry("ch2-remark-2.6", "remark", "2.6", 192, 196, ["rem:u"])],
+            [{"kind": "cross_reference", "targets": ["rem:o"], "source": {"file": TEX, "line_start": 194, "line_end": 194}},
+             {"kind": "cross_reference", "targets": ["rem:i", "rem:e"],
+              "source": {"file": TEX, "line_start": 195, "line_end": 195}}])
+        (self.tmp / "docs/COVERAGE.md").write_text(COVERAGE + rows)
+        return gn.build(gn.Reader(self.tmp))
+
+    ROWS = ("| Remark 2.3, prelim lines 180–182 | none | **Out of scope: cited result** [x2020]; "
+            "user decision 2026-11-09. |\n"
+            "| Remark 2.4, prelim lines 184–186 | none | **Implied by `Thm2_3_corrected`** (corrected clause). |\n"
+            "| Remark 2.5, prelim lines 188–190 | none | **Explanatory (no mathematical claim)** attribution. |\n"
+            "| Read-off after Theorem 2.3, prelim line 87 | none | **Implied by `Lemma2_1`** (Õ form not a Prop). |\n")
+
+    def test_closing_statuses_never_count_as_proved(self):
+        data = self.closing_fixture(self.ROWS)
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertEqual(n["ch2-remark-2.3"]["statement_status"], "cited-out-of-scope")
+        self.assertEqual(n["ch2-remark-2.3"]["decision_anchors"], ["2026-11-09"])
+        self.assertEqual(n["ch2-remark-2.4"]["statement_status"], "implied")
+        self.assertEqual(n["ch2-remark-2.4"]["implied_variant"], "corrected")   # inherits the entry's suffix
+        self.assertEqual(n["ch2-remark-2.4"]["implied_by"], ["StatisticalRL.Statements.Thm2_3_corrected"])
+        self.assertEqual(n["ch2-remark-2.5"]["statement_status"], "explanatory")
+        for nid in ("ch2-remark-2.3", "ch2-remark-2.4", "ch2-remark-2.5"):
+            self.assertEqual(n[nid]["proof_status"], "open")
+            self.assertFalse(n[nid]["printed_with_cited_printed"])
+        s = data["summary"]
+        self.assertEqual(s["closing_not_proved"]["implied"], {"nodes": 1, "rows_without_node": 1})
+        self.assertEqual(s["closing_not_proved"]["explanatory"], {"nodes": 1, "rows_without_node": 0})
+        self.assertEqual(s["closing_not_proved"]["cited-out-of-scope"], {"nodes": 1, "rows_without_node": 0})
+        self.assertEqual(s["named_results_with_ledger_record"], 3)
+        self.assertEqual(sum(s["prose_by_statement_status"][k] for k in ("printed", "corrected", "restricted")), 3)
+        # the unlabelled read-off row (Theorem 2.3 mentioned after the item start) is not attached to Theorem 2.3
+        self.assertEqual([r["line"] for r in data["closing_rows_without_node"]], [10])
+        self.assertNotIn(10, n["label:thm:c"]["coverage_rows"])
+        self.assertEqual(data["warnings"], [])
+        nxt = gn.render_next(data)
+        self.assertIn("INCOMPLETE", nxt)
+        self.assertIn("statement `implied (corrected)` · by `Thm2_3_corrected`", nxt)
+        # Remark 2.6 uses the out-of-scope remark: blocked; implied/explanatory uses do not block
+        blocked = nxt.split("### Blocked", 1)[1].split("##", 1)[0]
+        self.assertIn("Remark 2.6", blocked)
+        self.assertIn("waits on Remark 2.3", blocked)
+        self.assertNotIn("Remark 2.4", blocked)
+        ready = nxt.split("### Remarks and displayed claims", 1)[1].split("###", 1)[0]
+        for r in ("Remark 2.3", "Remark 2.4", "Remark 2.5"):
+            self.assertNotIn(r, ready)
+        self.assertIn("## Cited results out of scope (user decision) (1 nodes, 0 unlabelled rows)", nxt)
+
+    def test_closing_row_classifies_a_display_a_joint_entry_cites(self):
+        """A step-definition display cited by a joint entry (eq:RBMLE_online) is classified by its own
+        reviewed row: an explanatory row never makes the attached entry count as a proof of it."""
+        cov = COVERAGE.replace("| Displays `eq:p` and `eq:q` | x | **Proved** (`Eq_p_q`). |\n",
+                               "| Display `eq:p` | x | **Proved** (`Eq_p_q`). |\n"
+                               "| Step definition `eq:q` | none | **Explanatory (no mathematical claim).** |\n")
+        (self.tmp / "docs/COVERAGE.md").write_text(cov)
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual((n["label:eq:q"]["statement_status"], n["label:eq:q"]["proof_status"]),
+                         ("explanatory", "open"))
+        self.assertEqual(n["label:eq:p"]["proof_status"], "proved")
+
+    def test_closing_rows_fail_closed(self):
+        with self.assertRaises(SystemExit):   # no dated user-decision anchor
+            self.closing_fixture("| Remark 2.3 | none | **Out of scope: cited result** [x2020]. |\n")
+        with self.assertRaises(SystemExit):   # names no statement entry
+            self.closing_fixture("| Remark 2.4 | none | **Implied by `NoSuchEntry`** |\n")
+        with self.assertRaises(SystemExit):   # a numbered result can never be closed
+            self.closing_fixture("| Lemma 2.4, `lem:d` | none | **Explanatory (no mathematical claim).** |\n")
+        with self.assertRaises(SystemExit):   # names an entry whose node is not proved
+            self.closing_fixture("| Remark 2.4 | none | **Implied by `Eq_p_q`** |\n"
+                                 "| Displays `eq:p` | x | **Partial:** one clause. |\n")
+
+    def test_reader_words_for_closing_statuses(self):
+        from reader import graph, lean
+        for k in gn.CLOSING_STATUSES:
+            self.assertIn(k, graph.STATEMENT_WORDS)
+            word = graph.STATEMENT_WORDS[k].lower()   # each says in words that nothing is proved for it
+            self.assertTrue("not proved" in word or "not separately proved" in word or "no mathematical claim" in word)
+            self.assertIn(k, lean.STATUS)
+            self.assertTrue(any(w in lean.STATUS[k][0].lower() for w in ("not proved", "not separately proved",
+                                                                             "nothing proved")))
+            self.assertNotIn(k, lean.PROVED)
+        self.assertEqual(lean.coverage_status("**Implied by `X`** ..."), "implied")
+        self.assertEqual(lean.coverage_status("**Explanatory (no mathematical claim)** ..."), "explanatory")
+        self.assertEqual(lean.coverage_status("**Out of scope: cited result** ..."), "cited-out-of-scope")
+
 
 ROOT = HERE.parents[1]
 

@@ -57,6 +57,30 @@ def Eq_Vhatpi_Vpi_difference_decoupled_Hoeffding : Prop :=
         C₀ * (Real.sqrt (Real.log (S / δ) / ((1 - M.discount) ^ 4 * N)) +
           Real.log (S / δ) / ((1 - M.discount) ^ 2 * N))}
 
+/-- `eqn:ice-cream`, `source/upstream/tex/chapters/generative_model_model_based.tex:619–634`
+(display `:626–630`, its premise `N ≥ β₁/(1−γ)` at `:633`, `β₁ = C₀ log(Sm/δ)` at `:478` and
+`:634`, `m = ⌈log(e/(1−γ))⌉` at `:624`/`:634`). Printed: for some large enough constant `C₀`,
+with probability exceeding `1 − δ`, `‖V̂^π − V^π‖∞ ≤ 3√(8β₁/((1−γ)³N))`, provided
+`N ≥ β₁/(1−γ)`. "Some large enough `C₀`" is read as `∃ C̄ > 0, ∀ C₀ ≥ C̄`. `V̂^π` is the plug-in
+value of the empirical policy kernel (`valueEstimator`, as in `Thm3_1`) and `V^π` the expected
+infinite-trajectory value; `N > 0` is a binder since the display divides by `N`. The printed
+display is a chain; its middle expression `2√(8β₁/((1−γ)³N)) + 2β₁/((1−γ)²N)` is a proof step
+derived under Step 6's working premise `N ≥ 64β₁/(1−γ)` (`:622`), and this entry states the
+labelled final bound under the display's own premise. The premise `N ≥ β₁/(1−γ)` is kept as printed; the library
+export proves the bound for every `N ≥ 1` and every `C₀ ≥ 8`. -/
+def Eqn_ice_cream : Prop :=
+  ∃ C : ℝ, 0 < C ∧ ∀ C₀ : ℝ, C ≤ C₀ →
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+      (N : ℕ) (hN : 0 < N) (δ : ℝ), 0 < δ → δ < 1 →
+      let m : ℕ := ⌈Real.log (Real.exp 1 / (1 - M.discount))⌉₊
+      let β₁ : ℝ := C₀ * Real.log ((Fintype.card State : ℝ) * (m : ℝ) / δ)
+      β₁ / (1 - M.discount) ≤ N →
+      1 - δ < (StatisticalRL.ModelBasedPolicyEvaluation.samplingLaw M π N).real
+        {data | ‖StatisticalRL.ModelBasedPolicyEvaluation.valueEstimator M π N hN data -
+            M.trajectoryExpectedValue π‖ ≤
+          3 * Real.sqrt (8 * β₁ / ((1 - M.discount) ^ 3 * N))}
+
 /-- Restricted positive-sample version of source `Thm:sample-compl-main`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:900–923`.
 This entry makes the existing empirical-frequency export's `N > 0`
@@ -183,6 +207,29 @@ noncomputable local instance statementStateDecidable (State : Type*) : Decidable
   Classical.decEq State
 
 open scoped Matrix in
+/-- `eq:lemma-VarP-V-bound` together with `eq:I-gamma-P-Var-bound`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:300–352` (`eq:I-gamma-P-Var-bound`
+`:327–341`, `eq:lemma-VarP-V-bound` `:346–352`). For every finite MDP and stationary policy `π`,
+with `P_π(s,t) = Σ_a π(a|s)P(t|s,a)`, `V^π` the expected infinite-trajectory value,
+`Var_{P_π}(V^π)(s)` the variance of `V^π` under the row `P_π(s,·)` and `(I − γP_π)⁻¹` the matrix
+inverse: `0 ≤ (I − γP_π)⁻¹Var_{P_π}(V^π) ≤ (2‖V^π‖∞²/γ²)1` entrywise, and
+`0 ≤ ‖(I − γP_π)⁻¹√Var_{P_π}(V^π)‖∞ ≤ √(2/(1−γ))‖V^π‖∞/γ`. Domain condition `0 < γ`: the printed
+bounds divide by `γ` (at `γ = 0` they are undefined; Lean's `x/0 = 0` would make them false).
+The intermediate expressions of the printed chain are proof steps and are not stated. -/
+def Eq_lemma_VarP_V_bound : Prop :=
+  ∀ (State Action : Type*) [Fintype State] [Fintype Action] [DecidableEq State]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action),
+    0 < M.discount →
+    let P : Matrix State State ℝ := fun s t ↦ (M.policyTransition π s).prob t
+    let V : State → ℝ := M.trajectoryExpectedValue π
+    let VarV : State → ℝ := fun s ↦ (M.policyTransition π s).variance V
+    let R : Matrix State State ℝ := (1 - M.discount • P)⁻¹
+    (∀ s, 0 ≤ (R *ᵥ VarV) s ∧ (R *ᵥ VarV) s ≤ 2 * ‖V‖ ^ 2 / M.discount ^ 2) ∧
+    0 ≤ ‖R *ᵥ (fun s ↦ Real.sqrt (VarV s))‖ ∧
+    ‖R *ᵥ (fun s ↦ Real.sqrt (VarV s))‖ ≤
+      Real.sqrt (2 / (1 - M.discount)) * ‖V‖ / M.discount
+
+open scoped Matrix in
 /-- Lemma 3.6, `lem:empirical-value-residual`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:1395–1410`, on the event
 `eq:Bernstein-empirical-optimal-value` (lines 1373–1376). `π̂⋆` is any deterministic policy
@@ -270,6 +317,32 @@ def Thm3_7_corrected : Prop :=
             (1 : ℝ) / 4 ≤ (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
               {data | ε < ‖QHat M.reward M.discount data -
                 M.trajectoryExpectedQ M.optimalGreedyPolicy‖})
+
+/-- Restricted reading of the burn-in necessity claim `eq:sample-size-range-planning`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:930–940`: "Condition
+`N ≥ Ω̃(1/(1−γ))` is necessary for learning a policy that performs strictly better than a random
+guess". The book does not define "random guess"; this entry reads "strictly better" as value gap
+at most `1/(64(1−γ))`, a constant fraction of the trivial range `1/(1−γ)`. It does not cover
+accuracies between `1/(64(1−γ))` and `1/(1−γ)`. Further restrictions, inherited from
+`Thm3_7_corrected`: `S ≥ 2`, `A ≥ 2`, `SA ≥ 16`, `γ ≥ 2/3`, and deterministic estimators only
+(`piHat` is any function of the known rewards, the known discount and the `N`-per-pair sample
+array). The success metric is the book's `V⋆ − V^{π̂}` in sup norm, with `V⋆` the trajectory value
+of the optimal greedy policy (equal to the optimal value, so tie-independent) and `V^{π̂}` the
+trajectory value of the returned deterministic policy. The constant `c` is chosen first; the
+witness MDP after the estimator. See `docs/SOURCE-ISSUES.md#C49`. -/
+def Thm3_2_burnInNecessary_restricted : Prop :=
+  ∃ c : ℝ, 0 < c ∧
+    ∀ (S A N : ℕ) (γ : ℝ),
+      2 ≤ S → 2 ≤ A → 16 ≤ S * A → (2 : ℝ) / 3 ≤ γ → γ < 1 →
+      (N : ℝ) ≤ c * Real.log ((S : ℝ) * (A : ℝ)) / (1 - γ) →
+      ∀ piHat : (Fin S → Fin A → ℝ) → ℝ →
+          StatisticalRL.ModelBasedPolicyLearning.Samples (Fin S) (Fin A) N → Fin S → Fin A,
+        ∃ M : DiscountedMDP (Fin S) (Fin A), M.discount = γ ∧
+          (1 : ℝ) / 4 ≤ (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
+            {data | 1 / (64 * (1 - γ)) <
+              ‖M.trajectoryExpectedValue M.optimalGreedyPolicy -
+                M.trajectoryExpectedValue
+                  (fun s ↦ EnvironmentStage.pointMass (piHat M.reward M.discount data s))‖}
 
 /-- Approximate-planner extension of source `Thm:sample-compl-main`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:900–923`,

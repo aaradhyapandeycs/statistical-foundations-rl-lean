@@ -34,9 +34,13 @@ import Formalization.Online.Regret.MVP.Decoupling.OnlineMVPClaimPVSource
 import Formalization.Online.Regret.MVP.MVPProfileDefinitions
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
 import Formalization.Online.SourceOptimism.GreedyValueIdentity
+import Formalization.Online.SourceOptimism.MonotoneBonusFunction
+import Formalization.Online.Bandit.RegretDecompositionDisplay
+import Formalization.Online.Regret.T3.OnlineRegretT3SourceBound
 
 namespace StatisticalRL.Statements
 open StatisticalRL.OnlineRL
+universe u v w
 
 theorem Lemma5_5_corrected_holds : Lemma5_5_corrected := by
   intro State Action instS instA H K hH hK E ρ δ c₁ c₂ hδ hδone hc₁ hc₂
@@ -437,5 +441,41 @@ theorem Eq_regret_asymptotic_ucbvi_corrected_holds : Eq_regret_asymptotic_ucbvi_
   have hp := onlineUCBVI_actual_regret_burnIn H K hH hK E ρ fallback δ hδ hδone hburn
   simpa [onlineSourceOptimismDeltaPrime, onlineW1SourceIota, onlineActualEpisodeRegret,
     onlineCappedEpisodePolicyValue, fallback] using hp.le
+
+theorem Eqn_regret_decomposition_ucb_holds : Eqn_regret_decomposition_ucb.{u} := by
+  intro 𝒜 _ _ r T arm
+  exact StatisticalRL.Bandit.regret_decomposition r T arm
+
+theorem Remark5_9_holds : Remark5_9.{u} := by
+  intro Ω _ _ p c₁ H δ' n hδ hδ1 hn f
+  have hι : 0 ≤ Real.log (1 / δ') :=
+    Real.log_nonneg (by rw [le_div_iff₀ hδ]; linarith)
+  have hn' : (0 : ℝ) < n := by exact_mod_cast hn
+  exact ⟨fun v w hv hvw hw ↦ p.monotoneBonusFunction_mono hι hn' hv hvw hw,
+    fun v s y z hv hvH hy hyz hz ↦ p.monotoneBonusFunction_update_mono hι hn' hv hvH s hy hyz hz⟩
+
+theorem Remark5_13_corrected_holds : Remark5_13_corrected.{u, v, w} := by
+  intro State Action _ _ H K hH E initial fallback path δ c₁ c₂
+  have h := onlineActualT6UCB_le_policy_difference H K hH E initial fallback path δ c₁ c₂
+  -- `T₆^low ≥ 0` and `T₆^diff ≥ 0`: sums of variances and of expectations of squares.
+  have hP : 0 ≤ onlineActualT6Policy H K hH E initial fallback path δ c₁ c₂ := by
+    unfold onlineActualT6Policy
+    exact Finset.sum_nonneg fun _ _ ↦ Finset.sum_nonneg fun _ _ ↦
+      FiniteDistribution.variance_nonneg _ _
+  have hD : 0 ≤ onlineActualT6Difference H K hH E initial fallback path δ c₁ c₂ := by
+    unfold onlineActualT6Difference
+    exact Finset.sum_nonneg fun _ _ ↦ Finset.sum_nonneg fun _ _ ↦
+      FiniteDistribution.expectation_nonneg _ fun _ ↦ sq_nonneg _
+  refine ⟨h, ?_⟩
+  set a := 2 * onlineActualT6Policy H K hH E initial fallback path δ c₁ c₂
+  set b := 2 * onlineActualT6Difference H K hH E initial fallback path δ c₁ c₂
+  have ha : 0 ≤ a := by positivity
+  have hb : 0 ≤ b := by positivity
+  calc Real.sqrt (onlineActualT6UCB H K hH E initial fallback path δ c₁ c₂)
+      ≤ Real.sqrt (a + b) := Real.sqrt_le_sqrt h
+    _ ≤ Real.sqrt a + Real.sqrt b := by
+      rw [Real.sqrt_le_left (by positivity)]
+      nlinarith [Real.sq_sqrt ha, Real.sq_sqrt hb, mul_nonneg (Real.sqrt_nonneg a)
+        (Real.sqrt_nonneg b)]
 
 end StatisticalRL.Statements

@@ -18,6 +18,7 @@ import Formalization.ModelFree.MeanError
 import Formalization.ModelFree.AsyncQ.MeanError
 import Formalization.ModelFree.QLearningUnderestimation
 import Formalization.ModelFree.QLearningRateFacts
+import Formalization.ModelFree.QLearningSingleActionTD
 
 /-! Proofs of the Chapter 4 statement index from the existing exports. -/
 namespace StatisticalRL.Statements.Ch4
@@ -169,5 +170,11 @@ theorem Remark4_5_holds : Remark4_5 := by
     have hsq : 0 < Real.sqrt ((1 - γ) ^ 2 * T) := Real.sqrt_pos.mpr (by positivity)
     have hlb := (hmain γ hγ hγ1 T η hT3 hηlow hηup).2 τhat hτ hτmax t N htτ htN
     exact lt_of_lt_of_le (by positivity) hlb
+
+theorem QLearning_singleAction_eq_TD_holds : QLearning_singleAction_eq_TD.{u, v} := by
+  intro State Action _ _ _ M π a η Q₀
+  exact ⟨fun samples t s ↦ qLearningIterate_singleAction M π a η samples Q₀ t s,
+    fun T B ↦ qSampled_singleAction_event_eq M π a η T Q₀ B,
+    fun s ↦ optimalQ_singleAction_eq_value M π a s⟩
 
 end StatisticalRL.Statements.Ch4

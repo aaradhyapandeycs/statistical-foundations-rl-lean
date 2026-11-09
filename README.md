@@ -36,7 +36,9 @@ Every one of the 90 numbered results in the inventory now has a reviewed Lean re
 separates printed, corrected, restricted and refuted forms. For Theorem 7.11 the counted form is a corrected
 variant: true noise covariance instead of the printed one, closed half-spaces only, and an instance-dependent
 constant; the bound over all convex sets remains open. The monograph as a whole is **incomplete**: prose
-claims, algorithms and displays are tracked separately, and no result is author-approved.
+claims, algorithms and displays are tracked separately, and no result is author-approved. Remarks and
+displays recorded as implied by a proved entry, explanatory, or cited and out of scope (a user decision of
+2026-11-09) are listed separately and are never counted as proved.
 
 Only the standard foundational axioms `propext`, `Classical.choice`, and
 `Quot.sound` are allowed in the transitive dependency closure. No source theorem
