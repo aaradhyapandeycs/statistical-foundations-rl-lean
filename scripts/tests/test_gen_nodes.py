@@ -142,8 +142,8 @@ class GenNodesTest(unittest.TestCase):
         self.assertEqual(set(uses_c), {"label:lem:a", "label:alg:x", "label:lem:d"})
         self.assertEqual(uses_c["label:alg:x"]["target"], "context")
         self.assertTrue(all(not u["reviewed"] for u in uses_c.values()))
-        self.assertTrue(n["label:lem:a"]["fully_proved"])
-        self.assertFalse(n["label:thm:c"]["fully_proved"])
+        self.assertTrue(n["label:lem:a"]["printed_with_cited_printed"])
+        self.assertFalse(n["label:thm:c"]["printed_with_cited_printed"])
         self.assertEqual(data["summary"]["named_results_with_ledger_record"], 3)
         self.assertEqual(n["label:lem:a"]["proof_wrappers"], ["StatisticalRL.Statements.Lemma2_1_holds"])
         # R1: a proved node citing a refutation stays proved; the name is recorded as data only
@@ -174,7 +174,7 @@ class GenNodesTest(unittest.TestCase):
 
     def test_classify_agrees_with_reader(self):
         from reader import lean
-        names = ["Lemma2_1", "Thm3_2_positiveN", "Thm3_9_causal_positiveN", "Lemma5_7_K2_corrected",
+        names = ["Lemma2_1", "Thm3_2_positiveN", "Lemma2_1_iterationCount", "Thm3_9_causal_positiveN", "Lemma5_7_K2_corrected",
                  "Thm7_6_restricted", "Lemma6_4", "Thm7_12_corrected_local", "Thm4_7"]
         to_reader = {"printed": "original", "corrected": "corrected", "restricted": "restricted"}
         for kind in ("certified_named_results", "proved_variants"):
@@ -182,6 +182,96 @@ class GenNodesTest(unittest.TestCase):
                 for scope in ("", "Restricted to N>0."):
                     self.assertEqual(to_reader[gn.classify(name, kind, scope)], lean.classify(name, kind, scope),
                                      (name, kind, scope))
+
+    def test_unsuffixed_prose_entry_status_comes_from_coverage(self):
+        # An unrecorded entry with a non-restriction suffix is classified by the coverage row
+        # that names it, not by its name: proved -> printed; partial-sentence headline -> restricted.
+        rows = gn.parse_coverage('''| Source item | Lean evidence | Reviewed scope |
+| --- | --- | --- |
+| Iteration count after Lemma 2.1 | x | **Prose claim proved** (`Lemma2_1_iterationCount`): every k ... |
+| Constant rate after Theorem 4.6 | x | **Prose claim proved with the Õ made explicit** (`Thm4_6_constantRate`): ... |
+| Remarks | x | **Proved** (`Remark4_1`, `Remark4_2`): ... |
+| Remark 4.5 | x | **First two sentences proved** (`Remark4_5`), ... |
+| Theorem 4.7 | x | **Printed result proved** (`Thm4_7`) ... `Thm4_7_case_i` is a reading aid. |
+| Remark 5.12 | x | **Restricted variant proved (lower bound unrestricted).** `Remark5_12_lowerBound`: ... |
+| Theorem 7.11 | x | **Printed statement refuted; corrected theorem open.** (`Thm7_11_x`) |
+''')
+        self.assertEqual(gn.classify("Lemma2_1_iterationCount", None, "", rows), "printed")
+        self.assertEqual(gn.classify("Thm4_6_constantRate", None, "", rows), "printed")
+        self.assertEqual(gn.classify("Remark4_2", None, "", rows), "printed")
+        # proving only part of a remark is partial, not a restricted case
+        self.assertIsNone(gn.coverage_variant("Remark4_5", rows))
+        self.assertTrue(gn.coverage_partial("Remark4_5", rows))
+        self.assertFalse(gn.coverage_partial("Remark4_1", rows))
+        self.assertEqual(gn.classify("Remark5_12_lowerBound", None, "", rows), "restricted")
+        # not the row's subject: falls back to the name rule (suffix -> restricted)
+        self.assertIsNone(gn.coverage_variant("Thm4_7_case_i", rows))
+        self.assertEqual(gn.classify("Thm4_7_case_i", None, "", rows), "restricted")
+        # refuted with nothing proved: no proved variant
+        self.assertIsNone(gn.coverage_variant("Thm7_11_x", rows))
+        # name markers still win over a "proved" coverage headline
+        rows2 = gn.parse_coverage("| a | b | **Prose claim proved** (`Thm3_2_approxPlanner_positiveN`) |\n")
+        self.assertEqual(gn.classify("Thm3_2_approxPlanner_positiveN", None, "", rows2), "restricted")
+        # and the named-ledger record wins over coverage
+        self.assertEqual(gn.classify("Lemma2_1_iterationCount", "proved_variants", "", rows), "restricted")
+
+    def test_unsuffixed_prose_entry_in_graph(self):
+        ch2 = CH2.replace("def Remark2_1 : Prop := True", "def Remark2_1_iterationCount : Prop := True")
+        (self.tmp / "Formalization/Statements/Ch2.lean").write_text(ch2)
+        (self.tmp / "docs/COVERAGE.md").write_text(COVERAGE.replace("**Proved** (`Remark2_1`)",
+                                                                    "**Prose claim proved** (`Remark2_1_iterationCount`)"))
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["ch2-remark-2.1"]["statement_status"], "printed")
+        self.assertEqual(n["ch2-remark-2.1"]["statement_entries"][0]["variant"], "printed")
+
+    def test_issue_ids_ignore_constants(self):
+        # COVERAGE row for Theorems 7.2/7.4 uses constants "C1 log(...) (C1 = 2, C2 = 10⁶)"
+        cov = COVERAGE.replace("**Corrected variant proved.** Printed form false: `not_thm2_3_printed`.",
+                               "**Corrected variant proved.** iterations at least C1 log(N) (C1 = 2, C2 = 10), "
+                               "see [C7](SOURCE-ISSUES.md#C7). Printed form false: `not_thm2_3_printed`.")
+        (self.tmp / "docs/COVERAGE.md").write_text(cov)
+        (self.tmp / "docs/SOURCE-ISSUES.md").write_text("## Candidate C1: a\n## Candidate C2: b\n## Candidate C7: c\n")
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["label:thm:c"]["issues"], ["C7"])
+        self.assertEqual(gn.CID_RE.findall("C1 = 2, C2 ≤ 3, see C37"), ["37"])
+
+    def test_escaped_pipe_stays_in_cell(self):
+        cells = gn.split_md_row("| a | b | **Refuted.** \\|E f(x) − E f(Z)\\| ≤ 1, `|x|` |")
+        self.assertEqual(len(cells), 3)
+        self.assertEqual(cells[2], "**Refuted.** |E f(x) − E f(Z)| ≤ 1, `|x|`")
+        from reader import lean
+        self.assertEqual(lean.split_md_row("| a | b | c \\| d |"), gn.split_md_row("| a | b | c \\| d |"))
+
+    def test_reader_places_cards_at_their_own_item(self):
+        """B1: an entry is shown at the source item it formalizes, not the first item it cites;
+        the cited algorithm gets a link and no status."""
+        from reader import render
+        from reader.lean import Entry
+        from types import SimpleNamespace as NS
+
+        def blk(kind, kind_name, entry_id, labels, number):
+            b = NS(kind=kind, kind_name=kind_name, entry={"id": entry_id, "labels": labels}, labels=labels,
+                   children=[], anchor="E-" + entry_id, file=None, line_start=None, number=number)
+            return b
+        alg = blk("algorithm", None, "label:alg:q", ["alg:q"], "4.2")
+        alg.kind_name = None
+        thm = blk("env", "theorem", "label:thm:lb", ["thm:lb"], "4.7")
+        page = NS(id="ch4-3", blocks=[alg, thm])
+        e = Entry("Thm4_7", "S.Thm4_7", "F/Ch4.lean", 1, 2, "", ["alg:q", "thm:lb"], [],
+                  record={"source_label": "thm:lb"}, status="original")
+        site = object.__new__(render.Site)
+        site.book = NS(label_owner={"alg:q": {}, "thm:lb": {}})
+        site.lean = NS(entries=[e], coverage={})
+        site.pages = [page]
+        site.entry_node = {"S.Thm4_7": "label:thm:lb"}
+        site.inv_by_id = {"label:thm:lb": {"labels": ["thm:lb"], "kind": "theorem", "number": "4.7"}}
+        site.place()
+        self.assertEqual(site.placed["Thm4_7"][1], "E-label:thm:lb")
+        self.assertEqual(site.placement_problems(), [])
+        self.assertEqual(site.statuses(thm), ["original"])
+        self.assertEqual(site.statuses(alg), [])
+        self.assertIn(e, site.matches[id(alg)])
+        self.assertNotIn(id(alg), site.home)
 
     def test_check_mode_and_next(self):
         self.assertEqual(gn.main(["--root", str(self.tmp)]), 0)
@@ -205,6 +295,62 @@ class GenNodesTest(unittest.TestCase):
         (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
         with self.assertRaises(SystemExit):
             gn.build(gn.Reader(self.tmp))
+
+
+
+ROOT = HERE.parents[1]
+
+
+@unittest.skipUnless((ROOT / "source/upstream/tex/StatisticalRL-nowplain.tex").is_file(),
+                     "pinned TeX not restored (python3 scripts/fetch_source.py)")
+class ReaderPlacementTest(unittest.TestCase):
+    """Regression test on the real book and the committed ledgers (Lean revision HEAD): each Lean
+    card sits at the result it formalizes, never at an algorithm or definition it cites."""
+
+    @classmethod
+    def setUpClass(cls):
+        from reader.book import Book
+        from reader.lean import Git, LeanIndex
+        from reader.render import Site
+        cls.tmp = Path(tempfile.mkdtemp())
+        book = Book(ROOT, cls.tmp)
+        lean = LeanIndex(Git(ROOT, os.environ.get("SITE_TEST_REV", "HEAD")),
+                         {l["label"] for l in book.inventory["labels"]})
+        front, chapters, back = book.convert_all()
+        cls.site = Site(book, lean, book.paginate(chapters), front, back)
+        cls.blocks = {id(b): (p, b) for p in cls.site.pages for t in p.blocks for b in cls.site.units(t)}
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp)
+
+    def home(self, name):
+        _, _, _, bid = self.site.placed[name]
+        return self.blocks[bid][1]
+
+    def test_no_unplaced_cards_and_ledger_items_hold_their_cards(self):
+        self.assertEqual([e.name for e in self.site.unplaced], [])
+        self.assertEqual(self.site.placement_problems(), [])
+
+    def test_concrete_placements(self):
+        b = self.home("Thm4_7")
+        self.assertIn("thm:LB-example-Q-generative", b.labels)       # Theorem 4.7, not Algorithm 4.2
+        self.assertNotEqual(self.site.kind_of(b), "algorithm")
+        b = self.home("Thm7_6_restricted")
+        self.assertIn("thm:sample-complexity-plug-in-marl", b.labels)  # Theorem 7.6, not eq:defn-Nash-E / CCE
+        for name in ("Eq_PAC_from_regret_conversion_corrected", "Eq_PAC_from_regret_conversion_restricted"):
+            if name in {e.name for e in self.site.lean.entries}:
+                self.assertIn('id="L-eq:PAC-from-regret-conversion"', self.home(name).html)
+
+    def test_theorem_7_2_issues(self):
+        n = {x["id"]: x for x in self.site.node_data["nodes"]}
+        self.assertEqual(n["label:thm:l1-upper-bound"]["issues"], ["C37"])
+
+    def test_context_items_carry_no_status(self):
+        for _, b in self.blocks.values():
+            if self.site.kind_of(b) in ("algorithm", "assumption", "definition"):
+                self.assertEqual(self.site.statuses(b), [], b.labels)
+                self.assertNotIn(id(b), self.site.home, b.labels)
 
 
 if __name__ == "__main__":

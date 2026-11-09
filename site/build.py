@@ -63,6 +63,9 @@ def main() -> int:
     front, chapters, back = book.convert_all()
     pages = book.paginate(chapters)
     site = Site(book, lean, pages, front, back)
+    bad = site.placement_problems()
+    if bad:
+        raise SystemExit("Lean cards not at their ledger item:\n  " + "\n  ".join(bad))
 
     html_pages = site.book_pages()
     html_pages["index"] = site.index_page()
@@ -70,6 +73,7 @@ def main() -> int:
     graph = GraphPages(site, html_pages)  # node graph from the ledgers at the same Lean revision
     html_pages["status"] = graph.status_page()
     html_pages["graph"] = graph.graph_page()
+    html_pages["errata"] = graph.errata_page()
     html_pages["about"] = site.about_page()
     html_pages["acknowledgements"] = site.ack_page()
     html_pages["references"] = site.references_page()  # last: citations are collected above

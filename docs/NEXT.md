@@ -50,7 +50,7 @@ Open numbered results and prose claims (remarks, displayed claims) whose every u
 - Remark 5.10 — `chapters/onlineRL.tex:1746–1752` · statement `prose-claim`
 - Remark 5.11 — `chapters/onlineRL.tex:2043–2047` · statement `prose-claim`
 - Remark 5.13 — `chapters/onlineRL.tex:3512–3524` · statement `prose-claim`
-- Display `eq:Vk-Itrue` — `chapters/onlineRL.tex:4470–4473` · statement `refuted`
+- Display `eq:Vk-Itrue` — `chapters/onlineRL.tex:4470–4473` · statement `refuted` · C17
 - Remark 6.1 — `chapters/offlineRL.tex:45–47` · statement `prose-claim`
 - Remark 6.2 `rem:Cstar_lower_bound_infinite` — `chapters/offlineRL.tex:142–151` · statement `prose-claim`
 - Remark 6.3 — `chapters/offlineRL.tex:175–185` · statement `prose-claim`
@@ -75,9 +75,7 @@ The printed statement is not proved as printed. Each needs either a proof of the
 - Lemma 3.5 `lem:policy-learning-evaluation` — `chapters/generative_model_model_based.tex:1306–1326` · statement `restricted`
 - Theorem 3.7 `theorem:azar` — `chapters/generative_model_model_based.tex:1443–1464` · statement `corrected` · C1, C2
 - Theorem 3.9 `Thm:sample-compl-finite` — `chapters/generative_model_model_based.tex:2551–2570` · statement `restricted`
-- Display `eq:sample-size-finite-horizon-generative` — `chapters/generative_model_model_based.tex:2580–2583` · statement `restricted`
 - Lemma 4.3 `lemma:TD-step-size` — `chapters/generative_model_model_free.tex:317–327` · statement `corrected` · C5
-- Display — `chapters/generative_model_model_free.tex:1873–1879` · statement `restricted`
 - Theorem 4.12 `thm:infinite-horizon-asyn` — `chapters/generative_model_model_free.tex:2062–2086` · statement `corrected` · C34
 - Remark 4.3 — `chapters/generative_model_model_free.tex:2088–2090` · statement `corrected` · C34
 - Theorem 4.13 `thm:finite-horizon-simple-Q-generative` — `chapters/generative_model_model_free.tex:2215–2236` · statement `corrected` · C35
@@ -115,10 +113,10 @@ The printed statement is not proved as printed. Each needs either a proof of the
 - Lemma 6.14 `lemma:value-policy-LB-inf` — `chapters/offlineRL.tex:2544–2583` · statement `restricted`
 - Theorem 6.16 `thm:finite-VI-LCB` — `chapters/offlineRL.tex:3095–3112` · statement `restricted` · C32
 - Theorem 6.17 `thm:lcbq` — `chapters/offlineRL.tex:3176–3192` · statement `restricted` · C33
-- Theorem 7.2 `thm:l1-upper-bound` — `chapters/robust_RL.tex:342–359` · statement `corrected` · C1, C2, C37
+- Theorem 7.2 `thm:l1-upper-bound` — `chapters/robust_RL.tex:342–359` · statement `corrected` · C37
 - Remark 7.1 `remark:tv-upper` — `chapters/robust_RL.tex:361–372` · statement `restricted` · C37
 - Theorem 7.3 `thm:l1-lower-bound` — `chapters/robust_RL.tex:377–391` · statement `corrected` · C38
-- Theorem 7.4 `thm:l2-upper-bound` — `chapters/robust_RL.tex:437–450` · statement `corrected` · C1, C2, C37
+- Theorem 7.4 `thm:l2-upper-bound` — `chapters/robust_RL.tex:437–450` · statement `corrected` · C37
 - Theorem 7.5 `thm:chi2-lower-bound` — `chapters/robust_RL.tex:461–480` · statement `corrected` · C7
 - Theorem 7.6 `thm:sample-complexity-plug-in-marl` — `chapters/marl.tex:384–399` · statement `restricted` · C45
 - Theorem 7.7 `thm:Q-FTRL` — `chapters/marl.tex:441–467` · statement `restricted` · C39
@@ -136,7 +134,7 @@ A COVERAGE row marked partial, or a statement entry without its reviewed record.
 
 ## Other obligations outside the numbered-result count
 
-- Prose nodes (remarks and displayed claims): 55, of which 7 printed, 5 corrected, 4 restricted, 1 refuted, 3 partial, 35 prose-claim.
+- Prose nodes (remarks and displayed claims): 55, of which 9 printed, 5 corrected, 2 restricted, 1 refuted, 3 partial, 35 prose-claim.
 - Algorithms: 17; definitions: 4; assumptions: 3 (context items, not nodes; edges to them are recorded but never block).
 - Source-gap candidates in the inventory: 59 (see `docs/SOURCE-ISSUES.md`).
 - Unlabelled prose claims not listed in `docs/COVERAGE.md` are not tracked as nodes.
@@ -147,5 +145,5 @@ A COVERAGE row marked partial, or a statement entry without its reviewed record.
 - COVERAGE.md:49 matches no inventory result: Generative lower bound, singleton-action obstruction
 - COVERAGE.md:50 matches no inventory result: Robust χ² policy-value foundation and singleton obstruction
 - COVERAGE.md:67 matches no inventory result: Infinite-horizon Bellman consistency and VI, lines 190–264 and 316–355
-- COVERAGE.md:82 matches no inventory result: Planning accuracy of empirical VI and PI, prose claim, model-based cha
+- COVERAGE.md:82 matches no inventory result: Planning accuracy of empirical VI and PI, prose claim, model-based chapter line 943
 

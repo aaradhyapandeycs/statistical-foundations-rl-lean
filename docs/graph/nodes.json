@@ -19,7 +19,7 @@
   "Formalization/Statements/Ch6Proofs.lean": "39494946cb0020a987eadc0c81bea4c6feb6eb88a9e30b38c983aa88128d3f66",
   "Formalization/Statements/Ch7.lean": "c2939cb401da84e1ae23a96581197d14632bcf47365c9278e5243e31ca7d7e48",
   "Formalization/Statements/Ch7Proofs.lean": "fed6734244d47b228d3dd90fbcc5663ab296b101754e7aba5e57b340d850d007",
-  "docs/COVERAGE.md": "e6806bcbc18c3e5fd7a75e2f199776b1e1d76fdbef840efeb6beb424eef13aea",
+  "docs/COVERAGE.md": "b878cacc82e66cf1130d5d5b0e52123b9dfeb6305677f0399c983becd4b3d791",
   "docs/SOURCE-ISSUES.md": "40eb3cb041cf8c1addd9b602c65bd1cca6fc938633a396274856aa50cb026b39",
   "docs/named-result-status.json": "eed7b50c5aa12010788c2b235179b9338385e1103717925737ca8f3bff64dce0",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
@@ -52,12 +52,12 @@
    "open": 0,
    "prose-claim": 0
   },
-  "named_fully_proved": 39,
+  "named_printed_with_cited_printed": 39,
   "prose_nodes": 55,
   "prose_by_statement_status": {
-   "printed": 7,
+   "printed": 9,
    "corrected": 5,
-   "restricted": 4,
+   "restricted": 2,
    "refuted": 1,
    "partial": 3,
    "open": 0,
@@ -93,7 +93,7 @@
     },
     "named_total": 13,
     "named_proved": 13,
-    "named_fully_proved": 13
+    "named_printed_with_cited_printed": 13
    },
    "3": {
     "named": {
@@ -106,9 +106,9 @@
      "prose-claim": 0
     },
     "prose": {
-     "printed": 2,
+     "printed": 3,
      "corrected": 0,
-     "restricted": 1,
+     "restricted": 0,
      "refuted": 0,
      "partial": 0,
      "open": 0,
@@ -116,7 +116,7 @@
     },
     "named_total": 9,
     "named_proved": 9,
-    "named_fully_proved": 5
+    "named_printed_with_cited_printed": 5
    },
    "4": {
     "named": {
@@ -129,9 +129,9 @@
      "prose-claim": 0
     },
     "prose": {
-     "printed": 2,
+     "printed": 3,
      "corrected": 1,
-     "restricted": 1,
+     "restricted": 0,
      "refuted": 0,
      "partial": 0,
      "open": 0,
@@ -139,7 +139,7 @@
     },
     "named_total": 15,
     "named_proved": 15,
-    "named_fully_proved": 10
+    "named_printed_with_cited_printed": 10
    },
    "5": {
     "named": {
@@ -162,7 +162,7 @@
     },
     "named_total": 23,
     "named_proved": 23,
-    "named_fully_proved": 7
+    "named_printed_with_cited_printed": 7
    },
    "6": {
     "named": {
@@ -185,7 +185,7 @@
     },
     "named_total": 18,
     "named_proved": 18,
-    "named_fully_proved": 2
+    "named_printed_with_cited_printed": 2
    },
    "7": {
     "named": {
@@ -208,7 +208,7 @@
     },
     "named_total": 12,
     "named_proved": 11,
-    "named_fully_proved": 2
+    "named_printed_with_cited_printed": 2
    }
   }
  },
@@ -245,7 +245,7 @@
    "uses": [],
    "statement_status": "partial",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:defn-Qpi-inf-horizon",
@@ -279,7 +279,7 @@
    "uses": [],
    "statement_status": "partial",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:defn-dpi-occupancy-discounted-dist",
@@ -313,7 +313,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:bellman_consistency-V",
@@ -347,7 +347,7 @@
    "uses": [],
    "statement_status": "partial",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch2-lemma-2.1",
@@ -400,7 +400,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:variance-perturbation-var-P-V",
@@ -454,7 +454,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:basic-property-matrix-notation-inf",
@@ -508,7 +508,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:QV-pi-perturbabtion-r-inf",
@@ -552,7 +552,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:QV-star-perturbabtion-r-inf",
@@ -598,7 +598,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:dh-pi-defn",
@@ -632,7 +632,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eqn:defn-d1rho-finite",
@@ -666,7 +666,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:dhstar-finite",
@@ -700,7 +700,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:Bellman-finite-pi",
@@ -734,7 +734,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:Bellman-finite-opt",
@@ -768,7 +768,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:Hoeffding-prelim",
@@ -822,7 +822,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:Bernstein-prelim",
@@ -877,7 +877,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:empirical bernstein",
@@ -931,7 +931,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:tail-bound-sum-Bernoulli",
@@ -985,7 +985,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:azuma-hoeffding",
@@ -1039,7 +1039,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:Freedman-prelim",
@@ -1093,7 +1093,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:fano",
@@ -1148,7 +1148,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:reverse-Fano-bound",
@@ -1202,7 +1202,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch2-remark-2.1",
@@ -1242,7 +1242,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:KL-tensorize",
@@ -1296,7 +1296,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:KL-quadratic-lower-bound",
@@ -1351,7 +1351,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:model-based-policy-eval",
@@ -1433,7 +1433,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eqn:ice-cream",
@@ -1467,7 +1467,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:Thm:sample-compl-main",
@@ -1503,7 +1503,7 @@
     },
     {
      "name": "StatisticalRL.Statements.Ch3.Thm3_2_planningIterations",
-     "variant": "restricted",
+     "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
      "line": 288
@@ -1568,7 +1568,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch3-remark-3.1",
@@ -1598,7 +1598,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:LemAbsToNormalV",
@@ -1652,7 +1652,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:LemValueCover",
@@ -1716,7 +1716,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:policy-learning-evaluation",
@@ -1807,7 +1807,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:empirical-value-residual",
@@ -1862,7 +1862,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch3-remark-3.2",
@@ -1902,7 +1902,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:theorem:azar",
@@ -1978,7 +1978,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:N-UB-test-lower-Q-generative-overall",
@@ -2027,7 +2027,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:P-Mi-Q-inaccurate-lower-generative",
@@ -2076,7 +2076,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:properties-M01-lower-generative",
@@ -2133,7 +2133,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:Thm:sample-compl-finite",
@@ -2197,7 +2197,7 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:sample-size-finite-horizon-generative",
@@ -2219,7 +2219,7 @@
    "statement_entries": [
     {
      "name": "StatisticalRL.Statements.Ch3.Thm3_9_minimaxLowerBound",
-     "variant": "restricted",
+     "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
      "line": 358
@@ -2241,9 +2241,9 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "restricted",
+   "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:policy-evaluation-TD",
@@ -2352,7 +2352,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch4-remark-4.1",
@@ -2404,7 +2404,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:TD-bounded",
@@ -2459,7 +2459,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lemma:TD-step-size",
@@ -2525,7 +2525,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:TD-square",
@@ -2579,7 +2579,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lemma:TD-variance-proxy-bound",
@@ -2643,7 +2643,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:infinite-horizon-simple",
@@ -2743,7 +2743,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch4-remark-4.2",
@@ -2795,7 +2795,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:LB-example-Q-generative",
@@ -2925,7 +2925,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:non-negativity-Qt-Vt",
@@ -2991,7 +2991,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lemma:Q-step-size",
@@ -3045,7 +3045,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lemma:Q-comparison-facts",
@@ -3100,7 +3100,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lemma:robust-Bellman-contraction",
@@ -3154,7 +3154,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch4-display-7d1d8cf0e57c",
@@ -3174,7 +3174,7 @@
    "statement_entries": [
     {
      "name": "StatisticalRL.Statements.Ch4.Thm4_6_underestimation",
-     "variant": "restricted",
+     "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
      "line": 164
@@ -3194,9 +3194,9 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "restricted",
+   "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:infinite-horizon-asyn",
@@ -3272,7 +3272,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch4-remark-4.3",
@@ -3316,7 +3316,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:finite-horizon-simple-Q-generative",
@@ -3372,7 +3372,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:optimal-V-Q-hardMDP",
@@ -3428,7 +3428,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:lower-bound-E-xi-lower-Q",
@@ -3503,7 +3503,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch4-remark-4.4",
@@ -3543,7 +3543,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch4-remark-4.5",
@@ -3573,7 +3573,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:PAC-from-regret-conversion",
@@ -3631,7 +3631,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:bandit-pure-ucb",
@@ -3697,7 +3697,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch5-remark-5.1",
@@ -3727,7 +3727,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:remark:different-bonus-than-Azar",
@@ -3759,7 +3759,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm-ucbvi-regret",
@@ -3870,7 +3870,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch5-remark-5.3",
@@ -3910,7 +3910,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:sum-inv-Nhk-ucbvi",
@@ -3974,7 +3974,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:cum-var-ub-Hsquare-ucbvi-mean",
@@ -4038,7 +4038,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch5-remark-5.4",
@@ -4078,7 +4078,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:opt",
@@ -4145,7 +4145,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch5-remark-5.5",
@@ -4185,7 +4185,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:decomdetail",
@@ -4241,7 +4241,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:bound-W1-W2-ucbvi-proof",
@@ -4343,7 +4343,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch5-remark-5.6",
@@ -4373,7 +4373,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch5-remark-5.7",
@@ -4403,7 +4403,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:bound-T234",
@@ -4497,7 +4497,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:bound-T56",
@@ -4627,7 +4627,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch5-remark-5.8",
@@ -4667,7 +4667,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch5-remark-5.9",
@@ -4716,7 +4716,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm-mvp-regret",
@@ -4857,7 +4857,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:optimism-Q-V-geq-mvp",
@@ -4909,7 +4909,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:key2",
@@ -4975,7 +4975,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:sum-inv-Nhk-mvp",
@@ -5052,7 +5052,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:uniform",
@@ -5146,7 +5146,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:decouple",
@@ -5225,7 +5225,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch5-remark-5.10",
@@ -5265,7 +5265,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:T2-ub-analysis-mvp",
@@ -5334,7 +5334,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:T5-ub-analysis-mvp",
@@ -5393,7 +5393,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:bound-T6-ucb-mvp",
@@ -5451,7 +5451,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm-ucbq-regret",
@@ -5553,7 +5553,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:property_lr",
@@ -5609,7 +5609,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch5-remark-5.11",
@@ -5649,7 +5649,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:opt_model_free",
@@ -5724,7 +5724,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:minimax-lower-online",
@@ -5791,7 +5791,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:Vh-star-Vhpi-gap-lower-bound-online-final",
@@ -5845,7 +5845,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:online-lb-testing",
@@ -5918,7 +5918,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch5-remark-5.12",
@@ -5978,7 +5978,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch5-remark-5.13",
@@ -6008,7 +6008,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:sqv",
@@ -6065,7 +6065,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:claim:PV-l-UB",
@@ -6171,7 +6171,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:Vk-Itrue",
@@ -6197,7 +6197,9 @@
    "coverage_rows": [
     36
    ],
-   "issues": [],
+   "issues": [
+    "C17"
+   ],
    "evidence": [],
    "refutations_cited": [
     "not_eq_Vk_Itrue_printed"
@@ -6207,7 +6209,7 @@
    "uses": [],
    "statement_status": "refuted",
    "proof_status": "refuted",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch6-remark-6.1",
@@ -6237,7 +6239,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:rem:Cstar_lower_bound_infinite",
@@ -6269,7 +6271,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch6-remark-6.3",
@@ -6299,7 +6301,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch6-remark-6.4",
@@ -6329,7 +6331,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch6-remark-6.5",
@@ -6369,7 +6371,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:MAB_LCB_upper",
@@ -6444,7 +6446,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:monotone-contraction",
@@ -6510,7 +6512,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:infinite-offline",
@@ -6623,7 +6625,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:offline-prelim",
@@ -6687,7 +6689,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:sample-split-infinite",
@@ -6753,7 +6755,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:Bernstein-infinite",
@@ -6820,7 +6822,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch6-remark-6.6",
@@ -6860,7 +6862,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:sum-d-Var-UB",
@@ -6914,7 +6916,7 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch6-remark-6.7",
@@ -6954,7 +6956,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch6-remark-6.8",
@@ -6994,7 +6996,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:theorem:lcbq",
@@ -7115,7 +7117,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:Q-recursion-pessimistic-Q",
@@ -7199,7 +7201,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:pessimistic-Q",
@@ -7265,7 +7267,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:useful",
@@ -7331,7 +7333,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:lcbq-alpha-xi-psi-phi-bound",
@@ -7443,7 +7445,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:infinite-lwoer-bound",
@@ -7499,7 +7501,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch6-remark-6.9",
@@ -7548,7 +7550,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:value-policy-LB-inf",
@@ -7602,7 +7604,7 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:transition-KL-bound-infinite",
@@ -7668,7 +7670,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:finite-VI-LCB",
@@ -7737,7 +7739,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:lcbq",
@@ -7807,7 +7809,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:Bernstein-infinite-proof",
@@ -7889,7 +7891,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:mdp-value-Q",
@@ -7936,7 +7938,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lemma:dual-form",
@@ -8015,7 +8017,7 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:l1-upper-bound",
@@ -8058,14 +8060,14 @@
     16
    ],
    "issues": [
-    "C1",
-    "C2",
     "C37"
    ],
    "evidence": [
     "docs/critic-thm7-2-7-4.md"
    ],
-   "refutations_cited": [],
+   "refutations_cited": [
+    "not_thm7_2_printed"
+   ],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [
@@ -8081,7 +8083,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:remark:tv-upper",
@@ -8148,7 +8150,7 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:l1-lower-bound",
@@ -8220,7 +8222,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:l2-upper-bound",
@@ -8263,14 +8265,14 @@
     16
    ],
    "issues": [
-    "C1",
-    "C2",
     "C37"
    ],
    "evidence": [
     "docs/critic-thm7-2-7-4.md"
    ],
-   "refutations_cited": [],
+   "refutations_cited": [
+    "not_thm7_4_printed"
+   ],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [
@@ -8286,7 +8288,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:remark:chi2-upper",
@@ -8337,7 +8339,7 @@
    ],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:chi2-lower-bound",
@@ -8407,7 +8409,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:sample-complexity-plug-in-marl",
@@ -8463,14 +8465,16 @@
     "docs/critic-thm7-6.md"
    ],
    "refutations_cited": [
-    "not_thm7_6_printed"
+    "not_thm7_6_printed",
+    "not_thm7_6_printed_ne",
+    "not_thm7_6_printed_cce"
    ],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:Q-FTRL",
@@ -8531,7 +8535,7 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:lower-marl",
@@ -8603,7 +8607,7 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:dist-syncq-local",
@@ -8671,7 +8675,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:lower_bound",
@@ -8737,7 +8741,7 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "fully_proved": true
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch7-remark-7.3",
@@ -8767,7 +8771,7 @@
    "uses": [],
    "statement_status": "prose-claim",
    "proof_status": "open",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:Berry-Esseen-linear",
@@ -8807,7 +8811,7 @@
    "uses": [],
    "statement_status": "refuted",
    "proof_status": "refuted",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm_online",
@@ -8887,7 +8891,7 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
-   "fully_proved": false
+   "printed_with_cited_printed": false
   }
  ],
  "context": [
@@ -9292,6 +9296,6 @@
   "COVERAGE.md:49 matches no inventory result: Generative lower bound, singleton-action obstruction",
   "COVERAGE.md:50 matches no inventory result: Robust χ² policy-value foundation and singleton obstruction",
   "COVERAGE.md:67 matches no inventory result: Infinite-horizon Bellman consistency and VI, lines 190–264 and 316–355",
-  "COVERAGE.md:82 matches no inventory result: Planning accuracy of empirical VI and PI, prose claim, model-based cha"
+  "COVERAGE.md:82 matches no inventory result: Planning accuracy of empirical VI and PI, prose claim, model-based chapter line 943"
  ]
 }

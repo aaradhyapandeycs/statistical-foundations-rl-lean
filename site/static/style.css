@@ -159,6 +159,14 @@ pre.lean .c { color: var(--comment); font-style: italic; }
 .st-partial { color: var(--partial); border-style: dashed; }
 .st-ledger { color: var(--ledger); border-style: dotted; }
 .st-none { color: var(--none); border-style: dotted; font-weight: 500; }
+.st-refuted { color: var(--refuted); border-width: 2px; }
+.scope.caution { border-left: 3px solid var(--corrected); padding-left: 8px; }
+.scope.disclosure { color: var(--fg); }
+.refuted-note { font: 13.5px/1.5 var(--sans); border-left: 3px solid var(--refuted); padding: 4px 0 4px 8px; margin: 8px 0; }
+.status { max-width: 100%; white-space: normal; }
+/* long file paths, commit hashes and Lean names never force a horizontal scroll */
+.meta a, .meta, code, .label code, .lean-names code { overflow-wrap: anywhere; word-break: break-word; }
+pre.cite { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--code-bg); padding: 10px 12px; border-radius: 6px; font: 12.5px/1.5 var(--mono); }
 
 /* pager */
 .pager { display: flex; justify-content: space-between; gap: 16px; margin-top: 40px; padding-top: 16px;

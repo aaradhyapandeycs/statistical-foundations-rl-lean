@@ -248,6 +248,17 @@ class Block:
     children: list = field(default_factory=list)  # nested numbered/labelled blocks, flattened
 
 
+def _balanced_outer(t: str) -> bool:
+    """True when t is "( ... )" and the first "(" closes at the last character."""
+    depth = 0
+    for i, ch in enumerate(t):
+        depth += ch == "("
+        depth -= ch == ")"
+        if depth == 0 and i < len(t) - 1:
+            return False
+    return depth == 0
+
+
 def label_id(label: str) -> str:
     return "L-" + re.sub(r"[^A-Za-z0-9:_.\-]", "_", label)
 
@@ -774,7 +785,10 @@ class FileConverter:
         name = self.book.env_title(kind)
         head = f'<strong>{esc(name)}{(" " + esc(number)) if number else ""}</strong>'
         if title:
-            head += f" ({title})"
+            # A title that is only a parenthetical citation, e.g. "(Li et al., 2024)", already
+            # carries its parentheses; do not add a second pair.
+            plain = re.sub(r"<[^>]+>", "", title).strip()
+            head += f" {title}" if plain.startswith("(") and _balanced_outer(plain) else f" ({title})"
         body_parts = self.conv(s, start, b)
         inner = [("i", f'<span class="env-head">{head}.</span> ')] + body_parts
         labels = list(entry.get("labels", [])) if entry else re.findall(r"\\label\s*\{([^{}]*)\}", s[a:b])

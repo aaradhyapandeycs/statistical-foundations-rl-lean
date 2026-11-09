@@ -57,12 +57,19 @@ class GitReader:
         return self.git.ls(prefix)
 
 
+def status_phrase(n: dict) -> str:
+    if n["proof_status"] == "proved":
+        return {"printed": "proved as printed", "corrected": "corrected form proved",
+                "restricted": "restricted form proved"}.get(n["statement_status"], "proved")
+    return STATEMENT_WORDS[n["statement_status"]].lower()
+
+
 def fill_class(n: dict) -> str:
     if n["proof_status"] == "refuted":
         return "gn-pf-refuted"
     if n["proof_status"] != "proved":
         return "gn-pf-open"
-    if n["fully_proved"]:
+    if n["printed_with_cited_printed"]:
         return "gn-pf-fully"
     return "gn-pf-proved" if n["statement_status"] == "printed" else "gn-pf-variant"
 
@@ -86,7 +93,7 @@ def long_name(n: dict) -> str:
 class GraphPages:
     def __init__(self, site, html_pages: dict):
         self.site = site
-        self.data = gen_nodes.build(GitReader(site.lean.git))
+        self.data = getattr(site, "node_data", None) or gen_nodes.build(GitReader(site.lean.git))
         self.nodes = {n["id"]: n for n in self.data["nodes"]}
         self.where = {}
         for pid, text in html_pages.items():
@@ -129,7 +136,7 @@ class GraphPages:
                 f'<td class="num">{nm["printed"]}</td><td class="num">{nm["corrected"]}</td>'
                 f'<td class="num">{nm["restricted"]}</td><td class="num">{nm["refuted"]}</td>'
                 f'<td class="num">{nm["open"] + nm["partial"]}</td>'
-                f'<td class="num">{c["named_fully_proved"]}</td>'
+                f'<td class="num">{c["named_printed_with_cited_printed"]}</td>'
                 f'<td class="num">{prose_proved} of {prose_total}</td></tr>')
         tot_named = s["named_results_in_inventory"]
         recorded = s["named_results_with_ledger_record"]
@@ -138,22 +145,23 @@ class GraphPages:
         rev = self.site.lean.git.rev
         body = f"""<h1>Formalization status</h1>
 <div class="incomplete" role="note"><strong>INCOMPLETE.</strong> The formalization of the monograph is not
-complete, and no chapter is certified. The counts below are numbers of source results with a reviewed Lean
-record; they are not a percentage of the book, which also contains prose claims, algorithms and arguments that
+complete, and no chapter is certified. The counts below are numbers of source results with a Lean record in
+the project's ledgers, whose reviews are independent AI-agent reviews (no human referee, no author approval); they are not a percentage of the book, which also contains prose claims, algorithms and arguments that
 these counts do not cover.</div>
 <section class="dash">
 <div class="tile"><div class="big">{recorded} <span>of {tot_named}</span></div>
-<div>numbered theorems, lemmas and claims have a reviewed ledger record (in printed, corrected or restricted
+<div>numbered theorems, lemmas and claims have a ledger record, reviewed by independent AI agents (in printed, corrected or restricted
 form). Counted from <code>docs/named-result-status.json</code> at <code>{rev[:10]}</code>.</div></div>
 <div class="tile"><div class="big">{named["printed"]} <span>of {tot_named}</span></div>
 <div>proved as printed. {named["corrected"]} more are proved only in corrected form and {named["restricted"]}
-only in restricted form; those are <em>not</em> proofs of the printed statement.</div></div>
+only in restricted form; those are <em>not</em> proofs of the printed statement.{esc(self.site.restricted_note(named["restricted"]))}</div></div>
 <div class="tile"><div class="big">{named["refuted"] + named["open"] + named["partial"]} <span>of {tot_named}</span></div>
-<div>have no proved Lean statement: {named["refuted"]} printed statement refuted in Lean with no corrected
+<div>{"has" if named["refuted"] + named["open"] + named["partial"] == 1 else "have"} no proved Lean statement: {named["refuted"]} printed statement refuted in Lean{self.refuted_readings()} with no corrected
 version proved, {named["open"]} open, {named["partial"]} partial.</div></div>
-<div class="tile"><div class="big">{s["named_fully_proved"]} <span>of {tot_named}</span></div>
+<div class="tile"><div class="big">{s["named_printed_with_cited_printed"]} <span>of {tot_named}</span></div>
 <div>are proved as printed and every result they cite (transitively) is too. The citations are
-<strong>unreviewed</strong> TeX cross-references, so this is an indication, not a certified closure.</div></div>
+<strong>unreviewed</strong> TeX cross-references: this is not a reviewed proof-dependency check, and it does not
+say that the cited results are what the proof needs.</div></div>
 </section>
 <h2>By chapter</h2>
 <div class="table-wrap"><table class="results dash-table"><thead><tr><th>Ch.</th><th>Title</th>
@@ -186,14 +194,22 @@ are in <a href="{attr(self.site.lean.git.blob('docs/NEXT.md'))}">docs/NEXT.md</a
 <a href="graph.html">dependency graph</a>.</p>"""
         return self.site.shell(f"Status · {self.site_title()}", body, "status", toc=False)
 
+    def refuted_readings(self) -> str:
+        from .lean import REFUTED_READING
+        notes = [REFUTED_READING[l] for n in self.data["nodes"] if n["class"] == "named"
+                 and n["statement_status"] == "refuted" for l in n["labels"] if l in REFUTED_READING]
+        return f' ({esc("; ".join(notes))})' if notes else ""
+
     def warnings_html(self) -> str:
         w = self.data["warnings"]
         if not w:
             return ""
         items = "".join(f"<li>{esc(x)}</li>" for x in w)
-        return (f'<h2>Not matched to a node ({len(w)})</h2><p class="lede">Generator warnings: these coverage-ledger '
-                f'rows or statement entries could not be attached to a source result, so they are not reflected in '
-                f'the counts or the graph.</p><ul class="gwarn">{items}</ul>')
+        return (f'<details class="gwarn-box"><summary>Coverage rows not matched to a node ({len(w)})</summary>'
+                f'<p class="lede">Generator warnings: these coverage-ledger rows or statement entries could not be '
+                f'attached to a source result, so they are not reflected in the counts or the graph. The full list is '
+                f'in <a href="{attr(self.site.lean.git.blob("docs/NEXT.md"))}">docs/NEXT.md</a>.</p>'
+                f'<ul class="gwarn">{items}</ul></details>')
 
     def site_title(self) -> str:
         from .render import TITLE
@@ -243,7 +259,7 @@ are in <a href="{attr(self.site.lean.git.blob('docs/NEXT.md'))}">docs/NEXT.md</a
             x, y = pos[n["id"]]
             title = (f'{long_name(n)} {n["labels"][0] if n["labels"] else ""} — statement: '
                      f'{STATEMENT_WORDS[n["statement_status"]]}; proof: {PROOF_WORDS[n["proof_status"]]}'
-                     f'{"; fully proved (unreviewed closure)" if n["fully_proved"] else ""}'
+                     f'{"; proved as printed, and every result it cites (unreviewed TeX references) also proved as printed" if n["printed_with_cited_printed"] else ""}'
                      f'{"; " + ", ".join(n["issues"]) if n["issues"] else ""}')
             mark = "✕ " if n["proof_status"] == "refuted" else ""
             node = (f'<g class="gn {fill_class(n)} gn-st-{n["statement_status"]}" data-id="{attr(n["id"])}">'
@@ -283,9 +299,9 @@ are in <a href="{attr(self.site.lean.git.blob('docs/NEXT.md'))}">docs/NEXT.md</a
         legend_fill = "".join(
             f'<li><svg width="46" height="20" aria-hidden="true"><g class="gn {c} gn-st-open">'
             f'<rect x="2" y="2" width="42" height="16" rx="3"/></g></svg> {esc(w)}</li>'
-            for c, w in (("gn-pf-fully", "Fully proved: printed statement proved, and every cited result is fully "
-                                         "proved (closure over unreviewed TeX references)"),
-                         ("gn-pf-proved", "Printed statement proved; some cited result is not fully proved"),
+            for c, w in (("gn-pf-fully", "Proved as printed, and every result it cites through TeX cross-references "
+                                         "(unreviewed) is also proved as printed; not a reviewed proof-dependency check"),
+                         ("gn-pf-proved", "Proved as printed; some result it cites is not proved as printed"),
                          ("gn-pf-variant", "Proved only in corrected or restricted form (hatched)"),
                          ("gn-pf-refuted", "Printed statement refuted in Lean and nothing proved (also marked ✕)"),
                          ("gn-pf-open", "Not proved")))
@@ -300,7 +316,7 @@ are in <a href="{attr(self.site.lean.git.blob('docs/NEXT.md'))}">docs/NEXT.md</a
             name = f'<a href="{attr(link)}">{name}</a>' if link else name
             lab = f'<div class="label"><code>{esc(n["labels"][0])}</code></div>' if n["labels"] else ""
             st = f'<span class="gstatus">{esc(STATEMENT_WORDS[n["statement_status"]])}</span>'
-            pf = esc(PROOF_WORDS[n["proof_status"]]) + (" · fully proved*" if n["fully_proved"] else "")
+            pf = esc(PROOF_WORDS[n["proof_status"]]) + (" · cited results also printed*" if n["printed_with_cited_printed"] else "")
             uses = ", ".join(
                 f'<a href="#n-{attr(u["id"])}">{esc(short_name(self.nodes[u["id"]]))}</a>'
                 for u in n["uses"] if u["target"] == "node")
@@ -341,9 +357,63 @@ cites it. Click a node for its row; each row links to the book text. <a href="st
 <div class="table-wrap"><table class="results graph-table"><thead><tr><th>Item</th><th>Statement in Lean</th>
 <th>Proof</th><th>Statement entries</th><th>Source issues</th><th>Cites (unreviewed)</th></tr></thead>
 <tbody>{''.join(trs)}</tbody></table></div>
-<p class="lede">* Fully proved is computed over unreviewed cross-references. Definitions, assumptions and
+<p class="lede">* “Cited results also printed” means every result this one cites through TeX cross-references
+(unreviewed) is also proved as printed. It is not a reviewed proof-dependency check. Definitions, assumptions and
 algorithms are context, not nodes; references to them are counted but never block.</p>"""
         return self.site.shell(f"Dependency graph · {self.site_title()}", body, "graph", toc=False)
+
+    def errata_page(self) -> str:
+        """Source issues and Lean refutations, generated from SOURCE-ISSUES.md and the node graph."""
+        lean = self.site.lean
+        issues_url = lean.git.blob("docs/SOURCE-ISSUES.md")
+        by_issue: dict = {}
+        for n in self.data["nodes"]:
+            for c in n["issues"]:
+                by_issue.setdefault(c, []).append(n)
+
+        def node_link(n):
+            link = self.href(n)
+            name = esc(long_name(n))
+            return f'<a href="{attr(link)}">{name}</a>' if link else name
+
+        refuted = [n for n in self.data["nodes"] if n["refutations_cited"]]
+        rrows = "".join(
+            f'<tr><td>{node_link(n)}<div class="label"><code>{esc(n["labels"][0] if n["labels"] else "")}</code></div></td>'
+            f'<td>{" ".join(f"<code>{esc(x)}</code>" for x in n["refutations_cited"])}</td>'
+            f'<td>{esc(STATEMENT_WORDS[n["statement_status"]] if n["proof_status"] == "proved" else "Nothing proved")}'
+            f'{"" if n["proof_status"] != "proved" else " proved"}</td>'
+            f'<td>{lean.issue_links([c[1:] for c in n["issues"] if c[1:] in lean.issue_slugs])}</td></tr>'
+            for n in refuted)
+        crows = []
+        for cid, info in sorted(lean.issue_slugs.items(), key=lambda kv: int(kv[0])):
+            ns = by_issue.get(f"C{cid}", [])
+            items = ", ".join(f'{node_link(n)} ({esc(status_phrase(n))})' for n in ns)
+            crows.append(f'<tr><td><a href="{attr(issues_url)}#{attr(info["slug"])}">C{esc(cid)}</a></td>'
+                         f'<td>{esc(re.sub(r"^(Candidate )?C[0-9]+: *", "", info["title"]))}</td>'
+                         f'<td>{items or "—"}</td></tr>')
+        rev = lean.git.rev
+        body = f"""<h1>Errata and source issues</h1>
+<div class="incomplete" role="note"><strong>Candidates, not confirmed errata.</strong> Every item below was found
+by independent reviews performed by AI agents against the pinned TeX of arXiv:2610.41903v1. None has been confirmed
+by the authors or refereed by a human mathematician. A Lean refutation is a machine-checked proof that the printed
+statement, <em>under the reading the project formalized</em>, is false; the reading itself is part of what a reader
+should check.</div>
+<p class="lede">Generated at build time from <code>docs/SOURCE-ISSUES.md</code>, the coverage ledger and the
+named-result ledger at commit <code>{rev[:10]}</code>. The curated record with effects on each result is
+<a href="{attr(lean.git.blob("docs/ERRATA-AND-DEVIATIONS.md"))}">docs/ERRATA-AND-DEVIATIONS.md</a>.</p>
+<h2>Printed statements refuted in Lean</h2>
+<p class="lede">Source items whose coverage-ledger row or named-result ledger record cites a Lean theorem named
+<code>not_…_printed…</code> (the project convention). Each refutation is of the printed statement under the reading
+formalized; the card and the coverage row say which reading. Some other source issues are refuted in Lean under other names or only on paper; see
+the full list below and the record above.</p>
+<div class="table-wrap"><table class="results"><thead><tr><th>Item</th><th>Lean refutation</th>
+<th>What is proved instead</th><th>Source issue</th></tr></thead><tbody>{rrows}</tbody></table></div>
+<h2>All source-issue candidates ({len(crows)})</h2>
+<p class="lede">Each links to its entry in SOURCE-ISSUES.md, which states the evidence and any proposed correction.
+“Results” lists the tracked source results whose ledger rows cite the issue.</p>
+<div class="table-wrap"><table class="results"><thead><tr><th>Id</th><th>Candidate</th><th>Results</th></tr></thead>
+<tbody>{"".join(crows)}</tbody></table></div>"""
+        return self.site.shell(f"Errata · {self.site_title()}", body, "errata", toc=False)
 
     def nodes_json(self) -> str:
         return gen_nodes.dumps(self.data)
