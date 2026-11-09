@@ -17,6 +17,7 @@ import Formalization.ModelFree.AsyncQ.Main
 import Formalization.ModelFree.MeanError
 import Formalization.ModelFree.AsyncQ.MeanError
 import Formalization.ModelFree.QLearningUnderestimation
+import Formalization.ModelFree.QLearningRateFacts
 
 /-! Proofs of the Chapter 4 statement index from the existing exports. -/
 namespace StatisticalRL.Statements.Ch4
@@ -134,5 +135,39 @@ theorem Remark4_2_holds : Remark4_2 := qLearning_meanError_exists_universal_cons
 open Classical in
 theorem Remark4_3_corrected_holds : Remark4_3_corrected :=
   AsyncQ.asyncQ_meanError_exists_constants
+
+theorem Thm4_6_constantRate_holds : Thm4_6_constantRate := by
+  intro c₁ c₂ c₃ γ ε δ S A T hc₂ hc₂₁ hc₃ _ hγ1 hε hδ hδ1 hS hA hT
+  exact constantRate_schedule_and_bound c₁ c₂ c₃ γ ε δ S A T hc₂ hc₂₁ hc₃ hγ1 hε hδ hδ1 hS hA hT
+
+theorem Thm4_7_iterationLowerBound_holds : Thm4_7_iterationLowerBound :=
+  qLb_thm47_iterationLowerBound
+
+theorem Remark4_5_holds : Remark4_5 := by
+  refine ⟨fun γ hγ hγ1 η N t a ht ↦ ?_, ?_⟩
+  · have hrow := qLbMDP_rowSpec γ (by linarith) hγ1
+    refine ⟨fun W hW ↦ ?_, ?_⟩
+    · exact qLb_integral_xi_adapted _ N γ η hrow t ht a W (fun n s s' h ↦ hW n s s' h)
+    · exact qLb_integral_xi_adapted _ N γ η hrow t ht a
+        (fun n s ↦ qLbSingleAuxIterate γ η a s n)
+        (fun n s s' h ↦ qLbSingleAuxIterate_congr γ η a n s s' h)
+  · obtain ⟨c, c₃, hc, hc₃, hmain⟩ := qLb_lemma415
+    refine ⟨max c₃ 1, lt_max_of_lt_right one_pos, ?_⟩
+    intro γ hγ hγ1 T η hT hηlow hηup p ρ τhat hτ hτmax t N htτ htN
+    have hh : 0 < 1 - γ := by linarith
+    have hg2 : 0 < (1 - γ) ^ 2 := by positivity
+    have hT3 : c₃ / (1 - γ) ^ 2 ≤ T :=
+      le_trans (div_le_div_of_nonneg_right (le_max_left _ _) hg2.le) hT
+    have hT1 : 1 / (1 - γ) ^ 2 ≤ T :=
+      le_trans (div_le_div_of_nonneg_right (le_max_right _ _) hg2.le) hT
+    have hT16 : (16 : ℝ) ≤ T := by
+      have hsm : (1 - γ) ^ 2 ≤ 1 / 16 := by nlinarith
+      have : (16 : ℝ) ≤ 1 / (1 - γ) ^ 2 := by
+        rw [le_div_iff₀ hg2]; linarith
+      linarith
+    have hlog : 0 < Real.log T := Real.log_pos (by linarith)
+    have hsq : 0 < Real.sqrt ((1 - γ) ^ 2 * T) := Real.sqrt_pos.mpr (by positivity)
+    have hlb := (hmain γ hγ hγ1 T η hT3 hηlow hηup).2 τhat hτ hτmax t N htτ htN
+    exact lt_of_lt_of_le (by positivity) hlb
 
 end StatisticalRL.Statements.Ch4

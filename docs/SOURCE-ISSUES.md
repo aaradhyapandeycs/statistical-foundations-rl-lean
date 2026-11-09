@@ -286,6 +286,13 @@ the original zero-count expression or prove the full regret theorem. See
 [verification](online-regret-telescope-verification.md) and
 [independent review](critic-online-regret-telescope.md).
 
+Remark 5.5 (`onlineRL.tex:790–802`) is indexed as `Remark5_5_corrected` for the
+same C8-completed UCBVI tables; the greedy identity itself does not depend on
+the bonus. The burn-in and asymptotic-regret displays `eq:burn-in-ucbvi` and
+`eq:regret-asymptotic-ucbvi` (lines 491–506) are indexed as
+`Eq_regret_asymptotic_ucbvi_corrected`, inheriting the premises of
+`Thm5_2_corrected`. See the [review](critic-trivial-c.md).
+
 MVP uses the same Bernstein bonus at `onlineRL.tex:1303–1307`,
 after initializing every row count to zero in Algorithm `alg:main-mvp`
 (`:1256–1310`). Its unvisited rows have the same undefined division.
@@ -366,6 +373,12 @@ appendix proof. This is a restricted corrected result, not a proof of the
 unrestricted lemma. It does **not** refute parent Theorem 6.3, whose assumptions
 already require `γ ≥ 1/2`, and it establishes no failure of Theorem 6.3's rate
 or sample threshold.
+
+The prose iteration count after the lemma (`offlineRL.tex:892`) is recorded as
+`Lemma6_2_iterationCount_restricted` on `γ ≥ 1/2`. C10's instance does not refute
+it: on that instance the fixed point is unique and the count holds numerically
+([review](critic-trivial-a.md)). For `γ < 1/2` the count is open, neither proved
+nor refuted.
 
 ## Candidate C12: one-episode endpoints of auxiliary online bounds
 
@@ -448,6 +461,37 @@ candidate records the asserted error.
   as c_opt(1−γ)²log(SAN/((1−γ)δ))/N with ∀ c_opt ∃ C₂; only deterministic stationary planner outputs are covered
   (randomized or history-dependent outputs are not), and N > 0 is assumed as in `Thm7_2_corrected`. The event is
   uniform over all such outputs, so no measurability of the planner is needed.
+  Remark 7.2 (`remark:chi2-upper`, `robust_RL.tex:453–457`) is indexed as `Remark7_2_restricted` with the same
+  restriction: O(log(SAN/((1−γ)δ))/N²) is read as c_opt·log(SAN/((1−γ)δ))/N² with ∀ c_opt ∃ c₂ (proved with
+  c₂ = 10⁶ + 8c_opt); only deterministic stationary planner outputs are covered, and the premises are those of
+  `Thm7_4_corrected` (N > 0). The event is uniform over all such outputs ([review](critic-trivial-b.md)).
+
+- `eq:DPO` (`RLHF.tex:62–74`), `eq:policy_RBMLE` (`:115–141`) and `eq:online_RBMLE` (`:158–198`) are indexed as
+  `Eq_DPO_restricted`, `Eq_policy_RBMLE_restricted` and `Eq_online_RBMLE_restricted`. The main restriction is the
+  argmin domain: minimization is over full-support policies (`IsPositivePolicy`), not over all policies. In the
+  source's extended-real reading a policy with π(y₋|x) = 0 has −log σ(+∞) = 0, so over all policies the minimum 0
+  can be attained only at boundary policies, which are not Gibbs policies, while over full-support policies the
+  infimum 0 is unattained and no reward MLE exists (e.g. a dataset whose only comparison is (x, y₁, y₂)); under
+  Lean's log 0 = 0 such a boundary policy takes the junk loss −log σ(β log(π(y₁|x)/π_ref(y₁|x))) instead of 0. The
+  same example shows that the printed reward–policy correspondence holds only on full-support policies: over all
+  policies the DPO argmin can be a nonempty set of boundary policies while ℓ(·, D) has no minimizer. The book's
+  derivation works with the Gibbs policies π_r, which have full support. Further: π_ref has full support (implicit
+  in the source, where log π_ref appears in `eq:reward-policy-eq`), and X and Y are finite (as in
+  `Thm7_12_corrected`; the source's Z(r,x) is a finite sum over Y). Existence of minimizers is not claimed (cf.
+  [C44](#C44)). The online entry states the policy step with the printed uncalibrated J(r,π) of `eq:KL_reward`;
+  uniqueness of its maximizer is not claimed (it fails off the support of ρ). See the [review](critic-trivial-b.md).
+
+- The iteration count after Lemma 6.2 (`offlineRL.tex:892`) is indexed as `Lemma6_2_iterationCount_restricted`,
+  stated on γ ≥ 1/2, the domain of `Lemma6_2_corrected`. For γ < 1/2 the iteration count is open: neither proved
+  nor refuted. [C10](#C10) refutes only the uniqueness-plus-order conjunction of Lemma 6.2, not the sup-norm rate,
+  and its instance does not refute this count ([review](critic-trivial-a.md)).
+
+- Remark 6.3 (`offlineRL.tex:175–185`) is indexed as `Remark6_3`. Clauses (i) and (iii) hold for every stationary
+  policy. Clause (ii) ("can be as low as 1/S") is shown with a degenerate witness: zero rewards and discount 0, so
+  every policy is optimal there, and the value 1/S is for the library's tie choice `optimalGreedyPolicy`; another
+  optimal deterministic policy can give ∞ against the same behaviour distribution. The printed sentence is
+  existential and the source's π⋆ is itself tie-ambiguous. The citation sentence at `:184` is not covered
+  ([review](critic-trivial-a.md)).
 
 - Lemma 6.14 (`lemma:value-policy-LB-inf`, `offlineRL.tex:2544–2583`) is indexed as
   `Lemma6_14_restricted`. All values, the policy upper bound with equality at `π⋆` and
@@ -476,11 +520,13 @@ candidate records the asserted error.
   `N > 0` restriction; the companion iteration-count claim (`Thm3_2_planningIterations`)
   divides by `N`, so `N > 0` is implicit in the printed claim.
 - Theorem 3.9 (`Thm:sample-compl-finite`,
-  `generative_model_model_based.tex:2551–2570`) is indexed as `Thm3_9_positiveN`, for every deterministic
-  policy that is optimal for the empirical MDP at every stage and state (no tie rule is fixed), with the
-  sample count `N > 0` stated explicitly for the empirical-frequency model. The positive-sample condition
-  loses no content: for `N = 0` the printed threshold forces `log(HSA/δ) ≤ 0`, hence `δ ≥ HSA ≥ 1`, where the claim is trivial; `N > 0` is needed only to type the empirical model. The earlier
-  entry `Thm3_9_causal_positiveN`, for the concrete backward-greedy tie rule, is retained as a special case.
+  `generative_model_model_based.tex:2551–2570`) is indexed as `Thm3_9` in its printed form, for every
+  deterministic policy that is optimal for the empirical MDP at every stage and state (no tie rule is fixed).
+  The empirical-frequency model is typed by a witness `0 < N` quantified inside the event. At N = 0 that
+  event is the whole sample space. S, A ≥ 1 and H ≥ 1 are forced (nonempty stage types, 0 < ε ≤ H), so at
+  N = 0 the printed threshold implies δ ≥ HSA ≥ 1 and the claim is trivial there; the entry is never vacuous
+  ([review](critic-trivial-c.md), R1). `Thm3_9_positiveN` (explicit `N > 0`) and the earlier entry
+  `Thm3_9_causal_positiveN`, for the concrete backward-greedy tie rule, are retained.
 - `Thm3_9_minimaxLowerBound` (formal reading of the prose minimax-optimality
   claim at `generative_model_model_based.tex:2585`, context 2573–2585): domain
   S, A, H ≥ 2 and 0 < ε ≤ c₁H with existential c₁ (witness 1/4096). Each
@@ -580,6 +626,9 @@ identity at lines 1531–1533 also requires dyadic updates. That identity and
 full MVP regret are not certified by these two count/profile results.
 See [independent review](critic-online-MVP-counts-profiles.md) and
 [verification](online-MVP-counts-profiles-verification.md).
+
+Under the same literal reading the main Theorem 5.10 also fails; see [C48](#C48)
+(paper calculation, not Lean-checked).
 
 <a id="C14"></a>
 
@@ -811,6 +860,20 @@ Theorem 6.3 sample-size regime implies this condition. The release statement
 therefore labels this as a restricted auxiliary result; this observation is not
 a counterexample to the parent theorem or a claim that its sample regime is
 insufficient.
+
+**Addendum (2026-11-09): the printed lemma is false at N = 1.** Take S = 1, A = 2, ρ uniform, N = 1 and
+δ = 31/32. The single sample leaves one action with N_{s,a} = 0, and for that action
+(2/3)log(SN/δ) = (2/3)log(32/31) ≤ 2/93 < 1/24 = Nρ(s,a)/12. The simultaneous event is therefore empty, although
+the lemma claims probability greater than 1−δ = 1/32. The printed proof fails at `|N_large| ≤ N/(8L) ≤ N`
+(`offlineRL.tex:3607–3609`), which needs L = log(SN/δ) ≥ 1/8; here both pairs are in N_large and N = 1. Whenever
+SN ≥ 2, L > log 2 and that step holds, so the failure needs SN = 1. Scope: the standalone printed lemma
+(`:1104–1115`), which states no restriction on N. The formal `N ≥ 2` version
+(`Lemma6_5_sampleSplit_actualData_corrected`) is unaffected, and so is Theorem 6.3, whose sample regime implies
+N ≥ 2. Proposed repair: add `N ≥ 2` (or `SN ≥ 2`) to the lemma. With this counterexample the earlier sentence above
+("not a counterexample") describes only the parent theorem: the standalone lemma is a false printed statement, so
+the formal version is a correction rather than a domain restriction. Naming note: the Lean entry carries the
+`_corrected` suffix, while its `COVERAGE.md` row and named-result ledger record call it a "restricted variant";
+nothing is renamed here. Paper calculation, not Lean-checked. Reported by an external review (2026-11-08), independently re-checked ([check](critic-audit-findings.md)). Not author-approved.
 
 <a id="C20"></a>
 ## C20: online Q-learning completion, tie scope and proof repairs
@@ -1226,6 +1289,19 @@ Found by a source preflight and confirmed by an independent source check. Not au
 
 Machine-checked (2026-11-08, `Formalization/Ch7Rest/TDInferenceZeroNoise711.lean` and `Formalization/Ch7Rest/TDInferenceAnyInit711.lean`): Theorem 7.11 is false under the reading in which rewards depend on (s,a) as printed at `inference.tex:62` and the undefined r(s) in Γ is r_π(s) (`prelim.tex:418`). This holds whether the bound must hold for every initialization V₀ (`not_thm7_11_printed`; also with the constants c and C̃ chosen per instance, `not_thm7_11_printed_instWise`, and over all convex sets, `not_thm7_11_printed_allConvex`) or only for one V₀ chosen per instance, such as V₀ = 0 (`not_thm7_11_printed_someInit` with a universal c, and `not_thm7_11_printed_someInit_instWise` with V₀, c and C̃ all chosen after the instance, the weakest such reading). Instance: S = A = 2, γ = 1/2, μ and π uniform, s′ = a deterministically, r = (1/2, 3/4; 0, 1/4), η₀ = 1/8. Then V^π = (1, 1/2) and r(s,a) + γV^π(s′) = V^π(s) on every sample. From V₀ = V^π the TD iterates never move, so √T Δ̄_T = 0 surely. The printed Γ is diag(1/128, 1/128) ≻ 0 and A = diag(μ)(I − γP_π) is invertible (A⁻¹ = [[3,1],[1,3]]), so N(0, A⁻¹ΓA⁻ᵀ)({0}) = 0 and the convex distance is 1 at every T ≥ 1 (on the closed convex set {0}). From any other fixed V₀, the error satisfies E‖V_t − V^π‖² ≤ ‖V₀ − V^π‖² exp(−(3/8)η₀t^{1/3}), so E|(√T Δ̄_T)(0)| = O(T^{−1/2}). The data law therefore puts mass ≥ 1 − O(T^{−1/2}) on the closed convex slab {x : |x(0)| ≤ 1/20}, while the printed Gaussian gives it mass ≤ 4/(15√π) < 1/4, so the convex distance is ≥ 3/4 − O(T^{−1/2}) (`anyInit_violates`, for every V₀, every η₀ ∈ (0,1] and every real c, C̃). In both cases the printed right-hand side tends to 0 for any finite constants. No CLT is used. The example also shows that the printed Γ omits a cross term as well as the action-reward variance: Γ_true,ss = Γ_printed,ss + μ(s)[Var_a r(s,a) + 2γ Cov(r(s,a), V^π(s′))], and here Γ_true = 0 < Γ_printed. Not refuted by this example: the reading with state-only rewards (or deterministic π), where Γ_printed equals the true noise covariance, and the corrected statement (here Γ_true = 0, so it is vacuous). Independently critic-reviewed. Not author-approved.
 
+**Scope note (2026-11-09).** The machine-checked refutation depends on the reading r(s) = r_π(s) with
+action-dependent rewards; under state-only rewards (or deterministic π) the printed statement is neither proved nor
+refuted. The corrected statement (Γ replaced by the true residual covariance, assumed nonsingular), including its
+convex-set bound, remains open, and the cited proof may not transfer directly. With μ = (15/16, 1/16), γ = 3/4 and
+both rows of P_π uniform, xᵀdiag(μ)(I−γP_π)x = −3/16 at x = (1,3), so a Euclidean accretivity estimate is
+unavailable, although diag(μ)(I−γP_π) still has positive eigenvalues; this is a gap in applying the cited argument,
+not a counterexample. Two further differences are **unverified**: the cited analysis (Wu et al.,
+arXiv:2410.16106v6) appears to sample states from the stationary distribution, while the book allows any
+full-support μ (`inference.tex:64`), and its covariance estimator appears to use the running averages, while the
+book's Γ̂_T evaluates all residuals at V̄_T (`inference.tex:166–169`). These two points were read from a summary of
+the cited paper, not from the cited version itself, and need a direct check. A corrected bound may still hold by
+another argument. Paper calculation, not Lean-checked. Reported by an external review (2026-11-08), independently re-checked ([check](critic-audit-findings.md)). Not author-approved.
+
 <a id="C44"></a>
 ## Candidate C44: Theorem 7.12 is ill-posed at T = 1 and its VPO update may have no minimizer
 
@@ -1309,7 +1385,83 @@ deterministic Markov given the seed and the completed history; randomized πᵏ 
 `V₁⋆(ρ)`) is not covered. Independently plan-checked, critic-reviewed and the primary refutation separately reviewed ([review](critic-regret-pac.md), [refutation review](review-regret-pac-all-carriers.md)). Not
 author-approved.
 
-```
+<a id="C47"></a>
+## Candidate C47: Chapter 7 confidence sets: data-selected convex sets, rectangle scaling, ellipsoid radius, singular plug-in
+
+**Source:** `\subsection{Statistical inference}` (`sec:inference`), `chapters/inference.tex:150–213`: plug-in
+estimators `:160–181` (Λ̂_T = Ā_T⁻¹Γ̂_TĀ_T⁻ᵀ, `eq:defn-hat-Lambda` `:179–181`), confidence-set rule
+`eq:convex.Cdelta` `:185–194`, rectangles `:196–203`, ellipsoids `:205–213`; sampling model `eq:iid-samples`
+`:49–64`. Pinned chapter SHA-256: `82707713adb6c9296d9ee41faa84b2d0a12eaf1b34864a6d294de02132e648f2`.
+
+**(1) Arbitrary data-selected convex sets.** The text says it suffices to choose any convex set with conditional
+mass ≥ 1−α under N(V̄_T, Λ̂_T/T), and that Theorem 7.11 makes such sets approximate confidence regions (`:186–194`).
+This fails even for an exactly Gaussian estimator with known variance. Witness: X ~ N(θ,1/T), z = Φ⁻¹(1−α),
+0 < α < 1/2; choose [X − z/√T, ∞) if X ≥ 0 and (−∞, X + z/√T] otherwise. Both sets are convex with conditional mass
+exactly 1−α, but at θ = 0 the coverage is P(|√T X| ≤ z) = 1−2α for every T. In the book's own TD model (one
+state, π uniform over two actions with rewards 0 and 1, γ = 1/2), V^π = 1, Ā_T = 1/2, the true residual variance is
+1/4, Λ̂_T → 1, and the same sign-selected half-lines with radius z√(Λ̂_T/T) have limiting coverage 1−2α, given the
+scalar Polyak–Ruppert CLT and Slutsky's lemma (not formalized). The fixed-set bound of Theorem 7.11 is applied to a
+set chosen from the same data. This item holds under either reward reading of [C43](#C43).
+
+**(2) Rectangles.** R̂ is the ℓ∞ quantile under covariance Λ̂_T/T (`:202`), and the half-width is R̂/√T (`:200`), so
+the √T scaling is applied twice: the half-width is O(1/T). Even with oracle covariance and exact Gaussian errors
+(S = 1, Λ = 1, α = 0.05) the coverage is 2Φ(1.96/√T) − 1 → 0 (0.16 at T = 100). The printed set violates
+`eq:convex.Cdelta` for T > 1.
+
+**(3) Ellipsoids (confirmed with changes).** The Mahalanobis statistic is compared with R², where R is the 1−α
+quantile of χ²(d) (`:209–212`). The printed set has reference mass F_{χ²_d}(R²). The external review's transcription
+point is correct, but its consequence differs by α: for conventional α (R ≥ 1) the set is over-conservative (mass
+0.9999 at d = 1, α = 0.05) and still satisfies `eq:convex.Cdelta`; it falls below 1−α only when R < 1, i.e.
+α > 0.317 for d = 1 or α > 0.607 for d = 2 (d = 1, α = 1/2 gives mass 0.351). Also, `d` is undefined in the chapter
+(the dimension is S), and Λ̂_T⁻¹ needs Λ̂_T ≻ 0.
+
+**(4) Singular plug-in.** Row s of Ā_T is zero when state s is unsampled, an event of probability (1−μ(s))^T > 0
+for S ≥ 2 (for example 2^{−T} for uniform μ and S = 2), so Λ̂_T (`:181`) is undefined there. If every state is
+sampled, Ā_T is strictly diagonally dominant and invertible.
+
+**Scope.** (1) applies to the general rule `eq:convex.Cdelta`; (2)–(4) to the literal printed formulas. Theorem
+7.11 itself is not affected by this entry (see [C43](#C43)), and no Lean result is contradicted: the proved
+smooth-test partial result makes no confidence-region claim.
+
+**Proposed correction:** prescribe a confidence rule whose shape given the pivot is fixed (for example
+V̄_T + T^{-1/2}Λ̂_T^{1/2}K with K a fixed convex set of standard-Gaussian mass 1−α), prove its coverage with a
+covariance-perturbation bound, use half-width R̂ (not R̂/√T) in (2) and threshold R (not R²) in (3), and define the
+procedure on the singular event in (4) and charge that event's probability.
+
+Paper calculation, not Lean-checked (the TD-model limit also relies on a CLT and Slutsky argument that is not
+formalized). Reported by an external review (2026-11-08), independently re-checked ([check](critic-audit-findings.md)). Not author-approved.
+
+<a id="C48"></a>
+## Candidate C48: Theorem 5.10 fails under the literal MVP trigger
+
+**Source:** Theorem 5.10 (`thm-mvp-regret`, `chapters/onlineRL.tex:1339–1352`); Algorithm `alg:main-mvp`
+(`:1256–1310`), trigger `line:trigger-set-mvp` `:1280`, stored count and reset `:1281–1285`, clipped update
+`eq:updateq-mvp` `:1298–1300`, greedy step `:1268`; bonus `eq:bh-defn-Bernstein-ucbvi` (`:407–417`); allocations
+`:416` and `:1386–1390`; doubling prose `:1215`. Pinned chapter SHA-256:
+`393a4d26c228d833a27e54a4913489e499d2143f2f9b80ebf3c55d9a9ccb8c53`.
+
+The displayed trigger `{1,2,…,2^{log₂K}}` contains every count up to K, while the prose (`:1215`) describes powers
+of two ([C13](#C13)). Under the literal reading the main regret bound is false. **Witness:** S = H = 1, A = 2,
+rewards 0 and 1, deterministic transitions, δ = 1/2, and a greedy rule that breaks the initial tie Q = (H, H) toward
+the reward-0 action (the algorithm specifies only argmax). Every visit triggers and resets the batch, so that
+action's stored count is always 1. Since V_{H+1} = 0, its updated score is min{c₂ log(1/δ′), 1} = 1 as soon as
+c₂ log(1/δ′) ≥ 1, which holds for all large K under both printed allocations δ′ = δ/(100S²A²H²K²) (`:416`) and
+δ′ = 100δ/(S²A²H²K²) (`:1390`), for every c₂ > 0. The unvisited action has the undefined zero-count bonus
+([C8](#C8)); every completion that respects the clip at H gives it score at most 1. So the reward-0 action is played
+in every episode and Regret(K) = K surely, contradicting Õ(min{√(SAH³K), HK}) = Õ(√K) for large K, for every choice
+of c₁, c₂ > 0.
+
+**Scope.** The refutation is for the algorithm as printed, with unspecified ties: a tie rule favouring the reward-1
+action avoids this instance. Not affected: the dyadic-trigger corrected theorem `MVP_regret_corrected`
+(power-of-two trigger, one fixed tie rule), and C13's Lean refutation of the auxiliary Lemma 5.12 bound.
+
+**Proposed correction:** read the trigger as the prose's powers of two, `{1, 2, 4, …, 2^{⌊log₂K⌋}}`, as the
+formalization does ([C13](#C13)). Under that reading, together with the other disclosed corrections (C8, C12, C15,
+C16, C17 and one fixed tie rule), the bound is proved as `MVP_regret_corrected`.
+
+Paper calculation, not Lean-checked (a deterministic trace simulation is in the reviewer's working notes).
+Reported by an external review (2026-11-08), independently re-checked ([check](critic-audit-findings.md)). Not author-approved.
+
 
 ---------------------------------------------------------------------------------------------------
 

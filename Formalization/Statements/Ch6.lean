@@ -59,6 +59,24 @@ def Lemma6_2_corrected : Prop :=
       (∀ τ : ℕ, Real.log (M.N / (1 - M.γ)) / Real.log (1 / M.γ) ≤ τ →
         ‖M.iter τ - Qstar‖ ≤ 1 / M.N)
 
+/-- **Prose claim after Lemma 6.2, restricted to `1/2 ≤ γ`** (`chapters/offlineRL.tex:892`, the sentence
+after `lem:monotone-contraction`; lemma and claim together `chapters/offlineRL.tex:872–892`). "`Q̂_τ` becomes an `ε`-accurate approximation of
+`Q̂⋆_pe` … after at most `(1/(1−γ)) log(1/(ε(1−γ)))` iterations", read as: starting from
+`Q̂₀ = 0`, every `τ ≥ log(1/(ε(1−γ)))/(1−γ)` gives `‖Q̂_τ − Q̂⋆_pe‖∞ ≤ ε`, for every `ε > 0`.
+Restriction: the entry is stated on `1/2 ≤ γ`, the domain on which Lemma 6.2 is proved
+(`Lemma6_2_corrected`, `docs/SOURCE-ISSUES.md#C10`). For `γ < 1/2` this claim is OPEN: neither
+proved nor refuted. C10 refutes only the printed conjunction of uniqueness with the order clause
+`Q̂_τ ≤ Q̂⋆_pe`, not the sup-norm rate, and its instance does not refute this iteration count.
+Scope disclosure: `docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`. `γ < 1` is a field of
+`OfflineVILCB.Input`. -/
+def Lemma6_2_iterationCount_restricted : Prop :=
+  ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A]
+    (M : StatisticalRL.OfflineVILCB.Input S A) [Nonempty A],
+    1 / 2 ≤ M.γ →
+    ∃ Qstar : S → A → ℝ, M.pess Qstar = Qstar ∧ (∀ Q, M.pess Q = Q → Q = Qstar) ∧
+      ∀ ε : ℝ, 0 < ε → ∀ τ : ℕ, Real.log (1 / (ε * (1 - M.γ))) / (1 - M.γ) ≤ τ →
+        ‖M.iter τ - Qstar‖ ≤ ε
+
 
 section SampleSplitCorrected
 
@@ -225,7 +243,8 @@ shared rewards), a test distribution `ρ` and a data distribution `d^b` whose si
 concentrability coefficient `C⋆_ρ = max_{(s,a)} d⋆(s,a;ρ)/d^b(s,a)` (`eq:concentrate-infinite-simple`,
 `:128–140`) lies in `[C⋆, 2C⋆]` for every `θ`, such that for every `N ≤ c₂ S C⋆/((1-γ)³ε²)` and
 every policy estimator `π̂` (a deterministic map from datasets to stationary randomized policies;
-estimators using external randomness are not covered literally, though the Fano argument extends) some `θ` has
+estimators using an independent external seed are covered by `Thm6_13_randomized`, of which this
+entry is the Dirac-seed special case) some `θ` has
 `P_θ(V⋆_θ(ρ) - V^π̂_θ(ρ) > ε) ≥ 1/4`. This `∃ θ` for every `π̂` is the printed
 `inf_π̂ max_θ ≥ 1/4`.
 
@@ -271,6 +290,57 @@ def Thm6_13 : Prop :=
                 {D | ε < ∑ s, ρ.prob s *
                     ((M θ).trajectoryExpectedValue (M θ).optimalGreedyPolicy s -
                       (M θ).trajectoryExpectedValue (πhat D) s)}
+
+/-- **Theorem 6.13, externally randomized estimators** (`thm:infinite-lwoer-bound`,
+`chapters/offlineRL.tex:2367–2402`; proof `:2432–2927`). The printed infimum ranges over all
+policy estimators (`:2399–2400`). This entry covers estimators that use, besides the data, an
+independent random seed: a seed space `Ω` (in any universe, with any σ-algebra) with a probability
+measure `μ`, and a map `π̂ : Ω → dataset → stationary randomized policy`. The seed law does not
+depend on `θ`, and the failure probability is taken under the product law `μ ⊗ P_θ` of the seed
+and the dataset. Everything else is exactly as in `Thm6_13`: the same universal constant `c₂`,
+conditions on `(γ, S, C⋆, ε)`, hard family `{M_θ}`, test distribution `ρ`, data distribution
+`d^b`, concentrability range `[C⋆, 2C⋆]`, sample law and accuracy-endpoint conventions
+(`docs/SOURCE-ISSUES.md#C9`).
+
+No measurability of `π̂` in the seed is assumed. The failure probability is `(μ ⊗ P_θ)` of the
+failure set. When that set is measurable (for instance `Ω` countable, or `π̂` measurable in the seed
+and the value measurable in the policy) it is the probability. Otherwise it is the outer
+probability; an inner-probability version is false in general. Since datasets range over a finite
+set, every estimator given as a Markov kernel from datasets to policies is of this seeded form
+(`Ω = ∏_D Policy`, `μ = ⊗_D κ(D)`, `π̂(ω, D) = ω D`). `Thm6_13` (deterministic estimators) is the
+special case `Ω = Unit`, `μ = δ_()`. -/
+def Thm6_13_randomized : Prop :=
+  ∃ c₂ : ℝ, 0 < c₂ ∧
+    ∀ (γ : ℝ) (S : ℕ) (Cstar ε : ℝ), 2 / 3 ≤ γ → γ < 1 → 12 < S → 2 < Cstar →
+      ε ≤ 1 / (672 * (1 - γ)) →
+      ∃ (State : Type) (_ : Fintype State) (Θ : Type) (_ : Fintype Θ)
+        (M : Θ → DiscountedMDP State Bool) (ρ : FiniteDistribution State)
+        (db : FiniteDistribution (State × Bool)),
+        Fintype.card State = S ∧
+        (∀ θ, (M θ).discount = γ) ∧
+        (∀ θ θ', (M θ).reward = (M θ').reward) ∧
+        (∀ θ,
+          ENNReal.ofReal Cstar ≤
+              ⨆ sa : State × Bool,
+                ENNReal.ofReal
+                    ((M θ).discountedJointOccupancy (M θ).optimalGreedyPolicy ρ sa.1 sa.2) /
+                  ENNReal.ofReal (db.prob sa) ∧
+            (⨆ sa : State × Bool,
+                ENNReal.ofReal
+                    ((M θ).discountedJointOccupancy (M θ).optimalGreedyPolicy ρ sa.1 sa.2) /
+                  ENNReal.ofReal (db.prob sa)) ≤ ENNReal.ofReal (2 * Cstar)) ∧
+        ∀ N : ℕ, (N : ℝ) ≤ c₂ * S * Cstar / ((1 - γ) ^ 3 * ε ^ 2) →
+          letI : MeasurableSpace ((State × Bool) × State) := ⊤
+          ∀ (Ω : Type u) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+            (πhat : Ω → (Fin N → (State × Bool) × State) → StationaryPolicy State Bool),
+            ∃ θ, (1 : ℝ) / 4 ≤
+              (μ.prod (Measure.pi fun _ : Fin N =>
+                  ∑ t : (State × Bool) × State,
+                    ENNReal.ofReal (db.prob t.1 * ((M θ).transition t.1.1 t.1.2).prob t.2) •
+                      Measure.dirac t)).real
+                {p | ε < ∑ s, ρ.prob s *
+                    ((M θ).trajectoryExpectedValue (M θ).optimalGreedyPolicy s -
+                      (M θ).trajectoryExpectedValue (πhat p.1 p.2) s)}
 
 section BernsteinInfinite
 
@@ -760,5 +830,120 @@ def Thm6_17_restricted : Prop :=
               (LCBQFinite.output cb L sel π₀ (fun h ↦ (E h).reward) (X ω)))))) ≤ ε}
 
 end FiniteLCBQTheorem
+
+section TrivialBatchA
+
+/-- **`eq:defn-Cstar-bandits`** (`chapters/offlineRL.tex:264–281`; ratio convention of
+Definition 6.1, `:138`). For the point mass `d⋆ = 1{· = a⋆}` of the optimal arm and any behaviour
+law `d^b` on a finite arm set, `max_a d⋆(a)/d^b(a) = 1/d^b(a⋆)`. The ratio is taken in `ℝ≥0∞`
+(`0/0 = 0` as in the source, and `1/0 = ∞`, so the identity also holds when `d^b(a⋆) = 0`).
+The arm law is a `Measure`, as in `Thm6_1_zeroCountFallback_corrected`; no normalization is
+needed. -/
+def Eq_defn_Cstar_bandits : Prop :=
+  ∀ (Arm : Type u) [Fintype Arm] [DecidableEq Arm] [MeasurableSpace Arm]
+    (d : Measure Arm) (aStar : Arm),
+    (⨆ b : Arm, (if b = aStar then (1 : ENNReal) else 0) / d {b}) = (d {aStar})⁻¹
+
+/-- **Remark 6.4** (`chapters/offlineRL.tex:357–359`), on Example 6.1 (`:348–355`). Arms `Fin 2`
+(source arm 1 is `0`, arm 2 is `1`), deterministic design `aᵢ = 0` for `i < N − 1` and
+`a_{N−1} = 1`. Reading (the design is deterministic, so the source's `d^b` is not an i.i.d. law
+here): `d^b` is the empirical design frequency `d^b(b) = n_b/N`. With `d⋆ = 1{· = 0}` the
+coefficient of `eq:defn-Cstar-bandits` (`:278–281`, in `ℝ≥0∞`) equals `N/(N−1)` for every
+`N ≥ 2`, and `N/(N−1) → 1` ("exceedingly close to 1"). -/
+def Remark6_4 : Prop :=
+  (∀ N : ℕ, 2 ≤ N →
+    let a : Fin N → Fin 2 := fun i ↦ if i.val < N - 1 then 0 else 1
+    (⨆ b : Fin 2, ENNReal.ofReal (if b = 0 then 1 else 0) /
+        ENNReal.ofReal ((StatisticalRL.OfflineRL.armCount a b : ℝ) / N)) =
+      ENNReal.ofReal ((N : ℝ) / ((N : ℝ) - 1))) ∧
+  Filter.Tendsto (fun N : ℕ ↦ (N : ℝ) / ((N : ℝ) - 1)) Filter.atTop (nhds 1)
+
+/-- **Remark 6.2** (`rem:Cstar_lower_bound_infinite`, `chapters/offlineRL.tex:142–151`;
+coefficient `eq:concentrate-infinite-simple`, `:128–140`): `C⋆_ρ ≥ 1`. The coefficient is
+`max_{(s,a)} d(s,a;ρ)/d^b(s,a)`, ratio in `ℝ≥0∞` (`0/0 = 0`, `x/0 = ∞`), with `d` the discounted
+joint occupancy of a stationary policy and `d^b` any probability vector on `S × A`. The statement
+holds for **every** stationary policy `π`, so it covers `d⋆` of every optimal deterministic policy
+(the source's `π⋆`), whatever tie is chosen; it does not depend on `optimalGreedyPolicy`. -/
+def Remark6_2 : Prop :=
+  ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
+    (π : StationaryPolicy S A) (ρ : FiniteDistribution S) (db : FiniteDistribution (S × A)),
+    1 ≤ ⨆ sa : S × A,
+      ENNReal.ofReal (M.discountedJointOccupancy π ρ sa.1 sa.2) / ENNReal.ofReal (db.prob sa)
+
+/-- **Remark 6.3** (`chapters/offlineRL.tex:175–185`; clipped coefficient
+`eq:concentrate-infinite`, `:178–181`). With `d` the discounted joint occupancy of a stationary
+policy, ratios in `ℝ≥0∞` (`0/0 = 0`, `x/0 = ∞`) and `S = |𝒮|`:
+(i) `C_clipped = max min{d, 1/S}/d^b ≤ max d/d^b = C` ("Clearly"), for every stationary policy,
+hence for `d⋆` of every optimal deterministic policy;
+(ii) "can be as low as `1/S`": for all nonempty finite `𝒮, 𝒜` some instance (`M`, `ρ`, `d^b`)
+has `C⋆_clipped = 1/S` exactly, with `d⋆` the occupancy of the optimal deterministic policy
+`M.optimalGreedyPolicy`. Disclosure: the witness used in the proof has zero rewards and discount `0`,
+so every policy is optimal there and the value `1/S` is for the library's tie choice
+`optimalGreedyPolicy` (another optimal deterministic policy can give `∞` against the same `d^b`);
+the source's `π⋆` is itself tie-ambiguous and the printed sentence is existential;
+(iii) the lower bound implicit in "as low as": `C_clipped ≥ 1/S` always, for every stationary
+policy.
+The last sentence of the remark (`:184`, bounds continuing to hold with the clipped coefficient,
+citing li2024settling) is a citation and is not covered by this entry. -/
+def Remark6_3 : Prop :=
+  (∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
+    (π : StationaryPolicy S A) (ρ : FiniteDistribution S) (db : FiniteDistribution (S × A)),
+    (⨆ sa : S × A, ENNReal.ofReal (min (M.discountedJointOccupancy π ρ sa.1 sa.2)
+        (1 / (Fintype.card S : ℝ))) / ENNReal.ofReal (db.prob sa)) ≤
+      ⨆ sa : S × A, ENNReal.ofReal (M.discountedJointOccupancy π ρ sa.1 sa.2) /
+        ENNReal.ofReal (db.prob sa)) ∧
+  (∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] [Nonempty S] [Nonempty A],
+    ∃ (M : DiscountedMDP S A) (ρ : FiniteDistribution S) (db : FiniteDistribution (S × A)),
+      (⨆ sa : S × A, ENNReal.ofReal (min
+          (M.discountedJointOccupancy M.optimalGreedyPolicy ρ sa.1 sa.2)
+          (1 / (Fintype.card S : ℝ))) / ENNReal.ofReal (db.prob sa)) =
+        ENNReal.ofReal (1 / (Fintype.card S : ℝ))) ∧
+  (∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
+    (π : StationaryPolicy S A) (ρ : FiniteDistribution S) (db : FiniteDistribution (S × A)),
+    ENNReal.ofReal (1 / (Fintype.card S : ℝ)) ≤
+      ⨆ sa : S × A, ENNReal.ofReal (min (M.discountedJointOccupancy π ρ sa.1 sa.2)
+        (1 / (Fintype.card S : ℝ))) / ENNReal.ofReal (db.prob sa))
+
+/-- **Remark 6.5** (`chapters/offlineRL.tex:413–415`), Algorithm 6.1 (`alg:MAB-LCB`, `:383–445`,
+penalty `eq:penalty-bandit-illustrate` `:400–402`, `b_a = √(2 log(4A/δ)/N_a)` with `A = 2`) applied
+to Example 6.1 (`:348–355`): arms `Fin 2` (source arm 1 is `0`), `r = (1, 0)`, design `aᵢ = 0` for
+`i < N − 1`, `a_{N−1} = 1`, noise `z ∼ N(0,1)^{⊗N}`, rewards `r(aᵢ) + zᵢ`. Reading of "`r₁^lcb ≈ r₁`
+for large enough `N`", "`r₂^lcb ≤ r₂`" and "with high probability": for `δ ∈ (0,1)` and
+`N − 1 > 8 log(8/δ)`, with probability at least `1 − δ`, `r₂^lcb ≤ r₂ = 0`,
+`|r₁^lcb − r₁| ≤ 2√(2 log(8/δ)/(N−1))`, and `r₂^lcb < r₁^lcb` (arm 1 is the unique LCB choice,
+arm 2 is ruled out). Both arms have positive counts (`N − 1` and `1`), so the zero-count fallback
+branch of `lcbFallback` (`docs/SOURCE-ISSUES.md#C18`) is never reached and `lcbFallback` is the
+active pseudocode's `r̄_a − b_a`. -/
+def Remark6_5 : Prop :=
+  ∀ (N : ℕ) (δ : ℝ), 2 ≤ N → 0 < δ → δ < 1 → 8 * Real.log (8 / δ) < (N : ℝ) - 1 →
+    let r : Fin 2 → ℝ := ![1, 0]
+    let a : Fin N → Fin 2 := fun i ↦ if i.val < N - 1 then 0 else 1
+    1 - δ ≤ (Measure.pi fun _ : Fin N ↦ gaussianReal 0 1).real
+      {z | StatisticalRL.OfflineRL.lcbFallback r a z δ 1 ≤ r 1 ∧
+        |StatisticalRL.OfflineRL.lcbFallback r a z δ 0 - r 0| ≤
+          2 * Real.sqrt (2 * Real.log (8 / δ) / ((N : ℝ) - 1)) ∧
+        StatisticalRL.OfflineRL.lcbFallback r a z δ 1 <
+          StatisticalRL.OfflineRL.lcbFallback r a z δ 0}
+
+/-- **Example 6.1** (`example:offline-bandits`, `chapters/offlineRL.tex:348–355`; proof
+`:361–379`; empirical best arm `eq:empirical-best-arm-offline`, `:323–342`). Arms `Fin 2` (source
+arm 1 is `0`, arm 2 is `1`), `r = (1, 0)` (so `r⋆ = r 0 = 1`), deterministic design `aᵢ = 0` for
+`i < N − 1` and `a_{N−1} = 1`, rewards `r(aᵢ) + zᵢ` with `z ∼ N(0,1)^{⊗N}`, empirical means
+`StatisticalRL.OfflineRL.empiricalArmMean`. For every `N ≥ 2` and every selector `sel` that
+returns an empirical best arm (`a^emp ∈ argmax r̄`, ties broken arbitrarily, even
+non-measurably), `E[r⋆ − r_{a^emp}] ≥ 0.075`. The expectation is the lower Lebesgue integral of the
+nonnegative regret, so no measurability of the selector is assumed; for a measurable selector it
+equals the Bochner expectation. -/
+def Example6_1 : Prop :=
+  ∀ N : ℕ, 2 ≤ N →
+    let r : Fin 2 → ℝ := ![1, 0]
+    let a : Fin N → Fin 2 := fun i ↦ if i.val < N - 1 then 0 else 1
+    ∀ sel : (Fin N → ℝ) → Fin 2,
+      (∀ z b, StatisticalRL.OfflineRL.empiricalArmMean r a z b ≤
+        StatisticalRL.OfflineRL.empiricalArmMean r a z (sel z)) →
+      ENNReal.ofReal 0.075 ≤
+        ∫⁻ z, ENNReal.ofReal (r 0 - r (sel z)) ∂(Measure.pi fun _ : Fin N ↦ gaussianReal 0 1)
+
+end TrivialBatchA
 
 end StatisticalRL.Statements.Ch6

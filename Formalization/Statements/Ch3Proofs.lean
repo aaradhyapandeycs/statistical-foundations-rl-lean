@@ -14,6 +14,7 @@ import Formalization.Generative.FiniteHorizonAnyTieSample
 import Formalization.Generative.GenerativeLowerBoundTheorem37Fin
 import Formalization.Generative.FiniteHorizonLowerBoundTheorem
 import Formalization.Generative.GenerativeLowerBoundObservationLaw
+import Formalization.Generative.PolicyEvaluationCrude
 
 /-! Proofs of the source-facing Chapter 3 entries using the existing exports. -/
 open MeasureTheory
@@ -119,5 +120,25 @@ theorem Thm3_9_minimaxLowerBound_holds : Thm3_9_minimaxLowerBound := by
 
 theorem Thm3_9_positiveN_holds : Thm3_9_positiveN :=
   StatisticalRL.FiniteHorizonGenerative.exists_universal_anyEmpiricalOptimalPolicy_sample_constant
+
+/-- `Thm3_9` from the positive-`N` export: at `N = 0` the event is the whole sample space
+(its outer quantifier ranges over proofs of `0 < 0`), so its probability is `1 ≥ 1 − δ`;
+for `N > 0` the event contains the export's event. -/
+theorem Thm3_9_holds : Thm3_9 := by
+  obtain ⟨c₀, hc₀, hmain⟩ :=
+    StatisticalRL.FiniteHorizonGenerative.exists_universal_anyEmpiricalOptimalPolicy_sample_constant
+  refine ⟨c₀, hc₀, ?_⟩
+  intro State Action _ _ H E N δ ε hδ hε hεH hsize
+  rcases Nat.eq_zero_or_pos N with rfl | hN
+  · have hprob := StatisticalRL.FiniteHorizonGenerative.samplingLaw_probability E 0
+    refine ((by linarith : 1 - δ ≤ 1).trans
+      (probReal_univ (μ := StatisticalRL.FiniteHorizonGenerative.samplingLaw E 0)).ge).trans ?_
+    exact measureReal_mono (fun _ _ hN0 ↦ absurd hN0 (lt_irrefl 0)) (measure_ne_top _ _)
+  · refine (hmain State Action H E N hN δ ε hδ hε hεH hsize).trans ?_
+    refine measureReal_mono (fun data hd _ ↦ hd) (measure_ne_top _ _)
+
+theorem Eq_Vhatpi_Vpi_difference_decoupled_Hoeffding_holds :
+    Eq_Vhatpi_Vpi_difference_decoupled_Hoeffding :=
+  StatisticalRL.ModelBasedPolicyEvaluation.decoupledHoeffding_universal_constant
 
 end StatisticalRL.Statements.Ch3

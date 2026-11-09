@@ -33,6 +33,30 @@ def Thm3_1 : Prop :=
         {data | ‖StatisticalRL.ModelBasedPolicyEvaluation.valueEstimator M π N hN data -
           M.trajectoryExpectedValue π‖ ≤ ε}
 
+/-- First-attempt policy-evaluation bound `eq:eq:Vhatpi-Vpi-difference-decoupled-Hoeffding`
+(the label's doubled `eq:` is dropped in the Lean name),
+`source/upstream/tex/chapters/generative_model_model_based.tex:270–276` (estimator
+`eq:defn-empirical-P-policy-eval` and `eq:value-estimation-MB-inf-vhat`, :90–106; first-attempt
+analysis, :173–276): there is a universal constant `C₀ > 0` such that, for all finite
+state and action spaces, every model, every stationary policy `π`, every `N ≥ 1` and every
+`δ ∈ (0,1)`, with probability exceeding `1 − δ` (strict, as printed),
+`‖V̂^π − V^π‖∞ ≤ C₀(√(log(S/δ)/((1−γ)⁴N)) + log(S/δ)/((1−γ)²N))`. `V̂^π` is the plug-in
+value of the empirical policy kernel built from `N` samples per state (`valueEstimator`, as in
+`Thm3_1`) and `V^π` the expected infinite-trajectory value. `N > 0` is a binder because the
+printed display divides by `N` and the empirical-frequency model needs it. The result is
+stated, not the printed Hoeffding proof route; the Lean proof derives it from the
+policy-evaluation export of `Thm3_1` (with `δ/2`), the crude bound
+`‖V̂^π − V^π‖∞ ≤ 1/(1−γ)`, and the exact case `S = 1`. -/
+def Eq_Vhatpi_Vpi_difference_decoupled_Hoeffding : Prop :=
+  ∃ C₀ : ℝ, 0 < C₀ ∧ ∀ (S A N : ℕ) (hN : 0 < N)
+    (M : DiscountedMDP (Fin S) (Fin A)) (π : StationaryPolicy (Fin S) (Fin A)) (δ : ℝ),
+    0 < δ → δ < 1 →
+    1 - δ < (StatisticalRL.ModelBasedPolicyEvaluation.samplingLaw M π N).real
+      {data | ‖StatisticalRL.ModelBasedPolicyEvaluation.valueEstimator M π N hN data -
+          M.trajectoryExpectedValue π‖ ≤
+        C₀ * (Real.sqrt (Real.log (S / δ) / ((1 - M.discount) ^ 4 * N)) +
+          Real.log (S / δ) / ((1 - M.discount) ^ 2 * N))}
+
 /-- Restricted positive-sample version of source `Thm:sample-compl-main`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:900–923`.
 This entry makes the existing empirical-frequency export's `N > 0`
@@ -417,8 +441,9 @@ causal or not, is covered. Stage `h` is 0-based and `f h` acts at stage `h`; the
 
 `N > 0` is explicit for the empirical-frequency model, as in `Thm3_2_positiveN`; see
 [`SOURCE-ISSUES.md#statement-index-scope-disclosures`](../../docs/SOURCE-ISSUES.md#statement-index-scope-disclosures).
-No content is lost: for `N = 0` the printed threshold forces `log(HSA/δ) ≤ 0`, hence
-`δ ≥ HSA ≥ 1`, where the claim is trivial.
+No content is lost: `S, A, H ≥ 1` are forced (nonempty stage types, `0 < ε ≤ H`), so for
+`N = 0` the printed threshold forces `log(HSA/δ) ≤ 0`, hence `δ ≥ HSA ≥ 1`, where the claim is
+trivial. The printed form without the `N > 0` binder is `Thm3_9`.
 
 Proof route (differs from the source, which decouples the stages through the causality
 of its backward-induction planner, lines 2547–2549): the library proves the statistical
@@ -437,6 +462,50 @@ def Thm3_9_positiveN : Prop :=
       1 - δ ≤
         (StatisticalRL.FiniteHorizonGenerative.samplingLaw E N).real
           {data | ∀ f : ℕ → State → Action,
+            (∀ h : Fin H, ∀ s,
+              StatisticalRL.FiniteHorizonGenerative.policyTrajectorySuffix
+                  (StatisticalRL.FiniteHorizonGenerative.empiricalStages E N hN data) f h.val s =
+                EnvironmentStage.optimalValue
+                  ((StatisticalRL.FiniteHorizonGenerative.empiricalStages E N hN data).drop
+                    h.val) s) →
+            ∀ h : Fin H,
+              (∀ s,
+                EnvironmentStage.optimalValue ((List.ofFn E).drop h.val) s -
+                  StatisticalRL.FiniteHorizonGenerative.policyTrajectorySuffix (List.ofFn E) f
+                    h.val s ≤ ε) ∧
+              (∀ s a,
+                EnvironmentStage.optimalQ ((List.ofFn E).drop h.val) s a -
+                  StatisticalRL.FiniteHorizonGenerative.policyTrajectoryQSuffix (List.ofFn E) f
+                    h.val s a ≤ ε)}
+
+/-- Source `Thm:sample-compl-finite`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:2551–2570` (algorithm at
+lines 2524–2546), as printed: no positivity premise on the per-tuple sample size `N`. The
+quantifiers are those of the source: a universal `c₀`, then any finite state/action spaces,
+horizon `H`, stages `E`, sample size `N`, `δ > 0` and `0 < ε ≤ H` with
+`N ≥ c₀ H³ log(HSA/δ)/ε²`. The guarantee is stated for every deterministic policy `f` that is
+optimal for the empirical MDP `M̂` at every stage and state (the monograph's notion of an
+optimal deterministic policy, `source/upstream/tex/chapters/prelim.tex:738–739`; the
+algorithm's step 2 fixes no tie rule), quantified inside the event. Stage `h` is 0-based and
+`f h` acts at stage `h`; the printed `V_h^{π̂⋆}(s) ≥ V_h^⋆(s) − ε` is written as
+`V_h^⋆(s) − V_h^{f}(s) ≤ ε`, and likewise for `Q`.
+
+The empirical model `M̂` (empirical frequencies) is defined only for `N > 0`, so the event
+quantifies over a witness `hN : 0 < N`. The printed threshold has no `N` inside the logarithm,
+so it is a defined condition at `N = 0`. `S, A ≥ 1` and `H ≥ 1` are forced (nonempty stage
+types, `0 < ε ≤ H`), so at `N = 0` the printed threshold implies `δ ≥ HSA ≥ 1` and the claim is
+trivial there; the entry is never vacuous. For `N > 0` this entry is exactly `Thm3_9_positiveN`. -/
+def Thm3_9 : Prop :=
+  ∃ c₀ : ℝ, 0 < c₀ ∧
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (H : ℕ) (E : Fin H → EnvironmentStage State Action)
+      (N : ℕ) (δ ε : ℝ),
+      0 < δ → 0 < ε → ε ≤ H →
+      c₀ * (H : ℝ) ^ 3 *
+        Real.log ((H : ℝ) * Fintype.card State * Fintype.card Action / δ) / ε ^ 2 ≤ N →
+      1 - δ ≤
+        (StatisticalRL.FiniteHorizonGenerative.samplingLaw E N).real
+          {data | ∀ hN : 0 < N, ∀ f : ℕ → State → Action,
             (∀ h : Fin H, ∀ s,
               StatisticalRL.FiniteHorizonGenerative.policyTrajectorySuffix
                   (StatisticalRL.FiniteHorizonGenerative.empiricalStages E N hN data) f h.val s =

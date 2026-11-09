@@ -19,6 +19,8 @@ import Formalization.MDP.ForcedPrefixBridge
 import Formalization.MDP.OptimalTrajectoryValue
 import Formalization.MDP.RewardPerturbation
 import Formalization.MDP.PolicyIteration
+import Formalization.MDP.IterationCount
+import Formalization.MDP.MatrixBellman
 import Formalization.MDP.PlanningIterationCount
 import Formalization.MDP.DiscountedOccupancy
 import Formalization.MDP.OptimalDiscountedOccupancy
@@ -73,6 +75,7 @@ import Formalization.Generative.PolicyEvaluationHighSample
 import Formalization.Generative.PolicyEvaluationSourceTheorem
 import Formalization.Generative.PolicyLearningAbsorbing
 import Formalization.Generative.PolicyEvaluationUniversalConstant
+import Formalization.Generative.PolicyEvaluationCrude
 import Formalization.Generative.PolicyLearningAbsorbingPreservation
 import Formalization.Generative.PolicyLearningAbsorbingLipschitz
 import Formalization.Generative.PolicyLearningLeaveOneOutIndependence
@@ -107,6 +110,7 @@ import Formalization.ModelFree.QLearningLowerBoundValues
 import Formalization.ModelFree.QLearningLowerBoundAuxMoments
 import Formalization.ModelFree.QLearningLowerBoundZeta
 import Formalization.ModelFree.QLearningLowerBoundXi
+import Formalization.ModelFree.QLearningRateFacts
 import Formalization.ModelFree.QLearningLowerBoundModerate
 import Formalization.ModelFree.QLearningLowerBoundPathwise
 import Formalization.ModelFree.QLearningLowerBoundState2
@@ -142,6 +146,7 @@ import Formalization.OfflineRL.LowerBoundValueGap
 import Formalization.OfflineRL.LowerBoundConcentrability
 import Formalization.OfflineRL.LowerBoundDataKL
 import Formalization.OfflineRL.LowerBoundMinimax
+import Formalization.OfflineRL.LowerBoundRandomized
 import Formalization.OfflineRL.VILCBDatasetDefinitions
 import Formalization.Probability.VarianceIccPerturbation
 import Formalization.OfflineRL.BernsteinInfiniteFixedRow
@@ -183,6 +188,9 @@ import Formalization.OfflineRL.FiniteVILCB.Links2
 import Formalization.OfflineRL.FiniteVILCB.Prelim
 import Formalization.OfflineRL.FiniteVILCB.Theorem
 import Formalization.OfflineRL.FiniteVILCB.LibraryBridge
+import Formalization.OfflineRL.ConcentrabilityFacts
+import Formalization.OfflineRL.VILCBIterationCount
+import Formalization.OfflineRL.BanditExample
 import Formalization.PrelimKL.KLBinaryProductRNDerivative
 import Formalization.PrelimKL.KLBinaryProductLLRAdd
 import Formalization.PrelimKL.KLBinaryProductFinite
@@ -613,6 +621,9 @@ import Formalization.RobustRL.DRVI.Thm72Main
 import Formalization.RobustRL.DRVI.OraclePlanner
 import Formalization.RobustRL.DRVI.OraclePlannerNumerics
 import Formalization.RobustRL.DRVI.OraclePlannerMain
+import Formalization.RobustRL.DRVI.OraclePlannerChi
+import Formalization.RobustRL.DRVI.OraclePlannerChiNumerics
+import Formalization.RobustRL.DRVI.OraclePlannerChiMain
 import Formalization.RobustRL.DRVI.Thm74Numerics
 import Formalization.RobustRL.DRVI.Thm74
 import Formalization.RobustRL.DRVI.Thm74Main
@@ -634,6 +645,7 @@ import Formalization.Ch7Rest.VPOConfidence712
 import Formalization.Ch7Rest.VPOConcentration712
 import Formalization.Ch7Rest.VPORegret712
 import Formalization.Ch7Rest.VPOMain712
+import Formalization.Ch7Rest.VPOReparam712
 import Formalization.Ch7Rest.FedGeneric710
 import Formalization.Ch7Rest.LowerBound710
 import Formalization.Ch7Rest.InnerConstant710
@@ -710,6 +722,7 @@ import Formalization.Online.Regret.PolicyVariance.FinitePolicyVarianceSource
 import Formalization.Online.Regret.Joint.OnlineT234Joint
 import Formalization.Online.Regret.Joint.OnlineT56SourceConfidence
 import Formalization.Online.Regret.Main.OnlineUCBVIRegretMain
+import Formalization.Online.SourceOptimism.GreedyValueIdentity
 import Formalization.Online.Regret.Counts.OnlineReciprocalSource
 import Formalization.Probability.SquaredVarianceBounds
 import Formalization.Counterexamples.CenteredSquareVariance
@@ -882,6 +895,7 @@ import Formalization.Analysis.StochasticResolventSeries
 import Formalization.Analysis.StochasticResolventOrder
 import Formalization.Analysis.StepSizeSums
 import Formalization.Probability.GaussianAntiConcentration
+import Formalization.Probability.GaussianTailLower
 import Formalization.MDP.PolicyMatrixDefinitions
 import Formalization.MDP.PolicyMatrixResolvent
 import Formalization.MDP.OptimalityOperatorDefinitions
