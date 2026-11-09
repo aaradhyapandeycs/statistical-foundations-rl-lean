@@ -54,8 +54,47 @@ theorem qSource_robust_comparator_closeness_from_stopped_law
 obligation discharged by the actual stopped-law stability theorem and the
 published selected-model reduction. Constants are chosen before all problem
 data. The event is under the actual synchronous product sampling law and
-simultaneously covers every state-action pair. -/
+simultaneously covers every state-action pair. The witnesses are c₁ = c₂ = 1, with c₃ from
+`qFinal_exists_universal_budget_constant 1`. -/
 theorem qLearning_exists_universal_constants_source_accuracy :
+    ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ c₁ ≤ 1 ∧ 0 < c₃ ∧
+    ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (η : ℕ → ℝ) (δ ε : ℝ) (T : ℕ),
+      1/2 ≤ M.discount → 2 ≤ Fintype.card Action → 2 ≤ T →
+      0 < δ → δ < 1 → 0 < ε → ε ≤ M.effectiveHorizon →
+      qSourceRateSchedule M.discount c₁ c₂ T η →
+      ∀ (Q₀ : State → Action → ℝ),
+      (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ M.effectiveHorizon) →
+      c₃ * Real.log (T : ℝ) ^ 4 * Real.log
+        ((Fintype.card State : ℝ) * (Fintype.card Action : ℝ) * T / δ) /
+          ((1 - M.discount) ^ 4 * ε ^ 2) ≤ T →
+      1 - δ ≤ (qSamplingLaw M T).real {data | ∀ s a,
+        |qSampledIterate M η T Q₀ data s a -
+          M.trajectoryExpectedQ M.optimalGreedyPolicy s a| ≤ ε} := by
+  obtain ⟨c₃, hc₃, he, hs, hd⟩ := qFinal_exists_universal_budget_constant 1 (by norm_num)
+  refine ⟨1, 1, c₃, one_pos, le_rfl, le_rfl, hc₃, ?_⟩
+  intro State Action instState instAction M η δ ε T hγhalf hA hT hδ hδ1
+    hε hεmax hschedule Q₀ h₀ hbudget
+  let ρ := qChiSourceRadius (qChiSourceRateEnvelope M.discount 1 T) δ
+    (Fintype.card State) (Fintype.card Action) T
+  have hρ : 0 ≤ ρ := by
+    have hηbar := qChiSourceRateEnvelope_pos M.discount 1 T
+      M.discount_lt_one one_pos hT
+    exact (qChiSourceRadius_pos _ δ _ _ T hηbar hδ hδ1
+      (Fintype.card_pos_iff.mpr M.state_nonempty)
+      (Fintype.card_pos_iff.mpr M.action_nonempty) hT).le
+  exact qLearning_conditional_source_accuracy M η 1 1 c₃ δ ε T hγhalf (by norm_num)
+    (by norm_num) (by norm_num) hc₃ he hs hd hT hδ hδ1 hε hεmax hschedule Q₀ h₀ hbudget
+    (qSource_robust_comparator_closeness_from_stopped_law M ρ hρ)
+
+/-- The same accuracy statement with the original witnesses c₁ = c₂ = 1/4 (from
+`qLearning_exists_universal_constants_conditional`), retained alongside the main export,
+which witnesses c₁ = c₂ = 1. Source `thm:infinite-horizon-simple` with its comparator-closeness
+obligation discharged by the actual stopped-law stability theorem and the
+published selected-model reduction. Constants are chosen before all problem
+data. The event is under the actual synchronous product sampling law and
+simultaneously covers every state-action pair. -/
+theorem qLearning_exists_universal_constants_source_accuracy_quarter :
     ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ c₁ ≤ 1 ∧ 0 < c₃ ∧
     ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
       (M : DiscountedMDP State Action) (η : ℕ → ℝ) (δ ε : ℝ) (T : ℕ),

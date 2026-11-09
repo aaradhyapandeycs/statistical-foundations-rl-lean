@@ -11,17 +11,17 @@
   "Formalization/Statements/Ch2Proofs.lean": "03f51d01f761e467ec3a1c14af0d9fdbafc419ce17039d106727b45d732ac03e",
   "Formalization/Statements/Ch3.lean": "688560d6c57eb0adf349dc593806799d2e549aea4314ab1149728f9089b28aa9",
   "Formalization/Statements/Ch3Proofs.lean": "33f861e87a33aec8f9aff3a8905449b0a9ede85d4fd9df3e11a7e4c0e0562087",
-  "Formalization/Statements/Ch4.lean": "12013d346edda00401ee0f701dca2b1b31e86da3dead61b86a4041fc591eec63",
-  "Formalization/Statements/Ch4Proofs.lean": "9980fd8284a1687596f9243f719e6cfcbd427fe93ad122e83586f54c3811ca61",
+  "Formalization/Statements/Ch4.lean": "75a26a2d84c133c439f14ebfccb929910dccaea27d729279a1116bb18dd9b6e2",
+  "Formalization/Statements/Ch4Proofs.lean": "8156d2582725e9798f9e3e79a138f006f1aede088d7122eeeb6cb751730d65ff",
   "Formalization/Statements/Ch5.lean": "eb761b5f8cad2d849372319db58d5431fe5915e8c82b0623887ffe7f2f1b7261",
   "Formalization/Statements/Ch5Proofs.lean": "738be4835111846e19bac1fb25863a5bcb36ed7109fa83da506376f934dc55a6",
   "Formalization/Statements/Ch6.lean": "773418383d20387e0210ea8423f4d931cd888374f93a263b16d65d0830c8b8d2",
   "Formalization/Statements/Ch6Proofs.lean": "39494946cb0020a987eadc0c81bea4c6feb6eb88a9e30b38c983aa88128d3f66",
   "Formalization/Statements/Ch7.lean": "c2939cb401da84e1ae23a96581197d14632bcf47365c9278e5243e31ca7d7e48",
   "Formalization/Statements/Ch7Proofs.lean": "fed6734244d47b228d3dd90fbcc5663ab296b101754e7aba5e57b340d850d007",
-  "docs/COVERAGE.md": "3823c784ab4fb018e0c6bcb7234cb9d657b735e16af21df15b3a6c8fa429402d",
+  "docs/COVERAGE.md": "e6806bcbc18c3e5fd7a75e2f199776b1e1d76fdbef840efeb6beb424eef13aea",
   "docs/SOURCE-ISSUES.md": "40eb3cb041cf8c1addd9b602c65bd1cca6fc938633a396274856aa50cb026b39",
-  "docs/named-result-status.json": "7916ff39bd4788072bfef56016a34ff6e3dd3b7a2ce481ee83252b328b09364c",
+  "docs/named-result-status.json": "eed7b50c5aa12010788c2b235179b9338385e1103717925737ca8f3bff64dce0",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
  "vocabulary": {
@@ -53,11 +53,11 @@
    "prose-claim": 0
   },
   "named_fully_proved": 39,
-  "prose_nodes": 54,
+  "prose_nodes": 55,
   "prose_by_statement_status": {
    "printed": 7,
    "corrected": 5,
-   "restricted": 3,
+   "restricted": 4,
    "refuted": 1,
    "partial": 3,
    "open": 0,
@@ -131,7 +131,7 @@
     "prose": {
      "printed": 2,
      "corrected": 1,
-     "restricted": 0,
+     "restricted": 1,
      "refuted": 0,
      "partial": 0,
      "open": 0,
@@ -542,7 +542,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    128
+    129
    ],
    "issues": [],
    "evidence": [],
@@ -588,7 +588,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    128
+    129
    ],
    "issues": [],
    "evidence": [],
@@ -1944,7 +1944,7 @@
     }
    ],
    "coverage_rows": [
-    117
+    118
    ],
    "issues": [
     "C1",
@@ -2375,7 +2375,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 436
+     "line": 485
     }
    ],
    "proof_wrappers": [
@@ -2384,7 +2384,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    129
+    130
    ],
    "issues": [],
    "evidence": [],
@@ -2484,7 +2484,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 160
+     "line": 209
     }
    ],
    "proof_wrappers": [
@@ -2766,7 +2766,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 471
+     "line": 520
     }
    ],
    "proof_wrappers": [
@@ -2775,7 +2775,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    129
+    130
    ],
    "issues": [],
    "evidence": [],
@@ -2820,21 +2820,21 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 232
+     "line": 281
     },
     {
      "name": "StatisticalRL.Statements.Ch4.Thm4_7",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 383
+     "line": 432
     },
     {
      "name": "StatisticalRL.Statements.Ch4.Thm4_7_case_i",
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 419
+     "line": 468
     }
    ],
    "proof_wrappers": [
@@ -2855,7 +2855,7 @@
     }
    ],
    "coverage_rows": [
-    127
+    128
    ],
    "issues": [
     "C30",
@@ -3016,7 +3016,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 184
+     "line": 233
     }
    ],
    "proof_wrappers": [
@@ -3157,6 +3157,48 @@
    "fully_proved": true
   },
   {
+   "id": "ch4-display-7d1d8cf0e57c",
+   "labels": [],
+   "number": null,
+   "kind": "display",
+   "class": "prose",
+   "chapter": "4",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/generative_model_model_free.tex",
+     "line_start": 1873,
+     "line_end": 1879
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch4.Thm4_6_underestimation",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch4.lean",
+     "line": 164
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch4.Thm4_6_underestimation_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    107
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "restricted",
+   "proof_status": "proved",
+   "fully_proved": false
+  },
+  {
    "id": "label:thm:infinite-horizon-asyn",
    "labels": [
     "thm:infinite-horizon-asyn",
@@ -3180,7 +3222,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 328
+     "line": 377
     }
    ],
    "proof_wrappers": [
@@ -3197,7 +3239,7 @@
     }
    ],
    "coverage_rows": [
-    132
+    133
    ],
    "issues": [
     "C34"
@@ -3253,7 +3295,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 505
+     "line": 555
     }
    ],
    "proof_wrappers": [
@@ -3262,7 +3304,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    130
+    131
    ],
    "issues": [
     "C34"
@@ -3299,7 +3341,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 290
+     "line": 339
     }
    ],
    "proof_wrappers": [
@@ -3316,7 +3358,7 @@
     }
    ],
    "coverage_rows": [
-    133
+    134
    ],
    "issues": [
     "C35"
@@ -3355,7 +3397,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 208
+     "line": 257
     }
    ],
    "proof_wrappers": [
@@ -3411,7 +3453,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 262
+     "line": 311
     }
    ],
    "proof_wrappers": [
@@ -3428,7 +3470,7 @@
     }
    ],
    "coverage_rows": [
-    131
+    132
    ],
    "issues": [
     "C31"
@@ -5724,7 +5766,7 @@
     }
    ],
    "coverage_rows": [
-    120
+    121
    ],
    "issues": [
     "C25",
@@ -5791,7 +5833,7 @@
     }
    ],
    "coverage_rows": [
-    121
+    122
    ],
    "issues": [],
    "evidence": [
@@ -5845,7 +5887,7 @@
     }
    ],
    "coverage_rows": [
-    122
+    123
    ],
    "issues": [],
    "evidence": [
@@ -6369,7 +6411,7 @@
     }
    ],
    "coverage_rows": [
-    108
+    109
    ],
    "issues": [
     "C18"
@@ -6444,7 +6486,7 @@
     }
    ],
    "coverage_rows": [
-    109
+    110
    ],
    "issues": [
     "C10"
@@ -6510,7 +6552,7 @@
     }
    ],
    "coverage_rows": [
-    134
+    135
    ],
    "issues": [
     "C10",
@@ -6623,7 +6665,7 @@
     }
    ],
    "coverage_rows": [
-    110
+    111
    ],
    "issues": [],
    "evidence": [
@@ -6687,7 +6729,7 @@
     }
    ],
    "coverage_rows": [
-    116
+    117
    ],
    "issues": [
     "C19"
@@ -6753,7 +6795,7 @@
     }
    ],
    "coverage_rows": [
-    119
+    120
    ],
    "issues": [
     "C10",
@@ -6860,7 +6902,7 @@
     }
    ],
    "coverage_rows": [
-    111
+    112
    ],
    "issues": [],
    "evidence": [
@@ -6994,7 +7036,7 @@
     }
    ],
    "coverage_rows": [
-    126
+    127
    ],
    "issues": [
     "C22",
@@ -7115,7 +7157,7 @@
     }
    ],
    "coverage_rows": [
-    123
+    124
    ],
    "issues": [
     "C28"
@@ -7199,7 +7241,7 @@
     }
    ],
    "coverage_rows": [
-    124
+    125
    ],
    "issues": [
     "C28"
@@ -7265,7 +7307,7 @@
     }
    ],
    "coverage_rows": [
-    113
+    114
    ],
    "issues": [
     "C22"
@@ -7331,7 +7373,7 @@
     }
    ],
    "coverage_rows": [
-    125
+    126
    ],
    "issues": [
     "C24",
@@ -7443,7 +7485,7 @@
     }
    ],
    "coverage_rows": [
-    115
+    116
    ],
    "issues": [
     "C9"
@@ -7548,7 +7590,7 @@
     }
    ],
    "coverage_rows": [
-    112
+    113
    ],
    "issues": [],
    "evidence": [
@@ -7602,7 +7644,7 @@
     }
    ],
    "coverage_rows": [
-    114
+    115
    ],
    "issues": [
     "C21"
@@ -7671,7 +7713,7 @@
     }
    ],
    "coverage_rows": [
-    135
+    136
    ],
    "issues": [
     "C32"
@@ -7741,7 +7783,7 @@
     }
    ],
    "coverage_rows": [
-    136
+    137
    ],
    "issues": [
     "C33"
@@ -7807,7 +7849,7 @@
     }
    ],
    "coverage_rows": [
-    118
+    119
    ],
    "issues": [],
    "evidence": [

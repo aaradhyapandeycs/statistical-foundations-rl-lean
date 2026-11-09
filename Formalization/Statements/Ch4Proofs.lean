@@ -16,6 +16,7 @@ import Formalization.ModelFree.QLearningSourceTheoremClosure
 import Formalization.ModelFree.AsyncQ.Main
 import Formalization.ModelFree.MeanError
 import Formalization.ModelFree.AsyncQ.MeanError
+import Formalization.ModelFree.QLearningUnderestimation
 
 /-! Proofs of the Chapter 4 statement index from the existing exports. -/
 namespace StatisticalRL.Statements.Ch4
@@ -87,6 +88,10 @@ theorem Thm4_6_holds : Thm4_6 := by
   obtain ⟨c₁, c₂, c₃, hc₂, horder, _, hc₃, h⟩ :=
     qLearning_exists_universal_constants_source_accuracy
   exact ⟨c₁, c₂, c₃, hc₂, horder, hc₃, h⟩
+
+theorem Thm4_6_underestimation_holds : Thm4_6_underestimation :=
+  qLearning_underestimation_exists_universal_constants
+
 theorem Lemma4_3_corrected_holds : Lemma4_3_corrected := by
   intro γ c₁ c₂ T η hT hγ hγ1 hc₁ hc₂ hcprod hlarge hs t k htT hkt htime
   exact tdRateWeight_corrected_step_size γ c₁ c₂ T η hT hγ hγ1 hc₁ hc₂ hcprod hlarge hs

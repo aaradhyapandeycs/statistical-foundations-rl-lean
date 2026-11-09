@@ -138,8 +138,12 @@ def Lemma4_11 : Prop :=
     ‖qRobustBellmanMinus M ρ b Q - qRobustBellmanMinus M ρ b R‖ ≤ M.discount * ‖Q - R‖
 
 /-- `thm:infinite-horizon-simple`, chapters/generative_model_model_free.tex:891–912.
-The book uses “small enough universal constants c₁ ≥ c₂ > 0”; the
-existing proof supplies c₁ = c₂ = 1/4 and a sufficiently large c₃. -/
+The book uses “small enough universal constants c₁ ≥ c₂ > 0”; this is encoded
+existentially. The proof witnesses c₁ = c₂ = 1 (the same witnesses as `Remark4_2` and
+`Thm4_6_underestimation`) and a sufficiently large c₃. Schedules with c₂ < 1 are not
+covered by this entry, and the reading “for every sufficiently small c₁ ≥ c₂” is not
+established. The library separately retains the c₁ = c₂ = 1/4 result as
+`qLearning_exists_universal_constants_source_accuracy_quarter`. -/
 def Thm4_6 : Prop :=
   ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
@@ -157,6 +161,51 @@ def Thm4_6 : Prop :=
     1-δ ≤ (qSamplingLaw M T).real {data | ∀ s a,
       |qSampledIterate M η T Q₀ data s a -
         M.trajectoryExpectedQ M.optimalGreedyPolicy s a| ≤ ε}
+/-- Under-estimation discussion after Theorem 4.6 (`thm:infinite-horizon-simple`),
+paragraph "Discussion: over-estimation vs. under-estimation",
+`chapters/generative_model_model_free.tex:1869–1881` (display `:1873–1879`; Q-learning
+`alg:q-infinite` `:841–870`, schedule `eq:thm:infinite-horizaon-eta` `:881–886`,
+Theorem 4.6 `:891–912`).
+
+`Q̃` (`qPolicySampledIterate`) uses the same initialization and the same exact-T
+transition samples as Q-learning (`qSampledIterate`), but takes the next action from a
+deterministic optimal policy `f` (`V^f = V⋆` at every state) instead of maximizing.
+
+* Clause 1 (`Q̃_T ≤ Q_T`, the first display inequality) holds pathwise, for every data
+  array.
+* Clause 2 makes the printed `−Õ(√(1/((1−γ)³T)))·1_{SA}` explicit: with probability at
+  least `1−δ` under the actual synchronous sampling law, simultaneously for all `(s,a)`,
+  `Q̃_T − Q⋆ ≥ −C·√(log⁴T · log(SAT/δ) / ((1−γ)³T))`. The hidden polylog is exactly
+  `log⁴T · log(SAT/δ)` (C = 91 in the proof).
+* There is no budget premise on `T` (only `T ≥ 2`) and no `A ≥ 2` premise; both are
+  stronger than the printed context.
+* The schedule constants are existential, as in `Thm4_6` ("small enough universal
+  constants" is encoded existentially). The proof witnesses `c₁ = c₂ = 1`, the same
+  witnesses as `Thm4_6`; schedules with `c₂ < 1` are not covered, and the reading
+  "for every sufficiently small `c₁ ≥ c₂`" is not established. This is a limit of the
+  proof infrastructure (the transported TD analysis needs `c₂ ≥ 1` after rewriting the
+  `log³T` schedule as a `log²T` schedule with `T`-dependent constants), not a source
+  error. A prose claim, not a numbered result. -/
+def Thm4_6_underestimation : Prop :=
+  ∃ c₁ c₂ C : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < C ∧
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (η : ℕ → ℝ) (δ : ℝ) (T : ℕ),
+    1 / 2 ≤ M.discount → 2 ≤ T → 0 < δ → δ < 1 →
+    (∀ k, k ≤ T →
+      1 / (1 + c₁ * (1 - M.discount) * T / Real.log (T : ℝ) ^ 3) ≤ η k ∧
+      η k ≤ 1 / (1 + c₂ * (1 - M.discount) * k / Real.log (T : ℝ) ^ 3)) →
+    ∀ (Q₀ : State → Action → ℝ), (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ M.effectiveHorizon) →
+    ∀ (f : State → Action),
+      (∀ s, M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (f x)) s =
+        M.trajectoryExpectedValue M.optimalGreedyPolicy s) →
+    (∀ (data : QSamples State Action T) s a,
+        qPolicySampledIterate M f η T Q₀ data s a ≤ qSampledIterate M η T Q₀ data s a) ∧
+    1 - δ ≤ (qSamplingLaw M T).real {data | ∀ s a,
+      -(C * Real.sqrt (Real.log (T : ℝ) ^ 4 *
+          Real.log ((Fintype.card State : ℝ) * (Fintype.card Action : ℝ) * T / δ) /
+          ((1 - M.discount) ^ 3 * T))) ≤
+        qPolicySampledIterate M f η T Q₀ data s a -
+          M.trajectoryExpectedQ M.optimalGreedyPolicy s a}
 /-- Corrected Lemma 4.3, `lemma:TD-step-size`, `chapters/generative_model_model_free.tex:317–327`,
 with the schedule `eq:thm:eta-TD` (lines 182–184) and the weights `η_k^{(t)}` of
 `def:eta-k-t` (lines 307–313) written out (the `k = 0` branch takes precedence at `t = 0`).
@@ -470,7 +519,8 @@ def Remark4_1 : Prop :=
 
 /-- Remark 4.2 (mean estimation guarantee for synchronous Q-learning),
 `chapters/generative_model_model_free.tex:914–929`, for Theorem 4.6 `thm:infinite-horizon-simple`
-(:891–912). The constants are those of Theorem 4.6, quantified in the same order and with the same
+(:891–912). The constants are those of Theorem 4.6 (witnesses c₁ = c₂ = 1), quantified in the same
+order and with the same
 side conditions as `Thm4_6` (the proof reuses its witnesses by applying the same export
 `qLearning_exists_universal_constants_source_accuracy`). `δ := ε(1−γ)/2` as printed, so
 `S A T/δ = 2 S A T/(ε(1−γ))`. The premises other than `δ` are those of `Thm4_6`. `max_{(s,a)}` is
