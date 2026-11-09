@@ -27,18 +27,22 @@ Status rules (also shown in words on the site's Status and Graph pages):
   refutation of the printed statement by name (backticked `not_..._printed...`, the
   project convention; G4 in static_gates.py checks cited names resolve).  A node that
   is proved in some form is never marked refuted; its `refutations_cited` field lists
-  any such names as data only.  `partial`: a COVERAGE row whose bold lead starts with
-  "Partial", or a statement entry without the reviewed record it needs.
+  any such names as data only (also names of the form `not_..._printed` in a ledger record).
+  `partial`: a COVERAGE row whose bold lead starts with "Partial" or proves only part of the
+  item ("First two sentences proved"), or a statement entry without the reviewed record it needs.
+* Source-issue ids are read from ledger scopes and docstrings as `Cnn` (not `C1 = 2`), and from
+  COVERAGE rows only as links (`SOURCE-ISSUES.md#Cnn`, `[Cnn]`), since rows use constants C1, C2.
 * Fail-closed: if a proved node's COVERAGE headline says "Partial", or says "refuted"
   without saying anything is proved, the headline wins and a warning is emitted.
 * `open`: a named node with nothing recorded.  `prose-claim`: a prose node with no
   statement entry (it may have a COVERAGE note).
 * A joint statement entry (one Prop for several displays) is attached to every cited
   label whose range lies inside the entry's first cited range.
-* `fully_proved`: statement `printed`, proof `proved`, and every node reachable through
-  `uses` is fully proved.  `uses` edges are candidates read from the TeX
+* `printed_with_cited_printed`: statement `printed`, proof `proved`, and every node reachable
+  through `uses` is also proved as printed.  `uses` edges are candidates read from the TeX
   cross-references (`\\ref`, `\\eqref`, ...) inside the result and its proof; they are
-  NOT reviewed (`"reviewed": false`), so neither is `fully_proved`.
+  NOT reviewed (`"reviewed": false`), so this flag is not a reviewed proof-dependency check:
+  it says nothing about whether the cited results are what the proof actually needs.
 
 Python 3.9+, standard library only, read-only on everything except the two outputs.
 """
@@ -71,7 +75,14 @@ DECL_RE = re.compile(r"/--(?P<doc>.*?)-/\s*\n(?P<decl>(?:noncomputable\s+)?def\s
                      r"(?=\n\s*\n|\n/--|\nend\b|\Z)", re.S)
 HOLDS_RE = re.compile(r"^(?:noncomputable\s+)?theorem\s+([\w']+)_holds\b", re.M)
 QUALIFIED_RE = re.compile(r"\b(?:StatisticalRL|[A-Z][\w']*)(?:\.[\w']+)+")
-CID_RE = re.compile(r"\bC(\d+)\b")
+CID_RE = re.compile(r"\bC(\d+)\b(?!\s*[=≤≥<>])")  # not constants such as "C1 = 2"
+# In the coverage ledger, prose also uses constants named C1, C2 ("C1 log(N/(1−γ))"), so an issue
+# id is read there only from a link to SOURCE-ISSUES.md or a bracketed [Cnn] link text.
+CID_LINK_RE = re.compile(r"SOURCE-ISSUES\.md#C(\d+)\b|\[C(\d+)\]")
+
+
+def coverage_issue_ids(text: str) -> list:
+    return [a or b for a, b in CID_LINK_RE.findall(text)]
 # A Lean refutation of a printed statement, by the project's naming convention
 # (`not_thm7_11_printed`, `not_Eq_PAC_from_regret_conversion_printed`, ...), cited in backticks.
 REFUTATION_RE = re.compile(r"`(?:[\w.']*\.)?(not_[\w']*printed[\w']*)`")
@@ -93,11 +104,14 @@ def namespace_at(text: str, upto: int) -> str:
 
 
 def split_md_row(line: str) -> list:
+    """Cells of a Markdown table row. `|` inside backticks, or escaped as `\\|`, is literal."""
     cells, cur, tick = [], [], False
     for ch in line.strip().strip("|"):
         if ch == "`":
             tick = not tick
-        if ch == "|" and not tick:
+        if ch == "|" and cur and cur[-1] == "\\":
+            cur[-1] = "|"
+        elif ch == "|" and not tick:
             cells.append("".join(cur).strip())
             cur = []
         else:
@@ -106,11 +120,76 @@ def split_md_row(line: str) -> list:
     return cells
 
 
-def classify(name: str, ledger_kind: str | None, scope: str = "") -> str:
+def partial_lead(lead: str) -> bool:
+    """A coverage headline that proves only part of the item ("Partial: ...", "First two sentences
+    proved"). Proving part of a claim is partial, not a restricted case."""
+    lead = lead.lower()
+    return lead.startswith("partial") or bool(re.search(r"\bfirst\b|\bpart\b|\bsentences?\b", lead))
+
+
+def coverage_partial(name: str, coverage_rows: list) -> bool:
+    """True when a row naming the entry as its subject has a partial headline."""
+    for row in coverage_rows:
+        rest = re.sub(r"^\s*\*\*.+?\*\*", "", row["scope"], count=1)
+        paren = re.match(r"\s*\(([^)]*)\)", rest)
+        first = re.search(r"`([^`]+)`", rest)
+        subjects = re.findall(r"`([^`]+)`", paren.group(1)) if paren else ([first.group(1)] if first else [])
+        if name in [x.rsplit(".", 1)[-1] for x in subjects] and partial_lead(row["lead"]):
+            return True
+    return False
+
+
+def coverage_variant(name: str, coverage_rows: list) -> str | None:
+    """Variant that the coverage ledger records for an entry with no named-ledger record.
+
+    Only a row that names the entry as its *primary* subject counts: a backticked name in the
+    parenthetical right after the row's bold headline (`**Prose claim proved**
+    (`Lemma2_1_iterationCount`)`), or else the first backticked identifier after the headline.  The headline decides: refuted-without-proof or partial
+    gives None (nothing proved as a whole); "corrected" gives corrected; "restricted" or "only for"
+    gives restricted; any other
+    headline with "proved" gives printed ("partial" headlines, see `partial_lead`, give None).  An entry whose name is marked corrected or restricted
+    also counts when any proving row names it.  Otherwise None."""
+    for row in coverage_rows:
+        scope = row["scope"]
+        rest = re.sub(r"^\s*\*\*.+?\*\*", "", scope, count=1)
+        paren = re.match(r"\s*\(([^)]*)\)", rest)
+        if paren:  # "**Proved** (`Remark4_1`, `Remark4_2`): ..." names every entry in the parenthetical
+            subjects = re.findall(r"`([^`]+)`", paren.group(1))
+        else:
+            first = re.search(r"`([^`]+)`", rest)
+            subjects = [first.group(1)] if first else []
+        if name not in [x.rsplit(".", 1)[-1] for x in subjects]:
+            continue
+        lead = row["lead"].lower()
+        if not lead:
+            continue
+        if partial_lead(lead) or ("refuted" in lead and "proved" not in lead) or "proved" not in lead:
+            return None
+        if "corrected" in lead:
+            return "corrected"
+        if re.search(r"restricted|\bonly for\b", lead):
+            return "restricted"
+        return "printed"
+    # A variant entry (name marked corrected / restricted) that a proving row names anywhere, e.g.
+    # "**Printed statement refuted; corrected and restricted variants proved.** ... `X_corrected` proves".
+    marker = re.search(r"(corrected)|(positiven|restricted|causal|_k\d)", name.lower())
+    if marker:
+        for row in coverage_rows:
+            lead = row["lead"].lower()
+            if "proved" in lead and not lead.startswith("partial") and \
+                    re.search(r"`(?:[\w.']*\.)?%s`" % re.escape(name), row["scope"]):
+                return "corrected" if marker.group(1) else "restricted"
+    return None
+
+
+def classify(name: str, ledger_kind: str | None, scope: str = "", coverage_rows: list | None = None) -> str:
     """Variant of one statement entry; mirrors site/reader/lean.py `classify`.
 
-    Entries without a ledger record (prose claims) are `printed` only when the name has
-    no suffix after the source number (`Remark4_1`, `Eq_mdp_value_Q`)."""
+    A name marker (`_corrected`, `_positiveN`, `_restricted`, `_causal`, `_K2`) always wins.
+    Entries with a named-ledger record follow the ledger.  Entries without one (prose
+    claims, displays, remarks) take the variant from the coverage-ledger row that names them
+    (`coverage_variant`); with no such row they are `printed` only when the name has no
+    suffix after the source number (`Remark4_1`, `Eq_mdp_value_Q`), else `restricted`."""
     low = name.lower()
     if "corrected" in low:
         return "corrected"
@@ -120,6 +199,9 @@ def classify(name: str, ledger_kind: str | None, scope: str = "") -> str:
         return "printed"
     if ledger_kind == "proved_variants":
         return "restricted"
+    cov = coverage_variant(name, coverage_rows or [])
+    if cov:
+        return cov
     if re.fullmatch(r"(Thm|Lemma|Claim|Remark)\d+_\d+", name) or name.startswith("Eq_"):
         return "printed"
     return "restricted"
@@ -348,6 +430,11 @@ class Builder:
                 if rec.get("evidence"):
                     n["evidence"].append(rec["evidence"])
                 n["issues"].update(CID_RE.findall(rec.get("statement_scope", "")))
+                # Refutations of the printed form named in the record (data only: a recorded node is proved).
+                for name in re.findall(r"(?<![\w.'])(?:[\w']+\.)*(not_[\w']*printed[\w']*)",
+                                       " ".join(str(rec.get(k, "")) for k in ("lean_export", "statement_scope"))):
+                    if name not in n["refutations_cited"]:
+                        n["refutations_cited"].append(name)
                 exp = rec.get("component_exports") or rec.get("lean_export", "")
                 if isinstance(exp, list):
                     exp = " ".join(map(str, exp))
@@ -392,7 +479,7 @@ class Builder:
                     self.warnings.append(f"statement entry {ent['full']} matches no inventory entry")
                     continue
                 n = node_for(target)
-                variant = classify(ent["name"], None)
+                variant = classify(ent["name"], None, "", self.coverage)
             self.entry_node[ent["full"]] = n["id"]
             attached = [n]
             if not rec:
@@ -472,19 +559,19 @@ class Builder:
                             ranged.append(self.by_id[self.entry_node[ent["full"]]])
                 targets = ranged or numbered
             if not targets:
-                self.warnings.append(f"COVERAGE.md:{row['line']} matches no inventory result: {row['item'][:70]}")
+                self.warnings.append(f"COVERAGE.md:{row['line']} matches no inventory result: {row['item']}")
                 continue
             lead = row["lead"].lower()
             for e in dict((t["id"], t) for t in targets).values():
                 n = node_for(e)
                 n["coverage_rows"].append(row["line"])
-                n["issues"].update(CID_RE.findall(row["scope"]))
+                n["issues"].update(coverage_issue_ids(row["raw"]))
                 for name in REFUTATION_RE.findall(row["raw"]):
                     if name not in n["refutations_cited"]:
                         n["refutations_cited"].append(name)
                 # Fail-closed headline: a row whose bold lead says Partial, or says refuted without
                 # saying anything is proved, overrides a proved status (with a warning).
-                if lead.startswith("partial"):
+                if partial_lead(lead):
                     n["partial_lead"] = True
                 if re.search(r"\brefuted\b", lead) and "proved" not in lead:
                     n["refuted_lead"] = True
@@ -519,7 +606,7 @@ class Builder:
 
         # prune prose nodes created only by unmatched context (none expected) and order --------
         self.add_uses(nodes)
-        self.fully_proved(nodes)
+        self.printed_with_cited_printed(nodes)
         order = {e["id"]: i for i, e in enumerate(self.inv_entries)}
         node_list = sorted(nodes.values(), key=lambda n: order.get(n["id"], 10 ** 9))
         context = [{"id": e["id"], "labels": e.get("labels", []), "kind": e["kind"], "number": e.get("number"),
@@ -599,7 +686,7 @@ class Builder:
             nodes[owner]["uses"].append(edge)
 
     @staticmethod
-    def fully_proved(nodes: dict):
+    def printed_with_cited_printed(nodes: dict):
         fp = {nid: n["statement_status"] == "printed" and n["proof_status"] == "proved" for nid, n in nodes.items()}
         changed = True
         while changed:
@@ -609,7 +696,7 @@ class Builder:
                     fp[nid] = False
                     changed = True
         for nid, n in nodes.items():
-            n["fully_proved"] = fp[nid]
+            n["printed_with_cited_printed"] = fp[nid]
 
     def summary(self, node_list: list) -> dict:
         named = [n for n in node_list if n["class"] == "named"]
@@ -618,12 +705,12 @@ class Builder:
             ch = by_chapter.setdefault(n["chapter"], {"named": {s: 0 for s in STATEMENT_STATUSES},
                                                       "prose": {s: 0 for s in STATEMENT_STATUSES},
                                                       "named_total": 0, "named_proved": 0,
-                                                      "named_fully_proved": 0})
+                                                      "named_printed_with_cited_printed": 0})
             ch[n["class"]][n["statement_status"]] += 1
             if n["class"] == "named":
                 ch["named_total"] += 1
                 ch["named_proved"] += n["proof_status"] == "proved"
-                ch["named_fully_proved"] += n["fully_proved"]
+                ch["named_printed_with_cited_printed"] += n["printed_with_cited_printed"]
         # Cross-check: count distinct ledger keys (inventory id, else source label) that name a
         # numbered inventory entry, directly from the ledger and inventory fields.  This shares
         # the ledger's own keys with the node pass, so it guards the node bookkeeping, not the
@@ -652,7 +739,7 @@ class Builder:
             "named_results_with_ledger_record": len(ledger_ids),
             "named_by_statement_status": {s: tally(lambda n, s=s: n["class"] == "named" and n["statement_status"] == s)
                                           for s in STATEMENT_STATUSES},
-            "named_fully_proved": tally(lambda n: n["class"] == "named" and n["fully_proved"]),
+            "named_printed_with_cited_printed": tally(lambda n: n["class"] == "named" and n["printed_with_cited_printed"]),
             "prose_nodes": tally(lambda n: n["class"] == "prose"),
             "prose_by_statement_status": {s: tally(lambda n, s=s: n["class"] == "prose" and n["statement_status"] == s)
                                           for s in STATEMENT_STATUSES},

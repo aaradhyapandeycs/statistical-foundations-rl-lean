@@ -8,8 +8,13 @@ import re
 from datetime import datetime, timezone
 
 from .book import Book, ENV_NAMES
-from .lean import REPO, STATUS, STATUS_ORDER, LeanIndex
+from .graph import GitReader, gen_nodes
+from .lean import (PROVED, REFUTED_READING, REPO, RESTRICTED_COUNT_NOTE, STATUS, STATUS_ORDER, LeanIndex,
+                   coverage_status)
 from .tex import RESULT_KINDS, label_id
+
+# Items that are never "proved": they get no status chip, only "cited by" links.
+CONTEXT_KINDS = {"algorithm", "assumption", "definition"}
 
 MATHJAX = "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"
 ARXIV = "https://arxiv.org/abs/2610.41903v1"
@@ -26,6 +31,23 @@ def attr(t: str) -> str:
     return html.escape(t, quote=True)
 
 
+def inline_math(t: str) -> str:
+    """Bibliography titles keep TeX math as $...$; MathJax here only reads \\(...\\)."""
+    return re.sub(r"\$([^$]+)\$", r"\\(\1\\)", t)
+
+
+def tex_text(raw: str, detex) -> str:
+    """Bibliography field: prose parts de-TeXed and escaped, $...$ math kept verbatim for MathJax."""
+    out = []
+    for i, part in enumerate(re.split(r"(?<!\\)\$([^$]+)\$", raw)):
+        if i % 2:
+            out.append(f"\\({esc(part)}\\)")
+        else:  # keep the spaces around math that the de-TeXer would trim
+            pre, post = (" " if part[:1].isspace() else ""), (" " if part[-1:].isspace() else "")
+            out.append(pre + esc(detex(part)) + post if part.strip() else part)
+    return "".join(out)
+
+
 def strip_tags(t: str) -> str:
     t = re.sub(r"<[^>]+>", "", t)
     return html.unescape(t)
@@ -36,6 +58,15 @@ class Site:
         self.book, self.lean, self.pages = book, lean, pages
         self.front, self.back = front, back
         self.built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+        # Node graph from the ledgers at the same Lean revision (also used by the Status and
+        # Graph pages), so the reader and the graph place and classify entries the same way.
+        builder = gen_nodes.Builder(GitReader(lean.git))
+        self.node_data = builder.build()
+        for n in self.node_data["nodes"]:
+            n["issues"] = list(n["issues"])
+        self.nodes = {n["id"]: n for n in self.node_data["nodes"]}
+        self.entry_node = dict(builder.entry_node)
+        self.inv_by_id = builder.by_id
         self.place()
 
     # pairing -------------------------------------------------------------------
@@ -51,8 +82,19 @@ class Site:
         """A top-level block followed by its nested numbered or labelled blocks."""
         return [b] + list(b.children)
 
+    def primary_keys(self, e) -> set:
+        """Keys of the one source item an entry formalizes: its ledger record's inventory entry,
+        else the node gen_nodes attaches it to (label in the docstring's first range, else range)."""
+        nid = self.entry_node.get(e.full)
+        if not nid:
+            return set()
+        keys = {"id:" + nid}
+        keys.update(self.inv_by_id.get(nid, {}).get("labels", []))
+        return keys
+
     def place(self):
-        """Decide, in book order, which block shows each Lean entry in full."""
+        """Show each Lean entry in full at the source item it formalizes (primary pass); only
+        entries with no such item fall back to the first block they cite, in book order."""
         by_key: dict = {}
         ranged = []
         for e in self.lean.entries:
@@ -64,27 +106,73 @@ class Site:
                 by_key.setdefault(k, []).append(e)
             if not keys:
                 ranged.append(e)
-        self.matches: dict = {}  # id(block) -> [entries]
-        self.placed: dict = {}   # entry name -> (page id, anchor, id(top-level block))
-        for page in self.pages:
-            for top in page.blocks:
-                for b in self.units(top):
-                    found = []
-                    for key in sorted(self.block_keys(b)):
-                        for e in by_key.get(key, []):
-                            if e not in found:
-                                found.append(e)
-                    if b.kind == "env" and b.file:
-                        for e in ranged:
-                            for r in e.ranges:
-                                if b.file.endswith(r["file"]) and r["line_start"] <= b.line_start <= r["line_end"] \
-                                        and e.name not in self.placed and e not in found:
-                                    found.append(e)
-                    if found:
-                        self.matches[id(b)] = found
-                        for e in found:
-                            self.placed.setdefault(e.name, (page.id, self.anchor(b), id(top)))
+        primary = {e.name: self.primary_keys(e) for e in self.lean.entries}
+        self.matches: dict = {}  # id(block) -> [entries citing it]
+        self.home: dict = {}     # id(block) -> [entries shown in full there]
+        self.placed: dict = {}   # entry name -> (page id, anchor, id(top-level block), id(block))
+        blocks = [(page, top, b) for page in self.pages for top in page.blocks for b in self.units(top)]
+
+        def put(e, page, top, b):
+            if e.name not in self.placed:
+                self.placed[e.name] = (page.id, self.anchor(b), id(top), id(b))
+                self.home.setdefault(id(b), []).append(e)
+                self.matches.setdefault(id(b), [])
+                if e not in self.matches[id(b)]:
+                    self.matches[id(b)].append(e)
+
+        # Primary pass. A display inside a paragraph carries its label only as an anchor in the
+        # paragraph's HTML, so a block also matches when it holds the anchor of a primary label.
+        needles = {e.name: [f'id="{label_id(k)}"' for k in sorted(primary[e.name]) if not k.startswith("id:")]
+                   for e in self.lean.entries}
+        for page, top, b in blocks:  # the block that is the item itself
+            keys = self.block_keys(b)
+            for e in self.lean.entries:
+                if e.name not in self.placed and primary[e.name] & keys:
+                    put(e, page, top, b)
+        for page, top, b in blocks:  # else the block holding the item's anchor
+            for e in self.lean.entries:
+                if e.name not in self.placed and any(n in (b.html or "") for n in needles[e.name]):
+                    put(e, page, top, b)
+        for page, top, b in blocks:  # citations, and the first-cited fallback
+            found = []
+            for key in sorted(self.block_keys(b)):
+                for e in by_key.get(key, []):
+                    if e not in found:
+                        found.append(e)
+            if b.kind == "env" and b.file:
+                for e in ranged:
+                    for r in e.ranges:
+                        if b.file.endswith(r["file"]) and r["line_start"] <= b.line_start <= r["line_end"] \
+                                and e.name not in self.placed and e not in found:
+                            found.append(e)
+            if found:
+                lst = self.matches.setdefault(id(b), [])
+                for e in found:
+                    if e not in lst:
+                        lst.append(e)
+                    put(e, page, top, b)
         self.unplaced = [e for e in self.lean.entries if e.name not in self.placed]
+
+    @staticmethod
+    def kind_of(b) -> str:
+        return "algorithm" if b.kind == "algorithm" else (getattr(b, "kind_name", "") if b.kind == "env" else "")
+
+    def placement_problems(self) -> list:
+        """Build check: every named-ledger record's card sits at its own source item."""
+        bad = []
+        for e in self.lean.entries:
+            if not e.record or e.name not in self.placed:
+                continue
+            want = set()
+            if e.record.get("source_inventory_id"):
+                want.add("id:" + e.record["source_inventory_id"])
+            if e.record.get("source_label"):
+                want.add(e.record["source_label"])
+            b = next((b for p in self.pages for t in p.blocks for b in self.units(t)
+                      if id(b) == self.placed[e.name][3]), None)
+            if want and (b is None or not (want & self.block_keys(b))):
+                bad.append(f"{e.name}: ledger item {sorted(want)} but shown at {self.placed[e.name][:2]}")
+        return bad
 
     @staticmethod
     def anchor(b) -> str:
@@ -95,29 +183,48 @@ class Site:
         return ""
 
     def statuses(self, b) -> list:
-        sts = [e.status for e in self.matches.get(id(b), [])]
+        """Statuses of the entries shown at this block. Algorithms, assumptions and definitions
+        get none: an entry that cites them does not make them "proved"."""
+        if self.kind_of(b) in CONTEXT_KINDS:
+            return []
+        sts = [e.status for e in self.home.get(id(b), [])]
         if not sts:
             for lab in self.block_keys(b):
                 for row in self.lean.coverage.get(lab, []):
-                    sts.append("partial" if re.match(r"\s*\*\*Partial", row["scope"]) else "ledger")
+                    sts.append(coverage_status(row["scope"]))
         return sorted(set(sts), key=STATUS_ORDER.index)
+
+    def refutation_note(self, b) -> str:
+        """For a result proved only in some other form whose printed statement Lean refutes."""
+        n = self.nodes.get((b.entry or {}).get("id", ""))
+        if not n or not n["refutations_cited"] or n["proof_status"] != "proved":
+            return ""
+        names = ", ".join(f"<code>{esc(x)}</code>" for x in n["refutations_cited"])
+        issues = self.lean.issue_links([c[1:] for c in n["issues"] if c[1:] in self.lean.issue_slugs])
+        return (f'<div class="refuted-note"><strong>Printed statement refuted in Lean</strong> ({names}). '
+                f'The card below proves a {"corrected" if n["statement_status"] == "corrected" else "restricted"} '
+                f'form, not the printed statement.{(" " + issues) if issues else ""}</div>')
 
     def lean_column(self, page, top) -> str:
         out, seen, ledger_seen = [], set(), set()
         for b in self.units(top):
             entries = self.matches.get(id(b), [])
-            for e in entries:
+            home = self.home.get(id(b), [])
+            if home:
+                out.append(self.refutation_note(b))
+            for e in sorted(entries, key=lambda e: (e not in home, STATUS_ORDER.index(e.status))):
                 if e.name in seen:
                     continue
                 seen.add(e.name)
-                pid, _, top_id = self.placed[e.name]
+                pid, _, top_id, _ = self.placed[e.name]
                 if pid == page.id and top_id == id(top):
                     out.append(self.lean.card(e))
                 else:
-                    word, cls = STATUS[e.status]
-                    out.append(f'<div class="lean-ref"><span class="status {cls}">{esc(word)}</span> '
-                               f'<a href="{pid}.html#lean-{attr(e.name)}"><code>{esc(e.name)}</code></a> '
-                               f'is shown with its main source item.</div>')
+                    where = self.where_label(e)
+                    out.append(f'<div class="lean-ref">Cited by the Lean entry '
+                               f'<a href="{pid}.html#lean-{attr(e.name)}"><code>{esc(e.name)}</code></a>, '
+                               f'shown at {esc(where)}. Its status there: {esc(STATUS[e.status][0].lower())}.</div>')
+            entries = home
             if not entries:
                 for lab in sorted(l for l in (b.labels or []) if l in self.lean.coverage):
                     if lab not in ledger_seen:
@@ -130,6 +237,17 @@ class Site:
                 out.append(f'<div class="lean-none"><span class="status {cls}">{esc(word)}</span>'
                            f'{(" " + esc(name)) if name else ""}</div>')
         return "".join(out)
+
+    def where_label(self, e) -> str:
+        nid = self.entry_node.get(e.full)
+        inv = self.inv_by_id.get(nid or "", {})
+        kind = inv.get("kind", "")
+        if kind in ("display", "subequations"):
+            num = inv.get("number") or next((r.get("number") for r in inv.get("rows", []) if r.get("number")), None)
+            return f"display ({num})" if num else "its display"
+        if inv.get("number"):
+            return f"{ENV_NAMES.get(kind, kind.capitalize())} {inv['number']}"
+        return "its own row"
 
     # page pieces -----------------------------------------------------------------
     def block_html(self, b) -> str:
@@ -187,7 +305,7 @@ class Site:
 
     def shell(self, title: str, body: str, current: str | None = None, toc: bool = True) -> str:
         nav = [("index.html", "Home"), ("results.html", "Results"), ("status.html", "Status"),
-               ("graph.html", "Graph"), ("about.html", "About")]
+               ("graph.html", "Graph"), ("errata.html", "Errata"), ("about.html", "About")]
         links = "".join(f'<a href="{h}"{" aria-current=page" if h == (current or "") + ".html" else ""}>{t}</a>'
                         for h, t in nav)
         layout = (f'<div class="layout">{self.toc(current)}<main id="main">{body}</main></div>' if toc
@@ -211,15 +329,17 @@ class Site:
   <nav class="links">{links}<a href="{ARXIV}">arXiv ↗</a><a href="{REPO}/tree/{self.lean.git.rev}">GitHub ↗</a>
   <button class="theme" type="button" aria-label="Switch between light and dark">◐</button></nav>
 </header>
-<div class="banner">This formalization is <strong>incomplete</strong>. A status shows what the project's reviewed
-ledger records for one Lean entry; it never certifies a chapter or the book. <a href="about.html#status">How status works</a>.</div>
+<div class="banner">This formalization is <strong>incomplete</strong>. A status shows what the project's ledger
+records for one Lean entry; it never certifies a chapter or the book. Ledger reviews are independent reviews by AI
+agents against the pinned TeX; no result has been refereed by a human mathematician or approved by the authors.
+<a href="about.html#status">How status works</a> · <a href="about.html#verify">Check it yourself</a>.</div>
 {layout}
 <footer>
 <p>Book text: {AUTHORS}, <em>{TITLE}: {SUBTITLE}</em>, <a href="{ARXIV}">arXiv:2610.41903v1</a>,
 licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Changes were made: converted from
 the pinned TeX to HTML, comments and author-only material removed, math typeset by MathJax. The authors do not
-endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{self.lean.git.rev}"><code>{self.lean.git.rev[:10]}</code></a>.
-Built {self.built}.</p>
+endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{self.lean.git.rev}"><code>{self.lean.git.rev[:10]}</code></a>
+(<a href="{REPO}/commit/{self.lean.git.rev}">Lean CI status for this commit</a>). Built {self.built}.</p>
 </footer>
 <script src="assets/app.js"></script>
 </body>
@@ -250,7 +370,7 @@ Built {self.built}.</p>
             for top in page.blocks:
                 for b in self.units(top):
                     kind = getattr(b, "kind_name", None) if b.kind == "env" else ("algorithm" if b.kind == "algorithm" else None)
-                    paired = id(b) in self.matches
+                    paired = id(b) in self.home
                     if not kind and not paired:
                         continue
                     sts = self.statuses(b)
@@ -261,7 +381,7 @@ Built {self.built}.</p>
                     rows.append({"page": page.id, "anchor": self.anchor(b), "chapter": page.chapter,
                                  "section": page.number or "", "kind": name, "number": b.number or "",
                                  "title": strip_tags(b.title or ""), "label": label, "statuses": sts,
-                                 "lean": [e.name for e in self.matches.get(id(b), [])],
+                                 "lean": [e.name for e in self.home.get(id(b), [])],
                                  "result": kind in RESULT_KINDS})
         return rows
 
@@ -308,10 +428,21 @@ status column is derived from the project's reviewed ledger at commit <code>{sel
         by = {s: 0 for s in STATUS_ORDER}
         for r in rows:
             by[r["statuses"][0] if r["statuses"] else "none"] += 1
-        parts = [f"{by[s]} {STATUS[s][0].lower()}" for s in STATUS_ORDER if by[s]]
+        refuted = [f'{r["kind"]} {r["number"]}' for r in rows if r["statuses"] and r["statuses"][0] == "refuted"]
+        words = {"original": "proved as printed", "corrected": "proved in corrected form",
+                 "restricted": "proved for a restricted case", "unrecorded": "with a statement entry but no reviewed status",
+                 "partial": "partial",
+                 "refuted": f"refuted in Lean under the reading formalized ({', '.join(refuted)}), nothing proved",
+                 "ledger": "with a ledger note only", "none": "not yet formalized"}
+        parts = [f"{by[s]} {words.get(s, STATUS[s][0].lower())}" for s in STATUS_ORDER if by[s]]
         return (f"Of the {total} numbered theorems, lemmas, corollaries, propositions and claims, "
                 + ", ".join(parts) + " (best status per item). Prose claims, algorithms and unlabelled"
-                " displays are not in this count.")
+                " displays are not in this count." + self.restricted_note(by["restricted"]))
+
+    def restricted_note(self, n_restricted: int) -> str:
+        notes = [t for name, t in RESTRICTED_COUNT_NOTE.items()
+                 if any(e.name == name and e.status == "restricted" for e in self.lean.entries)]
+        return f" Of the {n_restricted} restricted, " + " ".join(notes) if notes and n_restricted else ""
 
     def index_page(self) -> str:
         front = "".join(b.html for b in self.front)
@@ -332,10 +463,14 @@ status column is derived from the project's reviewed ledger at commit <code>{sel
 <p class="authors">{AUTHORS} · <a href="{ARXIV}">arXiv:2610.41903v1</a></p>
 <p>The whole monograph, rendered from its pinned arXiv TeX source, with Lean&nbsp;4 statements and proofs shown
 next to the results they formalize. Each result links to its exact <code>.tex</code> lines and to the Lean source
-at a fixed commit. Most results are not yet formalized, and the page says so.</p>
+at a fixed commit. Every status comes from the project's ledgers. Many prose claims, algorithms, remarks and
+displays are not yet formalized, and the page says so where they appear. Reviews recorded in the ledgers are
+independent reviews by AI agents against the pinned TeX; no result has been refereed by a human mathematician or
+approved by the authors.</p>
 <p class="stats">{self.counts()}</p>
 <p class="actions"><a class="button primary" href="{chapters[0].id if chapters else 'index'}.html">Read the book →</a>
-<a class="button" href="results.html">Browse results</a></p>
+<a class="button" href="results.html">Browse results</a>
+<a class="button" href="errata.html">Errata found</a> <a class="button" href="about.html#verify">Check it yourself</a></p>
 </section>
 <section class="abstract"><h2>Abstract</h2>{front}</section>
 <section><h2>Chapters</h2><ol class="chapters">{''.join(lis)}</ol></section>"""
@@ -344,11 +479,13 @@ at a fixed commit. Most results are not yet formalized, and the page says so.</p
     def about_page(self) -> str:
         legend = "".join(f'<li><span class="status {STATUS[s][1]}">{esc(STATUS[s][0])}</span> {esc(desc)}</li>'
                          for s, desc in [
-                             ("original", "The ledger certifies the printed result: source review, compiled export and permitted axioms."),
+                             ("original", "The named-result ledger records the printed result as proved: an independent AI-agent source review, a compiled Lean export and only the permitted axioms."),
                              ("corrected", "A corrected variant is proved; the card says what differs and links the source issue."),
                              ("restricted", "A restricted variant (for example positive sample sizes) is proved; the card states the restriction."),
-                             ("unrecorded", "A statement entry exists in Lean but the reviewed ledger has no record for it, so it is not shown as proved."),
+                             ("cov-printed", "A prose claim, remark, display or reading aid with no numbered-result record; the coverage ledger row that names it records it as proved as stated (or in corrected or restricted form, shown the same way)."),
+                             ("unrecorded", "A statement entry exists in Lean but no ledger records it as proved, so it is not shown as proved."),
                              ("partial", "The coverage ledger lists components, but no statement entry covers the whole result."),
+                             ("refuted", "Lean proves the printed statement false and no corrected version is proved yet."),
                              ("ledger", "The coverage ledger has a note (for example a source gap or proposed repair); nothing is claimed as proved."),
                              ("none", "No Lean entry and no ledger note. This is the default.")])
         rev = self.lean.git.rev
@@ -357,10 +494,18 @@ at a fixed commit. Most results are not yet formalized, and the page says so.</p
 <a href="{self.lean.git.blob('README.md')}">statistical-foundations-rl-lean</a>. It was inspired by Axiom's
 <a href="https://stacks.axiommath.ai/">Stacks Project in Lean</a> site and shares no code with it.</p>
 <h2 id="status">How status works</h2>
-<p>The site derives each status from the reviewed ledger <code>docs/named-result-status.json</code> and the
+<p>The site derives each status from the named-result ledger <code>docs/named-result-status.json</code> and the
 coverage ledger <code>docs/COVERAGE.md</code> at commit <code>{rev[:10]}</code>. It never infers a proof from the
 existence of Lean code. Corrected and restricted results are never shown as plain proofs. No chapter or the book
 is described as complete.</p>
+<p><strong>Who reviewed what.</strong> Lean checking is mechanical: a compiled export with only the axioms
+<code>propext</code>, <code>Classical.choice</code> and <code>Quot.sound</code> is the only machine guarantee.
+Whether a Lean statement matches the printed result is judged by independent reviews performed by AI agents
+against the pinned TeX, recorded in the ledgers. No result has been refereed by a human mathematician or approved
+by the authors. Source issues (C1, C2, …) are candidates found by those reviews, not errors confirmed by the
+authors. Cards with a named-result ledger record link the review record, so the reasoning can be checked.</p>
+<p>A Lean card sits next to the source item it formalizes. When an entry also cites an algorithm, assumption,
+definition or display, that item shows a “cited by” link instead of a card, and never a status of its own.</p>
 <ul class="legend">{legend}</ul>
 <h2>Sources</h2>
 <ul>
@@ -376,11 +521,56 @@ named by the ledger. All read from commit <code>{rev}</code>.</li>
 <p>A small converter turns the TeX into HTML and leaves the math to MathJax&nbsp;3, with the book's own macros.
 Equation numbers come from the inventory. Each theorem-like block has a “TeX source” disclosure with its exact
 lines, so the rendering can be checked against the source. PDF figures were converted to PNG. Figure numbers are computed by the reader (per chapter, as in the <code>book</code> class the publisher's class loads), because the inventory does not record them.</p>
+<h2 id="verify">Check it yourself</h2>
+<p>This site was built from commit <a href="{REPO}/tree/{rev}"><code>{rev}</code></a>
+(<a href="{REPO}/commit/{rev}">its CI checks</a>; <a href="{REPO}/actions/workflows/lean.yml?query=branch%3Amain">Lean
+CI runs on main</a>). The Lean toolchain and Mathlib version are pinned in
+<a href="{self.lean.git.blob('lean-toolchain')}"><code>lean-toolchain</code></a> and
+<a href="{self.lean.git.blob('lake-manifest.json')}"><code>lake-manifest.json</code></a>. To rebuild everything and
+audit the axioms:</p>
+<pre class="cite">git clone {REPO}.git
+cd statistical-foundations-rl-lean
+git checkout {rev}
+lake exe cache get        # prebuilt Mathlib
+lake build                # compiles every Lean file of the formalization
+lake env lean Audit.lean  # transitive axiom audit of every StatisticalRL declaration</pre>
+<p>Expected: the build succeeds with no <code>sorry</code>, and <a href="{self.lean.git.blob('Audit.lean')}"><code>Audit.lean</code></a>
+prints “Axiom audit passed for N project declarations.” It collects the transitive axioms of every declaration in
+the <code>StatisticalRL</code> namespace and fails on any axiom other than <code>propext</code>,
+<code>Classical.choice</code> and <code>Quot.sound</code>. A statement is then checked
+by reading its entry in <code>Formalization/Statements/ChN.lean</code> (each card links it) against the TeX
+shown beside it.</p>
+<h2 id="cite">How to cite</h2>
+<p>The book:</p>
+<pre class="cite">{esc(self.bibtex_book())}</pre>
+<p>This formalization (incomplete; cite the commit you used):</p>
+<pre class="cite">{esc(self.bibtex_repo())}</pre>
 <h2>Licences</h2>
 <p>Book text and figures: CC BY 4.0, attributed to the six authors; changes were made as described above, and the
 authors do not endorse this formalization. Publisher formatting files from the arXiv archive are not republished.
 Lean code and this site: Apache-2.0.</p>"""
         return self.shell(f"About · {TITLE}", body, "about", toc=False)
+
+    def bibtex_book(self) -> str:
+        p = self.book.provenance
+        aid = p.get("arxiv_id", "2610.41903v1")
+        return ("@misc{chen2026statistical,\n"
+                f"  title         = {{{p.get('title', TITLE + ': ' + SUBTITLE)}}},\n"
+                f"  author        = {{{' and '.join(p.get('authors', []))}}},\n"
+                "  year          = {2026},\n"
+                f"  eprint        = {{{aid.split('v')[0]}}},\n"
+                "  archivePrefix = {arXiv},\n"
+                f"  note          = {{Version {aid}}},\n"
+                f"  url           = {{https://arxiv.org/abs/{aid}}}\n}}")
+
+    def bibtex_repo(self) -> str:
+        rev = self.lean.git.rev
+        return ("@software{statistical_foundations_rl_lean,\n"
+                "  title  = {Statistical Foundations of Reinforcement Learning in Lean: an incomplete\n"
+                "            Lean 4 formalization of arXiv:2610.41903v1},\n"
+                "  author = {statistical-foundations-rl-lean contributors},\n"
+                f"  url    = {{{REPO}}},\n"
+                f"  note   = {{Commit {rev}; built {self.built}}}\n}}")
 
     def references_page(self) -> str:
         items = []
@@ -393,8 +583,9 @@ Lean code and this site: Apache-2.0.</p>"""
             d = self.book.detex
             venue = d(e.get("journal") or e.get("booktitle") or e.get("publisher") or e.get("howpublished") or "")
             items.append(f'<li id="ref-{attr(k)}">{esc(d(e.get("author", "")).replace(" and ", ", "))}. '
-                         f'<em>{esc(d(e.get("title", "")))}</em>. {esc(venue)}{", " if venue else ""}{esc(d(e.get("year", "")))}.</li>')
-        body = f"<h1>References</h1><ol class=\"refs\">{''.join(items)}</ol>"
+                         f'<em>{tex_text(e.get("title", ""), d)}</em>. {inline_math(esc(venue))}'
+                         f'{", " if venue else ""}{esc(d(e.get("year", "")))}.</li>')
+        body = f"<h1>References</h1><ol class=\"refs tex2jax_process\">{''.join(items)}</ol>"
         return self.shell(f"References · {TITLE}", body, "references")
 
     def ack_page(self) -> str:

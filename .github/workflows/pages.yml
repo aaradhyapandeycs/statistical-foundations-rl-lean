@@ -1,11 +1,17 @@
 name: Book reader site
 
-# Rebuilds and republishes whenever Lean statements, proofs, ledgers or the
-# reader change on main, and on demand from the Actions tab. Nothing is
-# published until the maintainer enables GitHub Pages for the repository.
+# Deploys only a commit whose "Lean and source checks" run on main succeeded:
+# the deploy is triggered by that workflow's completion (workflow_run) and
+# builds exactly the commit it checked, and only while that commit is still
+# the tip of main. Pushes (any branch) only build and check the site. A manual
+# run from the Actions tab on main also deploys; the site footer links the CI
+# status of the commit it was built from either way.
 on:
   workflow_dispatch:
-  # Branch pushes build and check the site; only main deploys it.
+  workflow_run:
+    workflows: ["Lean and source checks"]
+    types: [completed]
+    branches: [main]
   push:
     paths:
       - "Formalization/**"
@@ -26,9 +32,34 @@ concurrency:
 
 jobs:
   build:
+    # For workflow_run, only after a successful Lean run of a push to main.
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.gate.outputs.deploy }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 0
+      - name: Decide whether this run may deploy
+        id: gate
+        env:
+          EVENT: ${{ github.event_name }}
+          REF: ${{ github.ref }}
+        run: |
+          deploy=false
+          if [ "$EVENT" = workflow_run ]; then
+            # Deploy only the commit that is still the tip of main (an older run finishing late never wins).
+            git fetch --quiet origin main
+            if [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ]; then deploy=true; fi
+          elif [ "$EVENT" = workflow_dispatch ] && [ "$REF" = refs/heads/main ]; then
+            deploy=true
+          fi
+          echo "deploy=$deploy" >> "$GITHUB_OUTPUT"
+          echo "deploy=$deploy for $(git rev-parse HEAD)"
       - name: Restore and verify the pinned arXiv source
         run: python3 scripts/fetch_source.py
       - name: Install PDF figure converter
@@ -57,7 +88,7 @@ jobs:
           path: site/_build
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: needs.build.outputs.deploy == 'true'
     needs: build
     runs-on: ubuntu-latest
     permissions:

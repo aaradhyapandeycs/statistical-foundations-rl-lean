@@ -43,9 +43,12 @@ python3 site/watch.py --lean-repo <clone of the project>
 ```
 
 Fetches `origin` every two minutes and rebuilds as soon as new commits reach
-`main`. On GitHub, `.github/workflows/pages.yml` rebuilds and republishes on
-every push to `main` that touches Lean files, ledgers or the reader, once
-GitHub Pages is enabled.
+`main`. On GitHub, `.github/workflows/pages.yml` builds and checks the site on
+every push that touches Lean files, ledgers or the reader, but deploys only
+after the "Lean and source checks" workflow has succeeded on a push to `main`
+(triggered by `workflow_run`, building exactly that commit, and only while it
+is still the tip of `main`), or on a manual run on `main`. The footer of every
+page links the CI status of the commit it was built from.
 
 ## What it reads (never writes)
 
@@ -72,8 +75,9 @@ with a ledger record disagrees with a direct count of distinct ledger keys
 The graph is drawn as inline SVG (one column per chapter); Graphviz is not
 needed, and the table is the text fallback. Border = which statement is in
 Lean (printed, corrected, restricted, refuted, partial, open, prose claim);
-fill = whether it is proved; dark fill ("fully proved") only for printed
-statements whose cited results are all fully proved. Edges are unreviewed
+fill = whether it is proved; dark fill only for results proved as printed
+whose cited results (through unreviewed TeX cross-references) are also all
+proved as printed, which is not a reviewed proof-dependency check. Edges are unreviewed
 candidates from TeX cross-references and the pages say so. The committed
 `docs/graph/nodes.json` and `docs/NEXT.md` come from the working tree; check
 them with `python3 scripts/gen_nodes.py --check` (run by
@@ -81,11 +85,30 @@ them with `python3 scripts/gen_nodes.py --check` (run by
 
 ## Status rules
 
-A status comes only from the reviewed ledger. A statement entry with no
-ledger record is shown as "no reviewed status recorded", never as proved.
-Corrected and restricted variants are never shown as the printed result,
-even when the ledger certifies them. Results with nothing in Lean say
-"Not yet formalized". See the site's About page for the full legend.
+A status comes only from the ledgers, whose reviews are independent AI-agent
+reviews against the pinned TeX (no human referee, no author approval; the
+site says so on every page). A numbered result's status comes from
+`docs/named-result-status.json`. A statement entry without a record there
+(prose claim, remark, display, reading aid) takes its status from the
+`docs/COVERAGE.md` row that names it as its subject, using the same
+classifier as the node graph (`scripts/gen_nodes.py`: `classify`,
+`coverage_variant`); with no such row it is shown as "no reviewed status
+recorded", never as proved. A coverage row whose headline says the printed
+statement is refuted, with nothing proved, is shown as refuted. Corrected and
+restricted variants are never shown as the printed result. Results with
+nothing in Lean say "Not yet formalized". See the site's About page for the
+full legend.
+
+## Placement rules
+
+Each Lean card is shown at the source item it formalizes: the inventory entry
+of its ledger record, else the node `gen_nodes.py` attaches it to (a cited
+label inside the docstring's first `.tex` range, else that range). Only an
+entry with no such item falls back to the first block it cites. Every other
+block an entry cites (an algorithm, assumption, definition or display) shows
+a "cited by" link and no status chip; algorithms, assumptions and definitions
+never carry a status. The build fails if a ledger record's card is not at its
+own source item.
 
 ## Layout
 
@@ -98,6 +121,7 @@ even when the ledger certifies them. Results with nothing in Lean say
 - `reader/book.py`: source verification, macros, bibliography, figures, pages
 - `reader/lean.py`: Lean entries, proofs, exports, ledger status
 - `reader/render.py`: pairing and page templates
+- `reader/graph.py`: status dashboard, dependency graph and generated errata page
 - `static/`: CSS and small scripts
 
 ## Checks done when this was built (2026-11-05)

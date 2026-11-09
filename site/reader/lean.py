@@ -12,8 +12,12 @@ import html
 import json
 import re
 import subprocess
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
+import gen_nodes  # noqa: E402  (one classifier for the reader and the node graph)
 
 REPO = "https://github.com/aaradhyapandeycs/statistical-foundations-rl-lean"
 
@@ -21,12 +25,29 @@ STATUS = {
     "original": ("Proved as printed", "st-proved"),
     "corrected": ("Proved in corrected form", "st-corrected"),
     "restricted": ("Proved for a restricted case", "st-restricted"),
+    "cov-printed": ("Proved as stated (coverage-ledger record)", "st-proved"),
+    "cov-corrected": ("Proved in corrected form (coverage-ledger record)", "st-corrected"),
+    "cov-restricted": ("Proved for a restricted case (coverage-ledger record)", "st-restricted"),
     "unrecorded": ("Statement entry, no reviewed status recorded", "st-unrecorded"),
     "partial": ("Partial (coverage ledger)", "st-partial"),
+    "refuted": ("Printed statement refuted in Lean under one reading; nothing proved", "st-refuted"),
     "ledger": ("Ledger note, not a proved result", "st-ledger"),
     "none": ("Not yet formalized", "st-none"),
 }
-STATUS_ORDER = ["original", "corrected", "restricted", "unrecorded", "partial", "ledger", "none"]
+STATUS_ORDER = ["original", "corrected", "restricted", "cov-printed", "cov-corrected", "cov-restricted",
+                "unrecorded", "partial", "refuted", "ledger", "none"]
+# Statuses that count as a proved Lean statement for a numbered result.
+PROVED = {"original", "corrected", "restricted"}
+
+
+def coverage_status(scope: str) -> str:
+    """Status of a coverage-ledger row that has no statement entry next to it."""
+    lead = (re.match(r"\s*\*\*(.+?)\*\*", scope) or [None, ""])[1].lower()
+    if gen_nodes.partial_lead(lead):
+        return "partial"
+    if lead.startswith("printed statement refuted") and "proved" not in lead:
+        return "refuted"
+    return "ledger"
 
 
 def esc(t: str) -> str:
@@ -141,7 +162,10 @@ class LeanIndex:
         self.entries: list = []
         self.status = json.loads(git.show("docs/named-result-status.json"))
         self.issue_slugs = self.parse_issues(git.show("docs/SOURCE-ISSUES.md"))
-        self.coverage = self.parse_coverage(git.show("docs/COVERAGE.md"))
+        cov_text = git.show("docs/COVERAGE.md")
+        self.coverage = self.parse_coverage(cov_text)
+        self.coverage_rows = gen_nodes.parse_coverage(cov_text)
+        self.disclosures = self.parse_disclosures(git.show("docs/SOURCE-ISSUES.md"))
         self.load_entries()
 
     # parsing ------------------------------------------------------------------
@@ -181,8 +205,14 @@ class LeanIndex:
                     # theorems that happen to end in `_holds`.
                     e.exports = [x for x in self.locate_exports(exp)
                                  if not (x["name"].endswith("_holds") and ".Statements." in "." + x["name"])]
+                elif gen_nodes.coverage_partial(name, self.coverage_rows):
+                    e.status = "partial"
+                elif gen_nodes.coverage_variant(name, self.coverage_rows):
+                    # No named-ledger record, but the coverage ledger (the reviewed ledger for
+                    # prose claims, remarks and displays) records this entry as proved.
+                    e.status = "cov-" + gen_nodes.classify(name, None, "", self.coverage_rows)
                 scope = (e.record or {}).get("statement_scope", "") + " " + doc
-                e.issues = [c for c in dict.fromkeys(re.findall(r"\bC(\d+)\b", scope)) if c in self.issue_slugs]
+                e.issues = [c for c in dict.fromkeys(gen_nodes.CID_RE.findall(scope)) if c in self.issue_slugs]
                 self.entries.append(e)
 
     def parse_proofs(self, path: str) -> dict:
@@ -240,6 +270,32 @@ class LeanIndex:
                 out[m.group(2)] = {"title": title, "slug": slug}
         return out
 
+    @staticmethod
+    def parse_disclosures(text: str) -> list:
+        """Bullets of SOURCE-ISSUES.md's "Statement-index scope disclosures" section."""
+        m = re.search(r"^## Statement-index scope disclosures\n(.*?)(?=^## )", text, re.S | re.M)
+        if not m:
+            return []
+        out, cur = [], None
+        for line in m.group(1).splitlines():
+            if line.startswith("- "):
+                cur = [line[2:].strip()]
+                out.append(cur)
+            elif cur is not None and line.strip():
+                cur.append(line.strip())
+            elif not line.strip():
+                cur = None
+        return [" ".join(b) for b in out]
+
+    def disclosure_for(self, e) -> str:
+        """The scope-disclosure bullet that names this entry (or, failing that, its source label)."""
+        keys = [f"`{e.name}`"] + [f"`{l}`" for l in ((e.record or {}).get("source_label"),) if l]
+        for key in keys:
+            for b in self.disclosures:
+                if key in b:
+                    return b
+        return ""
+
     def parse_coverage(self, text: str) -> dict:
         out: dict = {}
         for line in text.splitlines():
@@ -293,17 +349,30 @@ class LeanIndex:
 
     def card(self, e: Entry) -> str:
         word, cls = STATUS[e.status]
+        word = CHIP_OVERRIDES.get(e.name, word)
         rec = e.record or {}
         meta = [f'<a href="{attr(self.git.blob(e.file, e.line_start, e.line_end))}">'
-                f'{esc(e.file.rsplit("/", 1)[-1])}:{e.line_start}–{e.line_end}</a>']
+                f'{esc(e.file.rsplit("/", 1)[-1])}:{span(e.line_start, e.line_end)}</a>']
         if rec.get("evidence"):
             meta.append(f'<a href="{attr(self.git.blob(rec["evidence"]))}">review record</a>')
         if e.issues:
             meta.append(self.issue_links(e.issues))
         scope = f'<p class="scope">{self.md(link_paths(rec["statement_scope"]))}</p>' if rec.get("statement_scope") else ""
+        if "statement-index-scope-disclosures" in rec.get("statement_scope", ""):
+            d = self.disclosure_for(e)
+            if d:
+                scope += (f'<p class="scope disclosure"><strong>Disclosed restriction</strong> '
+                          f'(<a href="{attr(self.git.blob("docs/SOURCE-ISSUES.md"))}#statement-index-scope-disclosures">'
+                          f'SOURCE-ISSUES</a>): {self.md(d)}</p>')
+        if e.name in CARD_NOTES:
+            scope = f'<p class="scope caution">{self.md(CARD_NOTES[e.name])}</p>' + scope
         if e.status == "unrecorded":
             scope += ('<p class="scope">This statement entry has no record in the reviewed status ledger, '
                       "so the reader does not show it as proved.</p>")
+        elif e.status.startswith("cov-") or e.status == "partial":
+            scope += ('<p class="scope">This entry has no named-result ledger record of its own; its status comes '
+                      f'from the <a href="{attr(self.git.blob("docs/COVERAGE.md"))}">coverage-ledger</a> row that '
+                      'names it.</p>')
         parts = [f'<article class="lean-card" id="lean-{attr(e.name)}">',
                  f'<header><span class="status {cls}">{esc(word)}</span>'
                  f'<code class="decl" title="{attr(e.full)}">{esc(e.name)}</code></header>',
@@ -314,7 +383,7 @@ class LeanIndex:
             pr = e.proof
             parts.append(f'<details><summary>Proof <code>{esc(pr["name"])}</code></summary>'
                          f'<div class="meta"><a href="{attr(self.git.blob(pr["file"], pr["line_start"], pr["line_end"]))}">'
-                         f'{esc(pr["file"].rsplit("/", 1)[-1])}:{pr["line_start"]}–{pr["line_end"]}</a>'
+                         f'{esc(pr["file"].rsplit("/", 1)[-1])}:{span(pr["line_start"], pr["line_end"])}</a>'
                          f'{" · applies the library theorem below" if e.exports else ""}</div>'
                          f'{code_block(pr["source"], pr["line_start"])}</details>')
         for ex in e.exports:
@@ -325,7 +394,7 @@ class LeanIndex:
             note = " · first 400 lines shown" if ex["truncated"] else ""
             parts.append(f'<details><summary>Library theorem <code>{esc(ex["name"].rsplit(".", 1)[-1])}</code></summary>'
                          f'<div class="meta"><a href="{attr(self.git.blob(ex["file"], ex["line_start"], ex["line_end"]))}">'
-                         f'{esc(ex["file"])}:{ex["line_start"]}–{ex["line_end"]}</a>{note}</div>'
+                         f'{esc(ex["file"])}:{span(ex["line_start"], ex["line_end"])}</a>{note}</div>'
                          f'{code_block(ex["source"], ex["line_start"])}</details>')
         parts.append("</article>")
         return "".join(parts)
@@ -334,7 +403,7 @@ class LeanIndex:
         cards = []
         for row in rows:
             scope = row["scope"]
-            st = "partial" if re.match(r"\s*\*\*Partial", scope) else "ledger"
+            st = coverage_status(scope)
             word, cls = STATUS[st]
             cards.append(f'<article class="lean-card ledger"><header><span class="status {cls}">{esc(word)}</span>'
                          f'<code class="decl">{esc(label)}</code></header>'
@@ -345,13 +414,43 @@ class LeanIndex:
 
 
 def classify(name: str, ledger_kind: str, scope: str) -> str:
-    """Never show a variant as the printed result, even when the ledger certifies it."""
-    low = name.lower()
-    if "corrected" in low:
-        return "corrected"
-    if re.search(r"positiven|restricted|causal|_k\d", low) or scope.strip().lower().startswith("restricted"):
-        return "restricted"
-    return "original" if ledger_kind == "certified_named_results" else "restricted"
+    """Never show a variant as the printed result, even when the ledger records it.
+    Same rule as scripts/gen_nodes.py `classify` (shared code)."""
+    v = gen_nodes.classify(name, ledger_kind, scope)
+    return "original" if v == "printed" else v
+
+
+# Chip text for cards whose ledger class alone would mislead a reader (display only; the ledger
+# class and every count are unchanged).
+CHIP_OVERRIDES = {
+    "Thm7_7_restricted": "Related statement proved: some algorithm attains the rates (not Q-FTRL; see note)",
+}
+# Footnote on the restricted count wherever it is shown.
+RESTRICTED_COUNT_NOTE = {
+    "Thm7_7_restricted": "Theorem 7.7 is an existence statement for a different algorithm, not a special case of "
+                         "the printed theorem.",
+}
+# Reading under which a printed statement shown as refuted (nothing proved) was refuted, by source label.
+REFUTED_READING = {
+    "thm:Berry-Esseen-linear": "under the action-dependent-reward reading; the state-only-reward reading is not refuted",
+}
+
+
+# Site-side wording for cards whose ledger class alone would mislead a reader. These never
+# change a ledger status or a count; they say exactly what the Lean statement proves.
+CARD_NOTES = {
+    "Thm7_7_restricted": (
+        "**Not a special case of the printed Theorem 7.7.** The printed theorem is about Q-FTRL, a "
+        "model-based algorithm the monograph does not specify (marl.tex:432). What is proved is that "
+        "some algorithm attains the printed rates: an explicit reconstructed, non-model-based witness "
+        "(optimistic Hedge with backward induction and adaptive generative queries). Whether Q-FTRL "
+        "attains the rates is not checked. The ledger files this under restricted variants; see "
+        "[C39](../docs/SOURCE-ISSUES.md#candidate-c39-theorem-77-is-not-self-contained)."),
+}
+
+
+def span(a: int, b: int) -> str:
+    return f"{a}" if a == b else f"{a}–{b}"
 
 
 def link_paths(text: str) -> str:
@@ -360,11 +459,14 @@ def link_paths(text: str) -> str:
 
 
 def split_md_row(line: str) -> list:
+    """Cells of a Markdown table row. `|` inside backticks, or escaped as `\\|`, is literal."""
     cells, cur, tick = [], [], False
     for ch in line.strip().strip("|"):
         if ch == "`":
             tick = not tick
-        if ch == "|" and not tick:
+        if ch == "|" and cur and cur[-1] == "\\":
+            cur[-1] = "|"
+        elif ch == "|" and not tick:
             cells.append("".join(cur).strip())
             cur = []
         else:
