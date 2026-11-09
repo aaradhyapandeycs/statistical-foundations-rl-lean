@@ -594,8 +594,9 @@ full-support `μ` (:51–67); the asynchronous TD update (:72); the Polyak–Rup
 Not implied:
 * the convex-distance bound over all convex sets (corrected), which remains open;
 * the printed coefficient, which remains open;
-* any confidence region or interval, in particular with the estimated covariance `Λ̂_T`
-  (SOURCE-ISSUES C47(1)–(4)). -/
+* any confidence region with the estimated covariance `Λ̂_T` (SOURCE-ISSUES C47(1)–(4)), or beyond the
+  oracle-covariance half-lines, slabs and Bonferroni box of `Eq_convex_Cdelta_corrected_oracle`, which are
+  its corollaries. -/
 def Thm7_11_corrected_halfspace : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
@@ -609,6 +610,228 @@ def Thm7_11_corrected_halfspace : Prop :=
         K * (T : ℝ) ^ (-(1 / 3 : ℝ))
 
 end Thm7_11
+
+section EqClassicClt
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference in
+/-- Display `eqn:classic-clt` (`chapters/inference.tex:100–103`, prose :98; `Λ⋆ = A⁻¹ΓA⁻ᵀ`, `A`, `Γ`
+:104–117), corrected covariance. `√T Δ̄_T →d N(0, A⁻¹ Γ_true A⁻ᵀ)`: for every bounded continuous
+`g : (State → ℝ) → ℝ` (sup norm on `ℝ^S`), `E g(√T Δ̄_T) → ∫ g dN(0, A⁻¹ diag(Γ_true) A⁻ᵀ)` as
+`T → ∞`, which is the definition of convergence in distribution.
+Differs from the printed display in one way: `Γ` is the true per-sample TD-noise covariance
+`trueGamma`, `Γ_ss = μ(s) E_{a∼π(·|s), s'∼P(·|s,a)}[(V^π(s) − r(s,a) − γV^π(s'))²]`. With the
+printed `Γ` (`r(s)` read as `r_π(s)`) the display is false under action-dependent rewards
+(SOURCE-ISSUES C43; Lean refutation
+`StatisticalRL.Ch7Rest.TDInference.not_eq_classic_clt_printed` and
+`StatisticalRL.Ch7Rest.TDInference.not_eq_classic_clt_printed_someInit`, which refute the
+display for the printed step-size family `η_t = η₀t^{-2/3}` (`η₀ ∈ (0,1/4)` for every `V₀`;
+`η₀ ∈ (0,1]` and some `V₀` for `_someInit`). The display is existential in the schedule; for
+`V₀ = V^π` the same zero-noise argument refutes it for every schedule (paper argument, not
+Lean-checked, since `tdIter` fixes the schedule). The reading "some schedule and some `V₀`" over
+arbitrary schedules is not refuted).
+Schedule: the display says "with an appropriate choice of the learning rate schedule" (:98), an
+existential; this entry fixes the printed Theorem 7.11 schedule `η_t = η₀t^{-2/3}` with
+`0 < η₀ < 1/4` (:133) and proves the convergence for every such `η₀` and every `V₀`, which
+implies the existential. Kept: i.i.d. sampling with full-support `μ` (:51–67), the asynchronous
+TD update (:72), the Polyak–Ruppert average (:82), `Δ̄_T` (:86–88), everything else fixed as
+`T → ∞`. No `Γ_true ≻ 0` hypothesis: the limit may be degenerate. The statement is qualitative
+(no rate) and makes no confidence-region claim. -/
+def Eq_classic_clt_corrected : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 →
+    ∀ g : BoundedContinuousFunction (State → ℝ) ℝ,
+      Filter.Tendsto
+        (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action,
+          pathWeight M π μ ω * g (scaledError M π η₀ V₀ ω))
+        Filter.atTop
+        (nhds (∫ x, g x ∂(gaussCov (tdA M π μ) (trueGamma M π μ))))
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference in
+/-- Display `eqn:classic-clt` (`chapters/inference.tex:100–103`, prose :98; `Λ⋆`, `A`, `Γ` :104–117)
+with the printed `Γ`, restricted to instances where the reward `r(s,·)` is constant on the
+support of `π(·|s)` for every state `s` (this covers state-only rewards `r(s,a) = r(s)` and
+deterministic policies). On this class the printed `r(s)` is unambiguous (`= r_π(s)`) and the
+printed `Γ` equals the true TD-noise covariance, so the printed display holds. Differs from the
+printed display only by this restriction of the MDP class: outside it, under action-dependent
+rewards with `r(s) := r_π(s)`, the display is false (SOURCE-ISSUES C43; Lean refutations
+`StatisticalRL.Ch7Rest.TDInference.not_eq_classic_clt_printed` and
+`StatisticalRL.Ch7Rest.TDInference.not_eq_classic_clt_printed_someInit`, for the printed
+step-size family only; see `Eq_classic_clt_corrected` for their schedule scope).
+Schedule `η_t = η₀t^{-2/3}`, `0 < η₀ < 1/4` (:133), every `V₀`; the printed "appropriate
+schedule" is existential, so this family suffices. Convergence in distribution is stated as
+convergence of `E g(√T Δ̄_T)` for every bounded continuous `g`. -/
+def Eq_classic_clt_restricted : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s a a', 0 < (π s).prob a → 0 < (π s).prob a' → M.reward s a = M.reward s a') →
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 →
+    ∀ g : BoundedContinuousFunction (State → ℝ) ℝ,
+      Filter.Tendsto
+        (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action,
+          pathWeight M π μ ω * g (scaledError M π η₀ V₀ ω))
+        Filter.atTop
+        (nhds (∫ x, g x ∂(gaussCov (tdA M π μ) (printedGamma M π μ))))
+
+end EqClassicClt
+
+section EqConvexCdelta
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
+/-- Corrected (fixed-shape) and oracle-restricted variant of the confidence-set rule `eq:convex.Cdelta`
+(`chapters/inference.tex:189–195`, display :191–193) and of the claim that "such sets serve as approximate
+confidence regions" (:196); rectangle prose :198–205. See `docs/SOURCE-ISSUES.md#C47` and `#C43`.
+
+Differs from the printed text: (1) the printed claim for arbitrary convex sets chosen from the data is false
+(C47(1); Lean evidence for the oracle variant in `TDInferenceC47Evidence711.lean`); here the direction `u` and level
+`z` are fixed before the data, the C47 proposed correction. (2) The covariance is the oracle
+`Λ = A⁻¹ diag(Γ_true) A⁻ᵀ`, the population target of the printed plug-in `Λ̂_T` (:180–182), unknown in practice;
+`Γ_true` is the true residual covariance, not the printed `Γ` of `Λ*` (:115, C43). The plug-in rule is the separate
+entry `Eq_convex_Cdelta_corrected_plugin` (limits only, no rate).
+(3) Only half-lines, slabs and a Bonferroni box; the printed `ℓ∞`-quantile rectangle (C47(2)) and the ellipsoid
+(C47(3)) are not addressed. `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`,
+`0 < η₀ < 1/4` (:133), every `V₀`, the rate `T^{-1/3}` with an instance constant `K`.
+
+Statement: there is one `K > 0` such that for all `T ≥ 1`, with `Φ(z) = N(0,1)(−∞, z]` and `S = |State|`:
+(1) all `z ∈ ℝ`, `u ≠ 0`: `|P(uᵀV̄_T − z√(uᵀΛu/T) ≤ uᵀV^π) − Φ(z)| ≤ K T^{-1/3}`;
+(2) `z ≥ 0`, `u ≠ 0`: `|P(|uᵀ(V̄_T − V^π)| ≤ z√(uᵀΛu/T)) − (2Φ(z) − 1)| ≤ 2K T^{-1/3}`;
+(3) `z ≥ 0`: `P(∀ s, |V̄_T(s) − V^π(s)| ≤ z√(Λ_ss/T)) ≥ 1 − 2S(1 − Φ(z)) − 2SK T^{-1/3}`. -/
+def Eq_convex_Cdelta_corrected_oracle : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
+    ∃ K : ℝ, 0 < K ∧ ∀ T : ℕ, 1 ≤ T →
+      (∀ u : State → ℝ, u ≠ 0 → ∀ z : ℝ,
+        |(∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+            {ω' : Fin T → Tuple State Action | ∑ s, u s * prAverage M η₀ V₀ ω' s -
+              z * Real.sqrt ((∑ s, ∑ s', u s * u s' *
+                ((tdA M π μ)⁻¹ * diagonal (trueGamma M π μ) * (tdA M π μ)⁻¹ᵀ) s s') / T) ≤
+              ∑ s, u s * M.valueFixedPoint π s}.indicator 1 ω) -
+          (gaussianReal 0 1).real (Set.Iic z)| ≤ K * (T : ℝ) ^ (-(1 / 3 : ℝ))) ∧
+      (∀ u : State → ℝ, u ≠ 0 → ∀ z : ℝ, 0 ≤ z →
+        |(∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+            {ω' : Fin T → Tuple State Action |
+              |∑ s, u s * (prAverage M η₀ V₀ ω' s - M.valueFixedPoint π s)| ≤
+                z * Real.sqrt ((∑ s, ∑ s', u s * u s' *
+                  ((tdA M π μ)⁻¹ * diagonal (trueGamma M π μ) * (tdA M π μ)⁻¹ᵀ) s s') /
+                    T)}.indicator 1 ω) -
+          (2 * (gaussianReal 0 1).real (Set.Iic z) - 1)| ≤
+            2 * K * (T : ℝ) ^ (-(1 / 3 : ℝ))) ∧
+      (∀ z : ℝ, 0 ≤ z →
+        1 - 2 * (Fintype.card State : ℝ) * (1 - (gaussianReal 0 1).real (Set.Iic z)) -
+            2 * (Fintype.card State : ℝ) * K * (T : ℝ) ^ (-(1 / 3 : ℝ)) ≤
+          ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+            {ω' : Fin T → Tuple State Action | ∀ s,
+              |prAverage M η₀ V₀ ω' s - M.valueFixedPoint π s| ≤
+                z * Real.sqrt ((((tdA M π μ)⁻¹ * diagonal (trueGamma M π μ) *
+                  (tdA M π μ)⁻¹ᵀ) s s) / T)}.indicator 1 ω)
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
+/-- Corrected (fixed-shape) variant, with the printed plug-in covariance, of the confidence-set rule
+`eq:convex.Cdelta` (`chapters/inference.tex:187–196`, display :191–193, claim :196); plug-in `Λ̂_T` from
+`eq:defn-hat-Lambda` (:180–182); rectangle prose :198–205. See `docs/SOURCE-ISSUES.md#C47` and `#C43`.
+
+Differs from the printed text: (1) the printed claim for arbitrary convex sets chosen from the data is false
+(C47(1)); here the direction `u` and level `z` are fixed before the data (the C47 proposed correction): one-sided
+half-lines, two-sided intervals for a linear functional `uᵀV^π`, and a Bonferroni box with the plug-in diagonal
+`Λ̂_T(s,s)`. (2) Asymptotic coverage only, pointwise in `(u, z)`, not uniform: the plug-in consistency
+`Eq_defn_hat_Lambda_corrected` has no rate, so no finite-`T` bound is claimed. (3) Added non-degeneracy hypothesis
+`Γ_true ≻ 0` (so `uᵀΛu > 0` for `u ≠ 0`, with `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ`, the limit of `Λ̂_T`; it is also needed by the
+half-space result). Separately, by C43 this target `Λ` differs from the printed `Λ⋆` unless rewards are state-only.
+(4) Junk value: when some state is unsampled `Ā_T` is singular and the printed `Λ̂_T` is undefined (C47(4)); Lean's
+`Matrix.inv` returns 0, so `lambdaHat = 0` and the interval degenerates to the point estimate there. No special
+handling is needed: the proof charges every outcome with `Λ̂_T` entrywise `ε₁`-far from `Λ`, and since `diag Λ ≻ 0`
+under `Γ_true ≻ 0` the singular event is contained in that bad event for small `ε₁`. Its probability is at most
+`∑_s (1 − μ(s))^T → 0`, so the limits do not depend on how the procedure is defined there. Not covered:
+data-selected convex sets (C47(1)), the printed `ℓ∞`-quantile rectangle (C47(2)), the ellipsoid (C47(3)), any rate.
+Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
+
+Statement, with `Φ(z) = N(0,1)(−∞, z]`, `S = |State|`, `Λ̂_T = lambdaHat`:
+(1) all `u ≠ 0`, `z ∈ ℝ`: `P(uᵀV̄_T − z√(uᵀΛ̂_Tu/T) ≤ uᵀV^π) → Φ(z)`;
+(2) `u ≠ 0`, `z ≥ 0`: `P(|uᵀ(V̄_T − V^π)| ≤ z√(uᵀΛ̂_Tu/T)) → 2Φ(z) − 1`;
+(3) `z ≥ 0`, `η > 0`: eventually `P(∀ s, |V̄_T(s) − V^π(s)| ≤ z√(Λ̂_T(s,s)/T)) ≥ 1 − 2S(1 − Φ(z)) − η`. -/
+def Eq_convex_Cdelta_corrected_plugin : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
+    (∀ u : State → ℝ, u ≠ 0 → ∀ z : ℝ,
+      Filter.Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+          {ω' : Fin T → Tuple State Action | ∑ s, u s * prAverage M η₀ V₀ ω' s -
+            z * Real.sqrt ((∑ s, ∑ s', u s * u s' * lambdaHat M η₀ V₀ ω' s s') / T) ≤
+            ∑ s, u s * M.valueFixedPoint π s}.indicator 1 ω) Filter.atTop
+        (nhds ((gaussianReal 0 1).real (Set.Iic z)))) ∧
+    (∀ u : State → ℝ, u ≠ 0 → ∀ z : ℝ, 0 ≤ z →
+      Filter.Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+          {ω' : Fin T → Tuple State Action |
+            |∑ s, u s * (prAverage M η₀ V₀ ω' s - M.valueFixedPoint π s)| ≤
+              z * Real.sqrt ((∑ s, ∑ s', u s * u s' * lambdaHat M η₀ V₀ ω' s s') / T)}.indicator
+            1 ω) Filter.atTop
+        (nhds (2 * (gaussianReal 0 1).real (Set.Iic z) - 1))) ∧
+    (∀ z : ℝ, 0 ≤ z → ∀ η : ℝ, 0 < η →
+      ∀ᶠ T : ℕ in Filter.atTop,
+        1 - 2 * (Fintype.card State : ℝ) * (1 - (gaussianReal 0 1).real (Set.Iic z)) - η ≤
+          ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+            {ω' : Fin T → Tuple State Action | ∀ s,
+              |prAverage M η₀ V₀ ω' s - M.valueFixedPoint π s| ≤
+                z * Real.sqrt (lambdaHat M η₀ V₀ ω' s s / T)}.indicator 1 ω)
+
+end EqConvexCdelta
+
+section EqDefnHatLambda
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference in
+/-- Corrected `eq:defn-hat-Lambda` (`chapters/inference.tex:180–182`; "the final estimator of
+`Λ⋆`" :184; `Ā_T`, `Γ̂_T` :165–169, "as estimators of `A` and `Γ`" :172, weights :175–177), read as
+consistency. Differs from the printed claim: the target is `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (true
+TD-noise covariance), not the printed `Λ⋆ = A⁻¹ΓA⁻ᵀ`; under action-dependent rewards with
+`r(s) = r_π(s)` the printed reading is false, from every `V₀` (`docs/SOURCE-ISSUES.md#C43`). For
+every finite instance with full-support i.i.d. sampling (`λ₀ > 0`, :67), every `0 < η₀ < 1/4`
+(:133) and every `V₀`, `Λ̂_T → Λ` entrywise in probability. No `Γ_true ≻ 0` is assumed.
+Qualitative: no rate. Junk value: on the event that some state is unsampled, `Ā_T` is singular and
+the printed `Λ̂_T` is undefined (`docs/SOURCE-ISSUES.md#C47`(4)); Lean's `Matrix.inv` returns 0
+there, so `lambdaHat = 0` on that event, whose probability `≤ ∑_s (1 − μ(s))^T` tends to 0. -/
+def Eq_defn_hat_Lambda_corrected : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 →
+    ∀ ε : ℝ, 0 < ε →
+      Filter.Tendsto (fun T : ℕ ↦ pathProb M π μ T
+        {ω | ∃ s s', ε < |lambdaHat M η₀ V₀ ω s s' - trueLambda M π μ s s'|})
+        Filter.atTop (nhds 0)
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference in
+/-- Restricted `eq:defn-hat-Lambda` (`chapters/inference.tex:180–182`; "the final estimator of
+`Λ⋆`" :184; `Λ⋆ = A⁻¹ΓA⁻ᵀ`, `A`, `Γ` :99–117 with `r(s) = r_π(s)`), read as consistency for the
+printed `Λ⋆`, restricted to instances where `r(s,·)` is constant on the support of `π(·|s)` for
+every state `s` (state-only rewards or deterministic `π`), where `Γ_printed = Γ_true`. Differs
+from the printed claim only by this restriction of the MDP class: outside it, under
+action-dependent rewards with `r(s) = r_π(s)`, the printed reading is false from every `V₀`
+(`docs/SOURCE-ISSUES.md#C43`). Full-support i.i.d. sampling, `0 < η₀ < 1/4` (:133), every `V₀`;
+no `Γ ≻ 0` is assumed. Qualitative: no rate. Junk value as in `Eq_defn_hat_Lambda_corrected`
+(`docs/SOURCE-ISSUES.md#C47`(4)). -/
+def Eq_defn_hat_Lambda_restricted : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s a a', 0 < (π s).prob a → 0 < (π s).prob a' → M.reward s a = M.reward s a') →
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 →
+    ∀ ε : ℝ, 0 < ε →
+      Filter.Tendsto (fun T : ℕ ↦ pathProb M π μ T
+        {ω | ∃ s s', ε < |lambdaHat M η₀ V₀ ω s s' - printedLambda M π μ s s'|})
+        Filter.atTop (nhds 0)
+
+end EqDefnHatLambda
 
 section Thm7_12
 
@@ -820,6 +1043,119 @@ def Eq_online_RBMLE_restricted : Prop :=
 
 end Eq_DPO_VPO
 
+section RLHFDisplays
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- Restricted `eq:reward-policy-eq`, `chapters/RLHF.tex:62–66`, with `π_r` the Gibbs policy of
+`eq:RLHF-policy-closed-form` (`:52–55`), `π_r(y|x) = π_ref(y|x) exp(r(x,y)/β) / Z(r,x)`
+(`gibbsPolicy`), and `Z(r,x)` of `eq:normalization` (`:56–59`) written out:
+for every reward `r` and all `(x, y)`,
+`r(x,y) = β (log π_r(y|x) − log π_ref(y|x) + log Z(r,x))`.
+
+Restricted as `Eq_DPO_restricted`: full-support `π_ref` (implicit in the source, where
+`log π_ref` appears) and finite `X`, `Y` (the source's `Z(r,x)` is a finite sum over `Y`)
+(`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`). -/
+def Eq_reward_policy_eq_restricted : Prop :=
+  ∀ (X Y : Type) [Fintype X] [Fintype Y] (π_ref : X → Y → ℝ) (β : ℝ),
+    IsPositivePolicy π_ref → 0 < β →
+    ∀ (r : X → Y → ℝ) (x : X) (y : Y),
+      r x y = β * (Real.log (gibbsPolicy π_ref r β x y) - Real.log (π_ref x y) +
+        Real.log (∑ y', π_ref x y' * Real.exp (r x y' / β)))
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- Restricted `eq:Jstar`, `chapters/RLHF.tex:115–124`: all four printed expressions of
+`J⋆(r; π_cal)` (`eq:Jstar_calibrated`, `:99–102`, the supremum of the calibrated value
+`eq:calibrated_value` over all conditional policies, `optCalValue`), with `π_r` the Gibbs policy
+`π_r(y|x) = π_ref(y|x) exp(r(x,y)/β) / Z(r,x)` (`gibbsPolicy`) and `Z(r,x) = ∑_{y'} π_ref(y'|x) exp(r(x,y')/β)` (`eq:normalization`, `:56–59`) written out:
+first line `E_{ρ,π_r}[r − β(log π_r − log π_ref)] − E_{ρ,π_cal} r` (:118–119), second line
+`β E_ρ log Z(r,·) − E_{ρ,π_cal} r` (:120), (i) `E_{ρ,π_cal}[β log Z(r,x) − r(x,y)]` (:121) and
+(ii) `−β E_{ρ,π_cal}[log π_r − log π_ref]` (:122). Step (i) uses that `π_cal(·|x)` sums to one
+(`IsCondPolicy π_cal`); `ρ ≥ 0` suffices (no normalization of `ρ` is used).
+
+Restricted as `Eq_DPO_restricted`: full-support `π_ref`, finite `X`, `Y`
+(`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`). -/
+def Eq_Jstar_restricted : Prop :=
+  ∀ (X Y : Type) [Fintype X] [Fintype Y] (ρ : X → ℝ) (π_ref π_cal : X → Y → ℝ) (β : ℝ),
+    IsPositivePolicy π_ref → (∀ x, 0 ≤ ρ x) → IsCondPolicy π_cal → 0 < β →
+    ∀ r : X → Y → ℝ,
+      (optCalValue ρ π_ref π_cal β r =
+          ∑ x, ρ x * ∑ y, gibbsPolicy π_ref r β x y *
+            (r x y - β * (Real.log (gibbsPolicy π_ref r β x y) - Real.log (π_ref x y))) -
+          ∑ x, ρ x * ∑ y, π_cal x y * r x y) ∧
+      (optCalValue ρ π_ref π_cal β r =
+          β * ∑ x, ρ x * Real.log (∑ y', π_ref x y' * Real.exp (r x y' / β)) -
+          ∑ x, ρ x * ∑ y, π_cal x y * r x y) ∧
+      (optCalValue ρ π_ref π_cal β r =
+          ∑ x, ρ x * ∑ y, π_cal x y *
+            (β * Real.log (∑ y', π_ref x y' * Real.exp (r x y' / β)) - r x y)) ∧
+      (optCalValue ρ π_ref π_cal β r =
+          -β * ∑ x, ρ x * ∑ y, π_cal x y *
+            (Real.log (gibbsPolicy π_ref r β x y) - Real.log (π_ref x y)))
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- Restricted `eq:RLHF-policy-closed-form`, `chapters/RLHF.tex:41–59` (`eq:KL_reward` :41–45,
+`π_r := argmax_π J(r, π)` :47–50, closed form :51–55, `eq:normalization` :56–59). With
+`J(r, π) = E_{x∼ρ, y∼π(·|x)} r(x,y) − β E_{x∼ρ} KL(π(·|x)‖π_ref(·|x))` written out (KL with
+`0 log 0 = 0`) and `π_r(y|x) = π_ref(y|x) exp(r(x,y)/β) / ∑_{y'} π_ref(y'|x) exp(r(x,y')/β)`
+written out: `π_r` is a conditional policy, it maximizes `J(r, ·)` over all conditional policies,
+and a conditional policy maximizes `J(r, ·)` iff it agrees with `π_r` on the support of `ρ`.
+
+Restriction (`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`): the printed `arg max`
+treats the maximizer as unique; it is unique only on `supp ρ` (off the support any row gives the
+same value), and the statement characterizes the whole argmax set instead. Also full-support
+`π_ref` and finite `X`, `Y`, as in `Eq_DPO_restricted`. -/
+def Eq_RLHF_policy_closed_form_restricted : Prop :=
+  ∀ (X Y : Type) [Fintype X] [Fintype Y] (ρ : X → ℝ) (π_ref : X → Y → ℝ) (β : ℝ),
+    IsPositivePolicy π_ref → (∀ x, 0 ≤ ρ x) → 0 < β →
+    ∀ r : X → Y → ℝ,
+      let J : (X → Y → ℝ) → ℝ := fun π ↦
+        ∑ x, ρ x * (∑ y, π x y * r x y - β * klDiv (π x) (π_ref x))
+      let πr : X → Y → ℝ := fun x y ↦
+        π_ref x y * Real.exp (r x y / β) / ∑ y', π_ref x y' * Real.exp (r x y' / β)
+      IsCondPolicy πr ∧
+      (∀ π, IsCondPolicy π → J π ≤ J πr) ∧
+      ∀ π, IsCondPolicy π →
+        ((∀ π', IsCondPolicy π' → J π' ≤ J π) ↔ ∀ x, 0 < ρ x → ∀ y, π x y = πr x y)
+
+open StatisticalRL.Ch7Rest.Rlhf in
+/-- Restricted prompt-shift claims of `chapters/RLHF.tex:90–98` (`eq:calibrated_value` :92–96). For
+`r₁(x,y) = r₂(x,y) + c(x)`:
+(a) `r₁(x,y₁) − r₁(x,y₂) = r₂(x,y₁) − r₂(x,y₂)`;
+(b) `ℓ(r₁, D) = ℓ(r₂, D)` for every dataset `D` of comparisons `(x, y₊, y₋)`, with the
+Bradley–Terry negative log-likelihood `ℓ(r, D) = −∑ log σ(r(x,y₊) − r(x,y₋))` (`eq:MLE`);
+(c) `J⋆(r₁) = J⋆(r₂) + E_{x∼ρ} c(x)` for the uncalibrated `J⋆(r) = max_π J(r, π)` (:86–90) of the
+KL-regularized value `eq:KL_reward`, written as a supremum over conditional policies;
+(d) `J(r₁, π; π_cal) = J(r₂, π; π_cal)` for every conditional policy `π` (calibrated value written
+out); (e) hence `J⋆(r₁; π_cal) = J⋆(r₂; π_cal)` (`eq:Jstar_calibrated`, :99–102), the supremum of the
+calibrated value over conditional policies written out (this is the definition of `optCalValue`).
+
+Hypotheses: `ρ ≥ 0`, `π_cal` a conditional policy, `β > 0`.
+
+Restricted (`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`): full-support `π_ref`
+and finite `X`, `Y`, as in `Eq_DPO_restricted`. The printed claims hold for every `π_ref` with the
+extended-real KL; the hypothesis is needed because the formal `klDiv` equals the KL divergence only
+when `π_ref` has full support. Only (c) uses `π_ref` and `β` in the proof. -/
+def Eq_calibrated_value_shiftInvariant_restricted : Prop :=
+  ∀ (X Y : Type) [Fintype X] [Fintype Y] (ρ : X → ℝ) (π_ref π_cal : X → Y → ℝ) (β : ℝ),
+    IsPositivePolicy π_ref → (∀ x, 0 ≤ ρ x) → IsCondPolicy π_cal → 0 < β →
+    ∀ (r₂ : X → Y → ℝ) (c : X → ℝ),
+      let r₁ : X → Y → ℝ := fun x y ↦ r₂ x y + c x
+      let nll : (X → Y → ℝ) → List (X × Y × Y) → ℝ := fun r D ↦
+        -(D.map fun z ↦ Real.log (Real.sigmoid (r z.1 z.2.1 - r z.1 z.2.2))).sum
+      let J : (X → Y → ℝ) → (X → Y → ℝ) → ℝ := fun r π ↦
+        ∑ x, ρ x * (∑ y, π x y * r x y - β * klDiv (π x) (π_ref x))
+      let Jcal : (X → Y → ℝ) → (X → Y → ℝ) → ℝ := fun r π ↦
+        J r π - ∑ x, ρ x * ∑ y, π_cal x y * r x y
+      (∀ (x : X) (y₁ y₂ : Y), r₁ x y₁ - r₁ x y₂ = r₂ x y₁ - r₂ x y₂) ∧
+      (∀ D : List (X × Y × Y), nll r₁ D = nll r₂ D) ∧
+      sSup {v | ∃ π, IsCondPolicy π ∧ J r₁ π = v} =
+        sSup {v | ∃ π, IsCondPolicy π ∧ J r₂ π = v} + ∑ x, ρ x * c x ∧
+      (∀ π, IsCondPolicy π → Jcal r₁ π = Jcal r₂ π) ∧
+      sSup {v | ∃ π, IsCondPolicy π ∧ Jcal r₁ π = v} =
+        sSup {v | ∃ π, IsCondPolicy π ∧ Jcal r₂ π = v}
+
+end RLHFDisplays
+
 section Thm7_6
 
 open StatisticalRL StatisticalRL.Ch7Rest.Marl StatisticalRL.Ch7Rest.Marl76
@@ -1022,5 +1358,190 @@ def Eq_mdp_value_Q : Prop :=
         robustPolicyQ chiBall M σ π s a ≤ robustPolicyQ chiBall M σ (detPolicy f) s a))
 
 end Eq_mdp_value_Q
+
+section RobustBellman
+universe v
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- `eq:bellman-equ-infinite-all` (`eq:bellman-equ-pi-infinite`, `eq:bellman-equ-star-infinite`),
+`chapters/robust_RL.tex:102–113`, with the robust objects of `:71–84` and `V^{⋆,σ}`, `Q^{⋆,σ}` of
+`eq:mdp-value-Q` (`:88–98`).
+
+Objects as in `Eq_mdp_value_Q`: a `DiscountedMDP` whose `transition` is the nominal kernel `P^0`,
+the TV ball (half-L1 distance, `tvBall`) or the support-aware χ² ball (`chiBall`) of radius
+`σ > 0`, `V^{π,σ}` / `Q^{π,σ}` the infimum over `(s,a)`-rectangular admissible kernels of the actual
+infinite-trajectory value / forced-first-action Q-value (static adversary), and `⟨P, V⟩ =
+∑_{s'} P(s') V(s')`. For each of the two balls:
+(1) robust Bellman consistency `Q^{π,σ}(s,a) = r(s,a) + γ inf_{P ∈ U^σ(P^0_{s,a})} ⟨P, V^{π,σ}⟩`
+for every stationary randomized policy `π` ("π stands for any policy", `:113`);
+(2) robust Bellman optimality with `Q^{⋆,σ}(s,a) = max_π Q^{π,σ}(s,a)` and
+`V^{⋆,σ}(s) = max_π V^{π,σ}(s)` (`:95–96`; written as suprema over stationary randomized
+policies, `robustOptimalValue`);
+(3) for every stationary policy `π⋆` maximizing the robust value at every state (`:90–92`),
+`V^{π⋆,σ} = V^{⋆,σ}` and `Q^{π⋆,σ} = Q^{⋆,σ}`, so (2) is also the display with
+`Q^{⋆,σ} := Q^{π⋆,σ}`, `V^{⋆,σ} := V^{π⋆,σ}`.
+
+No source issue. Scope: the source states these displays for a general
+`(s,a)`-rectangular set built from a 'distance-like metric' ρ (`:36–46`); the entry covers the two
+instances the section focuses on (`:52`), the TV ball and the χ² ball. Other choices of ρ are not
+claimed. As in `Eq_mdp_value_Q`, 'any policy' is read as the book's stationary randomized policies
+(`prelim.tex:65`); history-dependent policies and dynamic adversaries are not claimed. Stronger than printed in two harmless ways: `π⋆` may be any (not necessarily
+deterministic) value-maximizing stationary policy, and the library needs only `σ ≥ 0`. -/
+def Eq_bellman_equ_infinite_all : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (σ : ℝ), 0 < σ →
+    ∀ ball : RowBall State, (ball = tvBall ∨ ball = chiBall) →
+      (∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
+        robustPolicyQ ball M σ π s a = M.reward s a + M.discount *
+          ⨅ q : ball (M.transition s a) σ,
+            ∑ s', q.1.prob s' * robustPolicyValue ball M σ π s') ∧
+      (∀ (s : State) (a : Action),
+        sSup (Set.range fun π : StationaryPolicy State Action ↦ robustPolicyQ ball M σ π s a) =
+          M.reward s a + M.discount *
+            ⨅ q : ball (M.transition s a) σ,
+              ∑ s', q.1.prob s' * robustOptimalValue ball M σ s') ∧
+      (∀ πs : StationaryPolicy State Action,
+        (∀ (π : StationaryPolicy State Action) (s : State),
+          robustPolicyValue ball M σ π s ≤ robustPolicyValue ball M σ πs s) →
+        (∀ s : State, robustPolicyValue ball M σ πs s = robustOptimalValue ball M σ s) ∧
+        ∀ (s : State) (a : Action), robustPolicyQ ball M σ πs s a =
+          sSup (Set.range fun π : StationaryPolicy State Action ↦ robustPolicyQ ball M σ π s a))
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 in
+/-- Unnumbered claims on the robust Bellman operator `eq:robust_bellman` and DRVI,
+`chapters/robust_RL.tex:114–133` ("`Q^{⋆,σ}` is the unique fixed point of `T^σ`", "`γ`-contraction
+… w.r.t. the `ℓ_∞` norm", DRVI from an arbitrary initialization "converges geometrically fast")
+and `:261–262` (the DRVI iterates `Q̂_t`, `Q̂_0 = 0` (`:268`), "converge linearly to the unique fixed
+point `Q̂^{⋆,σ}`" of the empirical operator).
+
+Objects as in `Eq_bellman_equ_infinite_all`. The operator is written out:
+`T^σ(Q)(s,a) = r(s,a) + γ inf_{P ∈ U^σ(P^0_{s,a})} ⟨P, V⟩`, `V(s) = max_b Q(s,b)` (`:118–127`).
+`Q^{⋆,σ} := Q^{π⋆,σ}` for an arbitrary stationary policy `π⋆` maximizing the robust value at every
+state (`eq:mdp-value-Q`; such a deterministic `π⋆` exists by `Eq_mdp_value_Q`). For each ball:
+(a) `T^σ Q^{⋆,σ} = Q^{⋆,σ}`; (b) every fixed point of `T^σ` equals `Q^{⋆,σ}`; (c) `T^σ` is a
+`γ`-contraction in the sup norm on `ℝ^{S×A}`; (d) from any initialization `Q₀`,
+`‖(T^σ)^t Q₀ − Q^{⋆,σ}‖_∞ ≤ γ^t ‖Q₀ − Q^{⋆,σ}‖_∞`; (e) the DRVI iterates from `0` satisfy
+`|Q_t(s,a) − Q^{⋆,σ}(s,a)| ≤ γ^t/(1−γ)`. The nominal kernel is arbitrary, so the statement
+applied to the empirical model `P̂^0` is the `:261` claim for `T̂^σ` and `Q̂^{⋆,σ}`.
+
+No source issue. Scope: the source states this operator and DRVI claim for a general
+`(s,a)`-rectangular set built from a 'distance-like metric' ρ (`:36–46`); the entry covers the two
+instances the section focuses on (`:52`), the TV ball and the χ² ball. Other choices of ρ are not
+claimed. As in `Eq_mdp_value_Q`, 'any policy' is read as the book's stationary randomized policies
+(`prelim.tex:65`); history-dependent policies and dynamic adversaries are not claimed. As in `Eq_bellman_equ_infinite_all`, `π⋆` may be randomized and `σ ≥ 0`
+suffices. -/
+def Eq_robust_bellman_fixedPoint : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (σ : ℝ), 0 < σ →
+    ∀ ball : RowBall State, (ball = tvBall ∨ ball = chiBall) →
+    ∀ πs : StationaryPolicy State Action,
+      (∀ (π : StationaryPolicy State Action) (s : State),
+        robustPolicyValue ball M σ π s ≤ robustPolicyValue ball M σ πs s) →
+      let T : (State → Action → ℝ) → State → Action → ℝ := fun Q s a ↦
+        M.reward s a + M.discount *
+          ⨅ q : ball (M.transition s a) σ, ∑ s', q.1.prob s' * ⨆ b, Q s' b
+      let Qs : State → Action → ℝ := robustPolicyQ ball M σ πs
+      T Qs = Qs ∧
+      (∀ Q : State → Action → ℝ, T Q = Q → Q = Qs) ∧
+      (∀ Q Q' : State → Action → ℝ, ‖T Q - T Q'‖ ≤ M.discount * ‖Q - Q'‖) ∧
+      (∀ (Q₀ : State → Action → ℝ) (t : ℕ),
+        ‖T^[t] Q₀ - Qs‖ ≤ M.discount ^ t * ‖Q₀ - Qs‖) ∧
+      (∀ (t : ℕ) (s : State) (a : Action),
+        |T^[t] 0 s a - Qs s a| ≤ M.discount ^ t / (1 - M.discount))
+
+end RobustBellman
+
+section MarlEquilibria
+
+open StatisticalRL StatisticalRL.Ch7Rest.Marl StatisticalRL.Ch7Rest.Marl76
+
+/-- Best responses and Bellman optimality for agent `i` (`eq:defn-optimal-V` and the prose after
+it), `chapters/marl.tex:119–143` (definition :119–126, existence of a best response attaining
+`V^{⋆,π_{-i}}_{i,h}(s)` at all `(s, h)` simultaneously :128–132, Bellman optimality with terminal
+value `0` :135–143). Markov policies :71–91, values `eq:value-function-defn` :96–106.
+
+For a joint Markov policy `π` and an agent `i` with `A i ≥ 1` actions (`Δ(A_i)` nonempty),
+`V⋆_h(s) := ⨆_{π'} V^{π'_i × π_{-i}}_{i,h}(s)` is the supremum over all Markov policies `π'` of
+agent `i` of the value `valueJ … i h (H + 1 - h) s` (steps `h, …, H`) of `deviate π i π'`, i.e.
+`π'_i` played independently of the marginal `π_{-i}` of `π`. Proved: (1) the supremum dominates every
+deviation (it is a genuine maximum, not a junk `iSup`); (2) one Markov policy `μ` attains it at
+every `h ∈ [1, H]` and every `s`; (3) `V⋆_{H+1} = 0`; (4) the Bellman optimality equation for
+`h ∈ [1, H]`:
+`V⋆_h(s) = max_b E_{a ∼ π_h(·|s)}[r_{i,h}(s, a[i ↦ b]) + ⟨P_h(·|s, a[i ↦ b]), V⋆_{h+1}⟩]`;
+the expectation over `a ∼ π_h(·|s)` with `a_i` replaced by `b` is the printed expectation over
+`a_{-i} ∼ π_{-i,h}(·|s)`. -/
+def Marl_bestResponse_exists : Prop :=
+  ∀ (m S H : ℕ) (A : Fin m → ℕ) (G : MarkovGame m S H A) (π : JointPolicy m S A) (i : Fin m),
+    0 < A i →
+    let Vstar : ℕ → Fin S → ℝ := fun h s =>
+      ⨆ π' : PlayerPolicy S (A i), valueJ G (deviate π i π') i h (H + 1 - h) s
+    (∀ (π' : PlayerPolicy S (A i)) (h : ℕ), 1 ≤ h → h ≤ H → ∀ s : Fin S,
+        valueJ G (deviate π i π') i h (H + 1 - h) s ≤ Vstar h s) ∧
+    (∃ μ : PlayerPolicy S (A i), ∀ h : ℕ, 1 ≤ h → h ≤ H → ∀ s : Fin S,
+        valueJ G (deviate π i μ) i h (H + 1 - h) s = Vstar h s) ∧
+    (∀ s : Fin S, Vstar (H + 1) s = 0) ∧
+    (∀ h : ℕ, 1 ≤ h → h ≤ H → ∀ s : Fin S,
+        Vstar h s = ⨆ b : Fin (A i), ∑ a' : (j : Fin m) → Fin (A j), (π h s).prob a' *
+          (G.reward i h s (Function.update a' i b) +
+            (G.transition h s (Function.update a' i b)).expectation (Vstar (h + 1))))
+
+/-- Every Nash equilibrium is a CCE, and the converse fails (`chapters/marl.tex:232–240`: CCE
+`eq:defn-CCE` :232–238 and the claim at :240; NE `eq:defn-Nash-E` :213–221, product policies
+:88–91).
+
+(1) If `σ` is an NE (`IsNE`, `eq:defn-Nash-E`) and the joint policy `π` has the product law
+`π_h(a|s) = ∏_j σ_{j,h}(a_j|s)` at every `(h, s)`, then `π` is a CCE (`IsCCE`, `eq:defn-CCE`).
+(2) There is a two-player, one-state, one-step game with rewards in `[0,1]` (the coordination game:
+reward `1` to both players when their two actions agree) and a CCE `π` (uniform on `{(0,0),(1,1)}`)
+whose step-1 law is not the product law of any product policy. Since NE is defined only for product
+policies (:213–214), such a `π` is not an NE. For product policies CCE and NE coincide (library
+`StatisticalRL.Ch7Rest.Marl76.isNE_iff_isCCE_toJoint`), so for a CCE "not an NE" amounts to
+"not a product". -/
+def Marl_NE_isCCE_not_converse : Prop :=
+  (∀ (m S H : ℕ) (A : Fin m → ℕ) (G : MarkovGame m S H A) (σ : ProductPolicy m S A)
+      (π : JointPolicy m S A),
+      (∀ (h : ℕ) (s : Fin S) (a : (j : Fin m) → Fin (A j)), (π h s).prob a = jointProb σ h s a) →
+      IsNE G σ → IsCCE G π) ∧
+  ∃ (G : MarkovGame 2 1 1 (fun _ => 2)) (π : JointPolicy 2 1 (fun _ => 2)),
+    (∀ (i : Fin 2) (h : ℕ) (s : Fin 1) (a : (j : Fin 2) → Fin ((fun _ : Fin 2 => 2) j)),
+      0 ≤ G.reward i h s a ∧ G.reward i h s a ≤ 1) ∧
+    IsCCE G π ∧
+    ∀ σ : ProductPolicy 2 1 (fun _ => 2),
+      ¬ ∀ a : (j : Fin 2) → Fin ((fun _ : Fin 2 => 2) j), (π 1 0).prob a = jointProb σ 1 0 a
+
+end MarlEquilibria
+
+section ConvexDistanceTV
+
+open MeasureTheory
+
+/-- `d_cvx(P, Q) ≤ TV(P, Q)`, `chapters/inference.tex:129`, with `d_cvx` from
+`eqn:convex-distance` (:124–127, supremum of `|P(A) − Q(A)|` over all convex `A ⊆ ℝ^d`) and TV from
+`eq:TV` (`chapters/intro.tex:218–227`, supremum over the σ-algebra). Laws are probability measures
+on `ℝ^d = Fin d → ℝ` with its Borel σ-algebra. Reading: a convex set need not be Borel (an open disc
+plus any subset of its boundary circle), so `P(A)` for convex `A` is the outer measure `P.real A`,
+the same reading as the library definition
+`StatisticalRL.Ch7Rest.TDInference.Thm7_11_printed_allConvex` in
+`Formalization/Ch7Rest/TDInferencePrinted711.lean` (a library definition, not a statement entry). Both suprema are of sets bounded by `1` and
+containing `|P(∅) − Q(∅)|`, so `sSup` is the genuine supremum. -/
+def Eq_convex_distance_le_TV : Prop :=
+  ∀ (d : ℕ) (P Q : Measure (Fin d → ℝ)), IsProbabilityMeasure P → IsProbabilityMeasure Q →
+    sSup {x : ℝ | ∃ C : Set (Fin d → ℝ), Convex ℝ C ∧ x = |P.real C - Q.real C|} ≤
+      sSup {x : ℝ | ∃ A : Set (Fin d → ℝ), MeasurableSet A ∧ x = |P.real A - Q.real A|}
+
+end ConvexDistanceTV
+
+section TDWeights
+
+/-- The plug-in weights `w_{t,T} := t / ∑_{u=1}^T u = 2t / (T(T+1))`,
+`chapters/inference.tex:173–177` (the display at :175), and they sum to `1` (implicit in their use
+as weights in `Γ̂_T`, :168). The index is 0-based: `t : Fin T` is the source's `t + 1`. -/
+def Eq_tdWeights_sum : Prop :=
+  ∀ T : ℕ, 1 ≤ T →
+    (∀ t : Fin T, ((t : ℝ) + 1) / ∑ u : Fin T, ((u : ℝ) + 1) =
+      2 * ((t : ℝ) + 1) / ((T : ℝ) * (T + 1))) ∧
+    ∑ t : Fin T, ((t : ℝ) + 1) / ∑ u : Fin T, ((u : ℝ) + 1) = 1
+
+end TDWeights
 
 end StatisticalRL.Statements.Ch7

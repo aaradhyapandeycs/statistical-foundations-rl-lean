@@ -14,7 +14,7 @@ Numbered theorems, lemmas and claims with no reviewed ledger record (including t
 
 - none
 
-## Ready: open nodes whose candidate uses are all proved
+## Ready: open nodes whose candidate uses are all proved, implied or explanatory
 
 Open numbered results and prose claims (remarks, displayed claims) whose every unreviewed TeX-reference dependency on another node is proved. Definitions, assumptions and algorithms are context, not blockers.
 
@@ -22,55 +22,24 @@ Open numbered results and prose claims (remarks, displayed claims) whose every u
 
 - none
 
-### Remarks and displayed claims (37)
+### Remarks and displayed claims (5)
 
-- Display `eq:defn-Vpi-inf` — `chapters/prelim.tex:96–100` · statement `partial`
-- Display `eq:defn-Qpi-inf-horizon` — `chapters/prelim.tex:117–121` · statement `partial`
-- Display `eq:defn-dpi-occupancy-discounted-dist` — `chapters/prelim.tex:149–157` · statement `prose-claim` · COVERAGE note only, no statement entry
-- Display `eq:bellman_consistency-V` — `chapters/prelim.tex:214–217` · statement `partial`
-- Display `eq:dh-pi-defn` — `chapters/prelim.tex:751–757` · statement `prose-claim` · COVERAGE note only, no statement entry
-- Display `eqn:defn-d1rho-finite` — `chapters/prelim.tex:760–763` · statement `prose-claim` · COVERAGE note only, no statement entry
-- Display `eq:dhstar-finite` — `chapters/prelim.tex:767–771` · statement `prose-claim` · COVERAGE note only, no statement entry
-- Display `eq:Bellman-finite-pi` — `chapters/prelim.tex:786–792` · statement `prose-claim` · COVERAGE note only, no statement entry
-- Display `eq:Bellman-finite-opt` — `chapters/prelim.tex:800–806` · statement `prose-claim` · COVERAGE note only, no statement entry
-- Remark 2.1 — `chapters/prelim.tex:1231–1235` · statement `prose-claim`
-- Display `eqn:ice-cream` — `chapters/generative_model_model_based.tex:626–630` · statement `prose-claim` · COVERAGE note only, no statement entry
-- Remark 3.1 — `chapters/generative_model_model_based.tex:1187–1189` · statement `prose-claim`
-- Remark 3.2 — `chapters/generative_model_model_based.tex:1412–1419` · statement `prose-claim`
-- Remark 4.4 — `chapters/generative_model_model_free.tex:3451–3453` · statement `prose-claim`
-- Remark 4.5 — `chapters/generative_model_model_free.tex:3455–3457` · statement `partial`
-- Remark 5.1 — `chapters/bandits.tex:279–281` · statement `prose-claim`
-- Remark 5.2 `remark:different-bonus-than-Azar` — `chapters/onlineRL.tex:425–429` · statement `prose-claim`
-- Remark 5.3 — `chapters/onlineRL.tex:486–488` · statement `prose-claim`
-- Remark 5.4 — `chapters/onlineRL.tex:660–662` · statement `prose-claim`
-- Remark 5.6 — `chapters/onlineRL.tex:959–961` · statement `prose-claim`
-- Remark 5.7 — `chapters/onlineRL.tex:963–965` · statement `prose-claim`
-- Remark 5.8 — `chapters/onlineRL.tex:1096–1101` · statement `prose-claim`
-- Remark 5.10 — `chapters/onlineRL.tex:1746–1752` · statement `prose-claim`
-- Remark 5.11 — `chapters/onlineRL.tex:2043–2047` · statement `prose-claim`
-- Remark 5.13 — `chapters/onlineRL.tex:3512–3524` · statement `prose-claim`
 - Display `eq:Vk-Itrue` — `chapters/onlineRL.tex:4470–4473` · statement `refuted` · C17
-- Remark 6.1 — `chapters/offlineRL.tex:45–47` · statement `prose-claim`
-- Remark 6.3 — `chapters/offlineRL.tex:175–185` · statement `prose-claim`
-- Remark 6.6 — `chapters/offlineRL.tex:1192–1199` · statement `prose-claim`
-- Remark 6.7 — `chapters/offlineRL.tex:1539–1541` · statement `prose-claim`
-- Remark 6.8 — `chapters/offlineRL.tex:1695–1697` · statement `prose-claim`
-- Remark 6.9 — `chapters/offlineRL.tex:2404–2411` · statement `prose-claim`
-- Remark 7.3 — `chapters/federated_RL.tex:250–252` · statement `prose-claim`
-- Display `eq:reward-policy-eq` — `chapters/RLHF.tex:64–66` · statement `partial`
-- Display `eq:Jstar` — `chapters/RLHF.tex:117–123` · statement `partial`
-- Display `eq:RBMLE_online` — `chapters/RLHF.tex:163–170` · statement `partial` · C44
-- Display `eq:RLHF-policy` — `chapters/RLHF.tex:172–175` · statement `partial` · C44
+- Remark 6.3 — `chapters/offlineRL.tex:175–185` · statement `partial` · user decision 2026-11-09 · also cited-out-of-scope (COVERAGE.md:236)
+- Display `eq:sample-size-LCBQ-bernstein` — `chapters/offlineRL.tex:1781–1783` · statement `prose-claim` · C50 · COVERAGE note only, no statement entry
+- Display `eq:sample-size-per-agent-fedQ` — `chapters/federated_RL.tex:124–127` · statement `prose-claim` · C41 · COVERAGE note only, no statement entry
+- Display `eq:convex.Cdelta` — `chapters/inference.tex:191–193` · statement `partial` · C43, C47
 
-### Blocked: some candidate use is not proved (1)
+### Blocked: some candidate use is not proved (0)
 
-- Remark 5.9 — `chapters/onlineRL.tex:1330–1332` · statement `prose-claim` · waits on Remark 5.2 `remark:different-bonus-than-Azar`
+- none
 
 ## Proved only in corrected or restricted form
 
 The printed statement is not proved as printed. Each needs either a proof of the printed form or a source-issue record explaining why it fails.
 
 - Theorem 3.2 `Thm:sample-compl-main` — `chapters/generative_model_model_based.tex:900–923` · statement `restricted`
+- Display `eq:sample-size-range-planning` — `chapters/generative_model_model_based.tex:934–937` · statement `restricted` · C49
 - Lemma 3.5 `lem:policy-learning-evaluation` — `chapters/generative_model_model_based.tex:1306–1326` · statement `restricted`
 - Theorem 3.7 `theorem:azar` — `chapters/generative_model_model_based.tex:1443–1464` · statement `corrected` · C1, C2
 - Lemma 4.3 `lemma:TD-step-size` — `chapters/generative_model_model_free.tex:317–327` · statement `corrected` · C5
@@ -99,6 +68,7 @@ The printed statement is not proved as printed. Each needs either a proof of the
 - Theorem 5.16 `thm-ucbq-regret` — `chapters/onlineRL.tex:1911–1922` · statement `corrected` · C20
 - Lemma 5.18 `lemma:opt_model_free` — `chapters/onlineRL.tex:2121–2150` · statement `restricted` · C20
 - Remark 5.12 — `chapters/onlineRL.tex:2727–2729` · statement `restricted`
+- Remark 5.13 — `chapters/onlineRL.tex:3512–3524` · statement `corrected` · C8
 - Lemma 5.22 `lemma:sqv` — `chapters/onlineRL.tex:3612–3615` · statement `corrected` · C14
 - Claim 5.1 `claim:PV-l-UB` — `chapters/onlineRL.tex:4340–4353` · statement `corrected` · C8, C13, C15, C16, C17
 - Theorem 6.1 `thm:MAB_LCB_upper` — `chapters/offlineRL.tex:456–471` · statement `corrected` · C18
@@ -124,8 +94,16 @@ The printed statement is not proved as printed. Each needs either a proof of the
 - Theorem 7.7 `thm:Q-FTRL` — `chapters/marl.tex:441–467` · statement `restricted` · C39
 - Theorem 7.8 `thm:lower-marl` — `chapters/marl.tex:487–503` · statement `corrected` · C40
 - Theorem 7.9 `thm:dist-syncq-local` — `chapters/federated_RL.tex:99–117` · statement `corrected` · C41
+- Display `eqn:classic-clt` — `chapters/inference.tex:100–103` · statement `corrected` · C43
 - Theorem 7.11 `thm:Berry-Esseen-linear` — `chapters/inference.tex:132–141` · statement `corrected` · C43, C47
+- Display `eq:defn-hat-Lambda` — `chapters/inference.tex:180–182` · statement `corrected` · C43, C47
+- Display `eq:KL_reward` — `chapters/RLHF.tex:43–45` · statement `restricted`
+- Display `eq:RLHF-policy-closed-form` — `chapters/RLHF.tex:52–55` · statement `restricted`
+- Display `eq:normalization` — `chapters/RLHF.tex:57–59` · statement `restricted`
+- Display `eq:reward-policy-eq` — `chapters/RLHF.tex:64–66` · statement `restricted`
 - Display `eq:DPO` — `chapters/RLHF.tex:69–72` · statement `restricted`
+- Display `eq:calibrated_value` — `chapters/RLHF.tex:92–96` · statement `restricted`
+- Display `eq:Jstar` — `chapters/RLHF.tex:117–123` · statement `restricted`
 - Display `eq:policy_RBMLE` — `chapters/RLHF.tex:126–134` · statement `restricted`
 - Display `eq:online_RBMLE` — `chapters/RLHF.tex:194–198` · statement `restricted` · C44
 - Theorem 7.12 `thm_online` — `chapters/RLHF.tex:208–215` · statement `corrected` · C44
@@ -134,28 +112,100 @@ The printed statement is not proved as printed. Each needs either a proof of the
 
 A COVERAGE row marked partial, or a statement entry without its reviewed record.
 
-- Display `eq:defn-Vpi-inf` — `chapters/prelim.tex:96–100` · statement `partial`
-- Display `eq:defn-Qpi-inf-horizon` — `chapters/prelim.tex:117–121` · statement `partial`
-- Display `eq:bellman_consistency-V` — `chapters/prelim.tex:214–217` · statement `partial`
-- Remark 4.5 — `chapters/generative_model_model_free.tex:3455–3457` · statement `partial`
-- Display `eq:reward-policy-eq` — `chapters/RLHF.tex:64–66` · statement `partial`
-- Display `eq:Jstar` — `chapters/RLHF.tex:117–123` · statement `partial`
-- Display `eq:RBMLE_online` — `chapters/RLHF.tex:163–170` · statement `partial` · C44
-- Display `eq:RLHF-policy` — `chapters/RLHF.tex:172–175` · statement `partial` · C44
+- Remark 6.3 — `chapters/offlineRL.tex:175–185` · statement `partial` · user decision 2026-11-09 · also cited-out-of-scope (COVERAGE.md:236)
+- Display `eq:convex.Cdelta` — `chapters/inference.tex:191–193` · statement `partial` · C43, C47
+
+## Implied by a proved entry (not separately proved) (14 nodes, 6 unlabelled rows)
+
+A COVERAGE row headed **Implied by `X`**: the item follows from the named statement entry, with that entry's suffix (an implication from a corrected or restricted entry does not give the printed item). The implication itself is not a separate Lean statement. Never counted as proved; does not block dependants.
+
+- Display `eq:sample-complexity-sync-Q-learning` — `chapters/generative_model_model_free.tex:936–939` · statement `implied (corrected)` · C1, C2, C6 · by `Thm3_7_corrected`, `Thm4_6`
+- Display `eq:QT-gamma-5-Q-learning-generative` — `chapters/generative_model_model_free.tex:1302–1308` · statement `implied (printed)` · by `Thm4_6`
+- Display `eq:sample-size-async-Q` — `chapters/generative_model_model_free.tex:2107–2110` · statement `implied (corrected)` · C34 · by `Thm4_12_corrected`
+- Remark 4.4 — `chapters/generative_model_model_free.tex:3451–3453` · statement `implied (printed)` · by `Lemma4_15`
+- Remark 5.6 — `chapters/onlineRL.tex:959–961` · statement `implied (corrected)` · C8, C12 · by `Lemma5_7_K2_corrected`
+- Remark 5.8 — `chapters/onlineRL.tex:1096–1101` · statement `implied (corrected)` · C8, C12 · by `Lemma5_9_K2_corrected`
+- Remark 5.10 — `chapters/onlineRL.tex:1746–1752` · statement `implied (corrected)` · C8, C13, C15, C16, C17 · by `Lemma5_14_corrected`
+- Display `eq:sample-size-Bernstein-infinite` — `chapters/offlineRL.tex:926–929` · statement `implied (printed)` · by `Thm6_3`
+- Display `eq:sample-size-Bernstein` — `chapters/offlineRL.tex:3117–3120` · statement `implied (restricted)` · C32 · by `Thm6_16_restricted`
+- Display `eq:tv-final-samples` — `chapters/robust_RL.tex:401–403` · statement `implied (corrected)` · C37, C38 · by `Remark7_1_restricted`, `Thm7_2_corrected`, `Thm7_3_corrected`
+- Display `eq:standard-final-samples` — `chapters/robust_RL.tex:411–413` · statement `implied (corrected)` · C1, C2 · by `Thm3_2_positiveN`, `Thm3_7_corrected`
+- Display `eq:chi2-final-samples` — `chapters/robust_RL.tex:490–492` · statement `implied (corrected)` · C7, C37 · by `Thm7_4_corrected`, `Thm7_5_corrected`
+- Display `eq:upper-bound-order` — `chapters/marl.tex:404–406` · statement `implied (restricted)` · C45 · by `Thm7_6_restricted`
+- Display `eq:RLHF-policy` — `chapters/RLHF.tex:172–175` · statement `implied (restricted)` · C44 · by `Eq_online_RBMLE_restricted`
+- Sample-size read-off after Theorem 3.1, model-based chapter lines 157–165 — `docs/COVERAGE.md:214` · no inventory node · by `Thm3_1` (printed)
+- Sample-size read-off and range after Theorem 3.2 (including the range display at lines 934–937), model-based chapter lines 926–937 — `docs/COVERAGE.md:215` · no inventory node · by `Thm3_2_positiveN` (restricted)
+- Minimax optimality of the model-based approach, model-based chapter lines 1468–1474 — `docs/COVERAGE.md:217` · no inventory node · by `Thm3_2_positiveN`, `Thm3_7_corrected` (corrected)
+- TD sample-size read-off, model-free chapter lines 240–251 — `docs/COVERAGE.md:218` · no inventory node · by `Thm4_1` (printed)
+- Loose TD iteration count, model-free chapter lines 434–447 — `docs/COVERAGE.md:219` · no inventory node · by `Thm4_1` (printed)
+- Finite-horizon Q-learning sample size, model-free chapter lines 2237–2247 — `docs/COVERAGE.md:223` · no inventory node · by `Thm4_13_corrected`, `Thm3_9_minimaxLowerBound` (corrected)
+
+## Explanatory (no mathematical claim) (16 nodes, 15 unlabelled rows)
+
+A COVERAGE row headed **Explanatory (no mathematical claim)**: attribution, comparison, motivation or notation, reviewed as making no claim to prove. Never counted as proved; does not block dependants.
+
+- Display `eq:defn-Var-Psa-V` — `chapters/prelim.tex:430–437` · statement `explanatory`
+- Display `eq:matrix-VarP-V-expression` — `chapters/prelim.tex:441–444` · statement `explanatory`
+- Remark 2.1 — `chapters/prelim.tex:1231–1235` · statement `explanatory`
+- Remark 3.1 — `chapters/generative_model_model_based.tex:1187–1189` · statement `explanatory`
+- Display `eq:LOO-intuition-generative` — `chapters/generative_model_model_based.tex:1214–1218` · statement `explanatory`
+- Remark 3.2 — `chapters/generative_model_model_based.tex:1412–1419` · statement `explanatory`
+- Remark 5.2 `remark:different-bonus-than-Azar` — `chapters/onlineRL.tex:425–429` · statement `explanatory`
+- Display `eq:ovr-est-ub2` — `chapters/onlineRL.tex:631–634` · statement `explanatory`
+- Remark 5.4 — `chapters/onlineRL.tex:660–662` · statement `explanatory`
+- Display `eq:ovr-est-ub1` — `chapters/onlineRL.tex:667–672` · statement `explanatory`
+- Remark 5.7 — `chapters/onlineRL.tex:963–965` · statement `explanatory`
+- Remark 5.11 — `chapters/onlineRL.tex:2043–2047` · statement `explanatory`
+- Remark 6.6 — `chapters/offlineRL.tex:1192–1199` · statement `explanatory`
+- Remark 6.7 — `chapters/offlineRL.tex:1539–1541` · statement `explanatory`
+- Remark 6.8 — `chapters/offlineRL.tex:1695–1697` · statement `explanatory`
+- Display `eq:RBMLE_online` — `chapters/RLHF.tex:163–170` · statement `explanatory` · C44
+- Time-invariant policies suffice, preliminaries line 76 — `docs/COVERAGE.md:182` · no inventory node
+- Solving the Bellman linear systems, preliminaries lines 225–228 — `docs/COVERAGE.md:183` · no inventory node
+- Asymptotic conclusion of the second policy-evaluation attempt, model-based chapter lines 354–376 — `docs/COVERAGE.md:186` · no inventory node
+- First-attempt policy-learning analysis, model-based chapter lines 975–1122 — `docs/COVERAGE.md:187` · no inventory node
+- Stochastic-approximation prelude, model-free chapter lines 14–54 — `docs/COVERAGE.md:189` · no inventory node
+- Over-estimation heuristic, model-free chapter lines 1003–1013 — `docs/COVERAGE.md:190` · no inventory node
+- Omitted lower-order bonus term, online-RL line 615 — `docs/COVERAGE.md:192` · no inventory node
+- Heuristic separation condition, offline-RL lines 505–515 (logs dropped at 511) — `docs/COVERAGE.md:197` · no inventory node
+- Verbal summary of the LCB-Q recursion, offline-RL lines 1894–1896 — `docs/COVERAGE.md:201` · no inventory node
+- Comparison with Q-learning after the Bernstein LCB-Q display, offline-RL lines 1789–1793 — `docs/COVERAGE.md:202` · no inventory node
+- Finite-sample meaning of Theorem 7.11, inference chapter line 144 — `docs/COVERAGE.md:203` · no inventory node
+- CCE computation, multi-agent chapter line 247 — `docs/COVERAGE.md:204` · no inventory node
+- Centralized versus communication-efficient federated RL, federated chapter lines 157–160 — `docs/COVERAGE.md:205` · no inventory node
+- Normalization factor is hard to compute, RLHF chapter line 74 — `docs/COVERAGE.md:206` · no inventory node
+- Introduction, Cousins and Conclusion chapters (survey prose) — `docs/COVERAGE.md:207` · no inventory node
+
+## Cited results out of scope (user decision) (5 nodes, 10 unlabelled rows)
+
+A COVERAGE row headed **Out of scope: cited result**, with a dated user-decision anchor: a result the book cites from the literature without stating it precisely about its own objects. Not proved, never counted as proved, and it still blocks dependants. The whole monograph cannot be called complete while any of these remain.
+
+- Remark 5.1 — `chapters/bandits.tex:279–281` · statement `cited-out-of-scope` · user decision 2026-11-09
+- Remark 5.3 — `chapters/onlineRL.tex:486–488` · statement `cited-out-of-scope` · user decision 2026-11-09
+- Remark 6.1 — `chapters/offlineRL.tex:45–47` · statement `cited-out-of-scope` · user decision 2026-11-09
+- Remark 6.9 — `chapters/offlineRL.tex:2404–2411` · statement `cited-out-of-scope` · user decision 2026-11-09
+- Remark 7.3 — `chapters/federated_RL.tex:250–252` · statement `cited-out-of-scope` · user decision 2026-11-09
+- Reference-advantage and Bernstein-bonus model-free regret, online-RL lines 1923–1929 — `docs/COVERAGE.md:234` · no inventory node · user decision 2026-11-09
+- Variance-reduced pessimistic model-free offline RL, offline-RL lines 1795–1800 — `docs/COVERAGE.md:238` · no inventory node · user decision 2026-11-09
+- Minimax-optimality sentence after the finite-horizon VI-LCB sample size, offline-RL line 3121 — `docs/COVERAGE.md:239` · no inventory node · user decision 2026-11-09
+- Asynchronous Q-learning lower bound, model-free chapter lines 2117–2118 — `docs/COVERAGE.md:240` · no inventory node · user decision 2026-11-09
+- Adaptive learning rates and cover-time analysis for asynchronous Q-learning, model-free chapter lines 2155–2164 — `docs/COVERAGE.md:241` · no inventory node · user decision 2026-11-09
+- Model-free Notes, model-free chapter lines 3956–3995 — `docs/COVERAGE.md:242` · no inventory node · user decision 2026-11-09
+- Q-FTRL algorithm (omitted at line 432) and the residual of Theorem 7.7 that `Thm7_7_restricted` does not cover, multi-agent chapter lines 423–432 and 441–467 — `docs/COVERAGE.md:244` · no inventory node · user decision 2026-11-09
+- PPAD-hardness of Nash equilibria, multi-agent chapter line 247 — `docs/COVERAGE.md:245` · no inventory node · user decision 2026-11-09
+- V-learning guarantees, Cousins chapter lines 30–40 — `docs/COVERAGE.md:246` · no inventory node · user decision 2026-11-09
+- Adaptive calibration policy, RLHF chapter lines 218–234 — `docs/COVERAGE.md:247` · no inventory node · user decision 2026-11-09
 
 ## Other obligations outside the numbered-result count
 
-- Prose nodes (remarks and displayed claims): 72, of which 20 printed, 8 corrected, 6 restricted, 1 refuted, 8 partial, 29 prose-claim.
+- Prose nodes (remarks and displayed claims): 116, of which 52 printed, 11 corrected, 13 restricted, 1 refuted, 2 partial, 14 implied, 16 explanatory, 5 cited-out-of-scope, 2 prose-claim.
 - Algorithms: 17; definitions: 4; assumptions: 3 (context items, not nodes; edges to them are recorded but never block).
 - Source-gap candidates in the inventory: 59 (see `docs/SOURCE-ISSUES.md`).
 - Unlabelled prose claims not listed in `docs/COVERAGE.md` are not tracked as nodes.
+- Supporting-infrastructure COVERAGE rows (attached to no node, proving nothing by themselves): 4.
 
 ## Generator warnings
 
-- COVERAGE.md:50 matches no inventory result: UCBVI zero-visit source gap, Algorithm 5.2
-- COVERAGE.md:55 matches no inventory result: Generative lower bound, singleton-action obstruction
-- COVERAGE.md:56 matches no inventory result: Robust χ² policy-value foundation and singleton obstruction
-- COVERAGE.md:75 matches no inventory result: Infinite-horizon Bellman consistency and VI, lines 190–264 and 316–355
-- COVERAGE.md:91 matches no inventory result: Planning accuracy of empirical VI and PI, prose claim, model-based chapter line 943
-- ch4-remark-4.5: proved by the ledgers, but a COVERAGE headline says partial; the headline wins
+- ch6-remark-6.3: proved by the ledgers, but a COVERAGE headline says partial; the headline wins
+- label:eq:convex.Cdelta: proved by the ledgers, but a COVERAGE headline says partial; the headline wins
 

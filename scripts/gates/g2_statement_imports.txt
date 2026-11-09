@@ -1,9 +1,15 @@
 # G2 frozen imports of Statements/ChN.lean: '<file> -> <module>'. May only shrink.
+Formalization/Statements/Ch2.lean -> Formalization.MDP.ActionTrajectoryDefinitions
 Formalization/Statements/Ch2.lean -> Formalization.MDP.CoreDefinitions
+Formalization/Statements/Ch2.lean -> Formalization.MDP.FiniteOccupancy
 Formalization/Statements/Ch2.lean -> Formalization.MDP.FixedPointDefinitions
+Formalization/Statements/Ch2.lean -> Formalization.MDP.ForcedActionReturn
+Formalization/Statements/Ch2.lean -> Formalization.MDP.InfiniteReturn
 Formalization/Statements/Ch2.lean -> Formalization.MDP.OptimalityOperatorDefinitions
 Formalization/Statements/Ch2.lean -> Formalization.MDP.PointMassDefinitions
+Formalization/Statements/Ch2.lean -> Formalization.MDP.PolicyEnvironmentDefinitions
 Formalization/Statements/Ch2.lean -> Formalization.MDP.PolicyMatrixDefinitions
+Formalization/Statements/Ch2.lean -> Formalization.MDP.TrajectoryDefinitions
 Formalization/Statements/Ch2.lean -> Formalization.Probability.BernoulliTailDefinitions
 Formalization/Statements/Ch2.lean -> Formalization.Probability.BernsteinMatrixMarginals
 Formalization/Statements/Ch2.lean -> Formalization.Probability.EmpiricalHoeffdingRandomFamily

@@ -480,6 +480,17 @@ candidate records the asserted error.
   `Thm7_12_corrected`; the source's Z(r,x) is a finite sum over Y). Existence of minimizers is not claimed (cf.
   [C44](#C44)). The online entry states the policy step with the printed uncalibrated J(r,π) of `eq:KL_reward`;
   uniqueness of its maximizer is not claimed (it fails off the support of ρ). See the [review](critic-trivial-b.md).
+  `eq:reward-policy-eq` (`RLHF.tex:62–66`) and `eq:Jstar` (`:115–124`) are indexed as
+  `Eq_reward_policy_eq_restricted` and `Eq_Jstar_restricted`, and the prompt-shift claims of `:90–98` as
+  `Eq_calibrated_value_shiftInvariant_restricted`, with the same full-support π_ref and finite X, Y. For the
+  prompt-shift claims the printed statements hold for every π_ref under the extended-real KL; the restriction
+  comes from the formal KL, which equals the KL divergence only when π_ref has full support.
+  `eq:RLHF-policy-closed-form` (`:41–59`) is indexed as `Eq_RLHF_policy_closed_form_restricted`: the Gibbs
+  policy π_r maximizes J(r,·) over all conditional policies, and a conditional policy is a maximizer iff it
+  agrees with π_r on supp ρ. The printed `π_r := arg max_π J(r,π)` treats the maximizer as unique; that holds
+  exactly when ρ has full support (off supp ρ every row gives the same value; machine-checked witness with
+  ρ = δ_true in the P3a non-vacuity probe). This is a scope note, not an asserted source error. Same
+  full-support π_ref and finite X, Y ([review](critic-p3a.md)).
 
 - The iteration count after Lemma 6.2 (`offlineRL.tex:892`) is indexed as `Lemma6_2_iterationCount_restricted`,
   stated on γ ≥ 1/2, the domain of `Lemma6_2_corrected`. For γ < 1/2 the iteration count is open: neither proved
@@ -1314,6 +1325,44 @@ and the polynomial C̃; the state-only-reward reading of the printed statement (
 half-space result is a restricted case of it under that reading). Independently critic-reviewed
 ([review](critic-thm7-11-m9.md)). Not author-approved.
 
+**Classic CLT display (2026-11-09, `Formalization/Ch7Rest/TDInferenceCLT711.lean`, `TDInferenceCLTPrinted711.lean`;
+entries `Eq_classic_clt_corrected`, `Eq_classic_clt_restricted`).** The same Γ issue affects `eqn:classic-clt`
+(`inference.tex:98–117`). Machine-checked: with r(s) = r_π(s) and action-dependent rewards, the display is false for the
+step sizes η_t = η₀t^(-2/3), both for every η₀ ∈ (0,1/4) and every V₀ (`not_eq_classic_clt_printed`) and for some
+η₀ ∈ (0,1] and some V₀ per instance (`not_eq_classic_clt_printed_someInit`). Witness: the zero-noise instance above with
+the bounded continuous test min(1, |x(0)|), whose expectation under the data law is O(T^(-1/2)) while under
+N(0, A⁻¹Γ_printedA⁻ᵀ) it is at least 3/80. The display is existential in the schedule; the Lean refutation covers this
+family only. For V₀ = V^π the iterates never move under any schedule, so that reading fails for every schedule (paper
+argument, not Lean-checked). "Some schedule and some V₀" over arbitrary schedules is not refuted. Proved: with Γ replaced
+by Γ_true (no nonsingularity needed) the display holds for every η₀ ∈ (0,1] and every V₀; and with the printed Γ it holds
+whenever r(s,·) is constant on the support of π(·|s) for every s, since then Γ_printed = Γ_true
+(`trueGamma_eq_printedGamma_of_reward_const_on_support`). This settles the state-only-reward reading for the display
+(not for Theorem 7.11's convex-distance bound). Independently critic-reviewed ([review](critic-classic-clt.md)). Not
+author-approved.
+
+**Plug-in estimator (2026-11-09; `Formalization/Ch7Rest/TDInferencePluginRefute711.lean`,
+`Formalization/Ch7Rest/TDInferencePluginCorrected711.lean`; entries `Eq_defn_hat_Lambda_corrected`,
+`Eq_defn_hat_Lambda_restricted`).** Under the reading with rewards r(s,a) and r(s) = r_π(s), Λ̂_T
+(`eq:defn-hat-Lambda`, `inference.tex:180–182`) is not a consistent estimator of the printed Λ⋆ = A⁻¹ΓA⁻ᵀ (`:184`;
+also `:172`, "estimator of Γ").
+- In the C43 two-state instance from V₀ = V^π: Γ̂_T = 0 and Λ̂_T = 0 surely, for every T ≥ 1 and every η₀,
+  while Λ⋆(0,0) = 5/64 (`not_eq_defn_hat_Lambda_printed_consistent`, with η₀ in the printed range (0, 1/4)).
+- The refutation is independent of the junk inverse (`pathProb_far_nonsingular_ge`).
+- From every V₀ and every η₀ ∈ (0,1], the far-event probability P(∃ s s′, |Λ̂_T(s,s′) − Λ⋆(s,s′)| > 1/64) tends
+  to 1 in that instance (`tendsto_pathProb_lambdaHat_far_printed_one`), so the some-V₀ reading is refuted too
+  (`not_eq_defn_hat_Lambda_printed_consistent_someInit`).
+
+Proposed correction, machine-checked: Λ̂_T is consistent for Λ = A⁻¹Γ_trueA⁻ᵀ, entrywise in probability, for
+full-support sampling, every η₀ ∈ (0,1] and every V₀, without Γ_true ≻ 0 (`eq_defn_hat_Lambda_corrected`).
+- The convergence is qualitative, with no rate.
+- The source's own commented-out definition (`:108`, not printed), Γ = E[(A_tθ⋆ − b_t)(A_tθ⋆ − b_t)ᵀ], equals
+  diag(Γ_true) at θ⋆ = V^π.
+- With state-only rewards or deterministic π, Γ_true = Γ_printed, and the printed reading holds
+  (`eq_defn_hat_Lambda_restricted`).
+
+Independently critic-reviewed ([review](critic-plugin.md), [round-2 review](critic-plugin-r2.md)). Not
+author-approved.
+
 <a id="C44"></a>
 ## Candidate C44: Theorem 7.12 is ill-posed at T = 1 and its VPO update may have no minimizer
 
@@ -1401,12 +1450,13 @@ author-approved.
 ## Candidate C47: Chapter 7 confidence sets: data-selected convex sets, rectangle scaling, ellipsoid radius, singular plug-in
 
 **Source:** `\subsection{Statistical inference}` (`sec:inference`), `chapters/inference.tex:150–213`: plug-in
-estimators `:160–181` (Λ̂_T = Ā_T⁻¹Γ̂_TĀ_T⁻ᵀ, `eq:defn-hat-Lambda` `:179–181`), confidence-set rule
-`eq:convex.Cdelta` `:185–194`, rectangles `:196–203`, ellipsoids `:205–213`; sampling model `eq:iid-samples`
+estimators `:156–185` (Λ̂_T = Ā_T⁻¹Γ̂_TĀ_T⁻ᵀ, `eq:defn-hat-Lambda` `:180–182`), confidence-set rule
+`eq:convex.Cdelta` `:187–196` (display `:191–193`, claim `:196`), rectangles `:198–205`, ellipsoids `:207–213`;
+sampling model `eq:iid-samples`
 `:49–64`. Pinned chapter SHA-256: `82707713adb6c9296d9ee41faa84b2d0a12eaf1b34864a6d294de02132e648f2`.
 
 **(1) Arbitrary data-selected convex sets.** The text says it suffices to choose any convex set with conditional
-mass ≥ 1−α under N(V̄_T, Λ̂_T/T), and that Theorem 7.11 makes such sets approximate confidence regions (`:186–194`).
+mass ≥ 1−α under N(V̄_T, Λ̂_T/T), and that Theorem 7.11 makes such sets approximate confidence regions (`:189–196`).
 This fails even for an exactly Gaussian estimator with known variance. Witness: X ~ N(θ,1/T), z = Φ⁻¹(1−α),
 0 < α < 1/2; choose [X − z/√T, ∞) if X ≥ 0 and (−∞, X + z/√T] otherwise. Both sets are convex with conditional mass
 exactly 1−α, but at θ = 0 the coverage is P(|√T X| ≤ z) = 1−2α for every T. In the book's own TD model (one
@@ -1415,13 +1465,13 @@ state, π uniform over two actions with rewards 0 and 1, γ = 1/2), V^π = 1, Ā
 scalar Polyak–Ruppert CLT and Slutsky's lemma (not formalized). The fixed-set bound of Theorem 7.11 is applied to a
 set chosen from the same data. This item holds under either reward reading of [C43](#C43).
 
-**(2) Rectangles.** R̂ is the ℓ∞ quantile under covariance Λ̂_T/T (`:202`), and the half-width is R̂/√T (`:200`), so
+**(2) Rectangles.** R̂ is the ℓ∞ quantile under covariance Λ̂_T/T (`:205`), and the half-width is R̂/√T (`:202`), so
 the √T scaling is applied twice: the half-width is O(1/T). Even with oracle covariance and exact Gaussian errors
 (S = 1, Λ = 1, α = 0.05) the coverage is 2Φ(1.96/√T) − 1 → 0 (0.16 at T = 100). The printed set violates
 `eq:convex.Cdelta` for T > 1.
 
 **(3) Ellipsoids (confirmed with changes).** The Mahalanobis statistic is compared with R², where R is the 1−α
-quantile of χ²(d) (`:209–212`). The printed set has reference mass F_{χ²_d}(R²). The external review's transcription
+quantile of χ²(d) (`:210–213`). The printed set has reference mass F_{χ²_d}(R²). The external review's transcription
 point is correct, but its consequence differs by α: for conventional α (R ≥ 1) the set is over-conservative (mass
 0.9999 at d = 1, α = 0.05) and still satisfies `eq:convex.Cdelta`; it falls below 1−α only when R < 1, i.e.
 α > 0.317 for d = 1 or α > 0.607 for d = 2 (d = 1, α = 1/2 gives mass 0.351). Also, `d` is undefined in the chapter
@@ -1442,6 +1492,63 @@ procedure on the singular event in (4) and charge that event's probability.
 
 Paper calculation, not Lean-checked (the TD-model limit also relies on a CLT and Slutsky argument that is not
 formalized). Reported by an external review (2026-11-08), independently re-checked ([check](critic-audit-findings.md)). Not author-approved.
+
+**Lean evidence for (1), oracle covariance (2026-11-09, `Formalization/Ch7Rest/TDInferenceC47Evidence711.lean`).**
+In the one-state TD instance of (1) (π uniform over rewards 0 and 1, γ = 1/2: V^π = 1, Γ_true = 1/4, A = 1/2, oracle
+Λ = 1, all machine-checked), the sign-selected half-lines `[V̄_T − z/√T, ∞)` if V̄_T ≥ 1 and `(−∞, V̄_T + z/√T]`
+otherwise are convex (`convex_signSel`), read only the data, and each has mass exactly Φ(z) = 1 − α under
+N(V̄_T, Λ/T) (`gaussianReal_signSel`). Their coverage is within 2K·T^(-1/3) of 2Φ(z) − 1 = 1 − 2α
+(`oneState_signSel_coverage`, from the half-space Theorem 7.11 result, no CLT), and is eventually at most
+Φ(z) − (1 − Φ(z))/2 < 1 − α for every z ≥ 0 (`oneState_signSel_coverage_eventually_lt`). The rule's threshold 1
+equals V^π of this instance, as the paper witness's threshold 0 equals θ; this suffices because the printed claim is
+universal over such sets. Scope: oracle Λ, not the printed Λ̂_T; the Λ̂_T version additionally needs consistency of
+Λ̂_T (in this model Ā_T = 1/2 surely, so Λ̂_T = 4Γ̂_T). Line locators in this entry were corrected against the pin
+(2026-11-09): rule :187–196 (display :191–193, claim :196), rectangles :198–205, ellipsoids :207–213, plug-in
+:156–185, `eq:defn-hat-Lambda` :180–182. Independently critic-reviewed ([review](critic-confint.md)). Not
+author-approved.
+
+**Fixed-shape correction, oracle covariance (2026-11-09, `Formalization/Ch7Rest/TDInferenceConfInt711.lean`, entry
+`Eq_convex_Cdelta_corrected_oracle`).** The proposed correction is machine-checked for fixed shapes with the oracle
+covariance Λ = A⁻¹Γ_trueA⁻ᵀ (Γ_true ≻ 0), as corollaries of the half-space result of [C43](#C43): for a direction u
+and level z fixed before the data, the one-sided interval for uᵀV^π has coverage within K·T^(-1/3) of Φ(z), the
+two-sided interval (z ≥ 0) within 2K·T^(-1/3) of 2Φ(z) − 1, and the Bonferroni box of half-widths z√(Λ_ss/T) has
+coverage at least 1 − 2S(1 − Φ(z)) − 2SK·T^(-1/3), with one instance constant K. Still open: the plug-in Λ̂_T rule
+(a covariance-perturbation coverage bound; consistency of Λ̂_T is now proved, see (4) below), (2), (3) and (4).
+Independently critic-reviewed ([review](critic-confint.md)). Not author-approved.
+
+**Machine-checked for (4) (2026-11-09, `Formalization/Ch7Rest/TDInferencePluginSingular711.lean`).** Ā_T
+(`inference.tex:166`) is invertible iff every state is sampled (`aBar_det_ne_zero_iff`; the forward direction is a
+zero row, the converse is strict diagonal dominance with margin T⁻¹(1−γ)n_s). Under the i.i.d. law,
+(1−μ(s))^T ≤ P(Ā_T singular) ≤ ∑_s(1−μ(s))^T (`pathProb_aBar_singular_ge`, `pathProb_aBar_singular_le`), so the
+probability is positive for every T when S ≥ 2 (`pathProb_aBar_singular_pos`). In the two-state uniform instance it
+is ≥ 2^{−T} (`zAbar_singular_ge`). The printed Λ̂_T (`eq:defn-hat-Lambda`, `:180–182`) is undefined there. Line
+references in this item: estimators `:165–169`, display `:180–182`. Consistency is not prevented:
+P(Ā_T singular) ≤ ∑_s(1−μ(s))^T → 0, and the corrected consistency theorem (`eq_defn_hat_Lambda_corrected`) holds
+with Lean's junk value 0. The procedure is still undefined on that event for finite T, so any confidence rule must
+define it there and charge that event's probability. Independently critic-reviewed ([review](critic-plugin.md),
+[round-2 review](critic-plugin-r2.md)). Not author-approved.
+
+**Fixed-shape correction, plug-in covariance (2026-11-09, `Formalization/Ch7Rest/TDInferencePluginCoverage711.lean`,
+entry `Eq_convex_Cdelta_corrected_plugin`).** The proposed correction is machine-checked with the printed estimator
+Λ̂_T = Ā_T⁻¹Γ̂_TĀ_T⁻ᵀ, asymptotically. For a direction u and level z fixed before the data, under full-support i.i.d.
+sampling, 0 < η₀ < 1/4, every V₀ and Γ_true ≻ 0:
+
+- the one-sided interval has coverage → Φ(z);
+- the two-sided interval (z ≥ 0) has coverage → 2Φ(z) − 1;
+- the Bonferroni box with half-widths z√(Λ̂_T(s,s)/T) has coverage eventually ≥ 1 − 2S(1 − Φ(z)) − η for every
+  η > 0.
+
+The limits are pointwise in (u, z), not uniform. Γ_true ≻ 0 is an added non-degeneracy hypothesis (it gives
+uᵀΛu > 0 and is needed by the half-space result). The proof sandwiches the random threshold between deterministic
+half-spaces off the event where Λ̂_T is entrywise far from A⁻¹diag(Γ_true)A⁻ᵀ. It uses the half-space result of
+[C43](#C43) and the corrected consistency `eq_defn_hat_Lambda_corrected`. No rate is given.
+
+For (4): Lean's convention Λ̂_T = 0 on the singular event (a degenerate interval) does not affect the limits.
+Because that event has vanishing probability, any definition there gives the same asymptotic coverage. The printed
+procedure is still undefined there for finite T.
+
+Still open: a rate, (2), (3), and the Λ̂_T version of the (1) refutation. Independently critic-reviewed
+([review](critic-pluginD.md)). Not author-approved.
 
 <a id="C48"></a>
 ## Candidate C48: Theorem 5.10 fails under the literal MVP trigger
@@ -1473,6 +1580,50 @@ C16, C17 and one fixed tie rule), the bound is proved as `MVP_regret_corrected`.
 
 Paper calculation, not Lean-checked (a deterministic trace simulation is in the reviewer's working notes).
 Reported by an external review (2026-11-08), independently re-checked ([check](critic-audit-findings.md)). Not author-approved.
+
+<a id="C49"></a>
+## C49: scope disclosure for `Thm3_2_burnInNecessary_restricted` (burn-in necessity)
+
+**Source:** prose claim after `eq:sample-size-range-planning`, `chapters/generative_model_model_based.tex:930–940`
+(claim at `:939`). This is a scope disclosure for a restricted statement-index entry, not a refutation.
+
+`Thm3_2_burnInNecessary_restricted`: the book's "strictly better than a random guess" (MB:939) is undefined. The
+entry reads it as failure probability ≥ 1/4 of value gap ‖V⋆ − V^{π̂}‖∞ > 1/(64(1−γ)) when N ≤ log(SA)/(8(1−γ));
+accuracies between 1/(64(1−γ)) and 1/(1−γ) are not covered. Restrictions inherited from `Thm3_7_corrected`: S ≥ 2,
+A ≥ 2, SA ≥ 16, γ ∈ [2/3,1), deterministic (non-randomized) learners returning deterministic policies (the learner is
+also given the true rewards and discount, which only strengthens the bound). V⋆ is the optimal value (greedy-policy
+value; tie-independent). Q-to-V transfer: ‖Q^π − Q^{π'}‖ ≤ γ‖V^π − V^{π'}‖.
+
+Lean: `StatisticalRL.GenerativeLowerBound.burnIn_necessary_valueGap` (`Formalization/Generative/BurnInNecessity.lean`);
+the entry's universal constant is c = 1/8. Independently critic-reviewed ([review](critic-p2.md)). Not author-approved.
+
+<a id="C50"></a>
+## C50: Bernstein-penalty LCB-Q sample size is not formalizable as stated (open)
+
+**Source:** `eq:sample-size-LCBQ-bernstein`, `chapters/offlineRL.tex:1776–1789` (display `:1781–1783`), after
+Theorem 6.8 (`theorem:lcbq`, `:1754–1772`). Pinned chapter SHA-256 prefix `67cf0d1ce6a3`.
+
+The book says that if a Bernstein-style penalty replaces the Hoeffding-style penalty, the sample complexity of
+LCB-Q "can be further improved to" Õ(SC⋆/((1−γ)⁴ε²)) "for sufficiently small ε", and that for near-expert data
+(C⋆ ≤ Õ(1)) it reduces to Õ(S/((1−γ)⁴ε²)). This claim cannot be formalized as stated:
+
+1. No Bernstein-style penalty is defined for LCB-Q. The book defines Bernstein-style penalties only for the
+   model-based VI-LCB (`def:bonus-Bernstein-infinite`, `:808–824`) and the UCBVI/MVP bonus
+   (`eq:bh-defn-Bernstein-ucbvi`, `chapters/onlineRL.tex`); both use empirical variances of an estimated
+   transition model, which LCB-Q does not maintain. For LCB-Q only the Hoeffding-style penalty
+   `eq:stepsize-penalty-offlineQ` (`:1666–1687`) is specified; the constants and variance estimate of a
+   Bernstein variant, and any change to its learning rate, are not given.
+2. "For sufficiently small ε" gives no threshold, so the range of ε the rate claims is unspecified.
+3. The sentence has no citation of its own. Theorem 6.8 is attributed to Yan et al. (2022) in its header, and the
+   citations at `:1799` are for the variance-reduced variant, a different claim. So it is not recorded as a cited
+   result out of scope.
+4. The proved corrected Theorem 6.8 (`Thm6_8_corrected`, Hoeffding penalty) gives a (1−γ)⁻⁵ dependence. It does
+   not imply the (1−γ)⁻⁴ rate.
+
+Formalizing it would require the project to choose a Bernstein-style LCB-Q (for example from the literature) and
+its constants, i.e. to decide which algorithm the authors meant. **Status: open** source-fidelity finding. Recorded
+by user decision 2026-11-09 as not formalizable as stated, pending the authors naming the intended algorithm. No
+Lean statement, proof or refutation. Not author-approved. COVERAGE row: "Bernstein-penalty LCB-Q sample size".
 
 
 ---------------------------------------------------------------------------------------------------

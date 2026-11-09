@@ -7,20 +7,22 @@
   "main_sha256": "5a925ce6a5a988bdc4b8631c5b3f985195f58b9fec80cc1f3d80c6cd10aea956"
  },
  "inputs_sha256": {
-  "Formalization/Statements/Ch2.lean": "04a59fd40c52baf5086c98afe43ddf3a0a7ee32c6d712ab666254f401b515f14",
-  "Formalization/Statements/Ch2Proofs.lean": "6ee43e9e13e6cbda3c7c08b223688f2c1b7907019d573fdda2cfd56188b25821",
-  "Formalization/Statements/Ch3.lean": "8153160da977adc48db9d11594321d4f68c99a5707d200bbb76de544211acaf0",
-  "Formalization/Statements/Ch3Proofs.lean": "24d4c5f7c0c19908565b029b26625efc0558d2440b2bf2cc7646e624400a27ff",
-  "Formalization/Statements/Ch4.lean": "aef409a7cf8fcea94e14fa41643ed4784762b4d31ee6ddee7a5c3b8be02fff84",
-  "Formalization/Statements/Ch4Proofs.lean": "e92e6c9357a5af3fc7ac79d8374877638dd3b2c2af3f672f789155c9c64d1443",
-  "Formalization/Statements/Ch5.lean": "a799f8649433e3c2f044ee6911f6802ddb734aff983f9ab457bfaa425627a2ff",
-  "Formalization/Statements/Ch5Proofs.lean": "ef4c2f9126d042b85fd0b25eaefb09b75ff311387ac31e1b5213a980f02e829b",
+  "Formalization/Statements/Ch1.lean": "90cae82ac3bc5552d5f7b93fb018fd3762de1f241cf380651312bdc0d4906774",
+  "Formalization/Statements/Ch1Proofs.lean": "60abeea2c7c5aea67c62507221193911f1f2ae42dd8279cf4564f4ce0eb5e657",
+  "Formalization/Statements/Ch2.lean": "63e358b4f9903c57aeffbf8403915985b752020d8d45c2cdf73407f94c907877",
+  "Formalization/Statements/Ch2Proofs.lean": "b78190d44f2a8bceec551be8673f90319766074962f327a08582752e8a8f45c2",
+  "Formalization/Statements/Ch3.lean": "f23026fb7e973a4d89d8afb2244f17ed81107892792356d8d537ed739ce5655c",
+  "Formalization/Statements/Ch3Proofs.lean": "ac95401746a4578130d35a18953905ec4b0d48cd280401580e82a7e5997dc3fd",
+  "Formalization/Statements/Ch4.lean": "442aa4501d5f6f6637ccde0fd3f4f187ee76cf79233f7ba93639b16c931adbd4",
+  "Formalization/Statements/Ch4Proofs.lean": "39d6d11d46244d6bc2483e35c3b3d33a549d9e4dd2f8f4448bdb851b8d0f6971",
+  "Formalization/Statements/Ch5.lean": "53452a5e961c359b398f12cf44a192a439f2ae402b39f98c96b6dd84adcbee0d",
+  "Formalization/Statements/Ch5Proofs.lean": "bc6a05e1be2b9ea6d5e3fe263e23aaa3d18eb37316b65c51aeb559a781bdbfc1",
   "Formalization/Statements/Ch6.lean": "cdc9a967fa91734a241a723a41bfe2bca5858081603efab12cf3ad60a5c3497d",
   "Formalization/Statements/Ch6Proofs.lean": "9ccedbcd1f900013e1e6e3f70d967ee7c1b4f6c75f27685ac6dd2986c3e0eec3",
-  "Formalization/Statements/Ch7.lean": "b92229727e740a867529b54d8bd2eae1e7718bd30675e94ca7f6d0183553ea9b",
-  "Formalization/Statements/Ch7Proofs.lean": "0b2c3f713a5178b25db17b217c99964e2b090f33869a38141b7cfee2902354d7",
-  "docs/COVERAGE.md": "955d55f7bbdd5f79047056f26bdccaaaf34267d55ff4ee5554167acb589011c1",
-  "docs/SOURCE-ISSUES.md": "a28f8209a9d44e8f48bfc75f133fd5beac77ea7fd7860ec44fed4baddcaecf87",
+  "Formalization/Statements/Ch7.lean": "d1400a969617a9ac7ed8d6186ea5dc0cb2fbedaa2152944738cb939174608c19",
+  "Formalization/Statements/Ch7Proofs.lean": "e03d45553ac59238d6e6ac9ac7c1063cec10927915610bb8c85980b15d6d9fbb",
+  "docs/COVERAGE.md": "0cc0352c0d412572203602915a9c69fed544ca3286c9ff7ac413b37b9931e8ea",
+  "docs/SOURCE-ISSUES.md": "e9d0689599c34163a6b350318a617eb7e36ae113f7dd1ce91a78c62a7a43feb8",
   "docs/named-result-status.json": "8832b822ca2803ae0e1c99f3af02c714efeaf5f8a4f93d26e7a876b0e1782603",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
@@ -31,6 +33,9 @@
    "restricted",
    "refuted",
    "partial",
+   "implied",
+   "explanatory",
+   "cited-out-of-scope",
    "open",
    "prose-claim"
   ],
@@ -49,21 +54,41 @@
    "restricted": 15,
    "refuted": 0,
    "partial": 0,
+   "implied": 0,
+   "explanatory": 0,
+   "cited-out-of-scope": 0,
    "open": 0,
    "prose-claim": 0
   },
-  "named_printed_with_cited_printed": 40,
-  "prose_nodes": 72,
+  "named_printed_with_cited_printed": 36,
+  "prose_nodes": 116,
   "prose_by_statement_status": {
-   "printed": 20,
-   "corrected": 8,
-   "restricted": 6,
+   "printed": 52,
+   "corrected": 11,
+   "restricted": 13,
    "refuted": 1,
-   "partial": 8,
+   "partial": 2,
+   "implied": 14,
+   "explanatory": 16,
+   "cited-out-of-scope": 5,
    "open": 0,
-   "prose-claim": 29
+   "prose-claim": 2
   },
-  "uses_edges": 164,
+  "closing_not_proved": {
+   "implied": {
+    "nodes": 14,
+    "rows_without_node": 6
+   },
+   "explanatory": {
+    "nodes": 16,
+    "rows_without_node": 15
+   },
+   "cited-out-of-scope": {
+    "nodes": 5,
+    "rows_without_node": 10
+   }
+  },
+  "uses_edges": 181,
   "uses_edges_reviewed": 0,
   "context_items": {
    "definition": 4,
@@ -72,6 +97,35 @@
   },
   "source_gap_candidates": 59,
   "by_chapter": {
+   "1": {
+    "named": {
+     "printed": 0,
+     "corrected": 0,
+     "restricted": 0,
+     "refuted": 0,
+     "partial": 0,
+     "implied": 0,
+     "explanatory": 0,
+     "cited-out-of-scope": 0,
+     "open": 0,
+     "prose-claim": 0
+    },
+    "prose": {
+     "printed": 3,
+     "corrected": 0,
+     "restricted": 0,
+     "refuted": 0,
+     "partial": 0,
+     "implied": 0,
+     "explanatory": 0,
+     "cited-out-of-scope": 0,
+     "open": 0,
+     "prose-claim": 0
+    },
+    "named_total": 0,
+    "named_proved": 0,
+    "named_printed_with_cited_printed": 0
+   },
    "2": {
     "named": {
      "printed": 13,
@@ -79,21 +133,27 @@
      "restricted": 0,
      "refuted": 0,
      "partial": 0,
+     "implied": 0,
+     "explanatory": 0,
+     "cited-out-of-scope": 0,
      "open": 0,
      "prose-claim": 0
     },
     "prose": {
-     "printed": 4,
+     "printed": 21,
      "corrected": 0,
      "restricted": 0,
      "refuted": 0,
-     "partial": 3,
+     "partial": 0,
+     "implied": 0,
+     "explanatory": 3,
+     "cited-out-of-scope": 0,
      "open": 0,
-     "prose-claim": 7
+     "prose-claim": 0
     },
     "named_total": 13,
     "named_proved": 13,
-    "named_printed_with_cited_printed": 13
+    "named_printed_with_cited_printed": 11
    },
    "3": {
     "named": {
@@ -102,21 +162,27 @@
      "restricted": 2,
      "refuted": 0,
      "partial": 0,
+     "implied": 0,
+     "explanatory": 0,
+     "cited-out-of-scope": 0,
      "open": 0,
      "prose-claim": 0
     },
     "prose": {
-     "printed": 4,
+     "printed": 7,
      "corrected": 0,
-     "restricted": 0,
+     "restricted": 1,
      "refuted": 0,
      "partial": 0,
+     "implied": 0,
+     "explanatory": 3,
+     "cited-out-of-scope": 0,
      "open": 0,
-     "prose-claim": 3
+     "prose-claim": 0
     },
     "named_total": 9,
     "named_proved": 9,
-    "named_printed_with_cited_printed": 6
+    "named_printed_with_cited_printed": 5
    },
    "4": {
     "named": {
@@ -125,17 +191,23 @@
      "restricted": 0,
      "refuted": 0,
      "partial": 0,
+     "implied": 0,
+     "explanatory": 0,
+     "cited-out-of-scope": 0,
      "open": 0,
      "prose-claim": 0
     },
     "prose": {
-     "printed": 5,
+     "printed": 6,
      "corrected": 1,
      "restricted": 0,
      "refuted": 0,
-     "partial": 1,
+     "partial": 0,
+     "implied": 4,
+     "explanatory": 0,
+     "cited-out-of-scope": 0,
      "open": 0,
-     "prose-claim": 1
+     "prose-claim": 0
     },
     "named_total": 15,
     "named_proved": 15,
@@ -148,17 +220,23 @@
      "restricted": 2,
      "refuted": 0,
      "partial": 0,
+     "implied": 0,
+     "explanatory": 0,
+     "cited-out-of-scope": 0,
      "open": 0,
      "prose-claim": 0
     },
     "prose": {
-     "printed": 0,
-     "corrected": 7,
+     "printed": 3,
+     "corrected": 8,
      "restricted": 1,
      "refuted": 1,
      "partial": 0,
+     "implied": 3,
+     "explanatory": 6,
+     "cited-out-of-scope": 2,
      "open": 0,
-     "prose-claim": 11
+     "prose-claim": 0
     },
     "named_total": 23,
     "named_proved": 23,
@@ -171,17 +249,23 @@
      "restricted": 9,
      "refuted": 0,
      "partial": 0,
+     "implied": 0,
+     "explanatory": 0,
+     "cited-out-of-scope": 0,
      "open": 0,
      "prose-claim": 0
     },
     "prose": {
-     "printed": 6,
+     "printed": 5,
      "corrected": 0,
      "restricted": 0,
      "refuted": 0,
-     "partial": 0,
+     "partial": 1,
+     "implied": 2,
+     "explanatory": 3,
+     "cited-out-of-scope": 2,
      "open": 0,
-     "prose-claim": 6
+     "prose-claim": 1
     },
     "named_total": 18,
     "named_proved": 18,
@@ -194,25 +278,183 @@
      "restricted": 2,
      "refuted": 0,
      "partial": 0,
+     "implied": 0,
+     "explanatory": 0,
+     "cited-out-of-scope": 0,
      "open": 0,
      "prose-claim": 0
     },
     "prose": {
-     "printed": 1,
-     "corrected": 0,
-     "restricted": 5,
+     "printed": 7,
+     "corrected": 2,
+     "restricted": 11,
      "refuted": 0,
-     "partial": 4,
+     "partial": 1,
+     "implied": 5,
+     "explanatory": 1,
+     "cited-out-of-scope": 1,
      "open": 0,
      "prose-claim": 1
     },
     "named_total": 12,
     "named_proved": 12,
-    "named_printed_with_cited_printed": 2
+    "named_printed_with_cited_printed": 1
    }
   }
  },
  "nodes": [
+  {
+   "id": "label:eq:TV",
+   "labels": [
+    "eq:TV"
+   ],
+   "number": "1.2a",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "1",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/intro.tex",
+     "line_start": 222,
+     "line_end": 227
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_KL_ub_chi2",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch1.lean",
+     "line": 12
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_KL_ub_chi2_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Probability.two_mul_sq_tv_le_klDiv_le_chiSquared"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    32,
+    100
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:defn-KL",
+   "labels": [
+    "eq:defn-KL",
+    "eq:defn-chi2"
+   ],
+   "number": "1.2b",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "1",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/intro.tex",
+     "line_start": 231,
+     "line_end": 235
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_KL_ub_chi2",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch1.lean",
+     "line": 12
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_KL_ub_chi2_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Probability.two_mul_sq_tv_le_klDiv_le_chiSquared"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    100
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:KL-ub-chi2",
+   "labels": [
+    "eq:KL-ub-chi2"
+   ],
+   "number": "1.3",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "1",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/intro.tex",
+     "line_start": 241,
+     "line_end": 247
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_KL_ub_chi2",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch1.lean",
+     "line": 12
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_KL_ub_chi2_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Probability.two_mul_sq_tv_le_klDiv_le_chiSquared"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    100
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
   {
    "id": "label:eq:defn-Vpi-inf",
    "labels": [
@@ -230,22 +472,36 @@
      "line_end": 100
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_defn_Vpi_inf",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 446
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_defn_Vpi_inf_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    76
+    92
    ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
-   "partial_lead": true,
+   "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "partial",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:defn-Qpi-inf-horizon",
@@ -264,22 +520,132 @@
      "line_end": 121
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_defn_Qpi_inf_horizon",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 461
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_defn_Qpi_inf_horizon_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    79
+    95
    ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
-   "partial_lead": true,
+   "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "partial",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:Vpi-a-function-of-Qpi-inf",
+   "labels": [
+    "eq:Vpi-a-function-of-Qpi-inf"
+   ],
+   "number": "2.6",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 126,
+     "line_end": 129
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_defn_Qpi_inf_horizon",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 461
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_defn_Qpi_inf_horizon_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    95
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:optimal-Vstar-Q-star-defn",
+   "labels": [
+    "eq:optimal-Vstar-Q-star-defn"
+   ],
+   "number": "2.7",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 138,
+     "line_end": 141
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_optimal_Vstar_Qstar_defn",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 475
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_optimal_Vstar_Qstar_defn_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    96
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:defn-dpi-occupancy-discounted-dist",
@@ -298,12 +664,22 @@
      "line_end": 157
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_defn_dpi_occupancy_discounted_dist",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 505
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_defn_dpi_occupancy_discounted_dist_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    78
+    94
    ],
    "issues": [],
    "evidence": [],
@@ -311,9 +687,157 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:infinite-d-star-def",
+   "labels": [
+    "eq:infinite-d-star-def"
+   ],
+   "number": "2.9a",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 167,
+     "line_end": 172
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_defn_dpi_occupancy_discounted_dist",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 505
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_defn_dpi_occupancy_discounted_dist_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    94
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:bellman_consistency_operator",
+   "labels": [
+    "eq:bellman_consistency_operator"
+   ],
+   "number": "2.10",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 195,
+     "line_end": 197
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_bellman_consistency_V",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 529
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_bellman_consistency_V_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    93
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:bellman_consistency",
+   "labels": [
+    "eq:bellman_consistency"
+   ],
+   "number": "2.11",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 205,
+     "line_end": 207
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_bellman_consistency_V",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 529
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_bellman_consistency_V_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    93
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:bellman_consistency-V",
@@ -332,22 +856,180 @@
      "line_end": 217
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_bellman_consistency_V",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 529
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_bellman_consistency_V_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    77
+    93
    ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
-   "partial_lead": true,
+   "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "partial",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:bellman_optimality_operator",
+   "labels": [
+    "eq:bellman_optimality_operator"
+   ],
+   "number": "2.13",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 237,
+     "line_end": 239
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_bellman_fix_point",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 549
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_bellman_fix_point_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    97
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:bellman_fix_point",
+   "labels": [
+    "eq:bellman_fix_point"
+   ],
+   "number": "2.14",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 244,
+     "line_end": 246
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_bellman_fix_point",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 549
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_bellman_fix_point_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    97
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:gamma-contraction-preliminary-inf",
+   "labels": [
+    "eq:gamma-contraction-preliminary-inf"
+   ],
+   "number": "2.15",
+   "kind": "subequations",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 255,
+     "line_end": 261
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_gamma_contraction_preliminary_inf",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 570
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_gamma_contraction_preliminary_inf_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    98
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "ch2-lemma-2.1",
@@ -370,7 +1052,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 138
+     "line": 144
     }
    ],
    "proof_wrappers": [
@@ -388,7 +1070,7 @@
     }
    ],
    "coverage_rows": [
-    58
+    74
    ],
    "issues": [],
    "evidence": [
@@ -397,9 +1079,32 @@
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:eq:bellman_fix_point",
+     "label": "eq:bellman_fix_point",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "prelim.tex",
+     "line": 348
+    },
+    {
+     "id": "label:eq:gamma-contraction-preliminary-inf",
+     "label": "eq:gamma-contraction-preliminary-inf",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "prelim.tex",
+     "line": 348
+    }
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -423,7 +1128,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 159
+     "line": 165
     }
    ],
    "proof_wrappers": [
@@ -432,7 +1137,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    59
+    75
    ],
    "issues": [],
    "evidence": [],
@@ -442,7 +1147,95 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:defn-Var-Psa-V",
+   "labels": [
+    "eq:defn-Var-Psa-V"
+   ],
+   "number": "2.21",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 430,
+     "line_end": 437
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    99
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "explanatory",
+   "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     99
+    ]
+   },
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:matrix-VarP-V-expression",
+   "labels": [
+    "eq:matrix-VarP-V-expression"
+   ],
+   "number": "2.22",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "2",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/prelim.tex",
+     "line_start": 441,
+     "line_end": 444
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    99
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "explanatory",
+   "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     99
+    ]
+   },
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lem:variance-perturbation-var-P-V",
@@ -467,7 +1260,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 28
+     "line": 34
     }
    ],
    "proof_wrappers": [
@@ -484,7 +1277,7 @@
     }
    ],
    "coverage_rows": [
-    57
+    73
    ],
    "issues": [],
    "evidence": [
@@ -493,10 +1286,24 @@
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:eq:matrix-VarP-V-expression",
+     "label": "eq:matrix-VarP-V-expression",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "prelim.tex",
+     "line": 470
+    }
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "printed_with_cited_printed": true
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:Qpi-Vpi-matrix-notation-inf",
@@ -521,27 +1328,39 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 106
+     "line": 112
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Eq_Qpi_Vpi_matrix_notation_inf_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Statements"
-   ],
+   "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    61
+    77
    ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:eq:Vpi-a-function-of-Qpi-inf",
+     "label": "eq:Vpi-a-function-of-Qpi-inf",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "prelim.tex",
+     "line": 506
+    }
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -567,7 +1386,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 80
+     "line": 86
     }
    ],
    "proof_wrappers": [
@@ -584,7 +1403,7 @@
     }
    ],
    "coverage_rows": [
-    60
+    76
    ],
    "issues": [],
    "evidence": [
@@ -596,6 +1415,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -621,7 +1444,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 386
+     "line": 392
     }
    ],
    "proof_wrappers": [
@@ -630,7 +1453,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    147
+    170
    ],
    "issues": [],
    "evidence": [],
@@ -640,6 +1463,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -665,7 +1492,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 409
+     "line": 415
     }
    ],
    "proof_wrappers": [
@@ -674,7 +1501,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    147
+    170
    ],
    "issues": [],
    "evidence": [],
@@ -684,6 +1511,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -703,12 +1534,22 @@
      "line_end": 757
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_dh_pi_defn",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 586
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_dh_pi_defn_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    74
+    90
    ],
    "issues": [],
    "evidence": [],
@@ -716,9 +1557,13 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eqn:defn-d1rho-finite",
@@ -737,12 +1582,22 @@
      "line_end": 763
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_dh_pi_defn",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 586
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_dh_pi_defn_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    74
+    90
    ],
    "issues": [],
    "evidence": [],
@@ -750,9 +1605,13 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:dhstar-finite",
@@ -771,12 +1630,22 @@
      "line_end": 771
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_dh_pi_defn",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 586
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_dh_pi_defn_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    74
+    90
    ],
    "issues": [],
    "evidence": [],
@@ -784,9 +1653,13 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:Bellman-finite-pi",
@@ -805,12 +1678,22 @@
      "line_end": 792
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_Bellman_finite_pi",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 620
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_Bellman_finite_pi_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    72
+    88
    ],
    "issues": [],
    "evidence": [],
@@ -818,9 +1701,13 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:Bellman-finite-opt",
@@ -839,12 +1726,22 @@
      "line_end": 806
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eq_Bellman_finite_opt",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch2.lean",
+     "line": 638
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eq_Bellman_finite_opt_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    73
+    89
    ],
    "issues": [],
    "evidence": [],
@@ -852,9 +1749,13 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:Hoeffding-prelim",
@@ -879,7 +1780,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 265
+     "line": 271
     }
    ],
    "proof_wrappers": [
@@ -896,7 +1797,7 @@
     }
    ],
    "coverage_rows": [
-    64
+    80
    ],
    "issues": [],
    "evidence": [
@@ -908,6 +1809,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -933,7 +1838,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 288
+     "line": 294
     }
    ],
    "proof_wrappers": [
@@ -951,7 +1856,7 @@
     }
    ],
    "coverage_rows": [
-    65
+    81
    ],
    "issues": [],
    "evidence": [
@@ -960,10 +1865,24 @@
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:eq:defn-Var-Psa-V",
+     "label": "eq:defn-Var-Psa-V",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "prelim.tex",
+     "line": 976
+    }
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "printed_with_cited_printed": true
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:empirical bernstein",
@@ -988,7 +1907,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 238
+     "line": 244
     }
    ],
    "proof_wrappers": [
@@ -1005,7 +1924,7 @@
     }
    ],
    "coverage_rows": [
-    66
+    82
    ],
    "issues": [],
    "evidence": [
@@ -1017,6 +1936,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1042,7 +1965,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 184
+     "line": 190
     }
    ],
    "proof_wrappers": [
@@ -1059,7 +1982,7 @@
     }
    ],
    "coverage_rows": [
-    67
+    83
    ],
    "issues": [],
    "evidence": [
@@ -1071,6 +1994,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1096,7 +2023,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 62
+     "line": 68
     }
    ],
    "proof_wrappers": [
@@ -1113,7 +2040,7 @@
     }
    ],
    "coverage_rows": [
-    62
+    78
    ],
    "issues": [],
    "evidence": [
@@ -1125,6 +2052,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1150,7 +2081,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 40
+     "line": 46
     }
    ],
    "proof_wrappers": [
@@ -1167,7 +2098,7 @@
     }
    ],
    "coverage_rows": [
-    63
+    79
    ],
    "issues": [],
    "evidence": [
@@ -1179,6 +2110,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1204,7 +2139,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 349
+     "line": 355
     }
    ],
    "proof_wrappers": [
@@ -1222,7 +2157,7 @@
     }
    ],
    "coverage_rows": [
-    70
+    86
    ],
    "issues": [],
    "evidence": [
@@ -1234,6 +2169,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1259,7 +2198,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 219
+     "line": 225
     }
    ],
    "proof_wrappers": [
@@ -1276,7 +2215,7 @@
     }
    ],
    "coverage_rows": [
-    71
+    87
    ],
    "issues": [],
    "evidence": [
@@ -1285,9 +2224,23 @@
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:eq:KL-ub-chi2",
+     "label": "eq:KL-ub-chi2",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "prelim.tex",
+     "line": 1280
+    }
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1309,7 +2262,9 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    181
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -1326,8 +2281,16 @@
      "line": 1232
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     181
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -1353,7 +2316,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 335
+     "line": 341
     }
    ],
    "proof_wrappers": [
@@ -1370,7 +2333,7 @@
     }
    ],
    "coverage_rows": [
-    68
+    84
    ],
    "issues": [],
    "evidence": [
@@ -1382,6 +2345,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1407,7 +2374,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 204
+     "line": 210
     }
    ],
    "proof_wrappers": [
@@ -1425,7 +2392,7 @@
     }
    ],
    "coverage_rows": [
-    69
+    85
    ],
    "issues": [],
    "evidence": [
@@ -1437,6 +2404,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1479,7 +2450,7 @@
     }
    ],
    "coverage_rows": [
-    80
+    101
    ],
    "issues": [],
    "evidence": [
@@ -1497,6 +2468,15 @@
      "target": "context",
      "file": "generative_model_model_based.tex",
      "line": 142
+    },
+    {
+     "id": "label:eq:lemma-VarP-V-bound",
+     "label": "eq:lemma-VarP-V-bound",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "generative_model_model_based.tex",
+     "line": 438
     },
     {
      "id": "label:lem:Bernstein-prelim",
@@ -1519,7 +2499,11 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "printed_with_cited_printed": true
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:eq:Vhatpi-Vpi-difference-decoupled-Hoeffding",
@@ -1555,7 +2539,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    81
+    102
    ],
    "issues": [],
    "evidence": [],
@@ -1565,6 +2549,112 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:I-gamma-P-Var-bound",
+   "labels": [
+    "eq:I-gamma-P-Var-bound"
+   ],
+   "number": "3.14",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "3",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/generative_model_model_based.tex",
+     "line_start": 335,
+     "line_end": 342
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch3.Eq_lemma_VarP_V_bound",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch3.lean",
+     "line": 210
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch3.Eq_lemma_VarP_V_bound_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.DiscountedMDP.evaluationPolicyResolvent_variance_bound",
+    "StatisticalRL.DiscountedMDP.evaluationPolicyResolvent_sqrtVariance_bound"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    107
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:lemma-VarP-V-bound",
+   "labels": [
+    "eq:lemma-VarP-V-bound"
+   ],
+   "number": "3.15",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "3",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/generative_model_model_based.tex",
+     "line_start": 348,
+     "line_end": 352
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch3.Eq_lemma_VarP_V_bound",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch3.lean",
+     "line": 210
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch3.Eq_lemma_VarP_V_bound_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.DiscountedMDP.evaluationPolicyResolvent_variance_bound",
+    "StatisticalRL.DiscountedMDP.evaluationPolicyResolvent_sqrtVariance_bound"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    107
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1584,12 +2674,24 @@
      "line_end": 630
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
-   "library_exports": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch3.Eqn_ice_cream",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch3.lean",
+     "line": 60
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch3.Eqn_ice_cream_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.ModelBasedPolicyEvaluation.policyEvaluation_source_radius_all_states_positive_samples"
+   ],
    "ledger_records": [],
    "coverage_rows": [
-    85
+    106
    ],
    "issues": [],
    "evidence": [],
@@ -1597,9 +2699,13 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:Thm:sample-compl-main",
@@ -1624,21 +2730,21 @@
      "variant": "restricted",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 60
+     "line": 84
     },
     {
      "name": "StatisticalRL.Statements.Ch3.Thm3_2_approxPlanner_positiveN",
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 274
+     "line": 347
     },
     {
      "name": "StatisticalRL.Statements.Ch3.Thm3_2_planningIterations",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 312
+     "line": 385
     }
    ],
    "proof_wrappers": [
@@ -1659,8 +2765,9 @@
     }
    ],
    "coverage_rows": [
-    89,
-    90
+    112,
+    113,
+    114
    ],
    "issues": [],
    "evidence": [
@@ -1678,6 +2785,15 @@
      "target": "context",
      "file": "generative_model_model_based.tex",
      "line": 902
+    },
+    {
+     "id": "label:eq:LOO-intuition-generative",
+     "label": "eq:LOO-intuition-generative",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "generative_model_model_based.tex",
+     "line": 1219
     },
     {
      "id": "label:LemAbsToNormalV",
@@ -1700,6 +2816,62 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:sample-size-range-planning",
+   "labels": [
+    "eq:sample-size-range-planning"
+   ],
+   "number": "3.33",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "3",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/generative_model_model_based.tex",
+     "line_start": 934,
+     "line_end": 937
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch3.Thm3_2_burnInNecessary_restricted",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch3.lean",
+     "line": 321
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch3.Thm3_2_burnInNecessary_restricted_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.GenerativeLowerBound.burnIn_necessary_valueGap"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    108
+   ],
+   "issues": [
+    "C49"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "restricted",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -1721,15 +2893,67 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    184
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     184
+    ]
+   },
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:LOO-intuition-generative",
+   "labels": [
+    "eq:LOO-intuition-generative"
+   ],
+   "number": "3.44",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "3",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/generative_model_model_based.tex",
+     "line_start": 1214,
+     "line_end": 1218
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    188
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "explanatory",
+   "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     188
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -1755,7 +2979,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 86
+     "line": 110
     }
    ],
    "proof_wrappers": [
@@ -1772,7 +2996,7 @@
     }
    ],
    "coverage_rows": [
-    86
+    109
    ],
    "issues": [],
    "evidence": [
@@ -1784,6 +3008,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1809,7 +3037,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 97
+     "line": 121
     }
    ],
    "proof_wrappers": [
@@ -1826,7 +3054,7 @@
     }
    ],
    "coverage_rows": [
-    87
+    110
    ],
    "issues": [],
    "evidence": [
@@ -1848,6 +3076,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -1873,7 +3105,7 @@
      "variant": "restricted",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 113
+     "line": 137
     }
    ],
    "proof_wrappers": [
@@ -1890,7 +3122,7 @@
     }
    ],
    "coverage_rows": [
-    88
+    111
    ],
    "issues": [],
    "evidence": [
@@ -1939,6 +3171,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -1964,7 +3200,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 186
+     "line": 233
     }
    ],
    "proof_wrappers": [
@@ -1982,7 +3218,7 @@
     }
    ],
    "coverage_rows": [
-    82
+    103
    ],
    "issues": [],
    "evidence": [
@@ -1994,6 +3230,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -2015,7 +3255,9 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    185
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -2030,10 +3272,27 @@
      "target": "node",
      "file": "generative_model_model_based.tex",
      "line": 1413
+    },
+    {
+     "id": "label:eq:lemma-VarP-V-bound",
+     "label": "eq:lemma-VarP-V-bound",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "generative_model_model_based.tex",
+     "line": 1416
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     185
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -2059,7 +3318,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 232
+     "line": 279
     }
    ],
    "proof_wrappers": [
@@ -2076,7 +3335,7 @@
     }
    ],
    "coverage_rows": [
-    135
+    158
    ],
    "issues": [
     "C1",
@@ -2110,6 +3369,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -2135,7 +3398,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 358
+     "line": 431
     }
    ],
    "proof_wrappers": [
@@ -2147,7 +3410,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    84
+    105
    ],
    "issues": [
     "C4"
@@ -2159,6 +3422,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -2184,7 +3451,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 358
+     "line": 431
     }
    ],
    "proof_wrappers": [
@@ -2196,7 +3463,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    84
+    105
    ],
    "issues": [
     "C4"
@@ -2208,6 +3475,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -2233,7 +3504,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 212
+     "line": 259
     }
    ],
    "proof_wrappers": [
@@ -2253,7 +3524,7 @@
     }
    ],
    "coverage_rows": [
-    83
+    104
    ],
    "issues": [],
    "evidence": [
@@ -2265,6 +3536,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -2290,21 +3565,21 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 145
+     "line": 169
     },
     {
      "name": "StatisticalRL.Statements.Ch3.Thm3_9_positiveN",
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 433
+     "line": 506
     },
     {
      "name": "StatisticalRL.Statements.Ch3.Thm3_9",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 481
+     "line": 554
     }
    ],
    "proof_wrappers": [
@@ -2325,7 +3600,7 @@
     }
    ],
    "coverage_rows": [
-    96
+    119
    ],
    "issues": [],
    "evidence": [
@@ -2337,6 +3612,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -2362,7 +3641,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 382
+     "line": 455
     }
    ],
    "proof_wrappers": [
@@ -2373,7 +3652,8 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    97
+    120,
+    216
    ],
    "issues": [],
    "evidence": [],
@@ -2383,6 +3663,17 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch3.Thm3_9",
+    "StatisticalRL.Statements.Ch3.Thm3_9_minimaxLowerBound"
+   ],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     216
+    ]
+   },
    "printed_with_cited_printed": true
   },
   {
@@ -2425,7 +3716,7 @@
     }
    ],
    "coverage_rows": [
-    103
+    126
    ],
    "issues": [],
    "evidence": [
@@ -2492,6 +3783,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -2515,7 +3810,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 573
+     "line": 598
     }
    ],
    "proof_wrappers": [
@@ -2524,7 +3819,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    148
+    171
    ],
    "issues": [],
    "evidence": [],
@@ -2544,6 +3839,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -2587,7 +3886,7 @@
     }
    ],
    "coverage_rows": [
-    93
+    116
    ],
    "issues": [],
    "evidence": [
@@ -2599,6 +3898,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -2641,7 +3944,7 @@
     }
    ],
    "coverage_rows": [
-    94
+    117
    ],
    "issues": [
     "C5"
@@ -2665,6 +3968,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -2707,7 +4014,7 @@
     }
    ],
    "coverage_rows": [
-    105
+    128
    ],
    "issues": [],
    "evidence": [
@@ -2719,6 +4026,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -2761,7 +4072,7 @@
     }
    ],
    "coverage_rows": [
-    107
+    130
    ],
    "issues": [],
    "evidence": [
@@ -2783,6 +4094,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -2825,7 +4140,7 @@
     }
    ],
    "coverage_rows": [
-    115
+    138
    ],
    "issues": [],
    "evidence": [
@@ -2883,6 +4198,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -2906,7 +4225,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 608
+     "line": 633
     }
    ],
    "proof_wrappers": [
@@ -2915,7 +4234,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    148
+    171
    ],
    "issues": [],
    "evidence": [],
@@ -2935,7 +4254,60 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:sample-complexity-sync-Q-learning",
+   "labels": [
+    "eq:sample-complexity-sync-Q-learning"
+   ],
+   "number": "4.46",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "4",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/generative_model_model_free.tex",
+     "line_start": 936,
+     "line_end": 939
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    220
+   ],
+   "issues": [
+    "C1",
+    "C2",
+    "C6"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "implied",
+   "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch3.Thm3_7_corrected",
+    "StatisticalRL.Statements.Ch4.Thm4_6"
+   ],
+   "implied_variant": "corrected",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     220
+    ]
+   },
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch4-display-9d4037f98d84",
@@ -2967,7 +4339,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    116
+    139
    ],
    "issues": [],
    "evidence": [],
@@ -2977,6 +4349,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -3009,14 +4385,14 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 499
+     "line": 524
     },
     {
      "name": "StatisticalRL.Statements.Ch4.Thm4_7_case_i",
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 556
+     "line": 581
     }
    ],
    "proof_wrappers": [
@@ -3037,7 +4413,7 @@
     }
    ],
    "coverage_rows": [
-    145
+    168
    ],
    "issues": [
     "C30",
@@ -3107,6 +4483,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -3130,7 +4510,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 535
+     "line": 560
     }
    ],
    "proof_wrappers": [
@@ -3139,7 +4519,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    146
+    169
    ],
    "issues": [
     "C31"
@@ -3151,6 +4531,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -3195,7 +4579,7 @@
     }
    ],
    "coverage_rows": [
-    99
+    122
    ],
    "issues": [],
    "evidence": [
@@ -3217,6 +4601,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -3259,7 +4647,7 @@
     }
    ],
    "coverage_rows": [
-    100
+    123
    ],
    "issues": [],
    "evidence": [
@@ -3271,7 +4659,55 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:QT-gamma-5-Q-learning-generative",
+   "labels": [
+    "eq:QT-gamma-5-Q-learning-generative"
+   ],
+   "number": "4.64",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "4",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/generative_model_model_free.tex",
+     "line_start": 1302,
+     "line_end": 1308
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    221
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "implied",
+   "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch4.Thm4_6"
+   ],
+   "implied_variant": "printed",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     221
+    ]
+   },
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:lemma:Q-comparison-facts",
@@ -3314,7 +4750,7 @@
     }
    ],
    "coverage_rows": [
-    113
+    136
    ],
    "issues": [],
    "evidence": [
@@ -3323,9 +4759,32 @@
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:eq:defn-KL",
+     "label": "eq:defn-chi2",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "generative_model_model_free.tex",
+     "line": 1347
+    },
+    {
+     "id": "label:eq:KL-ub-chi2",
+     "label": "eq:KL-ub-chi2",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "generative_model_model_free.tex",
+     "line": 2673
+    }
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -3368,7 +4827,7 @@
     }
    ],
    "coverage_rows": [
-    111
+    134
    ],
    "issues": [],
    "evidence": [
@@ -3380,6 +4839,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -3412,7 +4875,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    117
+    140
    ],
    "issues": [],
    "evidence": [],
@@ -3422,6 +4885,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -3448,7 +4915,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 444
+     "line": 469
     }
    ],
    "proof_wrappers": [
@@ -3465,7 +4932,7 @@
     }
    ],
    "coverage_rows": [
-    152
+    176
    ],
    "issues": [
     "C34"
@@ -3498,6 +4965,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -3521,7 +4992,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 643
+     "line": 668
     }
    ],
    "proof_wrappers": [
@@ -3530,7 +5001,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    149
+    172
    ],
    "issues": [
     "C34"
@@ -3542,6 +5013,56 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:sample-size-async-Q",
+   "labels": [
+    "eq:sample-size-async-Q"
+   ],
+   "number": "4.96",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "4",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/generative_model_model_free.tex",
+     "line_start": 2107,
+     "line_end": 2110
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    222
+   ],
+   "issues": [
+    "C34"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "implied",
+   "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch4.Thm4_12_corrected"
+   ],
+   "implied_variant": "corrected",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     222
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -3567,7 +5088,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 406
+     "line": 431
     }
    ],
    "proof_wrappers": [
@@ -3584,7 +5105,7 @@
     }
    ],
    "coverage_rows": [
-    153
+    177
    ],
    "issues": [
     "C35"
@@ -3598,6 +5119,10 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -3640,7 +5165,7 @@
     }
    ],
    "coverage_rows": [
-    101
+    124
    ],
    "issues": [
     "C31"
@@ -3651,9 +5176,23 @@
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:eq:bellman_fix_point",
+     "label": "eq:bellman_fix_point",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "generative_model_model_free.tex",
+     "line": 2830
+    }
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -3696,7 +5235,7 @@
     }
    ],
    "coverage_rows": [
-    150
+    173
    ],
    "issues": [
     "C31"
@@ -3729,6 +5268,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -3750,7 +5293,9 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    209
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -3767,8 +5312,18 @@
      "line": 3452
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "implied",
    "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch4.Lemma4_15"
+   ],
+   "implied_variant": "printed",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     209
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -3793,25 +5348,38 @@
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
      "line": 360
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch4.QLearning_singleAction_eq_TD",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch4.lean",
+     "line": 406
     }
    ],
    "proof_wrappers": [
+    "StatisticalRL.Statements.Ch4.QLearning_singleAction_eq_TD_holds",
     "StatisticalRL.Statements.Ch4.Remark4_5_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    151
+    174,
+    175
    ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
-   "partial_lead": true,
+   "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "partial",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:PAC-from-regret-conversion",
@@ -3836,14 +5404,14 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 1179
+     "line": 1236
     },
     {
      "name": "StatisticalRL.Statements.Eq_PAC_from_regret_conversion_restricted",
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 1220
+     "line": 1277
     }
    ],
    "proof_wrappers": [
@@ -3853,7 +5421,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    33
+    47
    ],
    "issues": [
     "C46"
@@ -3867,7 +5435,111 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:regret_bandit",
+   "labels": [
+    "eq:regret_bandit"
+   ],
+   "number": "5.8a",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "5",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/bandits.tex",
+     "line_start": 67,
+     "line_end": 69
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eqn_regret_decomposition_ucb",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch5.lean",
+     "line": 1116
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eqn_regret_decomposition_ucb_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Bandit.regret_decomposition"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    45
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eqn:regret-decomposition-ucb",
+   "labels": [
+    "eqn:regret-decomposition-ucb"
+   ],
+   "number": "5.8b",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "5",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/bandits.tex",
+     "line_start": 78,
+     "line_end": 82
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Eqn_regret_decomposition_ucb",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch5.lean",
+     "line": 1116
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Eqn_regret_decomposition_ucb_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Bandit.regret_decomposition"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    45
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:bandit-pure-ucb",
@@ -3892,7 +5564,7 @@
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 1076
+     "line": 1133
     }
    ],
    "proof_wrappers": [
@@ -3909,7 +5581,7 @@
     }
    ],
    "coverage_rows": [
-    31
+    44
    ],
    "issues": [
     "C36"
@@ -3933,6 +5605,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -3954,15 +5630,27 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    232
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
+   "statement_status": "cited-out-of-scope",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [
+    "2026-11-09"
+   ],
+   "closing_rows": {
+    "cited-out-of-scope": [
+     232
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -3986,15 +5674,25 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    193
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     193
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -4037,7 +5735,7 @@
     }
    ],
    "coverage_rows": [
-    45
+    59
    ],
    "issues": [
     "C8"
@@ -4106,6 +5804,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -4127,7 +5829,9 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    233
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -4144,8 +5848,18 @@
      "line": 487
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "cited-out-of-scope",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [
+    "2026-11-09"
+   ],
+   "closing_rows": {
+    "cited-out-of-scope": [
+     233
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -4177,12 +5891,10 @@
    "proof_wrappers": [
     "StatisticalRL.Statements.Eq_regret_asymptotic_ucbvi_corrected_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Statements"
-   ],
+   "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    46
+    60
    ],
    "issues": [
     "C8"
@@ -4194,6 +5906,10 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -4225,12 +5941,10 @@
    "proof_wrappers": [
     "StatisticalRL.Statements.Eq_regret_asymptotic_ucbvi_corrected_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Statements"
-   ],
+   "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    46
+    60
    ],
    "issues": [
     "C8"
@@ -4242,6 +5956,52 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:ovr-est-ub2",
+   "labels": [
+    "eq:ovr-est-ub2"
+   ],
+   "number": "5.25",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "5",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/onlineRL.tex",
+     "line_start": 631,
+     "line_end": 634
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    191
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "explanatory",
+   "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     191
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -4284,7 +6044,7 @@
     }
    ],
    "coverage_rows": [
-    44
+    58
    ],
    "issues": [],
    "evidence": [
@@ -4306,6 +6066,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -4348,7 +6112,7 @@
     }
    ],
    "coverage_rows": [
-    49
+    63
    ],
    "issues": [],
    "evidence": [
@@ -4370,6 +6134,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -4391,13 +6159,24 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    194
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [
+    {
+     "id": "label:eq:I-gamma-P-Var-bound",
+     "label": "eq:I-gamma-P-Var-bound",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "onlineRL.tex",
+     "line": 661
+    },
     {
      "id": "label:lem:cum-var-ub-Hsquare-ucbvi-mean",
      "label": "lem:cum-var-ub-Hsquare-ucbvi-mean",
@@ -4408,8 +6187,58 @@
      "line": 661
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     194
+    ]
+   },
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:ovr-est-ub1",
+   "labels": [
+    "eq:ovr-est-ub1"
+   ],
+   "number": "5.28",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "5",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/onlineRL.tex",
+     "line_start": 667,
+     "line_end": 672
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    191
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "explanatory",
+   "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     191
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -4452,7 +6281,7 @@
     }
    ],
    "coverage_rows": [
-    51
+    65
    ],
    "issues": [
     "C6",
@@ -4477,6 +6306,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -4509,7 +6342,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    53
+    67
    ],
    "issues": [
     "C8"
@@ -4531,6 +6364,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -4573,7 +6410,7 @@
     }
    ],
    "coverage_rows": [
-    52
+    66
    ],
    "issues": [
     "C8"
@@ -4587,6 +6424,10 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -4637,7 +6478,7 @@
     }
    ],
    "coverage_rows": [
-    54
+    70
    ],
    "issues": [
     "C8",
@@ -4689,6 +6530,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -4710,15 +6555,30 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
-   "issues": [],
+   "coverage_rows": [
+    210
+   ],
+   "issues": [
+    "C8",
+    "C12"
+   ],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
+   "statement_status": "implied",
    "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Lemma5_7_K2_corrected"
+   ],
+   "implied_variant": "corrected",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     210
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -4740,15 +6600,25 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    195
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     195
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -4791,7 +6661,7 @@
     }
    ],
    "coverage_rows": [
-    48
+    62
    ],
    "issues": [
     "C8",
@@ -4843,6 +6713,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -4885,7 +6759,7 @@
     }
    ],
    "coverage_rows": [
-    47
+    61
    ],
    "issues": [
     "C8",
@@ -4973,6 +6847,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -4994,8 +6872,13 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
-   "issues": [],
+   "coverage_rows": [
+    211
+   ],
+   "issues": [
+    "C8",
+    "C12"
+   ],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
@@ -5011,8 +6894,18 @@
      "line": 1098
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "implied",
    "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Lemma5_9_K2_corrected"
+   ],
+   "implied_variant": "corrected",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     211
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -5030,11 +6923,23 @@
      "line_end": 1332
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Remark5_9",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch5.lean",
+     "line": 428
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Remark5_9_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    68
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -5060,8 +6965,12 @@
      "line": 1331
     }
    ],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5087,7 +6996,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 770
+     "line": 811
     }
    ],
    "proof_wrappers": [
@@ -5204,6 +7113,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5229,7 +7142,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 529
+     "line": 570
     }
    ],
    "proof_wrappers": [
@@ -5242,7 +7155,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    38
+    52
    ],
    "issues": [
     "C8",
@@ -5256,6 +7169,10 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5281,7 +7198,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 445
+     "line": 486
     }
    ],
    "proof_wrappers": [
@@ -5298,7 +7215,7 @@
     }
    ],
    "coverage_rows": [
-    41
+    55
    ],
    "issues": [
     "C15"
@@ -5322,6 +7239,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -5347,7 +7268,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 466
+     "line": 507
     }
    ],
    "proof_wrappers": [
@@ -5364,7 +7285,7 @@
     }
    ],
    "coverage_rows": [
-    42
+    56
    ],
    "issues": [
     "C13"
@@ -5399,6 +7320,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5424,7 +7349,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 485
+     "line": 526
     }
    ],
    "proof_wrappers": [
@@ -5441,7 +7366,7 @@
     }
    ],
    "coverage_rows": [
-    39
+    53
    ],
    "issues": [
     "C15",
@@ -5493,6 +7418,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5518,7 +7447,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 808
+     "line": 849
     }
    ],
    "proof_wrappers": [
@@ -5572,6 +7501,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5593,8 +7526,16 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
-   "issues": [],
+   "coverage_rows": [
+    212
+   ],
+   "issues": [
+    "C8",
+    "C13",
+    "C15",
+    "C16",
+    "C17"
+   ],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
@@ -5610,8 +7551,18 @@
      "line": 1747
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "implied",
    "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Lemma5_14_corrected"
+   ],
+   "implied_variant": "corrected",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     212
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -5639,14 +7590,14 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 611
+     "line": 652
     },
     {
      "name": "StatisticalRL.Statements.MVP_T234_K2_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 704
+     "line": 745
     }
    ],
    "proof_wrappers": [
@@ -5665,8 +7616,8 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    35,
-    36
+    49,
+    50
    ],
    "issues": [
     "C8",
@@ -5681,6 +7632,10 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5706,7 +7661,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 655
+     "line": 696
     }
    ],
    "proof_wrappers": [
@@ -5726,7 +7681,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    36
+    50
    ],
    "issues": [
     "C8",
@@ -5740,6 +7695,10 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5765,7 +7724,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 564
+     "line": 605
     }
    ],
    "proof_wrappers": [
@@ -5782,7 +7741,7 @@
     }
    ],
    "coverage_rows": [
-    37
+    51
    ],
    "issues": [
     "C8",
@@ -5798,6 +7757,10 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5823,7 +7786,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 980
+     "line": 1021
     }
    ],
    "proof_wrappers": [
@@ -5900,6 +7863,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -5925,7 +7892,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 1001
+     "line": 1042
     }
    ],
    "proof_wrappers": [
@@ -5956,6 +7923,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -5977,7 +7948,9 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    196
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -5994,8 +7967,16 @@
      "line": 2044
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     196
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -6021,7 +8002,7 @@
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 942
+     "line": 983
     }
    ],
    "proof_wrappers": [
@@ -6071,6 +8052,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -6096,7 +8081,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 1053
+     "line": 1094
     }
    ],
    "proof_wrappers": [
@@ -6113,7 +8098,7 @@
     }
    ],
    "coverage_rows": [
-    138
+    161
    ],
    "issues": [
     "C25",
@@ -6138,6 +8123,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -6163,7 +8152,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 1018
+     "line": 1059
     }
    ],
    "proof_wrappers": [
@@ -6180,7 +8169,7 @@
     }
    ],
    "coverage_rows": [
-    139
+    162
    ],
    "issues": [],
    "evidence": [
@@ -6192,6 +8181,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -6217,7 +8210,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 1037
+     "line": 1078
     }
    ],
    "proof_wrappers": [
@@ -6234,7 +8227,7 @@
     }
    ],
    "coverage_rows": [
-    140
+    163
    ],
    "issues": [],
    "evidence": [
@@ -6265,6 +8258,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -6288,14 +8285,14 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 1108
+     "line": 1165
     },
     {
      "name": "StatisticalRL.Statements.Remark5_12_restricted",
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 1140
+     "line": 1197
     }
    ],
    "proof_wrappers": [
@@ -6305,7 +8302,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    32
+    46
    ],
    "issues": [],
    "evidence": [],
@@ -6325,6 +8322,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -6342,19 +8343,37 @@
      "line_end": 3524
     }
    ],
-   "statement_entries": [],
-   "proof_wrappers": [],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Remark5_13_corrected",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch5.lean",
+     "line": 448
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Remark5_13_corrected_holds"
+   ],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
-   "issues": [],
+   "coverage_rows": [
+    69
+   ],
+   "issues": [
+    "C8"
+   ],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
+   "statement_status": "corrected",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -6380,7 +8399,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 428
+     "line": 469
     }
    ],
    "proof_wrappers": [
@@ -6398,7 +8417,7 @@
     }
    ],
    "coverage_rows": [
-    43
+    57
    ],
    "issues": [
     "C14"
@@ -6412,6 +8431,10 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -6437,7 +8460,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
-     "line": 866
+     "line": 907
     }
    ],
    "proof_wrappers": [
@@ -6454,7 +8477,7 @@
     }
    ],
    "coverage_rows": [
-    34
+    48
    ],
    "issues": [
     "C8",
@@ -6527,6 +8550,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -6551,7 +8578,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    40
+    54
    ],
    "issues": [
     "C17"
@@ -6565,6 +8592,10 @@
    "uses": [],
    "statement_status": "refuted",
    "proof_status": "refuted",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -6586,15 +8617,27 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    235
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
+   "statement_status": "cited-out-of-scope",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [
+    "2026-11-09"
+   ],
+   "closing_rows": {
+    "cited-out-of-scope": [
+     235
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -6629,7 +8672,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    119
+    142
    ],
    "issues": [],
    "evidence": [],
@@ -6639,6 +8682,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -6654,38 +8701,6 @@
      "file": "chapters/offlineRL.tex",
      "line_start": 175,
      "line_end": 185
-    }
-   ],
-   "statement_entries": [],
-   "proof_wrappers": [],
-   "library_exports": [],
-   "ledger_records": [],
-   "coverage_rows": [],
-   "issues": [],
-   "evidence": [],
-   "refutations_cited": [],
-   "partial_lead": false,
-   "refuted_lead": false,
-   "uses": [],
-   "statement_status": "prose-claim",
-   "proof_status": "open",
-   "printed_with_cited_printed": false
-  },
-  {
-   "id": "label:eq:concentrate-infinite",
-   "labels": [
-    "eq:concentrate-infinite"
-   ],
-   "number": "6.4",
-   "kind": "display",
-   "class": "prose",
-   "chapter": "6",
-   "title_tex": null,
-   "tex": [
-    {
-     "file": "chapters/offlineRL.tex",
-     "line_start": 178,
-     "line_end": 181
     }
    ],
    "statement_entries": [
@@ -6705,17 +8720,28 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    120
+    143,
+    236
    ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
-   "partial_lead": false,
+   "partial_lead": true,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "printed",
-   "proof_status": "proved",
-   "printed_with_cited_printed": true
+   "statement_status": "partial",
+   "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [
+    "2026-11-09"
+   ],
+   "closing_rows": {
+    "cited-out-of-scope": [
+     236
+    ]
+   },
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:defn-Cstar-bandits",
@@ -6751,7 +8777,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    121
+    144
    ],
    "issues": [],
    "evidence": [],
@@ -6761,6 +8787,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -6797,7 +8827,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    122
+    145
    ],
    "issues": [],
    "evidence": [],
@@ -6807,6 +8837,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -6842,7 +8876,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    123
+    146
    ],
    "issues": [],
    "evidence": [],
@@ -6852,6 +8886,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -6886,7 +8924,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    124
+    147
    ],
    "issues": [
     "C18"
@@ -6917,6 +8955,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -6959,7 +9001,7 @@
     }
    ],
    "coverage_rows": [
-    125
+    148
    ],
    "issues": [
     "C18"
@@ -7001,6 +9043,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7051,8 +9097,8 @@
     }
    ],
    "coverage_rows": [
-    126,
-    127
+    149,
+    150
    ],
    "issues": [
     "C10"
@@ -7076,6 +9122,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7118,7 +9168,7 @@
     }
    ],
    "coverage_rows": [
-    154
+    178
    ],
    "issues": [
     "C10",
@@ -7178,6 +9228,15 @@
      "line": 1171
     },
     {
+     "id": "label:eq:infinite-d-star-def",
+     "label": "eq:infinite-d-star-def",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "offlineRL.tex",
+     "line": 1387
+    },
+    {
      "id": "label:lem:sum-d-Var-UB",
      "label": "lem:sum-d-Var-UB",
      "via": "tex-ref",
@@ -7189,6 +9248,54 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:sample-size-Bernstein-infinite",
+   "labels": [
+    "eq:sample-size-Bernstein-infinite"
+   ],
+   "number": "6.24",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "6",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/offlineRL.tex",
+     "line_start": 926,
+     "line_end": 929
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    224
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "implied",
+   "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch6.Thm6_3"
+   ],
+   "implied_variant": "printed",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     224
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -7231,7 +9338,7 @@
     }
    ],
    "coverage_rows": [
-    128
+    151
    ],
    "issues": [],
    "evidence": [
@@ -7253,6 +9360,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7295,7 +9406,7 @@
     }
    ],
    "coverage_rows": [
-    134
+    157
    ],
    "issues": [
     "C19"
@@ -7319,6 +9430,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7361,7 +9476,7 @@
     }
    ],
    "coverage_rows": [
-    137
+    160
    ],
    "issues": [
     "C10",
@@ -7386,6 +9501,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7407,7 +9526,9 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    198
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -7424,8 +9545,16 @@
      "line": 1193
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     198
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -7468,7 +9597,7 @@
     }
    ],
    "coverage_rows": [
-    129
+    152
    ],
    "issues": [],
    "evidence": [
@@ -7477,9 +9606,23 @@
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:eq:matrix-VarP-V-expression",
+     "label": "eq:matrix-VarP-V-expression",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "offlineRL.tex",
+     "line": 4331
+    }
+   ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7501,7 +9644,9 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    199
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -7518,8 +9663,16 @@
      "line": 1540
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     199
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -7541,7 +9694,9 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    200
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -7558,8 +9713,16 @@
      "line": 1696
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     200
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -7602,7 +9765,7 @@
     }
    ],
    "coverage_rows": [
-    144
+    167
    ],
    "issues": [
     "C22",
@@ -7681,6 +9844,50 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:sample-size-LCBQ-bernstein",
+   "labels": [
+    "eq:sample-size-LCBQ-bernstein"
+   ],
+   "number": "6.63",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "6",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/offlineRL.tex",
+     "line_start": 1781,
+     "line_end": 1783
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    231
+   ],
+   "issues": [
+    "C50"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "prose-claim",
+   "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7723,7 +9930,7 @@
     }
    ],
    "coverage_rows": [
-    141
+    164
    ],
    "issues": [
     "C28"
@@ -7765,6 +9972,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7807,7 +10018,7 @@
     }
    ],
    "coverage_rows": [
-    142
+    165
    ],
    "issues": [
     "C28"
@@ -7831,6 +10042,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7873,7 +10088,7 @@
     }
    ],
    "coverage_rows": [
-    131
+    154
    ],
    "issues": [
     "C22"
@@ -7897,6 +10112,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -7939,7 +10158,7 @@
     }
    ],
    "coverage_rows": [
-    143
+    166
    ],
    "issues": [
     "C24",
@@ -8009,6 +10228,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -8060,7 +10283,7 @@
     }
    ],
    "coverage_rows": [
-    133
+    156
    ],
    "issues": [
     "C9"
@@ -8074,6 +10297,10 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -8095,7 +10322,9 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    237
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
@@ -8103,7 +10332,7 @@
    "refuted_lead": false,
    "uses": [
     {
-     "id": "label:eq:concentrate-infinite",
+     "id": "ch6-remark-6.3",
      "label": "eq:concentrate-infinite",
      "via": "tex-ref",
      "reviewed": false,
@@ -8121,8 +10350,18 @@
      "line": 2407
     }
    ],
-   "statement_status": "prose-claim",
+   "statement_status": "cited-out-of-scope",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [
+    "2026-11-09"
+   ],
+   "closing_rows": {
+    "cited-out-of-scope": [
+     237
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -8165,7 +10404,7 @@
     }
    ],
    "coverage_rows": [
-    130
+    153
    ],
    "issues": [],
    "evidence": [
@@ -8177,6 +10416,10 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -8219,7 +10462,7 @@
     }
    ],
    "coverage_rows": [
-    132
+    155
    ],
    "issues": [
     "C21"
@@ -8243,6 +10486,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -8288,7 +10535,7 @@
     }
    ],
    "coverage_rows": [
-    155
+    179
    ],
    "issues": [
     "C32"
@@ -8312,6 +10559,56 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:sample-size-Bernstein",
+   "labels": [
+    "eq:sample-size-Bernstein"
+   ],
+   "number": "6.125",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "6",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/offlineRL.tex",
+     "line_start": 3117,
+     "line_end": 3120
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    225
+   ],
+   "issues": [
+    "C32"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "implied",
+   "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch6.Thm6_16_restricted"
+   ],
+   "implied_variant": "restricted",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     225
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -8358,7 +10655,7 @@
     }
    ],
    "coverage_rows": [
-    156
+    180
    ],
    "issues": [
     "C33"
@@ -8382,6 +10679,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -8424,7 +10725,7 @@
     }
    ],
    "coverage_rows": [
-    136
+    159
    ],
    "issues": [],
    "evidence": [
@@ -8464,6 +10765,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -8489,7 +10794,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 984
+     "line": 1320
     }
    ],
    "proof_wrappers": [
@@ -8497,8 +10802,7 @@
    ],
    "library_exports": [
     "StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_tv",
-    "StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_chi",
-    "StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le"
+    "StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_chi"
    ],
    "ledger_records": [],
    "coverage_rows": [
@@ -8512,6 +10816,106 @@
    "uses": [],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:bellman-equ-infinite-all",
+   "labels": [
+    "eq:bellman-equ-infinite-all"
+   ],
+   "number": "7.4",
+   "kind": "subequations",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/robust_RL.tex",
+     "line_start": 105,
+     "line_end": 110
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_bellman_equ_infinite_all",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1366
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_bellman_equ_infinite_all_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    20
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:robust_bellman",
+   "labels": [
+    "eq:robust_bellman"
+   ],
+   "number": "7.5",
+   "kind": "subequations",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/robust_RL.tex",
+     "line_start": 115,
+     "line_end": 129
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_robust_bellman_fixedPoint",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1411
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_robust_bellman_fixedPoint_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    21
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -8561,15 +10965,7 @@
     "StatisticalRL.RobustRL.tvFeasibleRows",
     "StatisticalRL.RobustRL.tvDualObjective",
     "StatisticalRL.RobustRL.tvClipAbove",
-    "StatisticalRL.FiniteDistribution.expectation",
-    "StatisticalRL.RobustRL.ChiSquaredPrimalDualWeakBridge.valueMin",
-    "StatisticalRL.RobustRL.ChiSquaredPrimalDualWeakBridge.valueMin_le",
-    "StatisticalRL.RobustRL.ChiSquaredPrimalDualWeakBridge.valueImage",
-    "StatisticalRL.RobustRL.ChiSquaredPrimalDualWeakBridge.valueMax",
-    "StatisticalRL.RobustRL.ChiSquaredPrimalDualWeakBridge.le_valueMax",
-    "StatisticalRL.QLearning.qRobustExpectations",
-    "StatisticalRL.QLearning.qChiBall",
-    "StatisticalRL.QLearning.qChiSquared"
+    "StatisticalRL.FiniteDistribution.expectation"
    ],
    "ledger_records": [
     {
@@ -8579,7 +10975,7 @@
     }
    ],
    "coverage_rows": [
-    109
+    132
    ],
    "issues": [],
    "evidence": [
@@ -8588,10 +10984,24 @@
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:eq:matrix-VarP-V-expression",
+     "label": "eq:matrix-VarP-V-expression",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "robust_RL.tex",
+     "line": 321
+    }
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
-   "printed_with_cited_printed": true
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:l1-upper-bound",
@@ -8657,6 +11067,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -8689,8 +11103,7 @@
     "StatisticalRL.Statements.Ch7.Remark7_1_restricted_holds"
    ],
    "library_exports": [
-    "StatisticalRL.RobustRL.DRVI.tv_oracle_planner_guarantee",
-    "StatisticalRL.RobustRL.DRVI.chi_oracle_planner_guarantee"
+    "StatisticalRL.RobustRL.DRVI.tv_oracle_planner_guarantee"
    ],
    "ledger_records": [],
    "coverage_rows": [
@@ -8725,6 +11138,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -8781,7 +11198,7 @@
     }
    ],
    "coverage_rows": [
-    20
+    22
    ],
    "issues": [
     "C38"
@@ -8797,6 +11214,107 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:tv-final-samples",
+   "labels": [
+    "eq:tv-final-samples"
+   ],
+   "number": "7.16",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/robust_RL.tex",
+     "line_start": 401,
+     "line_end": 403
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    226
+   ],
+   "issues": [
+    "C37",
+    "C38"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "implied",
+   "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch7.Remark7_1_restricted",
+    "StatisticalRL.Statements.Ch7.Thm7_2_corrected",
+    "StatisticalRL.Statements.Ch7.Thm7_3_corrected"
+   ],
+   "implied_variant": "corrected",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     226
+    ]
+   },
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:standard-final-samples",
+   "labels": [
+    "eq:standard-final-samples"
+   ],
+   "number": "7.17",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/robust_RL.tex",
+     "line_start": 411,
+     "line_end": 413
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    227
+   ],
+   "issues": [
+    "C1",
+    "C2"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "implied",
+   "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch3.Thm3_2_positiveN",
+    "StatisticalRL.Statements.Ch3.Thm3_7_corrected"
+   ],
+   "implied_variant": "corrected",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     227
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -8863,6 +11381,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -8930,6 +11452,10 @@
    ],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9000,7 +11526,168 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:chi2-final-samples",
+   "labels": [
+    "eq:chi2-final-samples"
+   ],
+   "number": "7.18",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/robust_RL.tex",
+     "line_start": 490,
+     "line_end": 492
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    228
+   ],
+   "issues": [
+    "C7",
+    "C37"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "implied",
+   "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch7.Thm7_4_corrected",
+    "StatisticalRL.Statements.Ch7.Thm7_5_corrected"
+   ],
+   "implied_variant": "corrected",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     228
+    ]
+   },
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:defn-optimal-V",
+   "labels": [
+    "eq:defn-optimal-V"
+   ],
+   "number": "7.21",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/marl.tex",
+     "line_start": 122,
+     "line_end": 126
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Marl_bestResponse_exists",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1458
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Marl_bestResponse_exists_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Ch7Rest.Marl76.valueJ_deviate_le_starValue",
+    "StatisticalRL.Ch7Rest.Marl76.brPolicy",
+    "StatisticalRL.Ch7Rest.Marl76.valueJ_brPolicy_eq_starValue",
+    "StatisticalRL.Ch7Rest.Marl76.starValue_terminal",
+    "StatisticalRL.Ch7Rest.Marl76.starValue_bellman"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    26
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:defn-CCE",
+   "labels": [
+    "eq:defn-CCE"
+   ],
+   "number": "7.23",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/marl.tex",
+     "line_start": 234,
+     "line_end": 238
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Marl_NE_isCCE_not_converse",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1488
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Marl_NE_isCCE_not_converse_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Ch7Rest.Marl76.isCCE_of_isNE_of_prob_eq",
+    "StatisticalRL.Ch7Rest.Marl76.coordGame",
+    "StatisticalRL.Ch7Rest.Marl76.coordPolicy",
+    "StatisticalRL.Ch7Rest.Marl76.coordGame_reward_mem",
+    "StatisticalRL.Ch7Rest.Marl76.coordPolicy_isCCE",
+    "StatisticalRL.Ch7Rest.Marl76.coordPolicy_not_product"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    27
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:sample-complexity-plug-in-marl",
@@ -9025,7 +11712,7 @@
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 827
+     "line": 1163
     }
    ],
    "proof_wrappers": [
@@ -9047,7 +11734,7 @@
     }
    ],
    "coverage_rows": [
-    21
+    23
    ],
    "issues": [
     "C45"
@@ -9065,6 +11752,56 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:upper-bound-order",
+   "labels": [
+    "eq:upper-bound-order"
+   ],
+   "number": "7.25",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/marl.tex",
+     "line_start": 404,
+     "line_end": 406
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    229
+   ],
+   "issues": [
+    "C45"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "implied",
+   "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch7.Thm7_6_restricted"
+   ],
+   "implied_variant": "restricted",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     229
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -9090,7 +11827,7 @@
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 909
+     "line": 1245
     }
    ],
    "proof_wrappers": [
@@ -9112,7 +11849,7 @@
     }
    ],
    "coverage_rows": [
-    22
+    24
    ],
    "issues": [
     "C39"
@@ -9126,6 +11863,10 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9182,7 +11923,7 @@
     }
    ],
    "coverage_rows": [
-    23
+    25
    ],
    "issues": [
     "C40"
@@ -9198,6 +11939,10 @@
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9240,7 +11985,7 @@
     }
    ],
    "coverage_rows": [
-    24
+    28
    ],
    "issues": [
     "C41"
@@ -9266,6 +12011,50 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:sample-size-per-agent-fedQ",
+   "labels": [
+    "eq:sample-size-per-agent-fedQ"
+   ],
+   "number": "7.31",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/federated_RL.tex",
+     "line_start": 124,
+     "line_end": 127
+    }
+   ],
+   "statement_entries": [],
+   "proof_wrappers": [],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    230
+   ],
+   "issues": [
+    "C41"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "prose-claim",
+   "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9308,7 +12097,7 @@
     }
    ],
    "coverage_rows": [
-    25
+    29
    ],
    "issues": [
     "C42"
@@ -9332,6 +12121,10 @@
    ],
    "statement_status": "printed",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": true
   },
   {
@@ -9353,16 +12146,142 @@
    "proof_wrappers": [],
    "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    243
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "prose-claim",
+   "statement_status": "cited-out-of-scope",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [
+    "2026-11-09"
+   ],
+   "closing_rows": {
+    "cited-out-of-scope": [
+     243
+    ]
+   },
    "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eqn:classic-clt",
+   "labels": [
+    "eqn:classic-clt"
+   ],
+   "number": "7.38",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/inference.tex",
+     "line_start": 100,
+     "line_end": 103
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_classic_clt_corrected",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 617
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_classic_clt_restricted",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 653
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_classic_clt_corrected_holds",
+    "StatisticalRL.Statements.Ch7.Eq_classic_clt_restricted_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Ch7Rest.TDInference.tendsto_sum_pathWeight_bcf_gaussCov",
+    "StatisticalRL.Ch7Rest.TDInference.tendsto_sum_pathWeight_bcf_gaussCov_printed_of_reward_const"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    31
+   ],
+   "issues": [
+    "C43"
+   ],
+   "evidence": [],
+   "refutations_cited": [
+    "not_eq_classic_clt_printed",
+    "not_eq_classic_clt_printed_someInit"
+   ],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "corrected",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eqn:convex-distance",
+   "labels": [
+    "eqn:convex-distance"
+   ],
+   "number": "7.41",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/inference.tex",
+     "line_start": 124,
+     "line_end": 127
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_distance_le_TV",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1518
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_convex_distance_le_TV_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Ch7Rest.TDInference.convexDistance_le_tv"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    32
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:thm:Berry-Esseen-linear",
@@ -9404,7 +12323,7 @@
     }
    ],
    "coverage_rows": [
-    26
+    30
    ],
    "issues": [
     "C43",
@@ -9420,9 +12339,343 @@
    ],
    "partial_lead": false,
    "refuted_lead": false,
+   "uses": [
+    {
+     "id": "label:eqn:convex-distance",
+     "label": "eqn:convex-distance",
+     "via": "tex-ref",
+     "reviewed": false,
+     "target": "node",
+     "file": "inference.tex",
+     "line": 140
+    }
+   ],
+   "statement_status": "corrected",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "ch7-display-ece61fa22828",
+   "labels": [],
+   "number": null,
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/inference.tex",
+     "line_start": 174,
+     "line_end": 176
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_tdWeights_sum",
+     "variant": "printed",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1536
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_tdWeights_sum_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Ch7Rest.TDInference.pluginWeight_eq",
+    "StatisticalRL.Ch7Rest.TDInference.sum_pluginWeight"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    34
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "printed",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": true
+  },
+  {
+   "id": "label:eq:defn-hat-Lambda",
+   "labels": [
+    "eq:defn-hat-Lambda"
+   ],
+   "number": "7.42",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/inference.tex",
+     "line_start": 180,
+     "line_end": 182
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_defn_hat_Lambda_corrected",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 791
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_defn_hat_Lambda_restricted",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 813
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_defn_hat_Lambda_corrected_holds",
+    "StatisticalRL.Statements.Ch7.Eq_defn_hat_Lambda_restricted_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Ch7Rest.TDInference.eq_defn_hat_Lambda_corrected",
+    "StatisticalRL.Ch7Rest.TDInference.eq_defn_hat_Lambda_restricted"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    33
+   ],
+   "issues": [
+    "C43",
+    "C47"
+   ],
+   "evidence": [],
+   "refutations_cited": [
+    "not_eq_defn_hat_Lambda_printed_consistent",
+    "not_eq_defn_hat_Lambda_printed_consistent_someInit"
+   ],
+   "partial_lead": false,
+   "refuted_lead": false,
    "uses": [],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:convex.Cdelta",
+   "labels": [
+    "eq:convex.Cdelta"
+   ],
+   "number": "7.43",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/inference.tex",
+     "line_start": 191,
+     "line_end": 193
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_corrected_oracle",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 685
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_corrected_plugin",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 736
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_corrected_oracle_holds",
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_corrected_plugin_holds"
+   ],
+   "library_exports": [
+    "StatisticalRL.Ch7Rest.TDInference.exists_coverage_oracle_bounds",
+    "StatisticalRL.Ch7Rest.TDInference.plugin_coverage_tendsto"
+   ],
+   "ledger_records": [],
+   "coverage_rows": [
+    35
+   ],
+   "issues": [
+    "C43",
+    "C47"
+   ],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": true,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "partial",
+   "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:KL_reward",
+   "labels": [
+    "eq:KL_reward"
+   ],
+   "number": "7.47",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/RLHF.tex",
+     "line_start": 43,
+     "line_end": 45
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_RLHF_policy_closed_form_restricted",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1096
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_RLHF_policy_closed_form_restricted_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    40
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "restricted",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:RLHF-policy-closed-form",
+   "labels": [
+    "eq:RLHF-policy-closed-form"
+   ],
+   "number": "7.49",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/RLHF.tex",
+     "line_start": 52,
+     "line_end": 55
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_RLHF_policy_closed_form_restricted",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1096
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_RLHF_policy_closed_form_restricted_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    40
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "restricted",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:normalization",
+   "labels": [
+    "eq:normalization"
+   ],
+   "number": "7.50",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/RLHF.tex",
+     "line_start": 57,
+     "line_end": 59
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_RLHF_policy_closed_form_restricted",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1096
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_RLHF_policy_closed_form_restricted_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    40
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "restricted",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9448,25 +12701,37 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 708
+     "line": 931
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_reward_policy_eq_restricted",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1049
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Ch7.Eq_DPO_restricted_holds"
+    "StatisticalRL.Statements.Ch7.Eq_DPO_restricted_holds",
+    "StatisticalRL.Statements.Ch7.Eq_reward_policy_eq_restricted_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Ch7Rest.Rlhf"
-   ],
+   "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    38
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "partial",
-   "proof_status": "open",
+   "statement_status": "restricted",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9492,18 +12757,16 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 708
+     "line": 931
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch7.Eq_DPO_restricted_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Ch7Rest.Rlhf"
-   ],
+   "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    28
+    37
    ],
    "issues": [],
    "evidence": [],
@@ -9513,6 +12776,58 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
+   "printed_with_cited_printed": false
+  },
+  {
+   "id": "label:eq:calibrated_value",
+   "labels": [
+    "eq:calibrated_value"
+   ],
+   "number": "7.54",
+   "kind": "display",
+   "class": "prose",
+   "chapter": "7",
+   "title_tex": null,
+   "tex": [
+    {
+     "file": "chapters/RLHF.tex",
+     "line_start": 92,
+     "line_end": 96
+    }
+   ],
+   "statement_entries": [
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_calibrated_value_shiftInvariant_restricted",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1121
+    }
+   ],
+   "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_calibrated_value_shiftInvariant_restricted_holds"
+   ],
+   "library_exports": [],
+   "ledger_records": [],
+   "coverage_rows": [
+    41
+   ],
+   "issues": [],
+   "evidence": [],
+   "refutations_cited": [],
+   "partial_lead": false,
+   "refuted_lead": false,
+   "uses": [],
+   "statement_status": "restricted",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9538,25 +12853,37 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 748
+     "line": 971
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_Jstar_restricted",
+     "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1066
     }
    ],
    "proof_wrappers": [
+    "StatisticalRL.Statements.Ch7.Eq_Jstar_restricted_holds",
     "StatisticalRL.Statements.Ch7.Eq_policy_RBMLE_restricted_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Ch7Rest.Rlhf"
-   ],
+   "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    39
+   ],
    "issues": [],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "partial",
-   "proof_status": "open",
+   "statement_status": "restricted",
+   "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9582,18 +12909,16 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 748
+     "line": 971
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch7.Eq_policy_RBMLE_restricted_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Ch7Rest.Rlhf"
-   ],
+   "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    29
+    42
    ],
    "issues": [],
    "evidence": [],
@@ -9603,6 +12928,10 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9628,17 +12957,17 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 790
+     "line": 1013
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch7.Eq_online_RBMLE_restricted_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted"
-   ],
+   "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    208
+   ],
    "issues": [
     "C44"
    ],
@@ -9647,8 +12976,16 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "partial",
+   "statement_status": "explanatory",
    "proof_status": "open",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {
+    "explanatory": [
+     208
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -9674,17 +13011,17 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 790
+     "line": 1013
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch7.Eq_online_RBMLE_restricted_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted"
-   ],
+   "library_exports": [],
    "ledger_records": [],
-   "coverage_rows": [],
+   "coverage_rows": [
+    213
+   ],
    "issues": [
     "C44"
    ],
@@ -9693,8 +13030,18 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "partial",
+   "statement_status": "implied",
    "proof_status": "open",
+   "implied_by": [
+    "StatisticalRL.Statements.Ch7.Eq_online_RBMLE_restricted"
+   ],
+   "implied_variant": "restricted",
+   "decision_anchors": [],
+   "closing_rows": {
+    "implied": [
+     213
+    ]
+   },
    "printed_with_cited_printed": false
   },
   {
@@ -9720,18 +13067,16 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 790
+     "line": 1013
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch7.Eq_online_RBMLE_restricted_holds"
    ],
-   "library_exports": [
-    "StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted"
-   ],
+   "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    30
+    43
    ],
    "issues": [
     "C44"
@@ -9743,6 +13088,10 @@
    "uses": [],
    "statement_status": "restricted",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   },
   {
@@ -9768,14 +13117,14 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 616
+     "line": 839
     },
     {
      "name": "StatisticalRL.Statements.Ch7.Thm7_12_corrected_local",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 675
+     "line": 898
     }
    ],
    "proof_wrappers": [
@@ -9799,7 +13148,7 @@
     }
    ],
    "coverage_rows": [
-    27
+    36
    ],
    "issues": [
     "C44"
@@ -9823,6 +13172,10 @@
    ],
    "statement_status": "corrected",
    "proof_status": "proved",
+   "implied_by": [],
+   "implied_variant": null,
+   "decision_anchors": [],
+   "closing_rows": {},
    "printed_with_cited_printed": false
   }
  ],
@@ -10223,12 +13576,278 @@
    ]
   }
  ],
+ "closing_rows_without_node": [
+  {
+   "line": 182,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Time-invariant policies suffice, preliminaries line 76"
+  },
+  {
+   "line": 183,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Solving the Bellman linear systems, preliminaries lines 225–228"
+  },
+  {
+   "line": 186,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Asymptotic conclusion of the second policy-evaluation attempt, model-based chapter lines 354–376"
+  },
+  {
+   "line": 187,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "First-attempt policy-learning analysis, model-based chapter lines 975–1122"
+  },
+  {
+   "line": 189,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Stochastic-approximation prelude, model-free chapter lines 14–54"
+  },
+  {
+   "line": 190,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Over-estimation heuristic, model-free chapter lines 1003–1013"
+  },
+  {
+   "line": 192,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Omitted lower-order bonus term, online-RL line 615"
+  },
+  {
+   "line": 197,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Heuristic separation condition, offline-RL lines 505–515 (logs dropped at 511)"
+  },
+  {
+   "line": 201,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Verbal summary of the LCB-Q recursion, offline-RL lines 1894–1896"
+  },
+  {
+   "line": 202,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Comparison with Q-learning after the Bernstein LCB-Q display, offline-RL lines 1789–1793"
+  },
+  {
+   "line": 203,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Finite-sample meaning of Theorem 7.11, inference chapter line 144"
+  },
+  {
+   "line": 204,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "CCE computation, multi-agent chapter line 247"
+  },
+  {
+   "line": 205,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Centralized versus communication-efficient federated RL, federated chapter lines 157–160"
+  },
+  {
+   "line": 206,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Normalization factor is hard to compute, RLHF chapter line 74"
+  },
+  {
+   "line": 207,
+   "kind": "explanatory",
+   "entries": [],
+   "variant": null,
+   "anchor": null,
+   "item": "Introduction, Cousins and Conclusion chapters (survey prose)"
+  },
+  {
+   "line": 214,
+   "kind": "implied",
+   "entries": [
+    "StatisticalRL.Statements.Ch3.Thm3_1"
+   ],
+   "variant": "printed",
+   "anchor": null,
+   "item": "Sample-size read-off after Theorem 3.1, model-based chapter lines 157–165"
+  },
+  {
+   "line": 215,
+   "kind": "implied",
+   "entries": [
+    "StatisticalRL.Statements.Ch3.Thm3_2_positiveN"
+   ],
+   "variant": "restricted",
+   "anchor": null,
+   "item": "Sample-size read-off and range after Theorem 3.2 (including the range display at lines 934–937), model-based chapter lines 926–937"
+  },
+  {
+   "line": 217,
+   "kind": "implied",
+   "entries": [
+    "StatisticalRL.Statements.Ch3.Thm3_2_positiveN",
+    "StatisticalRL.Statements.Ch3.Thm3_7_corrected"
+   ],
+   "variant": "corrected",
+   "anchor": null,
+   "item": "Minimax optimality of the model-based approach, model-based chapter lines 1468–1474"
+  },
+  {
+   "line": 218,
+   "kind": "implied",
+   "entries": [
+    "StatisticalRL.Statements.Ch4.Thm4_1"
+   ],
+   "variant": "printed",
+   "anchor": null,
+   "item": "TD sample-size read-off, model-free chapter lines 240–251"
+  },
+  {
+   "line": 219,
+   "kind": "implied",
+   "entries": [
+    "StatisticalRL.Statements.Ch4.Thm4_1"
+   ],
+   "variant": "printed",
+   "anchor": null,
+   "item": "Loose TD iteration count, model-free chapter lines 434–447"
+  },
+  {
+   "line": 223,
+   "kind": "implied",
+   "entries": [
+    "StatisticalRL.Statements.Ch4.Thm4_13_corrected",
+    "StatisticalRL.Statements.Ch3.Thm3_9_minimaxLowerBound"
+   ],
+   "variant": "corrected",
+   "anchor": null,
+   "item": "Finite-horizon Q-learning sample size, model-free chapter lines 2237–2247"
+  },
+  {
+   "line": 234,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "Reference-advantage and Bernstein-bonus model-free regret, online-RL lines 1923–1929"
+  },
+  {
+   "line": 238,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "Variance-reduced pessimistic model-free offline RL, offline-RL lines 1795–1800"
+  },
+  {
+   "line": 239,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "Minimax-optimality sentence after the finite-horizon VI-LCB sample size, offline-RL line 3121"
+  },
+  {
+   "line": 240,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "Asynchronous Q-learning lower bound, model-free chapter lines 2117–2118"
+  },
+  {
+   "line": 241,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "Adaptive learning rates and cover-time analysis for asynchronous Q-learning, model-free chapter lines 2155–2164"
+  },
+  {
+   "line": 242,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "Model-free Notes, model-free chapter lines 3956–3995"
+  },
+  {
+   "line": 244,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "Q-FTRL algorithm (omitted at line 432) and the residual of Theorem 7.7 that `Thm7_7_restricted` does not cover, multi-agent chapter lines 423–432 and 441–467"
+  },
+  {
+   "line": 245,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "PPAD-hardness of Nash equilibria, multi-agent chapter line 247"
+  },
+  {
+   "line": 246,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "V-learning guarantees, Cousins chapter lines 30–40"
+  },
+  {
+   "line": 247,
+   "kind": "cited-out-of-scope",
+   "entries": [],
+   "variant": null,
+   "anchor": "2026-11-09",
+   "item": "Adaptive calibration policy, RLHF chapter lines 218–234"
+  }
+ ],
+ "supporting_rows": [
+  64,
+  71,
+  72,
+  91
+ ],
  "warnings": [
-  "COVERAGE.md:50 matches no inventory result: UCBVI zero-visit source gap, Algorithm 5.2",
-  "COVERAGE.md:55 matches no inventory result: Generative lower bound, singleton-action obstruction",
-  "COVERAGE.md:56 matches no inventory result: Robust χ² policy-value foundation and singleton obstruction",
-  "COVERAGE.md:75 matches no inventory result: Infinite-horizon Bellman consistency and VI, lines 190–264 and 316–355",
-  "COVERAGE.md:91 matches no inventory result: Planning accuracy of empirical VI and PI, prose claim, model-based chapter line 943",
-  "ch4-remark-4.5: proved by the ledgers, but a COVERAGE headline says partial; the headline wins"
+  "ch6-remark-6.3: proved by the ledgers, but a COVERAGE headline says partial; the headline wins",
+  "label:eq:convex.Cdelta: proved by the ledgers, but a COVERAGE headline says partial; the headline wins"
  ]
 }

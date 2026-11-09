@@ -15,6 +15,9 @@ import Formalization.Generative.GenerativeLowerBoundTheorem37Fin
 import Formalization.Generative.FiniteHorizonLowerBoundTheorem
 import Formalization.Generative.GenerativeLowerBoundObservationLaw
 import Formalization.Generative.PolicyEvaluationCrude
+import Formalization.Generative.BurnInNecessity
+import Formalization.Generative.PolicyEvaluationGapRepairAllStates
+import Formalization.Generative.PolicyEvaluationVarianceResolvent
 
 /-! Proofs of the source-facing Chapter 3 entries using the existing exports. -/
 open MeasureTheory
@@ -140,5 +143,48 @@ theorem Thm3_9_holds : Thm3_9 := by
 theorem Eq_Vhatpi_Vpi_difference_decoupled_Hoeffding_holds :
     Eq_Vhatpi_Vpi_difference_decoupled_Hoeffding :=
   StatisticalRL.ModelBasedPolicyEvaluation.decoupledHoeffding_universal_constant
+
+theorem Eqn_ice_cream_holds : Eqn_ice_cream := by
+  refine ⟨8, by norm_num, ?_⟩
+  intro C₀ hC₀ State Action _ _ M π N hN δ hδ hδ1 m β₁ _
+  exact StatisticalRL.ModelBasedPolicyEvaluation.policyEvaluation_source_radius_all_states_positive_samples
+    M π N hN δ C₀ hδ hδ1 hC₀
+
+open scoped Matrix in
+theorem Eq_lemma_VarP_V_bound_holds : Eq_lemma_VarP_V_bound := by
+  intro State Action _ _ inst M π hγ P V VarV R
+  have hinst : inst = Classical.decEq State := Subsingleton.elim _ _
+  subst hinst
+  have hγ2 : 0 < M.discount ^ 2 := by positivity
+  have hg : 0 < 1 - M.discount := sub_pos.mpr M.discount_lt_one
+  refine ⟨fun s ↦ ?_, norm_nonneg _, ?_⟩
+  · obtain ⟨h0, h1⟩ := StatisticalRL.DiscountedMDP.evaluationPolicyResolvent_variance_bound M π s
+    change 0 ≤ M.discount ^ 2 * (R *ᵥ VarV) s at h0
+    change M.discount ^ 2 * (R *ᵥ VarV) s ≤ ‖V‖ ^ 2 at h1
+    refine ⟨nonneg_of_mul_nonneg_right (by linarith) hγ2, ?_⟩
+    rw [le_div_iff₀ hγ2]
+    nlinarith [sq_nonneg ‖V‖]
+  · have h := StatisticalRL.DiscountedMDP.evaluationPolicyResolvent_sqrtVariance_bound M π
+    change M.discount * ‖R *ᵥ (fun s ↦ Real.sqrt (VarV s))‖ ≤
+      ‖V‖ / Real.sqrt (1 - M.discount) at h
+    have h2 : ‖V‖ / Real.sqrt (1 - M.discount) ≤ Real.sqrt (2 / (1 - M.discount)) * ‖V‖ := by
+      rw [div_eq_inv_mul, ← Real.sqrt_inv]
+      apply mul_le_mul_of_nonneg_right _ (norm_nonneg _)
+      apply Real.sqrt_le_sqrt
+      rw [div_eq_mul_inv]
+      exact le_mul_of_one_le_left (inv_nonneg.mpr hg.le) (by norm_num)
+    rw [le_div_iff₀ hγ]
+    linarith
+
+theorem Thm3_2_burnInNecessary_restricted_holds : Thm3_2_burnInNecessary_restricted := by
+  refine ⟨1 / 8, by norm_num, ?_⟩
+  intro S A N γ hS hA hSA hγ hγ1 hN piHat
+  have hN' : (N : ℝ) ≤ Real.log ((S : ℝ) * (A : ℝ)) / (8 * (1 - γ)) := by
+    have : 1 / 8 * Real.log ((S : ℝ) * (A : ℝ)) / (1 - γ) =
+        Real.log ((S : ℝ) * (A : ℝ)) / (8 * (1 - γ)) := by
+      rw [mul_comm (8 : ℝ) (1 - γ), ← div_div]; ring
+    rwa [this] at hN
+  exact StatisticalRL.GenerativeLowerBound.burnIn_necessary_valueGap S A N γ hS hA hSA hγ hγ1 hN'
+    piHat
 
 end StatisticalRL.Statements.Ch3

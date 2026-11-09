@@ -67,7 +67,21 @@ class Site:
         self.nodes = {n["id"]: n for n in self.node_data["nodes"]}
         self.entry_node = dict(builder.entry_node)
         self.inv_by_id = builder.by_id
+        self.attach_unlabelled_rows()
         self.place()
+
+    def attach_unlabelled_rows(self):
+        """Coverage rows that gen_nodes attaches to a node by its number ("Remark 5.6, ...") rather than
+        by a label: key them by the node id, so an unlabelled remark with only a ledger row (for example
+        an implied or explanatory one) shows that row and its status instead of nothing."""
+        by_line = {r["line"]: r for r in getattr(self.lean, "coverage_rows", [])}
+        for n in self.node_data["nodes"]:
+            if n["statement_entries"] or any(l in self.lean.coverage for l in n["labels"]):
+                continue
+            rows = [by_line[l] for l in n["coverage_rows"] if l in by_line]
+            if rows:
+                self.lean.coverage.setdefault("id:" + n["id"], []).extend(
+                    {"item": r["item"], "evidence": r["evidence"], "scope": r["scope"]} for r in rows)
 
     # pairing -------------------------------------------------------------------
     def block_keys(self, b) -> set:
@@ -239,10 +253,14 @@ class Site:
                                f'shown at {esc(where)}. Its status there: {esc(STATUS[e.status][0].lower())}.</div>')
             entries = home
             if not entries:
-                for lab in sorted(l for l in (b.labels or []) if l in self.lean.coverage):
+                keys = sorted(l for l in (b.labels or []) if l in self.lean.coverage)
+                if b.entry and "id:" + b.entry["id"] in self.lean.coverage:
+                    keys.append("id:" + b.entry["id"])
+                for lab in keys:
                     if lab not in ledger_seen:
                         ledger_seen.add(lab)
-                        out.append(self.lean.ledger_card(lab, self.lean.coverage[lab]))
+                        shown = gen_nodes.node_title(self.nodes[lab[3:]]) if lab.startswith("id:") else lab
+                        out.append(self.lean.ledger_card(shown, self.lean.coverage[lab]))
             if not entries and not (set(b.labels or []) & ledger_seen) and b.kind == "env" \
                     and getattr(b, "kind_name", "") in RESULT_KINDS:
                 word, cls = STATUS["none"]
@@ -448,6 +466,9 @@ status column is derived from the project's reviewed ledger at commit <code>{sel
         words = {"original": "proved as printed", "corrected": "proved in corrected form",
                  "restricted": "proved for a restricted case", "unrecorded": "with a statement entry but no reviewed status",
                  "partial": "partial",
+                 "implied": "implied by a proved entry (not counted as proved)",
+                 "explanatory": "explanatory only (no claim)",
+                 "cited-out-of-scope": "cited, out of scope by user decision (not proved)",
                  "refuted": f"refuted in Lean under the reading formalized ({', '.join(refuted)}), nothing proved",
                  "ledger": "with a ledger note only", "none": "not yet formalized"}
         parts = [f"{by[s]} {words.get(s, STATUS[s][0].lower())}" for s in STATUS_ORDER if by[s]]
@@ -502,6 +523,9 @@ approved by the authors.</p>
                              ("unrecorded", "A statement entry exists in Lean but no ledger records it as proved, so it is not shown as proved."),
                              ("partial", "The coverage ledger lists components, but no statement entry covers the whole result."),
                              ("refuted", "Lean proves the printed statement false and no corrected version is proved yet."),
+                             ("implied", "The coverage ledger records that a named, proved statement entry implies this item; the implication is not a separate Lean statement, it carries the entry's corrected or restricted form, and it is never counted as proved."),
+                             ("explanatory", "The coverage ledger records the item as attribution, comparison, motivation or notation with no mathematical claim; nothing is proved and it is never counted as proved."),
+                             ("cited-out-of-scope", "A result the book cites from the literature, recorded as out of scope by a dated user decision (2026-11-09). It is not proved, is never counted as proved, and keeps the formalization incomplete."),
                              ("ledger", "The coverage ledger has a note (for example a source gap or proposed repair); nothing is claimed as proved."),
                              ("none", "No Lean entry and no ledger note. This is the default.")])
         rev = self.lean.git.rev

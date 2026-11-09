@@ -403,6 +403,31 @@ def Remark4_5 : Prop :=
         0 < ∫ data, qLbXiMax γ η (qSamplesExtend (qLbMDP γ (by linarith) hγ1) N data) t
           ∂qSamplingLaw (qLbMDP γ (by linarith) hγ1) N
 
+/-- Single-action synchronous Q-learning is TD learning: the identification behind sentence 3 of
+Remark 4.5 (`chapters/generative_model_model_free.tex:3455–3457`, "when there is only a single
+action ... leading respectively to `(1−γ)⁻³` and `(1−γ)⁻⁴`"). For a one-element action set
+`{a}` (`Subsingleton Action`), every stationary policy `π` (necessarily the unique one) and every
+learning-rate sequence: (i) pathwise, the synchronous Q-learning iterate at `a`
+(`qLearningIterate`, Algorithm 4.2's update with `max` over actions) driven by next-state samples
+`s'(t,s,a)` from `Q₀` equals the TD iterate (`tdIterate`) driven by the same samples from
+`Q₀(·,a)`; (ii) in law, for every set `B` of value functions, the probability that `T` steps of
+exact-`T` Q-learning output (read at `a`) lies in `B` equals the probability that `T` steps of
+exact-`T` TD learning output lies in `B`; (iii) `Q⋆(s,a) = V^π(s)`. Hence the Q-learning error
+event `|Q_T(s,a) − Q⋆(s,a)| ≤ ε` has exactly the probability of the TD error event of `Thm4_1`.
+This entry does not itself restate the rates. -/
+def QLearning_singleAction_eq_TD : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action] [Subsingleton Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action) (a : Action)
+    (η : ℕ → ℝ) (Q₀ : State → Action → ℝ),
+    (∀ (samples : ℕ → State → Action → State) (t : ℕ) (s : State),
+      qLearningIterate M η samples Q₀ t s a =
+        tdIterate M π η (fun k s ↦ samples k s a) (fun s ↦ Q₀ s a) t s) ∧
+    (∀ (T : ℕ) (B : Set (State → ℝ)),
+      (qSamplingLaw M T).real {data | (fun s ↦ qSampledIterate M η T Q₀ data s a) ∈ B} =
+        (tdSourceSamplingLaw M π T).real
+          {data | tdSourceSampledIterate M π η T (fun s ↦ Q₀ s a) data ∈ B}) ∧
+    (∀ s, M.trajectoryExpectedQ M.optimalGreedyPolicy s a = M.trajectoryExpectedValue π s)
+
 /-- Corrected Theorem 4.13, `thm:finite-horizon-simple-Q-generative`,
 `source/upstream/tex/chapters/generative_model_model_free.tex:2215–2236`, with the schedule
 `eq:thm:finite-horizaon-eta` (lines 2203–2209), the sample-size condition `eq:thm:finite-horizon-T`

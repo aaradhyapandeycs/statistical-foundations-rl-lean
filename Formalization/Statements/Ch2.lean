@@ -16,6 +16,12 @@ import Formalization.MDP.CoreDefinitions
 import Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic
 import Mathlib.MeasureTheory.Measure.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Formalization.MDP.InfiniteReturn
+import Formalization.MDP.ForcedActionReturn
+import Formalization.MDP.TrajectoryDefinitions
+import Formalization.MDP.ActionTrajectoryDefinitions
+import Formalization.MDP.PolicyEnvironmentDefinitions
+import Formalization.MDP.FiniteOccupancy
 
 /-! Source-facing statement index for Chapter 2. -/
 
@@ -436,5 +442,229 @@ def Eq_QV_star_perturbation_r_inf : Prop :=
         (fun s ↦ ⨆ π : StationaryPolicy State Action,
           (π s).expectation (M'.policyFixedPoint π s))‖ ≤
       ‖M.reward - M'.reward‖ / (1 - M.discount)
+
+/-- `eq:defn-Vpi-inf`, `chapters/prelim.tex:94–106` (display `:96–100`, bound
+`:104–106`). `V^π(s)` is the integral of the actual infinite discounted return
+`∑_t γ^t r(s_t,a_t)` (`infiniteDiscountedReturn`) under the controlled infinite trajectory law
+from `s_0 = s` with `a_t ∼ π(·|s_t)`, `s_{t+1} ∼ P(·|s_t,a_t)` (`infiniteTrajectoryLaw`,
+Ionescu-Tulcea); this is the definition of `trajectoryExpectedValue`. The entry records that
+the printed expectation is well defined (the return is integrable) and the printed bound
+`0 ≤ V^π(s) ≤ 1/(1−γ)`. Policies are stationary randomized `π : S → Δ(A)` (`:66`).
+`V^π(ρ)` (`:107–111`) is a definition. The Bellman fixed-point property is
+`Eq_bellman_consistency_V`. -/
+def Eq_defn_Vpi_inf : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action) (s : State),
+    Integrable (M.infiniteDiscountedReturn s) (M.infiniteTrajectoryLaw π s) ∧
+    0 ≤ M.trajectoryExpectedValue π s ∧ M.trajectoryExpectedValue π s ≤ 1 / (1 - M.discount)
+
+/-- `eq:defn-Qpi-inf-horizon`, `chapters/prelim.tex:117–121`, with
+`eq:Vpi-a-function-of-Qpi-inf`, `chapters/prelim.tex:126–129`. `Q^π(s,a)` is the integral of
+the actual infinite discounted return under the trajectory law with `s_0 = s`, the first
+action forced to `a`, and `a_t ∼ π(·|s_t)` afterwards (`forcedActionTrajectoryLaw`; meaningful
+also for actions outside the support of `π(s)`). The entry records integrability, the bound
+`0 ≤ Q^π ≤ 1/(1−γ)` (not printed, implied by the reward range), and the printed identity
+`V^π(s) = E_{a∼π(·|s)} Q^π(s,a)`. -/
+def Eq_defn_Qpi_inf_horizon : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action) (s : State) (a : Action),
+    Integrable (M.infiniteDiscountedReturn s) (M.forcedActionTrajectoryLaw π s a) ∧
+    0 ≤ M.trajectoryExpectedQ π s a ∧ M.trajectoryExpectedQ π s a ≤ 1 / (1 - M.discount) ∧
+    M.trajectoryExpectedValue π s = (π s).expectation (M.trajectoryExpectedQ π s)
+
+/-- `eq:optimal-Vstar-Q-star-defn`, `chapters/prelim.tex:132–143`. There is a deterministic
+stationary policy `π⋆ = f` (`π⋆(a|s) = 1{a = f s}`) that simultaneously maximizes `Q^π(s,a)`
+and `V^π(s)` at every `(s,a)`, over all stationary randomized policies `π` (the class the
+chapter restricts to, `:66`). The second conjunct records that the shorthand
+`V⋆ := V^{π⋆}`, `Q⋆ := Q^{π⋆}` does not depend on which such `π⋆` is chosen. `V^π`, `Q^π` are
+the actual trajectory expectations of `Eq_defn_Vpi_inf` and `Eq_defn_Qpi_inf_horizon`. -/
+def Eq_optimal_Vstar_Qstar_defn : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action),
+    (∃ f : State → Action, ∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
+      M.trajectoryExpectedQ π s a ≤
+          M.trajectoryExpectedQ (fun x ↦ EnvironmentStage.pointMass (f x)) s a ∧
+      M.trajectoryExpectedValue π s ≤
+          M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (f x)) s) ∧
+    ∀ f g : State → Action,
+      (∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
+        M.trajectoryExpectedQ π s a ≤
+            M.trajectoryExpectedQ (fun x ↦ EnvironmentStage.pointMass (f x)) s a ∧
+        M.trajectoryExpectedValue π s ≤
+            M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (f x)) s) →
+      (∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
+        M.trajectoryExpectedQ π s a ≤
+            M.trajectoryExpectedQ (fun x ↦ EnvironmentStage.pointMass (g x)) s a ∧
+        M.trajectoryExpectedValue π s ≤
+            M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (g x)) s) →
+      M.trajectoryExpectedQ (fun x ↦ EnvironmentStage.pointMass (f x)) =
+          M.trajectoryExpectedQ (fun x ↦ EnvironmentStage.pointMass (g x)) ∧
+      M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (f x)) =
+          M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (g x))
+
+/-- `eq:defn-dpi-occupancy-discounted-dist`, `chapters/prelim.tex:145–160`, with
+`eq:infinite-d-star-def`, `chapters/prelim.tex:163–176`. The occupancies are written as the
+printed formulas: `d^π(s;ρ) = (1−γ) ∑_t γ^t ℙ(s_t = s | s_0 ∼ ρ)` and
+`d^π(s,a;ρ) = (1−γ) ∑_t γ^t ℙ(s_t = s, a_t = a | s_0 ∼ ρ)`, with the event probabilities taken
+under the actual infinite trajectory law and mixed over `ρ`. Conjuncts: both are normalized
+(the "prefactor `1−γ` … ensuring that these distributions are normalized" claim, `:160`), and
+for every deterministic stationary policy `f` (in particular `π⋆`),
+`d(s,a;ρ) = d(s;ρ) 1{a = f(s)}` (`:171–174`). -/
+def Eq_defn_dpi_occupancy_discounted_dist : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action] [DecidableEq Action]
+    (M : DiscountedMDP State Action) (ρ : FiniteDistribution State),
+    let d : StationaryPolicy State Action → State → ℝ := fun π s ↦
+      (1 - M.discount) * ∑' t : ℕ, M.discount ^ t * ρ.expectation (fun x ↦
+        (M.infiniteTrajectoryLaw π x).real
+          {path | DiscountedMDP.trajectoryState x path t = s})
+    let dj : StationaryPolicy State Action → State → Action → ℝ := fun π s a ↦
+      (1 - M.discount) * ∑' t : ℕ, M.discount ^ t * ρ.expectation (fun x ↦
+        (M.infiniteTrajectoryLaw π x).real
+          {path | DiscountedMDP.trajectoryState x path t = s ∧ (path t).1 = a})
+    (∀ π : StationaryPolicy State Action, ∑ s, d π s = 1 ∧ ∑ s, ∑ a, dj π s a = 1) ∧
+    ∀ (f : State → Action) (s : State) (a : Action),
+      dj (fun x ↦ EnvironmentStage.pointMass (f x)) s a =
+        d (fun x ↦ EnvironmentStage.pointMass (f x)) s * (if a = f s then 1 else 0)
+
+/-- `eq:bellman_consistency_operator`, `eq:bellman_consistency`, `chapters/prelim.tex:191–209`,
+and `eq:bellman_consistency-V`, `chapters/prelim.tex:210–223`. With
+`T^π(Q)(s,a) = r(s,a) + γ E_{s'∼P(·|s,a)} E_{a'∼π(·|s')} Q(s',a')` and
+`T_π(V)(s) = E_{a∼π(·|s)} r(s,a) + γ E_{s'∼P(·|s,π)} V(s')`, where
+`P(s'|s,π) = E_{a∼π(·|s)} P(s'|s,a)` (`eq:defn-P-s-pi-inf`, `:69–74`): the actual trajectory
+`Q^π` is a fixed point of `T^π`, it is the unique fixed point (`:209`), and the actual
+trajectory `V^π` is a fixed point of `T_π`. Every `γ ∈ [0,1)`. -/
+def Eq_bellman_consistency_V : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action),
+    let Tπ : (State → Action → ℝ) → State → Action → ℝ := fun Q s a ↦
+      M.reward s a + M.discount *
+        (M.transition s a).expectation (fun s' ↦ (π s').expectation (Q s'))
+    let TV : (State → ℝ) → State → ℝ := fun V s ↦
+      (π s).expectation (M.reward s) + M.discount *
+        ∑ s', (π s).expectation (fun a ↦ (M.transition s a).prob s') * V s'
+    Tπ (M.trajectoryExpectedQ π) = M.trajectoryExpectedQ π ∧
+    (∀ Q : State → Action → ℝ, Tπ Q = Q → Q = M.trajectoryExpectedQ π) ∧
+    TV (M.trajectoryExpectedValue π) = M.trajectoryExpectedValue π
+
+/-- `eq:bellman_optimality_operator`, `eq:bellman_fix_point`, `chapters/prelim.tex:233–246`.
+`T(Q)(s,a) = r(s,a) + γ E_{s'∼P(·|s,a)} max_{a'} Q(s',a')` (the finite maximum written as
+`⨆ a'`, which is the maximum since the action set is finite and nonempty). For **every**
+optimal deterministic stationary policy `π⋆ = f` (in the sense of
+`Eq_optimal_Vstar_Qstar_defn`), `Q⋆ := Q^{π⋆}` is a fixed point of `T` and is its unique
+fixed point. -/
+def Eq_bellman_fix_point : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (f : State → Action),
+    (∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
+      M.trajectoryExpectedQ π s a ≤
+          M.trajectoryExpectedQ (fun x ↦ EnvironmentStage.pointMass (f x)) s a ∧
+      M.trajectoryExpectedValue π s ≤
+          M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (f x)) s) →
+    let T : (State → Action → ℝ) → State → Action → ℝ := fun Q s a ↦
+      M.reward s a + M.discount * (M.transition s a).expectation (fun s' ↦ ⨆ a', Q s' a')
+    T (M.trajectoryExpectedQ (fun x ↦ EnvironmentStage.pointMass (f x))) =
+        M.trajectoryExpectedQ (fun x ↦ EnvironmentStage.pointMass (f x)) ∧
+    ∀ Q : State → Action → ℝ, T Q = Q →
+      Q = M.trajectoryExpectedQ (fun x ↦ EnvironmentStage.pointMass (f x))
+
+/-- `eq:gamma-contraction-preliminary-inf`, `chapters/prelim.tex:251–261`. For every policy
+`π` and all `Q₁, Q₂ ∈ ℝ^{S×A}`, `‖T^π Q₁ − T^π Q₂‖∞ ≤ γ ‖Q₁ − Q₂‖∞` and
+`‖T Q₁ − T Q₂‖∞ ≤ γ ‖Q₁ − Q₂‖∞`, with `T^π`, `T` as in `Eq_bellman_consistency_V` and
+`Eq_bellman_fix_point`. `‖·‖` on `State → Action → ℝ` is Mathlib's sup norm on finite
+products, i.e. `max_{s,a} |Q(s,a)|` (the printed `ℓ∞` norm). -/
+def Eq_gamma_contraction_preliminary_inf : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (Q₁ Q₂ : State → Action → ℝ),
+    let Tπ : (State → Action → ℝ) → State → Action → ℝ := fun Q s a ↦
+      M.reward s a + M.discount *
+        (M.transition s a).expectation (fun s' ↦ (π s').expectation (Q s'))
+    let T : (State → Action → ℝ) → State → Action → ℝ := fun Q s a ↦
+      M.reward s a + M.discount * (M.transition s a).expectation (fun s' ↦ ⨆ a', Q s' a')
+    ‖Tπ Q₁ - Tπ Q₂‖ ≤ M.discount * ‖Q₁ - Q₂‖ ∧ ‖T Q₁ - T Q₂‖ ≤ M.discount * ‖Q₁ - Q₂‖
+
+/-- `eq:dh-pi-defn`, `chapters/prelim.tex:749–774` (`eq:dh-pi-defn` `:749–758`,
+`eqn:defn-d1rho-finite` `:760–763`, `eq:dhstar-finite` `:765–774`).
+A finite-horizon episode with nonstationary transitions, rewards and randomized Markov
+decision rules is a list of `DecisionStage`s (stage `i` is the source's step `h = i + 1`).
+`d_h(s;ρ) = ℙ(s_h = s | s_1 ∼ ρ)` is written as the final-state event of the actual trajectory
+law of the first `i` stages, mixed over `ρ`; `d_h(s,a;ρ) = ℙ(s_h = s, a_h = a | s_1 ∼ ρ)` adds
+one more sampled stage and its action. Conjuncts: `d_h(s,a) = d_h(s) π_h(a|s)`; `d_1 = ρ` for
+every policy; and for **every** deterministic Markov policy (`π_h(·|x) = 1{· = f_h(x)}` at every
+step; in particular `π⋆`), `d_h(s,a) = d_h(s) 1{a = f_h(s)}`. -/
+def Eq_dh_pi_defn : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    [DecidableEq State] [DecidableEq Action]
+    (stages : List (DecisionStage State Action)) (ρ : FiniteDistribution State),
+    let d : Fin stages.length → State → ℝ := fun i s ↦
+      ρ.expectation (fun x ↦ (DecisionStage.trajectoryLaw (stages.take i.val) x).expectation
+        (fun path ↦
+          if DecisionStage.finalState (stages.take i.val).length x path = s then 1 else 0))
+    let dj : Fin stages.length → State → Action → ℝ := fun i s a ↦
+      ρ.expectation (fun x ↦ (DecisionStage.trajectoryLaw (stages.take i.val) x).expectation
+        (fun path ↦
+          (DecisionStage.trajectoryLaw [stages.get i]
+              (DecisionStage.finalState (stages.take i.val).length x path)).expectation
+            (fun next ↦
+              if DecisionStage.finalState (stages.take i.val).length x path = s ∧ next.1 = a
+              then 1 else 0)))
+    (∀ (i : Fin stages.length) (s : State) (a : Action),
+      dj i s a = d i s * ((stages.get i).policy s).prob a) ∧
+    (∀ (i : Fin stages.length), i.val = 0 → ∀ s, d i s = ρ.prob s) ∧
+    ∀ f : ℕ → State → Action,
+      (∀ (i : Fin stages.length) (x : State),
+        (stages.get i).policy x = EnvironmentStage.pointMass (f i.val x)) →
+      ∀ (i : Fin stages.length) (s : State) (a : Action),
+        dj i s a = d i s * (if a = f i.val s then 1 else 0)
+
+/-- `eq:Bellman-finite-pi`, `chapters/prelim.tex:784–794`. For a finite-horizon episode with
+nonstationary transitions, rewards and randomized Markov decision rules (a list of `H`
+`DecisionStage`s; stage `i` is step `h = i + 1`), `V_h^π`, `Q_h^π` are the actual expected
+cumulative rewards from step `h` (`trajectoryValue`, `trajectoryQ` of the suffix starting at
+stage `i`). Terminal values `V_{H+1} = Q_{H+1} = 0` (`:784`), and for every `h ∈ [H]`:
+`Q_h(s,a) = r_h(s,a) + E_{s'∼P_h(·|s,a)} V_{h+1}(s')` and `V_h(s) = E_{a∼π_h(·|s)} Q_h(s,a)`. -/
+def Eq_Bellman_finite_pi : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
+    (stages : List (DecisionStage State Action)),
+    (∀ s, DecisionStage.trajectoryValue (stages.drop stages.length) s = 0) ∧
+    (∀ s a, DecisionStage.trajectoryQ (stages.drop stages.length) s a = 0) ∧
+    ∀ (i : Fin stages.length) (s : State) (a : Action),
+      DecisionStage.trajectoryQ (stages.drop i.val) s a =
+          (stages.get i).reward s a + ((stages.get i).transition s a).expectation
+            (DecisionStage.trajectoryValue (stages.drop (i.val + 1))) ∧
+      DecisionStage.trajectoryValue (stages.drop i.val) s =
+          ((stages.get i).policy s).expectation (DecisionStage.trajectoryQ (stages.drop i.val) s)
+
+/-- `eq:Bellman-finite-opt`, `chapters/prelim.tex:798–806`, with the existence claim at
+`chapters/prelim.tex:738–746` (`eq:defn-optimalV-optimalQ-finite-prelim`). A finite-horizon
+environment is a list of `H` `EnvironmentStage`s (nonstationary `P_h`, `r_h ∈ [0,1]`); a
+randomized Markov policy `π = (π_h)` acts through `controlled`, and `V_h^π`, `Q_h^π` are the
+actual expected cumulative rewards of the suffix from step `h` (index `n = h − 1`). A
+deterministic Markov policy `f = (f_h)` is optimal if it maximizes `V_h^π(s)` and `Q_h^π(s,a)`
+over all randomized Markov policies at every `(s,a,h) ∈ S × A × [H]`. Conjuncts: an optimal
+deterministic policy exists (`:738–739`); and for **every** optimal deterministic `π⋆`,
+`V⋆ := V^{π⋆}`, `Q⋆ := Q^{π⋆}` satisfy `V⋆_{H+1} = Q⋆_{H+1} = 0` and, for `h = H, …, 1`,
+`Q⋆_h(s,a) = r_h(s,a) + E_{s'∼P_h(·|s,a)} V⋆_{h+1}(s')` and `V⋆_h(s) = max_a Q⋆_h(s,a)` (written
+`⨆ a`). `Nonempty Action` is the printed 𝒜 = {1,…,A} (`chapters/prelim.tex:36`); each stage already
+carries a nonempty action set, so it matters only for H = 0. -/
+def Eq_Bellman_finite_opt : Prop :=
+  ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action] [Nonempty Action]
+    (es : List (EnvironmentStage State Action)),
+    let V : (ℕ → StationaryPolicy State Action) → ℕ → State → ℝ := fun π n ↦
+      DecisionStage.trajectoryValue ((EnvironmentStage.controlled es π).drop n)
+    let Q : (ℕ → StationaryPolicy State Action) → ℕ → State → Action → ℝ := fun π n ↦
+      DecisionStage.trajectoryQ ((EnvironmentStage.controlled es π).drop n)
+    let det : (ℕ → State → Action) → ℕ → StationaryPolicy State Action := fun f n x ↦
+      EnvironmentStage.pointMass (f n x)
+    let IsOptimal : (ℕ → State → Action) → Prop := fun f ↦
+      ∀ (π : ℕ → StationaryPolicy State Action) (n : ℕ) (s : State) (a : Action),
+        n < es.length → V π n s ≤ V (det f) n s ∧ Q π n s a ≤ Q (det f) n s a
+    (∃ f, IsOptimal f) ∧
+    ∀ f, IsOptimal f →
+      (∀ s, V (det f) es.length s = 0) ∧ (∀ s a, Q (det f) es.length s a = 0) ∧
+      ∀ (i : Fin es.length) (s : State) (a : Action),
+        Q (det f) i.val s a = (es.get i).reward s a +
+            ((es.get i).transition s a).expectation (V (det f) (i.val + 1)) ∧
+        V (det f) i.val s = ⨆ a', Q (det f) i.val s a'
 
 end StatisticalRL.Statements
