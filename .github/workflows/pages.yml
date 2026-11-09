@@ -14,6 +14,7 @@ on:
       - "docs/SOURCE-ISSUES.md"
       - "docs/source-inventory.json"
       - "site/**"
+      - "scripts/gen_nodes.py"
       - ".github/workflows/pages.yml"
 
 permissions:

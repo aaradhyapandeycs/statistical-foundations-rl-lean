@@ -23,6 +23,7 @@ ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 
 from reader.book import Book  # noqa: E402
+from reader.graph import GraphPages  # noqa: E402
 from reader.lean import Git, LeanIndex  # noqa: E402
 from reader.render import Site  # noqa: E402
 
@@ -66,6 +67,9 @@ def main() -> int:
     html_pages = site.book_pages()
     html_pages["index"] = site.index_page()
     html_pages["results"] = site.results_page()
+    graph = GraphPages(site, html_pages)  # node graph from the ledgers at the same Lean revision
+    html_pages["status"] = graph.status_page()
+    html_pages["graph"] = graph.graph_page()
     html_pages["about"] = site.about_page()
     html_pages["acknowledgements"] = site.ack_page()
     html_pages["references"] = site.references_page()  # last: citations are collected above
@@ -79,6 +83,9 @@ def main() -> int:
         shutil.copyfile(f, assets / f.name)
     (assets / "mathjax-config.js").write_text(site.mathjax_config())
     (out / "results.json").write_text(site.search_data())
+    (out / "graph").mkdir(exist_ok=True)
+    (out / "graph" / "nodes.json").write_text(graph.nodes_json())
+    (out / "graph" / "graph.dot").write_text(graph.dot())
     (out / ".nojekyll").write_text("")
 
     old = final.with_name(final.name + ".old")
@@ -94,6 +101,10 @@ def main() -> int:
     placed = len(lean.entries) - len(site.unplaced)
     print(f"Lean commit {git.rev}")
     print(f"{len(html_pages)} pages, {len(pages)} book sections, {len(book.images)} figures")
+    gs = graph.data["summary"]
+    print(f"node graph: {len(graph.data['nodes'])} nodes, {gs['uses_edges']} unreviewed edges; "
+          f"{gs['named_results_with_ledger_record']} of {gs['named_results_in_inventory']} numbered results "
+          f"with a ledger record")
     print(f"{len(lean.entries)} statement entries, {placed} placed next to book text, {len(site.unplaced)} unplaced")
     if site.unplaced:
         print("  unplaced: " + ", ".join(e.name for e in site.unplaced))

@@ -60,6 +60,25 @@ GitHub Pages is enabled.
 Lean files and ledgers are read with `git show <rev>:<path>`, so
 uncommitted work in the checkout never appears on the site.
 
+## Status dashboard and dependency graph
+
+`status.html` (counts by chapter) and `graph.html` (dependency graph, legend
+and a table of every node) are computed at build time by
+`scripts/gen_nodes.py` from the ledgers at the same Lean revision, so they
+never carry hand-written numbers; `graph/nodes.json` and `graph/graph.dot`
+are published beside them. The build fails if the number of numbered results
+with a ledger record disagrees with a direct count of distinct ledger keys
+(a bookkeeping cross-check, not an independent review of the ledger).
+The graph is drawn as inline SVG (one column per chapter); Graphviz is not
+needed, and the table is the text fallback. Border = which statement is in
+Lean (printed, corrected, restricted, refuted, partial, open, prose claim);
+fill = whether it is proved; dark fill ("fully proved") only for printed
+statements whose cited results are all fully proved. Edges are unreviewed
+candidates from TeX cross-references and the pages say so. The committed
+`docs/graph/nodes.json` and `docs/NEXT.md` come from the working tree; check
+them with `python3 scripts/gen_nodes.py --check` (run by
+`scripts/run_before_push.sh`).
+
 ## Status rules
 
 A status comes only from the reviewed ledger. A statement entry with no

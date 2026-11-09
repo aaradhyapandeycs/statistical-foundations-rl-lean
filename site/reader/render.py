@@ -186,7 +186,8 @@ class Site:
         return "".join(out)
 
     def shell(self, title: str, body: str, current: str | None = None, toc: bool = True) -> str:
-        nav = [("index.html", "Home"), ("results.html", "Results"), ("about.html", "About")]
+        nav = [("index.html", "Home"), ("results.html", "Results"), ("status.html", "Status"),
+               ("graph.html", "Graph"), ("about.html", "About")]
         links = "".join(f'<a href="{h}"{" aria-current=page" if h == (current or "") + ".html" else ""}>{t}</a>'
                         for h, t in nav)
         layout = (f'<div class="layout">{self.toc(current)}<main id="main">{body}</main></div>' if toc
