@@ -1203,6 +1203,26 @@
       "coverage": "docs/COVERAGE.md"
     },
     {
+      "name": "Theorem 7.11 (corrected covariance, closed half-spaces)",
+      "source_label": "thm:Berry-Esseen-linear",
+      "source_file": "chapters/inference.tex",
+      "source_lines": "132–141",
+      "source_context_lines": "47–129 (sampling, TD update, averaging, A, Γ, convex distance)",
+      "lean_export": "StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_11_corrected_halfspace",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_11_corrected_halfspace_holds",
+      "statement_scope": "Corrected and restricted: true noise covariance Γ_true ≻ 0 instead of the printed Γ (C43, printed refuted under the action-dependent-reward reading); closed half-spaces only, not all convex sets; printed rate T^(-1/3) with an instance-, η₀- and V₀-dependent constant, printed coefficient not established. Implies no convex confidence-region guarantee beyond half-spaces (C47). Not author-approved; this does not certify the printed theorem.",
+      "evidence": "docs/critic-thm7-11-m9.md",
+      "supporting_evidence": [
+        "docs/critic-thm7-11-corrected-plan-check.md",
+        "docs/critic-thm7-11-m5.md",
+        "docs/critic-thm7-11-m7.md",
+        "docs/critic-thm7-11-m8td.md",
+        "docs/critic-thm7-11-m8cs.md"
+      ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
       "name": "Theorem 7.12 (corrected well-posed VPO variant)",
       "source_label": "thm_online",
       "source_file": "chapters/RLHF.tex",

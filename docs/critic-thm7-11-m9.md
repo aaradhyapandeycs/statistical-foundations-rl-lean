@@ -2,7 +2,7 @@
 
 Public copy of the independent critic report; local paths removed. Probe and scratch files named below (`reviewer-probes/`, `builder-probes/`) were kept in private folders and are not published.
 
-Post-review note (added to this public copy, 2026-11-09): the entry was integrated under the recommended name `Thm7_11_corrected_halfspace` in `Formalization/Statements/Ch7.lean`, with the wrapper `Thm7_11_corrected_halfspace_holds` in `Formalization/Statements/Ch7Proofs.lean`, the corrected citations (F1) and the added docstring text (F2, F3), and the one G2 allowlist edge (R2). The ledger record (§7) awaits the maintainer's decision and is not yet in `docs/named-result-status.json`. The review text below is otherwise unchanged.
+Post-review note (added to this public copy, 2026-11-09): the entry was integrated under the recommended name `Thm7_11_corrected_halfspace` in `Formalization/Statements/Ch7.lean`, with the wrapper `Thm7_11_corrected_halfspace_holds` in `Formalization/Statements/Ch7Proofs.lean`, the corrected citations (F1) and the added docstring text (F2, F3), and the one G2 allowlist edge (R2). By the maintainer's decision the ledger record (§7) was added to `docs/named-result-status.json` as a `proved_variants` record, with the §7 wording conditions applied to README and PROGRESS. The review text below is otherwise unchanged.
 
 Reviewer: independent source-fidelity critic (not the builder). Date 2026-11-09.
 

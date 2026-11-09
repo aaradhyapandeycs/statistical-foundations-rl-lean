@@ -21,7 +21,7 @@
   "Formalization/Statements/Ch7Proofs.lean": "0b2c3f713a5178b25db17b217c99964e2b090f33869a38141b7cfee2902354d7",
   "docs/COVERAGE.md": "955d55f7bbdd5f79047056f26bdccaaaf34267d55ff4ee5554167acb589011c1",
   "docs/SOURCE-ISSUES.md": "a28f8209a9d44e8f48bfc75f133fd5beac77ea7fd7860ec44fed4baddcaecf87",
-  "docs/named-result-status.json": "54ffc4f989e825a3e129fae50ed229637781f010fd0f0279dca119db702b3bac",
+  "docs/named-result-status.json": "8832b822ca2803ae0e1c99f3af02c714efeaf5f8a4f93d26e7a876b0e1782603",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
  "vocabulary": {
@@ -42,12 +42,12 @@
  },
  "summary": {
   "named_results_in_inventory": 90,
-  "named_results_with_ledger_record": 89,
+  "named_results_with_ledger_record": 90,
   "named_by_statement_status": {
    "printed": 45,
-   "corrected": 29,
+   "corrected": 30,
    "restricted": 15,
-   "refuted": 1,
+   "refuted": 0,
    "partial": 0,
    "open": 0,
    "prose-claim": 0
@@ -190,9 +190,9 @@
    "7": {
     "named": {
      "printed": 2,
-     "corrected": 7,
+     "corrected": 8,
      "restricted": 2,
-     "refuted": 1,
+     "refuted": 0,
      "partial": 0,
      "open": 0,
      "prose-claim": 0
@@ -207,7 +207,7 @@
      "prose-claim": 1
     },
     "named_total": 12,
-    "named_proved": 11,
+    "named_proved": 12,
     "named_printed_with_cited_printed": 2
    }
   }
@@ -9385,7 +9385,7 @@
     {
      "name": "StatisticalRL.Statements.Ch7.Thm7_11_corrected_halfspace",
      "variant": "corrected",
-     "ledger": null,
+     "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
      "line": 578
     }
@@ -9396,7 +9396,13 @@
    "library_exports": [
     "StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le"
    ],
-   "ledger_records": [],
+   "ledger_records": [
+    {
+     "ledger": "variant",
+     "name": "Theorem 7.11 (corrected covariance, closed half-spaces)",
+     "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_11_corrected_halfspace"
+    }
+   ],
    "coverage_rows": [
     26
    ],
@@ -9404,7 +9410,9 @@
     "C43",
     "C47"
    ],
-   "evidence": [],
+   "evidence": [
+    "docs/critic-thm7-11-m9.md"
+   ],
    "refutations_cited": [
     "not_thm7_11_printed",
     "not_thm7_11_printed_someInit",
@@ -9413,8 +9421,8 @@
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
-   "statement_status": "refuted",
-   "proof_status": "refuted",
+   "statement_status": "corrected",
+   "proof_status": "proved",
    "printed_with_cited_printed": false
   },
   {
