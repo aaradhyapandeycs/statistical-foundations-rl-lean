@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "generated_by": "scripts/gen_nodes.py",
- "notice": "Generated file; do not edit. Status is derived from the reviewed ledgers. The formalization of the monograph is INCOMPLETE. `uses` edges are unreviewed candidates from TeX cross-references.",
+ "notice": "Generated file; do not edit. Status is derived from the reviewed ledgers. The formalization of the monograph is INCOMPLETE. `uses` edges are TeX cross-references classified by an AI critic and verifier (docs/graph/uses-review.json), not author-reviewed.",
  "source": {
   "arxiv_id": "2610.41903v1",
   "main_sha256": "5a925ce6a5a988bdc4b8631c5b3f985195f58b9fec80cc1f3d80c6cd10aea956"
@@ -23,6 +23,7 @@
   "Formalization/Statements/Ch7Proofs.lean": "71d982417a7c8ebfbb39f28effcee463dbe02a076c3a0211edd9c9fcbd6eab04",
   "docs/COVERAGE.md": "6a0e5e9bb4948cd6889ba43bc3d4eb27b887653c6ba37b86c84f78ae2460f220",
   "docs/SOURCE-ISSUES.md": "e34d0e819e4a278e1958f6dbc363c77be9a7ffbd4c2d0c5e1c586f2309fa7fa6",
+  "docs/graph/uses-review.json": "ec0fd31e102e3d6bb48ab1b0c5c493408c9508b4f9234fe09ba1d35e802250dc",
   "docs/named-result-status.json": "ab902c764f2cc2c58593bba45bc5273d1a2d266fbc447293129c7e3253d972f0",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
@@ -62,7 +63,7 @@
    "open": 0,
    "prose-claim": 0
   },
-  "named_printed_with_cited_printed": 35,
+  "named_printed_with_cited_printed": 34,
   "prose_nodes": 115,
   "prose_by_statement_status": {
    "printed": 47,
@@ -123,8 +124,15 @@
    "own-proof:source-omits": 2
   },
   "new_proof_marker": 23,
-  "uses_edges": 181,
-  "uses_edges_reviewed": 0,
+  "uses_edges": 199,
+  "uses_edges_reviewed": 199,
+  "uses_edges_by_verdict": {
+   "proof-dependency": 110,
+   "definition": 53,
+   "comparison": 34,
+   "wrong-target": 2
+  },
+  "uses_edges_added_by_review": 18,
   "context_items": {
    "definition": 4,
    "assumption": 3,
@@ -411,7 +419,7 @@
     },
     "named_total": 18,
     "named_proved": 18,
-    "named_printed_with_cited_printed": 2,
+    "named_printed_with_cited_printed": 1,
     "named_by_label": {
      "stated": 5,
      "corrected": 4,
@@ -1420,19 +1428,21 @@
      "id": "label:eq:bellman_fix_point",
      "label": "eq:bellman_fix_point",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "prelim.tex",
-     "line": 348
+     "line": 348,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:eq:gamma-contraction-preliminary-inf",
      "label": "eq:gamma-contraction-preliminary-inf",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "prelim.tex",
-     "line": 348
+     "line": 348,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 2.1",
@@ -1675,10 +1685,11 @@
      "id": "label:eq:matrix-VarP-V-expression",
      "label": "eq:matrix-VarP-V-expression",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "prelim.tex",
-     "line": 470
+     "line": 470,
+     "verdict": "definition"
     }
    ],
    "display_name": "Lemma 2.2",
@@ -1745,10 +1756,11 @@
      "id": "label:eq:Vpi-a-function-of-Qpi-inf",
      "label": "eq:Vpi-a-function-of-Qpi-inf",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "prelim.tex",
-     "line": 506
+     "line": 506,
+     "verdict": "definition"
     }
    ],
    "display_name": "Eq. (2.24)",
@@ -2381,10 +2393,11 @@
      "id": "label:eq:defn-Var-Psa-V",
      "label": "eq:defn-Var-Psa-V",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "prelim.tex",
-     "line": 976
+     "line": 976,
+     "verdict": "definition"
     }
    ],
    "display_name": "Lemma 2.5",
@@ -2847,10 +2860,11 @@
      "id": "label:eq:KL-ub-chi2",
      "label": "eq:KL-ub-chi2",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "prelim.tex",
-     "line": 1280
+     "line": 1280,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 2.11",
@@ -2904,10 +2918,11 @@
      "id": "label:lem:reverse-Fano-bound",
      "label": "lem:reverse-Fano-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "prelim.tex",
-     "line": 1232
+     "line": 1232,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 2.1",
@@ -3138,37 +3153,41 @@
      "id": "label:alg:policy-eval-model-based",
      "label": "alg:policy-eval-model-based",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "generative_model_model_based.tex",
-     "line": 142
+     "line": 142,
+     "verdict": "definition"
     },
     {
      "id": "label:eq:lemma-VarP-V-bound",
      "label": "eq:lemma-VarP-V-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 438
+     "line": 438,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:Bernstein-prelim",
      "label": "lem:Bernstein-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 471
+     "line": 471,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:basic-property-matrix-notation-inf",
      "label": "eq:sum-I-minu-gammaP-expand5-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 561
+     "line": 561,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 3.1",
@@ -3523,37 +3542,71 @@
      "id": "label:alg:policy-learn-model-based",
      "label": "alg:policy-learn-model-based",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "generative_model_model_based.tex",
-     "line": 902
+     "line": 902,
+     "verdict": "definition"
+    },
+    {
+     "id": "label:thm:model-based-policy-eval",
+     "label": "thm:model-based-policy-eval",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "generative_model_model_based.tex",
+     "line": 1035,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:basic-property-matrix-notation-inf",
+     "label": "lem:basic-property-matrix-notation-inf",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "generative_model_model_based.tex",
+     "line": 1082,
+     "verdict": "comparison"
     },
     {
      "id": "label:eq:LOO-intuition-generative",
      "label": "eq:LOO-intuition-generative",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1219
+     "line": 1219,
+     "verdict": "comparison"
     },
     {
      "id": "label:LemAbsToNormalV",
      "label": "LemAbsToNormalV",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1265
+     "line": 1265,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:Bernstein-prelim",
+     "label": "lem:Bernstein-prelim",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "generative_model_model_based.tex",
+     "line": 1334,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:policy-learning-evaluation",
      "label": "lem:policy-learning-evaluation",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1427
+     "line": 1427,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 3.2",
@@ -3882,10 +3935,11 @@
      "id": "label:LemAbsToNormalV",
      "label": "LemAbsToNormalV",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 2624
+     "line": 2624,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 3.4",
@@ -3974,37 +4028,41 @@
      "id": "label:lem:Bernstein-prelim",
      "label": "lem:Bernstein-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1334
+     "line": 1334,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:LemValueCover",
      "label": "LemValueCover",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1345
+     "line": 1345,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:basic-property-matrix-notation-inf",
      "label": "lem:basic-property-matrix-notation-inf",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1381
+     "line": 1381,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:empirical-value-residual",
      "label": "lem:empirical-value-residual",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1421
+     "line": 1421,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 3.5",
@@ -4141,19 +4199,21 @@
      "id": "label:lem:empirical-value-residual",
      "label": "lem:empirical-value-residual",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1413
+     "line": 1413,
+     "verdict": "comparison"
     },
     {
      "id": "label:eq:lemma-VarP-V-bound",
      "label": "eq:lemma-VarP-V-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1416
+     "line": 1416,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 3.2",
@@ -4249,22 +4309,44 @@
    "refuted_lead": false,
    "uses": [
     {
+     "id": "label:lem:KL-tensorize",
+     "label": "lem:KL-tensorize",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "generative_model_model_based.tex",
+     "line": 1700,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:KL-quadratic-lower-bound",
+     "label": "lem:KL-quadratic-lower-bound",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "generative_model_model_based.tex",
+     "line": 1709,
+     "verdict": "proof-dependency"
+    },
+    {
      "id": "label:lem:fano",
      "label": "lem:fano",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 1991
+     "line": 1991,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:properties-M01-lower-generative",
      "label": "lem:properties-M01-lower-generative",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_based.tex",
-     "line": 2063
+     "line": 2063,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 3.7",
@@ -4741,55 +4823,71 @@
      "id": "label:alg:td-infinite",
      "label": "alg:td-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "generative_model_model_free.tex",
-     "line": 217
+     "line": 217,
+     "verdict": "definition"
+    },
+    {
+     "id": "label:lem:azuma-hoeffding",
+     "label": "lem:azuma-hoeffding",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "generative_model_model_free.tex",
+     "line": 419,
+     "verdict": "comparison"
     },
     {
      "id": "label:lem:Freedman-prelim",
      "label": "lem:Freedman-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 482
+     "line": 482,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:TD-bounded",
      "label": "lemma:TD-bounded",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 548
+     "line": 548,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:TD-step-size",
      "label": "lemma:TD-step-size",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 548
+     "line": 548,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:TD-square",
      "label": "lemma:TD-square",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 665
+     "line": 665,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:TD-variance-proxy-bound",
      "label": "lemma:TD-variance-proxy-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 745
+     "line": 745,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 4.1",
@@ -4859,10 +4957,11 @@
      "id": "label:thm:policy-evaluation-TD",
      "label": "thm:policy-evaluation-TD",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 227
+     "line": 227,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Remark 4.1",
@@ -5018,10 +5117,11 @@
      "id": "label:thm:policy-evaluation-TD",
      "label": "eq:thm:sample-size-TD-thm",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 2309
+     "line": 2309,
+     "verdict": "definition"
     }
    ],
    "display_name": "Lemma 4.3",
@@ -5192,10 +5292,11 @@
      "id": "label:lem:Freedman-prelim",
      "label": "lem:Freedman-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 2455
+     "line": 2455,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 4.5",
@@ -5290,46 +5391,61 @@
      "id": "label:alg:q-infinite",
      "label": "alg:q-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "generative_model_model_free.tex",
-     "line": 904
+     "line": 904,
+     "verdict": "definition"
+    },
+    {
+     "id": "label:lem:azuma-hoeffding",
+     "label": "lem:azuma-hoeffding",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "generative_model_model_free.tex",
+     "line": 1250,
+     "verdict": "comparison"
     },
     {
      "id": "label:lemma:Q-comparison-facts",
      "label": "lemma:Q-comparison-facts",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 1376
+     "line": 1376,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:Q-step-size",
      "label": "eq:Q-weight-sum",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 1584
+     "line": 1584,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:Freedman-prelim",
      "label": "lem:Freedman-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 1628
+     "line": 1628,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:non-negativity-Qt-Vt",
      "label": "lemma:non-negativity-Qt-Vt",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 1705
+     "line": 1705,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 4.6",
@@ -5399,10 +5515,11 @@
      "id": "label:thm:infinite-horizon-simple",
      "label": "thm:infinite-horizon-simple",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 915
+     "line": 915,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Remark 4.2",
@@ -5560,55 +5677,61 @@
      "id": "label:alg:q-infinite",
      "label": "alg:q-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "generative_model_model_free.tex",
-     "line": 973
+     "line": 973,
+     "verdict": "definition"
     },
     {
      "id": "label:theorem:azar",
      "label": "theorem:azar",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 2717
+     "line": 2717,
+     "verdict": "comparison"
     },
     {
      "id": "label:lem:optimal-V-Q-hardMDP",
      "label": "lem:optimal-V-Q-hardMDP",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 3009
+     "line": 3009,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:lower-bound-E-xi-lower-Q",
      "label": "eqn:lb-xi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 3461
+     "line": 3461,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:non-negativity-Qt-Vt",
      "label": "lemma:non-negativity-Qt-Vt",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 3661
+     "line": 3661,
+     "verdict": "comparison"
     },
     {
      "id": "label:lem:Freedman-prelim",
      "label": "lem:Freedman-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 3676
+     "line": 3676,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 4.7",
@@ -5761,10 +5884,11 @@
      "id": "label:lemma:TD-bounded",
      "label": "lemma:TD-bounded",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 2510
+     "line": 2510,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Lemma 4.8",
@@ -5971,19 +6095,21 @@
      "id": "label:eq:defn-KL",
      "label": "eq:defn-chi2",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 1347
+     "line": 1347,
+     "verdict": "definition"
     },
     {
      "id": "label:eq:KL-ub-chi2",
      "label": "eq:KL-ub-chi2",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 2673
+     "line": 2673,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 4.10",
@@ -6198,19 +6324,21 @@
      "id": "label:assump:ergodicity-asyncQ",
      "label": "assump:ergodicity-asyncQ",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "generative_model_model_free.tex",
-     "line": 2069
+     "line": 2069,
+     "verdict": "definition"
     },
     {
      "id": "label:alg:async-q",
      "label": "alg:async-q",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "generative_model_model_free.tex",
-     "line": 2079
+     "line": 2079,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 4.12",
@@ -6543,10 +6671,11 @@
      "id": "label:eq:bellman_fix_point",
      "label": "eq:bellman_fix_point",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 2830
+     "line": 2830,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 4.14",
@@ -6628,19 +6757,21 @@
      "id": "label:lemma:non-negativity-Qt-Vt",
      "label": "lemma:non-negativity-Qt-Vt",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 3749
+     "line": 3749,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:Freedman-prelim",
      "label": "lem:Freedman-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 3758
+     "line": 3758,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 4.15",
@@ -6699,10 +6830,11 @@
      "id": "label:lem:lower-bound-E-xi-lower-Q",
      "label": "eq:tau-hat-byproduct-duplicate",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "generative_model_model_free.tex",
-     "line": 3452
+     "line": 3452,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 4.4",
@@ -7069,10 +7201,11 @@
      "id": "label:alg:main-ucb-bandits",
      "label": "alg:main-ucb-bandits",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "bandits.tex",
-     "line": 260
+     "line": 260,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 5.1",
@@ -7261,55 +7394,61 @@
      "id": "label:alg:main-ucbvi",
      "label": "alg:main-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 472
+     "line": 472,
+     "verdict": "definition"
     },
     {
      "id": "label:lemma:opt",
      "label": "eq:optimism-Q-V-geq",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 777
+     "line": 777,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:decomdetail",
      "label": "lemma:decomdetail",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 849
+     "line": 849,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:bound-W1-W2-ucbvi-proof",
      "label": "lem:bound-W1-W2-ucbvi-proof",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 967
+     "line": 967,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:bound-T234",
      "label": "eq:boundt234",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1014
+     "line": 1014,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:bound-T56",
      "label": "eq:T5-low-simpler-ub-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1118
+     "line": 1118,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 5.2",
@@ -7368,10 +7507,11 @@
      "id": "label:thm-ucbvi-regret",
      "label": "thm-ucbvi-regret",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 487
+     "line": 487,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 5.3",
@@ -7636,10 +7776,11 @@
      "id": "label:alg:main-ucbvi",
      "label": "alg:main-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 640
+     "line": 640,
+     "verdict": "definition"
     }
    ],
    "display_name": "Lemma 5.3",
@@ -7719,10 +7860,11 @@
      "id": "label:lem:sum-inv-Nhk-ucbvi",
      "label": "lem:sum-inv-Nhk-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 682
+     "line": 682,
+     "verdict": "wrong-target"
     }
    ],
    "display_name": "Lemma 5.4",
@@ -7776,19 +7918,21 @@
      "id": "label:eq:I-gamma-P-Var-bound",
      "label": "eq:I-gamma-P-Var-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 661
+     "line": 661,
+     "verdict": "comparison"
     },
     {
      "id": "label:lem:cum-var-ub-Hsquare-ucbvi-mean",
      "label": "lem:cum-var-ub-Hsquare-ucbvi-mean",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 661
+     "line": 661,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 5.4",
@@ -7924,10 +8068,11 @@
      "id": "label:empirical bernstein",
      "label": "empirical bernstein",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3355
+     "line": 3355,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 5.5",
@@ -7999,10 +8144,11 @@
      "id": "label:alg:main-ucbvi",
      "label": "line:policy-update-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 797
+     "line": 797,
+     "verdict": "definition"
     }
    ],
    "display_name": "Remark 5.5",
@@ -8177,37 +8323,41 @@
      "id": "label:lem:Bernstein-prelim",
      "label": "lem:Bernstein-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3447
+     "line": 3447,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:sum-inv-Nhk-ucbvi",
      "label": "lem:sum-inv-Nhk-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3479
+     "line": 3479,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:opt",
      "label": "lemma:opt",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3487
+     "line": 3487,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:sqv",
      "label": "lemma:sqv",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3653
+     "line": 3653,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 5.7",
@@ -8415,37 +8565,41 @@
      "id": "label:lem:sum-inv-Nhk-ucbvi",
      "label": "eq:sum-inv-Nhk-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3746
+     "line": 3746,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:Freedman-prelim",
      "label": "lem:Freedman-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3771
+     "line": 3771,
+     "verdict": "proof-dependency"
     },
     {
      "id": "ch5-remark-5.13",
      "label": "eq:T6ucb-ub-T6-low-T6-diff",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3783
+     "line": 3783,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:azuma-hoeffding",
      "label": "lem:azuma-hoeffding",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3811
+     "line": 3811,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 5.8",
@@ -8546,73 +8700,81 @@
      "id": "label:lem:bound-W1-W2-ucbvi-proof",
      "label": "eq:defn-T7-proof",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1078
+     "line": 1078,
+     "verdict": "definition"
     },
     {
      "id": "label:lemma:sqv",
      "label": "lemma:sqv",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3843
+     "line": 3843,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:Freedman-prelim",
      "label": "lem:Freedman-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3852
+     "line": 3852,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:bound-T234",
      "label": "eq:boundt2",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3916
+     "line": 3916,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:cum-var-ub-Hsquare-ucbvi-mean",
      "label": "lem:cum-var-ub-Hsquare-ucbvi-mean",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3951
+     "line": 3951,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:azuma-hoeffding",
      "label": "lem:azuma-hoeffding",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3957
+     "line": 3957,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:opt",
      "label": "lemma:opt",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3979
+     "line": 3979,
+     "verdict": "proof-dependency"
     },
     {
      "id": "ch5-remark-5.13",
      "label": "eq:T6ucb-ub-T6-low-T6-diff",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 4047
+     "line": 4047,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 5.9",
@@ -8674,10 +8836,11 @@
      "id": "label:lem:bound-T56",
      "label": "eq:T6-low-simpler-ub-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1098
+     "line": 1098,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 5.8",
@@ -8746,19 +8909,21 @@
      "id": "label:alg:main-ucbvi",
      "label": "alg:main-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 1331
+     "line": 1331,
+     "verdict": "comparison"
     },
     {
      "id": "label:remark:different-bonus-than-Azar",
      "label": "remark:different-bonus-than-Azar",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1331
+     "line": 1331,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 5.9",
@@ -8845,82 +9010,111 @@
      "id": "label:alg:main-mvp",
      "label": "alg:main-mvp",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 1341
+     "line": 1341,
+     "verdict": "definition"
     },
     {
      "id": "label:lemma:opt",
      "label": "eq:optimism-Q-V-geq",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1480
+     "line": 1480,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:key2",
      "label": "lemma:key2",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1566
+     "line": 1566,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:sum-inv-Nhk-mvp",
+     "label": "lem:sum-inv-Nhk-mvp",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "onlineRL.tex",
+     "line": 1568,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:sum-inv-Nhk-ucbvi",
      "label": "lem:sum-inv-Nhk-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1568
+     "line": 1568,
+     "verdict": "comparison"
     },
     {
      "id": "label:def:filt2",
      "label": "def:filt2",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 1648
+     "line": 1648,
+     "verdict": "definition"
     },
     {
      "id": "label:lemma:uniform",
      "label": "lemma:uniform",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1719
+     "line": 1719,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:decouple",
      "label": "lemma:decouple",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1782
+     "line": 1782,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:bound-T234",
      "label": "lem:bound-T234",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1794
+     "line": 1794,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:bound-T56",
      "label": "lem:bound-T56",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1803
+     "line": 1803,
+     "verdict": "comparison"
+    },
+    {
+     "id": "label:lem:bound-T6-ucb-mvp",
+     "label": "lem:bound-T6-ucb-mvp",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "onlineRL.tex",
+     "line": 1820,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 5.10",
@@ -9093,10 +9287,11 @@
      "id": "label:alg:main-mvp",
      "label": "alg:main-mvp",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 1541
+     "line": 1541,
+     "verdict": "definition"
     }
    ],
    "display_name": "Lemma 5.11",
@@ -9185,19 +9380,21 @@
      "id": "label:alg:main-mvp",
      "label": "alg:main-mvp",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 1572
+     "line": 1572,
+     "verdict": "definition"
     },
     {
      "id": "label:lem:sum-inv-Nhk-ucbvi",
      "label": "lem:sum-inv-Nhk-ucbvi",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1589
+     "line": 1589,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Lemma 5.12",
@@ -9300,37 +9497,41 @@
      "id": "label:assumption-X-mvp",
      "label": "assumption-X-mvp",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 1697
+     "line": 1697,
+     "verdict": "definition"
     },
     {
      "id": "label:def:filt2",
      "label": "def:filt2",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 4182
+     "line": 4182,
+     "verdict": "definition"
     },
     {
      "id": "label:lem:Freedman-prelim",
      "label": "lem:Freedman-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 4215
+     "line": 4215,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:key2",
      "label": "lemma:key2",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 4248
+     "line": 4248,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 5.13",
@@ -9434,19 +9635,31 @@
      "id": "label:claim:PV-l-UB",
      "label": "claim:PV-l-UB",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 4357
+     "line": 4357,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:sqv",
      "label": "lemma:sqv",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 4399
+     "line": 4399,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lemma:uniform",
+     "label": "lemma:uniform",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "onlineRL.tex",
+     "line": 4409,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 5.14",
@@ -9511,10 +9724,11 @@
      "id": "label:lemma:decouple",
      "label": "lemma:decouple",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 1747
+     "line": 1747,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 5.10",
@@ -9853,46 +10067,51 @@
      "id": "label:alg:main-q-ucb",
      "label": "alg:main-q-ucb",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 1912
+     "line": 1912,
+     "verdict": "definition"
     },
     {
      "id": "label:lemma:opt",
      "label": "lemma:opt",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 2117
+     "line": 2117,
+     "verdict": "comparison"
     },
     {
      "id": "label:lemma:opt_model_free",
      "label": "eq:beta-t-upper-bound-ucbq",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 2158
+     "line": 2158,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:property_lr",
      "label": "eq:properties-learning-rates-tail",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 2222
+     "line": 2222,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:azuma-hoeffding",
      "label": "lem:azuma-hoeffding",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 2382
+     "line": 2382,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 5.16",
@@ -10026,10 +10245,11 @@
      "id": "label:lemma:property_lr",
      "label": "eq:properties-learning-rates-tail",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 2044
+     "line": 2044,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 5.11",
@@ -10113,19 +10333,21 @@
      "id": "label:lem:azuma-hoeffding",
      "label": "lem:azuma-hoeffding",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 4744
+     "line": 4744,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:property_lr",
      "label": "eq:properties-learning-rates-square",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 4751
+     "line": 4751,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 5.18",
@@ -10210,13 +10432,34 @@
    "refuted_lead": false,
    "uses": [
     {
+     "id": "label:lem:Vh-star-Vhpi-gap-lower-bound-online-final",
+     "label": "lem:Vh-star-Vhpi-gap-lower-bound-online-final",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "onlineRL.tex",
+     "line": 2650,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:online-lb-testing",
+     "label": "lem:online-lb-testing",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "onlineRL.tex",
+     "line": 2735,
+     "verdict": "proof-dependency"
+    },
+    {
      "id": "label:lem:tail-bound-sum-Bernoulli",
      "label": "lem:tail-bound-sum-Bernoulli",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 3205
+     "line": 3205,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 5.19",
@@ -10374,19 +10617,21 @@
      "id": "label:lem:KL-quadratic-lower-bound",
      "label": "lem:KL-quadratic-lower-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 5018
+     "line": 5018,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:reverse-Fano-bound",
      "label": "lem:reverse-Fano-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 5067
+     "line": 5067,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 5.21",
@@ -10460,10 +10705,11 @@
      "id": "label:lem:online-lb-testing",
      "label": "lem:online-lb-testing",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 2728
+     "line": 2728,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 5.12",
@@ -10715,55 +10961,61 @@
      "id": "label:example:offline-bandits",
      "label": "example:offline-bandits",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 361
+     "line": 361,
+     "verdict": "wrong-target"
     },
     {
      "id": "label:lemma:uniform",
      "label": "lemma:uniform",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 4409
+     "line": 4409,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:alg:main-fixed-profile",
      "label": "alg:main-fixed-profile",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 4417
+     "line": 4417,
+     "verdict": "definition"
     },
     {
      "id": "label:assumption-X-mvp",
      "label": "assumption-X-mvp",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 4454
+     "line": 4454,
+     "verdict": "definition"
     },
     {
      "id": "label:def:filt2",
      "label": "def:filt2",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "onlineRL.tex",
-     "line": 4468
+     "line": 4468,
+     "verdict": "definition"
     },
     {
      "id": "label:eq:Vk-Itrue",
      "label": "eq:Vk-Itrue",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "onlineRL.tex",
-     "line": 4475
+     "line": 4475,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Claim 5.1",
@@ -11261,19 +11513,21 @@
      "id": "label:alg:MAB-LCB",
      "label": "alg:MAB-LCB",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 414
+     "line": 414,
+     "verdict": "definition"
     },
     {
      "id": "label:example:offline-bandits",
      "label": "example:offline-bandits",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 414
+     "line": 414,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 6.5",
@@ -11353,28 +11607,31 @@
      "id": "label:alg:MAB-LCB",
      "label": "alg:MAB-LCB",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 459
+     "line": 459,
+     "verdict": "definition"
     },
     {
      "id": "label:lem:tail-bound-sum-Bernoulli",
      "label": "lem:tail-bound-sum-Bernoulli",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 534
+     "line": 534,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:eq:defn-Cstar-bandits",
      "label": "eq:defn-Cstar-bandits",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 558
+     "line": 558,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 6.1",
@@ -11471,10 +11728,11 @@
      "id": "label:alg:infinite-q-update",
      "label": "alg:vi-lcb-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 873
+     "line": 873,
+     "verdict": "definition"
     }
    ],
    "display_name": "Lemma 6.2",
@@ -11574,64 +11832,81 @@
      "id": "label:alg:infinite-q-update",
      "label": "alg:vi-lcb-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 902
+     "line": 902,
+     "verdict": "definition"
     },
     {
      "id": "label:assumption:concentrate-infinite-simple",
      "label": "assumption:concentrate-infinite-simple",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 917
+     "line": 917,
+     "verdict": "definition"
     },
     {
      "id": "label:lem:monotone-contraction",
      "label": "lem:monotone-contraction",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1037
+     "line": 1037,
+     "verdict": "definition"
     },
     {
      "id": "label:lem:offline-prelim",
      "label": "lem:offline-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1095
+     "line": 1095,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:sample-split-infinite",
+     "label": "lem:sample-split-infinite",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "offlineRL.tex",
+     "line": 1100,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:Bernstein-infinite",
      "label": "eq:Bernstein-infinite-all",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1171
+     "line": 1171,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:eq:infinite-d-star-def",
      "label": "eq:infinite-d-star-def",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1387
+     "line": 1387,
+     "verdict": "definition"
     },
     {
      "id": "label:lem:sum-d-Var-UB",
      "label": "lem:sum-d-Var-UB",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1543
+     "line": 1543,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 6.3",
@@ -11769,10 +12044,11 @@
      "id": "label:lem:variance-perturbation-var-P-V",
      "label": "lem:variance-perturbation-var-P-V",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 3506
+     "line": 3506,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 6.4",
@@ -11861,10 +12137,11 @@
      "id": "label:lem:tail-bound-sum-Bernoulli",
      "label": "lem:tail-bound-sum-Bernoulli",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 3578
+     "line": 3578,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 6.5",
@@ -11965,10 +12242,11 @@
      "id": "label:lem:Bernstein-infinite-proof",
      "label": "lem:Bernstein-infinite-proof",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 3869
+     "line": 3869,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 6.6",
@@ -12027,10 +12305,11 @@
      "id": "label:lem:Bernstein-infinite",
      "label": "lem:Bernstein-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1193
+     "line": 1193,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 6.6",
@@ -12112,10 +12391,11 @@
      "id": "label:eq:matrix-VarP-V-expression",
      "label": "eq:matrix-VarP-V-expression",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4331
+     "line": 4331,
+     "verdict": "definition"
     }
    ],
    "display_name": "Lemma 6.7",
@@ -12174,10 +12454,11 @@
      "id": "label:lem:sum-d-Var-UB",
      "label": "lem:sum-d-Var-UB",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1540
+     "line": 1540,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 6.7",
@@ -12233,10 +12514,11 @@
      "id": "label:alg:q-infinite-lcb",
      "label": "alg:q-infinite-lcb",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 1696
+     "line": 1696,
+     "verdict": "definition"
     }
    ],
    "display_name": "Remark 6.8",
@@ -12321,64 +12603,81 @@
      "id": "label:alg:q-infinite-lcb",
      "label": "alg:q-infinite-lcb",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 1757
+     "line": 1757,
+     "verdict": "definition"
     },
     {
      "id": "label:assumption:concentrate-infinite-simple",
      "label": "assumption:concentrate-infinite-simple",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 1771
+     "line": 1771,
+     "verdict": "definition"
     },
     {
      "id": "label:lemma:property_lr",
      "label": "lemma:property_lr",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1839
+     "line": 1839,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:Q-recursion-pessimistic-Q",
      "label": "lemma:Q-recursion-pessimistic-Q",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1896
+     "line": 1896,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:thm:infinite-offline",
      "label": "thm:infinite-offline",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1902
+     "line": 1902,
+     "verdict": "comparison"
     },
     {
      "id": "label:lemma:pessimistic-Q",
      "label": "lemma:pessimistic-Q",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 1927
+     "line": 1927,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:useful",
      "label": "lemma:useful",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 2302
+     "line": 2302,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:lcbq-alpha-xi-psi-phi-bound",
+     "label": "lem:lcbq-alpha-xi-psi-phi-bound",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "offlineRL.tex",
+     "line": 2307,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Theorem 6.8",
@@ -12525,28 +12824,31 @@
      "id": "label:lem:azuma-hoeffding",
      "label": "lem:azuma-hoeffding",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4478
+     "line": 4478,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:property_lr",
      "label": "eq:properties-learning-rates-square",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4486
+     "line": 4486,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:opt_model_free",
      "label": "lemma:opt_model_free",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4498
+     "line": 4498,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Lemma 6.9",
@@ -12633,10 +12935,11 @@
      "id": "label:lemma:Q-recursion-pessimistic-Q",
      "label": "lemma:Q-recursion-pessimistic-Q",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4534
+     "line": 4534,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 6.10",
@@ -12736,10 +13039,11 @@
      "id": "label:eq:defn-dpi-occupancy-discounted-dist",
      "label": "eq:defn-dpi-occupancy-discounted-dist",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4713
+     "line": 4713,
+     "verdict": "definition"
     }
    ],
    "display_name": "Lemma 6.11",
@@ -12840,55 +13144,61 @@
      "id": "label:lemma:useful",
      "label": "lemma:useful",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4818
+     "line": 4818,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:sample-split-infinite",
      "label": "lem:sample-split-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4876
+     "line": 4876,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:Q-recursion-pessimistic-Q",
      "label": "eq:beta-bar-beta-lcbq",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4910
+     "line": 4910,
+     "verdict": "definition"
     },
     {
      "id": "label:assumption:concentrate-infinite-simple",
      "label": "assumption:concentrate-infinite-simple",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 4969
+     "line": 4969,
+     "verdict": "definition"
     },
     {
      "id": "label:theorem:lcbq",
      "label": "eq:sample-size-lcbq-T-thm",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4971
+     "line": 4971,
+     "verdict": "definition"
     },
     {
      "id": "label:lem:Freedman-prelim",
      "label": "lem:Freedman-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 5226
+     "line": 5226,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 6.12",
@@ -12991,7 +13301,48 @@
    "refutations_cited": [],
    "partial_lead": false,
    "refuted_lead": false,
-   "uses": [],
+   "uses": [
+    {
+     "id": "label:lemma:value-policy-LB-inf",
+     "label": "lemma:value-policy-LB-inf",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "offlineRL.tex",
+     "line": 2681,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:fano",
+     "label": "lem:fano",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "offlineRL.tex",
+     "line": 2762,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:KL-tensorize",
+     "label": "lem:KL-tensorize",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "offlineRL.tex",
+     "line": 2792,
+     "verdict": "proof-dependency"
+    },
+    {
+     "id": "label:lem:transition-KL-bound-infinite",
+     "label": "lem:transition-KL-bound-infinite",
+     "via": "review",
+     "reviewed": true,
+     "target": "node",
+     "file": "offlineRL.tex",
+     "line": 2871,
+     "verdict": "proof-dependency"
+    }
+   ],
    "display_name": "Theorem 6.13",
    "proof_origins": [
     "source-proof-repaired"
@@ -13014,7 +13365,7 @@
    "site_label": "stated",
    "site_markers": [],
    "site_sub_reason": "",
-   "printed_with_cited_printed": true
+   "printed_with_cited_printed": false
   },
   {
    "id": "ch6-remark-6.9",
@@ -13048,19 +13399,21 @@
      "id": "ch6-remark-6.3",
      "label": "eq:concentrate-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 2406
+     "line": 2406,
+     "verdict": "definition"
     },
     {
      "id": "label:thm:infinite-lwoer-bound",
      "label": "thm:infinite-lwoer-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 2407
+     "line": 2407,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 6.9",
@@ -13224,10 +13577,11 @@
      "id": "label:lem:KL-quadratic-lower-bound",
      "label": "lem:KL-quadratic-lower-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 5722
+     "line": 5722,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 6.15",
@@ -13312,10 +13666,11 @@
      "id": "label:assumption:concentrate-finite",
      "label": "assumption:concentrate-finite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 3110
+     "line": 3110,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 6.16",
@@ -13463,10 +13818,11 @@
      "id": "label:assumption:concentrate-finite",
      "label": "assumption:concentrate-finite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "offlineRL.tex",
-     "line": 3191
+     "line": 3191,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 6.17",
@@ -13553,28 +13909,31 @@
      "id": "label:empirical bernstein",
      "label": "empirical bernstein",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4363
+     "line": 4363,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lem:Bernstein-prelim",
      "label": "lem:Bernstein-prelim",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4377
+     "line": 4377,
+     "verdict": "proof-dependency"
     },
     {
      "id": "label:lemma:sqv",
      "label": "lemma:sqv",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "offlineRL.tex",
-     "line": 4385
+     "line": 4385,
+     "verdict": "proof-dependency"
     }
    ],
    "display_name": "Lemma 6.18",
@@ -13861,10 +14220,11 @@
      "id": "label:eq:matrix-VarP-V-expression",
      "label": "eq:matrix-VarP-V-expression",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "robust_RL.tex",
-     "line": 321
+     "line": 321,
+     "verdict": "definition"
     }
    ],
    "display_name": "Lemma 7.1",
@@ -13954,10 +14314,11 @@
      "id": "label:alg:cvi-dro-infinite",
      "label": "alg:cvi-dro-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "robust_RL.tex",
-     "line": 345
+     "line": 345,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 7.2",
@@ -14048,19 +14409,21 @@
      "id": "label:alg:cvi-dro-infinite",
      "label": "alg:cvi-dro-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "robust_RL.tex",
-     "line": 362
+     "line": 362,
+     "verdict": "comparison"
     },
     {
      "id": "label:thm:l1-upper-bound",
      "label": "thm:l1-upper-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "robust_RL.tex",
-     "line": 362
+     "line": 362,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 7.1",
@@ -14404,10 +14767,11 @@
      "id": "label:alg:cvi-dro-infinite",
      "label": "alg:cvi-dro-infinite",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "robust_RL.tex",
-     "line": 438
+     "line": 438,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 7.4",
@@ -14498,19 +14862,21 @@
      "id": "label:remark:tv-upper",
      "label": "remark:tv-upper",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "robust_RL.tex",
-     "line": 454
+     "line": 454,
+     "verdict": "comparison"
     },
     {
      "id": "label:thm:l2-upper-bound",
      "label": "thm:l2-upper-bound",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "robust_RL.tex",
-     "line": 454
+     "line": 454,
+     "verdict": "comparison"
     }
    ],
    "display_name": "Remark 7.2",
@@ -15288,10 +15654,11 @@
      "id": "label:alg:dist-syncq-local",
      "label": "alg:dist-syncq-local",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "federated_RL.tex",
-     "line": 109
+     "line": 109,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 7.9",
@@ -15462,10 +15829,11 @@
      "id": "label:alg:general_fed_alg_with_inter_comm",
      "label": "alg:general_fed_alg_with_inter_comm",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "federated_RL.tex",
-     "line": 228
+     "line": 228,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 7.10",
@@ -15790,10 +16158,11 @@
      "id": "label:eqn:convex-distance",
      "label": "eqn:convex-distance",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "node",
      "file": "inference.tex",
-     "line": 140
+     "line": 140,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 7.11",
@@ -16966,10 +17335,11 @@
      "id": "label:assump:linear",
      "label": "assump:linear",
      "via": "tex-ref",
-     "reviewed": false,
+     "reviewed": true,
      "target": "context",
      "file": "RLHF.tex",
-     "line": 209
+     "line": 209,
+     "verdict": "definition"
     }
    ],
    "display_name": "Theorem 7.12",

@@ -269,7 +269,7 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                 return f"M{x1 + W},{y1c} C{x1 + W + GX / 2},{y1c} {x2 - GX / 2},{y2c} {x2},{y2c}"
             return f"M{x1},{y1c} C{x1 - GX / 2},{y1c} {x2 + W + GX / 2},{y2c} {x2 + W},{y2c}"
 
-        uses = {n["id"]: [u["id"] for u in n["uses"] if u["target"] == "node" and u["id"] in pos]
+        uses = {n["id"]: [u["id"] for u in n["uses"] if gen_nodes.is_dependency(u) and u["id"] in pos]
                 for n in self.data["nodes"]}
 
         def named_uses(nid):
@@ -333,7 +333,7 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                          f'fillcolor={fill[lab]}];')
         for n in self.data["nodes"]:
             for u in n["uses"]:
-                if u["target"] == "node":
+                if gen_nodes.is_dependency(u):
                     lines.append(f'  "{u["id"]}" -> "{n["id"]}";')
         lines.append("}")
         return "\n".join(lines) + "\n"
@@ -364,10 +364,10 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
             lab = f'<div class="label"><code>{esc(n["labels"][0])}</code></div>' if n["labels"] else ""
             uses = ", ".join(
                 f'<a href="#n-{attr(html_id(u["id"]))}">{esc(long_name(self.nodes[u["id"]]))}</a>'
-                for u in n["uses"] if u["target"] == "node")
-            ctx = [u for u in n["uses"] if u["target"] == "context"]
+                for u in n["uses"] if gen_nodes.is_dependency(u))
+            ctx = [u for u in n["uses"] if not gen_nodes.is_dependency(u) and u.get("verdict") != "wrong-target"]
             if ctx:
-                uses += (", " if uses else "") + f'{len(ctx)} definition/algorithm reference{"s" if len(ctx) > 1 else ""}'
+                uses += (", " if uses else "") + f'{len(ctx)} context reference{"s" if len(ctx) > 1 else ""} (definition, algorithm or comparison)'
             lean = " ".join(f'<code title="{attr(e["name"])}">{esc(e["name"].rsplit(".", 1)[-1])}</code>'
                             for e in n["statement_entries"])
             search = " ".join([long_name(n), n["labels"][0] if n["labels"] else "", lean,
@@ -385,10 +385,12 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
         s = self.data["summary"]
         cnt = self.site.cnt
         body = f"""<h1>Dependency graph</h1>
-<div class="incomplete" role="note"><strong>Unreviewed edges.</strong> Arrows are candidates read from the TeX
-cross-references (<code>\\ref</code>, <code>\\eqref</code>, …) inside each result and its proof: a reference may be
-a comparison rather than a dependency, and a real dependency may be cited without one. {cnt("uses_edges")} such edges,
-{cnt("uses_edges_reviewed")} reviewed. The graph does not certify a chapter or the book.</div>
+<div class="incomplete" role="note"><strong>AI-reviewed edges.</strong> Arrows are read from the TeX
+cross-references (<code>\\ref</code>, <code>\\eqref</code>, …) inside each result and its proof. Of {cnt("uses_edges")}
+candidate edges, {cnt("uses_edges_reviewed")} were classified by an AI critic and an independent AI verifier (not
+author-reviewed); arrows are proof dependencies only, while definition and comparison references are listed as context
+and wrong-target references are dropped. A real dependency may still be cited without a reference. The graph does not
+certify a chapter or the book.</div>
 <p class="lede">One node per numbered theorem, lemma and claim ({cnt("named_results_in_inventory")}), plus remarks and
 displayed claims ({cnt("prose_nodes")}). The fill is the item's label; arrows point from a cited result to the result
 that cites it. Click a node to highlight what it cites (transitively) and what cites it; click it again to go to its
@@ -415,7 +417,7 @@ row. <a href="status.html">Counts by chapter</a> · <a href="graph/nodes.json">n
 <label class="toggle"><input type="checkbox" id="f-named"> numbered results only</label></div>
 <p class="filter-count" aria-live="polite"></p></div>
 <div class="table-wrap"><table class="results stack graph-table"><thead><tr><th>Item</th><th>Status</th>
-<th>Statement entries</th><th>Cites (unreviewed)</th></tr></thead>
+<th>Statement entries</th><th>Cites (proof dependencies; AI-reviewed)</th></tr></thead>
 <tbody>{''.join(trs)}</tbody></table></div>
 <p class="lede">Definitions, assumptions and algorithms are context, not nodes; references to them are counted but
 never block.</p>"""

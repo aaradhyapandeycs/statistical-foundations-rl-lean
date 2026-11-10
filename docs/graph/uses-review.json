@@ -1,0 +1,1821 @@
+{
+ "schema_version": 1,
+ "method": "Each candidate uses edge (a TeX cross-reference inside a result or its proof, as listed in docs/graph/nodes.json) was classified by an AI critic reading the pinned source as proof-dependency, definition, comparison or wrong-target. An independent AI verifier re-checked all comparison and wrong-target verdicts, all edges the critic proposed as missing, and a seeded random sample of 40 other verdicts; its corrections are applied here. Edges added by review have no TeX cross-reference of their own and are marked source added-by-review. This record has not been reviewed by the authors of the monograph.",
+ "verdicts": {
+  "proof-dependency": "the proof or statement uses the target's statement or an argument stated there",
+  "definition": "the target supplies a definition, display or hypothesis used as setup",
+  "comparison": "a remark, analogy or heuristic first attempt; not a proof step",
+  "wrong-target": "the reference line does not refer to the target; excluded from every dependency use"
+ },
+ "edges": [
+  {
+   "owner": "ch2-lemma-2.1",
+   "target": "label:eq:bellman_fix_point",
+   "file": "chapters/prelim.tex",
+   "line": 348,
+   "verdict": "proof-dependency",
+   "evidence": "In light of the fixed-point property",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch2-lemma-2.1",
+   "target": "label:eq:gamma-contraction-preliminary-inf",
+   "file": "chapters/prelim.tex",
+   "line": 348,
+   "verdict": "proof-dependency",
+   "evidence": "$\\gamma$-contraction",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:variance-perturbation-var-P-V",
+   "target": "label:eq:matrix-VarP-V-expression",
+   "file": "chapters/prelim.tex",
+   "line": 470,
+   "verdict": "definition",
+   "evidence": "From \\eqref{eq:matrix-VarP-V-expression}, we have the decomposition",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:eq:Qpi-Vpi-matrix-notation-inf",
+   "target": "label:eq:Vpi-a-function-of-Qpi-inf",
+   "file": "chapters/prelim.tex",
+   "line": 506,
+   "verdict": "definition",
+   "evidence": "which, when combined with",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:Bernstein-prelim",
+   "target": "label:eq:defn-Var-Psa-V",
+   "file": "chapters/prelim.tex",
+   "line": 976,
+   "verdict": "definition",
+   "evidence": "we recall the definitions of",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:reverse-Fano-bound",
+   "target": "label:eq:KL-ub-chi2",
+   "file": "chapters/prelim.tex",
+   "line": 1280,
+   "verdict": "proof-dependency",
+   "evidence": "Pinsker's inequality (see",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch2-remark-2.1",
+   "target": "label:lem:reverse-Fano-bound",
+   "file": "chapters/prelim.tex",
+   "line": 1232,
+   "verdict": "comparison",
+   "evidence": "The Pinsker-based lower bound in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:model-based-policy-eval",
+   "target": "label:alg:policy-eval-model-based",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 142,
+   "verdict": "definition",
+   "evidence": "Algorithm~\\ref{alg:policy-eval-model-based} achieves",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:model-based-policy-eval",
+   "target": "label:eq:lemma-VarP-V-bound",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 438,
+   "verdict": "proof-dependency",
+   "evidence": "As an immediate consequence of inequality",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:model-based-policy-eval",
+   "target": "label:lem:Bernstein-prelim",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 471,
+   "verdict": "proof-dependency",
+   "evidence": "The Bernstein inequality in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:model-based-policy-eval",
+   "target": "label:lem:basic-property-matrix-notation-inf",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 561,
+   "verdict": "proof-dependency",
+   "evidence": "the basic fact",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:Thm:sample-compl-main",
+   "target": "label:alg:policy-learn-model-based",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 902,
+   "verdict": "definition",
+   "evidence": "any optimal deterministic policy",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:Thm:sample-compl-main",
+   "target": "label:eq:LOO-intuition-generative",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1219,
+   "verdict": "comparison",
+   "evidence": "enables the application of standard concentration inequalities",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:Thm:sample-compl-main",
+   "target": "label:LemAbsToNormalV",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1265,
+   "verdict": "proof-dependency",
+   "evidence": "The proof of Lemma~\\ref{LemAbsToNormalV} consists of comparing",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:LemValueCover",
+   "target": "label:LemAbsToNormalV",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 2624,
+   "verdict": "proof-dependency",
+   "evidence": "In view of Lemma~\\ref{LemAbsToNormalV}, setting",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:policy-learning-evaluation",
+   "target": "label:lem:Bernstein-prelim",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1334,
+   "verdict": "proof-dependency",
+   "evidence": "The Bernstein inequality (see Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:policy-learning-evaluation",
+   "target": "label:LemValueCover",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1345,
+   "verdict": "proof-dependency",
+   "evidence": "Lemma~\\ref{LemValueCover} guarantees that there exists",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:policy-learning-evaluation",
+   "target": "label:lem:basic-property-matrix-notation-inf",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1381,
+   "verdict": "proof-dependency",
+   "evidence": "each row summing to $\\frac{1}{1-\\gamma}$",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:policy-learning-evaluation",
+   "target": "label:lem:empirical-value-residual",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1421,
+   "verdict": "proof-dependency",
+   "evidence": "Combining Lemma~\\ref{lem:empirical-value-residual} with inequality",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch3-remark-3.2",
+   "target": "label:lem:empirical-value-residual",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1413,
+   "verdict": "comparison",
+   "evidence": "is another key ingredient in",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch3-remark-3.2",
+   "target": "label:eq:lemma-VarP-V-bound",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1416,
+   "verdict": "comparison",
+   "evidence": "closely related to the earlier bound",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:theorem:azar",
+   "target": "label:lem:fano",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1991,
+   "verdict": "proof-dependency",
+   "evidence": "To invoke Fano's lemma stated in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:theorem:azar",
+   "target": "label:lem:properties-M01-lower-generative",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 2063,
+   "verdict": "proof-dependency",
+   "evidence": "From Lemma~\\ref{lem:properties-M01-lower-generative}(iii), it follows",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:Thm:sample-compl-main",
+   "target": "label:lem:policy-learning-evaluation",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1427,
+   "verdict": "proof-dependency",
+   "evidence": "implies the desired result as soon as",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:policy-evaluation-TD",
+   "target": "label:alg:td-infinite",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 217,
+   "verdict": "definition",
+   "evidence": "TD learning (see Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:policy-evaluation-TD",
+   "target": "label:lem:Freedman-prelim",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 482,
+   "verdict": "proof-dependency",
+   "evidence": "We intend to apply the Freedman inequality in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:policy-evaluation-TD",
+   "target": "label:lemma:TD-bounded",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 548,
+   "verdict": "proof-dependency",
+   "evidence": "follows from Lemmas~\\ref{lemma:TD-bounded}-\\ref{lemma:TD-step-size}",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:policy-evaluation-TD",
+   "target": "label:lemma:TD-step-size",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 548,
+   "verdict": "proof-dependency",
+   "evidence": "follows from Lemmas~\\ref{lemma:TD-bounded}-\\ref{lemma:TD-step-size}",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:policy-evaluation-TD",
+   "target": "label:lemma:TD-square",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 665,
+   "verdict": "proof-dependency",
+   "evidence": "Applying Lemma~\\ref{lemma:TD-square} to the weighted sum",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:policy-evaluation-TD",
+   "target": "label:lemma:TD-variance-proxy-bound",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 745,
+   "verdict": "proof-dependency",
+   "evidence": "The proof of Lemma~\\ref{lemma:TD-variance-proxy-bound} is deferred",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch4-remark-4.1",
+   "target": "label:thm:policy-evaluation-TD",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 227,
+   "verdict": "proof-dependency",
+   "evidence": "the high-probability result in Theorem~\\ref{thm:policy-evaluation-TD} immediately implies",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:TD-step-size",
+   "target": "label:thm:policy-evaluation-TD",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 2309,
+   "verdict": "definition",
+   "evidence": "as ensured by \\eqref{eq:thm:sample-size-TD-thm}",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:TD-variance-proxy-bound",
+   "target": "label:lem:Freedman-prelim",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 2455,
+   "verdict": "proof-dependency",
+   "evidence": "Applying Freedman's inequality in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-horizon-simple",
+   "target": "label:alg:q-infinite",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 904,
+   "verdict": "definition",
+   "evidence": "Q-learning (cf.~Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-horizon-simple",
+   "target": "label:lemma:Q-comparison-facts",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 1376,
+   "verdict": "proof-dependency",
+   "evidence": "In words, part (i) of Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-horizon-simple",
+   "target": "label:lemma:Q-step-size",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 1584,
+   "verdict": "proof-dependency",
+   "evidence": "unrolling the preceding recursion  using",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-horizon-simple",
+   "target": "label:lem:Freedman-prelim",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 1628,
+   "verdict": "proof-dependency",
+   "evidence": "can be bounded via Freedman's inequality",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-horizon-simple",
+   "target": "label:lemma:non-negativity-Qt-Vt",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 1705,
+   "verdict": "proof-dependency",
+   "evidence": "Q_{\\lfloor T/2\\rfloor}$ is",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch4-remark-4.2",
+   "target": "label:thm:infinite-horizon-simple",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 915,
+   "verdict": "proof-dependency",
+   "evidence": "The high-probability guarantee in Theorem",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:LB-example-Q-generative",
+   "target": "label:alg:q-infinite",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 973,
+   "verdict": "definition",
+   "evidence": "Q-learning (cf.~Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:LB-example-Q-generative",
+   "target": "label:theorem:azar",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 2717,
+   "verdict": "comparison",
+   "evidence": "minimax lower bound",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:LB-example-Q-generative",
+   "target": "label:lem:optimal-V-Q-hardMDP",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 3009,
+   "verdict": "proof-dependency",
+   "evidence": "and Lemma~\\ref{lem:optimal-V-Q-hardMDP} leads to",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:LB-example-Q-generative",
+   "target": "label:lem:lower-bound-E-xi-lower-Q",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 3461,
+   "verdict": "proof-dependency",
+   "evidence": "Substituting \\eqref{eqn:lb-xi} into",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:LB-example-Q-generative",
+   "target": "label:lemma:non-negativity-Qt-Vt",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 3661,
+   "verdict": "comparison",
+   "evidence": "akin to Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:LB-example-Q-generative",
+   "target": "label:lem:Freedman-prelim",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 3676,
+   "verdict": "proof-dependency",
+   "evidence": "Freedman's inequality (see Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:non-negativity-Qt-Vt",
+   "target": "label:lemma:TD-bounded",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 2510,
+   "verdict": "comparison",
+   "evidence": "The proof is similar to that of Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:Q-comparison-facts",
+   "target": "label:eq:defn-KL",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 1347,
+   "verdict": "definition",
+   "evidence": "where $\\chi^2(\\cdot\\,\\|\\,\\cdot)$ is the $\\chi^2$ divergence defined in",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:Q-comparison-facts",
+   "target": "label:eq:KL-ub-chi2",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 2673,
+   "verdict": "proof-dependency",
+   "evidence": "see~\\eqref{eq:KL-ub-chi2}",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-horizon-asyn",
+   "target": "label:assump:ergodicity-asyncQ",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 2069,
+   "verdict": "definition",
+   "evidence": "Suppose that Assumption~\\ref{assump:ergodicity-asyncQ} holds",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-horizon-asyn",
+   "target": "label:alg:async-q",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 2079,
+   "verdict": "definition",
+   "evidence": "asynchronous Q-learning (cf.~Algorithm~\\ref{alg:async-q})",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:optimal-V-Q-hardMDP",
+   "target": "label:eq:bellman_fix_point",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 2830,
+   "verdict": "proof-dependency",
+   "evidence": "it follows from the Bellman optimality equation",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:lower-bound-E-xi-lower-Q",
+   "target": "label:lemma:non-negativity-Qt-Vt",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 3749,
+   "verdict": "proof-dependency",
+   "evidence": "according to Lemma~\\ref{lemma:non-negativity-Qt-Vt}",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:lower-bound-E-xi-lower-Q",
+   "target": "label:lem:Freedman-prelim",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 3758,
+   "verdict": "proof-dependency",
+   "evidence": "taken together with Freedman's inequality",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch4-remark-4.4",
+   "target": "label:lem:lower-bound-E-xi-lower-Q",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 3452,
+   "verdict": "comparison",
+   "evidence": "guarantees that $\\widehat{\\tau}$",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:bandit-pure-ucb",
+   "target": "label:alg:main-ucb-bandits",
+   "file": "chapters/bandits.tex",
+   "line": 260,
+   "verdict": "definition",
+   "evidence": "the expected regret of the \\UCB algorithm (see Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbvi-regret",
+   "target": "label:alg:main-ucbvi",
+   "file": "chapters/onlineRL.tex",
+   "line": 472,
+   "verdict": "definition",
+   "evidence": "the \\ucbvi algorithm in Algorithm~\\ref{alg:main-ucbvi} with Bernstein-style bonuses",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbvi-regret",
+   "target": "label:lemma:opt",
+   "file": "chapters/onlineRL.tex",
+   "line": 777,
+   "verdict": "proof-dependency",
+   "evidence": "The proof is deferred to Section~\\ref{sec:proof-lemma:opt}",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbvi-regret",
+   "target": "label:lemma:decomdetail",
+   "file": "chapters/onlineRL.tex",
+   "line": 849,
+   "verdict": "proof-dependency",
+   "evidence": "Substituting the regret bound from Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbvi-regret",
+   "target": "label:lem:bound-W1-W2-ucbvi-proof",
+   "file": "chapters/onlineRL.tex",
+   "line": 967,
+   "verdict": "proof-dependency",
+   "evidence": "Combining Lemma~\\ref{lem:bound-W1-W2-ucbvi-proof} with",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbvi-regret",
+   "target": "label:lem:bound-T234",
+   "file": "chapters/onlineRL.tex",
+   "line": 1014,
+   "verdict": "proof-dependency",
+   "evidence": "Taking the preceding bounds",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbvi-regret",
+   "target": "label:lem:bound-T56",
+   "file": "chapters/onlineRL.tex",
+   "line": 1118,
+   "verdict": "proof-dependency",
+   "evidence": "First, substituting",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.3",
+   "target": "label:thm-ucbvi-regret",
+   "file": "chapters/onlineRL.tex",
+   "line": 487,
+   "verdict": "comparison",
+   "evidence": "differs from that in Theorem",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:sum-inv-Nhk-ucbvi",
+   "target": "label:alg:main-ucbvi",
+   "file": "chapters/onlineRL.tex",
+   "line": 640,
+   "verdict": "definition",
+   "evidence": "Algorithm~\\ref{alg:main-ucbvi} satisfies",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:cum-var-ub-Hsquare-ucbvi-mean",
+   "target": "label:lem:sum-inv-Nhk-ucbvi",
+   "file": "chapters/onlineRL.tex",
+   "line": 682,
+   "verdict": "wrong-target",
+   "evidence": "\\begin{proof}[Proof of Lemma~\\ref{lem:sum-inv-Nhk-ucbvi}]",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.4",
+   "target": "label:eq:I-gamma-P-Var-bound",
+   "file": "chapters/onlineRL.tex",
+   "line": 661,
+   "verdict": "comparison",
+   "evidence": "parallels the variance-based upper bounds",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.4",
+   "target": "label:lem:cum-var-ub-Hsquare-ucbvi-mean",
+   "file": "chapters/onlineRL.tex",
+   "line": 661,
+   "verdict": "comparison",
+   "evidence": "The variance bound in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:opt",
+   "target": "label:empirical bernstein",
+   "file": "chapters/onlineRL.tex",
+   "line": 3355,
+   "verdict": "proof-dependency",
+   "evidence": "applying the empirical Bernstein inequality in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.5",
+   "target": "label:alg:main-ucbvi",
+   "file": "chapters/onlineRL.tex",
+   "line": 797,
+   "verdict": "definition",
+   "evidence": "due to the greedy policy update (cf.~line",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-W1-W2-ucbvi-proof",
+   "target": "label:lem:Bernstein-prelim",
+   "file": "chapters/onlineRL.tex",
+   "line": 3447,
+   "verdict": "proof-dependency",
+   "evidence": "applying Bernstein's inequality (cf.~Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-W1-W2-ucbvi-proof",
+   "target": "label:lem:sum-inv-Nhk-ucbvi",
+   "file": "chapters/onlineRL.tex",
+   "line": 3479,
+   "verdict": "proof-dependency",
+   "evidence": "makes use of Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-W1-W2-ucbvi-proof",
+   "target": "label:lemma:opt",
+   "file": "chapters/onlineRL.tex",
+   "line": 3487,
+   "verdict": "proof-dependency",
+   "evidence": "(see Lemma~\\ref{lemma:opt}) gives rise to",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-W1-W2-ucbvi-proof",
+   "target": "label:lemma:sqv",
+   "file": "chapters/onlineRL.tex",
+   "line": 3653,
+   "verdict": "proof-dependency",
+   "evidence": "the penultimate inequality applies Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T234",
+   "target": "label:lem:sum-inv-Nhk-ucbvi",
+   "file": "chapters/onlineRL.tex",
+   "line": 3746,
+   "verdict": "proof-dependency",
+   "evidence": "invokes the visitation count property",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T234",
+   "target": "label:lem:Freedman-prelim",
+   "file": "chapters/onlineRL.tex",
+   "line": 3771,
+   "verdict": "proof-dependency",
+   "evidence": "one can invoke the Freedman inequality (see Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T234",
+   "target": "ch5-remark-5.13",
+   "file": "chapters/onlineRL.tex",
+   "line": 3783,
+   "verdict": "proof-dependency",
+   "evidence": "the last inequality arises from",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T234",
+   "target": "label:lem:azuma-hoeffding",
+   "file": "chapters/onlineRL.tex",
+   "line": 3811,
+   "verdict": "proof-dependency",
+   "evidence": "An application of the Azuma-Hoeffding inequality (cf.~Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T56",
+   "target": "label:lem:bound-W1-W2-ucbvi-proof",
+   "file": "chapters/onlineRL.tex",
+   "line": 1078,
+   "verdict": "definition",
+   "evidence": "where $W_3$ and $T_0^{\\mathsf{ub}}$ are defined in",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T56",
+   "target": "label:lemma:sqv",
+   "file": "chapters/onlineRL.tex",
+   "line": 3843,
+   "verdict": "proof-dependency",
+   "evidence": "According to Lemma~\\ref{lemma:sqv}, $\\mathsf{Var}(X^2)\\leq 4 H^2\\mathsf{Var}(X)$",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T56",
+   "target": "label:lem:Freedman-prelim",
+   "file": "chapters/onlineRL.tex",
+   "line": 3852,
+   "verdict": "proof-dependency",
+   "evidence": "invoking Freedman's inequality (see Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T56",
+   "target": "label:lem:bound-T234",
+   "file": "chapters/onlineRL.tex",
+   "line": 3916,
+   "verdict": "proof-dependency",
+   "evidence": "uses the definition \\eqref{eq:boundt2} of $T_2$",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T56",
+   "target": "label:lem:cum-var-ub-Hsquare-ucbvi-mean",
+   "file": "chapters/onlineRL.tex",
+   "line": 3951,
+   "verdict": "proof-dependency",
+   "evidence": "It then follows directly from Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T56",
+   "target": "label:lem:azuma-hoeffding",
+   "file": "chapters/onlineRL.tex",
+   "line": 3957,
+   "verdict": "proof-dependency",
+   "evidence": "Applying the Azuma--Hoeffding inequality (Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T56",
+   "target": "label:lemma:opt",
+   "file": "chapters/onlineRL.tex",
+   "line": 3979,
+   "verdict": "proof-dependency",
+   "evidence": "(see Lemma~\\ref{lemma:opt}), we can derive",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:bound-T56",
+   "target": "ch5-remark-5.13",
+   "file": "chapters/onlineRL.tex",
+   "line": 4047,
+   "verdict": "proof-dependency",
+   "evidence": "an inequality in the proof of Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.8",
+   "target": "label:lem:bound-T56",
+   "file": "chapters/onlineRL.tex",
+   "line": 1098,
+   "verdict": "comparison",
+   "evidence": "where the last inequality follows from",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.9",
+   "target": "label:alg:main-ucbvi",
+   "file": "chapters/onlineRL.tex",
+   "line": 1331,
+   "verdict": "comparison",
+   "evidence": "this version differs in this respect from the original",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.9",
+   "target": "label:remark:different-bonus-than-Azar",
+   "file": "chapters/onlineRL.tex",
+   "line": 1331,
+   "verdict": "comparison",
+   "evidence": "(see also Remark",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:alg:main-mvp",
+   "file": "chapters/onlineRL.tex",
+   "line": 1341,
+   "verdict": "definition",
+   "evidence": "the \\mvp algorithm (see Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:lemma:opt",
+   "file": "chapters/onlineRL.tex",
+   "line": 1480,
+   "verdict": "proof-dependency",
+   "evidence": "yields the same optimism property",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:lemma:key2",
+   "file": "chapters/onlineRL.tex",
+   "line": 1566,
+   "verdict": "proof-dependency",
+   "evidence": "by Lemma~\\ref{lemma:key2}, the exponent",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:lem:sum-inv-Nhk-ucbvi",
+   "file": "chapters/onlineRL.tex",
+   "line": 1568,
+   "verdict": "comparison",
+   "evidence": "This result is analogous to Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:def:filt2",
+   "file": "chapters/onlineRL.tex",
+   "line": 1648,
+   "verdict": "definition",
+   "evidence": "(cf.~Definition~\\ref{def:filt2})",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:lemma:uniform",
+   "file": "chapters/onlineRL.tex",
+   "line": 1719,
+   "verdict": "proof-dependency",
+   "evidence": "combining the uniform bound in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:lemma:decouple",
+   "file": "chapters/onlineRL.tex",
+   "line": 1782,
+   "verdict": "proof-dependency",
+   "evidence": "In view of Lemma~\\ref{lemma:decouple}, with probability",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:lem:bound-T234",
+   "file": "chapters/onlineRL.tex",
+   "line": 1794,
+   "verdict": "proof-dependency",
+   "evidence": "analysis of \\ucbvi (see Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:lem:bound-T56",
+   "file": "chapters/onlineRL.tex",
+   "line": 1803,
+   "verdict": "comparison",
+   "evidence": "repeating the same arguments as in the proof of Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:key2",
+   "target": "label:alg:main-mvp",
+   "file": "chapters/onlineRL.tex",
+   "line": 1541,
+   "verdict": "definition",
+   "evidence": "Algorithm~\\ref{alg:main-mvp} is at most",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:sum-inv-Nhk-mvp",
+   "target": "label:alg:main-mvp",
+   "file": "chapters/onlineRL.tex",
+   "line": 1572,
+   "verdict": "definition",
+   "evidence": "Algorithm~\\ref{alg:main-mvp} satisfies",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:sum-inv-Nhk-mvp",
+   "target": "label:lem:sum-inv-Nhk-ucbvi",
+   "file": "chapters/onlineRL.tex",
+   "line": 1589,
+   "verdict": "comparison",
+   "evidence": "follows from the same argument as in the proof of Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:uniform",
+   "target": "label:assumption-X-mvp",
+   "file": "chapters/onlineRL.tex",
+   "line": 1697,
+   "verdict": "definition",
+   "evidence": "satisfying Assumption~\\ref{assumption-X-mvp}.",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:uniform",
+   "target": "label:def:filt2",
+   "file": "chapters/onlineRL.tex",
+   "line": 4182,
+   "verdict": "definition",
+   "evidence": "(see Definition~\\ref{def:filt2})",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:uniform",
+   "target": "label:lem:Freedman-prelim",
+   "file": "chapters/onlineRL.tex",
+   "line": 4215,
+   "verdict": "proof-dependency",
+   "evidence": "We can therefore apply Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:uniform",
+   "target": "label:lemma:key2",
+   "file": "chapters/onlineRL.tex",
+   "line": 4248,
+   "verdict": "proof-dependency",
+   "evidence": "Moreover, Lemma~\\ref{lemma:key2} ensures that the number of admissible",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:decouple",
+   "target": "label:claim:PV-l-UB",
+   "file": "chapters/onlineRL.tex",
+   "line": 4357,
+   "verdict": "proof-dependency",
+   "evidence": "Assuming the validity of  Claim",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:decouple",
+   "target": "label:lemma:sqv",
+   "file": "chapters/onlineRL.tex",
+   "line": 4399,
+   "verdict": "proof-dependency",
+   "evidence": "where the last inequality follows from Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.10",
+   "target": "label:lemma:decouple",
+   "file": "chapters/onlineRL.tex",
+   "line": 1747,
+   "verdict": "comparison",
+   "evidence": "In addition to controlling $T_1$, Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbq-regret",
+   "target": "label:alg:main-q-ucb",
+   "file": "chapters/onlineRL.tex",
+   "line": 1912,
+   "verdict": "definition",
+   "evidence": "the \\ucbq algorithm in Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbq-regret",
+   "target": "label:lemma:opt",
+   "file": "chapters/onlineRL.tex",
+   "line": 2117,
+   "verdict": "comparison",
+   "evidence": "This property, as stated in the lemma below,  parallels Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbq-regret",
+   "target": "label:lemma:opt_model_free",
+   "file": "chapters/onlineRL.tex",
+   "line": 2158,
+   "verdict": "proof-dependency",
+   "evidence": "The bound on $\\beta_t$ in",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbq-regret",
+   "target": "label:lemma:property_lr",
+   "file": "chapters/onlineRL.tex",
+   "line": 2222,
+   "verdict": "proof-dependency",
+   "evidence": "The next step is to aggregate the one-step recursion",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm-ucbq-regret",
+   "target": "label:lem:azuma-hoeffding",
+   "file": "chapters/onlineRL.tex",
+   "line": 2382,
+   "verdict": "proof-dependency",
+   "evidence": "the Azuma-Hoeffding inequality (Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.11",
+   "target": "label:lemma:property_lr",
+   "file": "chapters/onlineRL.tex",
+   "line": 2044,
+   "verdict": "comparison",
+   "evidence": "The tail identity~\\eqref{eq:properties-learning-rates-tail} will be used",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:opt_model_free",
+   "target": "label:lem:azuma-hoeffding",
+   "file": "chapters/onlineRL.tex",
+   "line": 4744,
+   "verdict": "proof-dependency",
+   "evidence": "by applying the Azuma-Hoeffding inequality (cf.~Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:opt_model_free",
+   "target": "label:lemma:property_lr",
+   "file": "chapters/onlineRL.tex",
+   "line": 4751,
+   "verdict": "proof-dependency",
+   "evidence": "the last inequality is due to",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:minimax-lower-online",
+   "target": "label:lem:tail-bound-sum-Bernoulli",
+   "file": "chapters/onlineRL.tex",
+   "line": 3205,
+   "verdict": "proof-dependency",
+   "evidence": "Lemma~\\ref{lem:tail-bound-sum-Bernoulli} tells us that",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:online-lb-testing",
+   "target": "label:lem:KL-quadratic-lower-bound",
+   "file": "chapters/onlineRL.tex",
+   "line": 5018,
+   "verdict": "proof-dependency",
+   "evidence": "we can invoke Lemma~\\ref{lem:KL-quadratic-lower-bound} to show",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:online-lb-testing",
+   "target": "label:lem:reverse-Fano-bound",
+   "file": "chapters/onlineRL.tex",
+   "line": 5067,
+   "verdict": "proof-dependency",
+   "evidence": "Lemma~\\ref{lem:reverse-Fano-bound} then reveals that",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch5-remark-5.12",
+   "target": "label:lem:online-lb-testing",
+   "file": "chapters/onlineRL.tex",
+   "line": 2728,
+   "verdict": "comparison",
+   "evidence": "The proof argument used to establish Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:claim:PV-l-UB",
+   "target": "label:example:offline-bandits",
+   "file": "chapters/offlineRL.tex",
+   "line": 361,
+   "verdict": "wrong-target",
+   "evidence": "\\begin{proof}[Proof of Example~\\ref{example:offline-bandits}]",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:claim:PV-l-UB",
+   "target": "label:lemma:uniform",
+   "file": "chapters/onlineRL.tex",
+   "line": 4409,
+   "verdict": "proof-dependency",
+   "evidence": "To apply Lemma~\\ref{lemma:uniform}, we need to construct the collections",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:claim:PV-l-UB",
+   "target": "label:alg:main-fixed-profile",
+   "file": "chapters/onlineRL.tex",
+   "line": 4417,
+   "verdict": "definition",
+   "evidence": "consider the updates in Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:claim:PV-l-UB",
+   "target": "label:assumption-X-mvp",
+   "file": "chapters/onlineRL.tex",
+   "line": 4454,
+   "verdict": "definition",
+   "evidence": "Assumption~\\ref{assumption-X-mvp}.",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:claim:PV-l-UB",
+   "target": "label:def:filt2",
+   "file": "chapters/onlineRL.tex",
+   "line": 4468,
+   "verdict": "definition",
+   "evidence": "Under the coupling between",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:claim:PV-l-UB",
+   "target": "label:eq:Vk-Itrue",
+   "file": "chapters/onlineRL.tex",
+   "line": 4475,
+   "verdict": "proof-dependency",
+   "evidence": "The claim then follows directly from",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch6-remark-6.5",
+   "target": "label:alg:MAB-LCB",
+   "file": "chapters/offlineRL.tex",
+   "line": 414,
+   "verdict": "definition",
+   "evidence": "As a sanity check, when applying Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch6-remark-6.5",
+   "target": "label:example:offline-bandits",
+   "file": "chapters/offlineRL.tex",
+   "line": 414,
+   "verdict": "comparison",
+   "evidence": "to Example~\\ref{example:offline-bandits}",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:MAB_LCB_upper",
+   "target": "label:alg:MAB-LCB",
+   "file": "chapters/offlineRL.tex",
+   "line": 459,
+   "verdict": "definition",
+   "evidence": "returned by the \\LCB algorithm (cf.~Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:MAB_LCB_upper",
+   "target": "label:lem:tail-bound-sum-Bernoulli",
+   "file": "chapters/offlineRL.tex",
+   "line": 534,
+   "verdict": "proof-dependency",
+   "evidence": "the concentration bound in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:MAB_LCB_upper",
+   "target": "label:eq:defn-Cstar-bandits",
+   "file": "chapters/offlineRL.tex",
+   "line": 558,
+   "verdict": "definition",
+   "evidence": "the definition  $C^{\\star}=1/d^{\\mathsf{b}}(a^{\\star})$ (cf.",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:monotone-contraction",
+   "target": "label:alg:infinite-q-update",
+   "file": "chapters/offlineRL.tex",
+   "line": 873,
+   "verdict": "definition",
+   "evidence": "Then the iterates of Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-offline",
+   "target": "label:alg:infinite-q-update",
+   "file": "chapters/offlineRL.tex",
+   "line": 902,
+   "verdict": "definition",
+   "evidence": "the policy $\\widehat{\\pi}$ returned by \\vilcb (see Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-offline",
+   "target": "label:assumption:concentrate-infinite-simple",
+   "file": "chapters/offlineRL.tex",
+   "line": 917,
+   "verdict": "definition",
+   "evidence": "has been defined in Definition",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-offline",
+   "target": "label:lem:monotone-contraction",
+   "file": "chapters/offlineRL.tex",
+   "line": 1037,
+   "verdict": "definition",
+   "evidence": "we denote by $\\widehat{Q}_{\\mathsf{pe}}^{\\star}$ the unique fixed point of",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-offline",
+   "target": "label:lem:offline-prelim",
+   "file": "chapters/offlineRL.tex",
+   "line": 1095,
+   "verdict": "proof-dependency",
+   "evidence": "shows that terminating pessimistic value",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-offline",
+   "target": "label:lem:Bernstein-infinite",
+   "file": "chapters/offlineRL.tex",
+   "line": 1171,
+   "verdict": "proof-dependency",
+   "evidence": "which both~\\eqref{eq:Bernstein-infinite-all} and",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-offline",
+   "target": "label:eq:infinite-d-star-def",
+   "file": "chapters/offlineRL.tex",
+   "line": 1387,
+   "verdict": "definition",
+   "evidence": "definition of the discounted occupancy measure",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:infinite-offline",
+   "target": "label:lem:sum-d-Var-UB",
+   "file": "chapters/offlineRL.tex",
+   "line": 1543,
+   "verdict": "proof-dependency",
+   "evidence": "Taken together, Lemma~\\ref{lem:sum-d-Var-UB} and inequality",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:offline-prelim",
+   "target": "label:lem:variance-perturbation-var-P-V",
+   "file": "chapters/offlineRL.tex",
+   "line": 3506,
+   "verdict": "proof-dependency",
+   "evidence": "we can apply Lemma~\\ref{lem:variance-perturbation-var-P-V} to bound",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:sample-split-infinite",
+   "target": "label:lem:tail-bound-sum-Bernoulli",
+   "file": "chapters/offlineRL.tex",
+   "line": 3578,
+   "verdict": "proof-dependency",
+   "evidence": "invoking the Chernoff-type bound in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:Bernstein-infinite",
+   "target": "label:lem:Bernstein-infinite-proof",
+   "file": "chapters/offlineRL.tex",
+   "line": 3869,
+   "verdict": "proof-dependency",
+   "evidence": "the concentration bound in Lemma~\\ref{lem:Bernstein-infinite-proof} can be",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch6-remark-6.6",
+   "target": "label:lem:Bernstein-infinite",
+   "file": "chapters/offlineRL.tex",
+   "line": 1193,
+   "verdict": "comparison",
+   "evidence": "The variance-dependent form of the  concentration bound in Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:sum-d-Var-UB",
+   "target": "label:eq:matrix-VarP-V-expression",
+   "file": "chapters/offlineRL.tex",
+   "line": 4331,
+   "verdict": "definition",
+   "evidence": "follows from the variance identity",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch6-remark-6.7",
+   "target": "label:lem:sum-d-Var-UB",
+   "file": "chapters/offlineRL.tex",
+   "line": 1540,
+   "verdict": "comparison",
+   "evidence": "At a high level, Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch6-remark-6.8",
+   "target": "label:alg:q-infinite-lcb",
+   "file": "chapters/offlineRL.tex",
+   "line": 1696,
+   "verdict": "definition",
+   "evidence": "In Algorithm~\\ref{alg:q-infinite-lcb}, the policy iterate",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:theorem:lcbq",
+   "target": "label:alg:q-infinite-lcb",
+   "file": "chapters/offlineRL.tex",
+   "line": 1757,
+   "verdict": "definition",
+   "evidence": "returned by the \\LCBQ algorithm in Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:theorem:lcbq",
+   "target": "label:assumption:concentrate-infinite-simple",
+   "file": "chapters/offlineRL.tex",
+   "line": 1771,
+   "verdict": "definition",
+   "evidence": "is the single-policy concentrability coefficient in Definition",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:theorem:lcbq",
+   "target": "label:lemma:property_lr",
+   "file": "chapters/offlineRL.tex",
+   "line": 1839,
+   "verdict": "proof-dependency",
+   "evidence": "properties established in Lemma~\\ref{lemma:property_lr} continue to hold",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:theorem:lcbq",
+   "target": "label:lemma:Q-recursion-pessimistic-Q",
+   "file": "chapters/offlineRL.tex",
+   "line": 1896,
+   "verdict": "proof-dependency",
+   "evidence": "In words, the above recursion singles out two components",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:theorem:lcbq",
+   "target": "label:thm:infinite-offline",
+   "file": "chapters/offlineRL.tex",
+   "line": 1902,
+   "verdict": "comparison",
+   "evidence": "the model-free counterpart of the pessimism property established for the model-based approach",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:theorem:lcbq",
+   "target": "label:lemma:pessimistic-Q",
+   "file": "chapters/offlineRL.tex",
+   "line": 1927,
+   "verdict": "proof-dependency",
+   "evidence": "According to \\eqref{eq:value-bounded-lcbq} and Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:theorem:lcbq",
+   "target": "label:lemma:useful",
+   "file": "chapters/offlineRL.tex",
+   "line": 2302,
+   "verdict": "proof-dependency",
+   "evidence": "Informally speaking, Lemma~\\ref{lemma:useful} links",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:Q-recursion-pessimistic-Q",
+   "target": "label:lem:azuma-hoeffding",
+   "file": "chapters/offlineRL.tex",
+   "line": 4478,
+   "verdict": "proof-dependency",
+   "evidence": "invoke the Azuma-Hoeffding inequality (see Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:Q-recursion-pessimistic-Q",
+   "target": "label:lemma:property_lr",
+   "file": "chapters/offlineRL.tex",
+   "line": 4486,
+   "verdict": "proof-dependency",
+   "evidence": "the last inequality results from",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:Q-recursion-pessimistic-Q",
+   "target": "label:lemma:opt_model_free",
+   "file": "chapters/offlineRL.tex",
+   "line": 4498,
+   "verdict": "comparison",
+   "evidence": "By an argument analogous to that used in the online setting",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:pessimistic-Q",
+   "target": "label:lemma:Q-recursion-pessimistic-Q",
+   "file": "chapters/offlineRL.tex",
+   "line": 4534,
+   "verdict": "proof-dependency",
+   "evidence": "an immediate, useful consequence of Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:useful",
+   "target": "label:eq:defn-dpi-occupancy-discounted-dist",
+   "file": "chapters/offlineRL.tex",
+   "line": 4713,
+   "verdict": "definition",
+   "evidence": "definition of the discounted occupancy distribution",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:lcbq-alpha-xi-psi-phi-bound",
+   "target": "label:lemma:useful",
+   "file": "chapters/offlineRL.tex",
+   "line": 4818,
+   "verdict": "proof-dependency",
+   "evidence": "where the first inequality arises from Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:lcbq-alpha-xi-psi-phi-bound",
+   "target": "label:lem:sample-split-infinite",
+   "file": "chapters/offlineRL.tex",
+   "line": 4876,
+   "verdict": "proof-dependency",
+   "evidence": "applying Lemma~\\ref{lem:sample-split-infinite} with sample",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:lcbq-alpha-xi-psi-phi-bound",
+   "target": "label:lemma:Q-recursion-pessimistic-Q",
+   "file": "chapters/offlineRL.tex",
+   "line": 4910,
+   "verdict": "definition",
+   "evidence": "with the definition~\\eqref{eq:beta-bar-beta-lcbq} of",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:lcbq-alpha-xi-psi-phi-bound",
+   "target": "label:assumption:concentrate-infinite-simple",
+   "file": "chapters/offlineRL.tex",
+   "line": 4969,
+   "verdict": "definition",
+   "evidence": "coefficient (see Definition~\\ref{assumption:concentrate-infinite-simple})",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:lcbq-alpha-xi-psi-phi-bound",
+   "target": "label:theorem:lcbq",
+   "file": "chapters/offlineRL.tex",
+   "line": 4971,
+   "verdict": "definition",
+   "evidence": "the condition on $T$ in",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:lcbq-alpha-xi-psi-phi-bound",
+   "target": "label:lem:Freedman-prelim",
+   "file": "chapters/offlineRL.tex",
+   "line": 5226,
+   "verdict": "proof-dependency",
+   "evidence": "(Lemma~\\ref{lem:Freedman-prelim}) tells us that",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch6-remark-6.9",
+   "target": "ch6-remark-6.3",
+   "file": "chapters/offlineRL.tex",
+   "line": 2406,
+   "verdict": "definition",
+   "evidence": "defined in~\\eqref{eq:concentrate-infinite}",
+   "source": "candidate"
+  },
+  {
+   "owner": "ch6-remark-6.9",
+   "target": "label:thm:infinite-lwoer-bound",
+   "file": "chapters/offlineRL.tex",
+   "line": 2407,
+   "verdict": "comparison",
+   "evidence": "Theorem~\\ref{thm:infinite-lwoer-bound}",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:transition-KL-bound-infinite",
+   "target": "label:lem:KL-quadratic-lower-bound",
+   "file": "chapters/offlineRL.tex",
+   "line": 5722,
+   "verdict": "proof-dependency",
+   "evidence": "Lemma~\\ref{lem:KL-quadratic-lower-bound} then yields",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:finite-VI-LCB",
+   "target": "label:assumption:concentrate-finite",
+   "file": "chapters/offlineRL.tex",
+   "line": 3110,
+   "verdict": "definition",
+   "evidence": "is introduced in Definition",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:lcbq",
+   "target": "label:assumption:concentrate-finite",
+   "file": "chapters/offlineRL.tex",
+   "line": 3191,
+   "verdict": "definition",
+   "evidence": "is introduced in Definition",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:Bernstein-infinite-proof",
+   "target": "label:empirical bernstein",
+   "file": "chapters/offlineRL.tex",
+   "line": 4363,
+   "verdict": "proof-dependency",
+   "evidence": "Applying the empirical Bernstein inequality (cf.~Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:Bernstein-infinite-proof",
+   "target": "label:lem:Bernstein-prelim",
+   "file": "chapters/offlineRL.tex",
+   "line": 4377,
+   "verdict": "proof-dependency",
+   "evidence": "one can invoke the Bernstein inequality (cf.~Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lem:Bernstein-infinite-proof",
+   "target": "label:lemma:sqv",
+   "file": "chapters/offlineRL.tex",
+   "line": 4385,
+   "verdict": "proof-dependency",
+   "evidence": "where the second inequality results from Lemma",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:lemma:dual-form",
+   "target": "label:eq:matrix-VarP-V-expression",
+   "file": "chapters/robust_RL.tex",
+   "line": 321,
+   "verdict": "definition",
+   "evidence": "where we recall the definition of",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:l1-upper-bound",
+   "target": "label:alg:cvi-dro-infinite",
+   "file": "chapters/robust_RL.tex",
+   "line": 345,
+   "verdict": "definition",
+   "evidence": "Let $\\widehat{\\pi}$ be the policy returned by Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:remark:tv-upper",
+   "target": "label:alg:cvi-dro-infinite",
+   "file": "chapters/robust_RL.tex",
+   "line": 362,
+   "verdict": "comparison",
+   "evidence": "is not only valid when invoking Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:remark:tv-upper",
+   "target": "label:thm:l1-upper-bound",
+   "file": "chapters/robust_RL.tex",
+   "line": 362,
+   "verdict": "comparison",
+   "evidence": "Note that Theorem~\\ref{thm:l1-upper-bound} is not only valid",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:l2-upper-bound",
+   "target": "label:alg:cvi-dro-infinite",
+   "file": "chapters/robust_RL.tex",
+   "line": 438,
+   "verdict": "definition",
+   "evidence": "returned by  Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:remark:chi2-upper",
+   "target": "label:remark:tv-upper",
+   "file": "chapters/robust_RL.tex",
+   "line": 454,
+   "verdict": "comparison",
+   "evidence": "Analogous to  Remark",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:remark:chi2-upper",
+   "target": "label:thm:l2-upper-bound",
+   "file": "chapters/robust_RL.tex",
+   "line": 454,
+   "verdict": "comparison",
+   "evidence": "the sample complexity guarantee in Theorem",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:dist-syncq-local",
+   "target": "label:alg:dist-syncq-local",
+   "file": "chapters/federated_RL.tex",
+   "line": 109,
+   "verdict": "definition",
+   "evidence": "Algorithm~\\ref{alg:dist-syncq-local} achieves",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:lower_bound",
+   "target": "label:alg:general_fed_alg_with_inter_comm",
+   "file": "chapters/federated_RL.tex",
+   "line": 228,
+   "verdict": "definition",
+   "evidence": "as described in Algorithm",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm:Berry-Esseen-linear",
+   "target": "label:eqn:convex-distance",
+   "file": "chapters/inference.tex",
+   "line": 140,
+   "verdict": "definition",
+   "evidence": "is defined in \\eqref{eqn:convex-distance}",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:thm_online",
+   "target": "label:assump:linear",
+   "file": "chapters/RLHF.tex",
+   "line": 209,
+   "verdict": "definition",
+   "evidence": "Under Assumption~\\ref{assump:linear}, let",
+   "source": "candidate"
+  },
+  {
+   "owner": "label:Thm:sample-compl-main",
+   "target": "label:thm:model-based-policy-eval",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1035,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Thm 3.2 first-attempt analysis invokes the policy evaluation result of Thm 3.1 ('taking pi=pi* in the analysis of Theorem 3.1'). Existing edges of Thm 3.2 omit Thm 3.1.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:Thm:sample-compl-main",
+   "target": "label:lem:Bernstein-prelim",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1334,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Bernstein inequality (Lemma 2.5) is applied in the sharp analysis of Theorem 3.2.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:Thm:sample-compl-main",
+   "target": "label:lem:basic-property-matrix-notation-inf",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1082,
+   "verdict": "comparison",
+   "evidence": "",
+   "note": "Cited only in the informal first attempt; the sharp proof does not use Lemma 2.3.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:theorem:azar",
+   "target": "label:lem:KL-tensorize",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1700,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Q-estimation lower bound inside the proof of Thm 3.7 uses KL tensorization (Lemma 2.12).",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:theorem:azar",
+   "target": "label:lem:KL-quadratic-lower-bound",
+   "file": "chapters/generative_model_model_based.tex",
+   "line": 1709,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Lemma 2.13 used in proof of Thm 3.7 (also at 2393 via the un-noded appendix lemma lem:minimax-lb-bernoulli, which has no node).",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm:policy-evaluation-TD",
+   "target": "label:lem:azuma-hoeffding",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 419,
+   "verdict": "comparison",
+   "evidence": "",
+   "note": "Used only in the suboptimal first attempt; the sharp proof uses Freedman instead.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm:infinite-horizon-simple",
+   "target": "label:lem:azuma-hoeffding",
+   "file": "chapters/generative_model_model_free.tex",
+   "line": 1250,
+   "verdict": "comparison",
+   "evidence": "",
+   "note": "Used only in the looser first attempt; the sharp proof has no Azuma step.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:lem:bound-T6-ucb-mvp",
+   "file": "chapters/onlineRL.tex",
+   "line": 1820,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Lemma 5.15 is introduced by prose only ('formalized in the following lemma'); no \\ref in Thm 5.10 proof, so extractor missed it.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm-mvp-regret",
+   "target": "label:lem:sum-inv-Nhk-mvp",
+   "file": "chapters/onlineRL.tex",
+   "line": 1568,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Lemma 5.12 introduced as 'another useful property of the visitation counts' for the Thm 5.10 proof; never cited via \\ref (only an analogy to Lemma 5.3 at 1568). Probable dependency.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:lemma:decouple",
+   "target": "label:lemma:uniform",
+   "file": "chapters/onlineRL.tex",
+   "line": 4409,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Transitive: proof of Lemma 5.14 uses Claim 5.1 (edge present), whose proof applies Lemma 5.13; recorded only on the claim node. Consider an explicit edge Lemma 5.14 -> Lemma 5.13.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm:minimax-lower-online",
+   "target": "label:lem:online-lb-testing",
+   "file": "chapters/onlineRL.tex",
+   "line": 2735,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Regret analysis of Thm 5.19 leverages Lemma 5.21 (also 2848). No edge from Thm 5.19 to Lemma 5.21 exists.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm:minimax-lower-online",
+   "target": "label:lem:Vh-star-Vhpi-gap-lower-bound-online-final",
+   "file": "chapters/onlineRL.tex",
+   "line": 2650,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Lemma 5.20 introduced by prose only in the proof strategy of Thm 5.19; extractor missed it.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm:infinite-offline",
+   "target": "label:lem:sample-split-infinite",
+   "file": "chapters/offlineRL.tex",
+   "line": 1100,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Lemma 6.5 ('The next lemma provides a lower bound on N_{s,a}') is the source of the event eq:assumption-Nsa-LB-infinite used at line 1171; no \\ref from Thm 6.3's proof (only cited later from Lemma 6.12).",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:theorem:lcbq",
+   "target": "label:lem:lcbq-alpha-xi-psi-phi-bound",
+   "file": "chapters/offlineRL.tex",
+   "line": 2307,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Lemma 6.12 introduced by prose only inside the proof of Thm 6.8; extractor missed it.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm:infinite-lwoer-bound",
+   "target": "label:lemma:value-policy-LB-inf",
+   "file": "chapters/offlineRL.tex",
+   "line": 2681,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Proof of Thm 6.13 uses Lemma 6.14 (2668, 2681, 2719). Thm 6.13 has NO edges at all: its proof is not in a proof environment and the extractor missed it.",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm:infinite-lwoer-bound",
+   "target": "label:lem:fano",
+   "file": "chapters/offlineRL.tex",
+   "line": 2762,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Thm 6.13 proof applies Fano (Lemma 2.10(ii)).",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm:infinite-lwoer-bound",
+   "target": "label:lem:KL-tensorize",
+   "file": "chapters/offlineRL.tex",
+   "line": 2792,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Thm 6.13 proof uses KL tensorization (Lemma 2.12).",
+   "source": "added-by-review"
+  },
+  {
+   "owner": "label:thm:infinite-lwoer-bound",
+   "target": "label:lem:transition-KL-bound-infinite",
+   "file": "chapters/offlineRL.tex",
+   "line": 2871,
+   "verdict": "proof-dependency",
+   "evidence": "",
+   "note": "Thm 6.13 proof combines with Lemma 6.15.",
+   "source": "added-by-review"
+  }
+ ]
+}
