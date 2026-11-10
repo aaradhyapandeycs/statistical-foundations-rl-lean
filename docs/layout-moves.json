@@ -1,5 +1,5 @@
 {
-  "description": "Proposed Option A module moves (docs/LAYOUT.md). Pure module renames: file contents change only in import lines; namespaces and declaration names are unchanged. Apply with scripts/move_modules.py in a quiet window. Cumulative: entries already applied are skipped. Fill in pr/date and set status to 'applied' when an entry lands.",
+  "description": "Proposed Option A module moves (docs/LAYOUT.md). Pure module renames: file contents change only in import lines; namespaces and declaration names are unchanged. Apply with scripts/move_modules.py in a quiet window. Cumulative: entries already applied are skipped. Fill in pr/date and set status to 'applied' when an entry lands. 'allow_statements_source': true marks the one reviewed move out of Formalization/Statements/ (a library definitions module, not a statement-index file); the tool refuses every other Statements path.",
   "version": 1,
   "moves": [
     {
@@ -817,6 +817,407 @@
       "status": "proposed",
       "pr": null,
       "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.Marl76ZeroSumNEOracle",
+      "new": "Formalization.MultiAgent.ModelBased.ZeroSumNEOracle",
+      "group": "ch7-multiagent",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.MarlBestResponse",
+      "new": "Formalization.MultiAgent.Equilibria",
+      "group": "ch7-multiagent",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.FedSync79ReadOff",
+      "new": "Formalization.Federated.Sync.PerAgentSampleSize",
+      "group": "ch7-federated",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.VPODisplays712",
+      "new": "Formalization.RLHF.VPO.Displays",
+      "group": "ch7-rlhf",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.VPOReparam712",
+      "new": "Formalization.RLHF.VPO.Reparameterization",
+      "group": "ch7-rlhf",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.RobustRL.Ch7.RandomizedLowerBound",
+      "new": "Formalization.RobustRL.LowerBounds.RandomizedLowerBound",
+      "group": "ch7-robust-lower-bounds",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceAzuma711",
+      "new": "Formalization.TDInference.Azuma",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceCLT711",
+      "new": "Formalization.TDInference.ClassicCLT",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceCLTPrinted711",
+      "new": "Formalization.TDInference.ClassicCLTPrintedRefutation",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceHalfSpace711",
+      "new": "Formalization.TDInference.HalfSpace",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceKernel711",
+      "new": "Formalization.TDInference.Kernel",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceLeaveOneOut711",
+      "new": "Formalization.TDInference.LeaveOneOut",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceLeaveOneOutBound711",
+      "new": "Formalization.TDInference.LeaveOneOutBound",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceLinCov711",
+      "new": "Formalization.TDInference.LinearisedCovariance",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceLinRemainder711",
+      "new": "Formalization.TDInference.LinearisationRemainder",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceLinearised711",
+      "new": "Formalization.TDInference.Linearised",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceLooVector711",
+      "new": "Formalization.TDInference.LeaveOneOutVector",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceQuadForm711",
+      "new": "Formalization.TDInference.QuadraticForm",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceRemainderTail711",
+      "new": "Formalization.TDInference.RemainderTail",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceZeroNoiseDecay711",
+      "new": "Formalization.TDInference.ZeroNoiseDecay",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConvexAll711",
+      "new": "Formalization.TDInference.ConvexSets.AllConvexRate",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConvexLin711",
+      "new": "Formalization.TDInference.ConvexSets.LinearisedRate",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConvexLinSharp711",
+      "new": "Formalization.TDInference.ConvexSets.LinearisedSharp",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConvexLog711",
+      "new": "Formalization.TDInference.ConvexSets.LogRate",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConvexReservoir711",
+      "new": "Formalization.TDInference.ConvexSets.Reservoir",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConvexSharp711",
+      "new": "Formalization.TDInference.ConvexSets.Sharp",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConvexThird711",
+      "new": "Formalization.TDInference.ConvexSets.ThirdLogRate",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConfCalib711",
+      "new": "Formalization.TDInference.Confidence.Calibration",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConfChiSq711",
+      "new": "Formalization.TDInference.Confidence.ChiSquareQuantile",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConfInt711",
+      "new": "Formalization.TDInference.Confidence.Intervals",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConfRegion711",
+      "new": "Formalization.TDInference.Confidence.Regions",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceConfRegionSharp711",
+      "new": "Formalization.TDInference.Confidence.RegionsSharp",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceC47Evidence711",
+      "new": "Formalization.TDInference.Confidence.HalfLineEvidence",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceC47PluginEvidence711",
+      "new": "Formalization.TDInference.Confidence.HalfLinePluginEvidence",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceC47Rectangle711",
+      "new": "Formalization.TDInference.Confidence.PrintedRectangleEvidence",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferenceC47Singular711",
+      "new": "Formalization.TDInference.Confidence.SingularConvention",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePlugin711",
+      "new": "Formalization.TDInference.PluginCovariance.Basic",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginConsistency711",
+      "new": "Formalization.TDInference.PluginCovariance.Consistency",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginCorrected711",
+      "new": "Formalization.TDInference.PluginCovariance.CorrectedConsistency",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginCoverage711",
+      "new": "Formalization.TDInference.PluginCovariance.Coverage",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginEllipsoidRate711",
+      "new": "Formalization.TDInference.PluginCovariance.EllipsoidRate",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginIntervalRate711",
+      "new": "Formalization.TDInference.PluginCovariance.IntervalRate",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginRate711",
+      "new": "Formalization.TDInference.PluginCovariance.Rate",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginRect711",
+      "new": "Formalization.TDInference.PluginCovariance.Rectangle",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginRectRate711",
+      "new": "Formalization.TDInference.PluginCovariance.RectangleRate",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginRefute711",
+      "new": "Formalization.TDInference.PluginCovariance.PrintedLambdaRefutation",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginRegion711",
+      "new": "Formalization.TDInference.PluginCovariance.Ellipsoid",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.TDInferencePluginSingular711",
+      "new": "Formalization.TDInference.PluginCovariance.Singular",
+      "group": "ch7-td-inference",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Ch7Rest.ConvexDistanceTV711",
+      "new": "Formalization.Probability.ConvexDistanceTV",
+      "group": "generic-to-probability",
+      "status": "proposed",
+      "pr": null,
+      "date": null
+    },
+    {
+      "old": "Formalization.Statements.Ch3Definitions",
+      "new": "Formalization.Generative.ModelBasedDefinitions",
+      "group": "statements-definitions-out",
+      "status": "proposed",
+      "pr": null,
+      "date": null,
+      "allow_statements_source": true
     }
   ]
 }
