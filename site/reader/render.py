@@ -21,6 +21,14 @@ ARXIV = "https://arxiv.org/abs/2610.41903v1"
 TITLE = "Statistical Foundations of Reinforcement Learning"
 SUBTITLE = "A Non-Asymptotic Perspective"
 AUTHORS = "Yuxin Chen, Yuejie Chi, Jianqing Fan, Gen Li, Yuting Wei and Yuling Yan"
+MAINTAINER_HANDLE = "aaradhyapandeycs"
+MAINTAINER_URL = "https://github.com/aaradhyapandeycs"
+REPO_DISPLAY = REPO.split("//", 1)[1]
+# Plain authorship statement shown on the home and About pages (no claim of human review).
+AUTHORSHIP = ("The Lean formalization, its proofs, the reviews recorded in the ledgers and this website were "
+              "produced with AI assistance (Claude, by Anthropic) under the direction of the maintainer, "
+              f'<a href="{MAINTAINER_URL}">{MAINTAINER_HANDLE}</a> on GitHub. The book is by its six authors, '
+              "who do not endorse this formalization.")
 
 
 def esc(t: str) -> str:
@@ -339,7 +347,7 @@ class Site:
 
     def shell(self, title: str, body: str, current: str | None = None, toc: bool = True) -> str:
         nav = [("index.html", "Home"), ("results.html", "Results"), ("status.html", "Status"),
-               ("graph.html", "Graph"), ("errata.html", "Errata"), ("about.html", "About")]
+               ("graph.html", "Graph"), ("errata.html", "Source issues"), ("about.html", "About")]
         links = "".join(f'<a href="{h}"{" aria-current=page" if h == (current or "") + ".html" else ""}>{t}</a>'
                         for h, t in nav)
         layout = (f'<div class="layout">{self.toc(current)}<main id="main">{body}</main></div>' if toc
@@ -468,7 +476,7 @@ status column is derived from the project's reviewed ledger at commit <code>{sel
                  "partial": "partial",
                  "implied": "implied by a proved entry (not counted as proved)",
                  "explanatory": "explanatory only (no claim)",
-                 "cited-out-of-scope": "cited, out of scope by user decision (not proved)",
+                 "cited-out-of-scope": "cited from the literature and not formalized here (project scope decision; not proved)",
                  "refuted": f"refuted in Lean under the reading formalized ({', '.join(refuted)}), nothing proved",
                  "ledger": "with a ledger note only", "none": "not yet formalized"}
         parts = [f"{by[s]} {words.get(s, STATUS[s][0].lower())}" for s in STATUS_ORDER if by[s]]
@@ -504,12 +512,13 @@ at a fixed commit. Every status comes from the project's ledgers. Many prose cla
 displays are not yet formalized, and the page says so where they appear. Reviews recorded in the ledgers are
 independent reviews by AI agents against the pinned TeX; no result has been refereed by a human mathematician or
 approved by the authors.</p>
+<p class="authorship">{AUTHORSHIP}</p>
 <p class="stats">{self.counts()}</p>
 <p class="actions"><a class="button primary" href="{chapters[0].id if chapters else 'index'}.html">Read the book →</a>
 <a class="button" href="results.html">Browse results</a>
-<a class="button" href="errata.html">Errata found</a> <a class="button" href="about.html#verify">Check it yourself</a></p>
+<a class="button" href="errata.html">Source issues (candidates)</a> <a class="button" href="about.html#verify">Check it yourself</a></p>
 </section>
-<section class="abstract"><h2>Abstract</h2>{front}</section>
+<section class="abstract"><h2>Abstract of the book (by the authors)</h2>{front}</section>
 <section><h2>Chapters</h2><ol class="chapters">{''.join(lis)}</ol></section>"""
         return self.shell(TITLE, body, "index", toc=False)
 
@@ -518,14 +527,14 @@ approved by the authors.</p>
                          for s, desc in [
                              ("original", "The named-result ledger records the printed result as proved: an independent AI-agent source review, a compiled Lean export and only the permitted axioms."),
                              ("corrected", "A corrected variant is proved; the card says what differs and links the source issue."),
-                             ("restricted", "A restricted variant (for example positive sample sizes) is proved; the card states the restriction."),
+                             ("restricted", "A restricted variant (for example positive sample sizes, or a smaller class of sets or algorithms) is proved; the card states the restriction. A result that is both corrected and restricted is counted as restricted."),
                              ("cov-printed", "A prose claim, remark, display or reading aid with no numbered-result record; the coverage ledger row that names it records it as proved as stated (or in corrected or restricted form, shown the same way)."),
                              ("unrecorded", "A statement entry exists in Lean but no ledger records it as proved, so it is not shown as proved."),
                              ("partial", "The coverage ledger lists components, but no statement entry covers the whole result."),
-                             ("refuted", "Lean proves the printed statement false and no corrected version is proved yet."),
+                             ("refuted", "Lean proves the printed statement false under the reading formalized (the card names the reading), and no corrected version is proved yet."),
                              ("implied", "The coverage ledger records that a named, proved statement entry implies this item; the implication is not a separate Lean statement, it carries the entry's corrected or restricted form, and it is never counted as proved."),
                              ("explanatory", "The coverage ledger records the item as attribution, comparison, motivation or notation with no mathematical claim; nothing is proved and it is never counted as proved."),
-                             ("cited-out-of-scope", "A result the book cites from the literature, recorded as out of scope by a dated user decision (2026-11-09). It is not proved, is never counted as proved, and keeps the formalization incomplete."),
+                             ("cited-out-of-scope", "A result the book cites from the literature; not formalized in this project (project scope decision, 2026-11-09). It is not proved, is never counted as proved, and keeps the formalization incomplete."),
                              ("ledger", "The coverage ledger has a note (for example a source gap or proposed repair); nothing is claimed as proved."),
                              ("none", "No Lean entry and no ledger note. This is the default.")])
         rev = self.lean.git.rev
@@ -544,6 +553,8 @@ Whether a Lean statement matches the printed result is judged by independent rev
 against the pinned TeX, recorded in the ledgers. No result has been refereed by a human mathematician or approved
 by the authors. Source issues (C1, C2, …) are candidates found by those reviews, not errors confirmed by the
 authors. Cards with a named-result ledger record link the review record, so the reasoning can be checked.</p>
+<p><strong>Who made this.</strong> {AUTHORSHIP} If we have misread the book, please tell us by opening an issue at
+<a href="{REPO}/issues">{REPO_DISPLAY}/issues</a>.</p>
 <p>A Lean card sits next to the source item it formalizes. When an entry also cites an algorithm, assumption,
 definition or display, that item shows a “cited by” link instead of a card, and never a status of its own.</p>
 <ul class="legend">{legend}</ul>
@@ -586,9 +597,9 @@ shown beside it.</p>
 <p>This formalization (incomplete; cite the commit you used):</p>
 <pre class="cite">{esc(self.bibtex_repo())}</pre>
 <h2>Licences</h2>
-<p>Book text and figures: CC BY 4.0, attributed to the six authors; changes were made as described above, and the
-authors do not endorse this formalization. Publisher formatting files from the arXiv archive are not republished.
-Lean code and this site: Apache-2.0.</p>"""
+<p>As in the page footer: book text and figures CC BY 4.0, attributed to the six authors (changes as described
+above; the authors do not endorse this formalization); Lean code and this site Apache-2.0. Publisher formatting
+files from the arXiv archive are not republished.</p>"""
         return self.shell(f"About · {TITLE}", body, "about", toc=False)
 
     def bibtex_book(self) -> str:
@@ -608,9 +619,11 @@ Lean code and this site: Apache-2.0.</p>"""
         return ("@software{statistical_foundations_rl_lean,\n"
                 "  title  = {Statistical Foundations of Reinforcement Learning in Lean: an incomplete\n"
                 "            Lean 4 formalization of arXiv:2610.41903v1},\n"
-                "  author = {statistical-foundations-rl-lean contributors},\n"
+                f"  author = {{{MAINTAINER_HANDLE} (maintainer)}},\n"
+
                 f"  url    = {{{REPO}}},\n"
-                f"  note   = {{Commit {rev}; built {self.built}}}\n}}")
+                f"  note   = {{Commit {rev}; built {self.built}. Produced with AI assistance (Claude, by\n"
+                f"            Anthropic) under the direction of the maintainer}}\n}}")
 
     def references_page(self) -> str:
         items = []

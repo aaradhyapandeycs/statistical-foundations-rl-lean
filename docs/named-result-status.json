@@ -298,7 +298,7 @@
       "lean_export": "StatisticalRL.OnlineRL.MVPProfile.sourceMVPFinitePossibleProfiles_card_bound_all",
       "lean_statement": "StatisticalRL.Statements.Lemma5_11",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_11_holds",
-      "statement_scope": "Printed profile-cardinality conclusion with K≥SAH log₂K, including K=1. Proved in stronger arbitrary finite episode-by-stage state-action row-table form, with the exact source threshold profile of pre-episode cumulative counts. A safe ceiling comparison family repairs the source intermediate inclusion (C15); the final printed bound is unchanged. This does not certify the printed intermediate family or full MVP algorithm/regret.",
+      "statement_scope": "Printed profile-cardinality conclusion with K≥SAH log₂K, including K=1. Proved in stronger arbitrary finite episode-by-stage state-action row-table form, with the exact source threshold profile of pre-episode cumulative counts. A safe ceiling comparison family repairs the source intermediate inclusion (C15); the final printed bound is unchanged. This does not prove the printed intermediate family or the full MVP algorithm and regret bound.",
       "evidence": "docs/critic-online-MVP-counts-profiles.md",
       "supporting_evidence": [
         "docs/online-MVP-counts-profiles-verification.md"
@@ -461,7 +461,7 @@
       "lean_export": "StatisticalRL.OfflineVILCB.Theorem63.vilcb_infinite_offline",
       "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_3",
       "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_3_holds",
-      "statement_scope": "Printed theorem under its only coherent quantifier reading ∃c_b₀ ∀c_b≥c_b₀ ∃c₁ (witnesses 96 and 10⁴c_b; a c₁ uniform in c_b is false): for γ∈[1/2,1), C⋆<∞, any Q⋆-greedy π⋆ and the printed sample-size condition, every greedy output policy is ε-optimal on ρ with probability ≥1−2δ. Lemma 6.7's restricted premises, Lemma 6.6's positive-count scope and C10/C19/C23 are discharged inside the proof.",
+      "statement_scope": "Printed theorem under its only coherent quantifier reading ∃c_b₀ ∀c_b≥c_b₀ ∃c₁ (witnesses 96 and 10⁴c_b; a c₁ uniform in c_b appears to fail): for γ∈[1/2,1), C⋆<∞, any Q⋆-greedy π⋆ and the printed sample-size condition, every greedy output policy is ε-optimal on ρ with probability ≥1−2δ. Lemma 6.7's restricted premises, Lemma 6.6's positive-count scope and C10/C19/C23 are discharged inside the proof.",
       "evidence": "docs/critic-thm6-3.md",
       "coverage": "docs/COVERAGE.md"
     },
@@ -583,7 +583,7 @@
       "lean_export": "StatisticalRL.QLearning.qLb_thm47 (combining StatisticalRL.QLearning.qLb_thm47_rescaledLinear and StatisticalRL.QLearning.qLb_thm47_constantRate)",
       "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_7",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_7_holds",
-      "statement_scope": "Printed statement, both cases: ∃ universal c₃, c_lb (16, 10⁻⁹) such that for γ∈[3/4,1), T≥c₃/(1−γ)², Q₀≡0 and either (i) η_t=1/(1+c_η(1−γ)t) for any c_η>0 or (ii) constant η∈(0,1), a 4-state 2-action MDP has max_s E|V_T(s)−V⋆(s)|² ≥ c_lb/((1−γ)⁴T log²T). Encoding disclosures: dominated dummy actions (C31), ∃s for the max, natural log, T∈ℕ, η 0 unused. Case (i) is not proved in the source; the Lean proof is self-contained (C30, resolved). Case (ii) printed-proof slips repaired as in C31 (statement unchanged). Thm4_7_restricted is implied and retained for history. Independently plan-checked and source-reviewed. Not author-approved.",
+      "statement_scope": "Printed statement, both cases: ∃ universal c₃, c_lb (16, 10⁻⁹) such that for γ∈[3/4,1), T≥c₃/(1−γ)², Q₀≡0 and either (i) η_t=1/(1+c_η(1−γ)t) for any c_η>0 or (ii) constant η∈(0,1), a 4-state 2-action MDP has max_s E|V_T(s)−V⋆(s)|² ≥ c_lb/((1−γ)⁴T log²T). Encoding disclosures: dominated dummy actions (C31), ∃s for the max, natural log, T∈ℕ, η 0 unused. The printed statement is proved. The book's own proof of case (i) is incomplete (C30); the Lean proof of case (i) is self-contained and does not depend on it. Case (ii) printed-proof slips repaired as in C31 (statement unchanged). Thm4_7_restricted, an earlier case (ii)-only entry, is implied by this one and kept for reference. Independently plan-checked and source-reviewed. Not author-approved.",
       "evidence": "docs/critic-thm4-7-case-i.md",
       "supporting_evidence": [
         "docs/critic-thm4-7-case-i-plan-check.md",
@@ -601,7 +601,7 @@
       "lean_export": "StatisticalRL.OnlineRL.onlineSourceAllocated_allStageTrajectoryOptimism_strict",
       "lean_statement": "StatisticalRL.Statements.Lemma5_5_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_5_corrected_holds",
-      "statement_scope": "Explicit zero-count convention; fixed deterministic tie rule; 0 < δ ≤ 1. SOURCE-ISSUES C8 and C6. This does not certify the literal printed zero-count algorithm.",
+      "statement_scope": "Explicit zero-count convention; fixed deterministic tie rule; 0 < δ ≤ 1. SOURCE-ISSUES C8 and C6. This does not cover the literal printed zero-count algorithm.",
       "evidence": "docs/critic-online-corrected-optimism.md",
       "coverage": "docs/COVERAGE.md"
     },
@@ -613,7 +613,7 @@
       "lean_export": "StatisticalRL.OnlineRL.onlineCappedEpisode_realized_telescope_nonnegative",
       "lean_statement": "StatisticalRL.Statements.Lemma5_6_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_6_corrected_holds",
-      "statement_scope": "Finite H analysis charge at zero visits replaces the undefined printed bonus (SOURCE-ISSUES C8). The generic deterministic result permits any greedy tie choice and nonnegative bonus coefficients, with 0 < delta-prime <= 1. No full regret theorem is certified.",
+      "statement_scope": "Finite H analysis charge at zero visits replaces the undefined printed bonus (SOURCE-ISSUES C8). The generic deterministic result permits any greedy tie choice and nonnegative bonus coefficients, with 0 < delta-prime <= 1. This entry does not prove a full regret theorem.",
       "evidence": "docs/critic-online-regret-telescope.md",
       "supporting_evidence": [
         "docs/online-regret-telescope-verification.md"
@@ -628,7 +628,7 @@
       "lean_export": "StatisticalRL.OnlineRL.onlineSourceAllocated_actualW123Restricted_strict",
       "lean_statement": "StatisticalRL.Statements.Lemma5_7_K2_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_7_K2_corrected_holds",
-      "statement_scope": "All three printed inequalities on one actual-law event with the printed 12 S^2 A H K delta-prime confidence. K>=2 (SOURCE-ISSUES C12), finite zero-count completion (C8), fixed deterministic greedy tie and source confidence/bonus domains. Singleton state spaces included. Supersedes the W1-only ledger variant; the earlier W1 statement/proof remain available. No T234 or final regret theorem is certified.",
+      "statement_scope": "All three printed inequalities on one actual-law event with the printed 12 S^2 A H K delta-prime confidence. K>=2 (SOURCE-ISSUES C12), finite zero-count completion (C8), fixed deterministic greedy tie and source confidence/bonus domains. Singleton state spaces included. Supersedes the W1-only ledger variant; the earlier W1 statement/proof remain available. This entry does not prove the later bounds on the regret terms T₂–T₄ or the final regret theorem.",
       "evidence": "docs/critic-online-w123-joint.md",
       "supporting_evidence": [
         "docs/online-w123-joint-verification.md"
@@ -643,7 +643,7 @@
       "lean_export": "StatisticalRL.OnlineRL.onlineSourceAllocated_actualT234_K2_strict",
       "lean_statement": "StatisticalRL.Statements.Lemma5_8_K2_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_8_K2_corrected_holds",
-      "statement_scope": "All four printed inequalities, including both parts of the T3 radius chain, on one actual-law event with strict printed 4 log2(KH) delta-prime confidence. Printed iota and threshold retained. K>=2 (SOURCE-ISSUES C12), finite zero-count analysis charge H (C8), fixed deterministic greedy tie, and source confidence/bonus domains. No T56 or final regret theorem certified.",
+      "statement_scope": "All four printed inequalities, including both parts of the T3 radius chain, on one actual-law event with strict printed 4 log2(KH) delta-prime confidence. Printed iota and threshold retained. K>=2 (SOURCE-ISSUES C12), finite zero-count analysis charge H (C8), fixed deterministic greedy tie, and source confidence/bonus domains. This entry does not prove the later bounds on the regret terms T₅, T₆ or the final regret theorem.",
       "evidence": "docs/critic-online-t234-joint.md",
       "supporting_evidence": [
         "docs/online-t234-joint-verification.md"
@@ -673,7 +673,7 @@
       "lean_export": "StatisticalRL.OnlineRL.onlineUCBVI_actual_regret_high_probability",
       "lean_statement": "StatisticalRL.Statements.Thm5_2_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Thm5_2_corrected_holds",
-      "statement_scope": "For all K>=1 and 0<delta<1, actual true-policy regret is at most 20(sqrt(SAH^3K)+S^2AH^3)(1+iota) with probability at least 1-delta. Fixed universal bonus coefficients4 and 16. Independent iid initial resets and causal sequential transitions. Explicit direct K=1 and small-sample branches; no auxiliary K>=2 restriction remains. Finite zero-count algorithm completion (C8) and fixed deterministic greedy tie; no unproved event or intermediate estimate assumed.",
+      "statement_scope": "For all K>=1 and 0<delta<1, actual true-policy regret is at most 20(sqrt(SAH^3K)+S^2AH^3)(1+iota) with probability at least 1-delta. Fixed universal bonus coefficients 4 and 16. Independent iid initial resets and causal sequential transitions. The cases K = 1 and small sample sizes are proved directly, so no auxiliary K ≥ 2 restriction remains. Finite zero-count algorithm completion (C8) and fixed deterministic greedy tie; no unproved event or intermediate estimate assumed.",
       "evidence": "docs/critic-online-ucbvi-regret.md",
       "supporting_evidence": [
         "docs/online-ucbvi-regret-verification.md"
@@ -688,7 +688,7 @@
       "lean_export": "StatisticalRL.GeneralVariance.variance_square_le_four_of_abs_bound and StatisticalRL.GeneralVariance.variance_centeredSquare_le_four_of_abs_bound",
       "lean_statement": "StatisticalRL.Statements.Lemma5_22_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_22_corrected_holds",
-      "statement_scope": "Arbitrary probability space, measurable real X and pointwise absolute bound C. First coefficient 4 is unchanged; printed second coefficient 1 is false for signed X and is replaced by 4 (SOURCE-ISSUES C14). Integrability and MemLp are derived, not extra hypotheses. Exact ProbabilityTheory.variance counterexample: |X|=1, VarX=7/16, Var((X-EX)^2)=63/64. Original false general lemma is not certified.",
+      "statement_scope": "Arbitrary probability space, measurable real X and pointwise absolute bound C. First coefficient 4 is unchanged; printed second coefficient 1 is refuted in Lean for signed X (exact counterexample, SOURCE-ISSUES C14) and is replaced by 4. Integrability and MemLp are derived, not extra hypotheses. Exact ProbabilityTheory.variance counterexample: |X|=1, VarX=7/16, Var((X-EX)^2)=63/64. The printed general lemma, with second coefficient 1, is not proved: it is refuted in Lean for signed X (C14).",
       "evidence": "docs/critic-square-variance-correction.md",
       "supporting_evidence": [
         "docs/square-variance-correction-verification.md"
@@ -763,7 +763,7 @@
       "lean_export": "StatisticalRL.OnlineRL.mvpSourceRegretCorrected_holds",
       "lean_statement": "StatisticalRL.Statements.MVP_regret_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.MVP_regret_corrected_holds",
-      "statement_scope": "Universal C=100 before all environment parameters, all positive H,K and 0<delta<1: actual true-policy regret <=100 max(1,I) min(sqrt(SAH^3K),HK) with probability >=1-delta under the same sequential law and pre-episode greedy planner, fixed universal c1=4,c2=16. I=40000(log2 K)^3 log(3SAH) log(1/delta-prime), delta-prime=delta/(100S^2A^2H^2K^2). Direct K=1/small branches; large branch internally proves eligibility and consumes the actual decoupling probability. Corrections C8/C12/C13/C15/C16/C17 and fixed tie are explicit; no hdecProb or intermediate-bound premise. No unverified theorem ordinal is assigned.",
+      "statement_scope": "Universal C=100 before all environment parameters, all positive H,K and 0<delta<1: actual true-policy regret <=100 max(1,I) min(sqrt(SAH^3K),HK) with probability >=1-delta under the same sequential law and pre-episode greedy planner, fixed universal c1=4,c2=16. I=40000(log2 K)^3 log(3SAH) log(1/delta-prime), delta-prime=delta/(100S^2A^2H^2K^2). The cases K = 1 and small K are proved directly; for large K the proof establishes its own eligibility conditions and accounts for the actual decoupling probability. Differs from the printed theorem in: the corrections of source issues C8, C12, C13, C15, C16 and C17 and a fixed tie-breaking rule, all stated explicitly. No extra probability or intermediate-bound premise is assumed. The source gives this result no theorem number, and none is assigned here.",
       "evidence": "docs/critic-online-MVP-main-decoupling.md",
       "supporting_evidence": [
         "docs/online-MVP-main-decoupling-verification.md"
@@ -858,7 +858,7 @@
       "lean_export": "StatisticalRL.GenerativeLowerBound.theorem37_corrected_fin_carriers",
       "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_7_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_7_corrected_holds",
-      "statement_scope": "Corrected: the printed theorem is false (C1, C2). Proved for S≥2 and SA≥16 with A≥2 for part (i) only, the printed γ/ε ranges and sample bound, a uniform constant (witness 1/32768), probability ≥1/4, deterministic estimators given the known reward and discount, and witness MDPs on Fin S × Fin A. This does not certify the printed theorem.",
+      "statement_scope": "Corrected: as printed, the theorem fails under its standalone reading (A = 1, or one state with known rewards); the counterexamples are checked in Lean (C1, C2). Proved for S≥2 and SA≥16 with A≥2 for part (i) only, the printed γ/ε ranges and sample bound, a uniform constant (witness 1/32768), probability ≥1/4, deterministic estimators given the known reward and discount, and witness MDPs on Fin S × Fin A. This does not prove the printed theorem.",
       "evidence": "docs/critic-thm3-7-corrected.md",
       "coverage": "docs/COVERAGE.md"
     },
@@ -871,7 +871,7 @@
       "lean_export": "StatisticalRL.FiniteQLearning.finiteQLearning_sample_complexity",
       "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_13_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_13_corrected_holds",
-      "statement_scope": "Corrected: the printed statement with only 2≤T added; without it the statement is false (not_thm4_13_from_one). With probability >1−δ the sampled Q-learning iterates are ε-accurate at every stage, for ∃c₀ ∀0<c₂≤c₁≤c₀ ∃c₃ (c₀=1/64, c₃=8000/c₂). The stability step is deterministic rather than via KL/Pinsker (C35).",
+      "statement_scope": "Corrected: the printed statement with only 2≤T added; without it the statement is refuted in Lean (not_thm4_13_from_one). With probability >1−δ the sampled Q-learning iterates are ε-accurate at every stage, for ∃c₀ ∀0<c₂≤c₁≤c₀ ∃c₃ (c₀=1/64, c₃=8000/c₂). The stability step is deterministic rather than via KL/Pinsker (C35).",
       "evidence": "docs/critic-thm4-13-corrected.md",
       "coverage": "docs/COVERAGE.md"
     },
@@ -895,7 +895,7 @@
       "lean_export": "StatisticalRL.Bandit.ucb_regret_bounds",
       "lean_statement": "StatisticalRL.Statements.Thm5_1_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Thm5_1_restricted_holds",
-      "statement_scope": "Restricted: both printed bounds, E Regret ≤ 8√(AT log(T²/δ)) and ≤ 10 log(T²/δ) Σ_{Δ(a)>0} 1/Δ(a), with exactly the printed hypotheses (2≤A≤T, means in [0,1], 0<δ<1) and i.i.d. N(0,1) noise, for deterministic tie rules depending on the round and the argmax set only; history-dependent and randomized ties are not covered. The printed Step 1 is invalid under adaptive sampling and is replaced by an adaptive Gaussian exponential-martingale tail (C36).",
+      "statement_scope": "Restricted: both printed bounds, E Regret ≤ 8√(AT log(T²/δ)) and ≤ 10 log(T²/δ) Σ_{Δ(a)>0} 1/Δ(a), with exactly the printed hypotheses (2≤A≤T, means in [0,1], 0<δ<1) and i.i.d. N(0,1) noise, for deterministic tie rules depending on the round and the argmax set only; history-dependent and randomized ties are not covered. The printed proof's Step 1 applies fixed-count tail bounds at a random count, which does not justify it under adaptive sampling (C36; the conclusion still holds); it is replaced by an adaptive Gaussian exponential-martingale tail (C36).",
       "evidence": "docs/critic-thm5-1-restricted.md",
       "coverage": "docs/COVERAGE.md"
     },
@@ -919,7 +919,7 @@
       "lean_export": "StatisticalRL.OfflineRL.LCBQ.lemma610_prob",
       "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_10_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_10_restricted_holds",
-      "statement_scope": "Restricted: the printed lemma omits the requirement that c_b be large and is false for small c_b (C28). With ∃c_b₀ ∀c_b≥c_b₀ (the standing assumption of Lemma 6.9 and Theorem 6.8), Q_t≤Q⋆ and V_t≤V^{π_t}≤V⋆ hold with probability >1−δ, for tie rules depending only on the Q-row.",
+      "statement_scope": "Restricted: the printed lemma omits the requirement that c_b be large and appears to fail for small c_b (counterexample on paper, C28). With ∃c_b₀ ∀c_b≥c_b₀ (the standing assumption of Lemma 6.9 and Theorem 6.8), Q_t≤Q⋆ and V_t≤V^{π_t}≤V⋆ hold with probability >1−δ, for tie rules depending only on the Q-row.",
       "evidence": "docs/critic-lemma6-9-6-10.md",
       "coverage": "docs/COVERAGE.md"
     },
@@ -931,7 +931,7 @@
       "lean_export": "StatisticalRL.OfflineRL.LCBQ.lcbq_useful",
       "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_11_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_11_restricted_holds",
-      "statement_scope": "Restricted: with explicit universal constant 84 for the actual time-j state laws and discounted occupancy of every Q⋆-greedy deterministic policy π⋆ (every optimal deterministic policy, no tie rule fixed), every 0<δ<1, T≥1 and W≥0, under the added sufficient premise log(SAT/δ)≥1. The printed lemma is false without some such premise (C22); its uses with δ>SAT/e are not covered by this entry, and Theorem 6.8 handles that corner inside its own proof.",
+      "statement_scope": "Restricted: with explicit universal constant 84 for the actual time-j state laws and discounted occupancy of every Q⋆-greedy deterministic policy π⋆ (every optimal deterministic policy, no tie rule fixed), every 0<δ<1, T≥1 and W≥0, under the added sufficient premise log(SAT/δ)≥1. The printed lemma appears to fail without some such premise (counterexample on paper, C22); its uses with δ>SAT/e are not covered by this entry, and Theorem 6.8 handles that corner inside its own proof.",
       "evidence": "docs/critic-lemma6-11-restricted.md",
       "supporting_evidence": [
         "docs/critic-c22-lemma6-11-disclosure.md",
@@ -959,7 +959,7 @@
       "lean_export": "StatisticalRL.OfflineRL.LCBQ.thm68_corrected_prob",
       "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_8_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_8_corrected_holds",
-      "statement_scope": "Corrected: the printed theorem is false (C24). With log²(SAT/((1−γ)δ)) in the sample-size condition (the only change), c_b≥4, c₂=16(400000+5600c_b)², T≥1, C⋆<∞, any Q⋆-greedy π⋆ and ε∈(0,1/(1−γ)], the output policy is ε-optimal on ρ with probability >1−δ, for tie rules depending only on the Q-row. The δ>SAT/e corner is handled inside the proof (C22). This does not certify the printed theorem.",
+      "statement_scope": "Corrected: as printed, the theorem appears to fail under the reading formalized here (counterexample on paper, not machine-checked; C24). With log²(SAT/((1−γ)δ)) in the sample-size condition (the only change), c_b≥4, c₂=16(400000+5600c_b)², T≥1, C⋆<∞, any Q⋆-greedy π⋆ and ε∈(0,1/(1−γ)], the output policy is ε-optimal on ρ with probability >1−δ, for tie rules depending only on the Q-row. The δ>SAT/e corner is handled inside the proof (C22). This does not prove the printed theorem.",
       "evidence": "docs/critic-thm6-8-corrected.md",
       "coverage": "docs/COVERAGE.md"
     },
@@ -971,7 +971,7 @@
       "lean_export": "StatisticalRL.TemporalDifference.tdRateWeight_corrected_step_size",
       "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_3_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_3_corrected_holds",
-      "statement_scope": "Corrected: both printed weight bounds under the printed schedule and c₁c₂≤1/8, with the disclosed extra premises log²T≤c₁(1−γ)T, t≤T and T≥2 and γ∈[0,1) explicit (C5). The printed standalone early-weight bound fails without some such premise (formal counterexample); the retained premise is the one the appendix proof uses and is not claimed minimal. This does not certify the printed lemma.",
+      "statement_scope": "Corrected: both printed weight bounds under the printed schedule and c₁c₂≤1/8, with the disclosed extra premises log²T≤c₁(1−γ)T, t≤T and T≥2 and γ∈[0,1) explicit (C5). The printed standalone early-weight bound fails without some such premise (formal counterexample); the retained premise is the one the appendix proof uses and is not claimed minimal. This does not prove the printed lemma.",
       "evidence": "docs/critic-unreviewed-entries.md",
       "coverage": "docs/COVERAGE.md"
     },
@@ -1007,7 +1007,7 @@
       "lean_export": "StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_3_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_holds",
-      "statement_scope": "Corrected: the printed statement with the printed constants (1/8, c₀ ≤ 1/8, σ ∈ (0, 1−c₀], γ ∈ [1/2, 1), ε ≤ c₀/(256(1−γ)), the printed N bound) and only A ≥ 2 added; the printed statement is false at A = 1 (not_thm7_3_printed, C38). Estimators map samples to policies and do not see the reward, and the two hard models may differ in reward; the S = 1 case holds only for that reason. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: the printed statement with the printed constants (1/8, c₀ ≤ 1/8, σ ∈ (0, 1−c₀], γ ∈ [1/2, 1), ε ≤ c₀/(256(1−γ)), the printed N bound) and only A ≥ 2 added; the printed statement is refuted in Lean at A = 1 (not_thm7_3_printed, C38). Estimators map samples to policies and do not see the reward, and the two hard models may differ in reward; the S = 1 case holds only for that reason. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-3-integration.md",
       "supporting_evidence": [
         "docs/critic-thm7-3-corrected.md",
@@ -1023,7 +1023,7 @@
       "lean_export": "StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected_knownReward",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward_holds",
-      "statement_scope": "Corrected: the faithful form under the book's known-reward convention, with the printed constants and S ≥ 2 and A ≥ 2 added and the two hard models sharing their reward (C38). A ≥ 2 is necessary (the printed statement is refuted in Lean at A = 1); S ≥ 2 is needed because under known rewards the printed claim is false at S = 1 (argmax r is robust-optimal), which is a paper argument, not machine-checked. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: the faithful form under the book's known-reward convention, with the printed constants and S ≥ 2 and A ≥ 2 added and the two hard models sharing their reward (C38). A ≥ 2 is necessary (the printed statement is refuted in Lean at A = 1); S ≥ 2 is needed because under known rewards the printed claim appears to fail at S = 1 (argmax r is robust-optimal); this is a paper argument, not machine-checked. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-3-integration.md",
       "supporting_evidence": [
         "docs/critic-thm7-3-corrected.md",
@@ -1039,7 +1039,7 @@
       "lean_export": "StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_5_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_holds",
-      "statement_scope": "Corrected: explicit constants c₃ = 1/512, c₄ = 1/5308416 (hence every smaller pair) with the printed shape of every condition (γ ∈ [3/4, 1), σ > 0, ε ≤ c₃/(1−γ), the printed N budget, 1/8) and only A ≥ 2 added; the printed statement is refuted for every pair of positive constants (printed_at_fails, C7). Estimators do not see the reward; the S = 1 case holds only for that reason. ε > 0 is not needed: for ε < 0 the claim is trivial, and at ε = 0 the Lean value c₄/0 = 0 forces N = 0. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: explicit constants c₃ = 1/512, c₄ = 1/5308416 (hence every smaller pair) with the printed shape of every condition (γ ∈ [3/4, 1), σ > 0, ε ≤ c₃/(1−γ), the printed N budget, 1/8) and only A ≥ 2 added; the printed statement is refuted for every pair of positive constants (printed_at_fails, C7). Estimators do not see the reward; the S = 1 case holds only for that reason. ε > 0 is not needed: for ε < 0 the claim is trivial, and at ε = 0 the Lean value c₄/0 = 0 forces N = 0. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-5-revision.md",
       "supporting_evidence": [
         "docs/critic-thm7-5-corrected.md"
@@ -1054,7 +1054,7 @@
       "lean_export": "StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward_holds",
-      "statement_scope": "Corrected: the faithful form under the book's known-reward convention, with explicit constants c₃ = 1/512, c₄ = 1/5308416, the printed shape of every condition, and S ≥ 2 and A ≥ 2 added with a shared reward (C7). Both added hypotheses are shown necessary in Lean (knownReward_needs_two_states, knownReward_needs_two_actions), and the printed statement is refuted for every pair of positive constants (printed_at_fails). Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: the faithful form under the book's known-reward convention, with explicit constants c₃ = 1/512, c₄ = 1/5308416, the printed shape of every condition, and S ≥ 2 and A ≥ 2 added with a shared reward (C7). Both added hypotheses are shown necessary in Lean (knownReward_needs_two_states, knownReward_needs_two_actions), and the printed statement is refuted for every pair of positive constants (printed_at_fails). Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-5-revision.md",
       "supporting_evidence": [
         "docs/critic-thm7-5-corrected.md"
@@ -1069,7 +1069,7 @@
       "lean_export": "StatisticalRL.Ch7Rest.Marl.thm7_8_corrected",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_8_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_8_corrected_holds",
-      "statement_scope": "Corrected: \"Zero-sum\" for m ≥ 3 is read as rewards summing to 0, all in [−1,1], with player 1 in [0,1] (the book defines zero-sum only for m = 2); with c₁ = 1/2048 and c₂ = 2⁻³², every adaptive randomized learner (any discrete, countably supported seed law; outputs may be correlated joint Markov policies) fails, with gap > ε with probability ≥ 1/4, on some game of a family with a known shared reward (the book's convention) once N < c₂H⁴S·max_iA_i/ε², under the added hypotheses m ≥ 2, S ≥ 2, H ≥ 2 and max_iA_i ≥ 2. The printed statement is false when every A_i = 1 (not_thm7_8_printed); necessity of S, H, m ≥ 2 and max A ≥ 2 for the corrected statement is argued in prose only. Measurable output kernels into the continuous policy space are not literally covered, and the conclusion is vacuous if some A_j = 0 (C40). Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: \"Zero-sum\" for m ≥ 3 is read as rewards summing to 0, all in [−1,1], with player 1 in [0,1] (the book defines zero-sum only for m = 2); with c₁ = 1/2048 and c₂ = 2⁻³², every adaptive randomized learner (any discrete, countably supported seed law; outputs may be correlated joint Markov policies) fails, with gap > ε with probability ≥ 1/4, on some game of a family with a known shared reward (the book's convention) once N < c₂H⁴S·max_iA_i/ε², under the added hypotheses m ≥ 2, S ≥ 2, H ≥ 2 and max_iA_i ≥ 2. The printed statement is refuted in Lean when every A_i = 1 (not_thm7_8_printed); necessity of S, H, m ≥ 2 and max A ≥ 2 for the corrected statement is argued in prose only. Measurable output kernels into the continuous policy space are not literally covered, and the conclusion is vacuous if some A_j = 0 (C40). Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-8-corrected.md",
       "supporting_evidence": [
         "docs/critic-thm7-8-integration.md",
@@ -1085,7 +1085,7 @@
       "lean_export": "StatisticalRL.Ch7Rest.Marl.thm7_8_corrected_constSum",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_8_corrected_constSum",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_8_corrected_constSum_holds",
-      "statement_scope": "Corrected: \"Zero-sum\" for m ≥ 3 is read as normalised constant-sum rewards (the book defines zero-sum only for m = 2); with c₁ = 1/2048 and c₂ = 2⁻³², every adaptive randomized learner (any discrete, countably supported seed law; outputs may be correlated joint Markov policies) fails, with gap > ε with probability ≥ 1/4, on some game of a family with a known shared reward (the book's convention) once N < c₂H⁴S·max_iA_i/ε², under the added hypotheses m ≥ 2, S ≥ 2, H ≥ 2 and max_iA_i ≥ 2. The printed statement is false when every A_i = 1 (not_thm7_8_printed); necessity of S, H, m ≥ 2 and max A ≥ 2 for the corrected statement is argued in prose only. Measurable output kernels into the continuous policy space are not literally covered, and the conclusion is vacuous if some A_j = 0 (C40). Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: \"Zero-sum\" for m ≥ 3 is read as normalised constant-sum rewards (the book defines zero-sum only for m = 2); with c₁ = 1/2048 and c₂ = 2⁻³², every adaptive randomized learner (any discrete, countably supported seed law; outputs may be correlated joint Markov policies) fails, with gap > ε with probability ≥ 1/4, on some game of a family with a known shared reward (the book's convention) once N < c₂H⁴S·max_iA_i/ε², under the added hypotheses m ≥ 2, S ≥ 2, H ≥ 2 and max_iA_i ≥ 2. The printed statement is refuted in Lean when every A_i = 1 (not_thm7_8_printed); necessity of S, H, m ≥ 2 and max A ≥ 2 for the corrected statement is argued in prose only. Measurable output kernels into the continuous policy space are not literally covered, and the conclusion is vacuous if some A_j = 0 (C40). Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-8-corrected.md",
       "supporting_evidence": [
         "docs/critic-thm7-8-integration.md",
@@ -1102,7 +1102,7 @@
       "lean_export": "StatisticalRL.FiniteVILCB.finite_vilcb_restricted, with the bridges StatisticalRL.FiniteVILCB.isOptimal_of_optimal, StatisticalRL.FiniteVILCB.concentrability_eq_library and StatisticalRL.FiniteVILCB.gap_bridge",
       "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_16_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_16_restricted_holds",
-      "statement_scope": "Restricted: the monograph states the result for an undefined variant of VI-LCB and cites li2024settling (C32). Proved for one explicitly defined variant (two-fold sample splitting with first-half-determined subsampling, backward pessimistic value iteration with a Bernstein-style penalty clipped at the next-stage value norm), which is not asserted to be li2024settling's algorithm. It keeps the printed rate K ≥ c_k H³ S C⋆ log(KH/δ)/ε² with c_k = 69120·c_b for any c_b ≥ 16: with probability ≥ 1−δ every greedy output is ε-optimal, for every optimal π⋆. Values and occupancies are the library objects. Adds only the domain conditions 0 < K and C⋆ < ∞. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Restricted: the monograph states the result for an undefined variant of VI-LCB and cites li2024settling (C32). Proved for one explicitly defined variant (two-fold sample splitting with first-half-determined subsampling, backward pessimistic value iteration with a Bernstein-style penalty clipped at the next-stage value norm), which is not asserted to be li2024settling's algorithm. It keeps the printed rate K ≥ c_k H³ S C⋆ log(KH/δ)/ε² with c_k = 69120·c_b for any c_b ≥ 16: with probability ≥ 1−δ every greedy output is ε-optimal, for every optimal π⋆. Values and occupancies are the library objects. Adds only the domain conditions 0 < K and C⋆ < ∞. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm6-16.md",
       "supporting_evidence": [
         "docs/critic-thm6-16-integration.md",
@@ -1119,7 +1119,7 @@
       "lean_export": "StatisticalRL.LCBQFinite.lcbqFinite_restricted and StatisticalRL.LCBQFinite.printed_size_imp_export_size, with the bridges StatisticalRL.FiniteVILCB.isOptimal_of_optimal, StatisticalRL.FiniteVILCB.concentrability_eq_library and StatisticalRL.FiniteVILCB.gap_bridge",
       "lean_statement": "StatisticalRL.Statements.Ch6.Thm6_17_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Ch6.Thm6_17_restricted_holds",
-      "statement_scope": "Restricted: the printed algorithm is under-specified and the proof is cited (C33). Proved for one explicit completion (zero initialisation, arbitrary initial policy, forward stage order within an episode, rate (H+1)/(H+n), penalty c_b√(H³L/n) for every L in [ι, max(ι, ι³)] with ι = log(SAK/δ), monotone value, policy changed only on a strict value increase, C⋆ defined with a deterministic optimal policy). It keeps the printed size condition c_a H⁵ S C⋆ ι³/ε² ≤ K with c_a = 10⁶c_b² for any c_b ≥ 5: with probability ≥ 1−δ the output is ε-optimal, for every optimal π⋆. Values and occupancies are the library objects. Adds only the domain conditions 0 < K and C⋆ < ∞. The reading of Θ̃ as \"any such penalty\" is false. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Restricted: the printed algorithm is under-specified and the proof is cited (C33). Proved for one explicit completion (zero initialisation, arbitrary initial policy, forward stage order within an episode, rate (H+1)/(H+n), penalty c_b√(H³L/n) for every L in [ι, max(ι, ι³)] with ι = log(SAK/δ), monotone value, policy changed only on a strict value increase, C⋆ defined with a deterministic optimal policy). It keeps the printed size condition c_a H⁵ S C⋆ ι³/ε² ≤ K with c_a = 10⁶c_b² for any c_b ≥ 5: with probability ≥ 1−δ the output is ε-optimal, for every optimal π⋆. Values and occupancies are the library objects. Adds only the domain conditions 0 < K and C⋆ < ∞. The reading of Θ̃ as \"any such penalty\" appears to fail. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm6-17.md",
       "supporting_evidence": [
         "docs/critic-thm6-17-plan-check.md"
@@ -1135,7 +1135,7 @@
       "lean_export": "StatisticalRL.AsyncQ.asyncQ_exists_c₂",
       "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_12_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_12_corrected_holds",
-      "statement_scope": "Corrected: the printed ∃c₁ ∃c₂ statement for asynchronous Q-learning along one Markov trajectory (with probability ≥ 1−δ the final iterate is ε-accurate at the printed learning rate), with exactly two added premises, 0 < μ_min and 2 ≤ T ∨ 2 ≤ S·A, plus the domain premise 1 ≤ T (C34: the printed statement fails at T = 1 and when μ_min = 0). The trajectory is given by its finite path law. The Markov mixing theory (stationarity, mixing-distance decay, window visit counts) is built from scratch, and the proof is new rather than the monograph's cited argument. The library export holds for every c₁ ∈ (0,1] with c₂ = max(e^{32/c₁}, 4096); joint satisfiability of the budget for this c₂ is argued on paper only. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: the printed ∃c₁ ∃c₂ statement for asynchronous Q-learning along one Markov trajectory (with probability ≥ 1−δ the final iterate is ε-accurate at the printed learning rate), with exactly two added premises, 0 < μ_min and 2 ≤ T ∨ 2 ≤ S·A, plus the domain premise 1 ≤ T (C34: the printed statement fails at T = 1 and when μ_min = 0). The trajectory is given by its finite path law. The Markov mixing theory (stationarity, mixing-distance decay, window visit counts) is built from scratch, and the proof is new rather than the monograph's cited argument. The library export holds for every c₁ ∈ (0,1] with c₂ = max(e^{32/c₁}, 4096); joint satisfiability of the budget for this c₂ is argued on paper only. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm4-12.md",
       "supporting_evidence": [
         "docs/critic-thm4-12-plan-check.md"
@@ -1150,7 +1150,7 @@
       "lean_export": "StatisticalRL.Ch7Rest.FedSync.fedSynQ_error_le_of_eta_le_one",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_9_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_9_corrected_holds",
-      "statement_scope": "Corrected: the printed statement with exactly one added hypothesis, that the prescribed learning rate is below 1 (c_η K(1−γ)⁴ε² < log(SAKT/δ)); the printed statement is false under the literal reading (not_thm7_9_printed, C41). Stated under the true generative sampling law and with the true optimal Q-function, for universal constants c_η = 1/216 and c_T = 10⁴: with probability ≥ 1−δ the averaged output is ε-accurate, with linear speedup in K. γ > 0 is kept as a definedness convention for the τ condition and τ ∣ T as the source's standing convention; the export uses neither. Whether η < 1 is the minimal correction is not claimed. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: the printed statement with exactly one added hypothesis, that the prescribed learning rate is below 1 (c_η K(1−γ)⁴ε² < log(SAKT/δ)); the printed statement is refuted in Lean under the literal reading (not_thm7_9_printed, C41). Stated under the true generative sampling law and with the true optimal Q-function, for universal constants c_η = 1/216 and c_T = 10⁴: with probability ≥ 1−δ the averaged output is ε-accurate, with linear speedup in K. γ > 0 is kept as a definedness convention for the τ condition and τ ∣ T as the source's standing convention; the export uses neither. Whether η < 1 is the minimal correction is not claimed. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-9.md",
       "supporting_evidence": [
         "docs/critic-thm7-9-plan-check.md"
@@ -1166,7 +1166,7 @@
       "lean_export": "StatisticalRL.RobustRL.DRVI.thm7_2_corrected_holds",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_2_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_2_corrected_holds",
-      "statement_scope": "Corrected (TV-robust MDP): The only change from the printed statement is the iteration count: DRVI may run for any T ≥ C₁ log(N/(1−γ))/(1−γ) instead of the printed T = C₁ log(N/(1−γ)), and this is machine-checked by a definitional comparison. The printed count is refuted in Lean (not_thm7_2_printed, C37). Proved from scratch at the printed statistical rate with C₁ = 2 and C₂ = 10⁶ (the cited shi2024curious was not used): with probability ≥ 1−δ the output is an ε-optimal robust policy at the printed sample size. The change is a minimal edit; tightness of the log factor is not shown. The oracle-planner remarks and history-dependent policies are not covered. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected (TV-robust MDP): The only change from the printed statement is the iteration count: DRVI may run for any T ≥ C₁ log(N/(1−γ))/(1−γ) instead of the printed T = C₁ log(N/(1−γ)), and this is machine-checked by a definitional comparison. The printed count is refuted in Lean (not_thm7_2_printed, C37). Proved from scratch at the printed statistical rate with C₁ = 2 and C₂ = 10⁶ (the cited shi2024curious was not used): with probability ≥ 1−δ the output is an ε-optimal robust policy at the printed sample size. The change is a minimal edit; tightness of the log factor is not shown. The oracle-planner remarks and history-dependent policies are not covered. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-2-7-4.md",
       "supporting_evidence": [
         "docs/critic-thm7-2-7-4-plan-check.md"
@@ -1182,7 +1182,7 @@
       "lean_export": "StatisticalRL.RobustRL.DRVI.thm7_4_corrected_holds",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_4_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_4_corrected_holds",
-      "statement_scope": "Corrected (χ²-robust MDP with the support-aware χ² ball): The only change from the printed statement is the iteration count: DRVI may run for any T ≥ c₁ log(N/(1−γ))/(1−γ) instead of the printed T = c₁ log(N/(1−γ)), and this is machine-checked by a definitional comparison. The printed count is refuted in Lean (not_thm7_4_printed, C37). Proved from scratch at the printed statistical rate with c₁ = 2 and c₂ = 10⁶ (the cited shi2024curious was not used): with probability ≥ 1−δ the output is an ε-optimal robust policy at the printed sample size. The change is a minimal edit; tightness of the log factor is not shown. The oracle-planner remarks and history-dependent policies are not covered. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected (χ²-robust MDP with the support-aware χ² ball): The only change from the printed statement is the iteration count: DRVI may run for any T ≥ c₁ log(N/(1−γ))/(1−γ) instead of the printed T = c₁ log(N/(1−γ)), and this is machine-checked by a definitional comparison. The printed count is refuted in Lean (not_thm7_4_printed, C37). Proved from scratch at the printed statistical rate with c₁ = 2 and c₂ = 10⁶ (the cited shi2024curious was not used): with probability ≥ 1−δ the output is an ε-optimal robust policy at the printed sample size. The change is a minimal edit; tightness of the log factor is not shown. The oracle-planner remarks and history-dependent policies are not covered. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-2-7-4.md",
       "supporting_evidence": [
         "docs/critic-thm7-2-7-4-plan-check.md"
@@ -1198,7 +1198,8 @@
       "lean_export": "StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_11_corrected_halfspace",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_11_corrected_halfspace_holds",
-      "statement_scope": "Corrected and restricted: true noise covariance Γ_true ≻ 0 instead of the printed Γ (C43, printed refuted under the action-dependent-reward reading); closed half-spaces only, not all convex sets; printed rate T^(-1/3) with an instance-, η₀- and V₀-dependent constant, printed coefficient not established. Implies no convex confidence-region guarantee beyond half-spaces (C47). Not author-approved; this does not certify the printed theorem.",
+      "statement_variant": "restricted",
+      "statement_scope": "Corrected and restricted: true noise covariance Γ_true ≻ 0 instead of the printed Γ (C43, printed refuted under the action-dependent-reward reading); closed half-spaces only, not all convex sets; printed rate T^(-1/3) with an instance-, η₀- and V₀-dependent constant, printed coefficient not established. Implies no convex confidence-region guarantee beyond half-spaces (C47). Partial result over all convex sets (not counted here): an instance-constant bound K·T^(-1/3)·log(2T) is proved (abs_lawProb_convex_sub_gaussCov_le_third_log; see the coverage-ledger row for Theorem 7.11); the printed rate over all convex sets, without the logarithm, remains open. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-11-m9.md",
       "supporting_evidence": [
         "docs/critic-thm7-11-corrected-plan-check.md",
@@ -1218,7 +1219,7 @@
       "lean_export": "StatisticalRL.Ch7Rest.Rlhf.vpo_regret_both and StatisticalRL.Ch7Rest.Rlhf.exists_ballSelection",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_12_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_12_corrected_holds",
-      "statement_scope": "Corrected: The printed statement is ill-posed: α is undefined at T = 1 and the VPO update may have no minimizer (C44). For finite context and response sets, linear Bradley–Terry rewards with ‖θ⋆‖ ≤ r_max, and the printed VPO objective minimized over Gibbs policies with parameter in the ball ‖θ‖₂ ≤ r_max (any minimizer; one exists by compactness), with probability ≥ 1−δ the realized regret satisfies Regret ≤ T·B′/α + K·Γ·α (order d√(κT) at tuned α, informal arithmetic), for every α > 0 and T ≥ 1, with B′ = 2 log(2T/δ) + 2d log⌈2r_max T√d⌉ + 4, Γ = (e/(e−1))(2d log(1 + T/d) + log(2/δ)) and K = 2κe^{4r_max + 2r_max/β}; δ appears explicitly. The printed Õ(e^{2r_max + r_max/β}√(κdT)) rate is neither proved nor refuted. That the ball-selection rule covers every printed run whose iterates exist is an informal remark that needs the argmin's tie-breaking to be a deterministic function of the data; only its dataset-level extension step is machine-checked. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: The printed statement is ill-posed: α is undefined at T = 1 and the VPO update may have no minimizer (C44). For finite context and response sets, linear Bradley–Terry rewards with ‖θ⋆‖ ≤ r_max, and the printed VPO objective minimized over Gibbs policies with parameter in the ball ‖θ‖₂ ≤ r_max (any minimizer; one exists by compactness), with probability ≥ 1−δ the realized regret satisfies Regret ≤ T·B′/α + K·Γ·α (order d√(κT) at tuned α, informal arithmetic), for every α > 0 and T ≥ 1, with B′ = 2 log(2T/δ) + 2d log⌈2r_max T√d⌉ + 4, Γ = (e/(e−1))(2d log(1 + T/d) + log(2/δ)) and K = 2κe^{4r_max + 2r_max/β}; δ appears explicitly. The printed Õ(e^{2r_max + r_max/β}√(κdT)) rate is neither proved nor refuted. That the ball-selection rule covers every printed run whose iterates exist is an informal remark that needs the argmin's tie-breaking to be a deterministic function of the data; only its dataset-level extension step is machine-checked. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-12.md",
       "supporting_evidence": [
         "docs/critic-thm7-12-plan-check.md"
@@ -1234,7 +1235,7 @@
       "lean_export": "StatisticalRL.Ch7Rest.Rlhf.vpo_regret_both and StatisticalRL.Ch7Rest.Rlhf.exists_ballSelection",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_12_corrected_local",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_12_corrected_local_holds",
-      "statement_scope": "Corrected: The printed statement is ill-posed: α is undefined at T = 1 and the VPO update may have no minimizer (C44). For finite context and response sets, linear Bradley–Terry rewards with ‖θ⋆‖ ≤ r_max, and the printed VPO objective minimized over Gibbs policies with parameter in the ball ‖θ‖₂ ≤ r_max (any minimizer; one exists by compactness), with probability ≥ 1−δ the realized regret satisfies the local-curvature bound Regret ≤ (e^{4r_max/β}/(4β))·(16r_max² + 16e^{4r_max}(B′ + 4r_max α))·Γ, which does not involve κ and scales as √(dT) for large T (informal arithmetic), for every α > 0 and T ≥ 1, with B′ = 2 log(2T/δ) + 2d log⌈2r_max T√d⌉ + 4, Γ = (e/(e−1))(2d log(1 + T/d) + log(2/δ)) and K = 2κe^{4r_max + 2r_max/β}; δ appears explicitly. The printed Õ(e^{2r_max + r_max/β}√(κdT)) rate is neither proved nor refuted. That the ball-selection rule covers every printed run whose iterates exist is an informal remark that needs the argmin's tie-breaking to be a deterministic function of the data; only its dataset-level extension step is machine-checked. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Corrected: The printed statement is ill-posed: α is undefined at T = 1 and the VPO update may have no minimizer (C44). For finite context and response sets, linear Bradley–Terry rewards with ‖θ⋆‖ ≤ r_max, and the printed VPO objective minimized over Gibbs policies with parameter in the ball ‖θ‖₂ ≤ r_max (any minimizer; one exists by compactness), with probability ≥ 1−δ the realized regret satisfies the local-curvature bound Regret ≤ (e^{4r_max/β}/(4β))·(16r_max² + 16e^{4r_max}(B′ + 4r_max α))·Γ, which does not involve κ and scales as √(dT) for large T (informal arithmetic), for every α > 0 and T ≥ 1, with B′ = 2 log(2T/δ) + 2d log⌈2r_max T√d⌉ + 4, Γ = (e/(e−1))(2d log(1 + T/d) + log(2/δ)) and K = 2κe^{4r_max + 2r_max/β}; δ appears explicitly. The printed Õ(e^{2r_max + r_max/β}√(κdT)) rate is neither proved nor refuted. That the ball-selection rule covers every printed run whose iterates exist is an informal remark that needs the argmin's tie-breaking to be a deterministic function of the data; only its dataset-level extension step is machine-checked. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-12.md",
       "supporting_evidence": [
         "docs/critic-thm7-12-plan-check.md"
@@ -1250,7 +1251,7 @@
       "lean_export": "StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted, with the refutations StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed, StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_ne and StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_cce and the non-vacuity witnesses StatisticalRL.Ch7Rest.Marl76.causalCCEOracle_exists and StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted_ccePlanner",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_6_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_6_restricted_holds",
-      "statement_scope": "Restricted: the printed statement, which allows any equilibrium-returning planning oracle, is false for every C₁ (not_thm7_6_printed, also in NE-only and CCE-only forms; C45). With C₁ = 400, at the printed sample size N ≥ C₁H³ε⁻² log(SHN∏A_i/δ) (N inside the logarithm), δ ∈ (0,1) and 0 < ε ≤ √H, the model-based plug-in estimator (N generative samples per (s, a, h), empirical game with the true reward) satisfies, with probability ≥ 1−δ, gap ≤ ε for the returned CCE, for the returned product NE, and jointly for both, for every causal planning oracle (the step-h output depends only on the empirical kernels and rewards from step h on), given as a deterministic map of the empirical game whose output is an equilibrium of every empirical game. Adds the domain binders 0 < S, 0 < A_i and 0 < N. The causal restriction matches the backward-induction planners named at marl.tex:377 and is not claimed to be the least restrictive repair. The CCE clause is shown non-vacuous in Lean by a causal backward-induction CCE planner (stage-CCE existence by Hahn–Banach separation); Nash existence is not in the pinned Mathlib, so the NE and joint clauses hold for every causal NE oracle but are not shown non-vacuous in Lean. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Restricted: the printed statement, which allows any equilibrium-returning planning oracle, is refuted in Lean for every C₁ under that reading (not_thm7_6_printed, also in NE-only and CCE-only forms; C45). With C₁ = 400, at the printed sample size N ≥ C₁H³ε⁻² log(SHN∏A_i/δ) (N inside the logarithm), δ ∈ (0,1) and 0 < ε ≤ √H, the model-based plug-in estimator (N generative samples per (s, a, h), empirical game with the true reward) satisfies, with probability ≥ 1−δ, gap ≤ ε for the returned CCE, for the returned product NE, and jointly for both, for every causal planning oracle (the step-h output depends only on the empirical kernels and rewards from step h on), given as a deterministic map of the empirical game whose output is an equilibrium of every empirical game. Adds the domain binders 0 < S, 0 < A_i and 0 < N. The causal restriction matches the backward-induction planners named at marl.tex:377 and is not claimed to be the least restrictive repair. The CCE clause is shown non-vacuous in Lean by a causal backward-induction CCE planner (stage-CCE existence by Hahn–Banach separation); Nash existence is not in the pinned Mathlib, so the NE and joint clauses hold for every causal NE oracle but are not shown non-vacuous in Lean. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-6.md",
       "supporting_evidence": [
         "docs/critic-thm7-6-plan-check.md"
@@ -1266,7 +1267,7 @@
       "lean_export": "StatisticalRL.Ch7Rest.Marl77.thm7_7_restricted, with the main components StatisticalRL.Ch7Rest.Marl77.core_cce (general-sum CCE bound) and StatisticalRL.Ch7Rest.Marl77.gap_margProd_le_two_mul (zero-sum reduction), and the reusable library lemmas StatisticalRL.Online.Hedge.hedge_second_order_regret, StatisticalRL.AdaptiveKL.seqLaw_freedman_tail and StatisticalRL.Ch7Rest.Marl77.evalJ_jvarJ_le",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_7_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_7_restricted_holds",
-      "statement_scope": "Restricted: the printed theorem asserts that a model-based algorithm, namely Q-FTRL, attains the rates, but the monograph omits Q-FTRL (marl.tex:432) and leaves A and Õ undefined (C39). The existential guarantee is proved from scratch with an explicit reconstructed witness: optimistic Hedge (entropic FTRL) with backward induction and per-agent adaptive generative queries. The witness is not shown to be Q-FTRL, and it is not model-based (it builds no empirical transition kernel). With one universal constant C = 20000, quantified before all sizes, for every δ ∈ (0,1), ε ∈ (0,H], known reward (bounded on steps 1..H) and every transition kernel, with probability ≥ 1−δ: (i) N ≤ C·H⁴S·Σ_iA_i·ε⁻²·log(4HSΣ_iA_i/δ) adaptive, randomized generative queries give an ε-CCE (joint output, gap ≤ ε); (ii) for two-player zero-sum games (r₂ = −r₁, r₁ ∈ [0,1]), N ≤ C·H⁴S·A·ε⁻²·log(8HSA/δ) queries give an ε-NE product policy, with A read as max(A₁,A₂), which implies the A₁+A₂ and A₁ = A₂ readings. The query count is deterministic; Õ is read as a universal constant times one log(·/δ) factor with no ε in the logarithm. The algorithm sees the reward but not P. Adds the domain binders S ≥ 1 and A_i ≥ 1. The two clauses are separate existentials sharing C; that one algorithm serves both is argued in prose only. Whether Q-FTRL itself attains the rate is not checked. Not author-approved; this does not certify the printed theorem.",
+      "statement_scope": "Restricted: the printed theorem asserts that a model-based algorithm, namely Q-FTRL, attains the rates, but the monograph omits Q-FTRL (marl.tex:432) and leaves A and Õ undefined (C39). The existential guarantee is proved from scratch with an explicit reconstructed witness: optimistic Hedge (entropic FTRL) with backward induction and per-agent adaptive generative queries. The witness is not shown to be Q-FTRL, and it is not model-based (it builds no empirical transition kernel). With one universal constant C = 20000, quantified before all sizes, for every δ ∈ (0,1), ε ∈ (0,H], known reward (bounded on steps 1..H) and every transition kernel, with probability ≥ 1−δ: (i) N ≤ C·H⁴S·Σ_iA_i·ε⁻²·log(4HSΣ_iA_i/δ) adaptive, randomized generative queries give an ε-CCE (joint output, gap ≤ ε); (ii) for two-player zero-sum games (r₂ = −r₁, r₁ ∈ [0,1]), N ≤ C·H⁴S·A·ε⁻²·log(8HSA/δ) queries give an ε-NE product policy, with A read as max(A₁,A₂), which implies the A₁+A₂ and A₁ = A₂ readings. The query count is deterministic; Õ is read as a universal constant times one log(·/δ) factor with no ε in the logarithm. The algorithm sees the reward but not P. Adds the domain binders S ≥ 1 and A_i ≥ 1. The two clauses are separate existentials sharing C; that one algorithm serves both is argued in prose only. Whether Q-FTRL itself attains the rate is not checked. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-7.md",
       "supporting_evidence": [
         "docs/critic-thm7-7-plan-check.md"
@@ -1282,7 +1283,7 @@
       "lean_export": "StatisticalRL.Ch7Rest.FedGeneric.lowerBound_of_fewRounds_onRange",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_10_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_10_restricted_holds",
-      "statement_scope": "Restricted: the printed lower bound under the natural reading with the universal constant c₀ quantified first, for every schedule with few communication rounds, both printed learning-rate families and K≥2 agents, for the exact-averaging sub-class of the generic algorithm. Line 196 puts any distributed mean-estimation routine (including compression) in the algorithm class; those routines are not covered, so this is a restricted variant (moved from certified_named_results on 2026-11-09 after a statement audit). With c₀ inside the hypothesis the statement is refuted (not_thm7_10_innerConstant). The constant C_γ is doubly exponentially small, so the discussion after the theorem is not established (C42).",
+      "statement_scope": "Restricted: the printed lower bound under the natural reading with the universal constant c₀ quantified first, for every schedule with few communication rounds, both printed learning-rate families and K≥2 agents, for the exact-averaging sub-class of the generic algorithm. Line 196 puts any distributed mean-estimation routine (including compression) in the algorithm class; those routines are not covered, so this is a restricted variant (an earlier version of this record classified it as proved as printed; it was revised on 2026-11-09 after a statement review). With c₀ inside the hypothesis the statement is refuted (not_thm7_10_innerConstant). The constant C_γ is doubly exponentially small, so the discussion after the theorem is not established (C42).",
       "evidence": "docs/critic-thm7-10.md",
       "coverage": "docs/COVERAGE.md"
     }

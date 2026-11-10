@@ -116,7 +116,8 @@ figcaption { font: 14px/1.5 var(--sans); color: var(--muted); margin-top: 6px; }
 .algorithm { border-top: 2px solid var(--fg); border-bottom: 2px solid var(--fg); padding: 0 0 8px; }
 .algorithm figcaption { color: var(--fg); border-bottom: 1px solid var(--fg); padding: 6px 0; margin: 0 0 8px; }
 .alg-body { font-size: 0.95em; line-height: 1.7; }
-.alg-indent { border-left: 1px solid var(--muted); margin-left: 6px; padding-left: 14px; }
+.alg-indent { border-left: 1px solid var(--muted); margin: 0.1em 0 0.1em 0.5em; padding-left: 1.5em; }
+.alg-line { margin: 0.1em 0; }
 .alg-comment { color: var(--muted); font-style: italic; }
 .alg-comment::before { content: "▷ "; font-style: normal; }
 .missing-figure { display: inline-block; padding: 12px; border: 1px dashed var(--line); color: var(--muted); font: 14px var(--sans); }

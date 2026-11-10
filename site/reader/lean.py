@@ -33,7 +33,7 @@ STATUS = {
     "refuted": ("Printed statement refuted in Lean under one reading; nothing proved", "st-refuted"),
     "implied": ("Implied by a proved entry (coverage ledger); not separately proved", "st-implied"),
     "explanatory": ("Explanatory, no mathematical claim (coverage ledger); nothing proved", "st-explanatory"),
-    "cited-out-of-scope": ("Cited result, out of scope by user decision; not proved", "st-outofscope"),
+    "cited-out-of-scope": ("Cited from the literature; not formalized here (project scope decision); not proved", "st-outofscope"),
     "ledger": ("Ledger note, not a proved result", "st-ledger"),
     "none": ("Not yet formalized", "st-none"),
 }
@@ -200,7 +200,8 @@ class LeanIndex:
                 rec = records.get(full)
                 if rec:
                     kind, e.record = rec
-                    e.status = classify(name, kind, e.record.get("statement_scope", ""))
+                    e.status = classify(name, kind, e.record.get("statement_scope", ""),
+                                        e.record.get("statement_variant"))
                     lab = e.record.get("source_label")
                     if lab and lab not in e.labels:
                         e.labels.append(lab)
@@ -317,8 +318,8 @@ class LeanIndex:
 
     # rendering -----------------------------------------------------------------
     def md(self, text: str, base: str = "docs/") -> str:
-        """Tiny Markdown subset: links, bold, code."""
-        parts = re.split(r"(`[^`]*`)", text)
+        """Tiny Markdown subset: links, bold, code. Ledger shorthand is reworded for readers."""
+        parts = re.split(r"(`[^`]*`)", reader_wording(text))
         out = []
         for p in parts:
             if p.startswith("`") and p.endswith("`") and len(p) > 1:
@@ -360,7 +361,7 @@ class LeanIndex:
         meta = [f'<a href="{attr(self.git.blob(e.file, e.line_start, e.line_end))}">'
                 f'{esc(e.file.rsplit("/", 1)[-1])}:{span(e.line_start, e.line_end)}</a>']
         if rec.get("evidence"):
-            meta.append(f'<a href="{attr(self.git.blob(rec["evidence"]))}">review record</a>')
+            meta.append(f'<a href="{attr(self.git.blob(rec["evidence"]))}">review record (AI agent)</a>')
         if e.issues:
             meta.append(self.issue_links(e.issues))
         scope = f'<p class="scope">{self.md(link_paths(rec["statement_scope"]))}</p>' if rec.get("statement_scope") else ""
@@ -419,10 +420,10 @@ class LeanIndex:
         return "".join(cards)
 
 
-def classify(name: str, ledger_kind: str, scope: str) -> str:
+def classify(name: str, ledger_kind: str, scope: str, declared: str | None = None) -> str:
     """Never show a variant as the printed result, even when the ledger records it.
     Same rule as scripts/gen_nodes.py `classify` (shared code)."""
-    v = gen_nodes.classify(name, ledger_kind, scope)
+    v = gen_nodes.classify(name, ledger_kind, scope, declared=declared)
     return "original" if v == "printed" else v
 
 
@@ -430,8 +431,11 @@ def classify(name: str, ledger_kind: str, scope: str) -> str:
 # class and every count are unchanged).
 CHIP_OVERRIDES = {
     "Thm7_7_restricted": "Related statement proved: some algorithm attains the rates (not Q-FTRL; see note)",
-    "Thm7_11_corrected_halfspace": "Corrected variant proved on closed half-spaces only (true covariance, instance constant)",
+    "Thm7_11_corrected_halfspace": "Corrected and restricted (closed half-spaces only)",
     "Eq_classic_clt_corrected": "Corrected display proved (true covariance; qualitative, no rate)",
+    # superseded / reading-aid entries next to a result proved as printed (Theorem 4.7)
+    "Thm4_7_restricted": "Superseded: earlier case (ii)-only entry, implied by Thm4_7",
+    "Thm4_7_case_i": "Reading aid: case (i) of Thm4_7 stated alone (not separately reviewed)",
     "Eq_convex_Cdelta_corrected_oracle": "Partial: fixed-shape intervals with the oracle covariance only",
     "Eq_convex_Cdelta_corrected_plugin": "Partial: fixed-shape intervals with the plug-in covariance, limits only (no rate)",
 }
@@ -439,6 +443,11 @@ CHIP_OVERRIDES = {
 RESTRICTED_COUNT_NOTE = {
     "Thm7_7_restricted": "Theorem 7.7 is an existence statement for a different algorithm, not a special case of "
                          "the printed theorem.",
+    "Thm7_10_restricted": "Theorem 7.10 covers only the exact-averaging algorithms, not the compressed or other "
+                          "mean-estimation routines the printed algorithm class allows.",
+    "Thm7_11_corrected_halfspace": "Theorem 7.11 is both corrected (true noise covariance) and restricted to closed "
+                                   "half-spaces; an all-convex bound with an extra log(2T) factor is a partial result, "
+                                   "and the printed rate over all convex sets is open.",
 }
 # Reading under which a printed statement shown as refuted (nothing proved) was refuted, by source label.
 REFUTED_READING = {
@@ -449,6 +458,12 @@ REFUTED_READING = {
 # Site-side wording for cards whose ledger class alone would mislead a reader. These never
 # change a ledger status or a count; they say exactly what the Lean statement proves.
 CARD_NOTES = {
+    "Thm4_7_restricted": (
+        "**Superseded, kept for reference.** `Thm4_7` proves both cases of the printed Theorem 4.7 and implies "
+        "this earlier case (ii)-only entry."),
+    "Thm4_7_case_i": (
+        "**Reading aid.** Case (i) is covered by `Thm4_7`, which the ledger records as proved as printed; this "
+        "entry restates case (i) alone and has no review record of its own."),
     "Thm7_7_restricted": (
         "**Not a special case of the printed Theorem 7.7.** The printed theorem is about Q-FTRL, a "
         "model-based algorithm the monograph does not specify (marl.tex:432). What is proved is that "
@@ -457,14 +472,14 @@ CARD_NOTES = {
         "attains the rates is not checked. The ledger files this under restricted variants; see "
         "[C39](../docs/SOURCE-ISSUES.md#candidate-c39-theorem-77-is-not-self-contained)."),
     "Thm7_11_corrected_halfspace": (
-        "**Not the printed Theorem 7.11, and not its full corrected form.** The printed statement is refuted "
-        "under the action-dependent-reward reading. What is proved uses the true TD-noise covariance "
+        "**Corrected and restricted: not the printed Theorem 7.11, and not its full corrected form.** The "
+        "printed statement is refuted in Lean under the action-dependent-reward reading. What is proved uses the true TD-noise covariance "
         "Γ_true (assumed nonsingular) in place of the printed Γ, gives the printed T^(-1/3) rate only "
         "for closed half-spaces {x : uᵀx ≤ b}, and has a constant that depends on the instance, η₀ and "
-        "V₀. Not implied: the convex-distance bound over all convex sets (open); the printed coefficient "
+        "V₀. Not implied: the convex-distance bound over all convex sets at the printed rate (open); the printed coefficient "
         "(open); any confidence region with the estimated covariance Λ̂_T, or beyond the oracle-covariance "
         "half-lines, slabs and Bonferroni box of Eq_convex_Cdelta_corrected_oracle (source issue C47). "
-        "With state-only rewards Γ_true equals the printed Γ (source issue C43)."),
+        "A partial result over all convex sets is stated below. With state-only rewards Γ_true equals the printed Γ (source issue C43)."),
     "Eq_classic_clt_corrected": (
         "**Not the printed display.** The printed covariance Γ is replaced by the true TD-noise covariance "
         "Γ_true; with the printed Γ the display is refuted under the action-dependent-reward reading "
@@ -472,20 +487,45 @@ CARD_NOTES = {
         "η₀t^(-2/3): no rate and no confidence-region claim."),
     "Eq_convex_Cdelta_corrected_oracle": (
         "**Not the printed confidence-set rule.** The printed claim for arbitrary convex sets chosen from the "
-        "data is false (source issue C47(1)). What is proved uses the oracle covariance "
+        "data appears to fail (source issue C47(1): a counterexample whose coverage is checked in Lean with the "
+        "oracle covariance). What is proved uses the oracle covariance "
         "Λ = A⁻¹Γ_trueA⁻ᵀ, which is unknown in practice, not the plug-in Λ̂_T, and covers only one- and "
         "two-sided intervals for a linear functional fixed before the data and a Bonferroni box. The "
         "plug-in version is Eq_convex_Cdelta_corrected_plugin (limits only); the printed rectangle and the "
         "ellipsoid remain open."),
     "Eq_convex_Cdelta_corrected_plugin": (
         "**Not the printed confidence-set rule.** The printed claim for arbitrary convex sets chosen from the "
-        "data is false (source issue C47(1)). What is proved uses the printed plug-in Λ̂_T, but only for "
+        "data appears to fail (source issue C47(1): a counterexample whose coverage is checked in Lean with the "
+        "oracle covariance). What is proved uses the printed plug-in Λ̂_T, but only for "
         "one- and two-sided intervals for a linear functional and a Bonferroni box whose direction and level "
         "are fixed before the data. Coverage is asymptotic only: limits as T → ∞, pointwise in (u, z), not "
         "uniform, with no rate. Γ_true ≻ 0 is an added non-degeneracy hypothesis. Lean's junk value Λ̂_T = 0 "
         "on the singular event (some state unsampled) does not affect the limits. The printed rectangle and "
         "the ellipsoid remain open."),
 }
+
+
+# Display-only rewording of internal ledger shorthand (the ledgers keep their machine-checked anchors,
+# e.g. the dated `user decision YYYY-MM-DD` that gen_nodes requires). Never changes a status.
+READER_WORDING = [
+    (r"Independently plan-checked and source-reviewed", "Independently reviewed by AI agents (plan and source review)"),
+    (r"Independently critic-reviewed", "Independently reviewed by an AI agent"),
+    (r"\bcritic-reviewed\b", "independently reviewed"),
+    (r"\bopen source-fidelity finding\b", "open source issue"),
+    (r"\bsource-fidelity finding\b", "source issue"),
+    (r"\buser decision (\d{4}-\d{2}-\d{2})(?: \(cited-results rule\))?", r"project decision (\1)"),
+    (r"\bby (?:a |the )?project decision \((\d{4}-\d{2}-\d{2})\)", r"by a project decision (\1)"),
+    # the "no author approval" banner is on every page; keep the per-card point about the printed theorem
+    (r"Not author-approved; this does not prove the printed theorem\.", "This does not prove the printed theorem."),
+    (r"(?<=[.)]) Not author-approved\.", ""),
+    (r"\[(?:P\d+ review|m\d+[^\]]*)\]\(", "[review]("),
+]
+
+
+def reader_wording(text: str) -> str:
+    for pat, rep in READER_WORDING:
+        text = re.sub(pat, rep, text)
+    return text
 
 
 def span(a: int, b: int) -> str:

@@ -183,6 +183,19 @@ class GenNodesTest(unittest.TestCase):
                     self.assertEqual(to_reader[gn.classify(name, kind, scope)], lean.classify(name, kind, scope),
                                      (name, kind, scope))
 
+    def test_declared_restricted_variant_wins(self):
+        from reader import lean
+        # an entry named `_corrected` that the ledger declares restricted counts as restricted
+        self.assertEqual(gn.classify("Thm7_11_corrected_halfspace", "proved_variants", "Corrected and restricted",
+                                     declared="restricted"), "restricted")
+        self.assertEqual(lean.classify("Thm7_11_corrected_halfspace", "proved_variants", "", "restricted"),
+                         "restricted")
+        self.assertEqual(gn.classify("Thm7_11_corrected_halfspace", "proved_variants", ""), "corrected")
+        # the field may only downgrade; it can never declare the printed statement
+        for bad in ("printed", "corrected"):
+            with self.assertRaises(SystemExit):
+                gn.classify("Lemma2_1", "certified_named_results", "", declared=bad)
+
     def test_unsuffixed_prose_entry_status_comes_from_coverage(self):
         # An unrecorded entry with a non-restriction suffix is classified by the coverage row
         # that names it, not by its name: proved -> printed; partial-sentence headline -> restricted.
