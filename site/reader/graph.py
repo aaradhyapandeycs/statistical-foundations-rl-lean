@@ -487,11 +487,12 @@ never block.</p>"""
             pr = n.get("printed_refuted") or {}
             names = " ".join(f'<code title="{attr(x)}">{esc(x.rsplit(".", 1)[-1])}</code>'
                              for x in (pr.get("lean") or n["refutations_cited"])) or "see the coverage ledger"
-            return names + (f'<br><span class="reading">Reading: {lean.md(pr["reading"])}</span>' if pr.get("reading") else "")
+            return names + (f'<br><span class="reading tex2jax_process">Reading: {lean.md(pr["reading"])}</span>' if pr.get("reading") else "")
 
         def paper_case(n):
             pr = n.get("printed_refuted") or {}
-            return lean.md(pr.get("reading", "")) or "see the source issue"
+            r = lean.md(pr.get("reading", ""))
+            return f'<span class="tex2jax_process">{r}</span>' if r else "see the source issue"
         body = f"""<h1>Source issues</h1>
 <div class="incomplete" role="note"><strong>Candidates, not confirmed errata.</strong> Every item below was found by
 reviews performed by AI agents against the pinned TeX of arXiv:2610.41903v1. Every refutation, correction and
