@@ -3,7 +3,7 @@
 Source: `lem:azuma-hoeffding`, `chapters/prelim.tex:1038–1052`.
 The arbitrary-space natural-history export is
 `StatisticalRL.azuma_natural_history_source`; the index has
-`StatisticalRL.Statements.Lemma2_8` and `Lemma2_8_holds`.
+`StatisticalRL.Statements.Ch2.Lemma2_8` and `Lemma2_8_holds`.
 The source's one-based increments are represented by zero-based X₀; strict
 confidence, deterministic varying bounds, prior-increment conditional
 centering, n=0 and zero variance proxy are retained. Integrability and bound

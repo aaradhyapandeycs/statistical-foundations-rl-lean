@@ -38,7 +38,7 @@ import Formalization.Online.SourceOptimism.MonotoneBonusFunction
 import Formalization.Online.Bandit.RegretDecompositionDisplay
 import Formalization.Online.Regret.T3.OnlineRegretT3SourceBound
 
-namespace StatisticalRL.Statements
+namespace StatisticalRL.Statements.Ch5
 open StatisticalRL.OnlineRL
 universe u v w
 
@@ -478,4 +478,4 @@ theorem Remark5_13_corrected_holds : Remark5_13_corrected.{u, v, w} := by
       nlinarith [Real.sq_sqrt ha, Real.sq_sqrt hb, mul_nonneg (Real.sqrt_nonneg a)
         (Real.sqrt_nonneg b)]
 
-end StatisticalRL.Statements
+end StatisticalRL.Statements.Ch5

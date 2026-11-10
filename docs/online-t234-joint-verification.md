@@ -5,8 +5,8 @@ Source: arXiv:2610.41903v1, `lem:bound-T234`,
 `393a4d26c228d833a27e54a4913489e499d2143f2f9b80ebf3c55d9a9ccb8c53`.
 
 - Actual export: `StatisticalRL.OnlineRL.onlineSourceAllocated_actualT234_K2_strict`.
-- Complete statement: `StatisticalRL.Statements.Lemma5_8_K2_corrected`.
-- Applying proof: `StatisticalRL.Statements.Lemma5_8_K2_corrected_holds`.
+- Complete statement: `StatisticalRL.Statements.Ch5.Lemma5_8_K2_corrected`.
+- Applying proof: `StatisticalRL.Statements.Ch5.Lemma5_8_K2_corrected_holds`.
 - All four displayed inequalities concern one actual law/event. The printed
   iota and threshold are retained. The scope is K≥2, the C8 finite zero-count
   convention and analysis charge H, the fixed deterministic maximizing tie
