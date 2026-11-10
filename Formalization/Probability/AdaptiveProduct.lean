@@ -15,7 +15,7 @@ nonnegative factors `Y k x` (depending on `x j`, `j ≤ k`) whose conditional me
 (`adaptive_markov`) and a finite union bound (`union_bound_sum`).
 
 These declarations were first proved for corrected Theorem 7.12 in
-`Formalization/Ch7Rest/VPOAdaptive712.lean`, which now re-exports them under their original names.
+`Formalization/RLHF/VPO/Adaptive.lean`, which now re-exports them under their original names.
 -/
 
 namespace StatisticalRL.AdaptiveKL

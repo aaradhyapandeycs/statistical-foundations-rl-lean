@@ -11,7 +11,7 @@ no source result is claimed here.
 The path space is `Fin T → α` with `α` finite and the i.i.d. product weight
 `prodWeight p ω = ∏_t p(ω t)` of a probability vector `p` (`0 ≤ p`, `∑ p = 1`). The probability
 of an event is the finite sum `prodProb p T E = ∑_ω prodWeight p ω · 1_E(ω)`. This is literally
-the form of `pathWeight`/`pathProb` of `TDInference711Defs.lean` (`pathWeight = prodWeight tupleProb`
+the form of `pathWeight`/`pathProb` of `TDInference/Definitions.lean` (`pathWeight = prodWeight tupleProb`
 by `rfl`), so no measure-theoretic bridge is needed.
 
 The natural filtration of the coordinates is encoded by `DependsBelow n f`: `f` depends only on

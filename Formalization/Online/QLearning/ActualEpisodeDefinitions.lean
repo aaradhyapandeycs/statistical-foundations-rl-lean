@@ -1,6 +1,6 @@
 import Formalization.Online.QLearning.ChronologicalDefinitions
 import Formalization.Online.SourceOptimism.EpisodicSelectorDefinitions
-import Formalization.Online.SourceOptimism.FinitePathHistoryDefinitions
+import Formalization.MDP.FinitePathHistoryDefinitions
 
 namespace StatisticalRL.OnlineRL
 open scoped BigOperators

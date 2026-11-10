@@ -1,11 +1,11 @@
 # Critic report: plug-in ℓ∞ rectangle (corrected C47(2)) (2026-11-10)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/Ch7Rest/TDInferencePluginRect711.lean` with drafted statement entry `Eq_convex_Cdelta_rectangle_corrected_plugin`. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/TDInference/PluginCovariance/Rectangle.lean` with drafted statement entry `Eq_convex_Cdelta_rectangle_corrected_plugin`. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT-WITH-FIXES; findings 5 and 7 applied (scaling relation R̂ = r̂_T/√T marked not formalized in the docstrings; module imported from `Formalization.lean` and `Statements/Ch7Proofs.lean`; stale "plug-in rectangle remains open" text updated in COVERAGE, SOURCE-ISSUES C47 and the Ch7 docstrings). The entry landed as drafted below, with the oracle-rectangle docstring wording adjusted; `Statements/Ch7.lean` Formalization.* imports unchanged.
 
 Critic: independent (did not build). Date 2026-11-10. Read-only on Formalization/, docs/.
-Target: `Formalization/Ch7Rest/TDInferencePluginRect711.lean`, sha256
+Target: `Formalization/TDInference/PluginCovariance/Rectangle.lean`, sha256
 `e61ed5eb0976dccd2b38d50e4e5d36fb19c4f94e8ea4726878bc01aa78c20b1a`.
 Source read: `source/upstream/tex/chapters/inference.tex:156–213` (estimators :165–177, `eq:defn-hat-Lambda`
 :180–182, rule :187–196, rectangle (i) :198–205), Theorem 7.11 :132–141 (η₀ ∈ (0,1/4), λ₀ = min μ);
@@ -15,7 +15,7 @@ SOURCE-ISSUES C47 (1)–(4), C43.
 Mathematics and Lean are sound; fixes are documentation/integration only.
 
 ## Evidence (commands run)
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferencePluginRect711.lean` (guarded: <2 lean, no
+- `bash scripts/lean-local.sh Formalization/TDInference/PluginCovariance/Rectangle.lean` (guarded: <2 lean, no
   check_parallel): exit 0, no messages, ~15 s wall.
 - `bash scripts/lean-local.sh <local probe>`: exit 0. `#print axioms` for
   `tendsto_coverage_rect_plugin`, `tendsto_coverage_rect_plugin_quantile`, `exists_delta_abs_supBoxProb_sub_lt`,
@@ -165,13 +165,13 @@ only (irrelevant to the limit); `lambdaHat` junk disclosed; Prop self-contained;
 COVERAGE (row "Confidence-set rule"), replace "The plug-in ℓ∞ rectangle (C47(2)) remains open" with:
 "Corrected, plug-in Λ̂_T rectangle (`Eq_convex_Cdelta_rectangle_corrected_plugin`, exports
 `tendsto_coverage_rect_plugin`, `tendsto_coverage_rect_plugin_quantile`,
-[TDInferencePluginRect711.lean](../Formalization/Ch7Rest/TDInferencePluginRect711.lean)): for every per-outcome
+[Rectangle.lean](../Formalization/TDInference/PluginCovariance/Rectangle.lean)): for every per-outcome
 (1−α)-quantile r̂_T of ‖X‖∞, X ~ N(0, Λ̂_T) (e.g. the lower quantile), P(∀s, |V̄_T(s) − V^π(s)| ≤ r̂_T/√T) → 1 − α
 (half-width r̂_T/√T = R̂, not the printed R̂/√T, C47(2)); asymptotic only, no rate; Γ_true ≻ 0; junk Λ̂_T = 0 on
 the singular event (C47(4)) ([review](critic-pluginrect.md)). Open: the plug-in rectangle with a rate." and drop
 "the plug-in rectangle" from the Open list.
 SOURCE-ISSUES C47, new paragraph: "**Corrected rectangle with the printed plug-in Λ̂_T (2026-11-10,
-`Formalization/Ch7Rest/TDInferencePluginRect711.lean`).** For full-support μ, 0 < η₀ ≤ 1, every V₀, Γ_true ≻ 0 and
+`Formalization/TDInference/PluginCovariance/Rectangle.lean`).** For full-support μ, 0 < η₀ ≤ 1, every V₀, Γ_true ≻ 0 and
 α ∈ (0,1): for every random level r̂_T that is, outcome by outcome, a (1−α)-quantile of ‖X‖∞ with X ~ N(0, Λ̂_T)
 (N(0,Σ) := law of QZ, QQᵀ = Σ; Λ̂_T is always PSD), the rectangle ∏_s[V̄_T(s) ± r̂_T/√T] has coverage → 1 − α
 (`tendsto_coverage_rect_plugin`; concrete lower quantile `tendsto_coverage_rect_plugin_quantile`). With R̂ the

@@ -1,7 +1,7 @@
 import Formalization.Probability.EmpiricalRow
 import Formalization.MDP.PrefixValueBridge
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-!
 # Model-based evaluation of a fixed policy
 

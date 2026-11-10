@@ -1,5 +1,5 @@
 import Formalization.ModelFree.QLearningStoppedPrefixRewardMeasure
-import Formalization.ModelFree.QLearningStoppedPrefixPayoffTV
+import Formalization.Probability.InformationTheory.BoundedPayoffTV
 import Formalization.ModelFree.QLearningStoppedPrefixOptimalTransfer
 
 /-! Conditional fixed-policy and optimal-Q stability from explicit stopped-law information bounds. -/

@@ -13,7 +13,7 @@ import Formalization.Probability.StdGaussianPi
 Source: `chapters/inference.tex:207–213` (confidence ellipsoids: "`R` is the `1 − α` quantile of
 the `χ²(d)` distribution") and `docs/SOURCE-ISSUES.md` C47(3) (there `d = S = |State|`, and the
 ellipsoid threshold is `R`, not `R²`). This file supplies the distributional fact behind the
-printed `χ²` calibration; the TD corollary is `TDInferenceConfChiSq711.lean`.
+printed `χ²` calibration; the TD corollary is `TDInference/Confidence/ChiSquareQuantile.lean`.
 
 * `chiSquared k` is the `χ²(k)` law, defined as Mathlib's gamma distribution with shape `k/2` and
   rate `1/2` (`gammaMeasure (k/2) (1/2)`; pinned Mathlib has no `χ²` definition).

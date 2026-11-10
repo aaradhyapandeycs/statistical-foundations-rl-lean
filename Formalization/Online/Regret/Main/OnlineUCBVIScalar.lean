@@ -1,5 +1,5 @@
 import Formalization.Online.Regret.W1.OnlineW1IotaBounds
-import Formalization.Probability.OnlineT56ScalarAlgebra
+import Formalization.Online.Regret.Algebra.OnlineT56ScalarAlgebra
 
 /-! Scalar intermediates for the corrected K≥2 UCBVI route. All estimates
 are explicit premises; no actual-path or confidence result is asserted. -/

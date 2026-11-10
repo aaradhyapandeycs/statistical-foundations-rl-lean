@@ -1,18 +1,1 @@
 # G2 frozen library -> Statements import edges. May only shrink.
-Formalization/Ch7Rest/Marl76Defs.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/FiniteHorizonAuxiliaryVariance.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/FiniteHorizonEmpiricalContinuation.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/FiniteHorizonFittedAuxiliaryContinuation.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/FiniteHorizonGenerativeSampling.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/FiniteHorizonPolicyEvaluationConsumption.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/FiniteHorizonPolicyPerformanceConsumption.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/ModelBasedPolicyEvaluation.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/ModelBasedPolicyLearning.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/PolicyLearningAbsorbing.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/PolicyLearningAbsorbingGrid.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/PolicyLearningAbsorbingPreservation.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/PolicyLearningAllRowBernstein.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/PolicyLearningAnyOptimalPolicy.lean -> Formalization.Statements.Ch3Definitions
-Formalization/Generative/StateRelabelSampling.lean -> Formalization.Statements.Ch3Definitions
-Formalization/ModelFree/TDSamplingDefinitions.lean -> Formalization.Statements.Ch3Definitions
-Formalization/RobustRL/Ch7/Ch7Definitions.lean -> Formalization.Statements.Ch3Definitions

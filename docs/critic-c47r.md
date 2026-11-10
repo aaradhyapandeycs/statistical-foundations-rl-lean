@@ -5,7 +5,7 @@ Public copy of the independent critic report; local paths removed. The probe fil
 Post-review note (added to this public copy, 2026-11-09): F1 was applied: the general standard-Gaussian and quantile lemmas (`stdCDF_zero`, `stdCDF_neg`, `strictMono_stdCDF`, `tendsto_stdCDF_atTop`, `gaussianReal_real_Icc_neg_self`, `gaussianReal_abs_le_mul_sqrt`, `two_mul_stdCDF_sub_one_le_gaussianReal`, `le_mul_sqrt_of_quantile`, `exists_two_mul_stdCDF_sub_one_ge`, `exists_two_mul_stdCDF_sub_one_eq`, `isQuantile_mul_sqrt`) moved to `Formalization/Probability/GaussianQuantile.lean` (namespace `StatisticalRL.Probability.Stein`), and the small helpers (`sqrt_coe_toNNReal`, `sqrt_one_div_eq`, `tendsto_mul_sqrt_one_div`, `abs_sub_le_of_mem_pi_Icc`, `sum_pathWeight_indicator_*`) are now `private`; the moved proof of `gaussianReal_abs_le_mul_sqrt` now uses a private scaling lemma in the new file instead of `gaussianReal_eq_map_mul_add` (a Chapter 7 lemma). The two Props, their proofs and the other theorem statements are unchanged, so the file hash and line count quoted below refer to the reviewed version. F2 was applied: both modules are imported by `Formalization.lean`, and the full `Audit.lean` axiom audit passes. F3 and F4 were applied: the addendum below was added to C47 in `SOURCE-ISSUES.md` without citing the finite-T figures as machine-checked. The review text below is otherwise unchanged.
 
 Reviewer: independent critic (not the builder). Date 2026-11-09.
-File under review: `Formalization/Ch7Rest/TDInferenceC47Rectangle711.lean`
+File under review: `Formalization/TDInference/Confidence/PrintedRectangleEvidence.lean`
 (SHA-256 c7697b02f5f01c8c2c5fe6d7bdf127dfd11df4960b57393e3348bfaa53258d45, 395 lines).
 Source: `chapters/inference.tex` (pinned SHA-256 82707713adb6c9296d9ee41faa84b2d0a12eaf1b34864a6d294de02132e648f2, matches pin),
 rule :187–196, rectangles :198–205, plug-in :180–182, step size :133.
@@ -17,7 +17,7 @@ SOURCE-ISSUES addendum below. No fix touches the two Props or their proofs.
 
 ## Commands run (by the critic)
 
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceC47Rectangle711.lean`: exit 0, no output
+- `bash scripts/lean-local.sh Formalization/TDInference/Confidence/PrintedRectangleEvidence.lean`: exit 0, no output
   (no errors or warnings). One Lean process at a time, gated on `pgrep -x lean | wc -l` < 2.
 - Probe `Probe.lean` (private; imports `Formalization` and the module; module
   olean newer than source): exit 0. `#print axioms` gives exactly `[propext, Classical.choice, Quot.sound]` for
@@ -90,7 +90,7 @@ unknown constant K). The addendum must not cite them as Lean-checked.
 
 ## Final addendum text (for docs/SOURCE-ISSUES.md, C47)
 
-**Lean evidence for (2) (2026-11-09, `Formalization/Ch7Rest/TDInferenceC47Rectangle711.lean`).** On the
+**Lean evidence for (2) (2026-11-09, `Formalization/TDInference/Confidence/PrintedRectangleEvidence.lean`).** On the
 one-state instance of (1) (S = 1, oracle Λ = 1; all 0 < η₀ ≤ 1, which contains the printed range
 0 < η₀ < 1/4 of `:133`, and all V₀), the printed rectangle `∏_s [V̄_T(s) − R̂/√T, V̄_T(s) + R̂/√T]`
 (`:201–203`), with R̂ any number at most the lower (1−α)-quantile of `‖X‖∞`, X ~ N(0, covariance/T)

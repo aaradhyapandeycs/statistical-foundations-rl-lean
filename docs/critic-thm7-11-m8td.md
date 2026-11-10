@@ -5,10 +5,10 @@ Public copy of the independent critic report; local paths removed. Probe and scr
 Independent critic, 2026-11-09. Not the builder.
 
 Files under review:
-- `Formalization/Ch7Rest/TDInferenceQuadForm711.lean` (55 lines)
-- `Formalization/Ch7Rest/TDInferenceZeroNoiseDecay711.lean` (250 lines)
-- `Formalization/Ch7Rest/TDInferenceLeaveOneOut711.lean` (273 lines)
-- `Formalization/Ch7Rest/TDInferenceLeaveOneOutBound711.lean` (615 lines)
+- `Formalization/TDInference/QuadraticForm.lean` (55 lines)
+- `Formalization/TDInference/ZeroNoiseDecay.lean` (250 lines)
+- `Formalization/TDInference/LeaveOneOut.lean` (273 lines)
+- `Formalization/TDInference/LeaveOneOutBound.lean` (615 lines)
 
 Briefs: the private corrected-theorem plan (M8), critic-thm7-11-corrected-plan-check.md §4 (F6–F8), critic-thm7-11-m5.md.
 

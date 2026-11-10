@@ -1,10 +1,10 @@
 # Critic report: randomized-estimator lower bounds for Theorems 7.3 and 7.5 (2026-11-10)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/RobustRL/Ch7/RandomizedLowerBound.lean` (exports `thm7_3_corrected_randomized`, `thm7_3_corrected_knownReward_randomized`, `thm7_5_corrected_randomized`, `thm7_5_corrected_knownReward_randomized`) with drafted statement entries. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/RobustRL/LowerBounds/RandomizedLowerBound.lean` (exports `thm7_3_corrected_randomized`, `thm7_3_corrected_knownReward_randomized`, `thm7_5_corrected_randomized`, `thm7_5_corrected_knownReward_randomized`) with drafted statement entries. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT-WITH-FIXES; all fixes applied. The four entries `Thm7_3_corrected_randomized`, `Thm7_3_corrected_knownReward_randomized`, `Thm7_5_corrected_randomized` and `Thm7_5_corrected_knownReward_randomized` landed in `Formalization/Statements/Ch7.lean` alongside the deterministic ones (kept as the `Ω = Unit` special cases, with docstrings pointing to the randomized entries), with `_holds` wrappers in `Ch7Proofs.lean` and the library import in `Formalization.lean`. Docstrings state the seed model, the outer-probability convention for non-measurable failure sets and the printed constant 1/8; the entries keep the `_corrected` name (A ≥ 2, and S ≥ 2 with shared reward for the known-reward reading, still deviate from the print). The SOURCE-ISSUES C7 and C38 "Estimator class" paragraphs, the COVERAGE rows for Theorems 7.3 and 7.5 and the named-result records were updated: randomized estimators are now covered.
 
-Targets: Formalization/RobustRL/Ch7/RandomizedLowerBound.lean. Source: chapters/robust_RL.tex:377-391, 461-480; SOURCE-ISSUES C7, C38.
+Targets: Formalization/RobustRL/LowerBounds/RandomizedLowerBound.lean. Source: chapters/robust_RL.tex:377-391, 461-480; SOURCE-ISSUES C7, C38.
 
 
 ## Source (read independently)
@@ -53,7 +53,7 @@ Targets: Formalization/RobustRL/Ch7/RandomizedLowerBound.lean. Source: chapters/
    RandomizedLowerBound in Ch7Proofs.lean / Formalization.lean.
 
 ## Compilation evidence
-- `bash scripts/lean-local.sh Formalization/RobustRL/Ch7/RandomizedLowerBound.lean`: no output (clean), 8.4s.
+- `bash scripts/lean-local.sh Formalization/RobustRL/LowerBounds/RandomizedLowerBound.lean`: no output (clean), 8.4s.
 - Scratch `<local probe>`: the four drafted Props (bodies copied
   verbatim from the export types) with `X_holds : X.{u} := <export>.{u}`; all four print
   axioms [propext, Classical.choice, Quot.sound].

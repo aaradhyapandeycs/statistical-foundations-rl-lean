@@ -1,7 +1,7 @@
 import Formalization.Online.Regret.T0.OnlineT0ActualConditionalAssembly
 import Formalization.Online.Regret.T0.OnlineT0ScalarHelpers
 import Formalization.Online.Regret.T0.OnlineT0SingletonBudget
-import Formalization.Probability.OnlineT56ScalarAlgebra
+import Formalization.Online.Regret.Algebra.OnlineT56ScalarAlgebra
 
 /-! Same-experiment suffix proof component: OnlineT0UniformConditional.
 Scope and source confidence are established only by the final applying theorem. -/

@@ -6,1217 +6,1217 @@
       "old": "Formalization.Ch7Rest.Marl76Arith",
       "new": "Formalization.MultiAgent.ModelBased.Arithmetic",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76BestResponse",
       "new": "Formalization.MultiAgent.ModelBased.BestResponse",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76CE2",
       "new": "Formalization.MultiAgent.ModelBased.CE2",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76CE2Game",
       "new": "Formalization.MultiAgent.ModelBased.CE2Game",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76Defs",
       "new": "Formalization.MultiAgent.ModelBased.Definitions",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76Eval",
       "new": "Formalization.MultiAgent.ModelBased.Evaluation",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76Event",
       "new": "Formalization.MultiAgent.ModelBased.Event",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76Main",
       "new": "Formalization.MultiAgent.ModelBased.Main",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76Nonvacuity",
       "new": "Formalization.MultiAgent.ModelBased.Nonvacuity",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76Planner",
       "new": "Formalization.MultiAgent.ModelBased.Planner",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76Refutation",
       "new": "Formalization.MultiAgent.ModelBased.PrintedRefutation",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76Restricted",
       "new": "Formalization.MultiAgent.ModelBased.Restricted",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76StageCCE",
       "new": "Formalization.MultiAgent.ModelBased.StageCCE",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76Statement",
       "new": "Formalization.MultiAgent.ModelBased.Statement",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77Algorithm",
       "new": "Formalization.MultiAgent.Hedge.Algorithm",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77Core",
       "new": "Formalization.MultiAgent.Hedge.Core",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77Events",
       "new": "Formalization.MultiAgent.Hedge.Events",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77GoodBounds",
       "new": "Formalization.MultiAgent.Hedge.GoodBounds",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77Locality",
       "new": "Formalization.MultiAgent.Hedge.Locality",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77Main",
       "new": "Formalization.MultiAgent.Hedge.Main",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77Pathwise",
       "new": "Formalization.MultiAgent.Hedge.Pathwise",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77PathwiseMain",
       "new": "Formalization.MultiAgent.Hedge.PathwiseMain",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77Stage",
       "new": "Formalization.MultiAgent.Hedge.Stage",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77StageBounds",
       "new": "Formalization.MultiAgent.Hedge.StageBounds",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77Statement",
       "new": "Formalization.MultiAgent.Hedge.Statement",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl77ZeroSum",
       "new": "Formalization.MultiAgent.Hedge.ZeroSum",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl78Bayes",
       "new": "Formalization.MultiAgent.LowerBound.Bayes",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl78Defs",
       "new": "Formalization.MultiAgent.LowerBound.Definitions",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl78Hard",
       "new": "Formalization.MultiAgent.LowerBound.Hard",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl78HardTesting",
       "new": "Formalization.MultiAgent.LowerBound.HardTesting",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl78Main",
       "new": "Formalization.MultiAgent.LowerBound.Main",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl78Product",
       "new": "Formalization.MultiAgent.LowerBound.Product",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl78Statement",
       "new": "Formalization.MultiAgent.LowerBound.Statement",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl78Testing",
       "new": "Formalization.MultiAgent.LowerBound.Testing",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl78Values",
       "new": "Formalization.MultiAgent.LowerBound.Values",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.MarlPrinted78",
       "new": "Formalization.MultiAgent.LowerBound.PrintedStatement",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.SingletonAction78",
       "new": "Formalization.MultiAgent.LowerBound.SingletonActionRefutation",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.MarlNearSupersolution",
       "new": "Formalization.MultiAgent.NearSupersolution",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.FedSync79Event",
       "new": "Formalization.Federated.Sync.Event",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.FedSync79Main",
       "new": "Formalization.Federated.Sync.Main",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.FedSync79Noise",
       "new": "Formalization.Federated.Sync.Noise",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.FedSync79Pathwise",
       "new": "Formalization.Federated.Sync.Pathwise",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.FedSync79Rate",
       "new": "Formalization.Federated.Sync.Rate",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.FedPrinted79",
       "new": "Formalization.Federated.Sync.PrintedStatement",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.LargeStep79",
       "new": "Formalization.Federated.Sync.LargeStepRefutation",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.FedGeneric710",
       "new": "Formalization.Federated.LowerBound.GenericAlgorithmDefinitions",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.LowerBound710",
       "new": "Formalization.Federated.LowerBound.UniversalConstant",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.InnerConstant710",
       "new": "Formalization.Federated.LowerBound.InnerConstantRefutation",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInference711Defs",
       "new": "Formalization.TDInference.Definitions",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceAnyInit711",
       "new": "Formalization.TDInference.AnyInitRefutation",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceMartingale711",
       "new": "Formalization.TDInference.Martingale",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceNoise711",
       "new": "Formalization.TDInference.Noise",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceOperator711",
       "new": "Formalization.TDInference.Operator",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePRRemainder711",
       "new": "Formalization.TDInference.PolyakRuppertRemainder",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePathMarginals711",
       "new": "Formalization.TDInference.PathMarginals",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePolyakRuppert711",
       "new": "Formalization.TDInference.PolyakRuppert",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePrinted711",
       "new": "Formalization.TDInference.PrintedStatement",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceSmooth711",
       "new": "Formalization.TDInference.SmoothApproximation",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceSomeInitVariants711",
       "new": "Formalization.TDInference.SomeInitVariants",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceStepSize711",
       "new": "Formalization.TDInference.StepSize",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceZeroNoise711",
       "new": "Formalization.TDInference.ZeroNoiseRefutation",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOAdaptive712",
       "new": "Formalization.RLHF.VPO.Adaptive",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOConcentration712",
       "new": "Formalization.RLHF.VPO.Concentration",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOConfidence712",
       "new": "Formalization.RLHF.VPO.Confidence",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPODefs712",
       "new": "Formalization.RLHF.VPO.Definitions",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOElementary712",
       "new": "Formalization.RLHF.VPO.Elementary",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOElliptical712",
       "new": "Formalization.RLHF.VPO.Elliptical",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOGibbs712",
       "new": "Formalization.RLHF.VPO.Gibbs",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOGibbsBounds712",
       "new": "Formalization.RLHF.VPO.GibbsBounds",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOGrid712",
       "new": "Formalization.RLHF.VPO.Grid",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOIllPosed712",
       "new": "Formalization.RLHF.VPO.IllPosed",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOMain712",
       "new": "Formalization.RLHF.VPO.Main",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPORegret712",
       "new": "Formalization.RLHF.VPO.Regret",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOTraj712",
       "new": "Formalization.RLHF.VPO.Trajectory",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.RlhfPrinted712",
       "new": "Formalization.RLHF.VPO.PrintedStatement",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.Ch7Definitions",
       "new": "Formalization.RobustRL.LowerBounds.Ch7Definitions",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.Ch7PrintedStatements",
       "new": "Formalization.RobustRL.LowerBounds.Ch7PrintedStatements",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.HorizonTrap",
       "new": "Formalization.RobustRL.LowerBounds.HorizonTrap",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound73",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound73",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound73SingleState",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound73SingleState",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound73Testing",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound73Testing",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound73Values",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound73Values",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound75",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound75",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound75Bounds",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound75Bounds",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound75Core",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound75Core",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound75Necessity",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound75Necessity",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound75Params",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound75Params",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.LowerBound75Values",
       "new": "Formalization.RobustRL.LowerBounds.LowerBound75Values",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.SingletonAction73",
       "new": "Formalization.RobustRL.LowerBounds.SingletonAction73",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.TrapCore",
       "new": "Formalization.RobustRL.LowerBounds.TrapCore",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.TrapInstance",
       "new": "Formalization.RobustRL.LowerBounds.TrapInstance",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.ModelFree.QLearningPinskerBinary",
       "new": "Formalization.Probability.InformationTheory.PinskerBinary",
       "group": "generic-to-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.ModelFree.QLearningCountableL1Difference",
       "new": "Formalization.Probability.InformationTheory.CountableL1Difference",
       "group": "generic-to-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.ModelFree.QLearningCountableTailLogSum",
       "new": "Formalization.Probability.InformationTheory.CountableTailLogSum",
       "group": "generic-to-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.ModelFree.QLearningStoppedPrefixPayoffTV",
       "new": "Formalization.Probability.InformationTheory.BoundedPayoffTV",
       "group": "generic-to-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.OfflineRL.GaussianSubgaussian",
       "new": "Formalization.Probability.GaussianSubgaussian",
       "group": "generic-to-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Online.SourceOptimism.FinitePathHistoryDefinitions",
       "new": "Formalization.MDP.FinitePathHistoryDefinitions",
       "group": "generic-to-mdp",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Probability.OnlineT234ConfidenceAlgebra",
       "new": "Formalization.Online.Regret.Algebra.OnlineT234ConfidenceAlgebra",
       "group": "chapter-specific-out-of-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Probability.OnlineT56ConfidenceAlgebra",
       "new": "Formalization.Online.Regret.Algebra.OnlineT56ConfidenceAlgebra",
       "group": "chapter-specific-out-of-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Probability.OnlineT56RadiusBridge",
       "new": "Formalization.Online.Regret.Algebra.OnlineT56RadiusBridge",
       "group": "chapter-specific-out-of-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Probability.OnlineT56ScalarAlgebra",
       "new": "Formalization.Online.Regret.Algebra.OnlineT56ScalarAlgebra",
       "group": "chapter-specific-out-of-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Probability.OnlineVarianceRadiusAlgebra",
       "new": "Formalization.Online.Regret.Algebra.OnlineVarianceRadiusAlgebra",
       "group": "chapter-specific-out-of-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.Marl76ZeroSumNEOracle",
       "new": "Formalization.MultiAgent.ModelBased.ZeroSumNEOracle",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.MarlBestResponse",
       "new": "Formalization.MultiAgent.Equilibria",
       "group": "ch7-multiagent",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.FedSync79ReadOff",
       "new": "Formalization.Federated.Sync.PerAgentSampleSize",
       "group": "ch7-federated",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPODisplays712",
       "new": "Formalization.RLHF.VPO.Displays",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.VPOReparam712",
       "new": "Formalization.RLHF.VPO.Reparameterization",
       "group": "ch7-rlhf",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.RobustRL.Ch7.RandomizedLowerBound",
       "new": "Formalization.RobustRL.LowerBounds.RandomizedLowerBound",
       "group": "ch7-robust-lower-bounds",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceAzuma711",
       "new": "Formalization.TDInference.Azuma",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceCLT711",
       "new": "Formalization.TDInference.ClassicCLT",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceCLTPrinted711",
       "new": "Formalization.TDInference.ClassicCLTPrintedRefutation",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceHalfSpace711",
       "new": "Formalization.TDInference.HalfSpace",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceKernel711",
       "new": "Formalization.TDInference.Kernel",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceLeaveOneOut711",
       "new": "Formalization.TDInference.LeaveOneOut",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceLeaveOneOutBound711",
       "new": "Formalization.TDInference.LeaveOneOutBound",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceLinCov711",
       "new": "Formalization.TDInference.LinearisedCovariance",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceLinRemainder711",
       "new": "Formalization.TDInference.LinearisationRemainder",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceLinearised711",
       "new": "Formalization.TDInference.Linearised",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceLooVector711",
       "new": "Formalization.TDInference.LeaveOneOutVector",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceQuadForm711",
       "new": "Formalization.TDInference.QuadraticForm",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceRemainderTail711",
       "new": "Formalization.TDInference.RemainderTail",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceZeroNoiseDecay711",
       "new": "Formalization.TDInference.ZeroNoiseDecay",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConvexAll711",
       "new": "Formalization.TDInference.ConvexSets.AllConvexRate",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConvexLin711",
       "new": "Formalization.TDInference.ConvexSets.LinearisedRate",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConvexLinSharp711",
       "new": "Formalization.TDInference.ConvexSets.LinearisedSharp",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConvexLog711",
       "new": "Formalization.TDInference.ConvexSets.LogRate",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConvexReservoir711",
       "new": "Formalization.TDInference.ConvexSets.Reservoir",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConvexSharp711",
       "new": "Formalization.TDInference.ConvexSets.Sharp",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConvexThird711",
       "new": "Formalization.TDInference.ConvexSets.ThirdLogRate",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConfCalib711",
       "new": "Formalization.TDInference.Confidence.Calibration",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConfChiSq711",
       "new": "Formalization.TDInference.Confidence.ChiSquareQuantile",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConfInt711",
       "new": "Formalization.TDInference.Confidence.Intervals",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConfRegion711",
       "new": "Formalization.TDInference.Confidence.Regions",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceConfRegionSharp711",
       "new": "Formalization.TDInference.Confidence.RegionsSharp",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceC47Evidence711",
       "new": "Formalization.TDInference.Confidence.HalfLineEvidence",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceC47PluginEvidence711",
       "new": "Formalization.TDInference.Confidence.HalfLinePluginEvidence",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceC47Rectangle711",
       "new": "Formalization.TDInference.Confidence.PrintedRectangleEvidence",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferenceC47Singular711",
       "new": "Formalization.TDInference.Confidence.SingularConvention",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePlugin711",
       "new": "Formalization.TDInference.PluginCovariance.Basic",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginConsistency711",
       "new": "Formalization.TDInference.PluginCovariance.Consistency",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginCorrected711",
       "new": "Formalization.TDInference.PluginCovariance.CorrectedConsistency",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginCoverage711",
       "new": "Formalization.TDInference.PluginCovariance.Coverage",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginEllipsoidRate711",
       "new": "Formalization.TDInference.PluginCovariance.EllipsoidRate",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginIntervalRate711",
       "new": "Formalization.TDInference.PluginCovariance.IntervalRate",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginRate711",
       "new": "Formalization.TDInference.PluginCovariance.Rate",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginRect711",
       "new": "Formalization.TDInference.PluginCovariance.Rectangle",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginRectRate711",
       "new": "Formalization.TDInference.PluginCovariance.RectangleRate",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginRefute711",
       "new": "Formalization.TDInference.PluginCovariance.PrintedLambdaRefutation",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginRegion711",
       "new": "Formalization.TDInference.PluginCovariance.Ellipsoid",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.TDInferencePluginSingular711",
       "new": "Formalization.TDInference.PluginCovariance.Singular",
       "group": "ch7-td-inference",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Ch7Rest.ConvexDistanceTV711",
       "new": "Formalization.Probability.ConvexDistanceTV",
       "group": "generic-to-probability",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null
+      "date": "2026-11-10"
     },
     {
       "old": "Formalization.Statements.Ch3Definitions",
       "new": "Formalization.Generative.ModelBasedDefinitions",
       "group": "statements-definitions-out",
-      "status": "proposed",
+      "status": "applied",
       "pr": null,
-      "date": null,
+      "date": "2026-11-10",
       "allow_statements_source": true
     }
   ]

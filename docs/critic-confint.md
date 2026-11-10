@@ -5,7 +5,7 @@ Public copy of the independent critic report; local paths removed. Probe and scr
 Post-review note (added to this public copy, 2026-11-09): the entry was integrated under the recommended name `Eq_convex_Cdelta_corrected_oracle` (R2) with the recommended docstring (R1) and the `open ... in` line of R4, in `Formalization/Statements/Ch7.lean`, with the wrapper in `Ch7Proofs.lean`. R3, F3 and F4 were applied to the module and theorem docstrings, F2 was added as `convex_signSel`, and F1 corrected the C47 locators. The COVERAGE row uses the "Partial" headline. The review text below is otherwise unchanged.
 
 Critic: independent (not the builder). Date: 2026-11-09.
-Under review: `Formalization/Ch7Rest/TDInferenceConfInt711.lean`, `Formalization/Ch7Rest/TDInferenceC47Evidence711.lean`,
+Under review: `Formalization/TDInference/Confidence/Intervals.lean`, `Formalization/TDInference/Confidence/HalfLineEvidence.lean`,
 `builder-probes/{DRAFT-STATEMENT.lean, ProbeG.lean, STATUS.md}`.
 Source: `source/upstream/tex/chapters/inference.tex`, SHA-256
 `82707713adb6c9296d9ee41faa84b2d0a12eaf1b34864a6d294de02132e648f2` (matches the C47 pin).
@@ -19,8 +19,8 @@ and the entry name. No library theorem signature needs to change.
 
 ## Evidence (commands actually run, one Lean process at a time, `pgrep -x lean | wc -l` checked < 2 before each)
 
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConfInt711.lean`: no output (clean), 5.4 s.
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceC47Evidence711.lean`: clean, 2.8 s.
+- `bash scripts/lean-local.sh Formalization/TDInference/Confidence/Intervals.lean`: no output (clean), 5.4 s.
+- `bash scripts/lean-local.sh Formalization/TDInference/Confidence/HalfLineEvidence.lean`: clean, 2.8 s.
 - Sanity: a deliberately false `rfl` in `reviewer-probes/Sanity.lean` is reported as an error, so the runner really elaborates.
 - `reviewer-probes/ProbeEntryCtx.lean`: imports only `Formalization.Statements.Ch7`, puts the draft `def` in
   `namespace StatisticalRL.Statements.Ch7`: compiles. So the G2 import gate holds (no new `Formalization.*` import;
@@ -169,7 +169,7 @@ def Eq_convex_Cdelta_corrected_oracle : Prop := ...   -- body unchanged from DRA
 
 ## Recommended C47 addendum
 
-> **Lean evidence for (1), oracle covariance (2026-11-09, `Formalization/Ch7Rest/TDInferenceC47Evidence711.lean`).**
+> **Lean evidence for (1), oracle covariance (2026-11-09, `Formalization/TDInference/Confidence/HalfLineEvidence.lean`).**
 > In the one-state TD instance of (1) (π uniform over rewards 0 and 1, γ = 1/2: V^π = 1, Γ_true = 1/4, A = 1/2, oracle
 > Λ = 1, all machine-checked), the sign-selected half-lines `[V̄_T − z/√T, ∞)` if V̄_T ≥ 1 and `(−∞, V̄_T + z/√T]`
 > otherwise are convex, read only the data, and each has mass exactly Φ(z) = 1 − α under N(V̄_T, Λ/T)

@@ -1,6 +1,6 @@
 import Formalization.Generative.PolicyLearningAbsorbing
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! Source Lemma `LemAbsToNormalV`: the absorbing model at the original optimal
 trajectory value has the same optimal trajectory values everywhere. -/
 

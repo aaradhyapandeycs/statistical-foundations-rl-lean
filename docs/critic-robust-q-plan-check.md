@@ -2,7 +2,7 @@
 
 Public copy of the independent plan check; local paths removed. The plan checked here is the builder's private plan; it is not published.
 
-Post-review note (added to this public copy, 2026-11-08): only the stationary printed claim (Fix 1, Fix 7) was built; the optional history-dependent strengthening was not started. Fix 5 suggested a separate definitions file; to respect the frozen import-layering gate, `robustPolicyQ` was instead placed in the existing definitions-only module `Formalization/RobustRL/Ch7/Ch7Definitions.lean` (which keeps Fix 5's requirement that the statement file import definitions modules only); the proofs are in `Formalization/RobustRL/DRVI/RobustQ.lean`, and the entry is `Eq_mdp_value_Q` in `Formalization/Statements/Ch7.lean`. The check text below is otherwise unchanged.
+Post-review note (added to this public copy, 2026-11-08): only the stationary printed claim (Fix 1, Fix 7) was built; the optional history-dependent strengthening was not started. Fix 5 suggested a separate definitions file; to respect the frozen import-layering gate, `robustPolicyQ` was instead placed in the existing definitions-only module `Formalization/RobustRL/LowerBounds/Ch7Definitions.lean` (which keeps Fix 5's requirement that the statement file import definitions modules only); the proofs are in `Formalization/RobustRL/DRVI/RobustQ.lean`, and the entry is `Eq_mdp_value_Q` in `Formalization/Statements/Ch7.lean`. The check text below is otherwise unchanged.
 
 Date: 2026-11-08. No Lean or lake was run, nothing was fetched, and nothing under `Formalization/` was touched.
 Plan sha256 verified: `c36cb827e0a174836818f4612482f5ec456fbe630e6e67a5c3652689ec741400` (matches the brief).

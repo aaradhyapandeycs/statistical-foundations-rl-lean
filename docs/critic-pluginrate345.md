@@ -1,6 +1,6 @@
 # Critic report: plug-in rate stages 3-5 (interval, ellipsoid, rectangle) (2026-11-10)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/Ch7Rest/TDInferencePluginIntervalRate711.lean`, `TDInferencePluginEllipsoidRate711.lean` and `TDInferencePluginRectRate711.lean` (finite-T rate T^(-1/3) for the plug-in rule `eq:convex.Cdelta`), with drafted strengthened statement entries.
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/TDInference/PluginCovariance/IntervalRate.lean`, `TDInferencePluginEllipsoidRate711.lean` and `TDInferencePluginRectRate711.lean` (finite-T rate T^(-1/3) for the plug-in rule `eq:convex.Cdelta`), with drafted strengthened statement entries.
 
 Integration note: verdict ACCEPT for all three modules; PASS-DISCLOSED for the three entries. The recommendation was applied: `Eq_convex_Cdelta_corrected_plugin`, `Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin` were strengthened in place (same names) to the drafted rate forms, with wrappers in `Statements/Ch7Proofs.lean` from `plugin_coverage_rate`, `exists_coverage_ellipsoid_plugin_rate` and `exists_coverage_rect_plugin_rate`; the three modules are imported from `Ch7Proofs.lean` and `Formalization.lean`; the stale "with a rate remains open" docstring text and the COVERAGE and SOURCE-ISSUES C47 text were updated, with a new C47 paragraph. The optional rename of the Bonferroni export and the rpow-helper tidy-up were not applied (cosmetic). The stage-2 concentration bound has no separate statement entry (library export only). Not author-approved.
 
@@ -11,9 +11,9 @@ source `source/upstream/tex/chapters/inference.tex:156–213` (estimators :165�
 existing entries `Statements/Ch7.lean` (:936–988, :1180–1272) and wrappers `Ch7Proofs.lean:477–586`.
 
 Files (sha256):
-- `Formalization/Ch7Rest/TDInferencePluginIntervalRate711.lean` dc29e9fd…
-- `Formalization/Ch7Rest/TDInferencePluginEllipsoidRate711.lean` 009cf568…
-- `Formalization/Ch7Rest/TDInferencePluginRectRate711.lean` afbd4a1d…
+- `Formalization/TDInference/PluginCovariance/IntervalRate.lean` dc29e9fd…
+- `Formalization/TDInference/PluginCovariance/EllipsoidRate.lean` 009cf568…
+- `Formalization/TDInference/PluginCovariance/RectangleRate.lean` afbd4a1d…
 
 ## Commands and evidence
 - `bash scripts/lean-local.sh <file>` on each (guarded by the 2-Lean loop): all EXIT 0, no `error:`/`warning:`.

@@ -1,5 +1,5 @@
 import Formalization.MDP.DecisionStageDefinitions
-import Formalization.Online.SourceOptimism.FinitePathHistoryDefinitions
+import Formalization.MDP.FinitePathHistoryDefinitions
 open scoped BigOperators
 namespace StatisticalRL.DecisionStage
 variable {State Action : Type*} [Fintype State] [Fintype Action]

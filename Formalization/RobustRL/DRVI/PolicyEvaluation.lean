@@ -1,5 +1,5 @@
 import Formalization.RobustRL.DRVI.RowSets
-import Formalization.RobustRL.Ch7.LowerBound73Values
+import Formalization.RobustRL.LowerBounds.LowerBound73Values
 import Formalization.MDP.PrefixValueBridge
 import Formalization.Analysis.Contraction
 

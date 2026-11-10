@@ -6,7 +6,7 @@ Post-review note (added to this public copy, 2026-11-09): all round-1 fixes were
 
 Critic, independent of the builder. Date 2026-11-09. Source `chapters/inference.tex`, SHA-256
 `82707713adb6c9296d9ee41faa84b2d0a12eaf1b34864a6d294de02132e648f2` (matches `source/provenance.json`).
-Files reviewed: `Formalization/Ch7Rest/TDInferencePlugin711.lean`, `TDInferencePluginSingular711.lean`,
+Files reviewed: `Formalization/TDInference/PluginCovariance/Basic.lean`, `TDInferencePluginSingular711.lean`,
 `TDInferencePluginRefute711.lean`, `TDInferencePluginConsistency711.lean`, and the builder notes in `builder-probes/`.
 
 ## Verdict: ACCEPT WITH FIXES
@@ -26,8 +26,8 @@ Prop). Neither changes any proof idea. Both were checked with a compile (see Evi
     T⁻¹(−γ·m₀₁) = ½·(−½·1).
 - `bash scripts/lean-local.sh reviewer-probes/ProbeFull.lean`, which is `import Formalization` plus
   the 4 modules. **Fails**:
-  `import Formalization.Ch7Rest.TDInferencePlugin711 failed, environment already contains
-  'StatisticalRL.Ch7Rest.TDInference.sampleA' from Formalization.Ch7Rest.TDInferenceOperator711`.
+  `import Formalization.TDInference.PluginCovariance.Basic failed, environment already contains
+  'StatisticalRL.Ch7Rest.TDInference.sampleA' from Formalization.TDInference.Operator`.
 - grep over the 4 files finds no `sorry`, `admit` or `axiom`. The `.olean`s are newer than the sources.
 - Same-namespace name collisions with existing library declarations (grep of every def/theorem name in the 4 files
   against `Formalization/`): `sampleA`, `sampleA_apply`, `sum_tupleProb_mul_sampleA`, all in
@@ -165,7 +165,7 @@ The existing C47 entry in `docs/SOURCE-ISSUES.md` cites `eq:defn-hat-Lambda` as 
 ## Recommended text
 
 **COVERAGE (`eq:defn-hat-Lambda`, `inference.tex:161–185`):**
-> Definitions formalized: `aBar`, `gammaHat`, `lambdaHat` (`Formalization/Ch7Rest/TDInferencePlugin711.lean`), with the
+> Definitions formalized: `aBar`, `gammaHat`, `lambdaHat` (`Formalization/TDInference/PluginCovariance/Basic.lean`), with the
 > printed weights `w_{t,T} = 2t/(T(T+1))` and `∑w = 1` machine-checked (`pluginWeight_eq`, `sum_pluginWeight`). On the
 > event that some state is unsampled, `Ā_T` is singular and the printed `Λ̂_T` is undefined (C47(4)); Lean's
 > `Matrix.inv` returns 0 there. Consistency for the printed `Λ⋆` is false under the r(s) = r_π(s) reading
@@ -175,7 +175,7 @@ The existing C47 entry in `docs/SOURCE-ISSUES.md` cites `eq:defn-hat-Lambda` as 
 > Status: partial / source issue. Not author-approved.
 
 **SOURCE-ISSUES C47(4) addendum:**
-> Machine-checked (2026-11-09, `Formalization/Ch7Rest/TDInferencePluginSingular711.lean`). `Ā_T` (`inference.tex:166`)
+> Machine-checked (2026-11-09, `Formalization/TDInference/PluginCovariance/Singular.lean`). `Ā_T` (`inference.tex:166`)
 > is invertible iff every state is sampled (`aBar_det_ne_zero_iff`; the forward direction is a zero row, the converse
 > is strict diagonal dominance with margin T⁻¹(1−γ)n_s). Under the i.i.d. law,
 > `(1−μ(s))^T ≤ P(Ā_T singular) ≤ ∑_s(1−μ(s))^T` (`pathProb_aBar_singular_ge`, `pathProb_aBar_singular_le`), so the
@@ -185,7 +185,7 @@ The existing C47 entry in `docs/SOURCE-ISSUES.md` cites `eq:defn-hat-Lambda` as 
 > `:165–169`, display `:180–182`. Independently critic-reviewed. Not author-approved.
 
 **SOURCE-ISSUES C43 addendum:**
-> Plug-in estimator (2026-11-09, `Formalization/Ch7Rest/TDInferencePluginRefute711.lean`). Under the reading with
+> Plug-in estimator (2026-11-09, `Formalization/TDInference/PluginCovariance/PrintedLambdaRefutation.lean`). Under the reading with
 > rewards r(s,a) and r(s) = r_π(s), `Λ̂_T` (`eq:defn-hat-Lambda`, `inference.tex:180–182`) is not a consistent
 > estimator of the printed Λ⋆ = A⁻¹ΓA⁻ᵀ (`:184`). The proof uses the C43 instance with V₀ = V^π:
 > - Every positive-weight path has Γ̂_T = 0 and Λ̂_T = 0, for every T ≥ 1 and every η₀.

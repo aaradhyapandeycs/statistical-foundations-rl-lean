@@ -17,8 +17,8 @@ Formalization/Statements/Ch2.lean -> Formalization.Probability.Fano.TestRiskDefi
 Formalization/Statements/Ch2.lean -> Formalization.Probability.FiniteSampleDefinitions
 Formalization/Statements/Ch2.lean -> Formalization.Probability.RandomFamilyBorel
 Formalization/Statements/Ch3.lean -> Formalization.Generative.GenerativeLowerBoundTwoStateDefinitions
+Formalization/Statements/Ch3.lean -> Formalization.Generative.ModelBasedDefinitions
 Formalization/Statements/Ch3.lean -> Formalization.Probability.VarianceDefinitions
-Formalization/Statements/Ch3.lean -> Formalization.Statements.Ch3Definitions
 Formalization/Statements/Ch4.lean -> Formalization.ModelFree.AsyncQ.Definitions
 Formalization/Statements/Ch4.lean -> Formalization.ModelFree.FiniteQ.Definitions
 Formalization/Statements/Ch4.lean -> Formalization.ModelFree.QLearningComparisonDefinitions
@@ -66,11 +66,11 @@ Formalization/Statements/Ch6.lean -> Formalization.OfflineRL.VILCBDatasetDefinit
 Formalization/Statements/Ch6.lean -> Formalization.OfflineRL.VILCBDefinitions
 Formalization/Statements/Ch6.lean -> Formalization.Probability.FiniteSampleDefinitions
 Formalization/Statements/Ch6.lean -> Formalization.Probability.VarianceDefinitions
-Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.FedGeneric710
-Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.Marl76Defs
-Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.Marl78Defs
-Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.TDInference711Defs
-Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.VPODefs712
+Formalization/Statements/Ch7.lean -> Formalization.Federated.LowerBound.GenericAlgorithmDefinitions
 Formalization/Statements/Ch7.lean -> Formalization.ModelFree.QLearningRobustDefinitions
-Formalization/Statements/Ch7.lean -> Formalization.RobustRL.Ch7.Ch7Definitions
+Formalization/Statements/Ch7.lean -> Formalization.MultiAgent.LowerBound.Definitions
+Formalization/Statements/Ch7.lean -> Formalization.MultiAgent.ModelBased.Definitions
+Formalization/Statements/Ch7.lean -> Formalization.RLHF.VPO.Definitions
+Formalization/Statements/Ch7.lean -> Formalization.RobustRL.LowerBounds.Ch7Definitions
 Formalization/Statements/Ch7.lean -> Formalization.RobustRL.TVWeakDefinitions
+Formalization/Statements/Ch7.lean -> Formalization.TDInference.Definitions

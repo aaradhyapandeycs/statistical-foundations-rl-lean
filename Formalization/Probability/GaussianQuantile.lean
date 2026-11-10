@@ -16,7 +16,7 @@ General facts about the standard normal distribution function `stdCDF` (from
 * `isQuantile_mul_sqrt`: `z√v` is the exact lower `(1 − α)`-quantile of `|N(0, v)|`, for every
   `v ≥ 0` including the point mass `v = 0`.
 
-Infrastructure (used by the C47(2) evidence in `Ch7Rest/TDInferenceC47Rectangle711.lean`); no
+Infrastructure (used by the C47(2) evidence in `TDInference/Confidence/PrintedRectangleEvidence.lean`); no
 source result is stated here.
 -/
 

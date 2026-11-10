@@ -2,7 +2,7 @@ import Formalization.MDP.FiniteOptimal
 import Formalization.Probability.EmpiricalRow
 import Mathlib.Probability.Independence.Basic
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! The actual finite-horizon stage/state/action generative experiment and
 its strictly-future block independence. No policy-learning guarantee is claimed. -/
 open MeasureTheory ProbabilityTheory

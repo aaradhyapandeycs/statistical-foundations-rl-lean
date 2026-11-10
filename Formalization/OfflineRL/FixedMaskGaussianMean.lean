@@ -1,4 +1,4 @@
-import Formalization.OfflineRL.GaussianSubgaussian
+import Formalization.Probability.GaussianSubgaussian
 import Mathlib.Probability.Independence.Basic
 import Mathlib.Probability.Moments.SubGaussian
 

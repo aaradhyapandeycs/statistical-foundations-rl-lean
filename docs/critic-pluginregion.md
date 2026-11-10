@@ -1,6 +1,6 @@
-# Critic report: Formalization/Ch7Rest/TDInferencePluginRegion711.lean (plug-in χ²(S) ellipsoid)
+# Critic report: Formalization/TDInference/PluginCovariance/Ellipsoid.lean (plug-in χ²(S) ellipsoid)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of the plug-in-covariance confidence ellipsoid (`Formalization/Ch7Rest/TDInferencePluginRegion711.lean`; exports `tendsto_coverage_ellipsoid_plugin`, `tendsto_coverage_ellipsoid_plugin_chiSquared`), with drafted statement entry `Eq_convex_Cdelta_ellipsoid_corrected_plugin`. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of the plug-in-covariance confidence ellipsoid (`Formalization/TDInference/PluginCovariance/Ellipsoid.lean`; exports `tendsto_coverage_ellipsoid_plugin`, `tendsto_coverage_ellipsoid_plugin_chiSquared`), with drafted statement entry `Eq_convex_Cdelta_ellipsoid_corrected_plugin`. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT; minor 7 applied (the theorem docstring now cites `inference.tex:180–182`); minor 8 kept (the unused α hypotheses match the printed quantifier). The entry landed as drafted below (section EqConvexCdelta of `Statements/Ch7.lean`, no new `Formalization.*` imports), with its `_holds` wrapper in `Ch7Proofs.lean`; module imported from `Formalization.lean`. COVERAGE and SOURCE-ISSUES C47(3) wording applied; the plug-in rectangle and a finite-T rate stay open.
 
@@ -10,7 +10,7 @@ Source: source/upstream/tex/chapters/inference.tex:180-182 (eq:defn-hat-Lambda),
 ## Verdict: ACCEPT (two minor non-blocking notes, findings 7 and 8)
 
 ## Evidence
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferencePluginRegion711.lean`: rc=0, no output (no errors or warnings), 11 s. 
+- `bash scripts/lean-local.sh Formalization/TDInference/PluginCovariance/Ellipsoid.lean`: rc=0, no output (no errors or warnings), 11 s. 
 - The olean in .lake/build has mtime 1794307467, newer than the source (1794307462), so the axiom probe tests the current text.
 - `<local probe>`: both exports and the helpers continuous_cdf_chiSquared, exists_inv_entry_close and exists_sum_abs_sq_le_mul_sumSq use only [propext, Classical.choice, Quot.sound]. Log: axioms.log
 - The file contains no sorry, admit or axiom.
@@ -87,4 +87,4 @@ theorem Eq_convex_Cdelta_ellipsoid_corrected_plugin_holds :
 ## Proposed wording
 COVERAGE (eq:convex.Cdelta ellipsoid row): "Corrected, plug-in Λ̂_T: asymptotic χ²(S) coverage (threshold R, not R²; no rate; Γ_true ≻ 0) — `Eq_convex_Cdelta_ellipsoid_corrected_plugin`, TDInferencePluginRegion711.lean. The oracle-Λ version with rate T^{-1/3}log(2T) is `..._oracle_chiSquared`. The plug-in ℓ∞ rectangle (C47(2)) remains open."
 
-SOURCE-ISSUES C47(3) addendum: "**Lean evidence for the corrected ellipsoid with the printed plug-in Λ̂_T (2026-11-10, `Formalization/Ch7Rest/TDInferencePluginRegion711.lean`).** For full-support μ, 0 < η₀ ≤ 1, every V₀ and Γ_true ≻ 0: P(T(V^π − V̄_T)ᵀΛ̂_T⁻¹(V^π − V̄_T) ≤ R) → 1 − α for every χ²(S) (1 − α)-quantile R (`tendsto_coverage_ellipsoid_plugin_chiSquared`; for general q, → F_{χ²(S)}(q)). This is asymptotic only, with no rate. The singular-Ā_T junk value (C47(4)) lies in a vanishing-probability event. Independently critic-reviewed ([review](CRITIC-pluginregion)). Not author-approved. The plug-in ℓ∞ rectangle with a random level (C47(2)) is still open."
+SOURCE-ISSUES C47(3) addendum: "**Lean evidence for the corrected ellipsoid with the printed plug-in Λ̂_T (2026-11-10, `Formalization/TDInference/PluginCovariance/Ellipsoid.lean`).** For full-support μ, 0 < η₀ ≤ 1, every V₀ and Γ_true ≻ 0: P(T(V^π − V̄_T)ᵀΛ̂_T⁻¹(V^π − V̄_T) ≤ R) → 1 − α for every χ²(S) (1 − α)-quantile R (`tendsto_coverage_ellipsoid_plugin_chiSquared`; for general q, → F_{χ²(S)}(q)). This is asymptotic only, with no rate. The singular-Ā_T junk value (C47(4)) lies in a vanishing-probability event. Independently critic-reviewed ([review](CRITIC-pluginregion)). Not author-approved. The plug-in ℓ∞ rectangle with a random level (C47(2)) is still open."

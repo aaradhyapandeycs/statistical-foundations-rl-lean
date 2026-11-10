@@ -1,7 +1,7 @@
 import Formalization.Generative.PolicyLearningLeaveOneOutBernstein
 import Formalization.Generative.PolicyLearningAbsorbingGrid
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! The source simultaneous all-row Bernstein event for a fixed parameter grid.
 No independence of the families from the full empirical matrix is assumed. -/
 

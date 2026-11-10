@@ -1,10 +1,10 @@
 # Critic review: abs_lawProb_convex_sub_gaussCov_le_third_log
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review of `Formalization/Ch7Rest/TDInferenceConvexThird711.lean` (written by the lead; reviewed independently). Partial result toward Theorem 7.11, not a source result; no statement-index entry. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review of `Formalization/TDInference/ConvexSets/ThirdLogRate.lean` (written by the lead; reviewed independently). Partial result toward Theorem 7.11, not a source result; no statement-index entry. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT WITH FIXES; all three applied (module title says log(2T); module imported in `Formalization.lean`; COVERAGE Theorem 7.11 row rewritten as recommended).
 
-Target: Formalization/Ch7Rest/TDInferenceConvexThird711.lean (lead-authored; reviewed independently, no edits made).
+Target: Formalization/TDInference/ConvexSets/ThirdLogRate.lean (lead-authored; reviewed independently, no edits made).
 Source: Theorem 7.11, thm:Berry-Esseen-linear, source/upstream/tex/chapters/inference.tex:132-141 (d_cvx at 124-127, Lambda* / Gamma at 104-117).
 
 ## Verdict: ACCEPT-WITH-FIXES (fixes are documentation/integration only; the Lean theorem is accepted as is)
@@ -30,7 +30,7 @@ Source: Theorem 7.11, thm:Berry-Esseen-linear, source/upstream/tex/chapters/infe
    This is consistent with how the T^(-1/4) theorem is described and with the COVERAGE row's existing claims.
 
 4. Compilation (this critic, 2026-11-10):
-   - `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConvexThird711.lean`: rc 0, no output (no errors/warnings), ~2 s.
+   - `bash scripts/lean-local.sh Formalization/TDInference/ConvexSets/ThirdLogRate.lean`: rc 0, no output (no errors/warnings), ~2 s.
    - `bash scripts/lean-local.sh <local probe>: no errors/warnings/sorry, ~24 s.
      `#print axioms` for `abs_lawProb_convex_sub_gaussCov_le_third_log` and `g_allConvex_third_log`:
      [propext, Classical.choice, Quot.sound]. All other probed exports likewise.
@@ -41,7 +41,7 @@ Source: Theorem 7.11, thm:Berry-Esseen-linear, source/upstream/tex/chapters/infe
 1. (minor, doc) Module header title says "`T^{-1/3} log T`"; the theorem is `T^{-1/3} log(2T)` (log T vanishes at T = 1,
    so the distinction matters for the stated range T ≥ 1). Change the title to `log(2T)`.
 2. (integration) The module is not yet imported from Formalization.lean, so the project axiom audit does not
-   cover it. Add `import Formalization.Ch7Rest.TDInferenceConvexThird711` when integrating.
+   cover it. Add `import Formalization.TDInference.ConvexSets.ThirdLogRate` when integrating.
 3. (docs/COVERAGE.md, Theorem 7.11 row) After integration the row should:
    - name the new headline partial all-convex result: with Γ_true ≻ 0, printed step sizes (0 < η₀ ≤ 1, covering
      the printed 0 < η₀ < 1/4), full-support i.i.d. sampling and every V₀, there is an instance constant K with

@@ -1,10 +1,10 @@
 # CRITIC — M8a′ step 1 (Azuma route, check fix F6)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route, not a source result: no COVERAGE row, statement-index entry or named-result change follows from it. Reviewed: Azuma bridge (M8a′ step 1), `Formalization/Probability/PathAzumaBridge.lean`, `Formalization/Ch7Rest/TDInferenceAzuma711.lean`. Planning notes cited below (route plan, M5a design and design check, M6a interface note) are local and not published; the route plan check is public as [critic-allconvex-p0.md](critic-allconvex-p0.md). Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route, not a source result: no COVERAGE row, statement-index entry or named-result change follows from it. Reviewed: Azuma bridge (M8a′ step 1), `Formalization/Probability/PathAzumaBridge.lean`, `Formalization/TDInference/Azuma.lean`. Planning notes cited below (route plan, M5a design and design check, M6a interface note) are local and not published; the route plan check is public as [critic-allconvex-p0.md](critic-allconvex-p0.md). Probes are local scratch files (`<local probe>`).
 
 Critic: independent (not the builder), 2026-11-09.
 Under review: `Formalization/Probability/PathAzumaBridge.lean` (338 lines),
-`Formalization/Ch7Rest/TDInferenceAzuma711.lean` (504 lines).
+`Formalization/TDInference/Azuma.lean` (504 lines).
 
 ## Verdict: ACCEPT WITH FIXES
 
@@ -15,7 +15,7 @@ documentation items. None changes a statement.
 
 - `bash scripts/lean-local.sh Formalization/Probability/PathAzumaBridge.lean`: no output (clean, no
   warnings).
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceAzuma711.lean`: no output (clean).
+- `bash scripts/lean-local.sh Formalization/TDInference/Azuma.lean`: no output (clean).
 - `bash scripts/lean-local.sh <local probe>`: clean.
   - The probe imports `Formalization` together with both modules, so no name collision arises on
     import.

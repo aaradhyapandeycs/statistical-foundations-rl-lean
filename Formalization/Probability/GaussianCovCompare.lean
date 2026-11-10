@@ -1,6 +1,6 @@
 import Formalization.Probability.StdGaussianPi
-import Formalization.Ch7Rest.TDInference711Defs
-import Formalization.Ch7Rest.TDInferenceSmooth711
+import Formalization.TDInference.Definitions
+import Formalization.TDInference.SmoothApproximation
 import Mathlib.MeasureTheory.Measure.CharacteristicFunction
 import Mathlib.Analysis.Matrix.Order
 
@@ -199,7 +199,7 @@ theorem gaussCov_eq_map_mulVec_of_mul_transpose (A : Matrix State State ℝ) {Γ
   rw [gaussCov_eq_map_mulVec]
   exact map_mulVec_stdGaussianPi_eq _ _ ((gaussCovFactor_mul_transpose A hΓ).trans hQ.symm)
 
-/-- Bridge: the repo's TD Gaussian factor `tdGaussFactor` (`TDInferenceSmooth711.lean`) is
+/-- Bridge: the repo's TD Gaussian factor `tdGaussFactor` (`TDInference/SmoothApproximation.lean`) is
 `gaussCovFactor (tdA M π μ) (trueGamma M π μ)`. -/
 theorem tdGaussFactor_eq_gaussCovFactor {Action : Type} [Fintype Action]
     (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)

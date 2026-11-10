@@ -1,7 +1,7 @@
 import Formalization.Online.Regret.T2.OnlineT2SourceBound
 import Formalization.Online.Regret.T3.OnlineRegretT3SourceBound
 import Formalization.Online.Regret.Joint.W123Definitions
-import Formalization.Probability.OnlineT56RadiusBridge
+import Formalization.Online.Regret.Algebra.OnlineT56RadiusBridge
 
 /-! Pointwise source T56 simplification, onlineRL.tex 4040–4067.
 The actual first T5/low bounds and W3 bound are explicit intermediate inputs.

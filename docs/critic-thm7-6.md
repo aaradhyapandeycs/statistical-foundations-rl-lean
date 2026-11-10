@@ -165,7 +165,7 @@ Required edits are documentation and integration only (R1–R4). No theorem sign
 
 ### F9. Integration hygiene. (Required R2–R4)
 
-- **Imports.** `Marl76Defs.lean` imports `Formalization.Ch7Rest.Marl78Product`, which is a proof module containing theorems. The statement index's `Ch7.lean` must import definition modules only. The existing `Ch7.lean` imports `Marl78Defs`. `Marl76Defs.lean` uses `value`, `bestResponseValue`, `valueJ`, `bestResponseValueJ`, `MarkovGame` and the Ch3 sampling definitions, and none of `toJoint`. The `Marl76*Defs` module should therefore import `Marl78Defs`, `MarlPrinted78` (or whatever provides `value`/`gap`) and `Statements.Ch3Definitions`, not `Marl78Product`.
+- **Imports.** `Marl76Defs.lean` imports `Formalization.MultiAgent.LowerBound.Product`, which is a proof module containing theorems. The statement index's `Ch7.lean` must import definition modules only. The existing `Ch7.lean` imports `Marl78Defs`. `Marl76Defs.lean` uses `value`, `bestResponseValue`, `valueJ`, `bestResponseValueJ`, `MarkovGame` and the Ch3 sampling definitions, and none of `toJoint`. The `Marl76*Defs` module should therefore import `Marl78Defs`, `MarlPrinted78` (or whatever provides `value`/`gap`) and `Statements.Ch3Definitions`, not `Marl78Product`.
 - **Docstring.** The `Thm7_6_printed` docstring mentions only `0 < N`. It should also list `0 < S` and `∀ i, 0 < A_i`, and state that the oracles are deterministic maps of the empirical game, which is the "any oracle" reading.
 
 ## Required edits

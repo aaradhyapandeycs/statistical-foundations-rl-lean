@@ -1,18 +1,18 @@
 # Critic review: M6.3 (TDInferenceConvexLin711.lean) and M7 (TDInferenceConvexAll711.lean)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route, not a source result: no COVERAGE row, statement-index entry or named-result change follows from it. Reviewed: the linearised statistic at `T^{-1/4}` (`Formalization/Ch7Rest/TDInferenceConvexLin711.lean`) and the full statistic at `T^{-2/9}` over all convex sets (`Formalization/Ch7Rest/TDInferenceConvexAll711.lean`), a partial result weaker than the printed `T^{-1/3}`. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route, not a source result: no COVERAGE row, statement-index entry or named-result change follows from it. Reviewed: the linearised statistic at `T^{-1/4}` (`Formalization/TDInference/ConvexSets/LinearisedRate.lean`) and the full statistic at `T^{-2/9}` over all convex sets (`Formalization/TDInference/ConvexSets/AllConvexRate.lean`), a partial result weaker than the printed `T^{-1/3}`. Probes are local scratch files (`<local probe>`).
 
 Integration note: F2 (headings reworded to "Partial result toward Theorem 7.11 (not the printed result)"), F4 (`tdNoiseBound_nonneg'` removed in favour of `(tdNoiseBound_pos M π).le`), F6 (docstring notes that `η₀ ≤ 1` is weaker than the printed `η₀ < 1/4`) and F1 (import into `Formalization.lean`) were applied; plan-file references were removed from the module docstrings. F3 and F5 (duplicate generic lemma, placement of generic lemmas) are left as nits.
 
 Date 2026-11-09. Critic independent of the builder. No library files edited.
 
 Files reviewed (sha256 of the reviewed versions, before the integration fixes listed above):
-- Formalization/Ch7Rest/TDInferenceConvexLin711.lean  3d4b86bf276f737fe491c2415195fd2926f7815dbea64617465433572c983f9e
-- Formalization/Ch7Rest/TDInferenceConvexAll711.lean  fb12714d8c01a188bf378c7f2e3b78e1f67eadc1c54e2d590326c0200de21b8d
+- Formalization/TDInference/ConvexSets/LinearisedRate.lean  3d4b86bf276f737fe491c2415195fd2926f7815dbea64617465433572c983f9e
+- Formalization/TDInference/ConvexSets/AllConvexRate.lean  fb12714d8c01a188bf378c7f2e3b78e1f67eadc1c54e2d590326c0200de21b8d
 
 Commands run (guarded: at most 2 Lean processes, no check_parallel):
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConvexLin711.lean`: clean, no output (15 s).
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConvexAll711.lean`: clean, no output (16 s).
+- `bash scripts/lean-local.sh Formalization/TDInference/ConvexSets/LinearisedRate.lean`: clean, no output (15 s).
+- `bash scripts/lean-local.sh Formalization/TDInference/ConvexSets/AllConvexRate.lean`: clean, no output (16 s).
 - Scratch file (scratchpad, not in repo) `#print axioms` on both exports: [propext, Classical.choice, Quot.sound].
   `#check` of the M7 export matches the statement quoted below.
 - No `sorry`/`admit`/`axiom` in either file.

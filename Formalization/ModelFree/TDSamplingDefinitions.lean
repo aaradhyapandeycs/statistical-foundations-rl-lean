@@ -1,5 +1,5 @@
 import Formalization.ModelFree.TDIterateBounds
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 
 /-! Definitions for the actual finite synchronous TD sampling experiment.
 The matching probability facts are proved in `TDSynchronousSampling`. -/

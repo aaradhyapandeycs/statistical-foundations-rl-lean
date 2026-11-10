@@ -1,44 +1,44 @@
 import Formalization.Statements.Ch7
 import Formalization.RobustRL.TVSourceMaximum
 import Formalization.RobustRL.ChiSquaredSourceMaximum
-import Formalization.Ch7Rest.LowerBound710
-import Formalization.RobustRL.Ch7.LowerBound73
-import Formalization.RobustRL.Ch7.LowerBound75
-import Formalization.RobustRL.Ch7.RandomizedLowerBound
-import Formalization.Ch7Rest.Marl78Main
-import Formalization.Ch7Rest.FedSync79Main
-import Formalization.Ch7Rest.FedSync79ReadOff
+import Formalization.Federated.LowerBound.UniversalConstant
+import Formalization.RobustRL.LowerBounds.LowerBound73
+import Formalization.RobustRL.LowerBounds.LowerBound75
+import Formalization.RobustRL.LowerBounds.RandomizedLowerBound
+import Formalization.MultiAgent.LowerBound.Main
+import Formalization.Federated.Sync.Main
+import Formalization.Federated.Sync.PerAgentSampleSize
 import Formalization.RobustRL.DRVI.Thm74Main
 import Formalization.RobustRL.DRVI.RobustQ
-import Formalization.Ch7Rest.VPOMain712
-import Formalization.Ch7Rest.Marl76Restricted
-import Formalization.Ch7Rest.Marl77Main
+import Formalization.RLHF.VPO.Main
+import Formalization.MultiAgent.ModelBased.Restricted
+import Formalization.MultiAgent.Hedge.Main
 import Formalization.RobustRL.DRVI.OraclePlannerMain
 import Formalization.RobustRL.DRVI.OraclePlannerChiMain
-import Formalization.Ch7Rest.VPOReparam712
-import Formalization.Ch7Rest.TDInferenceHalfSpace711
-import Formalization.Ch7Rest.TDInferenceCLT711
-import Formalization.Ch7Rest.TDInferenceConfInt711
-import Formalization.Ch7Rest.TDInferencePlugin711
-import Formalization.Ch7Rest.TDInferencePluginSingular711
-import Formalization.Ch7Rest.TDInferencePluginConsistency711
-import Formalization.Ch7Rest.TDInferencePluginCorrected711
-import Formalization.Ch7Rest.TDInferencePluginRefute711
-import Formalization.Ch7Rest.TDInferencePluginCoverage711
-import Formalization.Ch7Rest.TDInferencePluginIntervalRate711
-import Formalization.Ch7Rest.TDInferencePluginEllipsoidRate711
-import Formalization.Ch7Rest.TDInferencePluginRectRate711
-import Formalization.Ch7Rest.TDInferenceConfRegion711
-import Formalization.Ch7Rest.TDInferenceConfCalib711
-import Formalization.Ch7Rest.TDInferenceConfChiSq711
-import Formalization.Ch7Rest.TDInferencePluginRegion711
+import Formalization.RLHF.VPO.Reparameterization
+import Formalization.TDInference.HalfSpace
+import Formalization.TDInference.ClassicCLT
+import Formalization.TDInference.Confidence.Intervals
+import Formalization.TDInference.PluginCovariance.Basic
+import Formalization.TDInference.PluginCovariance.Singular
+import Formalization.TDInference.PluginCovariance.Consistency
+import Formalization.TDInference.PluginCovariance.CorrectedConsistency
+import Formalization.TDInference.PluginCovariance.PrintedLambdaRefutation
+import Formalization.TDInference.PluginCovariance.Coverage
+import Formalization.TDInference.PluginCovariance.IntervalRate
+import Formalization.TDInference.PluginCovariance.EllipsoidRate
+import Formalization.TDInference.PluginCovariance.RectangleRate
+import Formalization.TDInference.Confidence.Regions
+import Formalization.TDInference.Confidence.Calibration
+import Formalization.TDInference.Confidence.ChiSquareQuantile
+import Formalization.TDInference.PluginCovariance.Ellipsoid
 import Formalization.RobustRL.DRVI.RobustBellmanDisplays
-import Formalization.Ch7Rest.VPODisplays712
-import Formalization.Ch7Rest.MarlBestResponse
-import Formalization.Ch7Rest.ConvexDistanceTV711
-import Formalization.Ch7Rest.TDInferencePluginRect711
-import Formalization.Ch7Rest.TDInferenceConvexSharp711
-import Formalization.Ch7Rest.TDInferenceConfRegionSharp711
+import Formalization.RLHF.VPO.Displays
+import Formalization.MultiAgent.Equilibria
+import Formalization.Probability.ConvexDistanceTV
+import Formalization.TDInference.PluginCovariance.Rectangle
+import Formalization.TDInference.ConvexSets.Sharp
+import Formalization.TDInference.Confidence.RegionsSharp
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -316,20 +316,20 @@ end Eq_DPO_VPO
 section RLHFDisplaysProofs
 
 open StatisticalRL.Ch7Rest.Rlhf in
-/-- `Eq_reward_policy_eq_restricted` from `reward_eq_log_gibbs` (`VPODisplays712.lean`). -/
+/-- `Eq_reward_policy_eq_restricted` from `reward_eq_log_gibbs` (`RLHF/VPO/Displays.lean`). -/
 theorem Eq_reward_policy_eq_restricted_holds : Eq_reward_policy_eq_restricted := by
   intro X Y _ _ π_ref β href hβ r x y
   exact reward_eq_log_gibbs href hβ r x y
 
 open StatisticalRL.Ch7Rest.Rlhf in
-/-- `Eq_Jstar_restricted` from `optCalValue_printed_lines` (`VPODisplays712.lean`). -/
+/-- `Eq_Jstar_restricted` from `optCalValue_printed_lines` (`RLHF/VPO/Displays.lean`). -/
 theorem Eq_Jstar_restricted_holds : Eq_Jstar_restricted := by
   intro X Y _ _ ρ π_ref π_cal β href hρ hcal hβ r
   exact optCalValue_printed_lines ρ hρ href π_cal hcal hβ r
 
 open StatisticalRL.Ch7Rest.Rlhf in
-/-- `Eq_RLHF_policy_closed_form_restricted` from `gibbsPolicy_isCondPolicy` (`VPOGibbs712.lean`),
-`klValue_le_gibbs` and `isMaximizer_klValue_iff` (`VPODisplays712.lean`). -/
+/-- `Eq_RLHF_policy_closed_form_restricted` from `gibbsPolicy_isCondPolicy` (`RLHF/VPO/Gibbs.lean`),
+`klValue_le_gibbs` and `isMaximizer_klValue_iff` (`RLHF/VPO/Displays.lean`). -/
 theorem Eq_RLHF_policy_closed_form_restricted_holds : Eq_RLHF_policy_closed_form_restricted := by
   intro X Y _ _ ρ π_ref β href hρ hβ r J πr
   exact ⟨gibbsPolicy_isCondPolicy href r β, fun π hπ ↦ klValue_le_gibbs ρ hρ href hβ r π hπ,
@@ -337,7 +337,7 @@ theorem Eq_RLHF_policy_closed_form_restricted_holds : Eq_RLHF_policy_closed_form
 
 open StatisticalRL.Ch7Rest.Rlhf in
 /-- `Eq_calibrated_value_shiftInvariant_restricted` from `prompt_shift_invariance`
-(`VPODisplays712.lean`). -/
+(`RLHF/VPO/Displays.lean`). -/
 theorem Eq_calibrated_value_shiftInvariant_restricted_holds :
     Eq_calibrated_value_shiftInvariant_restricted := by
   intro X Y _ _ ρ π_ref π_cal β href hρ hcal hβ r₂ c r₁ nll J Jcal

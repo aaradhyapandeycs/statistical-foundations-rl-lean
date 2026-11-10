@@ -1,6 +1,6 @@
 # Critic review: N3 (ConvexNonlinearTransfer.lean) and N4 (TDInferenceConvexSharp711.lean)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of N3 `Formalization/Probability/ConvexNonlinearTransfer.lean` (nonlinear transfer of the polyhedral Stein bound to all convex sets; sha256 75ffbbd9f429c38f9ed894a5b9668958777d5616d0564095d2f1e6e402091ab8) and N4 `Formalization/Ch7Rest/TDInferenceConvexSharp711.lean` (assembly of the corrected Theorem 7.11 over all convex sets at T^(-1/3); sha256 b3a0201a1e9d8aa86101ead71ed507fa91da9f2034be386a7fca70e9f8c765bd). Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of N3 `Formalization/Probability/ConvexNonlinearTransfer.lean` (nonlinear transfer of the polyhedral Stein bound to all convex sets; sha256 75ffbbd9f429c38f9ed894a5b9668958777d5616d0564095d2f1e6e402091ab8) and N4 `Formalization/TDInference/ConvexSets/Sharp.lean` (assembly of the corrected Theorem 7.11 over all convex sets at T^(-1/3); sha256 b3a0201a1e9d8aa86101ead71ed507fa91da9f2034be386a7fca70e9f8c765bd). Probes are local scratch files (`<local probe>`).
 
 Integration note: both ACCEPT. I1 applied (`TDInferenceConvexSharp711.lean` imported from `Formalization.lean` and `Formalization/Statements/Ch7Proofs.lean`). I2 applied: entry `Thm7_11_corrected` in `Formalization/Statements/Ch7.lean` with wrapper `Thm7_11_corrected_holds`; COVERAGE Theorem 7.11 row, the `Thm7_11_corrected_halfspace` docstring and the stale "rate without log(2T) open" items updated (the oracle confidence-region corollaries are not re-derived at the sharper rate). I3: the printed coefficient remains open and is disclosed. The end-to-end statement audit is [critic-711-sharp.md](critic-711-sharp.md).
 
@@ -8,12 +8,12 @@ Reviewer: independent critic (read-only on Formalization/, docs/, Formalization.
 
 ## Verdicts
 - N3 `Formalization/Probability/ConvexNonlinearTransfer.lean`: **ACCEPT**.
-- N4 `Formalization/Ch7Rest/TDInferenceConvexSharp711.lean`: **ACCEPT** (file); integration items I1-I3 are for the lead, not file fixes.
+- N4 `Formalization/TDInference/ConvexSets/Sharp.lean`: **ACCEPT** (file); integration items I1-I3 are for the lead, not file fixes.
 
 ## Evidence
 - No stale/missing project oleans (every Formalization/*.lean older than its olean, checked 07:10 EST).
 - `bash scripts/lean-local.sh Formalization/Probability/ConvexNonlinearTransfer.lean`: rc=0, no output (local log).
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConvexSharp711.lean`: rc=0, no output (local log).
+- `bash scripts/lean-local.sh Formalization/TDInference/ConvexSets/Sharp.lean`: rc=0, no output (local log).
 - `<local probe>`: `abs_pexp_convex_add_sub_le`, `_update`, `abs_lawProb_sub_linLaw_le_third_of_burnIn`,
   `abs_lawProb_convex_sub_gaussCov_le_third_sharp` all depend on [propext, Classical.choice, Quot.sound] only.
   Same file #print's lawProb/scaledError/linPart/pathWeight/gaussCov and #check's every upstream lemma used.

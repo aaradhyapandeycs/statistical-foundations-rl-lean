@@ -1,7 +1,7 @@
 import Formalization.Probability.EmpiricalRow
 import Formalization.MDP.OptimalTrajectoryValue
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-!
 # Model-based policy learning with a generative model
 

@@ -3,7 +3,7 @@ import Formalization.Online.Regret.MVP.T34.MVPActualT4Confidence
 import Formalization.Online.Regret.MVP.T34.MVPJointLogScalars
 import Formalization.Online.Regret.MVP.T34.MVPJointRadiusScalars
 import Formalization.Online.Regret.MVP.T2.MVPT2ActualSource
-import Formalization.Probability.OnlineT234ConfidenceAlgebra
+import Formalization.Online.Regret.Algebra.OnlineT234ConfidenceAlgebra
 import Formalization.Online.Regret.MVP.T6.MVPActualVarianceNonnegative
 
 /-! Joint actual-law MVP T2/T3/T4 confidence bound for the fixed retained-table planner. -/

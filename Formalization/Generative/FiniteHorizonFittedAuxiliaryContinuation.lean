@@ -1,6 +1,6 @@
 import Formalization.Generative.FiniteHorizonAuxiliaryVariance
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! Causal backward-greedy policy selection and its TRUE auxiliary continuation.
 This is distinct from a fixed policy's empirical auxiliary value family. -/
 open MeasureTheory ProbabilityTheory

@@ -1,7 +1,7 @@
 import Formalization.Generative.PolicyLearningFittedPolicyEvaluation
 import Formalization.Generative.PolicyLearningPerformanceTransfer
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! Uniform source intermediate bounds for all deterministic empirical optima. -/
 open MeasureTheory ProbabilityTheory
 namespace StatisticalRL.ModelBasedPolicyLearning

@@ -1,6 +1,6 @@
 import Formalization.Online.Regret.T0.OnlineT0SingletonSource
 import Formalization.Online.Regret.T4.OnlineT4SuffixConfidence
-import Formalization.Probability.OnlineT56ConfidenceAlgebra
+import Formalization.Online.Regret.Algebra.OnlineT56ConfidenceAlgebra
 
 /-! Same-experiment suffix proof component: OnlineT0ActualConfidence.
 Scope and source confidence are established only by the final applying theorem. -/

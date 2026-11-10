@@ -21,11 +21,11 @@ new known-reward entry.
 
 | file | sha256 |
 |---|---|
-| Formalization/RobustRL/Ch7/Ch7PrintedStatements.lean | 9657afc4d12ced2d58c5463f9530cfe53336fb7c325f9fec1ded67a7ef155581 |
-| Formalization/RobustRL/Ch7/LowerBound73Values.lean | e7477af8afe15d8f67a73525a14bb03518330ae24c31e334bf424d6b512a868b |
-| Formalization/RobustRL/Ch7/LowerBound73Testing.lean | 2c8a032b082d7f057d8fd35ca03e2d6c930630fb793d2a74b0043b6296a46116 |
-| Formalization/RobustRL/Ch7/LowerBound73SingleState.lean | d7598c0d44a6205bd089bcc7a26bc2321962e5e4b9c7d1d82ae134227fb38e40 |
-| Formalization/RobustRL/Ch7/LowerBound73.lean | 96bfdc6c85ad341457edc410005c72716fc4279f3f548a3b513134402989c23d |
+| Formalization/RobustRL/LowerBounds/Ch7PrintedStatements.lean | 9657afc4d12ced2d58c5463f9530cfe53336fb7c325f9fec1ded67a7ef155581 |
+| Formalization/RobustRL/LowerBounds/LowerBound73Values.lean | e7477af8afe15d8f67a73525a14bb03518330ae24c31e334bf424d6b512a868b |
+| Formalization/RobustRL/LowerBounds/LowerBound73Testing.lean | 2c8a032b082d7f057d8fd35ca03e2d6c930630fb793d2a74b0043b6296a46116 |
+| Formalization/RobustRL/LowerBounds/LowerBound73SingleState.lean | d7598c0d44a6205bd089bcc7a26bc2321962e5e4b9c7d1d82ae134227fb38e40 |
+| Formalization/RobustRL/LowerBounds/LowerBound73.lean | 96bfdc6c85ad341457edc410005c72716fc4279f3f548a3b513134402989c23d |
 | Formalization/Statements/Ch7.lean | 3f83eebd862844cfe652ee75ca0c3e2543dfb67235586534f0cb7843d7f244fb |
 | Formalization/Statements/Ch7Proofs.lean | f82e7299a8d95efe57c40c072f34f1ffda967ff8650672d921b83b27f80bb00e |
 | <builder working folder>/IntegrationProbe.lean | 07475f93124a782493aa99af411f878831fe6162f1a5573e60642d438ec047f3 |

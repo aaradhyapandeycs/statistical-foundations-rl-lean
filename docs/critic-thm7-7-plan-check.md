@@ -210,7 +210,7 @@ The proof is new reconstruction mathematics, so the builder's Lean must still be
   - `FiniteDistribution.variance`, `OnlineRL.finite_conditional_total_variance`.
 - **Name correction.** `pointMass` is `StatisticalRL.EnvironmentStage.pointMass` (`Formalization/MDP/PointMassDefinitions.lean`), not a `Marl78` name.
 - **Missed reuse (required fix 4).** Plan §4.1 says there is no discrete supermartingale or union bound on finite adaptive laws. But these exist:
-  - `StatisticalRL.Ch7Rest.Rlhf.adaptive_prod_le`, `adaptive_markov` and `union_bound_sum` (`Formalization/Ch7Rest/VPOAdaptive712.lean`). These are exactly the history-dependent kernel, nonnegative factors with conditional mean ≤ 1, Markov, and finite union bound.
+  - `StatisticalRL.Ch7Rest.Rlhf.adaptive_prod_le`, `adaptive_markov` and `union_bound_sum` (`Formalization/RLHF/VPO/Adaptive.lean`). These are exactly the history-dependent kernel, nonnegative factors with conditional mean ≤ 1, Markov, and finite union bound.
   - The analogous `LCBQFinite.lemmaG` (`OfflineRL/FiniteLCBQ/Supermart.lean`).
   - P1a should bridge `seqLaw`'s probability to the product form these lemmas use, or move the lemma to `Probability/` and reuse it, rather than reprove it.
 - **Generality of the algorithm model.** For an *existence* claim, a narrower class only strengthens the result. The class is still adequate for the witness:

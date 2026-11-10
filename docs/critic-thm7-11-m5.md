@@ -14,10 +14,10 @@ There are no required fixes. The optional items F1–F4 and the integration step
 | File | Lines | sha256 |
 | --- | --- | --- |
 | `Formalization/Analysis/MatrixContractionSup.lean` | 169 | `9a366d29fe8cee48817f45ce5398163c3fcea0f6cb82c92397ab7d6de0774633` |
-| `Formalization/Ch7Rest/TDInferenceLinearised711.lean` | 197 | `8e2b48684d7a38089a1653cbd82d7d7b7aaa0dc1a8996bdeb16baea0bbc6aec4` |
-| `Formalization/Ch7Rest/TDInferenceKernel711.lean` | 611 | `2c54f3a87ff08b1a64a2bd1c7e5269eb3d331e861ef5b33df1a3aa5b70d4bb6e` |
-| `Formalization/Ch7Rest/TDInferenceLinRemainder711.lean` | 350 | `9541f157ba051df1fabbd23417f2f1060fd65b76242fa696a6c1bee90fef0ddb` |
-| `Formalization/Ch7Rest/TDInferenceLinCov711.lean` | 239 | `ba89ae8e7df3db84b18790d3915a58ad1206b09c0e6879906a4c15bd1f0248ed` |
+| `Formalization/TDInference/Linearised.lean` | 197 | `8e2b48684d7a38089a1653cbd82d7d7b7aaa0dc1a8996bdeb16baea0bbc6aec4` |
+| `Formalization/TDInference/Kernel.lean` | 611 | `2c54f3a87ff08b1a64a2bd1c7e5269eb3d331e861ef5b33df1a3aa5b70d4bb6e` |
+| `Formalization/TDInference/LinearisationRemainder.lean` | 350 | `9541f157ba051df1fabbd23417f2f1060fd65b76242fa696a6c1bee90fef0ddb` |
+| `Formalization/TDInference/LinearisedCovariance.lean` | 239 | `ba89ae8e7df3db84b18790d3915a58ad1206b09c0e6879906a4c15bd1f0248ed` |
 
 `git status` shows no existing `Formalization/Ch7Rest`, `Analysis` or `Probability` file modified. The five files are new and untracked, and none of their 88 declaration names collides with an existing declaration in `Formalization/`.
 

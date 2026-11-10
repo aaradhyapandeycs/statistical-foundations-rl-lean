@@ -141,7 +141,7 @@ hidden hypothesis, weakened conclusion, junk-value exploit or vacuity.
       (logarithmic regret), so it cannot follow from the trivial bound Regret ≤ T·max-gap.
 
 11. **Statement-index conventions: met.**
-    - Statement.lean imports only `Thm712Wip.Defs`. That imports `Formalization.Ch7Rest.RlhfPrinted712`, which contains
+    - Statement.lean imports only `Thm712Wip.Defs`. That imports `Formalization.RLHF.VPO.PrintedStatement`, which contains
       definitions only (I grepped it: no theorem), plus Mathlib.
     - The Props are self-contained and do not refer to any theorem type.
     - StatementProofs applies the export `vpo_regret_both` + `exists_ballSelection` and keeps one conjunct of the export's

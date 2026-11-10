@@ -1,5 +1,5 @@
-import Formalization.ModelFree.QLearningCountableTailLogSum
-import Formalization.ModelFree.QLearningCountableL1Difference
+import Formalization.Probability.InformationTheory.CountableTailLogSum
+import Formalization.Probability.InformationTheory.CountableL1Difference
 import Formalization.ModelFree.QLearningStoppedPrefixPinskerInputs
 import Formalization.ModelFree.QLearningFinitePinskerCoarsening
 

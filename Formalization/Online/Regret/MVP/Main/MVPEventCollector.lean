@@ -1,4 +1,4 @@
-import Formalization.Probability.OnlineT234ConfidenceAlgebra
+import Formalization.Online.Regret.Algebra.OnlineT234ConfidenceAlgebra
 import Mathlib.Tactic
 
 /-! Finite-law intersection and failure-budget arithmetic from explicit event probability bounds. -/

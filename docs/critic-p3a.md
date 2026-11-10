@@ -9,7 +9,7 @@ the independent completion check, findings F-P3a-1..5.
 
 Reviewed (sha256 match the builder's final build-log hashes):
 - `Formalization/RobustRL/DRVI/RobustBellmanDisplays.lean` 16182559…6b21
-- `Formalization/Ch7Rest/VPODisplays712.lean` 9f2bfcef…e0
+- `Formalization/RLHF/VPO/Displays.lean` 9f2bfcef…e0
 - the builder's statement draft 2efec79c…aad and wrapper draft 6c34db1f…a6c,
   its non-vacuity probe, draft coverage rows, status notes and build log.
 

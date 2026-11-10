@@ -21,7 +21,7 @@ Public copy of the independent critic report; local paths removed.
 | `Formalization/Generative/StateRelabelSampling.lean` | `d98fd812ea85ac65d1d09bea3cf715109e90e3c22efc23b9a32536fdb14d696c` |
 | `Formalization/Generative/GenerativeLowerBoundQMixtureAnyAction.lean` | `f849dd787c1b2dfeac28532265233e8c3424f9c6728ac7a796df97c1d6ae4d72` |
 | `Formalization/Generative/GenerativeLowerBoundCombinedRisk.lean` | `b09e11443edf778797d44bb592655a5d619b06af106650cd0c0a61a365bcdc7c` |
-| `Formalization/Statements/Ch3Definitions.lean` | `8494b89e4a2c90c0ee41fd6fcc84796cfdb588b88320b352656e5dba5147b68c` |
+| `Formalization/Generative/ModelBasedDefinitions.lean` | `8494b89e4a2c90c0ee41fd6fcc84796cfdb588b88320b352656e5dba5147b68c` |
 | `docs/SOURCE-ISSUES.md` | `fe83f77b754a018199f81b5414d9434bbc142c604813c3c1fab9836fd560456c` |
 
 ## 1. Source reconstruction and the printed theorem's failures

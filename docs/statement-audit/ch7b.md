@@ -6,9 +6,9 @@ Auditor: independent statement auditor (read-only; no Lean compiled, no project 
 Targets: 19 entries in `Formalization/Statements/Ch7.lean`, wrappers in `Formalization/Statements/Ch7Proofs.lean`.
 Source read: `source/upstream/tex/chapters/{RLHF.tex:15–215, marl.tex:15–245, 300–480, robust_RL.tex:20–135, 255–270,
 inference.tex:45–190, intro.tex:214–236, prelim.tex:58–72}`.
-Definitions expanded: `Ch7Rest/TDInference711Defs.lean` (whole plug-in section), `Ch7Rest/VPODefs712.lean`,
-`Ch7Rest/RlhfPrinted712.lean` (`IsPositivePolicy`, `vpoObjective`, `IsVPOMinimizer`), `Ch7Rest/Marl78Defs.lean`,
-`Ch7Rest/Marl76Defs.lean`, `Ch7Rest/MarlPrinted78.lean`, `RobustRL/Ch7/Ch7Definitions.lean`,
+Definitions expanded: `TDInference/Definitions.lean` (whole plug-in section), `RLHF/VPO/Definitions.lean`,
+`RLHF/VPO/PrintedStatement.lean` (`IsPositivePolicy`, `vpoObjective`, `IsVPOMinimizer`), `MultiAgent/LowerBound/Definitions.lean`,
+`MultiAgent/ModelBased/Definitions.lean`, `MultiAgent/LowerBound/PrintedStatement.lean`, `RobustRL/LowerBounds/Ch7Definitions.lean`,
 `MDP/CoreDefinitions.lean` (`FiniteDistribution`, `DiscountedMDP`, `StationaryPolicy`),
 `Generative/FiniteHorizonSamplingDefinitions.lean`, `Probability/FiniteSampleDefinitions.lean` (`empiricalRow`),
 `RobustRL/DRVI/RowSets.lean` (`RowAttains`).

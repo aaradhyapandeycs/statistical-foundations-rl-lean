@@ -1,13 +1,13 @@
-# CRITIC review: m8a3, Formalization/Ch7Rest/TDInferenceConvexLog711.lean
+# CRITIC review: m8a3, Formalization/TDInference/ConvexSets/LogRate.lean
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route (assembly of the linear-part bound and the remainder tail), not a source result: no COVERAGE row, statement-index entry or named-result change follows from it; Theorem 7.11 stays open at the printed rate. Reviewed: `Formalization/Ch7Rest/TDInferenceConvexLog711.lean`. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route (assembly of the linear-part bound and the remainder tail), not a source result: no COVERAGE row, statement-index entry or named-result change follows from it; Theorem 7.11 stays open at the printed rate. Reviewed: `Formalization/TDInference/ConvexSets/LogRate.lean`. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT; imported without changes. Findings 1–3 are low/informational.
 
 Reviewer: independent critic (not the builder). File sha256 ed267c45e4d6a5b88def93372baff0f25a005e374c081de824c5c346f137db0a (matches builder STATUS).
 
 ## Evidence
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConvexLog711.lean`: exit 0, no output (7 s; run with 1 other lean process, no check_parallel).
+- `bash scripts/lean-local.sh Formalization/TDInference/ConvexSets/LogRate.lean`: exit 0, no output (7 s; run with 1 other lean process, no check_parallel).
 - Own axiom check (scratchpad AxCheck.lean): both main exports depend only on [propext, Classical.choice, Quot.sound].
 - Builder probe (m8a3-wip/probe.out): all 7 declarations plus instance-G theorems `g_allConvexQuarter`, `g_transferQuarter` with standard axioms only. Probe source read: G has Γ_true = (25/128, 1/128) > 0, zMu uniform, η₀ = 1/8; hypotheses discharged by real proofs, so both exports are non-vacuous; hlin is discharged at a = 1/4 from the proved linear-part theorem.
 - Name collisions: grep of the 7 names outside the file finds none.

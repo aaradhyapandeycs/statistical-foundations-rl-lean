@@ -1,6 +1,6 @@
 import Formalization.Generative.ModelBasedPolicyLearning
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-!
 # State-absorbing leave-one-out model
 

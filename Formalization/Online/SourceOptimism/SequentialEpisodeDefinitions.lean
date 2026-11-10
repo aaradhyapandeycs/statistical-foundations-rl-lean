@@ -1,5 +1,5 @@
 import Formalization.Online.SourceOptimism.EpisodicSelectorDefinitions
-import Formalization.Online.SourceOptimism.FinitePathHistoryDefinitions
+import Formalization.MDP.FinitePathHistoryDefinitions
 import Formalization.MDP.PointMassDefinitions
 import Formalization.Probability.FiniteSampleDefinitions
 import Mathlib.Algebra.BigOperators.Ring.Finset

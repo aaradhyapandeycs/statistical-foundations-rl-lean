@@ -1,6 +1,6 @@
 import Formalization.MDP.TrajectoryDefinitions
 import Formalization.MDP.FiniteHorizon
-import Formalization.Online.SourceOptimism.FinitePathHistoryDefinitions
+import Formalization.MDP.FinitePathHistoryDefinitions
 
 /-!
 # Finite trajectory laws and expected episodic return

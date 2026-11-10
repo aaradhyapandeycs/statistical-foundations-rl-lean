@@ -14,7 +14,7 @@ This file states no source result.
 
 **Carrier.** Any real normed space `E` (`NormedAddCommGroup E`, `NormedSpace ℝ E`). No inner product
 is used, so every statement applies verbatim to `ι → ℝ` with Mathlib's default **sup norm** (the
-carrier of `ConvexSmoothIndicator.lean` and `TDInferenceConvexAll711.lean`) and to `EuclideanSpace ℝ ι`.
+carrier of `ConvexSmoothIndicator.lean` and `TDInference/ConvexSets/AllConvexRate.lean`) and to `EuclideanSpace ℝ ι`.
 In particular convexity of the signed distance holds for the sup norm (and every other norm); it is
 not a Euclidean phenomenon.
 
@@ -33,9 +33,9 @@ they need (none for Lipschitz/convexity, which also hold in the degenerate cases
 * `convexOn_signedDist`: for convex `C` (closed or not), `signedDist C` is convex on `univ`.
 * `setOf_signedDist_le_of_nonneg`: `{x | signedDist C x ≤ t} = cthickening t C` for `t ≥ 0`.
 * `setOf_signedDist_le_of_neg`: `{x | signedDist C x ≤ t} = {x | closedBall x (-t) ⊆ C}` for `t < 0`
-  and closed `C` (the inner parallel set of `TDInferenceConvexAll711.lean`).
+  and closed `C` (the inner parallel set of `TDInference/ConvexSets/AllConvexRate.lean`).
 * `setOf_abs_signedDist_le`: `{x | |signedDist C x| ≤ t} = cthickening t C ∩ cthickening t (interior C)ᶜ`,
-  the `t`-shell used in `TDInferenceConvexAll711.lean`.
+  the `t`-shell used in `TDInference/ConvexSets/AllConvexRate.lean`.
 * convexity of sublevel sets, monotonicity in `C`, continuity and measurability.
 -/
 
@@ -355,7 +355,7 @@ theorem neg_le_signedDist_iff_mem_cthickening_compl (hCc : Cᶜ.Nonempty) {t : �
 
 omit [NormedSpace ℝ E] in
 /-- The `t`-shell: `|signedDist C x| ≤ t ↔ x ∈ cthickening t C ∩ cthickening t (interior C)ᶜ`, the
-shell set of `TDInferenceConvexAll711.lean` (for `C`, `Cᶜ` nonempty, `t ≥ 0`). -/
+shell set of `TDInference/ConvexSets/AllConvexRate.lean` (for `C`, `Cᶜ` nonempty, `t ≥ 0`). -/
 theorem setOf_abs_signedDist_le (hC : C.Nonempty) (hCc : Cᶜ.Nonempty) {t : ℝ} (ht : 0 ≤ t) :
     {x | |signedDist C x| ≤ t} = cthickening t C ∩ cthickening t (interior C)ᶜ := by
   rw [← closure_compl, cthickening_closure]

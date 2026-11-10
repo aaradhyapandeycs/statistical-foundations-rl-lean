@@ -1,5 +1,5 @@
 import Formalization.RobustRL.DRVI.Optimality
-import Formalization.RobustRL.Ch7.Ch7Definitions
+import Formalization.RobustRL.LowerBounds.Ch7Definitions
 
 /-!
 # A deterministic policy maximizes the robust value and the robust Q-function
