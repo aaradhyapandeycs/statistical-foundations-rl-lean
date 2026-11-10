@@ -239,7 +239,9 @@ on the site; <code>site/check_macros.py</code> checks that no TeX macro reaches 
              "<code>docs/named-result-status.json</code> and <code>docs/COVERAGE.md</code>. Every label on this site is "
              "read from them."),
             ("Node graph", "The table of tracked source items and which cite which, generated from the ledgers; the "
-             "counts on this site are read from it. The citation edges are not yet reviewed."),
+             "counts on this site are read from it. Its citation edges were classified by an AI critic as proof dependencies, "
+             "definitions or comparisons and spot-checked by an independent AI verifier; only proof dependencies count as "
+             "dependencies, and the edges are not author-reviewed."),
             ("Pinned commit, pinned source", "Links go to a fixed commit of the Lean repository and a hash-checked copy "
              "of the arXiv TeX, so a link keeps pointing at what was reviewed."),
             ("Reading formalized", "The interpretation of an ambiguous printed statement that the Lean statement "
