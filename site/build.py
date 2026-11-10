@@ -196,7 +196,7 @@ def main() -> int:
             f"fails on paper={gs['named_fails_paper_marker']}")
     print("old status -> label: printed->proved as stated, corrected->proved with corrections, "
           "restricted->proved under restrictions, everything else->incomplete (explanatory: no label)")
-    print(f"node graph: {len(graph.data['nodes'])} nodes, {gs['uses_edges']} unreviewed edges; "
+    print(f"node graph: {len(graph.data['nodes'])} nodes, {gs['uses_edges']} edges ({gs['uses_edges_reviewed']} AI-reviewed); "
           f"{gs['named_results_with_ledger_record']} of {gs['named_results_in_inventory']} numbered results "
           f"with a ledger record")
     print(f"{len(lean.entries)} statement entries, {placed} placed next to book text, {len(site.unplaced)} unplaced")
