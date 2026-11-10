@@ -989,6 +989,45 @@ def Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared : Prop :=
                   R}.indicator 1 ω) - (1 - α)| ≤
             K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
 
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
+/-- Corrected, plug-in-covariance ellipsoid confidence region at the printed `χ²(S)` quantile
+(`chapters/inference.tex:207–213`, item (ii) of `eq:convex.Cdelta` :187–196; plug-in `Λ̂_T`
+`eq:defn-hat-Lambda` :180–182). See `docs/SOURCE-ISSUES.md#C47` (items (3), (4)) and `#C43`.
+
+Differs from the printed text: (1) the threshold is the `χ²(S)` `(1 − α)`-quantile `R` itself, not the
+printed `R²` (C47(3)); `d = S = |State|`. (2) Asymptotic coverage only, pointwise in `q` and `R`; there is
+no rate, because the plug-in consistency `Eq_defn_hat_Lambda_corrected` has no rate. (3) Added
+non-degeneracy hypothesis `Γ_true ≻ 0`. The limit covariance of `Λ̂_T` is
+`Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (C43), not the printed `Λ⋆`. (4) Junk value: when `Ā_T` is singular the
+printed `Λ̂_T` is undefined (C47(4)). Lean's `Matrix.inv` gives `Λ̂_T = 0` and `Λ̂_T⁻¹ = 0`, and that event
+has vanishing probability. Not covered: the plug-in `ℓ∞` rectangle (C47(2)) and data-selected sets
+(C47(1)). Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
+`χ²(S)` is Mathlib's `gammaMeasure (S/2) (1/2)`.
+
+Statement: (1) for every `q`, `P(T (V^π − V̄_T)ᵀ Λ̂_T⁻¹ (V^π − V̄_T) ≤ q) → F_{χ²(S)}(q)`; (2) for every
+`α ∈ (0,1)` and every `R` with `F_{χ²(S)}(R) = 1 − α`, `P(T (V^π − V̄_T)ᵀ Λ̂_T⁻¹ (V^π − V̄_T) ≤ R) → 1 − α`. -/
+def Eq_convex_Cdelta_ellipsoid_corrected_plugin : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
+    (∀ q : ℝ,
+      Filter.Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+          {ω' : Fin T → Tuple State Action | (T : ℝ) * ∑ s, ∑ s',
+            (M.valueFixedPoint π s - prAverage M η₀ V₀ ω' s) *
+              (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
+                (lambdaHat M η₀ V₀ ω')⁻¹ s s' ≤ q}.indicator 1 ω) Filter.atTop
+        (nhds (cdf (gammaMeasure ((Fintype.card State : ℝ) / 2) (1 / 2)) q))) ∧
+    (∀ α : ℝ, 0 < α → α < 1 → ∀ R : ℝ,
+      cdf (gammaMeasure ((Fintype.card State : ℝ) / 2) (1 / 2)) R = 1 - α →
+      Filter.Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+          {ω' : Fin T → Tuple State Action | (T : ℝ) * ∑ s, ∑ s',
+            (M.valueFixedPoint π s - prAverage M η₀ V₀ ω' s) *
+              (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
+                (lambdaHat M η₀ V₀ ω')⁻¹ s s' ≤ R}.indicator 1 ω) Filter.atTop
+        (nhds (1 - α)))
+
 end EqConvexCdelta
 
 section EqDefnHatLambda
