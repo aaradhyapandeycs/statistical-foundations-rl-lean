@@ -75,8 +75,14 @@ Status rules (also shown in words on the site's Status and Graph pages):
 * `printed_with_cited_printed`: statement `printed`, proof `proved`, and every node reachable
   through `uses` is also proved as printed.  `uses` edges are candidates read from the TeX
   cross-references (`\\ref`, `\\eqref`, ...) inside the result and its proof; they are
-  NOT reviewed (`"reviewed": false`), so this flag is not a reviewed proof-dependency check:
-  it says nothing about whether the cited results are what the proof actually needs.
+  classified by `docs/graph/uses-review.json` (an AI critic and an independent AI verifier; not
+  author-reviewed): an edge with a review entry has `"reviewed": true` and a `verdict`, an edge without
+  one stays `"reviewed": false`.  Only `proof-dependency` (and unreviewed) edges count as dependencies
+  (`is_dependency`); `definition` and `comparison` edges are context and `wrong-target` edges are kept
+  in the node but used nowhere.  Edges the review added have `"via": "review"`.  The review file naming
+  an edge that does not exist is a stale record and fails like gate G7.  This flag is not a certificate
+  that the cited results are what the proof actually needs: it deliberately stays conservative and
+  counts every cited node except a `wrong-target` edge.
 
 Python 3.9+, standard library only, read-only on everything except the two outputs.
 """
@@ -94,6 +100,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NODES_PATH = "docs/graph/nodes.json"
 NEXT_PATH = "docs/NEXT.md"
+REVIEW_PATH = "docs/graph/uses-review.json"
+# Verdicts of the reviewed `uses` record.  Only `proof-dependency` is a dependency; an unreviewed edge
+# (no review entry) and an `unclear` one stay dependencies so that a gap in the record never unblocks work.
+REVIEW_VERDICTS = ("proof-dependency", "definition", "comparison", "wrong-target", "unclear")
+DEPENDENCY_VERDICTS = (None, "proof-dependency", "unclear")
+
+
+def is_dependency(u: dict) -> bool:
+    """A `uses` edge that counts as a dependency: a node target whose verdict is not definition,
+    comparison or wrong-target (those are shown as context only)."""
+    return u["target"] == "node" and u.get("verdict") in DEPENDENCY_VERDICTS
 SCHEMA_VERSION = 1
 
 NAMED_KINDS = ("theorem", "lemma", "claim")
@@ -586,6 +603,7 @@ class Builder:
             except (OSError, RuntimeError):
                 pass
         self.warnings: list = []
+        self.review = self.load_review(reader)
 
         self.inv_entries = self.inv["entries"]
         self.by_id = {e["id"]: e for e in self.inv_entries}
@@ -602,6 +620,19 @@ class Builder:
         for e in self.inv_entries:
             if e["kind"] in NAMED_KINDS + PROSE_KINDS and e.get("number"):
                 self.by_number[(e["kind"], e["number"])] = e
+
+    def load_review(self, reader) -> list:
+        try:
+            text = self.read(REVIEW_PATH)
+        except (OSError, RuntimeError):
+            return []
+        rec = json.loads(text)
+        out = []
+        for i, r in enumerate(rec.get("edges", [])):
+            if r.get("verdict") not in REVIEW_VERDICTS or r.get("source") not in ("candidate", "added-by-review"):
+                raise SystemExit(f"{REVIEW_PATH}: edge {i} has an unknown verdict or source")
+            out.append(r)
+        return out
 
     def read(self, path: str) -> str:
         text = self.reader.show(path)
@@ -1076,8 +1107,8 @@ class Builder:
             "schema_version": SCHEMA_VERSION,
             "generated_by": "scripts/gen_nodes.py",
             "notice": ("Generated file; do not edit. Status is derived from the reviewed ledgers. "
-                       "The formalization of the monograph is INCOMPLETE. `uses` edges are unreviewed "
-                       "candidates from TeX cross-references."),
+                       "The formalization of the monograph is INCOMPLETE. `uses` edges are TeX cross-references "
+                       "classified by an AI critic and verifier (docs/graph/uses-review.json), not author-reviewed."),
             "source": {"arxiv_id": self.inv["source"]["arxiv_id"], "main_sha256": self.inv["source"]["main_sha256"]},
             "inputs_sha256": dict(sorted(self.inputs.items())),
             "vocabulary": {"statement_status": list(STATEMENT_STATUSES), "proof_status": list(PROOF_STATUSES)},
@@ -1141,6 +1172,32 @@ class Builder:
                     edges[key] = {"id": tid, "label": lab, "via": "tex-ref", "reviewed": False,
                                   "target": "context" if tid in context_ids else "node",
                                   "file": f, "line": line}
+        # reviewed verdicts: each review entry must name an existing edge (candidate) or an existing
+        # owner and target not already linked (added-by-review); anything else is a stale record
+        problems = []
+        for r in self.review:
+            owner, tid, f, line = r["owner"], r["target"], tex_key(r["file"]), r["line"]
+            where = f"{REVIEW_PATH}: {r['source']} edge {owner} -> {tid} ({f}:{line})"
+            if r["source"] == "candidate":
+                edge = edges.get((owner, tid))
+                if edge is None or edge["file"] != f or edge["line"] != line:
+                    problems.append(where + " matches no candidate uses edge (stale review entry)")
+                    continue
+            else:
+                if owner not in nodes or tid not in nodes or tid == owner:
+                    problems.append(where + " names a node that does not exist (stale review entry)")
+                    continue
+                if (owner, tid) in edges:
+                    problems.append(where + " duplicates an existing edge")
+                    continue
+                edge = edges[(owner, tid)] = {"id": tid, "label": (nodes[tid]["labels"] or [tid])[0], "via": "review",
+                                              "reviewed": False, "target": "node", "file": f, "line": line}
+            if edge.get("reviewed"):
+                problems.append(where + " duplicates another review entry")
+                continue
+            edge["reviewed"] = True
+            edge["verdict"] = r["verdict"]
+        self.warnings += problems
         for (owner, _), edge in sorted(edges.items(), key=lambda kv: (kv[0][0], kv[1]["line"], kv[1]["id"])):
             nodes[owner]["uses"].append(edge)
 
@@ -1151,7 +1208,8 @@ class Builder:
         while changed:
             changed = False
             for nid, n in nodes.items():
-                if fp[nid] and any(u["target"] == "node" and not fp.get(u["id"], False) for u in n["uses"]):
+                if fp[nid] and any(u["target"] == "node" and u.get("verdict") != "wrong-target"
+                                and not fp.get(u["id"], False) for u in n["uses"]):
                     fp[nid] = False
                     changed = True
         for nid, n in nodes.items():
@@ -1254,7 +1312,10 @@ class Builder:
                                     for o in PROOF_ORIGINS if o != "unclassified"},
             "new_proof_marker": tally(lambda n: "new-proof" in n["site_markers"]),
             "uses_edges": sum(len(n["uses"]) for n in node_list),
-            "uses_edges_reviewed": 0,
+            "uses_edges_reviewed": sum(u["reviewed"] for n in node_list for u in n["uses"]),
+            "uses_edges_by_verdict": {v: sum(u.get("verdict") == v for n in node_list for u in n["uses"])
+                                      for v in REVIEW_VERDICTS if v != "unclear"},
+            "uses_edges_added_by_review": sum(u["via"] == "review" for n in node_list for u in n["uses"]),
             "context_items": {k: kinds.get(k, 0) for k in CONTEXT_KINDS},
             "source_gap_candidates": kinds.get("source_gap_candidate", 0),
             "by_chapter": dict(sorted(by_chapter.items(), key=lambda kv: int(kv[0] or 0))),
@@ -1307,15 +1368,17 @@ def render_next(data: dict) -> str:
         "form, excluding any result downgraded to incomplete by a status override); prose claims, "
         "algorithms, definitions and source-gap candidates are outside that count.",
         "",
-        "Dependencies (`uses`) are candidates read from TeX cross-references inside each result and its proof. "
-        "They are **not reviewed**: a reference can be a remark or a comparison rather than a logical dependency, "
-        "and a real dependency can be cited without `\\ref`.",
+        "Dependencies (`uses`) are read from TeX cross-references inside each result and its proof. "
+        f"{s['uses_edges_reviewed']} of {s['uses_edges']} edges are classified in `docs/graph/uses-review.json` "
+        "by an AI critic and an independent AI verifier (not author-reviewed); only `proof-dependency` edges "
+        "count below, while `definition`, `comparison` and `wrong-target` edges are context. "
+        "A real dependency can still be cited without `\\ref`.",
         "",
     ]
 
     def open_uses(n):
         # implied and explanatory nodes do not block their dependants; cited-out-of-scope nodes do
-        return [u for u in n["uses"] if u["target"] == "node" and not resolved(nodes[u["id"]])]
+        return [u for u in n["uses"] if is_dependency(u) and not resolved(nodes[u["id"]])]
 
     def status_word(n):
         st = n["statement_status"]
@@ -1350,16 +1413,16 @@ def render_next(data: dict) -> str:
     todo = [n for n in data["nodes"] if n["proof_status"] != "proved" and n["statement_status"] not in CLOSING_STATUSES]
     ready = [n for n in todo if not open_uses(n)]
     blocked = [n for n in todo if open_uses(n)]
-    lines += ["## Ready: open nodes whose candidate uses are all proved, implied or explanatory", "",
-              "Open numbered results and prose claims (remarks, displayed claims) whose every unreviewed "
-              "TeX-reference dependency on another node is proved. Definitions, assumptions and algorithms "
+    lines += ["## Ready: open nodes whose proof dependencies are all proved, implied or explanatory", "",
+              "Open numbered results and prose claims (remarks, displayed claims) whose every "
+              "proof-dependency edge to another node is proved. Definitions, assumptions and algorithms "
               "are context, not blockers.", ""]
     for cls, title in (("named", "Numbered results"), ("prose", "Remarks and displayed claims")):
         part = [n for n in ready if n["class"] == cls]
         lines += [f"### {title} ({len(part)})", ""]
         lines += [row(n) for n in part] or ["- none"]
         lines.append("")
-    lines += [f"### Blocked: some candidate use is not proved ({len(blocked)})", ""]
+    lines += [f"### Blocked: some proof dependency is not proved ({len(blocked)})", ""]
     for n in blocked:
         deps = ", ".join(node_title(nodes[u["id"]]) for u in open_uses(n))
         lines.append(row(n, f" · waits on {deps}"))
@@ -1429,6 +1492,7 @@ def g7_problems(data: dict) -> list:
            + ", ".join(e["name"].rsplit(".", 1)[-1] for e in n["statement_entries"])
            for n in data["nodes"] if n.get("site_sub_reason") == UNRECORDED_SUB_REASON]
     out += [w for w in data["warnings"] if w.startswith("statement entry ") and "matches no inventory entry" in w]
+    out += [w for w in data["warnings"] if w.startswith(REVIEW_PATH + ":")]
     return out
 
 
@@ -1451,7 +1515,7 @@ def main(argv=None) -> int:
     g7 = g7_problems(data)
     if g7:
         print("G7 failed: statement entries without a reviewed status (attach them to a reviewed item or add a "
-              "COVERAGE row):\n  " + "\n  ".join(g7))
+              "COVERAGE row), or a stale docs/graph/uses-review.json:\n  " + "\n  ".join(g7))
         return 1
     if args.check:
         stale = []
@@ -1469,7 +1533,7 @@ def main(argv=None) -> int:
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text, encoding="utf-8")
     s = data["summary"]
-    print(f"wrote {NODES_PATH} ({len(data['nodes'])} nodes, {s['uses_edges']} unreviewed uses edges) and {NEXT_PATH}")
+    print(f"wrote {NODES_PATH} ({len(data['nodes'])} nodes, {s['uses_edges']} uses edges, {s['uses_edges_reviewed']} reviewed) and {NEXT_PATH}")
     print(f"named results counted as proved (ledger record, no downgrade override): {s['named_results_with_ledger_record']} of {s['named_results_in_inventory']}")
     for w in data["warnings"]:
         print("warning: " + w)
