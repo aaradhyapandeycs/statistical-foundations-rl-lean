@@ -7,8 +7,8 @@ Pinned chapter SHA-256:
 
 - General exports: `StatisticalRL.GeneralVariance.variance_square_le_four_of_abs_bound`
   and `StatisticalRL.GeneralVariance.variance_centeredSquare_le_four_of_abs_bound`.
-- Full corrected statement: `StatisticalRL.Statements.Lemma5_22_corrected`;
-  applying proof: `StatisticalRL.Statements.Lemma5_22_corrected_holds`.
+- Full corrected statement: `StatisticalRL.Statements.Ch5.Lemma5_22_corrected`;
+  applying proof: `StatisticalRL.Statements.Ch5.Lemma5_22_corrected_holds`.
 - Exact general-variance refutation:
   `StatisticalRL.SourceCounterexamples.centeredSquare_measure_coefficient_one_false`.
 - The original second coefficient 1 fails for the signed two-point law

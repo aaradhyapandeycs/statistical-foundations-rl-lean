@@ -14,8 +14,8 @@ Freedman/peeling, greedy episode telescope and scalar closure. No stochastic
 or decomposition certificate is assumed by the final export.
 
 The complete self-contained Prop is
-`StatisticalRL.Statements.Lemma5_15_corrected`, proved by
-`StatisticalRL.Statements.Lemma5_15_corrected_holds` using the export.
+`StatisticalRL.Statements.Ch5.Lemma5_15_corrected`, proved by
+`StatisticalRL.Statements.Ch5.Lemma5_15_corrected_holds` using the export.
 Its direct imports contain definitions only. Five statement-facing
 variance/charge/history definitions were extracted with unchanged bodies;
 successor definitions with a theorem-dependent history index remain in a

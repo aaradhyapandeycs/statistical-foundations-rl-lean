@@ -6,7 +6,7 @@ import Mathlib.MeasureTheory.Measure.Real
 open MeasureTheory
 open scoped ENNReal
 
-namespace StatisticalRL.Statements
+namespace StatisticalRL.Statements.Ch1
 universe u
 
 /-- `eq:KL-ub-chi2`, `chapters/intro.tex:216–247` (`eq:TV` `:222–227`, `eq:defn-KL` and
@@ -32,4 +32,4 @@ def Eq_KL_ub_chi2 : Prop :=
     InformationTheory.klDiv P Q ≤
       ∫⁻ x, ENNReal.ofReal (((P.rnDeriv Q x).toReal - 1) ^ 2) ∂Q
 
-end StatisticalRL.Statements
+end StatisticalRL.Statements.Ch1

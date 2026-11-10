@@ -28,7 +28,7 @@ import Formalization.MDP.FiniteOccupancy
 open MeasureTheory
 open scoped BigOperators Matrix
 
-namespace StatisticalRL.Statements
+namespace StatisticalRL.Statements.Ch2
 universe u v
 
 /-- `lem:variance-perturbation-var-P-V`, `chapters/prelim.tex:458–467`. -/
@@ -670,4 +670,4 @@ def Eq_Bellman_finite_opt : Prop :=
             ((es.get i).transition s a).expectation (V (det f) (i.val + 1)) ∧
         V (det f) i.val s = ⨆ a', Q (det f) i.val s a'
 
-end StatisticalRL.Statements
+end StatisticalRL.Statements.Ch2

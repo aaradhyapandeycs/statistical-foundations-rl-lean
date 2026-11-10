@@ -7,23 +7,23 @@
   "main_sha256": "5a925ce6a5a988bdc4b8631c5b3f985195f58b9fec80cc1f3d80c6cd10aea956"
  },
  "inputs_sha256": {
-  "Formalization/Statements/Ch1.lean": "90cae82ac3bc5552d5f7b93fb018fd3762de1f241cf380651312bdc0d4906774",
-  "Formalization/Statements/Ch1Proofs.lean": "60abeea2c7c5aea67c62507221193911f1f2ae42dd8279cf4564f4ce0eb5e657",
-  "Formalization/Statements/Ch2.lean": "4af94872b6c933a30aa4a6e2ad3d08f395215dd0eb202bac185994db9befd7d5",
-  "Formalization/Statements/Ch2Proofs.lean": "ee733f9091b105db43ca55d8d3190fca7ed079902de4b78cdd6a65eed2c08927",
+  "Formalization/Statements/Ch1.lean": "f523ae98c23b85909a195bcb9f338133b83d4a6f6dc7b08f54e2400deb7387a0",
+  "Formalization/Statements/Ch1Proofs.lean": "816c9b8fd9e071b405c76069681144beffddf72bd2a3ce9d6d883e4601757965",
+  "Formalization/Statements/Ch2.lean": "c8ea5ea973a23bda4035c22f9f7b836370ee9c7a8404ac371408a927bb078e99",
+  "Formalization/Statements/Ch2Proofs.lean": "b279c60aa0cf1507ed9a896fad0981e43a2239ffc20086eb6f281ecf23a5f560",
   "Formalization/Statements/Ch3.lean": "d3f58239e21a28d06d28c75ddd6d89985b69588ea50f4fc57d7cbc41463af6c6",
   "Formalization/Statements/Ch3Proofs.lean": "cd6d4a2a9d98d1de22971f8393094060cb6304f81c3cddcfe156815b1fe6967e",
   "Formalization/Statements/Ch4.lean": "86923d993aab1153a084d9fe622b28ba7506f4c68c9390efef46d9320c3baabd",
   "Formalization/Statements/Ch4Proofs.lean": "39d6d11d46244d6bc2483e35c3b3d33a549d9e4dd2f8f4448bdb851b8d0f6971",
-  "Formalization/Statements/Ch5.lean": "76ba55fcaead518194ad474d4cc2c5fc7bae2ddb6a82920b875630d1be890715",
-  "Formalization/Statements/Ch5Proofs.lean": "2843eced74b3666b2d97a5735a396e6d284b59413269766ae3a701ac607978d3",
+  "Formalization/Statements/Ch5.lean": "17d24819bc404b453460c6dbc2ae06e8cae3294fec61a279307c57e90c505494",
+  "Formalization/Statements/Ch5Proofs.lean": "4f01fc43f9bf6d8d790b09d3a619c4b355cc3f03d095aa1baee5d04177311ce7",
   "Formalization/Statements/Ch6.lean": "e17cc9045a7d70dd349eea74cc6d1ae06316cadef20e5b275c1286463f2c76d6",
   "Formalization/Statements/Ch6Proofs.lean": "8fe9bb4558a7af2f9c2d688810c60338d9b62d51b9239c2ca63fbea0f9844506",
   "Formalization/Statements/Ch7.lean": "4477ea84922da6050ddcbddb95d510d7abd4fcb605c4c01ec8075a58af0193f4",
   "Formalization/Statements/Ch7Proofs.lean": "71d982417a7c8ebfbb39f28effcee463dbe02a076c3a0211edd9c9fcbd6eab04",
   "docs/COVERAGE.md": "6a0e5e9bb4948cd6889ba43bc3d4eb27b887653c6ba37b86c84f78ae2460f220",
-  "docs/SOURCE-ISSUES.md": "e34d0e819e4a278e1958f6dbc363c77be9a7ffbd4c2d0c5e1c586f2309fa7fa6",
-  "docs/named-result-status.json": "ab902c764f2cc2c58593bba45bc5273d1a2d266fbc447293129c7e3253d972f0",
+  "docs/SOURCE-ISSUES.md": "0758a5153a96a32b2714586b1192874185c078b4dee3e2cbe453b75e3df37d73",
+  "docs/named-result-status.json": "87211890e276bc6d330b1c0d4a7d71b2b7a7d58ca8af77499989e1b2dae752c1",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
  "vocabulary": {
@@ -504,7 +504,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_KL_ub_chi2",
+     "name": "StatisticalRL.Statements.Ch1.Eq_KL_ub_chi2",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch1.lean",
@@ -513,7 +513,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_KL_ub_chi2_holds"
+    "StatisticalRL.Statements.Ch1.Eq_KL_ub_chi2_holds"
    ],
    "library_exports": [
     "StatisticalRL.Probability.two_mul_sq_tv_le_klDiv_le_chiSquared"
@@ -566,7 +566,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_KL_ub_chi2",
+     "name": "StatisticalRL.Statements.Ch1.Eq_KL_ub_chi2",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch1.lean",
@@ -575,7 +575,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_KL_ub_chi2_holds"
+    "StatisticalRL.Statements.Ch1.Eq_KL_ub_chi2_holds"
    ],
    "library_exports": [
     "StatisticalRL.Probability.two_mul_sq_tv_le_klDiv_le_chiSquared"
@@ -626,7 +626,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_KL_ub_chi2",
+     "name": "StatisticalRL.Statements.Ch1.Eq_KL_ub_chi2",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch1.lean",
@@ -635,7 +635,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_KL_ub_chi2_holds"
+    "StatisticalRL.Statements.Ch1.Eq_KL_ub_chi2_holds"
    ],
    "library_exports": [
     "StatisticalRL.Probability.two_mul_sq_tv_le_klDiv_le_chiSquared"
@@ -686,7 +686,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_defn_Vpi_inf",
+     "name": "StatisticalRL.Statements.Ch2.Eq_defn_Vpi_inf",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -695,7 +695,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_defn_Vpi_inf_holds"
+    "StatisticalRL.Statements.Ch2.Eq_defn_Vpi_inf_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -744,7 +744,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_defn_Qpi_inf_horizon",
+     "name": "StatisticalRL.Statements.Ch2.Eq_defn_Qpi_inf_horizon",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -753,7 +753,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_defn_Qpi_inf_horizon_holds"
+    "StatisticalRL.Statements.Ch2.Eq_defn_Qpi_inf_horizon_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -802,7 +802,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_defn_Qpi_inf_horizon",
+     "name": "StatisticalRL.Statements.Ch2.Eq_defn_Qpi_inf_horizon",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -811,7 +811,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_defn_Qpi_inf_horizon_holds"
+    "StatisticalRL.Statements.Ch2.Eq_defn_Qpi_inf_horizon_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -860,7 +860,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_optimal_Vstar_Qstar_defn",
+     "name": "StatisticalRL.Statements.Ch2.Eq_optimal_Vstar_Qstar_defn",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -869,7 +869,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_optimal_Vstar_Qstar_defn_holds"
+    "StatisticalRL.Statements.Ch2.Eq_optimal_Vstar_Qstar_defn_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -918,7 +918,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_defn_dpi_occupancy_discounted_dist",
+     "name": "StatisticalRL.Statements.Ch2.Eq_defn_dpi_occupancy_discounted_dist",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -927,7 +927,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_defn_dpi_occupancy_discounted_dist_holds"
+    "StatisticalRL.Statements.Ch2.Eq_defn_dpi_occupancy_discounted_dist_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -976,7 +976,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_defn_dpi_occupancy_discounted_dist",
+     "name": "StatisticalRL.Statements.Ch2.Eq_defn_dpi_occupancy_discounted_dist",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -985,7 +985,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_defn_dpi_occupancy_discounted_dist_holds"
+    "StatisticalRL.Statements.Ch2.Eq_defn_dpi_occupancy_discounted_dist_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1034,7 +1034,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_bellman_consistency_V",
+     "name": "StatisticalRL.Statements.Ch2.Eq_bellman_consistency_V",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1043,7 +1043,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_bellman_consistency_V_holds"
+    "StatisticalRL.Statements.Ch2.Eq_bellman_consistency_V_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1092,7 +1092,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_bellman_consistency_V",
+     "name": "StatisticalRL.Statements.Ch2.Eq_bellman_consistency_V",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1101,7 +1101,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_bellman_consistency_V_holds"
+    "StatisticalRL.Statements.Ch2.Eq_bellman_consistency_V_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1150,7 +1150,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_bellman_consistency_V",
+     "name": "StatisticalRL.Statements.Ch2.Eq_bellman_consistency_V",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1159,7 +1159,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_bellman_consistency_V_holds"
+    "StatisticalRL.Statements.Ch2.Eq_bellman_consistency_V_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1208,7 +1208,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_bellman_fix_point",
+     "name": "StatisticalRL.Statements.Ch2.Eq_bellman_fix_point",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1217,7 +1217,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_bellman_fix_point_holds"
+    "StatisticalRL.Statements.Ch2.Eq_bellman_fix_point_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1266,7 +1266,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_bellman_fix_point",
+     "name": "StatisticalRL.Statements.Ch2.Eq_bellman_fix_point",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1275,7 +1275,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_bellman_fix_point_holds"
+    "StatisticalRL.Statements.Ch2.Eq_bellman_fix_point_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1324,7 +1324,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_gamma_contraction_preliminary_inf",
+     "name": "StatisticalRL.Statements.Ch2.Eq_gamma_contraction_preliminary_inf",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1333,7 +1333,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_gamma_contraction_preliminary_inf_holds"
+    "StatisticalRL.Statements.Ch2.Eq_gamma_contraction_preliminary_inf_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1380,7 +1380,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_1",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_1",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -1389,7 +1389,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_1_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_1_holds"
    ],
    "library_exports": [
     "StatisticalRL.DiscountedMDP.value_iteration_error",
@@ -1399,7 +1399,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.1",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_1",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_1",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -1441,7 +1441,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma2_1",
+     "entry": "StatisticalRL.Statements.Ch2.Lemma2_1",
      "note": "Stated for the Bellman fixed points; separate proved theorems identify them with the actual trajectory Q-values and show the comparator optimal (not part of the entry)."
     }
    ],
@@ -1476,7 +1476,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_1_iterationCount",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_1_iterationCount",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1485,7 +1485,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_1_iterationCount_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_1_iterationCount_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1636,7 +1636,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_2",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_2",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -1645,7 +1645,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_2_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_2_holds"
    ],
    "library_exports": [
     "StatisticalRL.DiscountedMDP.transitionVariance_perturbation"
@@ -1654,7 +1654,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.2",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_2",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_2",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -1719,7 +1719,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_Qpi_Vpi_matrix_notation_inf",
+     "name": "StatisticalRL.Statements.Ch2.Eq_Qpi_Vpi_matrix_notation_inf",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1728,7 +1728,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_Qpi_Vpi_matrix_notation_inf_holds"
+    "StatisticalRL.Statements.Ch2.Eq_Qpi_Vpi_matrix_notation_inf_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1787,7 +1787,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_3",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_3",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -1796,7 +1796,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_3_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_3_holds"
    ],
    "library_exports": [
     "StatisticalRL.DiscountedMDP.policyMatrices_resolvent_properties"
@@ -1805,7 +1805,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.3",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_3",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_3",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -1860,7 +1860,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_QV_pi_perturbation_r_inf",
+     "name": "StatisticalRL.Statements.Ch2.Eq_QV_pi_perturbation_r_inf",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1869,7 +1869,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_QV_pi_perturbation_r_inf_holds"
+    "StatisticalRL.Statements.Ch2.Eq_QV_pi_perturbation_r_inf_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1918,7 +1918,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_QV_star_perturbation_r_inf",
+     "name": "StatisticalRL.Statements.Ch2.Eq_QV_star_perturbation_r_inf",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1927,7 +1927,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_QV_star_perturbation_r_inf_holds"
+    "StatisticalRL.Statements.Ch2.Eq_QV_star_perturbation_r_inf_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -1976,7 +1976,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_dh_pi_defn",
+     "name": "StatisticalRL.Statements.Ch2.Eq_dh_pi_defn",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -1985,7 +1985,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_dh_pi_defn_holds"
+    "StatisticalRL.Statements.Ch2.Eq_dh_pi_defn_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -2034,7 +2034,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_dh_pi_defn",
+     "name": "StatisticalRL.Statements.Ch2.Eq_dh_pi_defn",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -2043,7 +2043,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_dh_pi_defn_holds"
+    "StatisticalRL.Statements.Ch2.Eq_dh_pi_defn_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -2092,7 +2092,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_dh_pi_defn",
+     "name": "StatisticalRL.Statements.Ch2.Eq_dh_pi_defn",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -2101,7 +2101,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_dh_pi_defn_holds"
+    "StatisticalRL.Statements.Ch2.Eq_dh_pi_defn_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -2150,7 +2150,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_Bellman_finite_pi",
+     "name": "StatisticalRL.Statements.Ch2.Eq_Bellman_finite_pi",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -2159,7 +2159,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_Bellman_finite_pi_holds"
+    "StatisticalRL.Statements.Ch2.Eq_Bellman_finite_pi_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -2208,7 +2208,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_Bellman_finite_opt",
+     "name": "StatisticalRL.Statements.Ch2.Eq_Bellman_finite_opt",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
@@ -2217,7 +2217,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_Bellman_finite_opt_holds"
+    "StatisticalRL.Statements.Ch2.Eq_Bellman_finite_opt_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -2266,7 +2266,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_4",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_4",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -2275,7 +2275,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_4_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_4_holds"
    ],
    "library_exports": [
     "StatisticalRL.FiniteDistribution.randomBorelFamily_empiricalRow_success_gt"
@@ -2284,7 +2284,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.4",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_4",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_4",
      "proof_origin": "own-proof:source-cites",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -2341,7 +2341,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_5",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_5",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -2350,7 +2350,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_5_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_5_holds"
    ],
    "library_exports": [
     "StatisticalRL.FiniteDistribution.randomBorelFamily_bernstein_source",
@@ -2360,7 +2360,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.5",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_5",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_5",
      "proof_origin": "own-proof:source-cites",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -2427,7 +2427,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_6",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_6",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -2436,7 +2436,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_6_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_6_holds"
    ],
    "library_exports": [
     "StatisticalRL.FiniteDistribution.randomBorelFamily_empiricalBernstein_success_gt"
@@ -2445,7 +2445,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.6",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_6",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_6",
      "proof_origin": "own-proof:source-cites",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -2502,7 +2502,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_7",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_7",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -2511,7 +2511,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_7_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_7_holds"
    ],
    "library_exports": [
     "StatisticalRL.Probability.bernoulliTailBound_source"
@@ -2520,7 +2520,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.7",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_7",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_7",
      "proof_origin": "own-proof:source-cites",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -2577,7 +2577,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_8",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_8",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -2586,7 +2586,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_8_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_8_holds"
    ],
    "library_exports": [
     "StatisticalRL.azuma_natural_history_source"
@@ -2595,7 +2595,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.8",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_8",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_8",
      "proof_origin": "own-proof:source-cites",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -2652,7 +2652,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_9",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_9",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -2661,7 +2661,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_9_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_9_holds"
    ],
    "library_exports": [
     "StatisticalRL.freedman_natural_history"
@@ -2670,7 +2670,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.9",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_9",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_9",
      "proof_origin": "own-proof:source-cites",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -2693,7 +2693,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma2_9",
+     "entry": "StatisticalRL.Statements.Ch2.Lemma2_9",
      "note": "Assumes the variance cap only almost surely, which every pointwise reading of the printed 'deterministically' implies."
     }
    ],
@@ -2732,7 +2732,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_10",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_10",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -2741,7 +2741,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_10_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_10_holds"
    ],
    "library_exports": [
     "StatisticalRL.PrelimFano.fano_binary_infimum_lower",
@@ -2751,7 +2751,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.10",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_10",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_10",
      "proof_origin": "own-proof:source-cites",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -2808,7 +2808,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_11",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_11",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -2817,7 +2817,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_11_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_11_holds"
    ],
    "library_exports": [
     "StatisticalRL.PrelimFano.reverseFano_infimum_lower"
@@ -2826,7 +2826,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.11",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_11",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_11",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -2950,7 +2950,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_12",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_12",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -2959,7 +2959,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_12_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_12_holds"
    ],
    "library_exports": [
     "StatisticalRL.PrelimKL.klDiv_pi_eq_sum"
@@ -2968,7 +2968,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.12",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_12",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_12",
      "proof_origin": "own-proof:source-cites",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -3025,7 +3025,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma2_13",
+     "name": "StatisticalRL.Statements.Ch2.Lemma2_13",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
@@ -3034,7 +3034,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma2_13_holds"
+    "StatisticalRL.Statements.Ch2.Lemma2_13_holds"
    ],
    "library_exports": [
     "StatisticalRL.GenerativeLowerBound.bernoulliKLExpression_le_quadratic",
@@ -3044,7 +3044,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 2.13",
-     "lean_statement": "StatisticalRL.Statements.Lemma2_13",
+     "lean_statement": "StatisticalRL.Statements.Ch2.Lemma2_13",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -6813,7 +6813,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_PAC_from_regret_conversion_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Eq_PAC_from_regret_conversion_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -6821,7 +6821,7 @@
      "counted": true
     },
     {
-     "name": "StatisticalRL.Statements.Eq_PAC_from_regret_conversion_restricted",
+     "name": "StatisticalRL.Statements.Ch5.Eq_PAC_from_regret_conversion_restricted",
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -6830,8 +6830,8 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_PAC_from_regret_conversion_corrected_holds",
-    "StatisticalRL.Statements.Eq_PAC_from_regret_conversion_restricted_holds"
+    "StatisticalRL.Statements.Ch5.Eq_PAC_from_regret_conversion_corrected_holds",
+    "StatisticalRL.Statements.Ch5.Eq_PAC_from_regret_conversion_restricted_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -6853,11 +6853,11 @@
    "proof_origins": [],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Eq_PAC_from_regret_conversion_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Eq_PAC_from_regret_conversion_corrected",
      "note": "Corrected constant: the PAC conclusion holds with C_{S,A,H} in place of the printed C_{S,A,H+1}. The regret hypothesis is needed only at the instance, and the book's state augmentation is not needed. Algorithm class: a finite seed and deterministic deployed policies; randomized deployed policies and the follow-up at lines 184–198 are not covered. The printed constant is refuted in Lean (C46)."
     },
     {
-     "entry": "StatisticalRL.Statements.Eq_PAC_from_regret_conversion_restricted",
+     "entry": "StatisticalRL.Statements.Ch5.Eq_PAC_from_regret_conversion_restricted",
      "note": "The printed constant C_{S,A,H+1}, kept under the added assumption that C is nondecreasing in H, which covers the book's later use. Same algorithm class as the corrected entry (finite seed, deterministic deployed policies). Without monotonicity the printed constant is refuted in Lean (C46)."
     }
    ],
@@ -6908,7 +6908,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eqn_regret_decomposition_ucb",
+     "name": "StatisticalRL.Statements.Ch5.Eqn_regret_decomposition_ucb",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -6917,7 +6917,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eqn_regret_decomposition_ucb_holds"
+    "StatisticalRL.Statements.Ch5.Eqn_regret_decomposition_ucb_holds"
    ],
    "library_exports": [
     "StatisticalRL.Bandit.regret_decomposition"
@@ -6968,7 +6968,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eqn_regret_decomposition_ucb",
+     "name": "StatisticalRL.Statements.Ch5.Eqn_regret_decomposition_ucb",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -6977,7 +6977,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eqn_regret_decomposition_ucb_holds"
+    "StatisticalRL.Statements.Ch5.Eqn_regret_decomposition_ucb_holds"
    ],
    "library_exports": [
     "StatisticalRL.Bandit.regret_decomposition"
@@ -7028,7 +7028,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Thm5_1_restricted",
+     "name": "StatisticalRL.Statements.Ch5.Thm5_1_restricted",
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -7037,7 +7037,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Thm5_1_restricted_holds"
+    "StatisticalRL.Statements.Ch5.Thm5_1_restricted_holds"
    ],
    "library_exports": [
     "StatisticalRL.Bandit.ucb_regret_bounds"
@@ -7046,7 +7046,7 @@
     {
      "ledger": "variant",
      "name": "Theorem 5.1 (restricted tie-rule variant)",
-     "lean_statement": "StatisticalRL.Statements.Thm5_1_restricted",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Thm5_1_restricted",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -7081,7 +7081,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Thm5_1_restricted",
+     "entry": "StatisticalRL.Statements.Ch5.Thm5_1_restricted",
      "note": "Restricted to deterministic tie rules depending only on the round and the argmax set. The printed proof's Step 1 is replaced (C36)."
     }
    ],
@@ -7220,7 +7220,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Thm5_2_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Thm5_2_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -7229,7 +7229,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Thm5_2_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Thm5_2_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.onlineUCBVI_actual_regret_high_probability"
@@ -7238,7 +7238,7 @@
     {
      "ledger": "variant",
      "name": "Theorem 5.2, UCBVI regret (corrected zero-count algorithm)",
-     "lean_statement": "StatisticalRL.Statements.Thm5_2_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Thm5_2_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -7318,7 +7318,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Thm5_2_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Thm5_2_corrected",
      "note": "Proved for the zero-count completion of the algorithm (C8) with one fixed deterministic tie rule, not for the literal undefined zero-count rule."
     }
    ],
@@ -7416,7 +7416,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_regret_asymptotic_ucbvi_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Eq_regret_asymptotic_ucbvi_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -7425,7 +7425,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_regret_asymptotic_ucbvi_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Eq_regret_asymptotic_ucbvi_corrected_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -7444,7 +7444,7 @@
    "proof_origins": [],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Eq_regret_asymptotic_ucbvi_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Eq_regret_asymptotic_ucbvi_corrected",
      "note": "Under the premises of the corrected Theorem 5.2 (zero-count completion, C8; c₁ = 4, c₂ = 16) and the burn-in S³AH³ ≤ K (constant 1): with probability ≥ 1 − δ, Regret(K) ≤ 40√(SAH³K)(1 + I), with I as in the corrected Theorem 5.2. The Õ is made explicit; the matching-lower-bound sentence is not separately formalized."
     }
    ],
@@ -7481,7 +7481,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Eq_regret_asymptotic_ucbvi_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Eq_regret_asymptotic_ucbvi_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -7490,7 +7490,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Eq_regret_asymptotic_ucbvi_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Eq_regret_asymptotic_ucbvi_corrected_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -7509,7 +7509,7 @@
    "proof_origins": [],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Eq_regret_asymptotic_ucbvi_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Eq_regret_asymptotic_ucbvi_corrected",
      "note": "Under the premises of the corrected Theorem 5.2 (zero-count completion, C8; c₁ = 4, c₂ = 16) and the burn-in S³AH³ ≤ K (constant 1): with probability ≥ 1 − δ, Regret(K) ≤ 40√(SAH³K)(1 + I), with I as in the corrected Theorem 5.2. The Õ is made explicit; the matching-lower-bound sentence is not separately formalized."
     }
    ],
@@ -7597,7 +7597,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_3",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_3",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
@@ -7606,7 +7606,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_3_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_3_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.onlineSequential_maxOne_reciprocal_count_budget"
@@ -7615,7 +7615,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 5.3",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_3",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_3",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -7680,7 +7680,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_4",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_4",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
@@ -7689,7 +7689,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_4_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_4_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.finitePolicy_expected_cumulative_variance_le_horizon_sq"
@@ -7698,7 +7698,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 5.4",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_4",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_4",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -7882,7 +7882,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_5_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_5_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -7891,7 +7891,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_5_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_5_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.onlineSourceAllocated_allStageTrajectoryOptimism_strict"
@@ -7900,7 +7900,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.5, UCBVI optimism (corrected variant)",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_5_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_5_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -7936,7 +7936,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_5_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_5_corrected",
      "note": "Explicit zero-count convention (C8) and one fixed deterministic tie rule; does not cover the literal printed zero-count algorithm."
     }
    ],
@@ -7971,7 +7971,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Remark5_5_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Remark5_5_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -7980,7 +7980,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Remark5_5_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Remark5_5_corrected_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -8009,7 +8009,7 @@
    "proof_origins": [],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Remark5_5_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Remark5_5_corrected",
      "note": "For the UCBVI tables with the zero-count completion (C8), at every stage h and state s and for all bonus parameters: V_h(s) = max_a Q_h(s,a) = Q_h(s, π_h(s)) for the fixed greedy planner of the corrected Theorem 5.2. This is stronger than the printed h = 1. Only the table object is corrected; the identity does not depend on the bonus. The remark's proof-strategy sentences are not formalized."
     }
    ],
@@ -8046,7 +8046,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_6_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_6_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -8055,7 +8055,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_6_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_6_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.onlineCappedEpisode_realized_telescope_nonnegative"
@@ -8064,7 +8064,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.6 (corrected zero-count telescope)",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_6_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_6_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -8089,7 +8089,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_6_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_6_corrected",
      "note": "Uses the analysis charge H at zero visits in place of the undefined printed bonus (C8)."
     }
    ],
@@ -8126,7 +8126,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_7_W1_K2_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_7_W1_K2_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -8134,7 +8134,7 @@
      "counted": false
     },
     {
-     "name": "StatisticalRL.Statements.Lemma5_7_K2_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_7_K2_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -8143,8 +8143,8 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_7_K2_corrected_holds",
-    "StatisticalRL.Statements.Lemma5_7_W1_K2_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_7_K2_corrected_holds",
+    "StatisticalRL.Statements.Ch5.Lemma5_7_W1_K2_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.onlineSourceAllocated_actualW123Restricted_strict"
@@ -8153,7 +8153,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.7, complete joint W1/W2/W3 (K>=2 corrected variant)",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_7_K2_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_7_K2_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -8216,11 +8216,11 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_7_K2_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_7_K2_corrected",
      "note": "Adds K ≥ 2 (C12), the zero-count completion (C8) and one fixed deterministic tie rule."
     },
     {
-     "entry": "StatisticalRL.Statements.Lemma5_7_W1_K2_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_7_W1_K2_corrected",
      "note": "Superseded: the W₁ clause of Lemma 5.7 alone; implied by `Lemma5_7_K2_corrected`."
     }
    ],
@@ -8289,7 +8289,7 @@
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
-    "StatisticalRL.Statements.Lemma5_7_K2_corrected"
+    "StatisticalRL.Statements.Ch5.Lemma5_7_K2_corrected"
    ],
    "implied_variant": "corrected",
    "decision_anchors": [],
@@ -8371,7 +8371,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_8_K2_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_8_K2_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -8380,7 +8380,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_8_K2_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_8_K2_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.onlineSourceAllocated_actualT234_K2_strict"
@@ -8389,7 +8389,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.8, complete joint T2/T3/T4 (K>=2 corrected variant)",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_8_K2_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_8_K2_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -8454,7 +8454,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_8_K2_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_8_K2_corrected",
      "note": "Adds K ≥ 2 (C12), the zero-count analysis charge H (C8) and one fixed deterministic tie rule."
     }
    ],
@@ -8504,7 +8504,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_9_K2_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_9_K2_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -8513,7 +8513,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_9_K2_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_9_K2_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.onlineSourceAllocated_T3_T56_simplified_actual_confidence"
@@ -8522,7 +8522,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.9, complete T5/T6 bounds (K>=2 corrected variant)",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_9_K2_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_9_K2_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -8621,7 +8621,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_9_K2_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_9_K2_corrected",
      "note": "Adds K ≥ 2 (C12), the zero-count completion (C8) and one fixed tie rule, and is restricted to the bonus constants c₁ = 4, c₂ = 16 (the book's standing regime is c₁ ≥ 4, c₂ ≥ c₁²)."
     }
    ],
@@ -8689,7 +8689,7 @@
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
-    "StatisticalRL.Statements.Lemma5_9_K2_corrected"
+    "StatisticalRL.Statements.Ch5.Lemma5_9_K2_corrected"
    ],
    "implied_variant": "corrected",
    "decision_anchors": [],
@@ -8720,7 +8720,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Remark5_9",
+     "name": "StatisticalRL.Statements.Ch5.Remark5_9",
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -8729,7 +8729,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Remark5_9_holds"
+    "StatisticalRL.Statements.Ch5.Remark5_9_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -8797,7 +8797,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.MVP_regret_corrected",
+     "name": "StatisticalRL.Statements.Ch5.MVP_regret_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -8806,14 +8806,14 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.MVP_regret_corrected_holds"
+    "StatisticalRL.Statements.Ch5.MVP_regret_corrected_holds"
    ],
    "library_exports": [],
    "ledger_records": [
     {
      "ledger": "variant",
      "name": "Theorem 5.10, MVP regret (corrected algorithm and confidence allocation)",
-     "lean_statement": "StatisticalRL.Statements.MVP_regret_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.MVP_regret_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -8929,7 +8929,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.MVP_regret_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.MVP_regret_corrected",
      "note": "Proved for the corrected MVP algorithm and confidence allocation (C8, C12, C13, C15, C16, C17) with one fixed tie rule; there is a universal constant C (the proof gives C = 100). Under the literal trigger the printed theorem fails by this project's paper calculation (C48)."
     }
    ],
@@ -8981,7 +8981,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.MVP_optimism_corrected",
+     "name": "StatisticalRL.Statements.Ch5.MVP_optimism_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -8990,7 +8990,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.MVP_optimism_corrected_holds"
+    "StatisticalRL.Statements.Ch5.MVP_optimism_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.MVPSourceOptimismCorrected",
@@ -9015,7 +9015,7 @@
    "proof_origins": [],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.MVP_optimism_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.MVP_optimism_corrected",
      "note": "Optimism for the corrected MVP algorithm under the actual sequential reset law: Q and V dominate Q⋆ and V⋆ for every episode, stage, state and action with probability ≥ 1 − 2SAHKδ′ (H, K > 0, 0 < δ < 1, c₁ ≥ 4, c₂ ≥ c₁²). Corrections: zero-count completion (C8), power-of-two triggers (C13), reciprocal δ′ = δ/(100S²A²H²K²) (C16), and a fixed maximizing tie rule. The entry keeps the standing condition K ≥ SAH·ι."
     }
    ],
@@ -9052,7 +9052,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_11",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_11",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
@@ -9061,7 +9061,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_11_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_11_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.MVPProfile.sourceMVPFinitePossibleProfiles_card_bound_all"
@@ -9070,7 +9070,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 5.11",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_11",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_11",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -9105,7 +9105,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_11",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_11",
      "note": "Final printed bound proved; the printed intermediate inclusion is replaced by a ceiling comparison family (C15)."
     }
    ],
@@ -9142,7 +9142,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_12_powerOfTwo_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_12_powerOfTwo_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -9151,7 +9151,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_12_powerOfTwo_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_12_powerOfTwo_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.onlineMVP_operationalHistory_sourceCountBudget"
@@ -9160,7 +9160,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.12, power-of-two trigger correction",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_12_powerOfTwo_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_12_powerOfTwo_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -9206,7 +9206,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_12_powerOfTwo_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_12_powerOfTwo_corrected",
      "note": "Proved under the power-of-two trigger reading of the doubling prose (C13); the literal consecutive-integer trigger is refuted in Lean by this project's counterexample."
     }
    ],
@@ -9256,7 +9256,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_13_confidence_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_13_confidence_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -9265,7 +9265,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_13_confidence_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_13_confidence_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.FiniteHorizonGenerative.mvp_corrected_sourceUniform_full"
@@ -9274,7 +9274,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.13, reciprocal confidence allocation correction",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_13_confidence_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_13_confidence_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -9339,7 +9339,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_13_confidence_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_13_confidence_corrected",
      "note": "The printed confidence allocation is replaced by δ′ = δ/(100S²A²H²K²); the printed allocation is refuted in Lean by this project's counterexample (C16)."
     }
    ],
@@ -9389,7 +9389,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_14_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_14_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -9398,7 +9398,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_14_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_14_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.mvp_actualDecouplingEvent_sourceConfidence"
@@ -9407,7 +9407,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.14, corrected actual-law MVP decoupling",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_14_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_14_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -9455,7 +9455,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_14_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_14_corrected",
      "note": "Proved for the corrected MVP algorithm (C8, C13, C15, C16, C17) with one fixed tie rule."
     }
    ],
@@ -9526,7 +9526,7 @@
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
-    "StatisticalRL.Statements.Lemma5_14_corrected"
+    "StatisticalRL.Statements.Ch5.Lemma5_14_corrected"
    ],
    "implied_variant": "corrected",
    "decision_anchors": [],
@@ -9561,7 +9561,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.MVP_T2_K2_corrected",
+     "name": "StatisticalRL.Statements.Ch5.MVP_T2_K2_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -9569,7 +9569,7 @@
      "counted": true
     },
     {
-     "name": "StatisticalRL.Statements.MVP_T234_K2_corrected",
+     "name": "StatisticalRL.Statements.Ch5.MVP_T234_K2_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -9578,8 +9578,8 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.MVP_T234_K2_corrected_holds",
-    "StatisticalRL.Statements.MVP_T2_K2_corrected_holds"
+    "StatisticalRL.Statements.Ch5.MVP_T234_K2_corrected_holds",
+    "StatisticalRL.Statements.Ch5.MVP_T2_K2_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.mvpActualT2_le_sourceBound_fixed",
@@ -9611,11 +9611,11 @@
    "proof_origins": [],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.MVP_T2_K2_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.MVP_T2_K2_corrected",
      "note": "The T2 estimate on the actual path of the corrected MVP algorithm for K ≥ 2, with c₁ = 4, c₂ = 16, the C8, C13 and C16 corrections and a fixed greedy tie rule. The entry keeps the standing condition K ≥ SAH·ι (lines 1402–1407)."
     },
     {
-     "entry": "StatisticalRL.Statements.MVP_T234_K2_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.MVP_T234_K2_corrected",
      "note": "The joint T2/T3/T4 event under the actual law, with the source failure coefficient 4log₂(K)δ′, for K ≥ 2, c₁ = 4, c₂ = 16, the C8, C12, C13 and C16 corrections and one fixed tie rule. The entry keeps the standing condition K ≥ SAH·ι."
     }
    ],
@@ -9652,7 +9652,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.MVP_T5_corrected",
+     "name": "StatisticalRL.Statements.Ch5.MVP_T5_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -9661,7 +9661,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.MVP_T5_corrected_holds"
+    "StatisticalRL.Statements.Ch5.MVP_T5_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.mvpActualT5_source_confidence",
@@ -9693,7 +9693,7 @@
    "proof_origins": [],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.MVP_T5_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.MVP_T5_corrected",
      "note": "The T5 estimate for the corrected MVP algorithm (zero-count completion C8, power-of-two trigger C13, reciprocal δ′ C16, fixed greedy tie), c₁ = 4, c₂ = 16, with the source's natural-log failure coefficient. The entry keeps the standing condition K ≥ SAH·ι."
     }
    ],
@@ -9730,7 +9730,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_15_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_15_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -9739,7 +9739,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_15_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_15_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.mvpActualT6_source_confidence"
@@ -9748,7 +9748,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.15, corrected MVP T6 variance bound",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_15_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_15_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -9775,7 +9775,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_15_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_15_corrected",
      "note": "Proved for the corrected MVP algorithm (C8, C13, C16) with one fixed tie rule."
     }
    ],
@@ -9812,7 +9812,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Thm5_16_restricted",
+     "name": "StatisticalRL.Statements.Ch5.Thm5_16_restricted",
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -9821,7 +9821,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Thm5_16_restricted_holds"
+    "StatisticalRL.Statements.Ch5.Thm5_16_restricted_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.qLearning_actualRegret_rate_confidence"
@@ -9830,7 +9830,7 @@
     {
      "ledger": "variant",
      "name": "Theorem 5.16, completed fixed-tie online Q-learning (restricted)",
-     "lean_statement": "StatisticalRL.Statements.Thm5_16_restricted",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Thm5_16_restricted",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -9901,7 +9901,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Thm5_16_restricted",
+     "entry": "StatisticalRL.Statements.Ch5.Thm5_16_restricted",
      "note": "Proved for the completed algorithm (initial nonterminal V = H, one fixed maximizing tie); no printed statement is changed. Proof repairs are recorded in C20."
     }
    ],
@@ -9938,7 +9938,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_17",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_17",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
@@ -9947,7 +9947,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_17_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_17_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.onlineQRateWeight_sqrt_sum_bounds",
@@ -9958,7 +9958,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 5.17",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_17",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_17",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -10072,7 +10072,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_18_restricted",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_18_restricted",
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -10081,7 +10081,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_18_restricted_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_18_restricted_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.qLearning_sourceOptimism_confidence"
@@ -10090,7 +10090,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.18, completed fixed-tie online Q-learning optimism",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_18_restricted",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_18_restricted",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -10134,7 +10134,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_18_restricted",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_18_restricted",
      "note": "Proved for the completed algorithm (initial nonterminal V = H, one fixed maximizing tie; C20)."
     }
    ],
@@ -10171,7 +10171,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Thm5_19",
+     "name": "StatisticalRL.Statements.Ch5.Thm5_19",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
@@ -10180,7 +10180,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Thm5_19_holds"
+    "StatisticalRL.Statements.Ch5.Thm5_19_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineLowerBound.minimax_lower_online"
@@ -10189,7 +10189,7 @@
     {
      "ledger": "certified",
      "name": "Theorem 5.19",
-     "lean_statement": "StatisticalRL.Statements.Thm5_19",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Thm5_19",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -10225,7 +10225,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Thm5_19",
+     "entry": "StatisticalRL.Statements.Ch5.Thm5_19",
      "note": "There is a constant c₀ > 0 (the proof gives 1/1536). Printed-proof gaps C25–C27 are repaired."
     }
    ],
@@ -10262,7 +10262,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_20",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_20",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
@@ -10271,7 +10271,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_20_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_20_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineLowerBound.onlineLBSub_value_gap"
@@ -10280,7 +10280,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 5.20",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_20",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_20",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -10335,7 +10335,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_21",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_21",
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch5.lean",
@@ -10344,7 +10344,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_21_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_21_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineLowerBound.bandit_testing"
@@ -10353,7 +10353,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 5.21",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_21",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_21",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -10425,7 +10425,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Remark5_12_lowerBound",
+     "name": "StatisticalRL.Statements.Ch5.Remark5_12_lowerBound",
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -10433,7 +10433,7 @@
      "counted": true
     },
     {
-     "name": "StatisticalRL.Statements.Remark5_12_restricted",
+     "name": "StatisticalRL.Statements.Ch5.Remark5_12_restricted",
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -10442,8 +10442,8 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Remark5_12_lowerBound_holds",
-    "StatisticalRL.Statements.Remark5_12_restricted_holds"
+    "StatisticalRL.Statements.Ch5.Remark5_12_lowerBound_holds",
+    "StatisticalRL.Statements.Ch5.Remark5_12_restricted_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -10470,11 +10470,11 @@
    "proof_origins": [],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Remark5_12_lowerBound",
+     "entry": "StatisticalRL.Statements.Ch5.Remark5_12_lowerBound",
      "note": "The lower bound, unrestricted: for 2 ≤ A ≤ T, a fixed family of A mean vectors in [0,1]^A (Gaussian N(0,1) noise) on which every measurable randomized history-dependent learner has expected pseudo-regret ≥ (1/16)√(AT) on some member. The proof and the constant 1/16 are this project's; the remark only says that the argument adapts."
     },
     {
-     "entry": "StatisticalRL.Statements.Remark5_12_restricted",
+     "entry": "StatisticalRL.Statements.Ch5.Remark5_12_restricted",
      "note": "Minimax optimality up to logarithmic factors: in addition, UCB's expected regret on every r ∈ [0,1]^A is at most 128√log(T²/δ) times that lower bound. Restricted because it inherits Theorem 5.1's deterministic tie rule."
     }
    ],
@@ -10509,7 +10509,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Remark5_13_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Remark5_13_corrected",
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch5.lean",
@@ -10518,7 +10518,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Remark5_13_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Remark5_13_corrected_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
@@ -10537,7 +10537,7 @@
    "proof_origins": [],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Remark5_13_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Remark5_13_corrected",
      "note": "T₆^ucb ≤ 2T₆^low + 2T₆^diff and √T₆^ucb ≤ √(2T₆^low) + √(2T₆^diff), deterministically. The inequalities are as printed; the quantities are those of the zero-count completion of the algorithm (C8), hence the suffix."
     }
    ],
@@ -10574,7 +10574,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Lemma5_22_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Lemma5_22_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -10583,7 +10583,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Lemma5_22_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Lemma5_22_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.GeneralVariance.variance_square_le_four_of_abs_bound",
@@ -10593,7 +10593,7 @@
     {
      "ledger": "variant",
      "name": "Lemma 5.22, signed square variance (corrected coefficient)",
-     "lean_statement": "StatisticalRL.Statements.Lemma5_22_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Lemma5_22_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -10620,7 +10620,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Lemma5_22_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Lemma5_22_corrected",
      "note": "The printed second coefficient 1 is replaced by 4; the printed coefficient is refuted in Lean by this project's counterexample (C14)."
     }
    ],
@@ -10670,7 +10670,7 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Claim5_1_corrected",
+     "name": "StatisticalRL.Statements.Ch5.Claim5_1_corrected",
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch5.lean",
@@ -10679,7 +10679,7 @@
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Claim5_1_corrected_holds"
+    "StatisticalRL.Statements.Ch5.Claim5_1_corrected_holds"
    ],
    "library_exports": [
     "StatisticalRL.OnlineRL.claimPV_eventConfidence"
@@ -10688,7 +10688,7 @@
     {
      "ledger": "variant",
      "name": "Claim 5.1 (corrected restricted variant)",
-     "lean_statement": "StatisticalRL.Statements.Claim5_1_corrected",
+     "lean_statement": "StatisticalRL.Statements.Ch5.Claim5_1_corrected",
      "proof_origin": "source-proof-repaired",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -10772,7 +10772,7 @@
    ],
    "display_notes": [
     {
-     "entry": "StatisticalRL.Statements.Claim5_1_corrected",
+     "entry": "StatisticalRL.Statements.Ch5.Claim5_1_corrected",
      "note": "Proved at the corrected allocation δ′ = δ/(100S²A²H²K²) with one fixed tie rule; the claim at the printed allocation is neither proved nor refuted (C16)."
     }
    ],

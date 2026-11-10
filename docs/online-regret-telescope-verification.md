@@ -9,7 +9,7 @@ zero-count formula. The full regret theorem and chapter remain incomplete.
 
 ## Exact mathematical endpoint
 
-`StatisticalRL.Statements.Lemma5_6_corrected` writes out the complete one-episode
+`StatisticalRL.Statements.Ch5.Lemma5_6_corrected` writes out the complete one-episode
 inequality over arbitrary observed stage tables and state/action paths whose
 selected actions maximize the same capped backward Q table. It expands the
 reward, analysis charge, empirical-minus-true continuation expectation, and
@@ -23,7 +23,7 @@ coefficients and actual confidence allocation. The proof uses only
 adds no optimism, event-probability, stochastic-centering or fluctuation-bound
 premise. The wrapper consumes
 `onlineCappedEpisode_realized_telescope_nonnegative` and unfolds definitions;
-the exact proof export is `StatisticalRL.Statements.Lemma5_6_corrected_holds`.
+the exact proof export is `StatisticalRL.Statements.Ch5.Lemma5_6_corrected_holds`.
 
 The same change supplies supporting actual-history results: the selected
 row/action and successor agree with the causal sequential path; episode

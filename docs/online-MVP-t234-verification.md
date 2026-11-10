@@ -3,7 +3,7 @@
 Source: `eq:T2-ub-analysis-mvp`, `eq:T3-ub-analysis-mvp`,
 `eq:T4-ub-analysis-mvp`, onlineRL.tex:1793–1802, with the standing regime
 at lines 1402–1407. The complete definition is
-`StatisticalRL.Statements.MVP_T234_K2_corrected`, and its applying wrapper
+`StatisticalRL.Statements.Ch5.MVP_T234_K2_corrected`, and its applying wrapper
 is `MVP_T234_K2_corrected_holds`.
 
 The indexed statement retains K≥SAH·Iota and the source non-strict

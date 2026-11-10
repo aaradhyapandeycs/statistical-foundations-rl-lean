@@ -2,8 +2,8 @@
 
 Source: unlabeled Lemma 2.1, `chapters/prelim.tex:339–343`, with the iteration
 definitions at `:319–336`. There is no invented LaTeX label. The full source
-index and applying wrapper are `StatisticalRL.Statements.Lemma2_1` and
-`StatisticalRL.Statements.Lemma2_1_holds`.
+index and applying wrapper are `StatisticalRL.Statements.Ch2.Lemma2_1` and
+`StatisticalRL.Statements.Ch2.Lemma2_1_holds`.
 
 Both convergence clauses retain the printed factor γ^k and k≥1. VI allows
 every initial Q table. PI allows every initial stationary randomized policy
