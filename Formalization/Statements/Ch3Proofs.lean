@@ -19,6 +19,7 @@ import Formalization.Generative.BurnInNecessity
 import Formalization.Generative.PolicyEvaluationGapRepairAllStates
 import Formalization.Generative.PolicyEvaluationVarianceResolvent
 import Formalization.Generative.PolicyEvalLowerBoundA1
+import Formalization.Generative.RandomizedQLowerBound
 
 /-! Proofs of the source-facing Chapter 3 entries using the existing exports. -/
 open MeasureTheory
@@ -33,6 +34,21 @@ theorem Thm3_2_positiveN_holds : Thm3_2_positiveN := by
   refine ⟨c, hc, ?_⟩
   intro State Action _ _ M N hN δ ε hδ hδ1 hε hεmax hsize
   exact (hmain State Action M N hN δ ε hδ hδ1 hε hεmax hsize).le
+
+/-- `Thm3_2` from the positive-`N` export: at `N = 0` the event is the whole sample space
+(its outer quantifier ranges over proofs of `0 < 0`), so its probability is `1 ≥ 1 − δ`;
+for `N > 0` the event contains the export's event. -/
+theorem Thm3_2_holds : Thm3_2 := by
+  obtain ⟨c, hc, hmain⟩ :=
+    StatisticalRL.ModelBasedPolicyLearning.mainSample_policyLearning_universal_constant
+  refine ⟨c, hc, ?_⟩
+  intro State Action _ _ M N δ ε hδ hδ1 hε hεmax hsize
+  rcases Nat.eq_zero_or_pos N with rfl | hN
+  · refine ((by linarith : 1 - δ ≤ 1).trans
+      (probReal_univ (μ := StatisticalRL.ModelBasedPolicyLearning.samplingLaw M 0)).ge).trans ?_
+    exact measureReal_mono (fun _ _ hN0 ↦ absurd hN0 (lt_irrefl 0)) (measure_ne_top _ _)
+  · refine (hmain State Action M N hN δ ε hδ hδ1 hε hεmax hsize).le.trans ?_
+    exact measureReal_mono (fun data hd _ ↦ hd) (measure_ne_top _ _)
 
 theorem Lemma3_3_holds : Lemma3_3 := by
   intro State Action _ _ M x s
@@ -51,6 +67,22 @@ theorem Lemma3_5_positiveN_holds : Lemma3_5_positiveN := by
   refine hp.le.trans (measureReal_mono ?_)
   intro data hd f hf
   exact ⟨(hd f hf).1, (hd f hf).2.2⟩
+
+/-- `Lemma3_5` from the positive-`N` export, by the same `N = 0` / `N > 0` split as
+`Thm3_2_holds`. -/
+theorem Lemma3_5_holds : Lemma3_5 := by
+  obtain ⟨c₀, c₁, hc₀, hc₁, hmain⟩ :=
+    StatisticalRL.ModelBasedPolicyLearning.source_policyLearning_pointwise_universal_constants
+  refine ⟨c₀, c₁, hc₀, hc₁, ?_⟩
+  intro State Action _ _ M N δ hδ hδ1 hsize
+  rcases Nat.eq_zero_or_pos N with rfl | hN
+  · refine ((by linarith : 1 - δ ≤ 1).trans
+      (probReal_univ (μ := StatisticalRL.ModelBasedPolicyLearning.samplingLaw M 0)).ge).trans ?_
+    exact measureReal_mono (fun _ _ hN0 ↦ absurd hN0 (lt_irrefl 0)) (measure_ne_top _ _)
+  · refine (hmain State Action M N hN δ hδ hδ1 hsize).le.trans (measureReal_mono ?_
+      (measure_ne_top _ _))
+    intro data hd _ f hf
+    exact ⟨(hd f hf).1, (hd f hf).2.2⟩
 
 theorem Thm3_9_causal_positiveN_holds : Thm3_9_causal_positiveN := by
   obtain ⟨c, hc, hmain⟩ :=
@@ -86,12 +118,22 @@ theorem Lemma3_8_holds : Lemma3_8 := by
   rw [h0, h1]
   exact StatisticalRL.GenerativeLowerBound.source_parameters_scalar_separation γ ε hγ hγ1 hε hεmax
 
-theorem Thm3_7_corrected_holds : Thm3_7_corrected :=
-  ⟨1 / 32768, by norm_num, StatisticalRL.GenerativeLowerBound.theorem37_corrected_fin_carriers⟩
+theorem Thm3_7_corrected_holds : Thm3_7_corrected := by
+  refine ⟨1 / 32768, by norm_num, ?_⟩
+  intro S A N γ ε hS hSA hγ hγ1 hε hεmax hN
+  refine ⟨(StatisticalRL.GenerativeLowerBound.theorem37_corrected_fin_carriers
+    S A N γ ε hS hSA hγ hγ1 hε hεmax hN).1, ?_⟩
+  intro QHat hQ
+  exact StatisticalRL.GenerativeLowerBound.theorem37_Q_fin_randomized_sampleBound hS hSA γ ε hγ
+    hγ1 hε hεmax hN QHat hQ
 
-theorem Thm3_7_policyEvaluation_A1_restricted_holds : Thm3_7_policyEvaluation_A1_restricted :=
-  ⟨1 / 32768, by norm_num,
-    StatisticalRL.GenerativeLowerBound.policyEvaluation_lowerBound_singleAction⟩
+theorem Thm3_7_policyEvaluation_A1_holds : Thm3_7_policyEvaluation_A1 := by
+  refine ⟨1 / 32768, by norm_num, ?_⟩
+  intro S N γ ε hS hγ hγ1 hε hεmax hN VHat hV
+  exact StatisticalRL.GenerativeLowerBound.policyEvaluation_lowerBound_singleAction_randomized
+    hS γ ε hγ hγ1 hε hεmax hN
+    (fun _ ↦ (isOpen_lt continuous_const (continuous_id.sub continuous_const).norm).measurableSet)
+    VHat hV
 
 theorem Thm3_2_approxPlanner_positiveN_holds : Thm3_2_approxPlanner_positiveN := by
   obtain ⟨c, hc, hmain⟩ :=
@@ -108,7 +150,7 @@ theorem Eq_P_Mi_Q_inaccurate_lower_generative_holds : Eq_P_Mi_Q_inaccurate_lower
   refine ⟨StatisticalRL.GenerativeLowerBound.sourceHardMDP γ ε hγ hγ1 hε hεmax false,
     StatisticalRL.GenerativeLowerBound.sourceHardMDP γ ε hγ hγ1 hε hεmax true,
     rfl, rfl, rfl, ?_⟩
-  intro N hN QHat
+  intro N hN QHat hQ
   have hd : 0 < (1 - γ) ^ 3 * ε ^ 2 := by
     have : 0 < 1 - γ := by linarith
     positivity
@@ -117,8 +159,8 @@ theorem Eq_P_Mi_Q_inaccurate_lower_generative_holds : Eq_P_Mi_Q_inaccurate_lower
       rw [div_div, mul_assoc]
     rw [h9]
     exact hN.trans (div_le_div_of_nonneg_right (by norm_num : (0.003 : ℝ) ≤ 9 / 2560) hd.le)
-  exact StatisticalRL.GenerativeLowerBound.sourceHardMDP_full_Q_estimation_lower
-    γ ε hγ hγ1 hε hεmax N hN' (fun data _ _ ↦ QHat data)
+  exact StatisticalRL.GenerativeLowerBound.sourceHardMDP_randomized_Q_estimation_lower
+    γ ε hγ hγ1 hε hεmax N hN' QHat hQ
 
 theorem Thm3_9_minimaxLowerBound_restricted_holds : Thm3_9_minimaxLowerBound_restricted := by
   refine ⟨1 / 2 ^ 28, 1 / 4096, by norm_num, by norm_num, ?_⟩

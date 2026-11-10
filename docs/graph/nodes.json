@@ -11,19 +11,19 @@
   "Formalization/Statements/Ch1Proofs.lean": "60abeea2c7c5aea67c62507221193911f1f2ae42dd8279cf4564f4ce0eb5e657",
   "Formalization/Statements/Ch2.lean": "4af94872b6c933a30aa4a6e2ad3d08f395215dd0eb202bac185994db9befd7d5",
   "Formalization/Statements/Ch2Proofs.lean": "ee733f9091b105db43ca55d8d3190fca7ed079902de4b78cdd6a65eed2c08927",
-  "Formalization/Statements/Ch3.lean": "3c8583a0e7687679079f30f30e577043d38d0531f3d484384a704f596323c22c",
-  "Formalization/Statements/Ch3Proofs.lean": "e61547793a6a0cceda99d923d4f33ed21ee75ce1146b255e1b0dcd70d8c594be",
+  "Formalization/Statements/Ch3.lean": "d3f58239e21a28d06d28c75ddd6d89985b69588ea50f4fc57d7cbc41463af6c6",
+  "Formalization/Statements/Ch3Proofs.lean": "cd6d4a2a9d98d1de22971f8393094060cb6304f81c3cddcfe156815b1fe6967e",
   "Formalization/Statements/Ch4.lean": "86923d993aab1153a084d9fe622b28ba7506f4c68c9390efef46d9320c3baabd",
   "Formalization/Statements/Ch4Proofs.lean": "39d6d11d46244d6bc2483e35c3b3d33a549d9e4dd2f8f4448bdb851b8d0f6971",
   "Formalization/Statements/Ch5.lean": "76ba55fcaead518194ad474d4cc2c5fc7bae2ddb6a82920b875630d1be890715",
   "Formalization/Statements/Ch5Proofs.lean": "2843eced74b3666b2d97a5735a396e6d284b59413269766ae3a701ac607978d3",
   "Formalization/Statements/Ch6.lean": "e17cc9045a7d70dd349eea74cc6d1ae06316cadef20e5b275c1286463f2c76d6",
   "Formalization/Statements/Ch6Proofs.lean": "8fe9bb4558a7af2f9c2d688810c60338d9b62d51b9239c2ca63fbea0f9844506",
-  "Formalization/Statements/Ch7.lean": "c60e3632eeb3e0ddcf760263357227ccdd263945ad3df38132affe204c76b9ec",
-  "Formalization/Statements/Ch7Proofs.lean": "85e9b000c8213806bd257730a8941220eea15eaf8a72be901fd5c317559717ff",
-  "docs/COVERAGE.md": "bef71525092e7ce2f7213cf6faf122f580392bcb257bc4c2f8b91ece042bc084",
-  "docs/SOURCE-ISSUES.md": "6ff85c5b244af0b2ceec110b322602fd7ac90347764c3f79edd4179efb742511",
-  "docs/named-result-status.json": "caf5cb8c4848e4f526df3b94088b93750fd902830d1587472e4707aedda56372",
+  "Formalization/Statements/Ch7.lean": "4477ea84922da6050ddcbddb95d510d7abd4fcb605c4c01ec8075a58af0193f4",
+  "Formalization/Statements/Ch7Proofs.lean": "71d982417a7c8ebfbb39f28effcee463dbe02a076c3a0211edd9c9fcbd6eab04",
+  "docs/COVERAGE.md": "6a0e5e9bb4948cd6889ba43bc3d4eb27b887653c6ba37b86c84f78ae2460f220",
+  "docs/SOURCE-ISSUES.md": "e34d0e819e4a278e1958f6dbc363c77be9a7ffbd4c2d0c5e1c586f2309fa7fa6",
+  "docs/named-result-status.json": "ab902c764f2cc2c58593bba45bc5273d1a2d266fbc447293129c7e3253d972f0",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
  "vocabulary": {
@@ -50,9 +50,9 @@
   "named_results_in_inventory": 90,
   "named_results_with_ledger_record": 89,
   "named_by_statement_status": {
-   "printed": 44,
+   "printed": 46,
    "corrected": 29,
-   "restricted": 16,
+   "restricted": 14,
    "refuted": 0,
    "partial": 0,
    "implied": 0,
@@ -63,13 +63,13 @@
    "prose-claim": 0
   },
   "named_printed_with_cited_printed": 35,
-  "prose_nodes": 117,
+  "prose_nodes": 115,
   "prose_by_statement_status": {
-   "printed": 45,
+   "printed": 47,
    "corrected": 11,
-   "restricted": 19,
+   "restricted": 17,
    "refuted": 1,
-   "partial": 4,
+   "partial": 2,
    "implied": 15,
    "explanatory": 16,
    "cited-out-of-scope": 5,
@@ -92,26 +92,30 @@
    }
   },
   "named_by_label": {
-   "stated": 44,
+   "stated": 46,
    "corrected": 29,
-   "restricted": 16,
+   "restricted": 14,
    "incomplete": 1
   },
-  "named_refuted_marker": 15,
+  "named_refuted_marker": 11,
   "named_overridden_incomplete": 1,
   "prose_by_label": {
-   "stated": 45,
+   "stated": 47,
    "corrected": 11,
-   "restricted": 19,
-   "incomplete": 26,
+   "restricted": 17,
+   "incomplete": 24,
    "no_claim": 16
   },
   "prose_refuted_marker": 5,
-  "refuted_marker_nodes": 20,
-  "named_fails_paper_marker": 10,
-  "prose_fails_paper_marker": 1,
-  "fails_paper_marker_nodes": 11,
-  "refutation_theorems": 37,
+  "refuted_marker_nodes": 16,
+  "named_fails_paper_marker": 5,
+  "prose_fails_paper_marker": 0,
+  "fails_paper_marker_nodes": 5,
+  "named_boundary_marker": 9,
+  "prose_boundary_marker": 1,
+  "boundary_marker_nodes": 10,
+  "refutation_theorems": 30,
+  "boundary_refutation_theorems": 16,
   "own_proof_by_origin": {
    "source-proof": 31,
    "source-proof-repaired": 35,
@@ -174,7 +178,9 @@
     "named_refuted_marker": 0,
     "prose_refuted_marker": 0,
     "named_fails_paper_marker": 0,
-    "prose_fails_paper_marker": 0
+    "prose_fails_paper_marker": 0,
+    "named_boundary_marker": 0,
+    "prose_boundary_marker": 0
    },
    "2": {
     "named": {
@@ -222,13 +228,15 @@
     "named_refuted_marker": 0,
     "prose_refuted_marker": 0,
     "named_fails_paper_marker": 0,
-    "prose_fails_paper_marker": 0
+    "prose_fails_paper_marker": 0,
+    "named_boundary_marker": 0,
+    "prose_boundary_marker": 0
    },
    "3": {
     "named": {
-     "printed": 6,
+     "printed": 8,
      "corrected": 1,
-     "restricted": 2,
+     "restricted": 0,
      "refuted": 0,
      "partial": 0,
      "implied": 0,
@@ -239,9 +247,9 @@
      "prose-claim": 0
     },
     "prose": {
-     "printed": 4,
+     "printed": 6,
      "corrected": 0,
-     "restricted": 3,
+     "restricted": 1,
      "refuted": 0,
      "partial": 0,
      "implied": 1,
@@ -255,22 +263,24 @@
     "named_proved": 9,
     "named_printed_with_cited_printed": 5,
     "named_by_label": {
-     "stated": 6,
+     "stated": 8,
      "corrected": 1,
-     "restricted": 2,
+     "restricted": 0,
      "incomplete": 0
     },
     "prose_by_label": {
-     "stated": 4,
+     "stated": 6,
      "corrected": 0,
-     "restricted": 3,
+     "restricted": 1,
      "incomplete": 1,
      "no_claim": 3
     },
-    "named_refuted_marker": 1,
+    "named_refuted_marker": 0,
     "prose_refuted_marker": 0,
     "named_fails_paper_marker": 0,
-    "prose_fails_paper_marker": 0
+    "prose_fails_paper_marker": 0,
+    "named_boundary_marker": 1,
+    "prose_boundary_marker": 0
    },
    "4": {
     "named": {
@@ -315,10 +325,12 @@
      "incomplete": 4,
      "no_claim": 0
     },
-    "named_refuted_marker": 2,
+    "named_refuted_marker": 1,
     "prose_refuted_marker": 0,
-    "named_fails_paper_marker": 1,
-    "prose_fails_paper_marker": 1
+    "named_fails_paper_marker": 0,
+    "prose_fails_paper_marker": 0,
+    "named_boundary_marker": 2,
+    "prose_boundary_marker": 1
    },
    "5": {
     "named": {
@@ -363,10 +375,12 @@
      "incomplete": 6,
      "no_claim": 6
     },
-    "named_refuted_marker": 3,
+    "named_refuted_marker": 4,
     "prose_refuted_marker": 2,
-    "named_fails_paper_marker": 3,
-    "prose_fails_paper_marker": 0
+    "named_fails_paper_marker": 1,
+    "prose_fails_paper_marker": 0,
+    "named_boundary_marker": 1,
+    "prose_boundary_marker": 0
    },
    "6": {
     "named": {
@@ -413,8 +427,10 @@
     },
     "named_refuted_marker": 0,
     "prose_refuted_marker": 0,
-    "named_fails_paper_marker": 6,
-    "prose_fails_paper_marker": 0
+    "named_fails_paper_marker": 4,
+    "prose_fails_paper_marker": 0,
+    "named_boundary_marker": 2,
+    "prose_boundary_marker": 0
    },
    "7": {
     "named": {
@@ -435,7 +451,7 @@
      "corrected": 2,
      "restricted": 15,
      "refuted": 0,
-     "partial": 3,
+     "partial": 1,
      "implied": 5,
      "explanatory": 1,
      "cited-out-of-scope": 1,
@@ -456,13 +472,15 @@
      "stated": 4,
      "corrected": 2,
      "restricted": 15,
-     "incomplete": 9,
+     "incomplete": 7,
      "no_claim": 1
     },
-    "named_refuted_marker": 9,
+    "named_refuted_marker": 6,
     "prose_refuted_marker": 3,
     "named_fails_paper_marker": 0,
-    "prose_fails_paper_marker": 0
+    "prose_fails_paper_marker": 0,
+    "named_boundary_marker": 3,
+    "prose_boundary_marker": 0
    }
   }
  },
@@ -3255,7 +3273,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 211,
+     "line": 291,
      "counted": true
     }
    ],
@@ -3316,7 +3334,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 211,
+     "line": 291,
      "counted": true
     }
    ],
@@ -3437,9 +3455,17 @@
     {
      "name": "StatisticalRL.Statements.Ch3.Thm3_2_positiveN",
      "variant": "restricted",
-     "ledger": "certified",
+     "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
      "line": 85,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch3.Thm3_2",
+     "variant": "printed",
+     "ledger": "certified",
+     "file": "Formalization/Statements/Ch3.lean",
+     "line": 111,
      "counted": true
     },
     {
@@ -3447,7 +3473,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 377,
+     "line": 469,
      "counted": false
     },
     {
@@ -3455,12 +3481,13 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 415,
+     "line": 507,
      "counted": false
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch3.Thm3_2_approxPlanner_positiveN_holds",
+    "StatisticalRL.Statements.Ch3.Thm3_2_holds",
     "StatisticalRL.Statements.Ch3.Thm3_2_planningIterations_holds",
     "StatisticalRL.Statements.Ch3.Thm3_2_positiveN_holds"
    ],
@@ -3473,7 +3500,7 @@
     {
      "ledger": "certified",
      "name": "Theorem 3.2",
-     "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_2_positiveN",
+     "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_2",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -3535,20 +3562,24 @@
    ],
    "display_notes": [
     {
+     "entry": "StatisticalRL.Statements.Ch3.Thm3_2",
+     "note": "Proved as printed. There is a universal constant (the proof gives 10240)."
+    },
+    {
      "entry": "StatisticalRL.Statements.Ch3.Thm3_2_positiveN",
-     "note": "Proved for N > 0 only; the printed threshold contains $\\log N$, which is undefined at N = 0. There is a universal constant (the proof gives 10240)."
+     "note": "Supporting entry: Theorem 3.2 with N > 0 as a hypothesis. The printed form is `Thm3_2`, which the ledger records as proved as printed; at N = 0 the printed threshold and the empirical model are undefined."
     }
    ],
-   "correction_status": "proposed-by-project",
+   "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
-   "statement_status": "restricted",
+   "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
    "implied_variant": null,
    "decision_anchors": [],
    "closing_rows": {},
-   "site_label": "restricted",
+   "site_label": "stated",
    "site_markers": [],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -3576,7 +3607,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 351,
+     "line": 443,
      "counted": true
     }
    ],
@@ -3743,7 +3774,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 111,
+     "line": 148,
      "counted": true
     }
    ],
@@ -3816,7 +3847,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 122,
+     "line": 159,
      "counted": true
     }
    ],
@@ -3897,13 +3928,22 @@
     {
      "name": "StatisticalRL.Statements.Ch3.Lemma3_5_positiveN",
      "variant": "restricted",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch3.lean",
+     "line": 175,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch3.Lemma3_5",
+     "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 138,
+     "line": 207,
      "counted": true
     }
    ],
    "proof_wrappers": [
+    "StatisticalRL.Statements.Ch3.Lemma3_5_holds",
     "StatisticalRL.Statements.Ch3.Lemma3_5_positiveN_holds"
    ],
    "library_exports": [
@@ -3913,7 +3953,7 @@
     {
      "ledger": "certified",
      "name": "Lemma 3.5",
-     "lean_statement": "StatisticalRL.Statements.Ch3.Lemma3_5_positiveN",
+     "lean_statement": "StatisticalRL.Statements.Ch3.Lemma3_5",
      "proof_origin": "source-proof",
      "correction_status": "proposed-by-project",
      "status_override": null
@@ -3973,20 +4013,24 @@
    ],
    "display_notes": [
     {
+     "entry": "StatisticalRL.Statements.Ch3.Lemma3_5",
+     "note": "Proved as printed. There are universal constants (explicit in the proof)."
+    },
+    {
      "entry": "StatisticalRL.Statements.Ch3.Lemma3_5_positiveN",
-     "note": "Proved for N > 0 only; the printed statement involves $\\log N$, undefined at N = 0. There are universal constants (explicit in the proof)."
+     "note": "Supporting entry: Lemma 3.5 with N > 0 as a hypothesis. The printed form is `Lemma3_5`, which the ledger records as proved as printed; at N = 0 the printed bounds and the empirical model are undefined."
     }
    ],
-   "correction_status": "proposed-by-project",
+   "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
-   "statement_status": "restricted",
+   "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
    "implied_variant": null,
    "decision_anchors": [],
    "closing_rows": {},
-   "site_label": "restricted",
+   "site_label": "stated",
    "site_markers": [],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -4014,7 +4058,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 234,
+     "line": 314,
      "counted": true
     }
    ],
@@ -4156,25 +4200,25 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 280,
+     "line": 360,
      "counted": true
     },
     {
-     "name": "StatisticalRL.Statements.Ch3.Thm3_7_policyEvaluation_A1_restricted",
-     "variant": "restricted",
+     "name": "StatisticalRL.Statements.Ch3.Thm3_7_policyEvaluation_A1",
+     "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 322,
+     "line": 410,
      "counted": false
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch3.Thm3_7_corrected_holds",
-    "StatisticalRL.Statements.Ch3.Thm3_7_policyEvaluation_A1_restricted_holds"
+    "StatisticalRL.Statements.Ch3.Thm3_7_policyEvaluation_A1_holds"
    ],
    "library_exports": [
     "StatisticalRL.GenerativeLowerBound.theorem37_corrected_fin_carriers",
-    "StatisticalRL.GenerativeLowerBound.policyEvaluation_lowerBound_singleAction"
+    "StatisticalRL.GenerativeLowerBound.policyEvaluation_lowerBound_singleAction_randomized"
    ],
    "ledger_records": [
     {
@@ -4230,7 +4274,7 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch3.Thm3_7_corrected",
-     "note": "Adds S ≥ 2, and A ≥ 2 for part (i); the printed theorem fails under its standalone reading by this project's counterexamples, checked in Lean (C1, C2). Estimators are deterministic maps of the data; randomized estimators in printed part (ii) are not covered."
+     "note": "Adds S ≥ 2, and A ≥ 2 for part (i); the printed theorem fails under its standalone reading by this project's counterexamples, checked in Lean (C1, C2). Part (ii) covers randomized estimators; part (i) is for deterministic estimators."
     }
    ],
    "correction_status": "proposed-by-project",
@@ -4246,6 +4290,7 @@
      "C1",
      "C2"
     ],
+    "kind": "boundary",
     "key": "theorem:azar"
    },
    "statement_status": "corrected",
@@ -4256,7 +4301,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted"
+    "boundary"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -4281,10 +4326,10 @@
    "statement_entries": [
     {
      "name": "StatisticalRL.Statements.Ch3.Eq_P_Mi_Q_inaccurate_lower_generative",
-     "variant": "restricted",
+     "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 461,
+     "line": 553,
      "counted": true
     }
    ],
@@ -4293,7 +4338,7 @@
    ],
    "library_exports": [
     "StatisticalRL.GenerativeLowerBound.sourceHardMDP",
-    "StatisticalRL.GenerativeLowerBound.sourceHardMDP_full_Q_estimation_lower"
+    "StatisticalRL.GenerativeLowerBound.sourceHardMDP_randomized_Q_estimation_lower"
    ],
    "ledger_records": [],
    "coverage_rows": [
@@ -4312,22 +4357,22 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch3.Eq_P_Mi_Q_inaccurate_lower_generative",
-     "note": "The two-point lower bound for deterministic estimators (functions of the sample array): for γ ∈ [2/3,1), 0 < ε < 1/(32(1−γ)) and every N ≤ 0.003/((1−γ)³ε²), every estimator of Q(s₁,a) has P(|Q̂ − Q⋆| > ε) > 0.1 under one of two two-state, one-action MDPs. Randomized estimators, which the printed \"any estimator\" includes, are not covered (C4)."
+     "note": "The two-point lower bound for every estimator, randomized included (a probability law on ℝ given the sample array): for γ ∈ [2/3,1), 0 < ε < 1/(32(1−γ)) and every N ≤ 0.003/((1−γ)³ε²), every estimator of Q(s₁,a) has P(|Q̂ − Q⋆| > ε) > 0.1 under one of two two-state, one-action MDPs. Deterministic estimators are the Dirac case; the strict inequality is the C4 step."
     }
    ],
-   "correction_status": "proposed-by-project",
+   "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
-   "statement_status": "restricted",
+   "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
    "implied_variant": null,
    "decision_anchors": [],
    "closing_rows": {},
-   "site_label": "restricted",
+   "site_label": "stated",
    "site_markers": [],
    "site_sub_reason": "",
-   "printed_with_cited_printed": false
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:eq:P-Mi-Q-inaccurate-lower-generative",
@@ -4349,10 +4394,10 @@
    "statement_entries": [
     {
      "name": "StatisticalRL.Statements.Ch3.Eq_P_Mi_Q_inaccurate_lower_generative",
-     "variant": "restricted",
+     "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 461,
+     "line": 553,
      "counted": true
     }
    ],
@@ -4361,7 +4406,7 @@
    ],
    "library_exports": [
     "StatisticalRL.GenerativeLowerBound.sourceHardMDP",
-    "StatisticalRL.GenerativeLowerBound.sourceHardMDP_full_Q_estimation_lower"
+    "StatisticalRL.GenerativeLowerBound.sourceHardMDP_randomized_Q_estimation_lower"
    ],
    "ledger_records": [],
    "coverage_rows": [
@@ -4380,22 +4425,22 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch3.Eq_P_Mi_Q_inaccurate_lower_generative",
-     "note": "The two-point lower bound for deterministic estimators (functions of the sample array): for γ ∈ [2/3,1), 0 < ε < 1/(32(1−γ)) and every N ≤ 0.003/((1−γ)³ε²), every estimator of Q(s₁,a) has P(|Q̂ − Q⋆| > ε) > 0.1 under one of two two-state, one-action MDPs. Randomized estimators, which the printed \"any estimator\" includes, are not covered (C4)."
+     "note": "The two-point lower bound for every estimator, randomized included (a probability law on ℝ given the sample array): for γ ∈ [2/3,1), 0 < ε < 1/(32(1−γ)) and every N ≤ 0.003/((1−γ)³ε²), every estimator of Q(s₁,a) has P(|Q̂ − Q⋆| > ε) > 0.1 under one of two two-state, one-action MDPs. Deterministic estimators are the Dirac case; the strict inequality is the C4 step."
     }
    ],
-   "correction_status": "proposed-by-project",
+   "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
-   "statement_status": "restricted",
+   "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
    "implied_variant": null,
    "decision_anchors": [],
    "closing_rows": {},
-   "site_label": "restricted",
+   "site_label": "stated",
    "site_markers": [],
    "site_sub_reason": "",
-   "printed_with_cited_printed": false
+   "printed_with_cited_printed": true
   },
   {
    "id": "label:lem:properties-M01-lower-generative",
@@ -4420,7 +4465,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 260,
+     "line": 340,
      "counted": true
     }
    ],
@@ -4496,7 +4541,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 170,
+     "line": 250,
      "counted": false
     },
     {
@@ -4504,7 +4549,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 541,
+     "line": 642,
      "counted": false
     },
     {
@@ -4512,7 +4557,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 589,
+     "line": 690,
      "counted": true
     }
    ],
@@ -4595,7 +4640,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 487,
+     "line": 588,
      "counted": false
     }
    ],
@@ -5000,6 +5045,7 @@
     "issues": [
      "C5"
     ],
+    "kind": "counterexample",
     "key": "lemma:TD-step-size"
    },
    "statement_status": "corrected",
@@ -6141,7 +6187,10 @@
    "evidence": [
     "docs/critic-thm4-12.md"
    ],
-   "refutations_cited": [],
+   "refutations_cited": [
+    "not_Thm4_12_printed",
+    "not_Thm4_12_printedAt"
+   ],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [
@@ -6177,12 +6226,16 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": {
-    "lean": null,
+    "lean": [
+     "StatisticalRL.AsyncQ.not_Thm4_12_printed",
+     "StatisticalRL.AsyncQ.not_Thm4_12_printedAt"
+    ],
     "paper": true,
-    "reading": "T = 1 with SA = 1, and μ_min = 0 (paper computations by this project).",
+    "reading": "T = 1 with S = A = 1 (log³T = 0, so the rate is 0 and Q₁ = Q₀; machine-checked for the ∃c₁∃c₂ Prop and, per constant, for every c₁, c₂, so every quantifier order fails). Read with η_t ∈ (0,1) (:1937) the instance is ill-posed, as in C35; domain repair T ≥ 2 or SA ≥ 2. μ_min = 0 (C34(2)) is a paper argument.",
     "issues": [
      "C34"
     ],
+    "kind": "boundary",
     "key": "thm:infinite-horizon-asyn"
    },
    "statement_status": "corrected",
@@ -6193,7 +6246,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "fails-paper",
+    "boundary",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -6236,7 +6289,10 @@
     "C34"
    ],
    "evidence": [],
-   "refutations_cited": [],
+   "refutations_cited": [
+    "not_Remark4_3_printed",
+    "not_Remark4_3_printedAt"
+   ],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [],
@@ -6251,12 +6307,16 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": {
-    "lean": null,
-    "paper": true,
-    "reading": "Read like Remarks 4.1/4.2, the remark fails at the same T = 1 instance as Theorem 4.12 (paper computation).",
+    "lean": [
+     "StatisticalRL.AsyncQ.not_Remark4_3_printed",
+     "StatisticalRL.AsyncQ.not_Remark4_3_printedAt"
+    ],
+    "paper": false,
+    "reading": "This project's reading (Remark4_3_corrected without the C34 premises; the remark has no formula), at the same T = 1, SA = 1 instance with ε = 1/4: mean error ≥ 1 exceeds both ε(1−δ)+δ/(1−γ) = 23/64 and the bare 2ε = 1/2, for every c₁, c₂.",
     "issues": [
      "C34"
     ],
+    "kind": "boundary",
     "key": "id:ch4-remark-4.3"
    },
    "statement_status": "corrected",
@@ -6267,7 +6327,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "fails-paper"
+    "boundary"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -6406,6 +6466,7 @@
     "issues": [
      "C35"
     ],
+    "kind": "boundary",
     "key": "thm:finite-horizon-simple-Q-generative"
    },
    "statement_status": "corrected",
@@ -6416,7 +6477,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted",
+    "boundary",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -6812,6 +6873,7 @@
     "issues": [
      "C46"
     ],
+    "kind": "counterexample",
     "key": "eq:PAC-from-regret-conversion"
    },
    "statement_status": "corrected",
@@ -8171,6 +8233,7 @@
     "issues": [
      "C12"
     ],
+    "kind": "counterexample",
     "key": "lem:bound-W1-W2-ucbvi-proof"
    },
    "statement_status": "corrected",
@@ -8342,7 +8405,9 @@
    "evidence": [
     "docs/critic-online-t234-joint.md"
    ],
-   "refutations_cited": [],
+   "refutations_cited": [
+    "not_Lemma5_8_printed"
+   ],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [
@@ -8396,12 +8461,15 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": {
-    "lean": null,
-    "paper": true,
-    "reading": "K = H = 1, where the displayed confidence demands probability greater than 1 (source-level argument).",
+    "lean": [
+     "StatisticalRL.OnlineRL.not_Lemma5_8_printed"
+    ],
+    "paper": false,
+    "reading": "K = H = 1: the confidence 1 − 4log₂(KH)δ' equals 1 and no probability exceeds it. Repair K ≥ 2; the four inequalities and Theorem 5.2 are not refuted.",
     "issues": [
      "C12"
     ],
+    "kind": "boundary",
     "key": "lem:bound-T234"
    },
    "statement_status": "corrected",
@@ -8412,7 +8480,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "fails-paper"
+    "boundary"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -8766,7 +8834,10 @@
    "evidence": [
     "docs/critic-online-MVP-main-decoupling.md"
    ],
-   "refutations_cited": [],
+   "refutations_cited": [
+    "not_Thm5_10_literalTrigger_printed",
+    "not_Thm5_10_literalTrigger_printed_rule"
+   ],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [
@@ -8865,12 +8936,17 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": {
-    "lean": null,
-    "paper": true,
-    "reading": "The literal consecutive-integer trigger of the printed algorithm with an adversarial tie (paper calculation).",
-    "issues": [
-     "C48"
+    "lean": [
+     "StatisticalRL.OnlineRL.not_Thm5_10_literalTrigger_printed",
+     "StatisticalRL.OnlineRL.not_Thm5_10_literalTrigger_printed_rule"
     ],
+    "paper": true,
+    "reading": "Literal trigger set {1,2,…,2^{log₂K}} (C13); Õ as ∃C,p polylog(SAHK/δ); universal c₁, c₂ > 0 (the refutation needs c₂ independent of K); any zero-count completion b₀ ≥ 0; every deterministic argmax tie rule (also each fixed rule separately), with regret exactly K surely. Uniform random tie-breaking (regret about K/2) is a paper argument only; history-dependent tie rules are outside the model.",
+    "issues": [
+     "C48",
+     "C13"
+    ],
+    "kind": "counterexample",
     "key": "thm-mvp-regret"
    },
    "statement_status": "corrected",
@@ -8881,7 +8957,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "fails-paper"
+    "refuted"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -9145,6 +9221,7 @@
     "issues": [
      "C13"
     ],
+    "kind": "counterexample",
     "key": "lem:sum-inv-Nhk-mvp"
    },
    "statement_status": "corrected",
@@ -9277,6 +9354,7 @@
     "issues": [
      "C16"
     ],
+    "kind": "counterexample",
     "key": "lemma:uniform"
    },
    "statement_status": "corrected",
@@ -10557,6 +10635,7 @@
     "issues": [
      "C14"
     ],
+    "kind": "counterexample",
     "key": "lemma:sqv"
    },
    "statement_status": "corrected",
@@ -10761,6 +10840,7 @@
     "issues": [
      "C17"
     ],
+    "kind": "counterexample",
     "key": "eq:Vk-Itrue"
    },
    "statement_status": "refuted",
@@ -10773,7 +10853,7 @@
    "site_markers": [
     "refuted"
    ],
-   "site_sub_reason": "printed statement refuted in Lean; nothing proved",
+   "site_sub_reason": "nothing proved",
    "printed_with_cited_printed": false
   },
   {
@@ -11416,6 +11496,7 @@
     "issues": [
      "C10"
     ],
+    "kind": "counterexample",
     "key": "lem:monotone-contraction"
    },
    "statement_status": "corrected",
@@ -11770,7 +11851,9 @@
    "evidence": [
     "docs/ch6-corrected-variants-evidence.md"
    ],
-   "refutations_cited": [],
+   "refutations_cited": [
+    "not_Lemma6_5_printed"
+   ],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [
@@ -11797,12 +11880,15 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": {
-    "lean": null,
-    "paper": true,
-    "reading": "N = 1 (S = 1, A = 2, δ = 31/32; paper calculation).",
+    "lean": [
+     "StatisticalRL.OfflineRL.not_Lemma6_5_printed"
+    ],
+    "paper": false,
+    "reading": "The standalone lemma at S·N = 1 (S = 1, A = 2, N = 1, δ = 31/32): the event is empty. Repair N ≥ 2; Theorem 6.3's regime implies it.",
     "issues": [
      "C19"
     ],
+    "kind": "boundary",
     "key": "lem:sample-split-infinite"
    },
    "statement_status": "corrected",
@@ -11813,7 +11899,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "fails-paper"
+    "boundary"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -12314,6 +12400,7 @@
     "issues": [
      "C24"
     ],
+    "kind": "counterexample",
     "key": "theorem:lcbq"
    },
    "statement_status": "corrected",
@@ -12571,6 +12658,7 @@
     "issues": [
      "C28"
     ],
+    "kind": "counterexample",
     "key": "lemma:pessimistic-Q"
    },
    "statement_status": "restricted",
@@ -12638,7 +12726,9 @@
    "evidence": [
     "docs/critic-lemma6-11-restricted.md"
    ],
-   "refutations_cited": [],
+   "refutations_cited": [
+    "not_Lemma6_11_printed"
+   ],
    "partial_lead": false,
    "refuted_lead": false,
    "uses": [
@@ -12665,12 +12755,15 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": {
-    "lean": null,
+    "lean": [
+     "StatisticalRL.OfflineRL.not_Lemma6_11_printed"
+    ],
     "paper": true,
-    "reading": "log(SAT/δ) < 1, possible only when SAT ≤ 2 (paper argument).",
+    "reading": "Standalone, log(SAT/δ) < 1 (SAT = 1, δ = 9/10, γ = 1/8 − η, κ < 1): no universal constant works (Lean, for every C); κ ≥ 1 divergence is a paper argument. Theorem 6.8 unaffected.",
     "issues": [
      "C22"
     ],
+    "kind": "boundary",
     "key": "lemma:useful"
    },
    "statement_status": "restricted",
@@ -12681,7 +12774,7 @@
    "closing_rows": {},
    "site_label": "restricted",
    "site_markers": [
-    "fails-paper"
+    "boundary"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -12817,6 +12910,7 @@
     "issues": [
      "C24"
     ],
+    "kind": "counterexample",
     "key": "lem:lcbq-alpha-xi-psi-phi-bound"
    },
    "statement_status": "restricted",
@@ -13525,7 +13619,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1697,
+     "line": 1782,
      "counted": true
     }
    ],
@@ -13588,7 +13682,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1746,
+     "line": 1831,
      "counted": true
     }
    ],
@@ -13651,7 +13745,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1797,
+     "line": 1882,
      "counted": true
     }
    ],
@@ -13822,7 +13916,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 474,
+     "line": 585,
      "counted": true
     }
    ],
@@ -13888,6 +13982,7 @@
     "issues": [
      "C37"
     ],
+    "kind": "counterexample",
     "key": "thm:l1-upper-bound"
    },
    "statement_status": "corrected",
@@ -13927,7 +14022,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 541,
+     "line": 652,
      "counted": true
     }
    ],
@@ -14021,17 +14116,37 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 178,
+     "line": 180,
      "counted": true
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_randomized",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 211,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward_randomized",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 237,
+     "counted": false
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch7.Thm7_3_corrected_holds",
-    "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward_holds"
+    "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward_holds",
+    "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward_randomized_holds",
+    "StatisticalRL.Statements.Ch7.Thm7_3_corrected_randomized_holds"
    ],
    "library_exports": [
     "StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected",
-    "StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected_knownReward"
+    "StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected_knownReward",
+    "StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_3_corrected_randomized",
+    "StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_3_corrected_knownReward_randomized"
    ],
    "ledger_records": [
     {
@@ -14055,6 +14170,7 @@
     31
    ],
    "issues": [
+    "C7",
     "C38"
    ],
    "evidence": [
@@ -14075,11 +14191,11 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch7.Thm7_3_corrected",
-     "note": "Adds A ≥ 2; the printed statement is refuted in Lean at A = 1 by this project's counterexample (C38). Estimators are deterministic maps of the samples; randomized estimators in the printed infimum are not covered."
+     "note": "Adds A ≥ 2; the printed statement is refuted in Lean at A = 1 by this project's counterexample (C38). Deterministic estimators here; seeded randomized estimators are covered by Thm7_3_corrected_randomized (docs/critic-rand73.md)."
     },
     {
      "entry": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward",
-     "note": "Adds S ≥ 2 and A ≥ 2 under the known-reward convention (C38); A = 1 is refuted in Lean, the S = 1 failure is a paper argument. Estimators are deterministic maps of the samples."
+     "note": "Adds S ≥ 2 and A ≥ 2 under the known-reward convention (C38); A = 1 is refuted in Lean, the S = 1 failure is a paper argument. Deterministic estimators here; seeded randomized estimators are covered by Thm7_3_corrected_knownReward_randomized."
     }
    ],
    "correction_status": "proposed-by-project",
@@ -14095,6 +14211,7 @@
     "issues": [
      "C38"
     ],
+    "kind": "boundary",
     "key": "thm:l1-lower-bound"
    },
    "statement_status": "corrected",
@@ -14105,7 +14222,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted",
+    "boundary",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -14211,7 +14328,7 @@
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
-    "StatisticalRL.Statements.Ch3.Thm3_2_positiveN",
+    "StatisticalRL.Statements.Ch3.Thm3_2",
     "StatisticalRL.Statements.Ch3.Thm3_7_corrected"
    ],
    "implied_variant": "corrected",
@@ -14249,7 +14366,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 512,
+     "line": 623,
      "counted": true
     }
    ],
@@ -14315,6 +14432,7 @@
     "issues": [
      "C37"
     ],
+    "kind": "counterexample",
     "key": "thm:l2-upper-bound"
    },
    "statement_status": "corrected",
@@ -14354,7 +14472,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 584,
+     "line": 695,
      "counted": true
     }
    ],
@@ -14440,7 +14558,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 211,
+     "line": 266,
      "counted": true
     },
     {
@@ -14448,17 +14566,37 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 258,
+     "line": 315,
      "counted": true
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_randomized",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 346,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward_randomized",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 372,
+     "counted": false
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch7.Thm7_5_corrected_holds",
-    "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward_holds"
+    "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward_holds",
+    "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward_randomized_holds",
+    "StatisticalRL.Statements.Ch7.Thm7_5_corrected_randomized_holds"
    ],
    "library_exports": [
     "StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected",
-    "StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward"
+    "StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward",
+    "StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_5_corrected_randomized",
+    "StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_5_corrected_knownReward_randomized"
    ],
    "ledger_records": [
     {
@@ -14482,7 +14620,8 @@
     24
    ],
    "issues": [
-    "C7"
+    "C7",
+    "C38"
    ],
    "evidence": [
     "docs/critic-thm7-5-revision.md"
@@ -14501,11 +14640,11 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch7.Thm7_5_corrected",
-     "note": "Adds A ≥ 2; at A = 1 the printed statement is refuted in Lean for every pair of constants by this project's counterexample (C7). There are constants c₃, c₄ (the proof gives 1/512 and 1/5308416). Estimators are deterministic maps of the samples."
+     "note": "Adds A ≥ 2; at A = 1 the printed statement is refuted in Lean for every pair of constants by this project's counterexample (C7). There are constants c₃, c₄ (the proof gives 1/512 and 1/5308416). Deterministic estimators here; seeded randomized estimators are covered by Thm7_5_corrected_randomized (docs/critic-rand73.md)."
     },
     {
      "entry": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward",
-     "note": "Adds S ≥ 2 and A ≥ 2 under the known-reward convention, both shown necessary in Lean (C7). Estimators are deterministic maps of the samples."
+     "note": "Adds S ≥ 2 and A ≥ 2 under the known-reward convention, both shown necessary in Lean (C7). Deterministic estimators here; seeded randomized estimators are covered by Thm7_5_corrected_knownReward_randomized."
     }
    ],
    "correction_status": "proposed-by-project",
@@ -14520,6 +14659,7 @@
     "issues": [
      "C7"
     ],
+    "kind": "boundary",
     "key": "thm:chi2-lower-bound"
    },
    "statement_status": "corrected",
@@ -14530,7 +14670,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted",
+    "boundary",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -14616,7 +14756,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1849,
+     "line": 1934,
      "counted": true
     }
    ],
@@ -14680,7 +14820,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1879,
+     "line": 1964,
      "counted": true
     }
    ],
@@ -14745,7 +14885,7 @@
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1540,
+     "line": 1621,
      "counted": true
     }
    ],
@@ -14758,7 +14898,9 @@
     "StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_ne",
     "StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_cce",
     "StatisticalRL.Ch7Rest.Marl76.causalCCEOracle_exists",
-    "StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted_ccePlanner"
+    "StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted_ccePlanner",
+    "StatisticalRL.Ch7Rest.Marl76.exists_causalNEOracle_constSum",
+    "StatisticalRL.Ch7Rest.Marl76.thm7_6_clauseB_hypotheses_constSum"
    ],
    "ledger_records": [
     {
@@ -14794,7 +14936,7 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch7.Thm7_6_restricted",
-     "note": "Restricted to causal planning oracles; with an arbitrary equilibrium oracle the printed statement is refuted in Lean for every C₁ by this project's counterexample (C45). There is a constant C₁ (the proof gives 400)."
+     "note": "Restricted to causal planning oracles; with an arbitrary equilibrium oracle the printed statement is refuted in Lean for every C₁ by this project's counterexample (C45). There is a constant C₁ (the proof gives 400). The CCE clause (a) is non-vacuous in Lean. The NE clause (b) and the joint clause (c) are shown non-vacuous only for two-player constant-sum games; for general-sum games and three or more players no causal Nash-equilibrium oracle is constructed in Lean (Nash's existence theorem is not in Mathlib), so there they are proved for every such oracle but may be vacuous."
     }
    ],
    "correction_status": "proposed-by-project",
@@ -14810,6 +14952,7 @@
     "issues": [
      "C45"
     ],
+    "kind": "counterexample",
     "key": "thm:sample-complexity-plug-in-marl"
    },
    "statement_status": "restricted",
@@ -14904,7 +15047,7 @@
      "variant": "restricted",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1622,
+     "line": 1707,
      "counted": false
     }
    ],
@@ -14987,7 +15130,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 290,
+     "line": 401,
      "counted": true
     },
     {
@@ -14995,7 +15138,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 337,
+     "line": 448,
      "counted": true
     }
    ],
@@ -15065,6 +15208,7 @@
     "issues": [
      "C40"
     ],
+    "kind": "boundary",
     "key": "thm:lower-marl"
    },
    "statement_status": "corrected",
@@ -15075,7 +15219,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted",
+    "boundary",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -15104,7 +15248,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 365,
+     "line": 476,
      "counted": true
     }
    ],
@@ -15172,6 +15316,7 @@
     "issues": [
      "C41"
     ],
+    "kind": "counterexample",
     "key": "thm:dist-syncq-local"
    },
    "statement_status": "corrected",
@@ -15211,7 +15356,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 420,
+     "line": 531,
      "counted": true
     }
    ],
@@ -15330,7 +15475,7 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch7.Thm7_10_restricted",
-     "note": "Theorem 7.10 covers only the exact-averaging algorithms, not the compressed or other mean-estimation routines the printed algorithm class allows (C42). The lower bound is proved with the deterministic instance r ≡ 1 only; no communication–variance argument is formalized."
+     "note": "The Lean entry covers only the exact-averaging algorithms, not the compressed or other mean-estimation routines the printed algorithm class allows (C42). The lower bound is proved with the deterministic instance r ≡ 1 only; no communication–variance argument is formalized."
     }
    ],
    "correction_status": "proposed-by-project",
@@ -15344,6 +15489,7 @@
     "issues": [
      "C42"
     ],
+    "kind": "counterexample",
     "key": "thm:lower_bound"
    },
    "statement_status": "restricted",
@@ -15434,7 +15580,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 705,
+     "line": 816,
      "counted": true
     },
     {
@@ -15442,7 +15588,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 741,
+     "line": 852,
      "counted": true
     }
    ],
@@ -15493,6 +15639,7 @@
     "issues": [
      "C43"
     ],
+    "kind": "counterexample",
     "key": "eqn:classic-clt"
    },
    "statement_status": "corrected",
@@ -15531,7 +15678,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1909,
+     "line": 1994,
      "counted": true
     }
    ],
@@ -15591,7 +15738,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 632,
+     "line": 743,
      "counted": true
     },
     {
@@ -15599,7 +15746,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 665,
+     "line": 776,
      "counted": false
     }
    ],
@@ -15676,6 +15823,7 @@
     "issues": [
      "C43"
     ],
+    "kind": "counterexample",
     "key": "thm:Berry-Esseen-linear"
    },
    "statement_status": "corrected",
@@ -15713,7 +15861,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1927,
+     "line": 2012,
      "counted": true
     }
    ],
@@ -15774,7 +15922,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1168,
+     "line": 1249,
      "counted": true
     },
     {
@@ -15782,7 +15930,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1190,
+     "line": 1271,
      "counted": true
     }
    ],
@@ -15834,6 +15982,7 @@
     "issues": [
      "C43"
     ],
+    "kind": "counterexample",
     "key": "eq:defn-hat-Lambda"
    },
    "statement_status": "corrected",
@@ -15872,7 +16021,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 773,
+     "line": 884,
      "counted": false
     },
     {
@@ -15880,7 +16029,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 825,
+     "line": 936,
      "counted": false
     },
     {
@@ -15888,19 +16037,87 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 879,
+     "line": 976,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1005,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_oracle",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1040,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1069,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1106,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1139,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_plugin",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1176,
+     "counted": false
+    },
+    {
+     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_plugin",
+     "variant": "corrected",
+     "ledger": null,
+     "file": "Formalization/Statements/Ch7.lean",
+     "line": 1208,
      "counted": false
     }
    ],
    "proof_wrappers": [
     "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_corrected_oracle_holds",
     "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_corrected_plugin_holds",
-    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_fixedShape_corrected_oracle_holds"
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated_holds",
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared_holds",
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_holds",
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_plugin_holds",
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_fixedShape_corrected_oracle_holds",
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated_holds",
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_oracle_holds",
+    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_plugin_holds"
    ],
    "library_exports": [
     "StatisticalRL.Ch7Rest.TDInference.exists_coverage_oracle_bounds",
-    "StatisticalRL.Ch7Rest.TDInference.plugin_coverage_tendsto",
-    "StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds"
+    "StatisticalRL.Ch7Rest.TDInference.plugin_coverage_rate",
+    "StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds_sharp",
+    "StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated_sharp",
+    "StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_chiSquared_sharp",
+    "StatisticalRL.Ch7Rest.TDInference.exists_chiSquared_quantile",
+    "StatisticalRL.Ch7Rest.TDInference.exists_coverage_ellipsoid_plugin_rate",
+    "StatisticalRL.Probability.exists_mul_transpose_eq_of_posSemidef"
    ],
    "ledger_records": [],
    "coverage_rows": [
@@ -15928,11 +16145,11 @@
     },
     {
      "entry": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_corrected_plugin",
-     "note": "Partial result toward eq:convex.Cdelta: fixed-shape intervals with the plug-in covariance Λ̂_T, limits only (no rate). Coverage is asymptotic, pointwise in (u, z); Γ_true ≻ 0 is an added hypothesis; Lean's junk value Λ̂_T = 0 on the singular event does not affect the limits. The plug-in ellipsoid and rectangle are separate entries."
+     "note": "Partial result toward eq:convex.Cdelta: fixed-shape intervals and the Bonferroni box with the plug-in covariance Λ̂_T, with a finite-T rate: one instance constant K (independent of T, u, z) bounds the coverage error by K·T^(-1/3). Γ_true ≻ 0 is an added hypothesis; Lean's junk value Λ̂_T = 0 on the singular event lies inside the charged bad event. The plug-in ellipsoid (K independent of T, q, α, R) and ℓ∞ rectangle (K depending on α) are separate entries with the same rate."
     },
     {
      "entry": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_fixedShape_corrected_oracle",
-     "note": "Partial result toward eq:convex.Cdelta: with the oracle covariance Λ = A⁻¹Γ_trueA⁻ᵀ (unknown in practice) and Γ_true ≻ 0, one instance constant K₀ such that for every convex K fixed before the data, |P(V^π ∈ V̄_T + T^(-1/2)K) − N(0,Λ)(K)| ≤ K₀T^(-1/3)log(2T) for all T ≥ 1. Sets chosen from the data, as the printed rule allows, are not covered; that printed claim fails (C47(1))."
+     "note": "Partial result toward eq:convex.Cdelta: with the oracle covariance Λ = A⁻¹Γ_trueA⁻ᵀ (unknown in practice) and Γ_true ≻ 0, one instance constant K₀ such that for every convex K fixed before the data, |P(V^π ∈ V̄_T + T^(-1/2)K) − N(0,Λ)(K)| ≤ K₀T^(-1/3) for all T ≥ 1. Sets chosen from the data, as the printed rule allows, are not covered; that printed claim fails (C47(1))."
     }
    ],
    "correction_status": "proposed-by-project",
@@ -15948,6 +16165,7 @@
     "issues": [
      "C47"
     ],
+    "kind": "counterexample",
     "key": "eq:convex.Cdelta"
    },
    "statement_status": "partial",
@@ -15961,176 +16179,6 @@
     "refuted"
    ],
    "site_sub_reason": "partial",
-   "printed_with_cited_printed": false
-  },
-  {
-   "id": "ch7-display-08451961e9d8",
-   "labels": [],
-   "number": null,
-   "kind": "display",
-   "class": "prose",
-   "chapter": "7",
-   "title_tex": null,
-   "tex": [
-    {
-     "file": "chapters/inference.tex",
-     "line_start": 200,
-     "line_end": 203
-    }
-   ],
-   "statement_entries": [
-    {
-     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_oracle",
-     "variant": "corrected",
-     "ledger": null,
-     "file": "Formalization/Statements/Ch7.lean",
-     "line": 943,
-     "counted": false
-    },
-    {
-     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated",
-     "variant": "corrected",
-     "ledger": null,
-     "file": "Formalization/Statements/Ch7.lean",
-     "line": 1009,
-     "counted": false
-    },
-    {
-     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_plugin",
-     "variant": "corrected",
-     "ledger": null,
-     "file": "Formalization/Statements/Ch7.lean",
-     "line": 1118,
-     "counted": false
-    }
-   ],
-   "proof_wrappers": [
-    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated_holds",
-    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_oracle_holds",
-    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_rectangle_corrected_plugin_holds"
-   ],
-   "library_exports": [
-    "StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds",
-    "StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated",
-    "StatisticalRL.Probability.exists_mul_transpose_eq_of_posSemidef"
-   ],
-   "ledger_records": [],
-   "coverage_rows": [],
-   "issues": [
-    "C43",
-    "C47"
-   ],
-   "evidence": [],
-   "refutations_cited": [],
-   "partial_lead": false,
-   "refuted_lead": false,
-   "uses": [],
-   "display_name": "Unnumbered display (inference.tex:200–203)",
-   "proof_origins": [],
-   "display_notes": [],
-   "correction_status": null,
-   "status_override": null,
-   "printed_refuted": null,
-   "statement_status": "partial",
-   "proof_status": "open",
-   "implied_by": [],
-   "implied_variant": null,
-   "decision_anchors": [],
-   "closing_rows": {},
-   "site_label": "incomplete",
-   "site_markers": [],
-   "site_sub_reason": "Lean statement without a reviewed status record",
-   "printed_with_cited_printed": false
-  },
-  {
-   "id": "ch7-display-df12552d443c",
-   "labels": [],
-   "number": null,
-   "kind": "display",
-   "class": "prose",
-   "chapter": "7",
-   "title_tex": null,
-   "tex": [
-    {
-     "file": "chapters/inference.tex",
-     "line_start": 209,
-     "line_end": 211
-    }
-   ],
-   "statement_entries": [
-    {
-     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle",
-     "variant": "corrected",
-     "ledger": null,
-     "file": "Formalization/Statements/Ch7.lean",
-     "line": 908,
-     "counted": false
-    },
-    {
-     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated",
-     "variant": "corrected",
-     "ledger": null,
-     "file": "Formalization/Statements/Ch7.lean",
-     "line": 972,
-     "counted": false
-    },
-    {
-     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared",
-     "variant": "corrected",
-     "ledger": null,
-     "file": "Formalization/Statements/Ch7.lean",
-     "line": 1042,
-     "counted": false
-    },
-    {
-     "name": "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_plugin",
-     "variant": "corrected",
-     "ledger": null,
-     "file": "Formalization/Statements/Ch7.lean",
-     "line": 1079,
-     "counted": false
-    }
-   ],
-   "proof_wrappers": [
-    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated_holds",
-    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared_holds",
-    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_oracle_holds",
-    "StatisticalRL.Statements.Ch7.Eq_convex_Cdelta_ellipsoid_corrected_plugin_holds"
-   ],
-   "library_exports": [
-    "StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds",
-    "StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated",
-    "StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_chiSquared",
-    "StatisticalRL.Ch7Rest.TDInference.exists_chiSquared_quantile",
-    "StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin",
-    "StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin_chiSquared"
-   ],
-   "ledger_records": [],
-   "coverage_rows": [],
-   "issues": [
-    "C43",
-    "C47"
-   ],
-   "evidence": [],
-   "refutations_cited": [],
-   "partial_lead": false,
-   "refuted_lead": false,
-   "uses": [],
-   "display_name": "Unnumbered display (inference.tex:209–211)",
-   "proof_origins": [],
-   "display_notes": [],
-   "correction_status": null,
-   "status_override": null,
-   "printed_refuted": null,
-   "statement_status": "partial",
-   "proof_status": "open",
-   "implied_by": [],
-   "implied_variant": null,
-   "decision_anchors": [],
-   "closing_rows": {},
-   "site_label": "incomplete",
-   "site_markers": [],
-   "site_sub_reason": "Lean statement without a reviewed status record",
    "printed_with_cited_printed": false
   },
   {
@@ -16156,7 +16204,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1473,
+     "line": 1554,
      "counted": true
     }
    ],
@@ -16214,7 +16262,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1473,
+     "line": 1554,
      "counted": true
     }
    ],
@@ -16272,7 +16320,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1473,
+     "line": 1554,
      "counted": true
     }
    ],
@@ -16330,7 +16378,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1308,
+     "line": 1389,
      "counted": true
     },
     {
@@ -16338,7 +16386,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1426,
+     "line": 1507,
      "counted": true
     }
    ],
@@ -16402,7 +16450,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1308,
+     "line": 1389,
      "counted": true
     }
    ],
@@ -16465,7 +16513,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1498,
+     "line": 1579,
      "counted": true
     }
    ],
@@ -16523,7 +16571,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1348,
+     "line": 1429,
      "counted": true
     },
     {
@@ -16531,7 +16579,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1443,
+     "line": 1524,
      "counted": true
     }
    ],
@@ -16595,7 +16643,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1348,
+     "line": 1429,
      "counted": true
     }
    ],
@@ -16658,7 +16706,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1390,
+     "line": 1471,
      "counted": false
     }
    ],
@@ -16727,7 +16775,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1390,
+     "line": 1471,
      "counted": false
     }
    ],
@@ -16798,7 +16846,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1390,
+     "line": 1471,
      "counted": true
     }
    ],
@@ -16863,7 +16911,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1216,
+     "line": 1297,
      "counted": true
     },
     {
@@ -16871,7 +16919,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch7.lean",
-     "line": 1275,
+     "line": 1356,
      "counted": true
     }
    ],
@@ -17487,9 +17535,9 @@
    "line": 214,
    "kind": "implied",
    "entries": [
-    "StatisticalRL.Statements.Ch3.Thm3_2_positiveN"
+    "StatisticalRL.Statements.Ch3.Thm3_2"
    ],
-   "variant": "restricted",
+   "variant": "printed",
    "anchor": null,
    "item": "Sample-size read-off and range after Theorem 3.2 (including the range display at lines 934–937), model-based chapter lines 926–937"
   },
@@ -17498,9 +17546,9 @@
    "kind": "implied",
    "entries": [
     "StatisticalRL.Statements.Ch3.Thm3_1",
-    "StatisticalRL.Statements.Ch3.Thm3_2_positiveN",
+    "StatisticalRL.Statements.Ch3.Thm3_2",
     "StatisticalRL.Statements.Ch3.Thm3_7_corrected",
-    "StatisticalRL.Statements.Ch3.Thm3_7_policyEvaluation_A1_restricted"
+    "StatisticalRL.Statements.Ch3.Thm3_7_policyEvaluation_A1"
    ],
    "variant": "corrected",
    "anchor": null,

@@ -27,7 +27,7 @@ All three follow from `abs_lawProb_convex_sub_gaussCov_le_third_log` (convex set
 with one constant: (1) via `−K` and the symmetry `N(0,Λ)(−K) = N(0,Λ)(K)` (`gaussCov_real_neg`);
 (2) via `Λ⁻¹ = Aᵀ diag(Γ_true)⁻¹ A` (`trueLambda_inv_eq`), so the ellipsoid is a convex sublevel set
 of `∑_r (Ax)_r² / Γ_r`; (3) the sup-norm box is convex.
-Not done: the plug-in covariance `Λ̂_T` with a rate, data-selected convex sets (C47(1)), and continuity
+Not done here (the plug-in rate is in `TDInferencePlugin{Interval,Ellipsoid,Rect}Rate711.lean`): data-selected convex sets (C47(1)), and continuity
 in `q` / `r` of the Gaussian side (only the sets are fixed; existence of an exact `1 − α` threshold is not
 proved here). The same corollaries at rate `T^{-1/3}` without `log(2T)` follow in the same way from
 `abs_lawProb_convex_sub_gaussCov_le_third_sharp` (`TDInferenceConvexSharp711.lean`) but are not re-derived here.
@@ -318,7 +318,7 @@ instance constant `K₀ > 0` such that for all `T ≥ 1`:
 3. every `r` (rectangle corrected per C47(2), half-width `r/√T`):
    `|P(∀ s, V̄_T(s) − r/√T ≤ V^π(s) ≤ V̄_T(s) + r/√T) − N(0,Λ){‖x‖∞ ≤ r}| ≤ K₀ T^{-1/3} log(2T)`.
 These are not the printed formulas (C47(2)/(3)); the rate is weaker than the printed `T^{-1/3}` by
-`log(2T)`; the plug-in-covariance version with a rate remains open. -/
+`log(2T)`; the plug-in-covariance versions with rate `T^{-1/3}` are in `TDInferencePlugin{Interval,Ellipsoid,Rect}Rate711.lean`. -/
 theorem exists_confRegion_oracle_bounds [Nonempty State] (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (μ : FiniteDistribution State) {η₀ : ℝ} (h0 : 0 < η₀)
     (h1 : η₀ ≤ 1) (V₀ : State → ℝ) (hμ : ∀ s, 0 < μ.prob s)

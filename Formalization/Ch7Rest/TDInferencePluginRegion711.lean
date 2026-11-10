@@ -26,7 +26,7 @@ corrected `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (`trueLambda`).
 quantile `R` itself (not `R²`), and the scaling is `T (V^π − V̄_T)ᵀ Λ̂_T⁻¹ (V^π − V̄_T)`
 (the `√T` scaling applied once, to the deviation).
 
-**Asymptotic only.** The plug-in consistency `eq_defn_hat_Lambda_corrected` has no rate, so the
+**Asymptotic only in this file** (the finite-`T` rate is in `TDInferencePluginEllipsoidRate711.lean`). The plug-in consistency `eq_defn_hat_Lambda_corrected` has no rate, so the
 result is a limit, not a finite-`T` bound; no rate is claimed. The limit is pointwise in `q`.
 
 **Route.** On the good event `{∀ s s', |Λ̂_T(s,s') − Λ(s,s')| ≤ δ}` (probability `→ 1`), the

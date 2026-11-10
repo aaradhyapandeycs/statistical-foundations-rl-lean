@@ -108,6 +108,43 @@ def Thm3_2_positiveN : Prop :=
               M.trajectoryExpectedQ
                 (fun t ↦ EnvironmentStage.pointMass (f t)) s a)}
 
+/-- Source `Thm:sample-compl-main`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:900–923` (algorithm
+`alg:policy-learn-model-based`, :814–865), as printed: no positivity premise on the per-pair
+sample size `N`. The quantifiers are those of the source: a universal `c₀ > 0`, then any finite
+state/action spaces, model, `N`, `0 < δ < 1` and `0 < ε ≤ 1/(1−γ)` with
+`N ≥ c₀ log(SAN/((1−γ)²εδ))/((1−γ)³ε²)` (`EqnSamples-main`). The guarantee is stated for every
+deterministic policy `f` that is optimal for the empirical MDP `M̂` ("any optimal deterministic
+policy returned by" the algorithm), quantified inside the event; `V⋆`, `Q⋆` are the values of
+the true model's optimal greedy policy.
+
+Domain of definition (typing guard, not a restriction): at `N = 0` the printed statement is
+undefined, since the threshold contains `log(SAN/…)` with `SAN = 0` and the empirical model
+`P̂(s'|s,a) = (1/N)∑ᵢ 1{sᵢ = s'}` is `0/0`. The Lean empirical model therefore needs a proof
+`hN : 0 < N`, and the event quantifies over that witness: at `N = 0` the event is the whole
+sample space, so the `N = 0` case carries no content, exactly as in the source where it is not
+in the domain. For `N > 0` this entry is equivalent to `Thm3_2_positiveN`. -/
+def Thm3_2 : Prop :=
+  ∃ c₀ : ℝ, 0 < c₀ ∧
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (N : ℕ) (δ ε : ℝ),
+    0 < δ → δ < 1 → 0 < ε → ε ≤ 1 / (1 - M.discount) →
+    c₀ * Real.log
+      (Fintype.card State * Fintype.card Action * N /
+        ((1 - M.discount) ^ 2 * ε * δ)) /
+      ((1 - M.discount) ^ 3 * ε ^ 2) ≤ N →
+    1 - δ ≤
+      (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
+        {data | ∀ hN : 0 < N, ∀ f : State → Action,
+          StatisticalRL.ModelBasedPolicyLearning.EmpiricallyOptimal M N hN data f →
+            (∀ s, M.trajectoryExpectedValue M.optimalGreedyPolicy s - ε ≤
+              M.trajectoryExpectedValue
+                (fun t ↦ EnvironmentStage.pointMass (f t)) s) ∧
+            (∀ s a, M.trajectoryExpectedQ M.optimalGreedyPolicy s a -
+                M.discount * ε ≤
+              M.trajectoryExpectedQ
+                (fun t ↦ EnvironmentStage.pointMass (f t)) s a)}
+
 /-- Source `LemAbsToNormalV`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:1254–1263`.
 The absorbing model uses the original model's actual optimal trajectory value
@@ -150,6 +187,49 @@ def Lemma3_5_positiveN : Prop :=
     1 - δ ≤
       (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
         {data | ∀ f : State → Action,
+          StatisticalRL.ModelBasedPolicyLearning.EmpiricallyOptimal M N hN data f →
+            ‖(StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).trajectoryExpectedValue
+                (fun t ↦ EnvironmentStage.pointMass (f t)) -
+              M.trajectoryExpectedValue (fun t ↦ EnvironmentStage.pointMass (f t))‖ ≤
+              c₁ * Real.sqrt
+                (2 * StatisticalRL.ModelBasedPolicyLearning.leaveOneOutBeta M N δ /
+                  (N * (1 - M.discount) ^ 3)) ∧
+            ∀ s, 0 ≤ M.trajectoryExpectedValue M.optimalGreedyPolicy s -
+                M.trajectoryExpectedValue
+                  (fun t ↦ EnvironmentStage.pointMass (f t)) s ∧
+              M.trajectoryExpectedValue M.optimalGreedyPolicy s -
+                M.trajectoryExpectedValue
+                  (fun t ↦ EnvironmentStage.pointMass (f t)) s ≤
+                2 * c₁ * Real.sqrt
+                  (StatisticalRL.ModelBasedPolicyLearning.leaveOneOutBeta M N δ /
+                    (N * (1 - M.discount) ^ 3))}
+
+/-- Source `lem:policy-learning-evaluation`,
+`source/upstream/tex/chapters/generative_model_model_based.tex:1306–1326`, as printed: no
+positivity premise on the per-pair sample size `N`. Universal constants `c₀, c₁ > 0`; for any
+finite state/action spaces, model, `N` and `0 < δ < 1`, with
+`β₁ = 2 log(16SAN/((1−γ)δ))` (`leaveOneOutBeta`, `eq:beta-policy-learning`) and
+`N ≥ c₀β₁/(1−γ)`, with probability at least `1 − δ`, every deterministic policy `f` optimal for
+the empirical MDP (`π̂⋆`, no tie rule fixed, quantified inside the event) satisfies
+`‖V̂^{π̂⋆} − V^{π̂⋆}‖∞ ≤ c₁√(2β₁/(N(1−γ)³))` and
+`0 ≤ V⋆ − V^{π̂⋆} ≤ 2c₁√(β₁/(N(1−γ)³))` pointwise, simultaneously.
+
+Domain of definition (typing guard, not a restriction): at `N = 0` the printed statement is
+undefined, since `β₁` contains `log(16SAN/…)` with `SAN = 0`, both bounds divide by `N`, and the
+empirical model `P̂` (hence `V̂^{π̂⋆}` and `π̂⋆`) is `0/0`. The Lean empirical model needs a
+proof `hN : 0 < N`, and the event quantifies over that witness, so at `N = 0` the event is the
+whole sample space and that case carries no content, as in the source where it is outside the
+domain. For `N > 0` this entry is equivalent to `Lemma3_5_positiveN`. -/
+def Lemma3_5 : Prop :=
+  ∃ c₀ c₁ : ℝ, 0 < c₀ ∧ 0 < c₁ ∧
+    ∀ (State Action : Type*) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (N : ℕ) (δ : ℝ),
+    0 < δ → δ < 1 →
+    c₀ * StatisticalRL.ModelBasedPolicyLearning.leaveOneOutBeta M N δ /
+      (1 - M.discount) ≤ N →
+    1 - δ ≤
+      (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
+        {data | ∀ hN : 0 < N, ∀ f : State → Action,
           StatisticalRL.ModelBasedPolicyLearning.EmpiricallyOptimal M N hN data f →
             ‖(StatisticalRL.ModelBasedPolicyLearning.empiricalModel M N hN data).trajectoryExpectedValue
                 (fun t ↦ EnvironmentStage.pointMass (f t)) -
@@ -287,17 +367,23 @@ exactly three ways:
    convention, C2);
 2. `A ≥ 2` is assumed in part (i) only (part (i) fails for `A = 1`, C1); part (ii) covers every
    `A` with `SA ≥ 16`;
-3. the estimators are deterministic: `piHat` and `QHat` are arbitrary functions of the known
-   reward table, the known discount (source conventions, `generative_model_model_based.tex:31`,
-   `prelim.tex:42`) and the `N`-per-state-action sample array (`samplingLaw`, independent draws
-   from the true transition rows). Randomized estimators are not covered by this entry; library
-   versions for them exist only for `S, A ≥ 2` (`sourcePolicyAndQ_risk_quarter_with_common_constant`).
+3. part (i) is stated for deterministic estimators returning deterministic policies (`piHat` is a
+   function, not a kernel).
+Part (ii) covers every Q-function estimator, randomized included: `QHat` assigns to the known
+reward table, the known discount (source conventions, `generative_model_model_based.tex:31`,
+`prelim.tex:42`) and the `N`-per-state-action sample array (`samplingLaw`, independent draws from
+the true transition rows) a probability measure on Q-tables `Fin S → Fin A → ℝ`. The measurable
+structure on Q-tables is the Borel σ-algebra (product of the Borel σ-algebra of `ℝ`; this is the
+instance the file resolves to, guarded by an `example` below), so the error sets are open, hence
+measurable, and the failure probability is the genuine joint probability
+`∫ data, (QHat r γ data).real {Q | ε < ‖Q - Q⋆‖} ∂samplingLaw`. Deterministic estimators are the
+Dirac case `QHat r γ data = δ_{Q̂(r,γ,data)}`, which recovers the deterministic statement.
 The witness MDP has states `Fin S`, actions `Fin A` and discount `γ`, and is chosen after the
 estimator, separately in each part. `Q^π̂` is the actual forced-first-action trajectory Q of the
 returned deterministic policy, `Q⋆` the trajectory Q of the optimal greedy policy (equal to the
 optimality fixed point, so tie-independent), `‖·‖` the sup norm, and the events are strict
-(`> ε`). The constant `c_N` is chosen before all other quantities (the proof uses `1/32768`);
-`N = 0` is allowed. -/
+(`> ε`). The constant `c_N` is chosen before all other quantities (the proof uses `1/32768`,
+unchanged by the randomization); `N = 0` is allowed. -/
 def Thm3_7_corrected : Prop :=
   ∃ c_N : ℝ, 0 < c_N ∧
     ∀ (S A N : ℕ) (γ ε : ℝ),
@@ -313,13 +399,15 @@ def Thm3_7_corrected : Prop :=
                   (fun s ↦ EnvironmentStage.pointMass (piHat M.reward M.discount data s)) -
                 M.trajectoryExpectedQ M.optimalGreedyPolicy‖}) ∧
       (∀ QHat : (Fin S → Fin A → ℝ) → ℝ →
-            StatisticalRL.ModelBasedPolicyLearning.Samples (Fin S) (Fin A) N → Fin S → Fin A → ℝ,
+            StatisticalRL.ModelBasedPolicyLearning.Samples (Fin S) (Fin A) N →
+              Measure (Fin S → Fin A → ℝ),
+          (∀ r g data, IsProbabilityMeasure (QHat r g data)) →
           ∃ M : DiscountedMDP (Fin S) (Fin A), M.discount = γ ∧
-            (1 : ℝ) / 4 ≤ (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N).real
-              {data | ε < ‖QHat M.reward M.discount data -
-                M.trajectoryExpectedQ M.optimalGreedyPolicy‖})
+            (1 : ℝ) / 4 ≤ ∫ data, (QHat M.reward M.discount data).real
+                {Q | ε < ‖Q - M.trajectoryExpectedQ M.optimalGreedyPolicy‖}
+              ∂(StatisticalRL.ModelBasedPolicyLearning.samplingLaw M N))
 
-/-- Restricted single-action (policy-evaluation) case of `theorem:azar` part (ii),
+/-- Single-action (policy-evaluation) case of `theorem:azar` part (ii),
 `source/upstream/tex/chapters/generative_model_model_based.tex:1443–1464`, in the form used by the
 comparisons "policy evaluation setting with `A = 1`" (`generative_model_model_based.tex:1468–1474`)
 and "setting `A = 1` therein" (`generative_model_model_free.tex:248–249`). With `A = 1` the printed
@@ -328,25 +416,29 @@ domain `SA ≥ 16` is `S ≥ 16`; the printed ranges `γ ∈ [2/3, 1)`, `0 < ε 
 policy `π₀ = (s ↦ δ₀)` and `Q⋆(s,0) = V^{π₀}(s)`, so the entry is stated in policy-evaluation
 form: the estimator `VHat` receives the known reward table, the known discount and `N` independent
 draws from the policy row at each state (`ModelBasedPolicyEvaluation.samplingLaw`, the sampling
-of Theorem 3.1 and of TD learning), and the error is `‖VHat − V^{π₀}‖∞` with `V^{π₀}` the expected
-infinite-trajectory value. Differences from the print: the corrections C1 and C2 of
-`Thm3_7_corrected` are vacuous here (`S ≥ 16 ≥ 2`, part (i) not included), and the only remaining
-difference is the restriction to deterministic estimators (randomized estimators, which are in the
-printed domain of part (ii), "any Q-function estimator", are not covered), inherited from `Thm3_7_corrected`; see `docs/SOURCE-ISSUES.md`, "Candidate repair of
-Theorem 3.7". The constant `c_N` is chosen first (the proof uses `1/32768`), the witness MDP after
-the estimator; `N = 0` is allowed and the event is strict (`> ε`). -/
-def Thm3_7_policyEvaluation_A1_restricted : Prop :=
+of Theorem 3.1 and of TD learning) and returns a probability measure on value vectors
+`Fin S → ℝ` (every estimator, randomized included; Borel σ-algebra, the instance the file resolves
+to, guarded by an `example` below; Dirac measures give deterministic estimators). The error is
+`‖V − V^{π₀}‖∞` with `V^{π₀}` the expected infinite-trajectory value, and the failure probability
+is the joint probability `∫ data, (VHat r γ data).real {V | ε < ‖V - V^{π₀}‖} ∂samplingLaw`.
+Differences from the print: none. The corrections C1 and C2 of `Thm3_7_corrected` are vacuous here
+(`S ≥ 16 ≥ 2`, part (i) not included). The constant `c_N` is chosen first (the proof uses
+`1/32768`), the witness MDP after the estimator; `N = 0` is allowed and the event is strict
+(`> ε`). -/
+def Thm3_7_policyEvaluation_A1 : Prop :=
   ∃ c_N : ℝ, 0 < c_N ∧
     ∀ (S N : ℕ) (γ ε : ℝ),
       16 ≤ S → (2 : ℝ) / 3 ≤ γ → γ < 1 → 0 < ε → ε < 1 / (32 * (1 - γ)) →
       (N : ℝ) ≤ c_N * Real.log (S : ℝ) / ((1 - γ) ^ 3 * ε ^ 2) →
       ∀ VHat : (Fin S → Fin 1 → ℝ) → ℝ →
-          StatisticalRL.ModelBasedPolicyEvaluation.Samples (Fin S) N → Fin S → ℝ,
+          StatisticalRL.ModelBasedPolicyEvaluation.Samples (Fin S) N → Measure (Fin S → ℝ),
+        (∀ r g data, IsProbabilityMeasure (VHat r g data)) →
         ∃ M : DiscountedMDP (Fin S) (Fin 1), M.discount = γ ∧
-          (1 : ℝ) / 4 ≤ (StatisticalRL.ModelBasedPolicyEvaluation.samplingLaw M
-              (fun _ ↦ EnvironmentStage.pointMass (0 : Fin 1)) N).real
-            {data | ε < ‖VHat M.reward M.discount data -
-              M.trajectoryExpectedValue (fun _ ↦ EnvironmentStage.pointMass (0 : Fin 1))‖}
+          (1 : ℝ) / 4 ≤ ∫ data, (VHat M.reward M.discount data).real
+              {V | ε < ‖V - M.trajectoryExpectedValue
+                (fun _ ↦ EnvironmentStage.pointMass (0 : Fin 1))‖}
+            ∂(StatisticalRL.ModelBasedPolicyEvaluation.samplingLaw M
+              (fun _ ↦ EnvironmentStage.pointMass (0 : Fin 1)) N)
 
 /-- Restricted reading of the burn-in necessity claim `eq:sample-size-range-planning`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:930–940`: "Condition
@@ -466,23 +558,32 @@ For every `γ ∈ [2/3, 1)` and `0 < ε < 1/(32(1−γ))` there are two MDPs `M�
 reward table, chosen before `N` and the estimator as printed. For every `N` with
 `N ≤ 0.003/((1−γ)³ε²)` (`N = 0` included) and every estimator `Q̂`, some `Mᵢ` has
 `P_{Mᵢ}(|Q̂(s₁,a) − Q⋆_{Mᵢ}(s₁,a)| > ε) > 0.1`. Here `Q⋆` is the trajectory Q function of the
-optimal greedy policy, and the estimator is a function of the full sample array (`N` independent
-generative draws for each state-action pair, both rows, `samplingLaw`). As in the source proof,
-which builds a deterministic test from `Q̂` and applies Fano's lemma over deterministic tests,
-randomized estimators are not part of this entry. Since the printed "any estimator" includes randomized
-estimators, this entry is a restricted variant of the display (project decision 2026-11-10; the entry name
-is unchanged). The strict `> 0.1` uses the Pinsker branch (SOURCE-ISSUES C4 records the omitted strictness
-step). -/
+optimal greedy policy. The estimator is any (randomized) function of the full sample array (`N`
+independent generative draws for each state-action pair, both rows, `samplingLaw`): `QHat data` is
+a probability measure on `ℝ` (Borel σ-algebra, the instance the file resolves to, guarded by an
+`example` below), and the probability is the joint data/estimate probability
+`∫ data, (QHat data).real {y | ε < |y − Q⋆|} ∂samplingLaw`. Deterministic estimators are the Dirac
+case. No deviation from the printed display. The strict `> 0.1` uses the Pinsker branch
+(SOURCE-ISSUES C4 records the omitted strictness step of the printed proof). -/
 def Eq_P_Mi_Q_inaccurate_lower_generative : Prop :=
   ∀ (γ ε : ℝ), (2 : ℝ) / 3 ≤ γ → γ < 1 → 0 < ε → ε < 1 / (32 * (1 - γ)) →
     ∃ M₀ M₁ : DiscountedMDP Bool Unit,
       M₀.discount = γ ∧ M₁.discount = γ ∧ M₀.reward = M₁.reward ∧
       ∀ N : ℕ, (N : ℝ) ≤ 0.003 / ((1 - γ) ^ 3 * ε ^ 2) →
-      ∀ QHat : StatisticalRL.ModelBasedPolicyLearning.Samples Bool Unit N → ℝ,
-        (1 : ℝ) / 10 < (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M₀ N).real
-            {data | ε < |QHat data - M₀.trajectoryExpectedQ M₀.optimalGreedyPolicy true ()|} ∨
-        (1 : ℝ) / 10 < (StatisticalRL.ModelBasedPolicyLearning.samplingLaw M₁ N).real
-            {data | ε < |QHat data - M₁.trajectoryExpectedQ M₁.optimalGreedyPolicy true ()|}
+      ∀ QHat : StatisticalRL.ModelBasedPolicyLearning.Samples Bool Unit N → Measure ℝ,
+        (∀ data, IsProbabilityMeasure (QHat data)) →
+        (1 : ℝ) / 10 < ∫ data, (QHat data).real
+            {y | ε < |y - M₀.trajectoryExpectedQ M₀.optimalGreedyPolicy true ()|}
+            ∂(StatisticalRL.ModelBasedPolicyLearning.samplingLaw M₀ N) ∨
+        (1 : ℝ) / 10 < ∫ data, (QHat data).real
+            {y | ε < |y - M₁.trajectoryExpectedQ M₁.optimalGreedyPolicy true ()|}
+            ∂(StatisticalRL.ModelBasedPolicyLearning.samplingLaw M₁ N)
+
+/-! Guard for the three randomized entries above: under this file's local instances the
+σ-algebras on Q-tables, value vectors and reals are the Borel ones, not the local `⊤`. -/
+example : (inferInstance : MeasurableSpace (Fin 3 → Fin 2 → ℝ)) = MeasurableSpace.pi := rfl
+example : (inferInstance : MeasurableSpace (Fin 3 → ℝ)) = MeasurableSpace.pi := rfl
+example : (inferInstance : MeasurableSpace ℝ) = Real.measurableSpace := rfl
 
 /-- Matching lower bound behind the prose claim at
 `source/upstream/tex/chapters/generative_model_model_based.tex:2585` (paragraph :2573–2585) that

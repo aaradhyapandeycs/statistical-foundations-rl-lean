@@ -203,10 +203,13 @@ pre.lean .c { color: var(--comment); font-style: italic; }
 .st-corrected { color: var(--corrected); border-style: double; border-width: 3px; padding: 0 6px; }
 .st-restricted { color: var(--restricted); border-style: dashed; }
 .st-incomplete { color: var(--inc); border-style: dotted; font-weight: 500; }
+.st-supporting { color: var(--fg); border-color: var(--line); font-weight: 500; }
+.st-supporting::before { content: "✓ "; color: var(--stated); }
 .marker { display: inline-block; font: 600 11.5px/1.6 var(--sans); padding: 0 6px; border-radius: 4px; margin: 1px 4px 1px 0;
   background: var(--code-bg); color: var(--fg); }
 .mk-refuted { color: var(--refuted); background: var(--refuted-fill); }
 .mk-fails-paper { color: var(--partial); background: var(--corr-fill); }
+.mk-boundary { color: var(--muted); background: var(--code-bg); border: 1px dashed var(--line); }
 .mk-new-proof { color: var(--accent); }
 .mk-new-proof::before { content: "★ "; }
 .mk-also-corrected { color: var(--corrected); }
@@ -215,6 +218,8 @@ pre.lean .c { color: var(--comment); font-style: italic; }
 .item-status { font: 13.5px/1.5 var(--sans); margin: 8px 0 4px; padding: 6px 0 2px; border-bottom: 1px solid var(--line); }
 .item-name { font-weight: 600; margin-right: 8px; }
 .refuted-line { font: 13.5px/1.5 var(--sans); border-left: 3px solid var(--refuted); padding: 2px 0 2px 8px; margin: 6px 0; }
+.refuted-line.paper { border-left-color: var(--partial); }
+.refuted-line.boundary { border-left: 3px dashed var(--muted); }
 .what { margin: 6px 0; font-size: 14px; line-height: 1.55; }
 .ours { margin: 4px 0; font-size: 12.5px; color: var(--muted); font-style: italic; }
 .origin { margin: 4px 0; font-size: 13px; }
@@ -317,6 +322,7 @@ svg.depgraph { display: block; font: 11.5px var(--sans); }
 .gl-none rect { fill: var(--code-bg); stroke: var(--line); }
 .gn.mk-new rect { stroke-dasharray: 6 3; stroke-width: 2.2; }
 .gmark { color: var(--refuted); font-weight: 700; margin: 0 14px 0 16px; }
+.gmark.soft { color: var(--partial); }
 .gn.dim { opacity: .18; }
 .gn.sel rect { stroke: var(--accent); stroke-width: 3; }
 .gn.anc rect, .gn.desc rect { stroke-width: 2.4; }

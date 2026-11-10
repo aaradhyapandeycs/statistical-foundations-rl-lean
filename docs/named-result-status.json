@@ -111,12 +111,14 @@
       "lean_export": "StatisticalRL.ModelBasedPolicyLearning.source_policyLearning_pointwise_universal_constants",
       "evidence": "docs/critic-policy-learning-source-pointwise-second.md",
       "coverage": "docs/COVERAGE.md",
-      "lean_statement": "StatisticalRL.Statements.Ch3.Lemma3_5_positiveN",
-      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Lemma3_5_positiveN_holds",
-      "statement_scope": "restricted (N > 0 explicit; the printed statement involves log N, which is undefined at N = 0); see docs/SOURCE-ISSUES.md#statement-index-scope-disclosures",
+      "lean_statement": "StatisticalRL.Statements.Ch3.Lemma3_5",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Lemma3_5_holds",
+      "statement_scope": "printed; for every empirically optimal deterministic policy (no tie rule fixed). `0 < N` witness inside the event: at N = 0, β₁ = 2 log(16SAN/((1−γ)δ)) has SAN = 0, both bounds divide by N and P̂ is 0/0, so N = 0 is outside the printed domain. Universal constants exist (explicit in the proof). The positive-N form `Lemma3_5_positiveN` is kept as a supporting entry.",
       "proof_origin": "source-proof",
-      "display_note": "Proved for N > 0 only; the printed statement involves $\\log N$, undefined at N = 0. There are universal constants (explicit in the proof).",
-      "correction_status": "proposed-by-project"
+      "display_note": "Proved as printed. There are universal constants (explicit in the proof).",
+      "supporting_evidence": [
+        "docs/critic-thm32.md"
+      ]
     },
     {
       "name": "Theorem 3.2",
@@ -126,12 +128,14 @@
       "lean_export": "StatisticalRL.ModelBasedPolicyLearning.mainSample_policyLearning_universal_constant",
       "evidence": "docs/critic-policy-learning-main-sample-integrated-second.md",
       "coverage": "docs/COVERAGE.md",
-      "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_2_positiveN",
-      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_2_positiveN_holds",
-      "statement_scope": "restricted (N > 0 explicit; the printed threshold contains log N, which is undefined at N = 0); a universal constant exists (the proof gives 10240); see docs/SOURCE-ISSUES.md#statement-index-scope-disclosures",
+      "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_2",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_2_holds",
+      "statement_scope": "printed; for every deterministic policy optimal for the empirical MDP (no tie rule fixed). The empirical model is typed by a `0 < N` witness inside the event: at N = 0 the printed threshold (log of SAN = 0) and the empirical model (0/0) are undefined, so that case is outside the printed domain and the event is the whole sample space. A universal constant exists (the proof gives 10240). The positive-N form `Thm3_2_positiveN` is kept as a supporting entry.",
       "proof_origin": "source-proof",
-      "display_note": "Proved for N > 0 only; the printed threshold contains $\\log N$, which is undefined at N = 0. There is a universal constant (the proof gives 10240).",
-      "correction_status": "proposed-by-project"
+      "display_note": "Proved as printed. There is a universal constant (the proof gives 10240).",
+      "supporting_evidence": [
+        "docs/critic-thm32.md"
+      ]
     },
     {
       "name": "Lemma 2.9",
@@ -1002,11 +1006,11 @@
       "lean_export": "StatisticalRL.GenerativeLowerBound.theorem37_corrected_fin_carriers",
       "lean_statement": "StatisticalRL.Statements.Ch3.Thm3_7_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch3.Thm3_7_corrected_holds",
-      "statement_scope": "Corrected: as printed, the theorem fails under its standalone reading (A = 1, or one state with known rewards); our counterexamples (C1, C2; this project's, not author-confirmed) are checked in Lean. C1 is excluded if the earlier A ≥ 2 convention (line 787) is read into the theorem. Proved for S≥2 and SA≥16 with A≥2 for part (i) only, the printed γ/ε ranges and sample bound, a uniform constant (witness 1/32768), probability ≥1/4, deterministic estimators given the known reward and discount, and witness MDPs on Fin S × Fin A. Part (ii) is restricted to deterministic estimators: the printed 'any Q-function estimator' also includes randomized estimators, which this entry does not cover (project decision 2026-11-10). This does not prove the printed theorem.",
+      "statement_scope": "Corrected: as printed, the theorem fails under its standalone reading (A = 1, or one state with known rewards); our counterexamples (C1, C2; this project's, not author-confirmed) are checked in Lean. C1 is excluded if the earlier A ≥ 2 convention (line 787) is read into the theorem. Proved for S≥2 and SA≥16 with A≥2 for part (i) only, the printed γ/ε ranges and sample bound, a uniform constant (witness 1/32768), probability ≥1/4, known reward and discount, and witness MDPs on Fin S × Fin A. Part (ii) covers every Q-function estimator, randomized included (Borel probability laws given the data; deterministic estimators are the Dirac case); part (i) is for deterministic estimators returning deterministic policies. This does not prove the printed theorem.",
       "evidence": "docs/critic-thm3-7-corrected.md",
       "coverage": "docs/COVERAGE.md",
       "proof_origin": "source-proof-repaired",
-      "display_note": "Adds S ≥ 2, and A ≥ 2 for part (i); the printed theorem fails under its standalone reading by this project's counterexamples, checked in Lean (C1, C2). Estimators are deterministic maps of the data; randomized estimators in printed part (ii) are not covered.",
+      "display_note": "Adds S ≥ 2, and A ≥ 2 for part (i); the printed theorem fails under its standalone reading by this project's counterexamples, checked in Lean (C1, C2). Part (ii) covers randomized estimators; part (i) is for deterministic estimators.",
       "correction_status": "proposed-by-project"
     },
     {
@@ -1187,7 +1191,7 @@
       "lean_export": "StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_3_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_holds",
-      "statement_scope": "Corrected: the printed statement with the printed constants (1/8, c₀ ≤ 1/8, σ ∈ (0, 1−c₀], γ ∈ [1/2, 1), ε ≤ c₀/(256(1−γ)), the printed N bound) and only A ≥ 2 added; the printed statement is refuted in Lean at A = 1 (not_thm7_3_printed, C38). Estimators are deterministic maps from samples to policies (randomized estimators, included in the printed infimum over all estimators, are not covered; project decision 2026-11-10) and do not see the reward, and the two hard models may differ in reward; the S = 1 case holds only for that reason. Not author-approved; this does not prove the printed theorem.",
+      "statement_scope": "Corrected: the printed statement with the printed constants (1/8, c₀ ≤ 1/8, σ ∈ (0, 1−c₀], γ ∈ [1/2, 1), ε ≤ c₀/(256(1−γ)), the printed N bound) and only A ≥ 2 added; the printed statement is refuted in Lean at A = 1 (not_thm7_3_printed, C38). This entry takes deterministic estimators that do not see the reward (externally randomized estimators are covered by Thm7_3_corrected_randomized, which has this entry as its Ω = Unit case), and the two hard models may differ in reward; the S = 1 case holds only for that reason. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-3-integration.md",
       "supporting_evidence": [
         "docs/critic-thm7-3-corrected.md",
@@ -1195,7 +1199,7 @@
       ],
       "coverage": "docs/COVERAGE.md",
       "proof_origin": "own-proof:source-cites",
-      "display_note": "Adds A ≥ 2; the printed statement is refuted in Lean at A = 1 by this project's counterexample (C38). Estimators are deterministic maps of the samples; randomized estimators in the printed infimum are not covered.",
+      "display_note": "Adds A ≥ 2; the printed statement is refuted in Lean at A = 1 by this project's counterexample (C38). Deterministic estimators here; seeded randomized estimators are covered by Thm7_3_corrected_randomized (docs/critic-rand73.md).",
       "correction_status": "proposed-by-project"
     },
     {
@@ -1206,7 +1210,7 @@
       "lean_export": "StatisticalRL.RobustRL.Ch7.LowerBound73.thm7_3_corrected_knownReward",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_3_corrected_knownReward_holds",
-      "statement_scope": "Corrected: the faithful form under the book's known-reward convention, with the printed constants and S ≥ 2 and A ≥ 2 added and the two hard models sharing their reward (C38). A ≥ 2 is necessary (the printed statement is refuted in Lean at A = 1); S ≥ 2 is needed because under known rewards the printed claim appears to fail at S = 1 (argmax r is robust-optimal); this is a paper argument, not machine-checked. Estimators are deterministic maps from samples to policies; randomized estimators are not covered. Not author-approved; this does not prove the printed theorem.",
+      "statement_scope": "Corrected: the faithful form under the book's known-reward convention, with the printed constants and S ≥ 2 and A ≥ 2 added and the two hard models sharing their reward (C38). A ≥ 2 is necessary (the printed statement is refuted in Lean at A = 1); S ≥ 2 is needed because under known rewards the printed claim appears to fail at S = 1 (argmax r is robust-optimal); this is a paper argument, not machine-checked. Deterministic estimators here; seeded randomized estimators are covered by Thm7_3_corrected_knownReward_randomized. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-3-integration.md",
       "supporting_evidence": [
         "docs/critic-thm7-3-corrected.md",
@@ -1214,7 +1218,7 @@
       ],
       "coverage": "docs/COVERAGE.md",
       "proof_origin": "own-proof:source-cites",
-      "display_note": "Adds S ≥ 2 and A ≥ 2 under the known-reward convention (C38); A = 1 is refuted in Lean, the S = 1 failure is a paper argument. Estimators are deterministic maps of the samples.",
+      "display_note": "Adds S ≥ 2 and A ≥ 2 under the known-reward convention (C38); A = 1 is refuted in Lean, the S = 1 failure is a paper argument. Deterministic estimators here; seeded randomized estimators are covered by Thm7_3_corrected_knownReward_randomized.",
       "correction_status": "proposed-by-project"
     },
     {
@@ -1225,14 +1229,14 @@
       "lean_export": "StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_5_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_holds",
-      "statement_scope": "Corrected: constants c₃, c₄ exist (the proof gives c₃ = 1/512, c₄ = 1/5308416, hence every smaller pair) with the printed shape of every condition (γ ∈ [3/4, 1), σ > 0, ε ≤ c₃/(1−γ), the printed N budget, 1/8) and only A ≥ 2 added; the printed statement is refuted for every pair of positive constants (printed_at_fails, C7). Estimators are deterministic maps of the samples (randomized estimators, included in the printed infimum over π̂, are not covered; project decision 2026-11-10) and do not see the reward; the S = 1 case holds only for that reason. ε > 0 is not needed: for ε < 0 the claim is trivial, and at ε = 0 the Lean value c₄/0 = 0 forces N = 0. Not author-approved; this does not prove the printed theorem.",
+      "statement_scope": "Corrected: constants c₃, c₄ exist (the proof gives c₃ = 1/512, c₄ = 1/5308416, hence every smaller pair) with the printed shape of every condition (γ ∈ [3/4, 1), σ > 0, ε ≤ c₃/(1−γ), the printed N budget, 1/8) and only A ≥ 2 added; the printed statement is refuted for every pair of positive constants (printed_at_fails, C7). This entry takes deterministic estimators that do not see the reward (externally randomized estimators are covered by Thm7_5_corrected_randomized, which has this entry as its Ω = Unit case); the S = 1 case holds only for that reason. ε > 0 is not needed: for ε < 0 the claim is trivial, and at ε = 0 the Lean value c₄/0 = 0 forces N = 0. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-5-revision.md",
       "supporting_evidence": [
         "docs/critic-thm7-5-corrected.md"
       ],
       "coverage": "docs/COVERAGE.md",
       "proof_origin": "own-proof:source-cites",
-      "display_note": "Adds A ≥ 2; at A = 1 the printed statement is refuted in Lean for every pair of constants by this project's counterexample (C7). There are constants c₃, c₄ (the proof gives 1/512 and 1/5308416). Estimators are deterministic maps of the samples.",
+      "display_note": "Adds A ≥ 2; at A = 1 the printed statement is refuted in Lean for every pair of constants by this project's counterexample (C7). There are constants c₃, c₄ (the proof gives 1/512 and 1/5308416). Deterministic estimators here; seeded randomized estimators are covered by Thm7_5_corrected_randomized (docs/critic-rand73.md).",
       "correction_status": "proposed-by-project"
     },
     {
@@ -1243,14 +1247,14 @@
       "lean_export": "StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_5_corrected_knownReward_holds",
-      "statement_scope": "Corrected: the faithful form under the book's known-reward convention, with constants c₃, c₄ (the proof gives 1/512 and 1/5308416), the printed shape of every condition, and S ≥ 2 and A ≥ 2 added with a shared reward (C7). Both added hypotheses are shown necessary in Lean (knownReward_needs_two_states, knownReward_needs_two_actions), and the printed statement is refuted for every pair of positive constants (printed_at_fails). Estimators are deterministic maps of the samples; randomized estimators are not covered. Not author-approved; this does not prove the printed theorem.",
+      "statement_scope": "Corrected: the faithful form under the book's known-reward convention, with constants c₃, c₄ (the proof gives 1/512 and 1/5308416), the printed shape of every condition, and S ≥ 2 and A ≥ 2 added with a shared reward (C7). Both added hypotheses are shown necessary in Lean (knownReward_needs_two_states, knownReward_needs_two_actions), and the printed statement is refuted for every pair of positive constants (printed_at_fails). Deterministic estimators here; seeded randomized estimators are covered by Thm7_5_corrected_knownReward_randomized. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-5-revision.md",
       "supporting_evidence": [
         "docs/critic-thm7-5-corrected.md"
       ],
       "coverage": "docs/COVERAGE.md",
       "proof_origin": "own-proof:source-cites",
-      "display_note": "Adds S ≥ 2 and A ≥ 2 under the known-reward convention, both shown necessary in Lean (C7). Estimators are deterministic maps of the samples.",
+      "display_note": "Adds S ≥ 2 and A ≥ 2 under the known-reward convention, both shown necessary in Lean (C7). Deterministic estimators here; seeded randomized estimators are covered by Thm7_5_corrected_knownReward_randomized.",
       "correction_status": "proposed-by-project"
     },
     {
@@ -1475,17 +1479,18 @@
       "source_file": "chapters/marl.tex",
       "source_lines": "384–399",
       "source_context_lines": "355–377 (model-based plug-in algorithm and planning oracle)",
-      "lean_export": "StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted, with the refutations StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed, StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_ne and StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_cce and the non-vacuity witnesses StatisticalRL.Ch7Rest.Marl76.causalCCEOracle_exists and StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted_ccePlanner",
+      "lean_export": "StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted, with the refutations StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed, StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_ne and StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_cce and the non-vacuity witnesses StatisticalRL.Ch7Rest.Marl76.causalCCEOracle_exists and StatisticalRL.Ch7Rest.Marl76.thm7_6_restricted_ccePlanner, and for two-player constant-sum games StatisticalRL.Ch7Rest.Marl76.exists_causalNEOracle_constSum and StatisticalRL.Ch7Rest.Marl76.thm7_6_clauseB_hypotheses_constSum",
       "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_6_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_6_restricted_holds",
-      "statement_scope": "Restricted: the printed statement, which allows any equilibrium-returning planning oracle, is refuted in Lean for every C₁ under that reading (not_thm7_6_printed, also in NE-only and CCE-only forms; C45). With a universal C₁ (the proof gives C₁ = 400), at the printed sample size N ≥ C₁H³ε⁻² log(SHN∏A_i/δ) (N inside the logarithm), δ ∈ (0,1) and 0 < ε ≤ √H, the model-based plug-in estimator (N generative samples per (s, a, h), empirical game with the true reward) satisfies, with probability ≥ 1−δ, gap ≤ ε for the returned CCE, for the returned product NE, and jointly for both, for every causal planning oracle (the step-h output depends only on the empirical kernels and rewards from step h on), given as a deterministic map of the empirical game whose output is an equilibrium of every empirical game. Adds the domain binders 0 < S, 0 < A_i and 0 < N. The causal restriction matches the backward-induction planners named at marl.tex:377 and is not claimed to be the least restrictive repair. The CCE clause is shown non-vacuous in Lean by a causal backward-induction CCE planner (stage-CCE existence by Hahn–Banach separation); Nash existence is not in the pinned Mathlib, so the NE and joint clauses hold for every causal NE oracle but are not shown non-vacuous in Lean. Not author-approved; this does not prove the printed theorem.",
+      "statement_scope": "Restricted: the printed statement, which allows any equilibrium-returning planning oracle, is refuted in Lean for every C₁ under that reading (not_thm7_6_printed, also in NE-only and CCE-only forms; C45). With a universal C₁ (the proof gives C₁ = 400), at the printed sample size N ≥ C₁H³ε⁻² log(SHN∏A_i/δ) (N inside the logarithm), δ ∈ (0,1) and 0 < ε ≤ √H, the model-based plug-in estimator (N generative samples per (s, a, h), empirical game with the true reward) satisfies, with probability ≥ 1−δ, gap ≤ ε for the returned CCE, for the returned product NE, and jointly for both, for every causal planning oracle (the step-h output depends only on the empirical kernels and rewards from step h on), given as a deterministic map of the empirical game whose output is an equilibrium of every empirical game. Adds the domain binders 0 < S, 0 < A_i and 0 < N. The causal restriction matches the backward-induction planners named at marl.tex:377 and is not claimed to be the least restrictive repair. The CCE clause is shown non-vacuous in Lean by a causal backward-induction CCE planner (stage-CCE existence by Hahn–Banach separation). For two-player constant-sum games the NE and joint clauses are also non-vacuous in Lean: the product of the marginals of that planner is a causal exact Nash equilibrium oracle (exists_causalNEOracle_constSum, thm7_6_clauseB_hypotheses_constSum). For general-sum two-player games and for three or more players, Nash existence is not in the pinned Mathlib, so the NE and joint clauses hold for every causal NE oracle but are not shown non-vacuous in Lean. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm7-6.md",
       "supporting_evidence": [
-        "docs/critic-thm7-6-plan-check.md"
+        "docs/critic-thm7-6-plan-check.md",
+        "docs/critic-thm76b.md"
       ],
       "coverage": "docs/COVERAGE.md",
       "proof_origin": "own-proof:source-cites",
-      "display_note": "Restricted to causal planning oracles; with an arbitrary equilibrium oracle the printed statement is refuted in Lean for every C₁ by this project's counterexample (C45). There is a constant C₁ (the proof gives 400).",
+      "display_note": "Restricted to causal planning oracles; with an arbitrary equilibrium oracle the printed statement is refuted in Lean for every C₁ by this project's counterexample (C45). There is a constant C₁ (the proof gives 400). The CCE clause (a) is non-vacuous in Lean. The NE clause (b) and the joint clause (c) are shown non-vacuous only for two-player constant-sum games; for general-sum games and three or more players no causal Nash-equilibrium oracle is constructed in Lean (Nash's existence theorem is not in Mathlib), so there they are proved for every such oracle but may be vacuous.",
       "correction_status": "proposed-by-project"
     },
     {
@@ -1521,17 +1526,18 @@
       "evidence": "docs/critic-thm7-10.md",
       "coverage": "docs/COVERAGE.md",
       "proof_origin": "own-proof:source-omits",
-      "display_note": "Theorem 7.10 covers only the exact-averaging algorithms, not the compressed or other mean-estimation routines the printed algorithm class allows (C42). The lower bound is proved with the deterministic instance r ≡ 1 only; no communication–variance argument is formalized.",
+      "display_note": "The Lean entry covers only the exact-averaging algorithms, not the compressed or other mean-estimation routines the printed algorithm class allows (C42). The lower bound is proved with the deterministic instance r ≡ 1 only; no communication–variance argument is formalized.",
       "correction_status": "proposed-by-project"
     }
   ],
   "printed_refuted": {
-    "_comment": "Printed statements that fail, keyed by source label (or `id:<inventory id>` for an unlabelled remark). `lean`: fully qualified Lean theorems that refute the printed statement under `reading` (null when there is no Lean refutation); `paper`: true when a paper argument by this project (not Lean-checked) shows a failure, alone or beyond the Lean part; `issues`: SOURCE-ISSUES ids. scripts/gen_nodes.py reads this field for the site's refuted markers; its `not_..._printed` name heuristic must agree with it. Every entry is this project's finding, not confirmed by the authors. Added 2026-11-10 from SOURCE-ISSUES.md and COVERAGE.md.",
+    "_comment": "Printed statements that fail, keyed by source label (or `id:<inventory id>` for an unlabelled remark). `lean`: fully qualified Lean theorems that refute the printed statement under `reading` (null when there is no Lean refutation); `paper`: true when a paper argument by this project (not Lean-checked) shows a failure, alone or beyond the Lean part; `issues`: SOURCE-ISSUES ids. scripts/gen_nodes.py reads this field for the site's refuted markers; its `not_..._printed` name heuristic must agree with it. Optional `kind`: `counterexample` (default) or `boundary` when the Lean refutation shows only a degenerate boundary or domain case (for example T = 1 with a junk value, or a single action or state) and the repair is a domain restriction; the site then shows the boundary marker instead of the refuted marker and leaves the item out of the refuted counts (reclassified 2026-11-10 after the live-site review). Every entry is this project's finding, not confirmed by the authors. Added 2026-11-10 from SOURCE-ISSUES.md and COVERAGE.md.",
     "theorem:azar": {
       "lean": [
         "StatisticalRL.Obstructions.not_printedTheorem37ii",
         "StatisticalRL.Obstructions.c1_literal_displayed_domain_obstruction"
       ],
+      "kind": "boundary",
       "paper": true,
       "reading": "Standalone reading with the book's known-reward convention: both parts fail at S = 1 (C2; Lean refutes part (ii) literally, `not_printedTheorem37ii`); part (i) fails at A = 1 (C1; Lean obstruction for a fixed estimator) unless the A ≥ 2 convention of the policy-learning section is read into the theorem.",
       "issues": [
@@ -1553,6 +1559,7 @@
       "lean": [
         "StatisticalRL.FiniteQLearning.not_thm4_13_from_one"
       ],
+      "kind": "boundary",
       "paper": false,
       "reading": "The literal Lean transcription at T = 1, where the printed schedule divides by H log²T = 0 (Lean: log 1 = 0, x/0 = 0). The book leaves the schedule undefined there, so this is a domain repair (add T ≥ 2) rather than a refutation of a meaningful printed case.",
       "issues": [
@@ -1639,6 +1646,7 @@
         "StatisticalRL.RobustRL.Ch7.not_thm7_3_exists_c0",
         "StatisticalRL.RobustRL.Ch7.not_thm7_3_printed_small"
       ],
+      "kind": "boundary",
       "paper": true,
       "reading": "A = 1 (machine-checked for every, some, and every sufficiently small c₀); S = 1 under the known-reward convention is a paper argument.",
       "issues": [
@@ -1650,6 +1658,7 @@
         "StatisticalRL.RobustRL.Ch7.LowerBound75.printed_at_fails",
         "StatisticalRL.RobustRL.Ch7.LowerBound75.knownReward_needs_two_states"
       ],
+      "kind": "boundary",
       "paper": false,
       "reading": "A = 1 (a degenerate domain: every policy is optimal), for every pair of positive constants; under the book's known-reward convention also S = 1 (`knownReward_needs_two_states`).",
       "issues": [
@@ -1672,6 +1681,7 @@
       "lean": [
         "StatisticalRL.Ch7Rest.Marl.not_thm7_8_printed"
       ],
+      "kind": "boundary",
       "paper": true,
       "reading": "Every A_i = 1 (machine-checked); S = 1 or H = 1 under the known-reward convention is a paper argument.",
       "issues": [
@@ -1746,17 +1756,25 @@
       ]
     },
     "thm:infinite-horizon-asyn": {
-      "lean": null,
+      "lean": [
+        "StatisticalRL.AsyncQ.not_Thm4_12_printed",
+        "StatisticalRL.AsyncQ.not_Thm4_12_printedAt"
+      ],
+      "kind": "boundary",
       "paper": true,
-      "reading": "T = 1 with SA = 1, and μ_min = 0 (paper computations by this project).",
+      "reading": "T = 1 with S = A = 1 (log³T = 0, so the rate is 0 and Q₁ = Q₀; machine-checked for the ∃c₁∃c₂ Prop and, per constant, for every c₁, c₂, so every quantifier order fails). Read with η_t ∈ (0,1) (:1937) the instance is ill-posed, as in C35; domain repair T ≥ 2 or SA ≥ 2. μ_min = 0 (C34(2)) is a paper argument.",
       "issues": [
         "C34"
       ]
     },
     "id:ch4-remark-4.3": {
-      "lean": null,
-      "paper": true,
-      "reading": "Read like Remarks 4.1/4.2, the remark fails at the same T = 1 instance as Theorem 4.12 (paper computation).",
+      "lean": [
+        "StatisticalRL.AsyncQ.not_Remark4_3_printed",
+        "StatisticalRL.AsyncQ.not_Remark4_3_printedAt"
+      ],
+      "kind": "boundary",
+      "paper": false,
+      "reading": "This project's reading (Remark4_3_corrected without the C34 premises; the remark has no formula), at the same T = 1, SA = 1 instance with ε = 1/4: mean error ≥ 1 exceeds both ε(1−δ)+δ/(1−γ) = 23/64 and the bare 2ε = 1/2, for every c₁, c₂.",
       "issues": [
         "C34"
       ]
@@ -1770,19 +1788,27 @@
       ]
     },
     "lem:bound-T234": {
-      "lean": null,
-      "paper": true,
-      "reading": "K = H = 1, where the displayed confidence demands probability greater than 1 (source-level argument).",
+      "lean": [
+        "StatisticalRL.OnlineRL.not_Lemma5_8_printed"
+      ],
+      "kind": "boundary",
+      "paper": false,
+      "reading": "K = H = 1: the confidence 1 − 4log₂(KH)δ' equals 1 and no probability exceeds it. Repair K ≥ 2; the four inequalities and Theorem 5.2 are not refuted.",
       "issues": [
         "C12"
       ]
     },
     "thm-mvp-regret": {
-      "lean": null,
+      "lean": [
+        "StatisticalRL.OnlineRL.not_Thm5_10_literalTrigger_printed",
+        "StatisticalRL.OnlineRL.not_Thm5_10_literalTrigger_printed_rule"
+      ],
+      "kind": "counterexample",
       "paper": true,
-      "reading": "The literal consecutive-integer trigger of the printed algorithm with an adversarial tie (paper calculation).",
+      "reading": "Literal trigger set {1,2,…,2^{log₂K}} (C13); Õ as ∃C,p polylog(SAHK/δ); universal c₁, c₂ > 0 (the refutation needs c₂ independent of K); any zero-count completion b₀ ≥ 0; every deterministic argmax tie rule (also each fixed rule separately), with regret exactly K surely. Uniform random tie-breaking (regret about K/2) is a paper argument only; history-dependent tie rules are outside the model.",
       "issues": [
-        "C48"
+        "C48",
+        "C13"
       ]
     },
     "lem:monotone-contraction": {
@@ -1794,9 +1820,12 @@
       ]
     },
     "lem:sample-split-infinite": {
-      "lean": null,
-      "paper": true,
-      "reading": "N = 1 (S = 1, A = 2, δ = 31/32; paper calculation).",
+      "lean": [
+        "StatisticalRL.OfflineRL.not_Lemma6_5_printed"
+      ],
+      "kind": "boundary",
+      "paper": false,
+      "reading": "The standalone lemma at S·N = 1 (S = 1, A = 2, N = 1, δ = 31/32): the event is empty. Repair N ≥ 2; Theorem 6.3's regime implies it.",
       "issues": [
         "C19"
       ]
@@ -1818,9 +1847,12 @@
       ]
     },
     "lemma:useful": {
-      "lean": null,
+      "lean": [
+        "StatisticalRL.OfflineRL.not_Lemma6_11_printed"
+      ],
+      "kind": "boundary",
       "paper": true,
-      "reading": "log(SAT/δ) < 1, possible only when SAT ≤ 2 (paper argument).",
+      "reading": "Standalone, log(SAT/δ) < 1 (SAT = 1, δ = 9/10, γ = 1/8 − η, κ < 1): no universal constant works (Lean, for every C); κ ≥ 1 divergence is a paper argument. Theorem 6.8 unaffected.",
       "issues": [
         "C22"
       ]
@@ -1842,14 +1874,14 @@
     "Thm7_11_corrected_halfspace": "Corrected and restricted: the true TD-noise covariance $\\Gamma_{\\mathrm{true}}$ replaces the printed $\\Gamma$, and the printed $T^{-1/3}$ rate is proved for closed half-spaces, with an instance-dependent constant. Under the action-dependent-reward reading the printed statement is refuted in Lean (C43); the state-only-reward reading is not refuted. Implied by the all-convex corrected entry Thm7_11_corrected; kept as a supporting entry with its own proof route.",
     "Eq_classic_clt_corrected": "Not the printed display. The printed covariance Γ is replaced by the true TD-noise covariance Γ_true; with the printed Γ the display is refuted in Lean under the action-dependent-reward reading by this project's counterexample (C43). The result is qualitative convergence in distribution for the step sizes η₀t^(-2/3): no rate and no confidence-region claim.",
     "Eq_convex_Cdelta_corrected_oracle": "Partial result toward eq:convex.Cdelta: fixed-shape intervals with the oracle covariance only. The printed claim for arbitrary convex sets chosen from the data fails (C47(1): this project's counterexample, whose coverage is checked in Lean with the oracle covariance). What is proved uses the oracle covariance Λ = A⁻¹Γ_trueA⁻ᵀ, unknown in practice, and covers only one- and two-sided intervals for a linear functional fixed before the data and a Bonferroni box.",
-    "Eq_convex_Cdelta_corrected_plugin": "Partial result toward eq:convex.Cdelta: fixed-shape intervals with the plug-in covariance Λ̂_T, limits only (no rate). Coverage is asymptotic, pointwise in (u, z); Γ_true ≻ 0 is an added hypothesis; Lean's junk value Λ̂_T = 0 on the singular event does not affect the limits. The plug-in ellipsoid and rectangle are separate entries.",
+    "Eq_convex_Cdelta_corrected_plugin": "Partial result toward eq:convex.Cdelta: fixed-shape intervals and the Bonferroni box with the plug-in covariance Λ̂_T, with a finite-T rate: one instance constant K (independent of T, u, z) bounds the coverage error by K·T^(-1/3). Γ_true ≻ 0 is an added hypothesis; Lean's junk value Λ̂_T = 0 on the singular event lies inside the charged bad event. The plug-in ellipsoid (K independent of T, q, α, R) and ℓ∞ rectangle (K depending on α) are separate entries with the same rate.",
     "Eq_PAC_from_regret_conversion_corrected": "Corrected constant: the PAC conclusion holds with C_{S,A,H} in place of the printed C_{S,A,H+1}. The regret hypothesis is needed only at the instance, and the book's state augmentation is not needed. Algorithm class: a finite seed and deterministic deployed policies; randomized deployed policies and the follow-up at lines 184–198 are not covered. The printed constant is refuted in Lean (C46).",
     "Eq_PAC_from_regret_conversion_restricted": "The printed constant C_{S,A,H+1}, kept under the added assumption that C is nondecreasing in H, which covers the book's later use. Same algorithm class as the corrected entry (finite seed, deterministic deployed policies). Without monotonicity the printed constant is refuted in Lean (C46).",
     "Eq_defn_hat_Lambda_corrected": "Consistency of the plug-in estimator for the corrected target Λ = A⁻¹Γ_trueA⁻ᵀ (Γ replaced by the true TD-noise covariance): for every finite instance with full-support i.i.d. sampling, 0 < η₀ < 1/4 and every V₀, Λ̂_T → Λ entrywise in probability. No Γ_true ≻ 0 is assumed. Convergence in probability only; no rate.",
     "Eq_defn_hat_Lambda_restricted": "Consistency for the printed Λ⋆, restricted to instances where r(s,·) is constant on the support of π(·|s) for every s (state-only rewards or deterministic π), where the printed Γ equals Γ_true. In probability only; no rate. With action-dependent rewards the printed target is refuted in Lean (C43).",
     "Eq_classic_clt_restricted": "The printed CLT with the printed Γ, restricted to instances where r(s,·) is constant on the support of π(·|s) for every s (state-only rewards or deterministic π), where the printed Γ equals Γ_true; step sizes η_t = η₀t^(-2/3) and every V₀. Qualitative only: no rate.",
     "Thm3_2_burnInNecessary_restricted": "A restricted reading of the burn-in necessity claim: with N ≤ log(SA)/(8(1−γ)), every deterministic learner returning a deterministic policy has, on some instance, probability ≥ 1/4 of value gap ‖V⋆ − V^π̂‖∞ > 1/(64(1−γ)). \"Strictly better than a random guess\" is undefined in the book; this reading and the proof are this project's. Inherits S ≥ 2, A ≥ 2, SA ≥ 16, γ ∈ [2/3,1) from the corrected Theorem 3.7; accuracies between 1/(64(1−γ)) and 1/(1−γ) are not covered (C49).",
-    "Eq_P_Mi_Q_inaccurate_lower_generative": "The two-point lower bound for deterministic estimators (functions of the sample array): for γ ∈ [2/3,1), 0 < ε < 1/(32(1−γ)) and every N ≤ 0.003/((1−γ)³ε²), every estimator of Q(s₁,a) has P(|Q̂ − Q⋆| > ε) > 0.1 under one of two two-state, one-action MDPs. Randomized estimators, which the printed \"any estimator\" includes, are not covered (C4).",
+    "Eq_P_Mi_Q_inaccurate_lower_generative": "The two-point lower bound for every estimator, randomized included (a probability law on ℝ given the sample array): for γ ∈ [2/3,1), 0 < ε < 1/(32(1−γ)) and every N ≤ 0.003/((1−γ)³ε²), every estimator of Q(s₁,a) has P(|Q̂ − Q⋆| > ε) > 0.1 under one of two two-state, one-action MDPs. Deterministic estimators are the Dirac case; the strict inequality is the C4 step.",
     "Remark4_3_corrected": "The remark has no formula. Read like Remarks 4.1 and 4.2: with δ = ε(1−γ)/2 in Theorem 4.12's budget, E[max|Q_T − Q⋆|] ≤ 2ε, under the premises of the corrected Theorem 4.12 (μ_min > 0, and T ≥ 2 or SA ≥ 2). Without them this reading fails (T = 1 with SA = 1, or μ_min = 0; paper computation by this project, C34).",
     "Eq_regret_asymptotic_ucbvi_corrected": "Under the premises of the corrected Theorem 5.2 (zero-count completion, C8; c₁ = 4, c₂ = 16) and the burn-in S³AH³ ≤ K (constant 1): with probability ≥ 1 − δ, Regret(K) ≤ 40√(SAH³K)(1 + I), with I as in the corrected Theorem 5.2. The Õ is made explicit; the matching-lower-bound sentence is not separately formalized.",
     "Remark5_5_corrected": "For the UCBVI tables with the zero-count completion (C8), at every stage h and state s and for all bonus parameters: V_h(s) = max_a Q_h(s,a) = Q_h(s, π_h(s)) for the fixed greedy planner of the corrected Theorem 5.2. This is stronger than the printed h = 1. Only the table object is corrected; the identity does not depend on the bonus. The remark's proof-strategy sentences are not formalized.",
@@ -1870,6 +1902,8 @@
     "MVP_T234_K2_corrected": "The joint T2/T3/T4 event under the actual law, with the source failure coefficient 4log₂(K)δ′, for K ≥ 2, c₁ = 4, c₂ = 16, the C8, C12, C13 and C16 corrections and one fixed tie rule. The entry keeps the standing condition K ≥ SAH·ι.",
     "MVP_T5_corrected": "The T5 estimate for the corrected MVP algorithm (zero-count completion C8, power-of-two trigger C13, reciprocal δ′ C16, fixed greedy tie), c₁ = 4, c₂ = 16, with the source's natural-log failure coefficient. The entry keeps the standing condition K ≥ SAH·ι.",
     "Remark6_3": "Sentences 1–3 of the remark, in their formal reading: (i) C_clipped ≤ C for every stationary policy; (ii) for all nonempty S, A some instance has C⋆_clipped = 1/S; (iii) C_clipped ≥ 1/S always. Not proved: sentence 4, which cites li2024settling for \"many\" bounds continuing to hold with the clipped coefficient (out of scope as a cited result). The remark is therefore shown as incomplete.",
-    "Eq_convex_Cdelta_fixedShape_corrected_oracle": "Partial result toward eq:convex.Cdelta: with the oracle covariance Λ = A⁻¹Γ_trueA⁻ᵀ (unknown in practice) and Γ_true ≻ 0, one instance constant K₀ such that for every convex K fixed before the data, |P(V^π ∈ V̄_T + T^(-1/2)K) − N(0,Λ)(K)| ≤ K₀T^(-1/3)log(2T) for all T ≥ 1. Sets chosen from the data, as the printed rule allows, are not covered; that printed claim fails (C47(1))."
+    "Eq_convex_Cdelta_fixedShape_corrected_oracle": "Partial result toward eq:convex.Cdelta: with the oracle covariance Λ = A⁻¹Γ_trueA⁻ᵀ (unknown in practice) and Γ_true ≻ 0, one instance constant K₀ such that for every convex K fixed before the data, |P(V^π ∈ V̄_T + T^(-1/2)K) − N(0,Λ)(K)| ≤ K₀T^(-1/3) for all T ≥ 1. Sets chosen from the data, as the printed rule allows, are not covered; that printed claim fails (C47(1)).",
+    "Thm3_2_positiveN": "Supporting entry: Theorem 3.2 with N > 0 as a hypothesis. The printed form is `Thm3_2`, which the ledger records as proved as printed; at N = 0 the printed threshold and the empirical model are undefined.",
+    "Lemma3_5_positiveN": "Supporting entry: Lemma 3.5 with N > 0 as a hypothesis. The printed form is `Lemma3_5`, which the ledger records as proved as printed; at N = 0 the printed bounds and the empirical model are undefined."
   }
 }

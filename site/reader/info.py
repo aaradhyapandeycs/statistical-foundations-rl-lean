@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import html
 
-from .lean import LABELS, MARKERS, REPO, gen_nodes
+from .lean import ENTRY_LABELS, LABELS, MARKERS, REPO, gen_nodes
 
 ARXIV = "https://arxiv.org/abs/2610.41903v1"
 MAINTAINER = "aaradhyapandeycs"
@@ -62,7 +62,10 @@ Counts after each chapter are its numbered results by label.</p>
         pdf = prov["artifacts"].get("2610.41903v1.pdf", "")
         ci = (f'<p>This build was made by the publishing workflow after the “Lean and source checks” workflow '
               f'succeeded on this commit: <a href="{attr(self.ci_run_url)}">that CI run</a>.</p>'
-              if self.ci_run_url else "")
+              if self.ci_run_url else
+              f'<p>This build records no gating CI run (it was a manual deploy or a local build, which do not wait '
+              f'for the Lean workflow). The Lean CI status of this commit is shown at '
+              f'<a href="{REPO}/commit/{rev}">its checks page on GitHub</a> and may still be pending.</p>')
         audit = (f'<p>Axiom-audit output of that run: <code>{esc(self.audit_line)}</code></p>'
                  if self.audit_line else "")
         checks = (f'<a href="{attr(self.ci_run_url)}">the CI run that gated this build</a>' if self.ci_run_url
@@ -90,6 +93,11 @@ Counts after each chapter are its numbered results by label.</p>
         ]
         rows = "".join(f'<tr><td><span class="status {LABELS[k][1]}">{esc(LABELS[k][0])}</span></td><td>{d}</td></tr>'
                        for k, d in mapping)
+        sw, sc = ENTRY_LABELS["supporting"]
+        rows += (f'<tr><td><span class="status {sc}">{esc(sw)}</span></td><td>On a Lean entry card only, never an '
+                 f'item: the entry is proved in Lean (its <code>_holds</code> wrapper compiles), but the item\'s '
+                 f'reviewed record is another entry, so it is not counted for the item (for example a positive-N form '
+                 f'kept beside the printed entry, or a superseded entry).</td></tr>')
         body = f"""<h1>Methodology and verification</h1>
 <nav class="page-toc"><a href="#sources">Sources and scope</a> · <a href="#formalized">How results are formalized</a> ·
 <a href="#review">Review</a> · <a href="#verify">Verification snapshot</a> · <a href="#establishes">What compilation establishes</a> ·
@@ -145,12 +153,13 @@ matrices, division by zero) and choice functions. The conventions it found are d
 <tr><th>Built</th><td>{esc(self.built)}</td></tr>
 </tbody></table>
 {ci}{audit or no_audit}
-<p>Publishing: the site's workflow (<code>.github/workflows/pages.yml</code>) deploys automatically only after the
-“Lean and source checks” workflow (<code>lean.yml</code>: Lean build and <code>python3 scripts/check.py</code>, which
-includes the axiom audit) has succeeded on a push to <code>main</code>, builds exactly that commit, and deploys only
-while it is still the tip of <code>main</code>. A maintainer can also start a deploy by hand from <code>main</code>;
-that path does not wait for the Lean workflow. The footer links the CI status of the commit each page was built from
-(<a href="{REPO}/commit/{rev}">this commit</a>).</p>
+<p>Publishing: the site's workflow (<code>.github/workflows/pages.yml</code>) has two deploy paths. Automatic deploys
+run only after the “Lean and source checks” workflow (<code>lean.yml</code>: Lean build and
+<code>python3 scripts/check.py</code>, which includes the axiom audit) has succeeded on a push of that same commit to
+<code>main</code>; they build exactly that commit and deploy only while it is still the tip of <code>main</code>.
+Manual deploys (<code>workflow_dispatch</code> from <code>main</code>) do not wait for the Lean workflow, so the
+commit they publish may not yet have passed Lean CI. The footer links the CI status of the commit each page was built
+from (<a href="{REPO}/commit/{rev}">this commit</a>).</p>
 
 <h2 id="establishes">What compilation establishes, and what it does not</h2>
 <p>It establishes that each exported Lean theorem is proved from Mathlib and the three axioms <code>propext</code>,
@@ -183,8 +192,12 @@ classifies on its own. Counts never become a percentage of the book.</p>
 <div class="table-wrap"><table class="results"><thead><tr><th>Label</th><th>Meaning</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p>Markers after a label: <span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span> when a Lean theorem
 refutes the printed statement under the reading formalized, shown even when a corrected form is proved;
+<span class="marker mk-boundary">{esc(MARKERS["boundary"])}</span> instead when the Lean theorem shows the printed
+statement fails only at a degenerate boundary or domain case (for example T = 1, where a formula divides by
+log T = 0, or a single action, where every policy is optimal) and the repair is a domain restriction (ledger
+<code>"kind": "boundary"</code>; such items are left out of every refuted count and counted separately);
 <span class="marker mk-fails-paper">{esc(MARKERS["fails-paper"])}</span> when there is no Lean refutation but a paper
-argument by this project (not checked in Lean) shows that the printed statement fails. Both come from the explicit
+argument by this project (not checked in Lean) shows that the printed statement fails. All three come from the explicit
 ledger field <code>printed_refuted</code> in <code>docs/named-result-status.json</code>, which states the reading and
 the Lean theorems; the generator fails if a Lean refutation cited elsewhere in the ledgers is missing from it; <span class="marker mk-new-proof">{esc(MARKERS["new-proof"])}</span> when the ledger records
 an own proof where the book cites or omits one; <span class="marker mk-also-corrected">{esc(MARKERS["also-corrected"])}</span>
@@ -252,7 +265,7 @@ book says, a misread hypothesis, a wrong label, or a rendering error.</p>
 <p>Open an issue at <a href="{REPO}/issues">{esc(REPO.split("//", 1)[1])}/issues</a> with:</p>
 <ul><li>the source item (number and label, for example Theorem 7.11, <code>thm:Berry-Esseen-linear</code>) and its
 <code>.tex</code> lines (shown on every card);</li>
-<li>the Lean entry (for example <code>Thm7_11_corrected_halfspace</code>) and the commit shown in the page footer;</li>
+<li>the Lean entry (for example <code>Thm7_11_corrected</code>) and the commit shown in the page footer;</li>
 <li>what is wrong, and what the book says instead.</li></ul>
 <h2>Build and check</h2>
 <pre class="cite">python3 scripts/fetch_source.py

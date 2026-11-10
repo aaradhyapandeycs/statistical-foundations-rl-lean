@@ -17,7 +17,7 @@ import re
 import sys
 from pathlib import Path
 
-from .tex import label_id
+from .tex import html_id, label_id
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
 import gen_nodes  # noqa: E402
@@ -147,14 +147,17 @@ class GraphPages:
                 f'<td class="num">{cnt(p + ".named_total")}</td>'
                 + "".join(f'<td class="num">{cnt(f"{p}.named_by_label.{k}")}</td>' for k in order)
                 + f'<td class="num">{cnt(p + ".named_refuted_marker")}</td>'
+                + f'<td class="num">{cnt(p + ".named_boundary_marker")}</td>'
                 + f'<td class="num">{cnt(p + ".named_fails_paper_marker")}</td>'
                 + "".join(f'<td class="num">{cnt(f"{p}.prose_by_label.{k}")}</td>' for k in order)
                 + f'<td class="num">{cnt(p + ".prose_refuted_marker")}</td>'
+                + f'<td class="num">{cnt(p + ".prose_boundary_marker")}</td>'
                 + f'<td class="num">{cnt(p + ".prose_fails_paper_marker")}</td></tr>')
         heads = "".join(f'<th><span class="status {gen_nodes.SITE_LABELS[k][1]}">{esc(gen_nodes.SITE_LABELS[k][0])}</span></th>'
                         for k in order)
         rev = site.lean.git.rev
         c = s["closing_not_proved"]
+        n_issues = len(site.lean.issue_slugs)
         body = f"""<h1>Progress</h1>
 <div class="incomplete" role="note"><strong>INCOMPLETE.</strong> The formalization of the monograph is not
 complete, and no chapter is certified. These are counts of source items by label, read from the node graph generated
@@ -164,17 +167,19 @@ approval). They are not a percentage of the book.</div>
 {site.stacked_bar()}
 <h2>By chapter</h2>
 <div class="table-wrap"><table class="results dash-table"><thead>
-<tr><th rowspan="2">Ch.</th><th rowspan="2">Title</th><th colspan="7">Numbered theorems, lemmas and claims</th>
-<th colspan="6">Remarks and displayed claims</th></tr>
-<tr><th>Total</th>{heads}<th>✕ refuted in Lean</th><th>⚠ fails on paper</th>{heads}<th>✕ refuted in Lean</th><th>⚠ fails on paper</th></tr></thead>
+<tr><th rowspan="2">Ch.</th><th rowspan="2">Title</th><th colspan="8">Numbered theorems, lemmas and claims</th>
+<th colspan="7">Remarks and displayed claims</th></tr>
+<tr><th>Total</th>{heads}<th>✕ refuted in Lean</th><th>∂ boundary case</th><th>⚠ fails on paper</th>{heads}<th>✕ refuted in Lean</th><th>∂ boundary case</th><th>⚠ fails on paper</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
 <p class="lede">✕ refuted in Lean counts items whose printed statement is refuted in Lean under the reading
-formalized; ⚠ fails on paper counts items with no Lean refutation whose printed statement fails by a paper argument of
-this project (not checked in Lean). Both also carry one of the four labels (a corrected form may be proved). A chapter whose numbered results all have a label
+formalized; ∂ boundary case counts items whose printed statement Lean shows to fail only at a degenerate boundary or
+domain case (such as T = 1 or a single action), repaired by a domain restriction, and not counted as refuted; ⚠ fails on
+paper counts items with no Lean refutation whose printed statement fails by a paper argument of this project (not
+checked in Lean). All three also carry one of the four labels (a corrected form may be proved). A chapter whose numbered results all have a label
 other than incomplete is still not certified: its prose claims, algorithms and arguments are not all formalized.</p>
 <h2>What is not in these counts</h2>
 <ul>
-<li>{cnt("prose_by_label.no_claim")} remarks or displays the coverage ledger reviews as making no mathematical claim
+<li>{site.cntw("prose_by_label.no_claim", "remark or display", "remarks or displays")} the coverage ledger reviews as making no mathematical claim
 (no label).</li>
 <li>Among the incomplete remarks and displays: {cnt("closing_not_proved.implied.nodes")} implied by a proved entry (not
 separately proved) and {cnt("closing_not_proved.cited-out-of-scope.nodes")} cited from the literature and out of scope
@@ -183,7 +188,10 @@ implied, {cnt("closing_not_proved.explanatory.rows_without_node")} explanatory,
 {cnt("closing_not_proved.cited-out-of-scope.rows_without_node")} cited and out of scope.</li>
 <li>{cnt("context_items.algorithm")} algorithms, {cnt("context_items.definition")} definitions and
 {cnt("context_items.assumption")} assumptions (no label), {cnt("source_gap_candidates")} source-gap candidates in the
-inventory, and unlabelled prose claims not listed in the coverage ledger.</li>
+inventory, and unlabelled prose claims not listed in the coverage ledger. The inventory's source-gap candidates are
+unreviewed keyword hits (phrases such as “omitted” or a proof deferred to the literature), flagged for manual review and
+not claims of error; they are a different list from the {n_issues} reviewed source-issue candidates on the
+<a href="errata.html#all">Source issues</a> page, which come from <code>docs/SOURCE-ISSUES.md</code>.</li>
 </ul>
 {self.warnings_html()}
 <h2>How these numbers are made</h2>
@@ -280,14 +288,14 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
 
         for n in self.data["nodes"]:
             for uid in uses[n["id"]]:
-                out.append(f'<path d="{path(pos[uid], pos[n["id"]])}" class="gn-edge e-all" data-from="{attr(uid)}" '
-                           f'data-to="{attr(n["id"])}" marker-end="url(#arrow)"/>')
+                out.append(f'<path d="{path(pos[uid], pos[n["id"]])}" class="gn-edge e-all" data-from="{attr(html_id(uid))}" '
+                           f'data-to="{attr(html_id(n["id"]))}" marker-end="url(#arrow)"/>')
         for n in self.data["nodes"]:
             if n["class"] != "named":
                 continue
             for uid in named_uses(n["id"]):
                 out.append(f'<path d="{path(npos[uid], npos[n["id"]])}" class="gn-edge e-named" '
-                           f'data-from="{attr(uid)}" data-to="{attr(n["id"])}" marker-end="url(#arrow)"/>')
+                           f'data-from="{attr(html_id(uid))}" data-to="{attr(html_id(n["id"]))}" marker-end="url(#arrow)"/>')
         for n in self.data["nodes"]:
             x, y = pos[n["id"]]
             nx, ny = npos.get(n["id"], (x, y))
@@ -295,18 +303,19 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                      f'{"; " + ", ".join(n["issues"]) if n["issues"] else ""}')
             lab = n.get("site_label") or "none"
             marks = n.get("site_markers", [])
-            text = ("✕ " if "refuted" in marks else "") + short_name(n)
+            text = ("✕ " if "refuted" in marks else "∂ " if "boundary" in marks else
+                    "⚠ " if "fails-paper" in marks else "") + short_name(n)
             cls = f'gn gl-{lab}{" mk-new" if "new-proof" in marks else ""}{" named" if n["class"] == "named" else " prose"}'
-            node = (f'<g class="{cls}" data-id="{attr(n["id"])}" data-ch="{attr(n["chapter"])}" '
+            node = (f'<g class="{cls}" data-id="{attr(html_id(n["id"]))}" data-ch="{attr(n["chapter"])}" '
                     f'data-named="{1 if n["class"] == "named" else 0}" '
-                    f'data-uses="{attr(" ".join(uses[n["id"]]))}" '
-                    f'data-nuses="{attr(" ".join(named_uses(n["id"])) if n["class"] == "named" else "")}" '
+                    f'data-uses="{attr(" ".join(html_id(u) for u in uses[n["id"]]))}" '
+                    f'data-nuses="{attr(" ".join(html_id(u) for u in named_uses(n["id"])) if n["class"] == "named" else "")}" '
                     f'data-xy="{x},{y}" data-nxy="{nx},{ny}" transform="translate({nx},{ny})">'
                     f'<title>{esc(title)}</title>'
                     f'<rect x="0" y="0" width="{W}" height="{H}" rx="4"/>'
                     f'<text x="{W / 2}" y="15" clip-path="url(#nclip)" textLength="{min(W - 8, 7 * len(text))}" '
                     f'lengthAdjust="spacingAndGlyphs">{esc(text)}</text></g>')
-            out.append(f'<a href="#n-{attr(n["id"])}" aria-label="{attr(long_name(n))}">{node}</a>')
+            out.append(f'<a href="#n-{attr(html_id(n["id"]))}" aria-label="{attr(long_name(n))}">{node}</a>')
         out.append("</svg>")
         return "".join(out)
 
@@ -318,7 +327,8 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
         for n in self.data["nodes"]:
             lab = n.get("site_label") or "none"
             style = "filled,dashed" if "new-proof" in n.get("site_markers", []) else "filled"
-            color = "red" if "refuted" in n.get("site_markers", []) else "black"
+            mk = n.get("site_markers", [])
+            color = "red" if "refuted" in mk else "orange" if "boundary" in mk or "fails-paper" in mk else "black"
             lines.append(f'  "{n["id"]}" [label="{long_name(n)}", style="{style}", color={color}, '
                          f'fillcolor={fill[lab]}];')
         for n in self.data["nodes"]:
@@ -336,6 +346,10 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
         legend += ('<li><svg width="46" height="20" aria-hidden="true"><g class="gn gl-none">'
                    '<rect x="2" y="2" width="42" height="16" rx="3"/></g></svg> no mathematical claim (no label)</li>'
                    '<li><span class="gmark">✕</span> printed statement refuted in Lean</li>'
+                   '<li><span class="gmark soft">∂</span> printed statement fails in Lean only at a boundary case '
+                   '(domain repaired)</li>'
+                   '<li><span class="gmark soft">⚠</span> printed statement appears to fail (paper argument, not '
+                   'checked in Lean)</li>'
                    '<li><svg width="46" height="20" aria-hidden="true"><g class="gn gl-stated mk-new">'
                    '<rect x="2" y="2" width="42" height="16" rx="3"/></g></svg> dashed border: new proof</li>')
         trs, last = [], None
@@ -349,7 +363,7 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
             name = f'<a href="{attr(link)}">{name}</a>' if link else name
             lab = f'<div class="label"><code>{esc(n["labels"][0])}</code></div>' if n["labels"] else ""
             uses = ", ".join(
-                f'<a href="#n-{attr(u["id"])}">{esc(long_name(self.nodes[u["id"]]))}</a>'
+                f'<a href="#n-{attr(html_id(u["id"]))}">{esc(long_name(self.nodes[u["id"]]))}</a>'
                 for u in n["uses"] if u["target"] == "node")
             ctx = [u for u in n["uses"] if u["target"] == "context"]
             if ctx:
@@ -358,7 +372,7 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                             for e in n["statement_entries"])
             search = " ".join([long_name(n), n["labels"][0] if n["labels"] else "", lean,
                                " ".join(n["issues"])]).lower()
-            trs.append(f'<tr id="n-{attr(n["id"])}" data-label="{attr(n.get("site_label") or "none")}" '
+            trs.append(f'<tr id="n-{attr(html_id(n["id"]))}" data-label="{attr(n.get("site_label") or "none")}" '
                        f'data-markers="{attr(" ".join(n.get("site_markers", [])))}" data-ch="{attr(n["chapter"])}" '
                        f'data-named="{1 if n["class"] == "named" else 0}" '
                        f'data-search="{attr(re.sub("<[^>]+>", "", search))}">'
@@ -396,6 +410,7 @@ row. <a href="status.html">Counts by chapter</a> · <a href="graph/nodes.json">n
     f'<button type="button" class="chip" data-filter="{k}" aria-pressed="false"><span class="status {gen_nodes.SITE_LABELS[k][1]}">'
     f'{esc(gen_nodes.SITE_LABELS[k][0])}</span></button>' for k in gen_nodes.SITE_LABEL_ORDER)}
 <label class="toggle"><input type="checkbox" id="f-refuted"> <span class="marker mk-refuted">{esc(gen_nodes.MARKERS["refuted"])}</span></label>
+<label class="toggle"><input type="checkbox" id="f-boundary"> <span class="marker mk-boundary">{esc(gen_nodes.MARKERS["boundary"])}</span></label>
 <label class="toggle"><input type="checkbox" id="f-paper"> <span class="marker mk-fails-paper">{esc(gen_nodes.MARKERS["fails-paper"])}</span></label>
 <label class="toggle"><input type="checkbox" id="f-named"> numbered results only</label></div>
 <p class="filter-count" aria-live="polite"></p></div>
@@ -437,6 +452,7 @@ never block.</p>"""
         nodes = self.data["nodes"]
         refuted = [n for n in nodes if "refuted" in n.get("site_markers", [])]
         paper = [n for n in nodes if "fails-paper" in n.get("site_markers", [])]
+        boundary = [n for n in nodes if "boundary" in n.get("site_markers", [])]
         corrected = [n for n in nodes if n.get("site_label") == "corrected" or "also-corrected" in n.get("site_markers", [])]
         restricted = [n for n in nodes if n.get("site_label") == "restricted" and n not in corrected]
         repaired = [n for n in nodes if "source-proof-repaired" in n.get("proof_origins", [])]
@@ -450,6 +466,11 @@ never block.</p>"""
         ids = sorted(int(c) for c in lean.issue_slugs)
         gaps = [f"C{i}" for i in range(ids[0], ids[-1] + 1) if str(i) not in lean.issue_slugs] if ids else []
         gap_note = "".join(f" {g}: {WITHDRAWN_ISSUES.get(g, 'not used.')}" for g in gaps)
+        n_gap = self.data["summary"].get("source_gap_candidates", 0)
+        gap_note += (f" These {len(ids)} reviewed candidates are not the {n_gap} “source-gap candidates” counted on the "
+                     f'<a href="status.html">Progress</a> page: those are unreviewed keyword hits in the source inventory '
+                     f"(for example “omitted” or a proof deferred to the literature), flagged for manual review, not "
+                     f"claims of error.")
         rev = lean.git.rev
         def refs(n):
             pr = n.get("printed_refuted") or {}
@@ -468,13 +489,18 @@ reading the project formalized</em>, is false; the reading itself is part of wha
 <p class="lede">Generated at build time from <code>docs/SOURCE-ISSUES.md</code>, the coverage ledger and the
 named-result ledger at commit <code>{rev[:10]}</code>. The curated record with effects on each result is
 <a href="{attr(lean.git.blob("docs/ERRATA-AND-DEVIATIONS.md"))}">docs/ERRATA-AND-DEVIATIONS.md</a>.</p>
-<nav class="page-toc"><a href="#refuted">Refuted in Lean</a> · <a href="#paper">Failing on paper</a> · <a href="#corrections">Corrections</a> ·
+<nav class="page-toc"><a href="#refuted">Refuted in Lean</a> · <a href="#boundary">Boundary cases</a> · <a href="#paper">Failing on paper</a> · <a href="#corrections">Corrections</a> ·
 <a href="#restrictions">Restrictions</a> · <a href="#repaired">Proof gaps repaired</a> · <a href="#all">All candidates</a></nav>
 <h2 id="refuted">(a) Printed statements refuted in Lean</h2>
 <p class="lede">Items for which the named-result ledger (field <code>printed_refuted</code>) lists Lean theorems that
 refute the printed statement under the stated reading. Most items are proved in a corrected or restricted form as
 well; the label says so.</p>
 {table(refuted, "Lean refutation", refs)}
+<h2 id="boundary">(a″) Printed statements that fail only at a boundary case (domain repaired)</h2>
+<p class="lede">Items for which Lean shows the printed statement fails, but only at a degenerate boundary or domain case
+(for example T = 1, where the printed schedule divides by log T = 0, or a single action, where every policy is
+optimal); adding the missing domain condition repairs it. They are not counted with (a).</p>
+{table(boundary, "Lean theorem (boundary case)", refs)}
 <h2 id="paper">(a′) Printed statements that appear to fail (paper argument)</h2>
 <p class="lede">Items with no Lean refutation for which a paper argument by this project, not checked in Lean, shows
 that the printed statement fails. These are weaker evidence than (a).</p>

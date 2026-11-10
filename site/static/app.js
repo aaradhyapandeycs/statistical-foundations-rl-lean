@@ -38,6 +38,7 @@
     var fRef = document.getElementById("f-refuted");
     var fNew = document.getElementById("f-new");
     var fPaper = document.getElementById("f-paper");
+    var fBound = document.getElementById("f-boundary");
     var fNamed = document.getElementById("f-named");
     var fCh = document.getElementById("f-ch");
     var count = document.querySelector(".filter-count");
@@ -50,6 +51,7 @@
       if (fRef) fRef.checked = (h.get("m") || "").split(",").indexOf("refuted") >= 0;
       if (fNew) fNew.checked = (h.get("m") || "").split(",").indexOf("new-proof") >= 0;
       if (fPaper) fPaper.checked = (h.get("m") || "").split(",").indexOf("fails-paper") >= 0;
+      if (fBound) fBound.checked = (h.get("m") || "").split(",").indexOf("boundary") >= 0;
       if (fNamed && h.has("all")) fNamed.checked = h.get("all") !== "1";
       if (q && h.has("q")) q.value = h.get("q");
       chips.forEach(function (x) {
@@ -66,6 +68,7 @@
       if (fRef && fRef.checked) m.push("refuted");
       if (fNew && fNew.checked) m.push("new-proof");
       if (fPaper && fPaper.checked) m.push("fails-paper");
+      if (fBound && fBound.checked) m.push("boundary");
       if (m.length) h.set("m", m.join(","));
       if (fNamed && !fNamed.checked && fNamed.defaultChecked) h.set("all", "1");
       if (fNamed && fNamed.checked && !fNamed.defaultChecked) h.set("all", "0");
@@ -83,6 +86,7 @@
           (!fRef || !fRef.checked || mk.indexOf(" refuted ") >= 0) &&
           (!fNew || !fNew.checked || mk.indexOf(" new-proof ") >= 0) &&
           (!fPaper || !fPaper.checked || mk.indexOf(" fails-paper ") >= 0) &&
+          (!fBound || !fBound.checked || mk.indexOf(" boundary ") >= 0) &&
           (!fNamed || !fNamed.checked || r.dataset.named === "1") &&
           (!fCh || !fCh.value || r.dataset.ch === fCh.value);
         r.hidden = !ok;
@@ -101,7 +105,7 @@
       if (params.get("q")) q.value = params.get("q");
       q.addEventListener("input", changed);
     }
-    [fRef, fNew, fPaper, fNamed, fCh].forEach(function (el) { if (el) el.addEventListener("change", changed); });
+    [fRef, fNew, fPaper, fBound, fNamed, fCh].forEach(function (el) { if (el) el.addEventListener("change", changed); });
     chips.forEach(function (c) {
       c.addEventListener("click", function () {
         filter = c.dataset.filter;
@@ -231,8 +235,11 @@
   // Open the Lean card, the disclosure holding it, or the TeX disclosure that a link points at.
   function reveal() {
     if (!location.hash || location.hash.indexOf("=") >= 0) return;
-    var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    var id = decodeURIComponent(location.hash.slice(1));
+    // Old links may carry an unsanitized id (with a space): map it to the sanitized anchor.
+    var el = document.getElementById(id) || document.getElementById(id.replace(/[^A-Za-z0-9:_.\-]/g, "_"));
     if (!el) return;
+    if (el.id !== id && el.scrollIntoView) el.scrollIntoView();
     for (var p = el.parentElement; p; p = p.parentElement) if (p.tagName === "DETAILS") p.open = true;
     if (el.tagName === "ARTICLE") {
       var d = el.querySelector("details");

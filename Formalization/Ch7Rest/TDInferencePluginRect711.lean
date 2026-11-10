@@ -37,7 +37,7 @@ The quantile property is the definition of the level, not an extra probabilistic
 convergence of `r̂_T` is assumed. By C43 the limit covariance is the corrected
 `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (`trueLambda`).
 
-**Asymptotic only.** The consistency of `Λ̂_T` (`eq_defn_hat_Lambda_corrected`) has no rate, so this
+**Asymptotic only in this file** (the finite-`T` rate is in `TDInferencePluginRectRate711.lean`). The consistency of `Λ̂_T` (`eq_defn_hat_Lambda_corrected`) has no rate, so this
 is a limit statement; no finite-`T` rate is claimed.
 
 **Route.** (i) Continuity of `Σ ↦ N(0,Σ){‖x‖∞ ≤ r}` at `Λ = L Lᵀ` (`L` invertible) among PSD `Σ`
