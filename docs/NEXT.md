@@ -144,7 +144,7 @@ A COVERAGE row headed **Implied by `X`**: the item follows from the named statem
 - Display `eq:RLHF-policy` — `chapters/RLHF.tex:172–175` · statement `implied (restricted)` · C44 · by `Eq_online_RBMLE_restricted`
 - Sample-size read-off after Theorem 3.1, model-based chapter lines 157–165 — `docs/COVERAGE.md:214` · no inventory node · by `Thm3_1` (printed)
 - Sample-size read-off and range after Theorem 3.2 (including the range display at lines 934–937), model-based chapter lines 926–937 — `docs/COVERAGE.md:215` · no inventory node · by `Thm3_2_positiveN` (restricted)
-- Minimax optimality of the model-based approach, model-based chapter lines 1468–1474 — `docs/COVERAGE.md:217` · no inventory node · by `Thm3_2_positiveN`, `Thm3_7_corrected` (corrected)
+- Minimax optimality of the model-based approach, model-based chapter lines 1468–1474 — `docs/COVERAGE.md:217` · no inventory node · by `Thm3_1`, `Thm3_2_positiveN`, `Thm3_7_corrected`, `Thm3_7_policyEvaluation_A1_restricted` (corrected)
 - TD sample-size read-off, model-free chapter lines 240–251 — `docs/COVERAGE.md:218` · no inventory node · by `Thm4_1` (printed)
 - Loose TD iteration count, model-free chapter lines 434–447 — `docs/COVERAGE.md:219` · no inventory node · by `Thm4_1` (printed)
 - Finite-horizon Q-learning sample size, model-free chapter lines 2237–2247 — `docs/COVERAGE.md:223` · no inventory node · by `Thm4_13_corrected`, `Thm3_9_minimaxLowerBound_restricted` (corrected)

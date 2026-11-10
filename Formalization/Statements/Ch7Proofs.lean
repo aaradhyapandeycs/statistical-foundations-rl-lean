@@ -26,6 +26,7 @@ import Formalization.Ch7Rest.TDInferencePluginCoverage711
 import Formalization.Ch7Rest.TDInferenceConfRegion711
 import Formalization.Ch7Rest.TDInferenceConfCalib711
 import Formalization.Ch7Rest.TDInferenceConfChiSq711
+import Formalization.Ch7Rest.TDInferencePluginRegion711
 import Formalization.RobustRL.DRVI.RobustBellmanDisplays
 import Formalization.Ch7Rest.VPODisplays712
 import Formalization.Ch7Rest.MarlBestResponse
@@ -504,6 +505,20 @@ theorem Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared_holds :
     M π μ hμ h0 (by linarith) V₀ hΓ
   refine ⟨K₀, hK₀, fun α hα0 hα1 ↦ ⟨?_, fun R hR ↦ hb α hα0 hα1 R hR⟩⟩
   exact StatisticalRL.Ch7Rest.TDInference.exists_chiSquared_quantile Fintype.card_pos hα0 hα1
+
+/-- `Eq_convex_Cdelta_ellipsoid_corrected_plugin` from
+`StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin` and
+`StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin_chiSquared` (the exports need only
+`η₀ ≤ 1`). -/
+theorem Eq_convex_Cdelta_ellipsoid_corrected_plugin_holds :
+    Eq_convex_Cdelta_ellipsoid_corrected_plugin := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  have h1' : η₀ ≤ 1 := by linarith
+  exact ⟨fun q ↦ StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin
+      M π μ h0 h1' V₀ hμ hΓ q,
+    fun α hα0 hα1 R hR ↦
+      StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin_chiSquared
+        M π μ h0 h1' V₀ hμ hΓ hα0 hα1 hR⟩
 
 end EqConvexCdeltaProofs
 

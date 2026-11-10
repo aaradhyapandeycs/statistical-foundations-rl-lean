@@ -1,6 +1,6 @@
 # Five-bin statement audit of the statement index
 
-Date: 2026-11-09/10. Scope: every statement-index entry in `Formalization/Statements/Ch1.lean`–`Ch7.lean` (174 entries at the time of the audit, 179 after the later additions listed below) together with its `_holds` wrapper in `ChNProofs.lean`.
+Date: 2026-11-09/10. Scope: every statement-index entry in `Formalization/Statements/Ch1.lean`–`Ch7.lean` (174 entries at the time of the audit, 182 after the later additions listed below) together with its `_holds` wrapper in `ChNProofs.lean`.
 
 ## Method
 
@@ -30,10 +30,11 @@ The audit follows the `lean-statement-audit` skill (`skills/lean/skills/lean-sta
 | [Ch7, part A](ch7a.md) | 20 | 2 | 18 | 1 | 0 |
 | [Ch7, part B](ch7b.md) | 19 | 4 | 15 | 3 | 0 |
 | **Total** | **174** | **87** | **87** | **7** | **0** |
-| [Later additions, Ch7](../critic-confregion.md) ([and](../critic-confcalib.md), [and](../critic-chisq.md)) | 6 | 0 | 6 | 0 | 0 |
-| **Total now** | **180** | **87** | **93** | **7** | **0** |
+| [Later additions, Ch7](../critic-confregion.md) ([and](../critic-confcalib.md), [and](../critic-chisq.md), [and](../critic-pluginregion.md)) | 7 | 0 | 7 | 0 | 0 |
+| [Later addition, Ch3](../critic-a1.md) | 1 | 0 | 1 | 0 | 0 |
+| **Total now** | **182** | **87** | **95** | **7** | **0** |
 
-The PASS and PASS-DISCLOSED columns are the verdicts after re-audit. The later additions (2026-11-10) are the oracle-covariance confidence-region entries `Eq_convex_Cdelta_{fixedShape,ellipsoid,rectangle}_corrected_oracle` `Eq_convex_Cdelta_{ellipsoid,rectangle}_corrected_oracle_calibrated` and `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared`; each was five-bin audited by its independent reviewer.
+The PASS and PASS-DISCLOSED columns are the verdicts after re-audit. The later additions (2026-11-10) are the oracle-covariance confidence-region entries `Eq_convex_Cdelta_{fixedShape,ellipsoid,rectangle}_corrected_oracle` `Eq_convex_Cdelta_{ellipsoid,rectangle}_corrected_oracle_calibrated` `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared` and `Eq_convex_Cdelta_ellipsoid_corrected_plugin` (plug-in Λ̂_T, asymptotic only), and the Chapter 3 entry `Thm3_7_policyEvaluation_A1_restricted` (PASS-DISCLOSED: deterministic estimators only); each was five-bin audited by its independent reviewer.
 
 ## First-pass failures and their fixes
 

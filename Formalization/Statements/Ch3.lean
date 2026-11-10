@@ -318,6 +318,35 @@ def Thm3_7_corrected : Prop :=
               {data | ε < ‖QHat M.reward M.discount data -
                 M.trajectoryExpectedQ M.optimalGreedyPolicy‖})
 
+/-- Restricted single-action (policy-evaluation) case of `theorem:azar` part (ii),
+`source/upstream/tex/chapters/generative_model_model_based.tex:1443–1464`, in the form used by the
+comparisons "policy evaluation setting with `A = 1`" (`generative_model_model_based.tex:1468–1474`)
+and "setting `A = 1` therein" (`generative_model_model_free.tex:248–249`). With `A = 1` the printed
+domain `SA ≥ 16` is `S ≥ 16`; the printed ranges `γ ∈ [2/3, 1)`, `0 < ε < 1/(32(1−γ))` and
+`N ≤ c_N log(SA)/((1−γ)³ε²)` are kept (`log(S·1) = log S`). With one action there is a unique
+policy `π₀ = (s ↦ δ₀)` and `Q⋆(s,0) = V^{π₀}(s)`, so the entry is stated in policy-evaluation
+form: the estimator `VHat` receives the known reward table, the known discount and `N` independent
+draws from the policy row at each state (`ModelBasedPolicyEvaluation.samplingLaw`, the sampling
+of Theorem 3.1 and of TD learning), and the error is `‖VHat − V^{π₀}‖∞` with `V^{π₀}` the expected
+infinite-trajectory value. Differences from the print: the corrections C1 and C2 of
+`Thm3_7_corrected` are vacuous here (`S ≥ 16 ≥ 2`, part (i) not included), and the only remaining
+difference is the restriction to deterministic estimators (randomized estimators, which are in the
+printed domain of part (ii), "any Q-function estimator", are not covered), inherited from `Thm3_7_corrected`; see `docs/SOURCE-ISSUES.md`, "Candidate repair of
+Theorem 3.7". The constant `c_N` is chosen first (the proof uses `1/32768`), the witness MDP after
+the estimator; `N = 0` is allowed and the event is strict (`> ε`). -/
+def Thm3_7_policyEvaluation_A1_restricted : Prop :=
+  ∃ c_N : ℝ, 0 < c_N ∧
+    ∀ (S N : ℕ) (γ ε : ℝ),
+      16 ≤ S → (2 : ℝ) / 3 ≤ γ → γ < 1 → 0 < ε → ε < 1 / (32 * (1 - γ)) →
+      (N : ℝ) ≤ c_N * Real.log (S : ℝ) / ((1 - γ) ^ 3 * ε ^ 2) →
+      ∀ VHat : (Fin S → Fin 1 → ℝ) → ℝ →
+          StatisticalRL.ModelBasedPolicyEvaluation.Samples (Fin S) N → Fin S → ℝ,
+        ∃ M : DiscountedMDP (Fin S) (Fin 1), M.discount = γ ∧
+          (1 : ℝ) / 4 ≤ (StatisticalRL.ModelBasedPolicyEvaluation.samplingLaw M
+              (fun _ ↦ EnvironmentStage.pointMass (0 : Fin 1)) N).real
+            {data | ε < ‖VHat M.reward M.discount data -
+              M.trajectoryExpectedValue (fun _ ↦ EnvironmentStage.pointMass (0 : Fin 1))‖}
+
 /-- Restricted reading of the burn-in necessity claim `eq:sample-size-range-planning`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:930–940`: "Condition
 `N ≥ Ω̃(1/(1−γ))` is necessary for learning a policy that performs strictly better than a random

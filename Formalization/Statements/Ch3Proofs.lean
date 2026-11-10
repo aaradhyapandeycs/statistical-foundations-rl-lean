@@ -18,6 +18,7 @@ import Formalization.Generative.PolicyEvaluationCrude
 import Formalization.Generative.BurnInNecessity
 import Formalization.Generative.PolicyEvaluationGapRepairAllStates
 import Formalization.Generative.PolicyEvaluationVarianceResolvent
+import Formalization.Generative.PolicyEvalLowerBoundA1
 
 /-! Proofs of the source-facing Chapter 3 entries using the existing exports. -/
 open MeasureTheory
@@ -87,6 +88,10 @@ theorem Lemma3_8_holds : Lemma3_8 := by
 
 theorem Thm3_7_corrected_holds : Thm3_7_corrected :=
   ⟨1 / 32768, by norm_num, StatisticalRL.GenerativeLowerBound.theorem37_corrected_fin_carriers⟩
+
+theorem Thm3_7_policyEvaluation_A1_restricted_holds : Thm3_7_policyEvaluation_A1_restricted :=
+  ⟨1 / 32768, by norm_num,
+    StatisticalRL.GenerativeLowerBound.policyEvaluation_lowerBound_singleAction⟩
 
 theorem Thm3_2_approxPlanner_positiveN_holds : Thm3_2_approxPlanner_positiveN := by
   obtain ⟨c, hc, hmain⟩ :=
