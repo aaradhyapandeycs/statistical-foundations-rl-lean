@@ -141,7 +141,7 @@
     var scale = 1, selected = null;
     var named = function () { return !gNamed || gNamed.checked; };
     var size = function () {
-      var w = +graph.dataset.w, h = +(named() ? graph.dataset.hNamed : graph.dataset.hAll);
+      var w = +(named() ? graph.dataset.wNamed : graph.dataset.w), h = +(named() ? graph.dataset.hNamed : graph.dataset.hAll);
       graph.setAttribute("viewBox", "0 0 " + w + " " + h);
       graph.setAttribute("width", Math.round(w * scale));
       graph.setAttribute("height", Math.round(h * scale));
@@ -153,6 +153,11 @@
         var xy = (only ? g.dataset.nxy : g.dataset.xy).split(",");
         g.setAttribute("transform", "translate(" + xy[0] + "," + xy[1] + ")");
         g.parentNode.style.display = (only && g.dataset.named !== "1") ? "none" : "";
+      });
+      graph.querySelectorAll(".gn-col").forEach(function (t) {
+        var x = only ? t.dataset.nx : t.dataset.x;
+        t.style.display = x === "" ? "none" : "";
+        if (x !== "") t.setAttribute("x", x);
       });
       size();
       highlight(selected);
@@ -222,7 +227,7 @@
     if (gCh) gCh.addEventListener("change", function () {
       highlight(null);
       var t = graph.querySelector('.gn-col[data-ch="' + gCh.value + '"]');
-      if (t) wrap.scrollLeft = Math.max(0, (+t.getAttribute("x")) * scale - 12);
+      if (t && t.style.display !== "none") wrap.scrollLeft = Math.max(0, (+t.getAttribute("x")) * scale - 12);
     });
     var zoom = function (f) { scale = Math.min(2.5, Math.max(0.4, scale * f)); size(); };
     var zi = document.getElementById("g-zoom-in"), zo = document.getElementById("g-zoom-out"), gc = document.getElementById("g-clear");

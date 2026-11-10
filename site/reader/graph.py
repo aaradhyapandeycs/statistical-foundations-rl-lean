@@ -153,7 +153,9 @@ class GraphPages:
                 + f'<td class="num">{cnt(p + ".prose_refuted_marker")}</td>'
                 + f'<td class="num">{cnt(p + ".prose_boundary_marker")}</td>'
                 + f'<td class="num">{cnt(p + ".prose_fails_paper_marker")}</td></tr>')
-        heads = "".join(f'<th><span class="status {gen_nodes.SITE_LABELS[k][1]}">{esc(gen_nodes.SITE_LABELS[k][0])}</span></th>'
+        short = {"stated": "as stated", "corrected": "corrected", "restricted": "restricted", "incomplete": "incomplete"}
+        heads = "".join(f'<th><span class="status {gen_nodes.SITE_LABELS[k][1]}" '
+                        f'title="{attr(gen_nodes.SITE_LABELS[k][0])}">{esc(short.get(k, gen_nodes.SITE_LABELS[k][0]))}</span></th>'
                         for k in order)
         rev = site.lean.git.rev
         c = s["closing_not_proved"]
@@ -166,6 +168,7 @@ approval). They are not a percentage of the book.</div>
 <p class="lede">{site.count_sentence()}</p>
 {site.stacked_bar()}
 <h2>By chapter</h2>
+<p class="scroll-hint">The table is wide: scroll it sideways →</p>
 <div class="table-wrap"><table class="results dash-table"><thead>
 <tr><th rowspan="2">Ch.</th><th rowspan="2">Title</th><th colspan="8">Numbered theorems, lemmas and claims</th>
 <th colspan="7">Remarks and displayed claims</th></tr>
@@ -242,14 +245,18 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                 pos[n["id"]] = (LEFT + ci * (W + GX), TOP + ri * (H + GY))
         # a second layout with numbered results only (default view); edges through hidden nodes collapse
         npos = {}
-        for ci, ch in enumerate(chapters):
+        # chapters with no numbered result get no column in this view (no blank panel on narrow screens)
+        ncols = [ch for ch in chapters if any(x["class"] == "named" for x in cols[ch])]
+        nx = {ch: LEFT + i * (W + GX) for i, ch in enumerate(ncols)}
+        for ch in ncols:
             for ri, n in enumerate([x for x in cols[ch] if x["class"] == "named"]):
-                npos[n["id"]] = (LEFT + ci * (W + GX), TOP + ri * (H + GY))
+                npos[n["id"]] = (nx[ch], TOP + ri * (H + GY))
         width = LEFT * 2 + len(chapters) * (W + GX) - GX
+        nwidth = LEFT * 2 + len(ncols) * (W + GX) - GX
         height = TOP + max(len(v) for v in cols.values()) * (H + GY) + 10
         nheight = TOP + max(sum(1 for x in v if x["class"] == "named") for v in cols.values()) * (H + GY) + 10
         out = [f'<svg class="depgraph" xmlns="http://www.w3.org/2000/svg" width="{width}" height="{nheight}" '
-               f'viewBox="0 0 {width} {nheight}" data-w="{width}" data-h-all="{height}" data-h-named="{nheight}" '
+               f'viewBox="0 0 {width} {nheight}" data-w="{width}" data-w-named="{nwidth}" data-h-all="{height}" data-h-named="{nheight}" '
                f'role="group" aria-labelledby="gtitle">'
                '<title id="gtitle">Dependency graph of the book\'s results, one column per chapter</title>'
                '<defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" '
@@ -257,7 +264,8 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                '<clipPath id="nclip"><rect x="0" y="0" width="124" height="22"/></clipPath></defs>']
         for ci, ch in enumerate(chapters):
             x = LEFT + ci * (W + GX)
-            out.append(f'<text x="{x}" y="22" class="gn-col" data-ch="{attr(ch)}">Chapter {esc(ch)}</text>')
+            out.append(f'<text x="{x}" y="22" class="gn-col" data-ch="{attr(ch)}" data-x="{x}" '
+                       f'data-nx="{nx.get(ch, "")}">Chapter {esc(ch)}</text>')
 
         def path(p1, p2):
             (x1, y1), (x2, y2) = p1, p2

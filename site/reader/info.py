@@ -93,15 +93,16 @@ Counts after each chapter are its numbered results by label.</p>
         ]
         rows = "".join(f'<tr><td><span class="status {LABELS[k][1]}">{esc(LABELS[k][0])}</span></td><td>{d}</td></tr>'
                        for k, d in mapping)
-        sw, sc = ENTRY_LABELS["supporting"]
-        rows += (f'<tr><td><span class="status {sc}">{esc(sw)}</span></td><td>On a Lean entry card only, never an '
+        rows += (f'<tr><td><span class="entry-note">Supporting Lean entry (not a status)</span></td><td>Not a fifth label. '
+                 f'On a Lean entry card only, never an '
                  f'item: the entry is proved in Lean (its <code>_holds</code> wrapper compiles), but the item\'s '
                  f'reviewed record is another entry, so it is not counted for the item (for example a positive-N form '
                  f'kept beside the printed entry, or a superseded entry).</td></tr>')
         body = f"""<h1>Methodology and verification</h1>
 <nav class="page-toc"><a href="#sources">Sources and scope</a> · <a href="#formalized">How results are formalized</a> ·
 <a href="#review">Review</a> · <a href="#verify">Verification snapshot</a> · <a href="#establishes">What compilation establishes</a> ·
-<a href="#reproduce">Reproduce</a> · <a href="#labels">Status labels</a> · <a href="#rendering">Rendering</a></nav>
+<a href="#reproduce">Reproduce</a> · <a href="#labels">Status labels</a> · <a href="#rendering">Rendering</a> ·
+<a href="#glossary">Glossary</a></nav>
 
 <h2 id="sources">Sources and scope</h2>
 <p>The book is the pinned arXiv source of <em>{esc(prov.get("title", ""))}</em> (arXiv:{esc(prov.get("arxiv_id", ""))}),
@@ -210,8 +211,47 @@ no label: a Lean entry that cites them does not make them proved.</p>
 Equation numbers come from the inventory. Each theorem-like block has a “TeX source” disclosure with its exact
 lines. PDF figures were converted to PNG; figure numbers are computed per chapter. <code>site/check_fidelity.py</code>
 compares the site's prose with the hash-pinned PDF in both directions and checks that every formula in the TeX appears
-on the site; <code>site/check_macros.py</code> checks that no TeX macro reaches a reader unrendered.</p>"""
+on the site; <code>site/check_macros.py</code> checks that no TeX macro reaches a reader unrendered.</p>
+{self.glossary_html()}"""
         return self.shell(f"Methodology · {self.book.provenance.get('title', '')}", body, "methodology", toc=False)
+
+    def glossary_html(self) -> str:
+        terms = [
+            ("Lean, proof assistant, kernel", "Lean 4 is a programming language and proof assistant. A statement and a "
+             "proof are written out in full, and a small trusted kernel checks each step."),
+            ("Mathlib", "The community library of formalized mathematics on which the project builds."),
+            ("Axiom", "A statement Lean assumes without proof. Every theorem here may depend only on "
+             "<code>propext</code>, <code>Classical.choice</code> and <code>Quot.sound</code> (standard in Mathlib)."),
+            ("<code>sorry</code>", "Lean's placeholder for an unproved step. None is allowed in the library, and the "
+             "axiom audit would report it."),
+            ("Statement entry, <code>Prop</code>", "A Lean definition (of type <code>Prop</code>, a proposition) that "
+             "writes one source result in full, with every quantifier and hypothesis, so it can be read against the "
+             "book. It contains no proof. Entries are in <code>Formalization/Statements/ChN.lean</code>."),
+            ("Wrapper, <code>_holds</code>", "The theorem that proves a statement entry (for example "
+             "<code>Thm3_2_holds : Thm3_2</code>) by applying a library theorem; it is what the kernel checks."),
+            ("Binder, hypothesis", "A variable or assumption a Lean statement quantifies over. The statement audit "
+             "checks that each one corresponds to something in the book."),
+            ("Five-bin audit", "Each binder and hypothesis of an entry is placed in one bin: SOURCE (a premise of the "
+             "printed statement), STANDING (a standing assumption of the chapter), TYPING (type formation), DISCLOSED "
+             "(a deviation stated in the docstring and recorded as a source issue) or EXCESS (anything else, which "
+             "fails the entry)."),
+            ("Ledger (status record)", "The project files that record each result's status and its review: "
+             "<code>docs/named-result-status.json</code> and <code>docs/COVERAGE.md</code>. Every label on this site is "
+             "read from them."),
+            ("Node graph", "The table of tracked source items and which cite which, generated from the ledgers; the "
+             "counts on this site are read from it. The citation edges are not yet reviewed."),
+            ("Pinned commit, pinned source", "Links go to a fixed commit of the Lean repository and a hash-checked copy "
+             "of the arXiv TeX, so a link keeps pointing at what was reviewed."),
+            ("Reading formalized", "The interpretation of an ambiguous printed statement that the Lean statement "
+             "encodes. A refutation holds under that reading, which each card states."),
+            ("Boundary case (domain repaired)", "The printed statement fails only at a degenerate case (for example a "
+             "single action, or T = 1 where a formula divides by log T = 0); adding the missing domain condition "
+             "repairs it. Not counted as a refutation."),
+            ("Refuted in Lean", "A Lean theorem proves the printed statement false under the reading formalized. "
+             "A corrected statement may be proved instead."),
+        ]
+        items = "".join(f"<dt>{t}</dt><dd>{d}</dd>" for t, d in terms)
+        return (f'<h2 id="glossary">Glossary</h2><dl class="glossary">{items}</dl>')
 
     # ------------------------------------------------------------------ credits
     def credits_page(self) -> str:
@@ -293,7 +333,8 @@ intermediate inputs.</li>
 <h2>Open work</h2>
 <p>Open items are listed in <a href="{attr(self.lean.git.blob("docs/NEXT.md"))}"><code>docs/NEXT.md</code></a>
 (generated) and in the results index under the <a href="results.html#f=incomplete&amp;all=1">incomplete</a> label.</p>"""
-        return self.shell("Contribute · Statistical Foundations of RL in Lean", body, "contribute", toc=False)
+        from .render import TITLE
+        return self.shell(f"Contribute · {TITLE}", body, "contribute", toc=False)
 
     # ------------------------------------------------------------------ about (moved)
     def about_page(self) -> str:
@@ -306,4 +347,5 @@ intermediate inputs.</li>
 <a href="methodology.html#reproduce">reproduce</a>.</p>
 <h2 id="cite">How to cite</h2>
 <p>See <a href="credits.html#cite">Credits and citation</a>.</p>"""
-        return self.shell("About · Statistical Foundations of RL in Lean", body, "about", toc=False)
+        from .render import TITLE
+        return self.shell(f"About · {TITLE}", body, "about", toc=False)
