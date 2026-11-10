@@ -8,9 +8,13 @@ import hashlib
 import json
 from pathlib import Path, PurePosixPath
 import subprocess
+import sys
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'scripts'))
+import gen_nodes  # noqa: E402
+
 REPO_URL = 'https://github.com/aaradhyapandeycs/statistical-foundations-rl-lean'
 
 
@@ -40,13 +44,13 @@ def published_snapshot(sha):
 
 
 def staged_snapshot():
-    config_path = ROOT / '.local/dashboard-staged.json'
+    config_path = ROOT / '.local/dashboard-staged.json'  # release-scan: allow
     if not config_path.is_file():
         return {'available': False}
     try:
         config = json.loads(config_path.read_text())
         directory = (ROOT / config['verification_directory']).resolve()
-        if ROOT not in directory.parents or not str(directory.relative_to(ROOT)).startswith('.local/'):
+        if ROOT not in directory.parents or not str(directory.relative_to(ROOT)).startswith('.local/'):  # release-scan: allow
             raise ValueError('Invalid staged verification directory')
         freeze_bytes = (directory / 'source-freeze.json').read_bytes()
         if hashlib.sha256(freeze_bytes).hexdigest() != config['source_freeze_sha256']:
@@ -87,30 +91,9 @@ def status():
     inventory = json.loads((ROOT / 'docs/source-inventory.json').read_text())
     ledger = json.loads((ROOT / 'docs/named-result-status.json').read_text())
     kinds = inventory['counts']['by_kind']
-    total = sum(kinds.get(k, 0) for k in ('theorem', 'lemma', 'claim'))
-    certified = ledger['certified_named_results']
-    source_entries = [e for e in inventory['entries'] if e.get('kind') in ('theorem', 'lemma', 'claim')]
-    def matched_ids(records):
-        result = []
-        for record in records:
-            source_id = record.get('source_inventory_id')
-            label = record.get('source_label')
-            matches = [e for e in source_entries
-                       if (e['id'] == source_id if source_id else label in e.get('labels', []))
-                       and (label is None or label in e.get('labels', []))
-                       and any(r['file'].endswith('/' + record['source_file'])
-                               for r in e.get('source_ranges', []))]
-            if len(matches) != 1 or not (ROOT / record['evidence']).is_file() or not (ROOT / record['coverage']).is_file():
-                raise ValueError('A reviewed result lacks a unique source entry or evidence file')
-            result.append(matches[0]['id'])
-        return result
-    original_ids = matched_ids(certified)
-    variants = ledger['proved_variants']
-    variant_ids = matched_ids(variants)
-    # Count unique source environments, never theorem declarations or proof components.
-    reviewed = len(set(original_ids + variant_ids))
-    if len(set(original_ids)) != len(certified) or reviewed > total:
-        raise ValueError('Duplicate or excess certified named results')
+    # Every count comes from the single inventory: the node-graph summary of scripts/gen_nodes.py.
+    summary = gen_nodes.build(gen_nodes.Reader(ROOT))['summary']
+    total = summary['named_results_in_inventory']
     published = {'available': False, 'reference': 'origin/main'}
     try:
         sha = git('rev-parse', '--verify', 'refs/remotes/origin/main')
@@ -121,8 +104,7 @@ def status():
             'current': {'lean_lines': current_lines, 'lean_files': len(paths)},
             'published': published, 'staged': staged_snapshot(),
             'inventory': {'named_results': total, 'algorithms': kinds['algorithm']},
-            'original_result_count': len(certified), 'corrected_variant_count': len(variants),
-            'reviewed_count': reviewed, 'conservative_named_result_percent': 100 * reviewed / total if total else 0,
+            'named_by_label': summary['named_by_label'], 'named_refuted_marker': summary['named_refuted_marker'],
             'ledger': ledger, 'github_url': REPO_URL, 'coverage_url': '/coverage'}
 
 
@@ -136,7 +118,7 @@ HTML = r'''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="view
 <section class="card"><div class="label">Staged candidate · Lean lines</div><div class="number" id="staged">…</div><div class="small" id="staged-files"></div><div class="small">Separate candidate under verification; excludes other private drafts.</div></section>
 </div>
 <section class="panel"><div class="tag">Candidate verification</div><h2 id="build">…</h2><div class="sub" id="build-detail"></div><div class="small" id="build-time"></div></section>
-<section class="panel"><div class="tag">Reviewed source statements</div><h2 id="fraction">…</h2><div class="row"><div><strong id="original-count">…</strong><div class="small">Original-result entries, including disclosed restrictions</div></div><div><strong id="corrected-count">…</strong><div class="small">Separately proved corrected variants</div></div></div><div class="sub">The combined count covers unique named source environments represented by either category. It is <strong>not a percentage of the entire monograph</strong>; definitions, algorithms, displayed claims and other mathematical work are outside this denominator.</div><div class="meter"><div class="fill" id="bar"></div></div><div class="small" id="percent"></div><div class="small" id="ledger-time"></div><div class="notice">A compiling helper or more lines of code does not certify a source result. Statement scope and corrections are recorded in the ledger and source-issues report. No complete chapter or monograph is certified.</div><details><summary>Original/restricted entries and corrected variants</summary><h3>Original-result entries</h3><div id="original-results"></div><h3>Corrected variants</h3><div id="corrected-results"></div></details><details><summary>Measurement scope and evidence</summary><pre id="policy"></pre><p class="small">Main and published line counts exclude Mathlib, dependencies, private drafts and symbolic links. Staged lines are counted from an explicitly selected, hash-checked source freeze. Source inventory: docs/source-inventory.json. Reviewed entries: docs/named-result-status.json.</p><div class="small" id="algorithms"></div></details></section>
+<section class="panel"><div class="tag">Numbered source results by label</div><h2 id="fraction">…</h2><div class="row" id="labels"></div><div class="sub">Counts from the <code>summary</code> of docs/graph/nodes.json (scripts/gen_nodes.py), the same numbers the reader site shows. They are <strong>not a percentage of the monograph</strong>; remarks, displays, algorithms and other mathematical work are outside this denominator.</div><div class="small" id="ledger-time"></div><div class="notice">A compiling helper or more lines of code does not certify a source result. Statement scope and corrections are recorded in the ledger and source-issues report. No chapter or the monograph is certified.</div><details><summary>Measurement scope and evidence</summary><pre id="policy"></pre><p class="small">Main and published line counts exclude Mathlib, dependencies, private drafts and symbolic links. Staged lines are counted from an explicitly selected, hash-checked source freeze. Source inventory: docs/source-inventory.json. Labels: docs/graph/nodes.json.</p><div class="small" id="algorithms"></div></details></section>
 <footer><span id="observed">Loading…</span> · Refreshes every 10 seconds · Loopback only · Read only <span id="error" role="status"></span></footer></main>
 <script>
 const text=(id,value)=>document.getElementById(id).textContent=value;
@@ -152,10 +134,8 @@ async function refresh(){try{
  text('build',s.available?s.completed_modules+' / '+s.total_modules+' modules checked':'No staged verification selected');
  text('build-detail',s.available?(s.verification_status==='passed'?'Fresh verification passed. '+(s.axiom_declarations||0).toLocaleString()+' declarations audited; release review and publication are tracked separately.':s.verification_status==='running'?'Verification is running. Staged code is not added to the reviewed-result count.':'Last recorded verification progress; no active run is confirmed.'):'Proof work can also exist in private drafts, which are excluded from these counts.');
  text('build-time',s.available&&s.updated_at?'Last verification update: '+new Date(s.updated_at).toLocaleString():'');
- text('fraction',d.reviewed_count+' / '+d.inventory.named_results+' named source environments with reviewed entries');
- text('original-count',d.original_result_count+' original/restricted entries');text('corrected-count',d.corrected_variant_count+' corrected variants');
- text('percent',d.conservative_named_result_percent.toFixed(2)+'% of named environments represented, including corrections and restrictions');document.getElementById('bar').style.width=Math.min(100,d.conservative_named_result_percent)+'%';
- text('original-results',describe(d.ledger.certified_named_results));text('corrected-results',describe(d.ledger.proved_variants));
+ text('fraction','Of '+d.inventory.named_results+' numbered theorems, lemmas and claims');
+ document.getElementById('labels').innerHTML='';[['stated','proved as stated'],['corrected','proved with corrections'],['restricted','proved under restrictions'],['incomplete','incomplete']].forEach(function(k){var e=document.createElement('div');var b=document.createElement('strong');b.textContent=d.named_by_label[k[0]];var t=document.createElement('div');t.className='small';t.textContent=k[1];e.appendChild(b);e.appendChild(t);document.getElementById('labels').appendChild(e);});
  text('ledger-time','Ledger updated: '+d.ledger.updated_at);text('policy',d.ledger.policy+'\n\nSource: '+d.ledger.source);text('algorithms',d.inventory.algorithms+' algorithm environments are tracked separately.');
  text('observed','Observed '+new Date(d.observed_at).toLocaleString());text('error','');
 }catch(e){text('error',' · Refresh failed; displayed data may be stale.');}}

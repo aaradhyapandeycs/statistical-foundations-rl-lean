@@ -6,6 +6,7 @@ import Formalization.RobustRL.Ch7.LowerBound73
 import Formalization.RobustRL.Ch7.LowerBound75
 import Formalization.Ch7Rest.Marl78Main
 import Formalization.Ch7Rest.FedSync79Main
+import Formalization.Ch7Rest.FedSync79ReadOff
 import Formalization.RobustRL.DRVI.Thm74Main
 import Formalization.RobustRL.DRVI.RobustQ
 import Formalization.Ch7Rest.VPOMain712
@@ -31,6 +32,8 @@ import Formalization.RobustRL.DRVI.RobustBellmanDisplays
 import Formalization.Ch7Rest.VPODisplays712
 import Formalization.Ch7Rest.MarlBestResponse
 import Formalization.Ch7Rest.ConvexDistanceTV711
+import Formalization.Ch7Rest.TDInferencePluginRect711
+import Formalization.Ch7Rest.TDInferenceConvexSharp711
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -211,6 +214,15 @@ theorem Thm7_9_corrected_holds : Thm7_9_corrected :=
     fun _State _Action _ _ M K τ T δ ε Q₀ hK hτ hT _hτT _hγ hδ hδ1 hε hεH hQ₀ η hη hη1 hτc hTc =>
       StatisticalRL.Ch7Rest.FedSync.fedSynQ_error_le_of_eta_le_one M K τ T δ ε Q₀ hK hτ hT hδ
         hδ1 hε hεH hQ₀ η hη hη1.le hτc hTc⟩
+
+/-- `Eq_sample_size_per_agent_fedQ_restricted` from
+`StatisticalRL.Ch7Rest.FedSync.fedSynQ_readOff_restricted` (`C = 270000216`, `c_η = 1/216`). -/
+theorem Eq_sample_size_per_agent_fedQ_restricted_holds :
+    Eq_sample_size_per_agent_fedQ_restricted :=
+  ⟨270000216, 1 / 216, by norm_num, by norm_num,
+    fun _State _Action _ _ M K δ ε Q₀ hK hδ hδ1 hε hεH hQ₀ hKr =>
+      StatisticalRL.Ch7Rest.FedSync.fedSynQ_readOff_restricted M K δ ε Q₀ hK hδ hδ1 hε hεH hQ₀
+        hKr⟩
 
 /-- `Thm7_2_corrected` from `StatisticalRL.RobustRL.DRVI.thm7_2_corrected_holds`
 (`C₁ = 2`, `C₂ = 10⁶`). -/
@@ -398,6 +410,14 @@ end RobustBellmanProofs
 
 section Thm7_11
 
+/-- `Thm7_11_corrected` from
+`StatisticalRL.Ch7Rest.TDInference.abs_lawProb_convex_sub_gaussCov_le_third_sharp`
+(the export needs only `η₀ ≤ 1`). -/
+theorem Thm7_11_corrected_holds : Thm7_11_corrected := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  exact StatisticalRL.Ch7Rest.TDInference.abs_lawProb_convex_sub_gaussCov_le_third_sharp M π μ h0
+    (by linarith) V₀ hμ hΓ
+
 /-- `Thm7_11_corrected_halfspace` from
 `StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le`
 (the export needs only `η₀ ≤ 1`). -/
@@ -519,6 +539,29 @@ theorem Eq_convex_Cdelta_ellipsoid_corrected_plugin_holds :
     fun α hα0 hα1 R hR ↦
       StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin_chiSquared
         M π μ h0 h1' V₀ hμ hΓ hα0 hα1 hR⟩
+
+open StatisticalRL.Ch7Rest.TDInference in
+/-- `Eq_convex_Cdelta_rectangle_corrected_plugin` from
+`StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_rect_plugin`, with `posSemidef_lambdaHat`,
+`isSupBoxQuantile_supBoxQuantile` and `gaussOfCov_eq_map` for the existence conjunct and the law of `Q Z`. -/
+theorem Eq_convex_Cdelta_rectangle_corrected_plugin_holds :
+    Eq_convex_Cdelta_rectangle_corrected_plugin := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ α hα0 hα1
+  have h1' : η₀ ≤ 1 := by linarith
+  refine ⟨⟨fun _ ω ↦ supBoxQuantile (lambdaHat M η₀ V₀ ω) α, fun T ω ↦ ?_⟩, fun rhat hrhat ↦ ?_⟩
+  · have hS := posSemidef_lambdaHat M η₀ V₀ ω
+    obtain ⟨Q, hQ⟩ := StatisticalRL.Probability.exists_mul_transpose_eq_of_posSemidef hS
+    have hG := gaussOfCov_eq_map hS Q hQ
+    obtain ⟨q1, q2⟩ := isSupBoxQuantile_supBoxQuantile (lambdaHat M η₀ V₀ ω) hα0 hα1
+    refine ⟨Q, hQ, fun r hr ↦ q1 r ?_, fun r hr ↦ q2 r ?_⟩
+    · rw [supBoxProb, hG]; exact hr
+    · rw [supBoxProb, hG]; exact hr
+  · refine tendsto_coverage_rect_plugin M π μ h0 h1' V₀ hμ hΓ hα0 hα1 rhat fun T ω ↦ ?_
+    obtain ⟨Q, hQ, q1, q2⟩ := hrhat T ω
+    have hG := gaussOfCov_eq_map (posSemidef_lambdaHat M η₀ V₀ ω) Q hQ
+    refine ⟨fun r hr ↦ q1 r ?_, fun r hr ↦ q2 r ?_⟩
+    · rw [supBoxProb, hG] at hr; exact hr
+    · rw [supBoxProb, hG] at hr; exact hr
 
 end EqConvexCdeltaProofs
 

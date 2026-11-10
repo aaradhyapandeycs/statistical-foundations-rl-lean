@@ -63,41 +63,46 @@ page links the CI status of the commit it was built from.
 Lean files and ledgers are read with `git show <rev>:<path>`, so
 uncommitted work in the checkout never appears on the site.
 
-## Status dashboard and dependency graph
+## One inventory for every count and label
 
-`status.html` (counts by chapter) and `graph.html` (dependency graph, legend
-and a table of every node) are computed at build time by
-`scripts/gen_nodes.py` from the ledgers at the same Lean revision, so they
-never carry hand-written numbers; `graph/nodes.json` and `graph/graph.dot`
-are published beside them. The build fails if the number of numbered results
-with a ledger record disagrees with a direct count of distinct ledger keys
-(a bookkeeping cross-check, not an independent review of the ledger).
-The graph is drawn as inline SVG (one column per chapter); Graphviz is not
-needed, and the table is the text fallback. Border = which statement is in
-Lean (printed, corrected, restricted, refuted, partial, open, prose claim);
-fill = whether it is proved; dark fill only for results proved as printed
-whose cited results (through unreviewed TeX cross-references) are also all
-proved as printed, which is not a reviewed proof-dependency check. Edges are unreviewed
-candidates from TeX cross-references and the pages say so. The committed
-`docs/graph/nodes.json` and `docs/NEXT.md` come from the working tree; check
-them with `python3 scripts/gen_nodes.py --check` (run by
-`scripts/run_before_push.sh`).
+Every status word and every number on the site comes from the node graph that
+`scripts/gen_nodes.py` derives from the ledgers at the same Lean revision
+(`docs/graph/nodes.json`: `nodes[].site_label`, `site_markers`,
+`site_sub_reason`, `display_name`, and the `summary`). The reader never
+classifies a status on its own and holds no hand-written status text: notes
+shown on cards come from the ledger fields `display_note` (per record) and
+`entry_display_notes` (per statement entry without a record).
 
-## Status rules
+- Four labels: *proved as stated*, *proved with corrections*, *proved under
+  restrictions*, *incomplete* (with a sub-reason). Markers: *✕ printed statement
+  refuted*, *new proof* (only where `proof_origin` is an own proof), *also
+  corrected*. Explanatory items (no mathematical claim) get no label and are left
+  out of every count; algorithms, assumptions and definitions get no label.
+- A ledger record with `"status_override": "incomplete"` never counts as proving
+  its item (downgrade only; any other value fails the generator).
+- Every count on a page is written as
+  `<span class="n" data-count="summary.path">N</span>`; `site/build.py` fails if
+  any shown number differs from the summary, or if the summary's label counts
+  differ from a direct tally of the nodes.
+- `status.html` (counts by chapter), `graph.html` (graph with a
+  numbered-results-only view, chapter filter and click highlight of cited and
+  citing results, plus a table of every node) and `errata.html` (refuted printed
+  statements, corrections, restrictions, repaired proof gaps, all candidates) are
+  generated from the same data; `graph/nodes.json` and `graph/graph.dot` are
+  published beside them. Edges are unreviewed candidates from TeX
+  cross-references, and the pages say so.
+- Check the committed `docs/graph/nodes.json` and `docs/NEXT.md` with
+  `python3 scripts/gen_nodes.py --check` (run by `scripts/run_before_push.sh`).
 
-A status comes only from the ledgers, whose reviews are independent AI-agent
-reviews against the pinned TeX (no human referee, no author approval; the
-site says so on every page). A numbered result's status comes from
-`docs/named-result-status.json`. A statement entry without a record there
-(prose claim, remark, display, reading aid) takes its status from the
-`docs/COVERAGE.md` row that names it as its subject, using the same
-classifier as the node graph (`scripts/gen_nodes.py`: `classify`,
-`coverage_variant`); with no such row it is shown as "no reviewed status
-recorded", never as proved. A coverage row whose headline says the printed
-statement is refuted, with nothing proved, is shown as refuted. Corrected and
-restricted variants are never shown as the printed result. Results with
-nothing in Lean say "Not yet formalized". See the site's About page for the
-full legend.
+## Pages
+
+Overview (`index.html`) → Results (`results.html`) → Book (`book.html` and the
+chapter pages) → Status (`status.html`, `graph.html`, `errata.html`) →
+`methodology.html`, `contribute.html`, `credits.html`. `about.html` keeps its
+old anchors (`#status`, `#verify`, `#cite`) as pointers to the new pages.
+`build.py --ci-run-url <url>` adds a sentence naming the Lean CI run that gated a
+deploy, and `--audit-log <file>` prints that run's axiom-audit line verbatim;
+both are omitted for local builds.
 
 ## Placement rules
 
@@ -119,36 +124,26 @@ capture the in-order search.
 
 ## Layout
 
-- `build.py`: entry point and build report (unhandled TeX, unresolved
-  references, unplaced Lean entries)
+- `build.py`: entry point, count check against the node-graph summary, and build
+  report (labels, unhandled TeX, unresolved references, unplaced Lean entries)
 - `check_fidelity.py`, `tools/pdftext.swift`: fidelity check against the PDF and TeX
 - `watch.py`: rebuild whenever `origin/main` moves
 - `reader/tex.py`: TeX → HTML; math left as TeX for MathJax 3.2.2, equation
   numbers inserted from the inventory
 - `reader/book.py`: source verification, macros, bibliography, figures, pages
-- `reader/lean.py`: Lean entries, proofs, exports, ledger status
-- `reader/render.py`: pairing and page templates
+- `reader/lean.py`: Lean entries, proofs, exports, Lean cards and status chips
+- `reader/render.py`: pairing, book pages, overview and results index
+- `reader/info.py`: methodology, credits, contribute, book contents, About stub
 - `reader/graph.py`: status dashboard, dependency graph and generated errata page
 - `static/`: CSS and small scripts
 
-## Checks done when this was built (2026-11-05)
-
-- All 1077 inventory labels and every numbered environment and proof have anchors.
-- All 41 statement entries at commit `2015162` were placed next to book text,
-  and all their library theorems were located.
-- Every formula on every page parsed in MathJax with the book's macros (0 errors).
-- `check_fidelity.py`: every prose passage on the site is found in the arXiv
-  PDF and every passage of the PDF's main text is found on the site; all
-  3148 formulas in the TeX appear verbatim. It found one real defect (the
-  caption of Figure 3.2), which was fixed.
-- An independent read-only review compared a sample of results across
-  chapters 2–7 with the TeX, all equation numbers and cross-references with
-  the inventory, and all Lean code blocks with `git show`; it found no text,
-  math or status errors. Its six layout and indexing findings were fixed.
-
 ## Publishing
 
-Not published. GitHub Pages can serve `site/_build/` (it contains
-`.nojekyll`). Publishing needs the maintainer's approval; the book text is
-CC BY 4.0 with attribution on every page, and the publisher's formatting
-files are never copied.
+Published at <https://aaradhyapandeycs.github.io/statistical-foundations-rl-lean/>
+by `.github/workflows/pages.yml`. An automatic deploy happens only after the
+"Lean and source checks" workflow has succeeded on a push to `main`, builds
+exactly that commit, and deploys only while it is still the tip of `main`; a
+manual run on `main` also deploys, without waiting for the Lean workflow.
+`site/_build/` contains `.nojekyll`. The book text is CC BY 4.0 with
+attribution on every page, and the publisher's formatting files are never
+copied.

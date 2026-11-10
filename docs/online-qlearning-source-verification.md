@@ -6,7 +6,7 @@ the entire monograph remains **incomplete**. The full check compiled all 1,052
 project modules and audited 8,873 project declarations.
 
 The release adds the complete `Lemma5_18_restricted` and
-`Thm5_16_corrected` Props to `Formalization/Statements/Ch5.lean` and applies
+`Thm5_16_corrected` (renamed `Thm5_16_restricted` on 2026-11-10) Props to `Formalization/Statements/Ch5.lean` and applies
 their existing providers in `Ch5Proofs.lean`. The algorithm's actual trajectory
 law, Q/count updates, previsit episode list, optimal Q/V, deployed policy return
 and regret are represented by proved definitions and bridges. No confidence

@@ -59,7 +59,13 @@ LEDGER = {"certified_named_results": [
      "lean_export": "StatisticalRL.Foo.lemma_b", "statement_scope": "", "evidence": "docs/critic-b.md"}],
     "proved_variants": [
     {"name": "Theorem 2.3 (corrected)", "source_label": "thm:c", "lean_statement": "StatisticalRL.Statements.Thm2_3_corrected",
-     "lean_export": "StatisticalRL.Foo.thm_c", "statement_scope": "See C7.", "evidence": "docs/critic-c.md"}]}
+     "lean_export": "StatisticalRL.Foo.thm_c", "statement_scope": "See C7.", "evidence": "docs/critic-c.md"}],
+    "printed_refuted": {
+        "_comment": "ignored",
+        "lem:d": {"lean": ["StatisticalRL.Foo.not_lemma2_4_printed"], "paper": False, "reading": "as printed",
+                  "issues": []},
+        "thm:c": {"lean": ["StatisticalRL.Foo.not_thm2_3_printed"], "paper": False, "reading": "as printed",
+                  "issues": ["C7"]}}}
 
 CH2 = '''namespace StatisticalRL.Statements
 
@@ -149,7 +155,8 @@ class GenNodesTest(unittest.TestCase):
         # R1: a proved node citing a refutation stays proved; the name is recorded as data only
         self.assertEqual(n["label:thm:c"]["proof_status"], "proved")
         self.assertEqual(n["label:thm:c"]["refutations_cited"], ["not_thm2_3_printed"])
-        self.assertNotIn("printed_refuted", n["label:thm:c"])
+        self.assertEqual(n["label:thm:c"]["printed_refuted"]["lean"], ["StatisticalRL.Foo.not_thm2_3_printed"])
+        self.assertIsNone(n["label:lem:a"]["printed_refuted"])
 
     def test_joint_entry_attaches_to_every_cited_display(self):
         n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
@@ -160,8 +167,48 @@ class GenNodesTest(unittest.TestCase):
     def test_refuted_needs_a_cited_refutation(self):
         cov = COVERAGE.replace(" `not_lemma2_4_printed`", "")
         (self.tmp / "docs/COVERAGE.md").write_text(cov)
+        ledger = json.loads(json.dumps(LEDGER))
+        del ledger["printed_refuted"]["lem:d"]
+        (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
         n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
         self.assertEqual(n["label:lem:d"]["statement_status"], "open")
+
+    def test_ledger_field_decides_refuted_marker_not_the_name(self):
+        # a refutation listed only in the ledger field (no `not_..._printed` name in COVERAGE) still marks
+        cov = COVERAGE.replace(" `not_lemma2_4_printed`", "")
+        (self.tmp / "docs/COVERAGE.md").write_text(cov)
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["label:lem:d"]["statement_status"], "refuted")
+        self.assertIn("refuted", n["label:lem:d"]["site_markers"])
+
+    def test_name_heuristic_must_agree_with_ledger_field(self):
+        ledger = json.loads(json.dumps(LEDGER))
+        del ledger["printed_refuted"]["thm:c"]
+        (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+        with self.assertRaises(SystemExit) as cm:
+            gn.build(gn.Reader(self.tmp))
+        self.assertIn("not_thm2_3_printed", str(cm.exception))
+
+    def test_paper_only_failure_gets_its_own_marker(self):
+        ledger = json.loads(json.dumps(LEDGER))
+        ledger["printed_refuted"]["lem:b"] = {"lean": None, "paper": True, "reading": "at N = 1", "issues": []}
+        (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertEqual(n["label:lem:b"]["site_markers"], ["fails-paper"])
+        self.assertEqual(n["label:lem:b"]["refutations_cited"], [])
+        self.assertEqual(data["summary"]["named_fails_paper_marker"], 1)
+        self.assertEqual(data["summary"]["named_refuted_marker"], 2)
+
+    def test_printed_refuted_field_is_validated(self):
+        for bad in ({"lean": None, "paper": False, "reading": "x"}, {"lean": [], "paper": True, "reading": "x"},
+                    {"lean": None, "paper": True, "reading": ""}, {"lean": None, "paper": True, "reading": "x",
+                                                                   "issues": ["C99"]}):
+            ledger = json.loads(json.dumps(LEDGER))
+            ledger["printed_refuted"]["lem:b"] = bad
+            (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+            with self.assertRaises(SystemExit):
+                gn.build(gn.Reader(self.tmp))
 
     def test_partial_headline_overrides_proved(self):
         cov = COVERAGE.replace("**Proved** (`Remark2_1`).", "**Partial:** only one clause (`Remark2_1`).")
@@ -170,7 +217,16 @@ class GenNodesTest(unittest.TestCase):
         n = {x["id"]: x for x in data["nodes"]}
         self.assertEqual((n["ch2-remark-2.1"]["statement_status"], n["ch2-remark-2.1"]["proof_status"]),
                          ("partial", "open"))
-        self.assertTrue(any("headline wins" in w for w in data["warnings"]))
+        # the COVERAGE row is a remark's only reviewed record: partial is its status, not a disagreement
+        self.assertFalse(any("headline wins" in w for w in data["warnings"]))
+        self.assertEqual([e["counted"] for e in n["ch2-remark-2.1"]["statement_entries"]], [False])
+
+    def test_partial_headline_on_a_recorded_numbered_result_fails_closed(self):
+        cov = COVERAGE + "| Lemma 2.1, `lem:a` | x | **Partial:** one clause only. |\n"
+        (self.tmp / "docs/COVERAGE.md").write_text(cov)
+        # a numbered result's two ledgers disagree: the generator stops (ledger count != node count)
+        with self.assertRaises(SystemExit):
+            gn.build(gn.Reader(self.tmp))
 
     def test_classify_agrees_with_reader(self):
         from reader import lean
@@ -278,10 +334,15 @@ class GenNodesTest(unittest.TestCase):
         site.pages = [page]
         site.entry_node = {"S.Thm4_7": "label:thm:lb"}
         site.inv_by_id = {"label:thm:lb": {"labels": ["thm:lb"], "kind": "theorem", "number": "4.7"}}
+        node = {"id": "label:thm:lb", "labels": ["thm:lb"], "site_label": "stated", "site_markers": [],
+                "site_sub_reason": ""}
+        site.nodes = {"label:thm:lb": node}
+        site.label_node = {"thm:lb": node}
         site.place()
         self.assertEqual(site.placed["Thm4_7"][1], "E-label:thm:lb")
         self.assertEqual(site.placement_problems(), [])
-        self.assertEqual(site.statuses(thm), ["original"])
+        # the block's label is the node's label (read from the node graph, never re-derived)
+        self.assertEqual(site.statuses(thm), ["stated"])
         self.assertEqual(site.statuses(alg), [])
         self.assertIn(e, site.matches[id(alg)])
         self.assertNotIn(id(alg), site.home)
@@ -328,11 +389,13 @@ class GenNodesTest(unittest.TestCase):
                   status="cov-restricted")
         site = object.__new__(render.Site)
         site.book = NS(label_owner={"eq:upd": {}})
-        site.lean = NS(entries=[e], coverage={}, card=lambda e: f'<article id="lean-{e.name}">CARD</article>')
+        site.lean = NS(entries=[e], coverage={})
+        site.card = lambda e: f'<article id="lean-{e.name}">CARD</article>'
         site.pages = [page]
         site.entry_node = {"S.Eq_upd_restricted": "label:eq:upd"}
         site.inv_by_id = {"label:eq:upd": {"labels": ["eq:upd"], "kind": "display", "number": "7.62"}}
         site.nodes = {}
+        site.label_node = {}
         site.place()
         self.assertEqual(site.unplaced, [])
         self.assertEqual(site.statuses(alg), [])
@@ -506,19 +569,119 @@ class GenNodesTest(unittest.TestCase):
             self.closing_fixture("| Remark 2.4 | none | **Implied by `Eq_p_q`** |\n"
                                  "| Displays `eq:p` | x | **Partial:** one clause. |\n")
 
-    def test_reader_words_for_closing_statuses(self):
-        from reader import graph, lean
-        for k in gn.CLOSING_STATUSES:
-            self.assertIn(k, graph.STATEMENT_WORDS)
-            word = graph.STATEMENT_WORDS[k].lower()   # each says in words that nothing is proved for it
-            self.assertTrue("not proved" in word or "not separately proved" in word or "no mathematical claim" in word)
-            self.assertIn(k, lean.STATUS)
-            self.assertTrue(any(w in lean.STATUS[k][0].lower() for w in ("not proved", "not separately proved",
-                                                                             "nothing proved")))
-            self.assertNotIn(k, lean.PROVED)
-        self.assertEqual(lean.coverage_status("**Implied by `X`** ..."), "implied")
-        self.assertEqual(lean.coverage_status("**Explanatory (no mathematical claim)** ..."), "explanatory")
-        self.assertEqual(lean.coverage_status("**Out of scope: cited result** ..."), "cited-out-of-scope")
+    def test_closing_statuses_never_get_a_proved_label(self):
+        for st, want in (("implied", "incomplete"), ("cited-out-of-scope", "incomplete"), ("explanatory", None)):
+            n = {"statement_status": st, "proof_status": "open", "refutations_cited": [], "statement_entries": []}
+            lab, markers, sub = gn.site_label(n)
+            self.assertEqual(lab, want, st)
+            self.assertTrue(sub)
+        n = {"statement_status": "implied", "proof_status": "open", "refutations_cited": [],
+             "implied_variant": "corrected", "statement_entries": []}
+        self.assertIn("not separately proved", gn.site_label(n)[2])
+
+    # -- reader labels, ledger fields and the downgrade-only override -----------------------------
+
+    def ledger_with(self, **fields):
+        ledger = json.loads(json.dumps(LEDGER))
+        for rec in ledger["certified_named_results"] + ledger["proved_variants"]:
+            rec.update(fields.get(rec["lean_statement"].rsplit(".", 1)[-1], {}))
+        (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+
+    def test_exactly_four_labels_and_refuted_marker(self):
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertEqual(set(gn.SITE_LABELS), {"stated", "corrected", "restricted", "incomplete"})
+        self.assertEqual([gn.SITE_LABELS[k][0] for k in gn.SITE_LABEL_ORDER],
+                         ["proved as stated", "proved with corrections", "proved under restrictions", "incomplete"])
+        self.assertEqual(n["label:lem:a"]["site_label"], "stated")
+        self.assertEqual(n["label:thm:c"]["site_label"], "corrected")
+        # a corrected form is proved and the printed form is refuted: label and marker together
+        self.assertIn("refuted", n["label:thm:c"]["site_markers"])
+        self.assertEqual((n["label:lem:d"]["site_label"], n["label:lem:d"]["site_markers"]), ("incomplete", ["refuted"]))
+        s = data["summary"]
+        self.assertEqual(s["named_by_label"], {"stated": 2, "corrected": 1, "restricted": 0, "incomplete": 1})
+        self.assertEqual(s["named_refuted_marker"], 2)
+        self.assertEqual(sum(s["named_by_label"].values()), s["named_results_in_inventory"])
+        self.assertEqual(s["by_chapter"]["2"]["named_by_label"]["stated"], 2)
+
+    def test_display_name_never_an_internal_id(self):
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["label:thm:c"]["display_name"], "Theorem 2.3")
+        self.assertEqual(n["label:eq:p"]["display_name"], "Eq. (2.5)")
+        self.assertEqual(n["ch2-remark-2.1"]["display_name"], "Remark 2.1")
+        self.assertEqual(gn.display_name({"kind": "display", "number": None,
+                                          "tex": [{"file": "chapters/x.tex", "line_start": 5, "line_end": 7}]}),
+                         "Unnumbered display (x.tex:5–7)")
+
+    def test_ledger_fields_default_safely(self):
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["label:lem:a"]["proof_origins"], [])
+        self.assertNotIn("new-proof", n["label:lem:a"]["site_markers"])
+        self.assertEqual(n["label:lem:a"]["display_notes"], [])
+        self.assertEqual(n["label:thm:c"]["correction_status"], "proposed-by-project")
+        self.assertIsNone(n["label:lem:a"]["correction_status"])
+
+    def test_ledger_fields_pass_through(self):
+        self.ledger_with(Lemma2_1={"proof_origin": "own-proof:source-cites", "display_note": "Proved $x$."},
+                         Thm2_3_corrected={"proof_origin": "source-proof-repaired"})
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertEqual(n["label:lem:a"]["proof_origins"], ["own-proof:source-cites"])
+        self.assertIn("new-proof", n["label:lem:a"]["site_markers"])
+        self.assertEqual(n["label:lem:a"]["display_notes"],
+                         [{"entry": "StatisticalRL.Statements.Lemma2_1", "note": "Proved $x$."}])
+        self.assertNotIn("new-proof", n["label:thm:c"]["site_markers"])
+        self.assertEqual(data["summary"]["own_proof_by_origin"]["own-proof:source-cites"], 1)
+        self.assertEqual(data["summary"]["new_proof_marker"], 1)
+        self.ledger_with(Lemma2_1={"proof_origin": "my-own"})
+        with self.assertRaises(SystemExit):
+            gn.build(gn.Reader(self.tmp))
+
+    def test_entry_display_notes_for_entries_without_record(self):
+        ledger = json.loads(json.dumps(LEDGER))
+        ledger["entry_display_notes"] = {"Eq_p_q": "Joint display, $p$ and $q$.", "_comment": "ignored"}
+        (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertEqual(n["label:eq:p"]["display_notes"],
+                         [{"entry": "StatisticalRL.Statements.Eq_p_q", "note": "Joint display, $p$ and $q$."}])
+        ledger["entry_display_notes"] = {"Eq_p_q": 3}
+        (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+        with self.assertRaises(SystemExit):
+            gn.build(gn.Reader(self.tmp))
+
+    def test_status_override_downgrades_only(self):
+        self.ledger_with(Thm2_3_corrected={"status_override": "incomplete"})
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}["label:thm:c"]
+        self.assertEqual((n["statement_status"], n["proof_status"]), ("related", "open"))
+        self.assertEqual(n["site_label"], "incomplete")
+        self.assertIn("related statement", n["site_sub_reason"])
+        self.assertEqual(n["status_override"], "incomplete")
+        s = data["summary"]
+        self.assertEqual(s["named_by_label"]["incomplete"], 2)
+        self.assertEqual(s["named_by_label"]["corrected"], 0)
+        self.assertEqual(s["named_results_with_ledger_record"], 2)
+        self.assertEqual(s["named_overridden_incomplete"], 1)
+        self.assertEqual(gn.main(["--root", str(self.tmp)]), 0)
+        self.assertEqual(gn.main(["--root", str(self.tmp), "--check"]), 0)
+        # an override can never upgrade or name another status
+        for bad in ("printed", "stated", "corrected", "restricted", "proved"):
+            self.ledger_with(Thm2_3_corrected={"status_override": bad})
+            with self.assertRaises(SystemExit):
+                gn.build(gn.Reader(self.tmp))
+
+    def test_site_count_check_catches_a_mismatch(self):
+        sys.path.insert(0, str(HERE.parents[1] / "site"))
+        import build as site_build
+        data = gn.build(gn.Reader(self.tmp))
+        good = {"x": '<span class="n" data-count="named_by_label.stated">2</span>'}
+        self.assertEqual(site_build.check_counts(good, data), [])
+        bad = {"x": '<span class="n" data-count="named_by_label.stated">3</span>'}
+        self.assertTrue(site_build.check_counts(bad, data))
+        unknown = {"x": '<span class="n" data-count="no.such.path">3</span>'}
+        self.assertTrue(site_build.check_counts(unknown, data))
+        data["summary"]["named_by_label"]["stated"] += 1
+        self.assertTrue(site_build.check_counts(good, data))
 
 
 ROOT = HERE.parents[1]

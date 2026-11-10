@@ -33,7 +33,9 @@ variable {State Action : Type} [Fintype State] [Fintype Action] [DecidableEq Sta
 such that for every `T ≥ 1` and every convex `C` (measurable or not; the Gaussian side is the
 outer measure),
 `|P(√T Δ̄_T ∈ C) − N(0, A⁻¹ diag(Γ_true) A⁻ᵀ)(C)| ≤ K · T^{-1/3} · log(2T)`.
-The printed rate `T^{-1/3}` without the logarithm remains open. -/
+The printed rate `T^{-1/3}` without the logarithm is proved separately, by a different remainder argument, in
+`TDInferenceConvexSharp711.lean` (`abs_lawProb_convex_sub_gaussCov_le_third_sharp`, statement entry
+`Thm7_11_corrected`); this weaker bound is kept because the oracle confidence-region corollaries use it. -/
 theorem abs_lawProb_convex_sub_gaussCov_le_third_log [Nonempty State]
     (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (μ : FiniteDistribution State) {η₀ : ℝ} (h0 : 0 < η₀) (h1 : η₀ ≤ 1) (V₀ : State → ℝ)

@@ -1037,8 +1037,11 @@ completion. The original bonus uses cb=2 and log(SAT/δ); the explicit soft-O
 rate uses Λ=1+log(4SAT/δ) and universal constant max(1,19e). The proof
 uses the corrected shifted-beta inequality and retains signed stage weights.
 See `docs/SOURCE-ISSUES.md`, C20, for the algorithm completion, tie
-restriction and proof repairs; no literal printed-proof-validity claim is made. -/
-noncomputable def Thm5_16_corrected : Prop :=
+restriction and proof repairs; no literal printed-proof-validity claim is made.
+Restricted variant (renamed from `Thm5_16_corrected` on 2026-11-10, project decision): C20 changes
+no printed statement; the restriction is the completed algorithm (initial nonterminal V=H, one fixed
+maximizing tie), and the entry implies the printed soft-O rate for that implementation. -/
+noncomputable def Thm5_16_restricted : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
     (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)

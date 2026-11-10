@@ -21,39 +21,28 @@ import gen_nodes  # noqa: E402  (one classifier for the reader and the node grap
 
 REPO = "https://github.com/aaradhyapandeycs/statistical-foundations-rl-lean"
 
-STATUS = {
-    "original": ("Proved as printed", "st-proved"),
-    "corrected": ("Proved in corrected form", "st-corrected"),
-    "restricted": ("Proved for a restricted case", "st-restricted"),
-    "cov-printed": ("Proved as stated (coverage-ledger record)", "st-proved"),
-    "cov-corrected": ("Proved in corrected form (coverage-ledger record)", "st-corrected"),
-    "cov-restricted": ("Proved for a restricted case (coverage-ledger record)", "st-restricted"),
-    "unrecorded": ("Statement entry, no reviewed status recorded", "st-unrecorded"),
-    "partial": ("Partial (coverage ledger)", "st-partial"),
-    "refuted": ("Printed statement refuted in Lean under one reading; nothing proved", "st-refuted"),
-    "implied": ("Implied by a proved entry (coverage ledger); not separately proved", "st-implied"),
-    "explanatory": ("Explanatory, no mathematical claim (coverage ledger); nothing proved", "st-explanatory"),
-    "cited-out-of-scope": ("Cited from the literature; not formalized here (project scope decision); not proved", "st-outofscope"),
-    "ledger": ("Ledger note, not a proved result", "st-ledger"),
-    "none": ("Not yet formalized", "st-none"),
-}
-STATUS_ORDER = ["original", "corrected", "restricted", "cov-printed", "cov-corrected", "cov-restricted",
-                "unrecorded", "partial", "refuted", "implied", "explanatory", "cited-out-of-scope", "ledger", "none"]
-# Statuses that count as a proved Lean statement for a numbered result.
-PROVED = {"original", "corrected", "restricted"}
+# Exactly four reader labels (plus markers), defined once in scripts/gen_nodes.py and read from the
+# node graph; the reader never classifies a status on its own.
+LABELS = gen_nodes.SITE_LABELS
+MARKERS = gen_nodes.MARKERS
+# Internal order of a statement entry's own classification (for sorting cards only; never shown).
+ENTRY_ORDER = ["original", "corrected", "restricted", "cov-printed", "cov-corrected", "cov-restricted",
+               "unrecorded", "partial"]
 
 
-def coverage_status(scope: str) -> str:
-    """Status of a coverage-ledger row that has no statement entry next to it."""
-    lead = (re.match(r"\s*\*\*(.+?)\*\*", scope) or [None, ""])[1].lower()
-    closing = gen_nodes.closing_kind(lead)
-    if closing:
-        return closing
-    if gen_nodes.partial_lead(lead):
-        return "partial"
-    if lead.startswith("printed statement refuted") and "proved" not in lead:
-        return "refuted"
-    return "ledger"
+def chip(label, markers=(), sub: str = "", issues: str = "") -> str:
+    """Status chip: one of the four labels (or none), then markers and the incomplete sub-reason."""
+    out = []
+    if label:
+        word, cls = LABELS[label]
+        out.append(f'<span class="status {cls}">{esc(word)}</span>')
+    for m in markers:
+        out.append(f'<span class="marker mk-{m}">{esc(MARKERS[m])}</span>')
+    if sub and label in ("incomplete", None):
+        out.append(f'<span class="subreason">{esc(sub)}</span>')
+    if issues:
+        out.append(f'<span class="issues">{issues}</span>')
+    return "".join(out)
 
 
 def esc(t: str) -> str:
@@ -296,7 +285,8 @@ class LeanIndex:
 
     def disclosure_for(self, e) -> str:
         """The scope-disclosure bullet that names this entry (or, failing that, its source label)."""
-        keys = [f"`{e.name}`"] + [f"`{l}`" for l in ((e.record or {}).get("source_label"),) if l]
+        keys = [f"`{e.name}`"] + [f"`{l}`" for l in ((e.record or {}).get("source_label"),) if l] \
+            + ([f"`{e.labels[0]}`"] if e.labels and not e.record else [])
         for key in keys:
             for b in self.disclosures:
                 if key in b:
@@ -325,8 +315,8 @@ class LeanIndex:
             if p.startswith("`") and p.endswith("`") and len(p) > 1:
                 out.append(f"<code>{esc(p[1:-1])}</code>")
                 continue
+            p = re.sub(r"(?<![\\$])\$([^$\n]+?)\$", lambda m: "\\(" + m.group(1) + "\\)", p)
             p = esc(p)
-            p = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", p)
 
             def link(m):
                 href = m.group(2)
@@ -344,7 +334,7 @@ class LeanIndex:
 
             p = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", link, p)
             out.append(p)
-        return "".join(out)
+        return bold("".join(out))
 
     def issue_links(self, ids: list) -> str:
         links = []
@@ -354,38 +344,56 @@ class LeanIndex:
                          f'title="{attr(info["title"])}">source issue C{c}</a>')
         return " · ".join(links)
 
-    def card(self, e: Entry) -> str:
-        word, cls = STATUS[e.status]
-        word = CHIP_OVERRIDES.get(e.name, word)
+    def card(self, e: Entry, view: dict) -> str:
+        """One Lean entry, math first: label and markers; what is proved (the ledger's display_note,
+        TeX rendered); origin; links; then closed disclosures with the Lean code and the full scope."""
         rec = e.record or {}
-        meta = [f'<a href="{attr(self.git.blob(e.file, e.line_start, e.line_end))}">'
-                f'{esc(e.file.rsplit("/", 1)[-1])}:{span(e.line_start, e.line_end)}</a>']
+        scope_text = rec.get("statement_scope", "")
+        links = [f'<a href="{attr(self.git.blob(e.file, e.line_start, e.line_end))}">Lean statement '
+                 f'({esc(e.file.rsplit("/", 1)[-1])}:{span(e.line_start, e.line_end)})</a>']
+        if view.get("tex"):
+            links.insert(0, view["tex"])
         if rec.get("evidence"):
-            meta.append(f'<a href="{attr(self.git.blob(rec["evidence"]))}">review record (AI agent)</a>')
-        if e.issues:
-            meta.append(self.issue_links(e.issues))
-        scope = f'<p class="scope">{self.md(link_paths(rec["statement_scope"]))}</p>' if rec.get("statement_scope") else ""
-        if "statement-index-scope-disclosures" in rec.get("statement_scope", ""):
-            d = self.disclosure_for(e)
-            if d:
-                scope += (f'<p class="scope disclosure"><strong>Disclosed restriction</strong> '
-                          f'(<a href="{attr(self.git.blob("docs/SOURCE-ISSUES.md"))}#statement-index-scope-disclosures">'
-                          f'SOURCE-ISSUES</a>): {self.md(d)}</p>')
-        if e.name in CARD_NOTES:
-            scope = f'<p class="scope caution">{self.md(CARD_NOTES[e.name])}</p>' + scope
-        if e.status == "unrecorded":
-            scope += ('<p class="scope">This statement entry has no record in the reviewed status ledger, '
-                      "so the reader does not show it as proved.</p>")
-        elif e.status.startswith("cov-") or e.status == "partial":
-            scope += ('<p class="scope">This entry has no named-result ledger record of its own; its status comes '
-                      f'from the <a href="{attr(self.git.blob("docs/COVERAGE.md"))}">coverage-ledger</a> row that '
-                      'names it.</p>')
+            links.append(f'<a href="{attr(self.git.blob(rec["evidence"]))}">review record (AI agent)</a>')
+        if view.get("audit"):
+            links.append(view["audit"])
+        if e.issues or view.get("node_issues"):
+            links.append(self.issue_links(e.issues or view["node_issues"]))
+        note = view.get("note") or ""
+        body = []
+        if note:
+            body.append(f'<p class="what tex2jax_process"><strong>What is proved.</strong> {self.md(note)}</p>')
+        elif scope_text:
+            # No reader note in the ledger yet: show the reviewed scope itself, beside the result.
+            body.append(f'<p class="what tex2jax_process"><strong>What is proved</strong> (reviewed ledger '
+                        f'scope). {self.md(link_paths(scope_text))}</p>')
+        elif view.get("cov_note"):
+            # A remark or display: its reviewed record is the coverage-ledger row, shown in full.
+            body.append(f'<p class="what tex2jax_process"><strong>What is proved</strong> (reviewed coverage-ledger '
+                        f'row). {self.md(view["cov_note"])}</p>')
+        if view.get("refuted"):
+            body.append(f'<p class="refuted-line">{view["refuted"]}</p>')
+        if view.get("correction"):
+            body.append(f'<p class="ours">{esc(view["correction"])}</p>')
+        if view.get("origin"):
+            body.append(f'<p class="origin">{view["origin"]}</p>')
+        d = self.disclosure_for(e) if "statement-index-scope-disclosures" in scope_text else ""
+        d = d or view.get("disclosure") or ""
+        if d:
+            href = f'{attr(self.git.blob("docs/SOURCE-ISSUES.md"))}#statement-index-scope-disclosures'
+            first, rest = split_first_sentence(d)
+            more = (f'<details class="more"><summary>Full disclosure</summary><p class="scope tex2jax_process">'
+                    f'{self.md(d)}</p></details>' if rest else "")
+            body.append(f'<p class="scope disclosure tex2jax_process"><strong>Disclosed restriction</strong> '
+                        f'(<a href="{href}">source issues: scope disclosures</a>): {self.md(first)}'
+                        f'{" …" if rest else ""}</p>{more}')
+        if view.get("explain"):
+            body.append(f'<p class="scope">{view["explain"]}</p>')
         parts = [f'<article class="lean-card" id="lean-{attr(e.name)}">',
-                 f'<header><span class="status {cls}">{esc(word)}</span>'
+                 f'<header>{chip(view.get("label"), view.get("markers", ()), view.get("sub", ""))}'
                  f'<code class="decl" title="{attr(e.full)}">{esc(e.name)}</code></header>',
-                 f'<div class="meta">{" · ".join(meta)}</div>', scope,
-                 '<details open><summary>Lean statement</summary>',
-                 code_block(e.source, e.line_start), "</details>"]
+                 "".join(body), f'<div class="meta">{" · ".join(links)}</div>',
+                 '<details><summary>Lean statement</summary>', code_block(e.source, e.line_start), "</details>"]
         if e.proof:
             pr = e.proof
             parts.append(f'<details><summary>Proof <code>{esc(pr["name"])}</code></summary>'
@@ -398,26 +406,63 @@ class LeanIndex:
                 parts.append(f'<details><summary>Library theorem <code>{esc(ex["name"])}</code></summary>'
                              '<p class="scope">Source location not found automatically at this commit.</p></details>')
                 continue
-            note = " · first 400 lines shown" if ex["truncated"] else ""
+            tnote = " · first 400 lines shown" if ex["truncated"] else ""
             parts.append(f'<details><summary>Library theorem <code>{esc(ex["name"].rsplit(".", 1)[-1])}</code></summary>'
                          f'<div class="meta"><a href="{attr(self.git.blob(ex["file"], ex["line_start"], ex["line_end"]))}">'
-                         f'{esc(ex["file"])}:{span(ex["line_start"], ex["line_end"])}</a>{note}</div>'
+                         f'{esc(ex["file"])}:{span(ex["line_start"], ex["line_end"])}</a>{tnote}</div>'
                          f'{code_block(ex["source"], ex["line_start"])}</details>')
+        if note and scope_text:
+            parts.append(f'<details><summary>Full ledger scope</summary><p class="scope tex2jax_process">'
+                         f'{self.md(link_paths(scope_text))}</p></details>')
         parts.append("</article>")
         return "".join(parts)
 
-    def ledger_card(self, label: str, rows: list) -> str:
+    def ledger_card(self, label: str, rows: list, view: dict) -> str:
+        """A coverage-ledger row with no statement entry beside it; the label comes from the node."""
         cards = []
         for row in rows:
-            scope = row["scope"]
-            st = coverage_status(scope)
-            word, cls = STATUS[st]
-            cards.append(f'<article class="lean-card ledger"><header><span class="status {cls}">{esc(word)}</span>'
+            cards.append(f'<article class="lean-card ledger"><header>'
+                         f'{chip(view.get("label"), view.get("markers", ()), view.get("sub", ""))}'
                          f'<code class="decl">{esc(label)}</code></header>'
-                         f'<p class="scope">{self.md(scope)}</p>'
+                         f'<p class="scope tex2jax_process">{self.md(row["scope"])}</p>'
                          f'<div class="meta">Lean evidence: {self.md(row["evidence"])} · '
                          f'<a href="{attr(self.git.blob("docs/COVERAGE.md"))}">coverage ledger</a></div></article>')
         return "".join(cards)
+
+
+def bold(html_text: str) -> str:
+    """Markdown **bold** outside <code> spans, also when it spans inline code (**Implied by `X`**)."""
+    parts = re.split(r"(<code>.*?</code>)", html_text)
+    if sum(p.count("**") for i, p in enumerate(parts) if i % 2 == 0) % 2:
+        return html_text  # unbalanced: leave as is
+    out, on = [], False
+    for i, p in enumerate(parts):
+        if i % 2 == 0:
+            bits = p.split("**")
+            for k, b in enumerate(bits):
+                if k:
+                    out.append("</strong>" if on else "<strong>")
+                    on = not on
+                out.append(b)
+        else:
+            out.append(p)
+    return "".join(out)
+
+
+def split_first_sentence(text: str) -> tuple:
+    """(first sentence, rest) at the first '. ' outside backticks and parentheses, after 60 characters."""
+    depth, tick = 0, False
+    for i, ch in enumerate(text):
+        if ch == "`":
+            tick = not tick
+        elif not tick and ch in "([":
+            depth += 1
+        elif not tick and ch in ")]":
+            depth = max(0, depth - 1)
+        elif ch == "." and not tick and depth == 0 and i >= 60 and text[i + 1:i + 2] == " " \
+                and not re.search(r"(?:e\.g|i\.e|cf|resp|Thm|Eq|Lemma|eq)$", text[max(0, i - 6):i]):
+            return text[:i + 1], text[i + 1:].strip()
+    return text, ""
 
 
 def classify(name: str, ledger_kind: str, scope: str, declared: str | None = None) -> str:
@@ -425,84 +470,6 @@ def classify(name: str, ledger_kind: str, scope: str, declared: str | None = Non
     Same rule as scripts/gen_nodes.py `classify` (shared code)."""
     v = gen_nodes.classify(name, ledger_kind, scope, declared=declared)
     return "original" if v == "printed" else v
-
-
-# Chip text for cards whose ledger class alone would mislead a reader (display only; the ledger
-# class and every count are unchanged).
-CHIP_OVERRIDES = {
-    "Thm7_7_restricted": "Related statement proved: some algorithm attains the rates (not Q-FTRL; see note)",
-    "Thm7_11_corrected_halfspace": "Corrected and restricted (closed half-spaces only)",
-    "Eq_classic_clt_corrected": "Corrected display proved (true covariance; qualitative, no rate)",
-    # superseded / reading-aid entries next to a result proved as printed (Theorem 4.7)
-    "Thm4_7_restricted": "Superseded: earlier case (ii)-only entry, implied by Thm4_7",
-    "Thm4_7_case_i": "Reading aid: case (i) of Thm4_7 stated alone (not separately reviewed)",
-    "Eq_convex_Cdelta_corrected_oracle": "Partial: fixed-shape intervals with the oracle covariance only",
-    "Eq_convex_Cdelta_corrected_plugin": "Partial: fixed-shape intervals with the plug-in covariance, limits only (no rate)",
-}
-# Footnote on the restricted count wherever it is shown.
-RESTRICTED_COUNT_NOTE = {
-    "Thm7_7_restricted": "Theorem 7.7 is an existence statement for a different algorithm, not a special case of "
-                         "the printed theorem.",
-    "Thm7_10_restricted": "Theorem 7.10 covers only the exact-averaging algorithms, not the compressed or other "
-                          "mean-estimation routines the printed algorithm class allows.",
-    "Thm7_11_corrected_halfspace": "Theorem 7.11 is both corrected (true noise covariance) and restricted to closed "
-                                   "half-spaces; an all-convex bound with an extra log(2T) factor is a partial result, "
-                                   "and the printed rate over all convex sets is open.",
-}
-# Reading under which a printed statement shown as refuted (nothing proved) was refuted, by source label.
-REFUTED_READING = {
-    "thm:Berry-Esseen-linear": "under the action-dependent-reward reading; the state-only-reward reading is not refuted",
-}
-
-
-# Site-side wording for cards whose ledger class alone would mislead a reader. These never
-# change a ledger status or a count; they say exactly what the Lean statement proves.
-CARD_NOTES = {
-    "Thm4_7_restricted": (
-        "**Superseded, kept for reference.** `Thm4_7` proves both cases of the printed Theorem 4.7 and implies "
-        "this earlier case (ii)-only entry."),
-    "Thm4_7_case_i": (
-        "**Reading aid.** Case (i) is covered by `Thm4_7`, which the ledger records as proved as printed; this "
-        "entry restates case (i) alone and has no review record of its own."),
-    "Thm7_7_restricted": (
-        "**Not a special case of the printed Theorem 7.7.** The printed theorem is about Q-FTRL, a "
-        "model-based algorithm the monograph does not specify (marl.tex:432). What is proved is that "
-        "some algorithm attains the printed rates: an explicit reconstructed, non-model-based witness "
-        "(optimistic Hedge with backward induction and adaptive generative queries). Whether Q-FTRL "
-        "attains the rates is not checked. The ledger files this under restricted variants; see "
-        "[C39](../docs/SOURCE-ISSUES.md#candidate-c39-theorem-77-is-not-self-contained)."),
-    "Thm7_11_corrected_halfspace": (
-        "**Corrected and restricted: not the printed Theorem 7.11, and not its full corrected form.** The "
-        "printed statement is refuted in Lean under the action-dependent-reward reading. What is proved uses the true TD-noise covariance "
-        "Γ_true (assumed nonsingular) in place of the printed Γ, gives the printed T^(-1/3) rate only "
-        "for closed half-spaces {x : uᵀx ≤ b}, and has a constant that depends on the instance, η₀ and "
-        "V₀. Not implied: the convex-distance bound over all convex sets at the printed rate (open); the printed coefficient "
-        "(open); any confidence region with the estimated covariance Λ̂_T, or beyond the oracle-covariance "
-        "half-lines, slabs and Bonferroni box of Eq_convex_Cdelta_corrected_oracle (source issue C47). "
-        "A partial result over all convex sets is stated below. With state-only rewards Γ_true equals the printed Γ (source issue C43)."),
-    "Eq_classic_clt_corrected": (
-        "**Not the printed display.** The printed covariance Γ is replaced by the true TD-noise covariance "
-        "Γ_true; with the printed Γ the display is refuted under the action-dependent-reward reading "
-        "(source issue C43). The result is qualitative convergence in distribution for the step sizes "
-        "η₀t^(-2/3): no rate and no confidence-region claim."),
-    "Eq_convex_Cdelta_corrected_oracle": (
-        "**Not the printed confidence-set rule.** The printed claim for arbitrary convex sets chosen from the "
-        "data appears to fail (source issue C47(1): a counterexample whose coverage is checked in Lean with the "
-        "oracle covariance). What is proved uses the oracle covariance "
-        "Λ = A⁻¹Γ_trueA⁻ᵀ, which is unknown in practice, not the plug-in Λ̂_T, and covers only one- and "
-        "two-sided intervals for a linear functional fixed before the data and a Bonferroni box. The "
-        "plug-in version is Eq_convex_Cdelta_corrected_plugin (limits only); the printed rectangle and the "
-        "ellipsoid remain open."),
-    "Eq_convex_Cdelta_corrected_plugin": (
-        "**Not the printed confidence-set rule.** The printed claim for arbitrary convex sets chosen from the "
-        "data appears to fail (source issue C47(1): a counterexample whose coverage is checked in Lean with the "
-        "oracle covariance). What is proved uses the printed plug-in Λ̂_T, but only for "
-        "one- and two-sided intervals for a linear functional and a Bonferroni box whose direction and level "
-        "are fixed before the data. Coverage is asymptotic only: limits as T → ∞, pointwise in (u, z), not "
-        "uniform, with no rate. Γ_true ≻ 0 is an added non-degeneracy hypothesis. Lean's junk value Λ̂_T = 0 "
-        "on the singular event (some state unsampled) does not affect the limits. The printed rectangle and "
-        "the ellipsoid remain open."),
-}
 
 
 # Display-only rewording of internal ledger shorthand (the ledgers keep their machine-checked anchors,

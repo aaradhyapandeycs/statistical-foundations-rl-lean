@@ -36,7 +36,7 @@ echo "== private-path scan of changed files (base: $base)"
 # marker_files (where the patterns themselves are documented).
 private_re='/Users/|/home/[A-Za-z]|(^|[^A-Za-z0-9_])\.local/|/private/tmp|/private/var|/var/folders/'  # release-scan: allow
 allow_marker='release-scan: allow'
-marker_files='|scripts/run_before_push.sh|.github/pull_request_template.md|'
+marker_files='|scripts/run_before_push.sh|.github/pull_request_template.md|.github/workflows/pages.yml|scripts/progress_dashboard.py|'
 
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT

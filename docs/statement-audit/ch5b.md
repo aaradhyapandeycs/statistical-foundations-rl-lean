@@ -329,7 +329,7 @@ the existential reading explicitly in C20.
 
 Verdict: **PASS-DISCLOSED** (with the note above).
 
-## 9. Thm5_16_corrected
+## 9. Thm5_16_corrected (renamed `Thm5_16_restricted` on 2026-11-10; Prop unchanged)
 
 Def: `Ch5.lean:1028`; wrapper `Ch5Proofs.lean:397`.
 Source: `thm-ucbq-regret`, onlineRL.tex:1911–1922.
