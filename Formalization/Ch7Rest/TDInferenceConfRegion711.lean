@@ -27,9 +27,10 @@ All three follow from `abs_lawProb_convex_sub_gaussCov_le_third_log` (convex set
 with one constant: (1) via `−K` and the symmetry `N(0,Λ)(−K) = N(0,Λ)(K)` (`gaussCov_real_neg`);
 (2) via `Λ⁻¹ = Aᵀ diag(Γ_true)⁻¹ A` (`trueLambda_inv_eq`), so the ellipsoid is a convex sublevel set
 of `∑_r (Ax)_r² / Γ_r`; (3) the sup-norm box is convex.
-Not done: the plug-in covariance `Λ̂_T` with a rate, data-selected convex sets (C47(1)), the printed
-rate without `log(2T)`, and continuity in `q` / `r` of the Gaussian side (only the sets are fixed;
-existence of an exact `1 − α` threshold is not proved here).
+Not done: the plug-in covariance `Λ̂_T` with a rate, data-selected convex sets (C47(1)), and continuity
+in `q` / `r` of the Gaussian side (only the sets are fixed; existence of an exact `1 − α` threshold is not
+proved here). The same corollaries at rate `T^{-1/3}` without `log(2T)` follow in the same way from
+`abs_lawProb_convex_sub_gaussCov_le_third_sharp` (`TDInferenceConvexSharp711.lean`) but are not re-derived here.
 -/
 
 open MeasureTheory ProbabilityTheory Finset Matrix

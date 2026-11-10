@@ -704,6 +704,13 @@ def cited_names(tree):
                         if isinstance(x, str):
                             for n in CITED_RE.findall(x):
                                 cited.append((n.rstrip("."), "ledger %r.%s" % (rec.get("name"), f)))
+        # Lean refutations of printed statements (the site's refuted markers come from this field)
+        for key, rec in sorted((ledger.get("printed_refuted") or {}).items()):
+            if key.startswith("_") or not isinstance(rec, dict):
+                continue
+            for x in rec.get("lean") or []:
+                if isinstance(x, str):
+                    cited.append((x, "ledger printed_refuted[%r].lean" % key))
     cov_p = tree.path("docs", "COVERAGE.md")
     if os.path.exists(cov_p):
         with open(cov_p, encoding="utf-8") as fh:

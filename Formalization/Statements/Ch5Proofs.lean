@@ -394,7 +394,7 @@ theorem Lemma5_18_restricted_holds : Lemma5_18_restricted := by
   have h := qLearning_sourceOptimism_confidence H K hH hK E ρ fallback δ cb hδ hδ1 hcb
   simpa only [qLearningSourceOptimismGood,qLearningSourceBeta] using h
 
-theorem Thm5_16_corrected_holds : Thm5_16_corrected := by
+theorem Thm5_16_restricted_holds : Thm5_16_restricted := by
   intro State Action instS instA H K hH hK E ρ fallback δ hδ hδ1
   exact qLearning_actualRegret_rate_confidence H K hH hK E ρ fallback δ hδ hδ1
 

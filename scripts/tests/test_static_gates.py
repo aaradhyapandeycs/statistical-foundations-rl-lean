@@ -173,6 +173,13 @@ class TestG4(GateFixture):
         self.put("docs/COVERAGE.md", COVERAGE + "| x | `StatisticalRL.Probability.missing_lemma` |\n")
         self.assertFail("G4", "cited Lean name not declared in Formalization/ not on frozen allowlist scripts/gates/g4_unresolved_names.txt (StatisticalRL.Probability.missing_lemma")
 
+    def test_fail_unresolved_printed_refutation(self):
+        led = json.loads(json.dumps(LEDGER))
+        led["printed_refuted"] = {"lem:a": {"lean": ["StatisticalRL.Probability.not_missing_printed"],
+                                            "paper": False, "reading": "x"}}
+        self.put("docs/named-result-status.json", json.dumps(led))
+        self.assertFail("G4", "StatisticalRL.Probability.not_missing_printed")
+
 
 class TestG6(GateFixture):
     def test_pass(self):

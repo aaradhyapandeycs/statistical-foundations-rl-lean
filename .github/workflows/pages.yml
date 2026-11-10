@@ -65,7 +65,7 @@ jobs:
       - name: Install PDF figure converter
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends poppler-utils
       - name: Build the reader (no Lean, reads committed files only)
-        run: python3 site/build.py --rev HEAD
+        run: python3 site/build.py --rev HEAD ${{ github.event.workflow_run.html_url && format('--ci-run-url {0}', github.event.workflow_run.html_url) || '' }}
       - name: Check the site against the arXiv PDF and TeX
         run: python3 site/check_fidelity.py --dump-pdf-text "$RUNNER_TEMP/pdf-text.txt"
       - name: Keep the built site and PDF text for debugging
@@ -81,7 +81,7 @@ jobs:
         run: |
           bad=$(find site/_build \( -name '*.cls' -o -name '*.sty' -o -name '*.cfg' -o -name '*.tar' -o -name '*.tex' \) -print)
           if [ -n "$bad" ]; then echo "publisher or source files in output: $bad"; exit 1; fi
-          if grep -rIlE '/Users/|/home/runner' site/_build; then echo "local paths in output"; exit 1; fi
+          if grep -rIlE '/Users/|/home/runner' site/_build; then echo "local paths in output"; exit 1; fi  # release-scan: allow
       - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:

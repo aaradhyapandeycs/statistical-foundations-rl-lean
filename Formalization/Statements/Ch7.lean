@@ -416,6 +416,57 @@ def Thm7_9_corrected : Prop :=
           (fun t k s a ↦ FedGeneric.fedSamplesExtend M T K 1 data t k s a 0) T s a -
         M.optimalityFixedPoint s a| ≤ ε}
 
+open StatisticalRL.Ch7Rest in
+/-- Per-agent sample size, restricted to the `K`-range where the prescribed step size is at most 1
+(`eq:sample-size-per-agent-fedQ`, `chapters/federated_RL.tex:118–129`; `docs/SOURCE-ISSUES.md#C41`).
+
+Printed claim (:120–127): Theorem 7.9 implies that each agent requires at most
+`Õ(SA/(K(1-γ)⁵ε²))` samples for an `ε`-accurate estimate of `Q⋆`, each agent drawing `SA`
+samples per iteration.
+
+Entry: there are constants `C, c_η > 0` such that for every finite MDP (`0 ≤ γ < 1`), `K ≥ 1`,
+`δ ∈ (0,1)`, `ε ∈ (0, 1/(1-γ)]` and `0 ≤ Q₀ ≤ 1/(1-γ)` with `c_η K(1-γ)⁴ε² ≤ log(SAK/δ)` (the
+step size (114) at `T = 1` is at most 1), there is a horizon `T ≥ 1` with per-agent sample count
+`SA·T ≤ C·SA/(K(1-γ)⁵ε²)·(1 + log(SAK/(δε(1-γ)²)))³` such that FedSynQ (Algorithm
+`alg:dist-syncq-local`, :35–90) run for `T` iterations with the printed step size
+`η = c_η K(1-γ)⁴ε²/log(SAKT/δ)` (114) and any period `τ ≥ 1` obeying (106) outputs
+`Q_T = (1/K)Σ_k Q_T^k` with `|Q_T(s,a) - Q⋆(s,a)| ≤ ε` for all `(s,a)` with probability at least
+`1-δ` under the true generative law `FedGeneric.fedSamplingLaw M T K 1`; `Q⋆` is
+`M.optimalityFixedPoint`. The proof gives `C = 270000216`, `c_η = 1/216`.
+
+Differences from the printed claim. The `Õ` is made explicit as the cube of
+`1 + log(SAK/(δε(1-γ)²))`. The claim is restricted to `c_η K(1-γ)⁴ε² ≤ log(SAK/δ)`, i.e.
+`K ≲ log(SAK/δ)/((1-γ)⁴ε²)`: the corrected Theorem 7.9 needs `η ≤ 1` (C41), and for
+`K ≫ log(SAK/δ)/((1-γ)⁴ε²)` the corrected theorem only certifies horizons
+`T ≥ δ·exp(c_η K(1-γ)⁴ε²)/(SAK)`, exponential in `K` (library lemma
+`FedSync.horizon_ge_exp_of_eta_le_one`), so the unrestricted read-off (linear speedup for every
+`K`) is not implied by the theorem. It is not refuted either: whether FedSynQ attains it for larger
+`K` is open. The entry has no `0 < γ` hypothesis (unlike `Thm7_9_corrected`): at `γ = 0` (outside
+the theorem's `γ ∈ (0,1)`) Lean's `1/0 = 0` makes condition (106) force `τ = 1`, a narrower range
+of `τ` than the printed reading; for `γ > 0` the condition is the printed (106). See
+`docs/SOURCE-ISSUES.md` C41. -/
+def Eq_sample_size_per_agent_fedQ_restricted : Prop :=
+  ∃ C c_η : ℝ, 0 < C ∧ 0 < c_η ∧
+  ∀ (State Action : Type) [Fintype State] [Fintype Action] (M : DiscountedMDP State Action)
+    (K : ℕ) (δ ε : ℝ) (Q₀ : State → Action → ℝ),
+    1 ≤ K → 0 < δ → δ < 1 → 0 < ε → ε ≤ 1 / (1 - M.discount) →
+    (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ 1 / (1 - M.discount)) →
+    c_η * K * (1 - M.discount) ^ 4 * ε ^ 2 ≤
+      Real.log (Fintype.card State * Fintype.card Action * K / δ) →
+    ∃ T : ℕ, 1 ≤ T ∧
+      (Fintype.card State * Fintype.card Action * T : ℝ) ≤
+        C * (Fintype.card State * Fintype.card Action) / (K * (1 - M.discount) ^ 5 * ε ^ 2) *
+          (1 + Real.log (Fintype.card State * Fintype.card Action * K /
+            (δ * ε * (1 - M.discount) ^ 2))) ^ 3 ∧
+      ∀ (τ : ℕ) (η : ℝ), 1 ≤ τ →
+        η = c_η * K * (1 - M.discount) ^ 4 * ε ^ 2 /
+          Real.log (Fintype.card State * Fintype.card Action * K * T / δ) →
+        (τ : ℝ) ≤ 1 + 1 / η * min ((1 - M.discount) / (8 * M.discount)) (1 / (K : ℝ)) →
+        1 - δ ≤ (FedGeneric.fedSamplingLaw M T K 1).real {data | ∀ s a,
+          |Fed.fedOutput M η K τ Q₀
+              (fun t k s a ↦ FedGeneric.fedSamplesExtend M T K 1 data t k s a 0) T s a -
+            M.optimalityFixedPoint s a| ≤ ε}
+
 end Thm7_9
 
 section Thm7_2_7_4
@@ -578,6 +629,39 @@ end Thm7_2_7_4
 section Thm7_11
 
 open StatisticalRL StatisticalRL.Ch7Rest.TDInference in
+/-- Theorem 7.11 (`thm:Berry-Esseen-linear`, `chapters/inference.tex:132–141`; convex distance
+`eqn:convex-distance` :124–127; `Λ⋆` :104–117), corrected covariance, all convex sets, instance constant.
+Differs from the printed result in two ways.
+(1) `Γ` is the true per-sample TD-noise covariance `trueGamma`,
+`Γ_ss = μ(s) E_{a∼π(·|s), s'∼P(·|s,a)}[(V^π(s) − r(s,a) − γV^π(s'))²]`, so the Gaussian is
+`N(0, Λ)` with `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ`, `A = diag(μ)(I − γP_π)`. The printed `Γ` (:115) averages only over
+`s' ∼ P_π` with an undefined `r(s)`; read as `r_π(s)` it omits the action-reward variance and the cross term
+`2γCov(r(s,a), V^π(s'))`, and the printed theorem is then false (SOURCE-ISSUES C43). With state-only rewards
+(or deterministic `π`) the two coincide.
+(2) The `T^{-1/3}` constant `K` depends on the instance, `η₀` and `V₀`. It is not shown to be a universal multiple of
+the printed `√(η₀/((1−γ)λ₀))Tr Γ‖Γ⁻¹‖ + √(Sκ(Γ))/((1−γ)λ₀η₀)`, and `C̃T^{-1/2}` is absorbed into `K`, so it is not
+shown polynomial.
+Kept: the printed rate `T^{-1/3}`; `d_cvx` over all convex `C ⊆ ℝ^S` (written as a bound for every convex `C`;
+non-measurable `C` allowed, the Gaussian side being the outer measure); `η_t = η₀t^{-2/3}` with `0 < η₀ < 1/4` (:133);
+i.i.d. sampling with full-support `μ` (:51–67); the asynchronous TD update (:72); the Polyak–Ruppert average (:82);
+every `V₀`; `d = S`. `Γ_true ≻ 0` is assumed, the corrected analogue of the printed `‖Γ⁻¹‖`, `κ(Γ)` being finite.
+`lawProb` is the exact i.i.d. law of `√TΔ̄_T`; `gaussCov (tdA M π μ) (trueGamma M π μ)` is `N(0, Λ)`.
+Our own proof (randomized concentration for polyhedral representations of convex sets plus leave-one-out TD
+estimates), not the cited paper's. Implies `Thm7_11_corrected_halfspace`.
+Not implied: the printed coefficient; the printed statement under the state-only-reward reading; any confidence
+region with the estimated covariance `Λ̂_T` (SOURCE-ISSUES C47). -/
+def Thm7_11_corrected : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
+    ∃ K : ℝ, 0 < K ∧
+    ∀ T : ℕ, 1 ≤ T → ∀ C : Set (State → ℝ), Convex ℝ C →
+      |lawProb M π μ η₀ V₀ T C - (gaussCov (tdA M π μ) (trueGamma M π μ)).real C| ≤
+        K * (T : ℝ) ^ (-(1 / 3 : ℝ))
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference in
 /-- Theorem 7.11 (`thm:Berry-Esseen-linear`, `chapters/inference.tex:132–141`), corrected covariance, closed
 half-spaces only, instance constant. Differs from the printed result in three ways.
 (1) `Γ` is the true per-sample TD-noise covariance `trueGamma`,
@@ -594,8 +678,9 @@ Kept: the printed rate `T^{-1/3}`; `η_t = η₀t^{-2/3}` with `0 < η₀ < 1/4`
 full-support `μ` (:51–67); the asynchronous TD update (:72); the Polyak–Ruppert average (:82); every `V₀`; `d = S`.
 `Γ_true ≻ 0` is assumed, since the printed coefficient uses `‖Γ⁻¹‖` and `κ(Γ)`. `lawProb` is the exact i.i.d. law of
 `√TΔ̄_T`. `gaussCov (tdA M π μ) (trueGamma M π μ)` is `N(0, A⁻¹ΓA⁻ᵀ)` with `A = diag(μ)(I − γP_π)` (:106–117).
+Implied by `Thm7_11_corrected` (half-spaces are convex), which covers all convex sets; kept as a supporting
+entry with its own proof route (Chen–Shao nonlinear Stein bound on one-dimensional projections).
 Not implied:
-* the convex-distance bound over all convex sets (corrected), which remains open;
 * the printed coefficient, which remains open;
 * any confidence region with the estimated covariance `Λ̂_T` (SOURCE-ISSUES C47(1)–(4)), or beyond the
   oracle-covariance half-lines, slabs and Bonferroni box of `Eq_convex_Cdelta_corrected_oracle`, which are
@@ -752,9 +837,10 @@ half-space result). Separately, by C43 this target `Λ` differs from the printed
 `Matrix.inv` returns 0, so `lambdaHat = 0` and the interval degenerates to the point estimate there. No special
 handling is needed: the proof charges every outcome with `Λ̂_T` entrywise `ε₁`-far from `Λ`, and since `diag Λ ≻ 0`
 under `Γ_true ≻ 0` the singular event is contained in that bad event for small `ε₁`. Its probability is at most
-`∑_s (1 − μ(s))^T → 0`, so the limits do not depend on how the procedure is defined there. Not covered:
-data-selected convex sets (C47(1)), the printed `ℓ∞`-quantile rectangle (C47(2)), the ellipsoid (C47(3)), any rate
-(oracle-covariance corrected rectangle and ellipsoid: `Eq_convex_Cdelta_rectangle_corrected_oracle`,
+`∑_s (1 − μ(s))^T → 0`, so the limits do not depend on how the procedure is defined there. Not covered
+here: data-selected convex sets (C47(1)); the plug-in ellipsoid and rectangle are the separate entries
+`Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin`; any rate
+(oracle-covariance versions with rate: `Eq_convex_Cdelta_rectangle_corrected_oracle`,
 `Eq_convex_Cdelta_ellipsoid_corrected_oracle`).
 Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 
@@ -860,7 +946,7 @@ item (i) of the rule `eq:convex.Cdelta` :187–196). See `docs/SOURCE-ISSUES.md#
 Differs from the printed text: (1) the printed half-width `R̂/√T`, with `R̂` the `ℓ∞` quantile under covariance
 `Λ̂_T/T`, applies `√T` twice (C47(2)); here the half-width is `r/√T` with the Gaussian side
 `N(0,Λ){x | ‖x‖∞ ≤ r}`, i.e. `r` is an `ℓ∞` level under covariance `Λ` (not `Λ/T`). (2) The covariance is the oracle
-`Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not `Λ̂_T`; the plug-in version with a rate remains open;
+`Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not `Λ̂_T`; the plug-in version is asymptotic only (`Eq_convex_Cdelta_rectangle_corrected_plugin`) and with a rate remains open;
 `Γ_true` is the true residual covariance (C43). (3) Rate `T^{-1/3} log(2T)` (weaker than Theorem 7.11's printed
 `T^{-1/3}` by `log(2T)`), instance constant `K₀`. `Γ_true ≻ 0` is assumed. The existence of an exact `1 − α` level `r` is not part of this entry
 (see `Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated`).
@@ -895,7 +981,7 @@ covariance (C43); (3) rate `T^{-1/3} log(2T)` (weaker than the printed `T^{-1/3}
 exact Gaussian `1 − α` level `q_α ≥ 0` exists, `N(0,Λ){x | xᵀΛ⁻¹x ≤ q_α} = 1 − α`, and the coverage is within
 `K₀ T^{-1/3} log(2T)` of `1 − α`. This entry only asserts that the level exists; its identification with the
 `χ²(S)` `(1 − α)`-quantile is the separate entry `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared`
-(threshold `R`, not the printed `R²`). These are not the printed formulas; the plug-in version (with `Λ̂_T`) remains open.
+(threshold `R`, not the printed `R²`). These are not the printed formulas; the plug-in versions (with `Λ̂_T`) are the asymptotic entries `Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin`; with a rate they remain open.
 `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 
 Statement: one `K₀ > 0` such that for every `α ∈ (0,1)` there is `q ≥ 0` with `N(0,Λ){x | xᵀΛ⁻¹x ≤ q} = 1 − α`
@@ -931,7 +1017,7 @@ residual covariance (C43); (3) rate `T^{-1/3} log(2T)` (weaker than the printed 
 instance constant `K₀` (independent of `α`). In addition to that entry, for every `α ∈ (0,1)` an exact Gaussian
 `1 − α` level `r_α ≥ 0` exists, `N(0,Λ){x | ∀ s, |x s| ≤ r_α} = 1 − α`, and the coverage is within
 `K₀ T^{-1/3} log(2T)` of `1 − α`. The level is only shown to exist: it is not identified with the printed `ℓ∞`
-quantile formula. These are not the printed formulas; the plug-in version (with `Λ̂_T`) remains open.
+quantile formula. These are not the printed formulas; the plug-in versions (with `Λ̂_T`) are the asymptotic entries `Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin`; with a rate they remain open.
 `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 
 Statement: one `K₀ > 0` such that for every `α ∈ (0,1)` there is `r ≥ 0` with `N(0,Λ){x | ∀ s, |x s| ≤ r} = 1 − α`
@@ -1000,8 +1086,8 @@ no rate, because the plug-in consistency `Eq_defn_hat_Lambda_corrected` has no r
 non-degeneracy hypothesis `Γ_true ≻ 0`. The limit covariance of `Λ̂_T` is
 `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (C43), not the printed `Λ⋆`. (4) Junk value: when `Ā_T` is singular the
 printed `Λ̂_T` is undefined (C47(4)). Lean's `Matrix.inv` gives `Λ̂_T = 0` and `Λ̂_T⁻¹ = 0`, and that event
-has vanishing probability. Not covered: the plug-in `ℓ∞` rectangle (C47(2)) and data-selected sets
-(C47(1)). Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
+has vanishing probability. Not covered here: data-selected sets (C47(1)); the plug-in `ℓ∞` rectangle is
+`Eq_convex_Cdelta_rectangle_corrected_plugin`. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 `χ²(S)` is Mathlib's `gammaMeasure (S/2) (1/2)`.
 
 Statement: (1) for every `q`, `P(T (V^π − V̄_T)ᵀ Λ̂_T⁻¹ (V^π − V̄_T) ≤ q) → F_{χ²(S)}(q)`; (2) for every
@@ -1027,6 +1113,52 @@ def Eq_convex_Cdelta_ellipsoid_corrected_plugin : Prop :=
               (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
                 (lambdaHat M η₀ V₀ ω')⁻¹ s s' ≤ R}.indicator 1 ω) Filter.atTop
         (nhds (1 - α)))
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix Filter Topology in
+/-- Corrected, plug-in-covariance hyper-rectangle confidence region (`chapters/inference.tex:198–205`, item (i)
+of the rule `eq:convex.Cdelta` :187–196; plug-in `Λ̂_T` `eq:defn-hat-Lambda` :180–182). See
+`docs/SOURCE-ISSUES.md#C47` (items (2), (4)) and `#C43`.
+
+Differs from the printed text: (1) half-width `r̂_T/√T` with `r̂_T` a `(1 − α)` quantile of `‖X‖∞`,
+`X ~ N(0, Λ̂_T)`; the printed `R̂/√T` with `R̂` the quantile under `Λ̂_T/T` applies `√T` twice (C47(2)). Since
+`R̂ = r̂_T/√T` (Gaussian scaling; not formalized), this is the rectangle with half-width `R̂` in place of the printed `R̂/√T`.
+(2) Asymptotic coverage only; no rate (plug-in consistency `Eq_defn_hat_Lambda_corrected` has none).
+(3) Added non-degeneracy hypothesis `Γ_true ≻ 0`; the limit covariance is `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (C43).
+(4) Junk value: on the singular event `Ā_T` (C47(4)) Lean's `Matrix.inv` gives `Λ̂_T = 0`, so `N(0, Λ̂_T)` is
+the point mass at `0` and `r̂_T = 0`; that event has vanishing probability.
+`N(0, Λ̂_T)` is written as the law of `Q Z`, `Z` standard Gaussian on `State → ℝ`, `Q Qᵀ = Λ̂_T` (`Λ̂_T` is always
+PSD; the law does not depend on `Q`). `r̂` is a quantile when every `r` with box mass `< 1 − α` is `≤ r̂` and
+every `r` with box mass `> 1 − α` is `≥ r̂`. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133),
+every `V₀`, `α ∈ (0,1)` (:189).
+
+Statement: such quantile levels `r̂_T(ω)` exist, and for every choice of them,
+`P(∀ s, V̄_T(s) − r̂_T/√T ≤ V^π(s) ≤ V̄_T(s) + r̂_T/√T) → 1 − α`. -/
+def Eq_convex_Cdelta_rectangle_corrected_plugin : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
+    ∀ α : ℝ, 0 < α → α < 1 →
+    (∃ rhat : (T : ℕ) → (Fin T → Tuple State Action) → ℝ,
+      ∀ (T : ℕ) (ω : Fin T → Tuple State Action), ∃ Q : Matrix State State ℝ,
+        Q * Qᵀ = lambdaHat M η₀ V₀ ω ∧
+        (∀ r : ℝ, ((Measure.pi fun _ : State ↦ gaussianReal 0 1).map (Q *ᵥ ·)).real
+            {x | ∀ s, |x s| ≤ r} < 1 - α → r ≤ rhat T ω) ∧
+        (∀ r : ℝ, 1 - α < ((Measure.pi fun _ : State ↦ gaussianReal 0 1).map (Q *ᵥ ·)).real
+            {x | ∀ s, |x s| ≤ r} → rhat T ω ≤ r)) ∧
+    ∀ rhat : (T : ℕ) → (Fin T → Tuple State Action) → ℝ,
+      (∀ (T : ℕ) (ω : Fin T → Tuple State Action), ∃ Q : Matrix State State ℝ,
+        Q * Qᵀ = lambdaHat M η₀ V₀ ω ∧
+        (∀ r : ℝ, ((Measure.pi fun _ : State ↦ gaussianReal 0 1).map (Q *ᵥ ·)).real
+            {x | ∀ s, |x s| ≤ r} < 1 - α → r ≤ rhat T ω) ∧
+        (∀ r : ℝ, 1 - α < ((Measure.pi fun _ : State ↦ gaussianReal 0 1).map (Q *ᵥ ·)).real
+            {x | ∀ s, |x s| ≤ r} → rhat T ω ≤ r)) →
+      Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+          {ω' : Fin T → Tuple State Action | ∀ s,
+            prAverage M η₀ V₀ ω' s - rhat T ω' / Real.sqrt T ≤ M.valueFixedPoint π s ∧
+              M.valueFixedPoint π s ≤ prAverage M η₀ V₀ ω' s + rhat T ω' / Real.sqrt T}.indicator 1 ω)
+        atTop (𝓝 (1 - α))
 
 end EqConvexCdelta
 

@@ -67,7 +67,8 @@ infinite-trajectory value; `N > 0` is a binder since the display divides by `N`.
 display is a chain; its middle expression `2√(8β₁/((1−γ)³N)) + 2β₁/((1−γ)²N)` is a proof step
 derived under Step 6's working premise `N ≥ 64β₁/(1−γ)` (`:622`), and this entry states the
 labelled final bound under the display's own premise. The premise `N ≥ β₁/(1−γ)` is kept as printed; the library
-export proves the bound for every `N ≥ 1` and every `C₀ ≥ 8`. -/
+export proves the bound for every `N ≥ 1` and every `C₀ ≥ 8`, using this project's repair of the printed proof gap
+between `N ≥ β₁/(1−γ)` and `N ≥ 64β₁/(1−γ)` (`docs/SOURCE-ISSUES.md`, C3). -/
 def Eqn_ice_cream : Prop :=
   ∃ C : ℝ, 0 < C ∧ ∀ C₀ : ℝ, C ≤ C₀ →
     ∀ (State Action : Type*) [Fintype State] [Fintype Action]
@@ -120,8 +121,8 @@ def Lemma3_3 : Prop :=
 
 /-- Source `LemValueCover`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:1292–1300`.
-For the same positive-size empirical data, a grid point covers the actual
-optimal trajectory-value function within one grid step. -/
+For the same positive-size empirical data, a grid point covers the empirical
+optimal value V̂⋆ within one grid step. -/
 def Lemma3_4 : Prop :=
   ∀ (State Action : Type*) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
@@ -468,8 +469,10 @@ reward table, chosen before `N` and the estimator as printed. For every `N` with
 optimal greedy policy, and the estimator is a function of the full sample array (`N` independent
 generative draws for each state-action pair, both rows, `samplingLaw`). As in the source proof,
 which builds a deterministic test from `Q̂` and applies Fano's lemma over deterministic tests,
-randomized estimators are not part of this entry. The strict `> 0.1` uses the Pinsker branch
-(SOURCE-ISSUES C4 records the omitted strictness step). -/
+randomized estimators are not part of this entry. Since the printed "any estimator" includes randomized
+estimators, this entry is a restricted variant of the display (project decision 2026-11-10; the entry name
+is unchanged). The strict `> 0.1` uses the Pinsker branch (SOURCE-ISSUES C4 records the omitted strictness
+step). -/
 def Eq_P_Mi_Q_inaccurate_lower_generative : Prop :=
   ∀ (γ ε : ℝ), (2 : ℝ) / 3 ≤ γ → γ < 1 → 0 < ε → ε < 1 / (32 * (1 - γ)) →
     ∃ M₀ M₁ : DiscountedMDP Bool Unit,

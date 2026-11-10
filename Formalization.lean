@@ -953,6 +953,14 @@ import Formalization.Ch7Rest.TDInferenceConfChiSq711
 import Formalization.Ch7Rest.TDInferenceC47PluginEvidence711
 import Formalization.Ch7Rest.TDInferenceC47Singular711
 import Formalization.Ch7Rest.TDInferencePluginRegion711
+import Formalization.Ch7Rest.FedSync79ReadOff
+import Formalization.Analysis.SignedDistanceConvex
+import Formalization.Ch7Rest.TDInferenceLooVector711
+import Formalization.Ch7Rest.TDInferencePluginRect711
+import Formalization.Analysis.PolyhedralSeparation
+import Formalization.Probability.SteinPolyhedralConcentration
+import Formalization.Probability.ConvexNonlinearTransfer
+import Formalization.Ch7Rest.TDInferenceConvexSharp711
 import Formalization.Probability.PathAzumaBridge
 import Formalization.Ch7Rest.TDInferenceAzuma711
 import Formalization.Ch7Rest.TDInferenceRemainderTail711

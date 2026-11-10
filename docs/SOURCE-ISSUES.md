@@ -4,6 +4,13 @@ This is a research ledger, not an author-approved errata list. The original
 article remains the source of truth. A corrected result is separately identified
 and must not be presented as a proof of an incorrect original statement.
 
+**Project decision 2026-11-10 (status of every entry).** Every candidate, counterexample, refutation, correction,
+restriction and proof repair below is this project's proposal, found by AI-agent review; none is confirmed by the
+authors. Each entry says whether its counterexample or refutation is machine-checked in Lean or a paper argument.
+Where the book cites or omits a proof, the Lean proof is this project's own (recorded per result as `proof_origin`
+in `named-result-status.json`). Where the book says "any estimator" and a Lean entry covers only estimators that
+are deterministic functions of the data, the entry is a restriction, not the printed statement.
+
 ## Candidate C1: singleton actions in Theorem 3.7(i)
 
 **Source:** arXiv:2610.41903v1, printed pp. 47–48,
@@ -69,9 +76,9 @@ No author-approved correction or ruling is assumed.
 
 ## Candidate repair of Theorem 3.7
 
-**Formal corrected entry (2026-11-06).** Theorem 3.7 is false as printed (C1: part (i) at `A=1`; C2: both parts at `S=1` under the source's known-reward convention). `Thm3_7_corrected` proves the printed conclusion, with probability `≥1/4`, the printed γ and ε ranges, the printed sample bound and a uniform constant (witness `c_N=1/32768`), on the domain `S≥2`, `SA≥16`, with `A≥2` required only in part (i). Each estimator is a deterministic map from the known reward table, the known discount and the full `N`-per-pair sample array. Both added conditions are necessary, by C1 and C2; part (ii) is proved for `A=1` as well. This is a corrected variant, not the printed theorem, and not an author-approved erratum. The older proposal below adds `A ≥ 2` to both parts; the formal entry needs it only for part (i).
+**Formal corrected entry (2026-11-06).** Under its standalone reading, Theorem 3.7 fails as printed by this project's counterexamples, checked in Lean and not author-confirmed (C1: part (i) at `A=1`, unless the earlier `A ≥ 2` convention of line 787 is read into the theorem; C2: both parts at `S=1` under the source's known-reward convention). `Thm3_7_corrected` proves the printed conclusion, with probability `≥1/4`, the printed γ and ε ranges, the printed sample bound and a uniform constant (witness `c_N=1/32768`), on the domain `S≥2`, `SA≥16`, with `A≥2` required only in part (i). Each estimator is a deterministic map from the known reward table, the known discount and the full `N`-per-pair sample array; since printed part (ii) quantifies over any Q-function estimator, randomized estimators included, this is also a restriction (project decision 2026-11-10). Both added conditions are necessary, by C1 and C2; part (ii) is proved for `A=1` as well. This is a corrected variant, not the printed theorem, and not an author-approved erratum. The older proposal below adds `A ≥ 2` to both parts; the formal entry needs it only for part (i).
 
-**A = 1 policy-evaluation form (2026-11-10).** `Thm3_7_policyEvaluation_A1_restricted` specializes corrected part (ii) to one action and restates it on the policy-evaluation experiment of Theorem 3.1 and TD learning (estimator: deterministic map of the known rewards, discount and N draws per state; error ‖V̂ − V^{π₀}‖∞, equal to ‖Q̂ − Q⋆‖∞ at A = 1), with c_N = 1/32768 and the printed γ, ε, SA ≥ 16 (= S ≥ 16) domain. C1 and C2 are vacuous here; the only deviation from the print is deterministic estimators. It closes the A = 1 comparisons (model-based :1468–1474, model-free :248–249) only for ε < 1/(32(1−γ)) and γ ≥ 2/3 ([review](critic-a1.md)).
+**A = 1 policy-evaluation form (2026-11-10).** `Thm3_7_policyEvaluation_A1_restricted` specializes corrected part (ii) to one action and restates it on the policy-evaluation experiment of Theorem 3.1 and TD learning (estimator: deterministic map of the known rewards, discount and N draws per state; error ‖V̂ − V^{π₀}‖∞, equal to ‖Q̂ − Q⋆‖∞ at A = 1), with c_N = 1/32768 and the printed γ, ε, SA ≥ 16 (= S ≥ 16) domain. C1 and C2 are vacuous here; the only deviation from the print is deterministic estimators. It closes the A = 1 comparisons (model-based :1468–1474, model-free :248–249) only for ε < 1/(32(1−γ)) and γ ≥ 2/3 ([review](critic-a1.md)). Restricted variant; since 2026-11-10 it has its own `COVERAGE.md` row.
 
 **Sharpening (independently re-derived 2026-11-06).** The separation claim in the proof (`generative_model_model_based.tex:2073–2079`), `Q^⋆(s,π^⋆(s)) − Q^⋆(s,a) > 2ε`, is false at every admissible `(γ,ε)`. With the printed `p, α` and `x=4(1−γ)/3`, the true gap is `γα/(1−γ(p+α)) = 2xε/(γ−2xε) < (16/21)·2ε`; the displayed suboptimal value `1/(1−γp)` should be `(1−γα)/(1−γ(p+α))`. The data-free estimator equal to the midpoint `(H+L)/2` on active states and `0` at the absorber has error `< (8/21)ε` on every member of the printed family, so that family cannot witness part (ii). Part (i)'s reduction survives with corrected values. The formal proof of part (ii) uses a baseline-versus-one-row family instead.
 
@@ -164,9 +171,10 @@ and Q-risk results prove the stronger `≥1/4` bound on the explicit domain
 `S,A≥2`, `SA≥16`. The standalone two-state, one-action example itself
 (`eq:P-Mi-Q-inaccurate-lower-generative`, lines 1541–1556) is now proved with
 the strict `> 0.1` for every estimator that is a function of the full sample
-array: `StatisticalRL.Statements.Ch3.Eq_P_Mi_Q_inaccurate_lower_generative`.
-An extension to randomized Q estimators (via `finiteSeed_test_error_gt_one_tenth`)
-is an optional strengthening, and the source's wider original domain for the
+array: `StatisticalRL.Statements.Ch3.Eq_P_Mi_Q_inaccurate_lower_generative`. Because the printed
+"any estimator" includes randomized estimators, this entry is a restricted variant (project decision
+2026-11-10). An extension to randomized Q estimators (via `finiteSeed_test_error_gt_one_tenth`)
+would remove that restriction but is not indexed, and the source's wider original domain for the
 general theorem remains separate; the source's strictness omission is not
 itself a counterexample.
 
@@ -639,6 +647,15 @@ candidate records the asserted error.
   rule remains undefined as recorded in C8. See the
   [independent review](critic-online-ucbvi-regret.md).
 
+- Lemma 6.4 (`lem:offline-prelim`, `offlineRL.tex:1078–1094`) is indexed as
+  `Lemma6_4`, a restricted variant: it assumes the standing assumptions of its
+  parent Theorem 6.3 (γ ≥ 1/2 and τmax ≥ (1/(1−γ))log(N/(1−γ))), which the
+  printed lemma leaves implicit. The fixed point and the value and bonus error
+  estimates are proved; the lemma does not prove the parent policy guarantee.
+  Recorded in the named-result ledger since its entry; listed here on
+  2026-11-10 so that the reader can link the restriction. Not an asserted
+  source error.
+
 <a id="C13"></a>
 
 ## Candidate C13: MVP trigger notation and stored-count comparison
@@ -930,8 +947,8 @@ SN ≥ 2, L > log 2 and that step holds, so the failure needs SN = 1. Scope: the
 N ≥ 2. Proposed repair: add `N ≥ 2` (or `SN ≥ 2`) to the lemma. With this counterexample the earlier sentence above
 ("not a counterexample") describes only the parent theorem: the standalone lemma is a false printed statement, so
 the formal version is a correction rather than a domain restriction. Naming note: the Lean entry carries the
-`_corrected` suffix, while its `COVERAGE.md` row and named-result ledger record call it a "restricted variant";
-nothing is renamed here. Paper calculation, not Lean-checked. Reported by an external review (2026-11-08), independently re-checked ([check](critic-audit-findings.md)). Not author-approved.
+`_corrected` suffix; since 2026-11-10 its `COVERAGE.md` row and named-result ledger record also call it a corrected
+variant (they previously said "restricted variant"); nothing is renamed. Paper calculation, not Lean-checked. Reported by an external review (2026-11-08), independently re-checked ([check](critic-audit-findings.md)). Not author-approved.
 
 <a id="C20"></a>
 ## C20: online Q-learning completion, tie scope and proof repairs
@@ -947,7 +964,9 @@ V=min(H,max Q), hence initially H, and uses one fixed deterministic maximizing
 tie rule for the policy update at line 1947. The proof concerns that completed
 implementation. It does not quantify over every randomized or adaptive
 maximizing selector. These choices are visible in `Lemma5_18_restricted` and
-`Thm5_16_corrected`; neither is advertised as an unrestricted algorithm claim.
+`Thm5_16_restricted` (renamed from `Thm5_16_corrected` by project decision 2026-11-10: this entry changes no
+printed statement, so it is a restricted variant, like Lemma 5.18); neither is advertised as an unrestricted
+algorithm claim.
 
 The printed beta-sum equality at lines 2245–2247 equates the previsit indices
 0,...,N−1 with 1,...,N. Already for N=1, beta_0=0 and beta_1>0 can differ.
@@ -1299,6 +1318,11 @@ Readings:
 Whether Q-FTRL itself attains the rate is not checked. No falsity of the printed statement is known.
 Independently reviewed. Not author-approved.
 
+**Project decision 2026-11-10.** The proved entry `Thm7_7_restricted` is an existential witness: it is not the
+printed Q-FTRL algorithm and not a special case of the printed theorem. The named result Theorem 7.7 is therefore
+shown as **incomplete** (named-result record field `"status_override": "incomplete"`), with the existence result
+shown as a related proved result. The Lean entry and its proof are unchanged.
+
 <a id="C40"></a>
 ## Candidate C40: Theorem 7.8 admits A_i = 1 (and S = 1 or H = 1 with known reward); "m-player zero-sum" is undefined
 
@@ -1323,6 +1347,8 @@ probability is 0. Proposed correction: add the hypothesis c_η K(1−γ)⁴ε² 
 and γ ∈ (0,1). The corrected statement is cited (woo2023blessing), not proved in the monograph. Found by a source preflight and confirmed by an independent source check. Machine-checked in Lean (`Formalization/Ch7Rest/LargeStep79.lean`: `not_thm7_9_at`, `not_thm7_9_printed`): false under the literal reading, in which the algorithm's input range η ∈ (0,1) (`:51`, `:76`) is not a hypothesis of the theorem; if that range is read as tacitly assumed, the theorem is vacuous for large K rather than false. Only K depends on the constants, so constants depending on (δ, ε, Q₀, τ, T, γ, S, A) but not on K are also refuted (by inspection, not formalized). The Lean Prop lets the probability space and sample law be chosen existentially, which only weakens the printed claim (the refutation is deterministic: the output is wrong on every sample path).
 
 Corrected result (2026-11-08). `Thm7_9_corrected` (`Formalization/Ch7Rest/FedSync79Main.lean`) proves the printed statement with exactly one added hypothesis, that the prescribed η is below 1 (c_η K(1−γ)⁴ε² < log(SAKT/δ)), under the true generative sampling law and with the true optimal Q-function, for universal constants c_η = 1/216 and c_T = 10⁴ (the reading "every sufficiently small c_η with c_T fixed" is not claimed). γ > 0 is kept as a definedness convention for the τ condition, and τ ∣ T is the source's standing convention (`:70`); the export uses neither. The proof is new and self-contained (the cited woo2023blessing was not used): per-agent noise processes with Azuma–Hoeffding give the linear speedup in K. Whether η < 1 is the minimal correction is not claimed. Independently plan-checked and source-reviewed. Not author-approved.
+
+Read-off (2026-11-10). The per-agent sample size eq:sample-size-per-agent-fedQ (`federated_RL.tex:118–129`) is proved only in the K-range c_η K(1−γ)⁴ε² ≤ log(SAK/δ), i.e. where the prescribed η is at most 1 already at T = 1 (`Eq_sample_size_per_agent_fedQ_restricted`, `Formalization/Ch7Rest/FedSync79ReadOff.lean`, with explicit Õ = 270000216·(1 + log(SAK/(δε(1−γ)²)))³). Because the corrected theorem needs η ≤ 1 and η grows linearly in K, any horizon it certifies satisfies T ≥ δ·exp(c_η K(1−γ)⁴ε²)/(SAK) for every c_η > 0 (`horizon_ge_exp_of_eta_le_one`), so for K ≫ log(SAK/δ)/((1−γ)⁴ε²) the linear-speedup read-off does not follow from the theorem. It is not refuted: whether FedSynQ (with some other step size) attains it for such K is open. Not author-approved.
 
 <a id="C42"></a>
 ## Candidate C42: Theorem 7.10 is vacuous in N as printed; the placement of c0 matters
@@ -1351,8 +1377,9 @@ Machine-checked (2026-11-08, `Formalization/Ch7Rest/TDInferenceZeroNoise711.lean
 
 **Scope note (2026-11-09).** The machine-checked refutation depends on the reading r(s) = r_π(s) with
 action-dependent rewards; under state-only rewards (or deterministic π) the printed statement is neither proved nor
-refuted. The corrected statement (Γ replaced by the true residual covariance, assumed nonsingular), including its
-convex-set bound, remains open, and the cited proof may not transfer directly. With μ = (15/16, 1/16), γ = 3/4 and
+refuted. The corrected statement (Γ replaced by the true residual covariance, assumed nonsingular) was open as of
+2026-11-09; it is now machine-checked over all convex sets with an instance constant (2026-11-10, see the all-convex
+result below), by this project's own argument, and the cited proof may not transfer directly. With μ = (15/16, 1/16), γ = 3/4 and
 both rows of P_π uniform, xᵀdiag(μ)(I−γP_π)x = −3/16 at x = (1,3), so a Euclidean accretivity estimate is
 unavailable, although diag(μ)(I−γP_π) still has positive eigenvalues; this is a gap in applying the cited argument,
 not a counterexample. Two further differences are **unverified**: the cited analysis (Wu et al.,
@@ -1369,10 +1396,19 @@ states the printed 0 < η₀ < 1/4) and every V₀, there is an instance-, η₀
 sup_{u,b} |P(uᵀ√TΔ̄_T ≤ b) − N(0, A⁻¹Γ_trueA⁻ᵀ)(uᵀx ≤ b)| ≤ K·T^(-1/3) for all T ≥ 1.
 The proof does not use the cited paper. It uses a Chen–Shao nonlinear Stein bound, leave-one-out TD estimates and
 a Gaussian variance comparison, so it does not depend on the unverified stationarity and estimator differences
-noted in the scope note above. Still open: the convex-distance bound over all convex sets; the printed coefficient
-and the polynomial C̃; the state-only-reward reading of the printed statement (Γ_true = Γ_printed there, so the
-half-space result is a restricted case of it under that reading). Independently critic-reviewed
-([review](critic-thm7-11-m9.md)). Not author-approved.
+noted in the scope note above. It is implied by the all-convex result below and kept as a supporting entry.
+Independently critic-reviewed ([review](critic-thm7-11-m9.md)). Not author-approved.
+
+**All convex sets (2026-11-10, `Formalization/Ch7Rest/TDInferenceConvexSharp711.lean`, entry `Thm7_11_corrected`).**
+The corrected statement is machine-checked over all convex sets at the printed rate: with Γ_true ≻ 0, full-support μ,
+0 < η₀ ≤ 1 (the entry states 0 < η₀ < 1/4) and every V₀, there is an instance-, η₀- and V₀-dependent K with
+sup_{C convex} |P(√TΔ̄_T ∈ C) − N(0, A⁻¹Γ_trueA⁻ᵀ)(C)| ≤ K·T^(-1/3) for all T ≥ 1 (outer measure for non-Borel C).
+Our own proof (randomized concentration over polyhedral representations of convex sets plus leave-one-out TD
+estimates); it does not use the cited paper, so the unverified stationarity/estimator differences do not affect it.
+Still open: the printed coefficient and polynomial C̃; the printed statement under the state-only-reward reading.
+The printed statement remains refuted under the action-dependent-reward reading. Independently critic-reviewed
+([review](critic-711-sharp.md); components: [N1/N2](critic-nolog-N1N2.md), [N3/N4](critic-nolog-N3N4.md)).
+Not author-approved.
 
 **Classic CLT display (2026-11-09, `Formalization/Ch7Rest/TDInferenceCLT711.lean`, `TDInferenceCLTPrinted711.lean`;
 entries `Eq_classic_clt_corrected`, `Eq_classic_clt_restricted`).** The same Γ issue affects `eqn:classic-clt`
@@ -1599,7 +1635,7 @@ For (4): Lean's convention Λ̂_T = 0 on the singular event (a degenerate interv
 Because that event has vanishing probability, any definition there gives the same asymptotic coverage. The printed
 procedure is still undefined there for finite T.
 
-Still open: a rate, (3), and the Λ̂_T version of the (1) refutation; (2) now has Lean evidence of failure on one
+Still open (as of this paragraph; see below): a rate. (3) and the Λ̂_T version of (1) were settled later (paragraphs below); (2) now has Lean evidence of failure on one
 instance (next paragraph), and its finite-T figures remain paper calculations. Independently critic-reviewed
 ([review](critic-pluginD.md)). Not author-approved.
 
@@ -1622,7 +1658,9 @@ T = 100, violation of `eq:convex.Cdelta` for T > 1) remain paper calculations. I
 
 **Corrected rectangle and ellipsoid, oracle covariance (2026-11-10, `TDInferenceConfRegion711.lean`, entries `Eq_convex_Cdelta_fixedShape_corrected_oracle`, `Eq_convex_Cdelta_ellipsoid_corrected_oracle`, `Eq_convex_Cdelta_rectangle_corrected_oracle`).** The proposed corrections of (2) (√T applied once: half-width r/√T with r an ℓ∞ level under Λ) and (3) (threshold q, not R²), and the fixed-shape rule V̄_T + T^(-1/2)K, are machine-checked with the oracle Λ = A⁻¹Γ_trueA⁻ᵀ (Γ_true ≻ 0): coverage is within K₀T^(-1/3)log(2T) of the Gaussian mass, with one instance constant. Exact 1−α calibration of these corrected oracle shapes is machine-checked as well (`TDInferenceConfCalib711.lean`, entries `Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated`, `Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated`): for every α ∈ (0,1) Gaussian levels q_α, r_α with N(0,Λ)-mass exactly 1 − α exist, and the corrected ellipsoid and rectangle cover with probability within K₀T^(-1/3)log(2T) of 1 − α (one instance constant, independent of α) ([review](critic-confcalib.md)). The χ²(S) identification for the corrected ellipsoid is machine-checked too (`Formalization/Probability/ChiSquaredQuadForm.lean`, `TDInferenceConfChiSq711.lean`, entry `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared`): N(0,Λ){xᵀΛ⁻¹x ≤ q} is the χ²(S) cdf at q, so with threshold R equal to the χ²(S) (1−α)-quantile (R itself, not the printed R², confirming correction (3)) the oracle ellipsoid covers within K₀T^(-1/3)log(2T) of 1 − α ([review](critic-chisq.md)). The rectangle level r_α is not identified with the printed ℓ∞-quantile formula. Still open: the plug-in Λ̂_T versions with a rate, the ℓ∞-quantile identification of the rectangle level, and the rate without log(2T). [Independent review](critic-confregion.md). Not author-approved.
 
-**Lean evidence for the corrected ellipsoid with the printed plug-in Λ̂_T (2026-11-10, `Formalization/Ch7Rest/TDInferencePluginRegion711.lean`).** For full-support μ, 0 < η₀ ≤ 1, every V₀ and Γ_true ≻ 0: P(T(V^π − V̄_T)ᵀΛ̂_T⁻¹(V^π − V̄_T) ≤ R) → 1 − α for every χ²(S) (1 − α)-quantile R (`tendsto_coverage_ellipsoid_plugin_chiSquared`; for general q, → F_{χ²(S)}(q)). This is asymptotic only, with no rate. The singular-Ā_T junk value (C47(4)) lies in a vanishing-probability event. Independently critic-reviewed ([review](critic-pluginregion.md)). Not author-approved. The plug-in ℓ∞ rectangle with a random level (C47(2)) is still open.
+**Lean evidence for the corrected ellipsoid with the printed plug-in Λ̂_T (2026-11-10, `Formalization/Ch7Rest/TDInferencePluginRegion711.lean`).** For full-support μ, 0 < η₀ ≤ 1, every V₀ and Γ_true ≻ 0: P(T(V^π − V̄_T)ᵀΛ̂_T⁻¹(V^π − V̄_T) ≤ R) → 1 − α for every χ²(S) (1 − α)-quantile R (`tendsto_coverage_ellipsoid_plugin_chiSquared`; for general q, → F_{χ²(S)}(q)). This is asymptotic only, with no rate. The singular-Ā_T junk value (C47(4)) lies in a vanishing-probability event. Independently critic-reviewed ([review](critic-pluginregion.md)). Not author-approved. The plug-in ℓ∞ rectangle with a random level (C47(2)) is now proved asymptotically (next paragraph); a rate remains open.
+
+**Corrected rectangle with the printed plug-in Λ̂_T (2026-11-10, `Formalization/Ch7Rest/TDInferencePluginRect711.lean`).** For full-support μ, 0 < η₀ ≤ 1, every V₀, Γ_true ≻ 0 and α ∈ (0,1): for every random level r̂_T that is, outcome by outcome, a (1−α)-quantile of ‖X‖∞ with X ~ N(0, Λ̂_T) (N(0,Σ) := law of QZ, QQᵀ = Σ; Λ̂_T is always PSD), the rectangle ∏_s[V̄_T(s) ± r̂_T/√T] has coverage → 1 − α (`tendsto_coverage_rect_plugin`; concrete lower quantile `tendsto_coverage_rect_plugin_quantile`). With R̂ the quantile under Λ̂_T/T as printed, R̂ = r̂_T/√T (scaling; not formalized), so this is the proposed correction 'half-width R̂ (not R̂/√T)'. Asymptotic only, no rate. Independently critic-reviewed ([review](critic-pluginrect.md)). Not author-approved.
 
 **Quantified irrelevance of the convention on the singular event, C47(4) (2026-11-10, `Formalization/Ch7Rest/TDInferenceC47Singular711.lean`).** For any two confidence procedures agreeing whenever Ā_T is invertible, |P(V in C1) − P(V in C2)| ≤ P(Ā_T singular) ≤ ∑_s (1−μ(s))^T ≤ S ρ^T (ρ = max_s(1−μ(s)) < 1 under full support). Hence for the plug-in two-sided interval, coverage → 2Φ(z) − 1 for every convention on the singular event (`tendsto_coverage_twoSided_plugin_anyConvention`). The printed procedure remains undefined on that event; the gap is not repaired, only shown asymptotically immaterial. Independently critic-reviewed ([review](critic-c47s.md)). Not author-approved.
 

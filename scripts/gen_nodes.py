@@ -23,17 +23,24 @@ Status rules (also shown in words on the site's Status and Graph pages):
   `restricted` by the same rule the reader uses (`site/reader/lean.py: classify`).
 * A remark or displayed claim ("prose" node) is proved only if it has both a
   statement-index entry and a COVERAGE row (COVERAGE is its reviewed ledger).
-* `refuted`: nothing is proved for the node and one of its COVERAGE rows cites a Lean
-  refutation of the printed statement by name (backticked `not_..._printed...`, the
-  project convention; G4 in static_gates.py checks cited names resolve).  A node that
-  is proved in some form is never marked refuted; its `refutations_cited` field lists
-  any such names as data only (also names of the form `not_..._printed` in a ledger record).
+* Printed-statement failures come from the explicit ledger field `printed_refuted` in
+  named-result-status.json, keyed by source label (or `id:<inventory id>`): `lean` lists the Lean
+  theorems refuting the printed statement under `reading` (null if none), `paper` says a paper argument
+  (not Lean-checked) shows a failure.  The node's `refutations_cited` are the short names of `lean`.
+  The old name heuristic (backticked `not_..._printed...` in a COVERAGE row, or such a name in a ledger
+  record) is kept only as a cross-check: every name it finds must be listed in the field, or the
+  generator fails.  G4 in static_gates.py checks that the listed names resolve.
+* `refuted`: nothing is proved for the node and the field lists a Lean refutation.  A node that
+  is proved in some form is never `refuted`; it carries the refuted marker instead.  A node with
+  only a paper argument gets the separate `fails-paper` marker ("appears to fail").
   `partial`: a COVERAGE row whose bold lead starts with "Partial" or proves only part of the
   item ("First two sentences proved"), or a statement entry without the reviewed record it needs.
 * Source-issue ids are read from ledger scopes and docstrings as `Cnn` (not `C1 = 2`), and from
   COVERAGE rows only as links (`SOURCE-ISSUES.md#Cnn`, `[Cnn]`), since rows use constants C1, C2.
-* Fail-closed: if a proved node's COVERAGE headline says "Partial", or says "refuted"
-  without saying anything is proved, the headline wins and a warning is emitted.
+* Fail-closed: if a numbered result with a ledger record has a COVERAGE headline that says "Partial",
+  or says "refuted" without saying anything is proved, the headline wins and a warning is emitted.
+  For a remark or display the COVERAGE row is its only reviewed record, so such a headline simply
+  makes the node partial (no warning), and its statement entries are not counted.
 * `open`: a named node with nothing recorded.  `prose-claim`: a prose node with no
   statement entry (it may have a COVERAGE note).
 * A joint statement entry (one Prop for several displays) is attached to every cited
@@ -88,7 +95,7 @@ CONTEXT_KINDS = ("definition", "assumption", "algorithm")  # edge targets only, 
 # they are counted separately and never as proved (proof status stays `open`).
 CLOSING_STATUSES = ("implied", "explanatory", "cited-out-of-scope")
 STATEMENT_STATUSES = ("printed", "corrected", "restricted", "refuted", "partial") + CLOSING_STATUSES + \
-    ("open", "prose-claim")
+    ("related", "open", "prose-claim")
 PROOF_STATUSES = ("proved", "refuted", "open")
 
 # Same regexes as site/reader/lean.py (scripts/tests/test_gen_nodes.py asserts they agree).
@@ -129,6 +136,141 @@ def closing_kind(lead: str) -> str | None:
     if OUT_OF_SCOPE_LEAD_RE.match(lead):
         return "cited-out-of-scope"
     return None
+
+
+# ---------------------------------------------------------------------------------------
+# Reader-facing vocabulary: exactly four labels, derived only from a node's fields.
+
+SITE_LABELS = {
+    "stated": ("proved as stated", "st-stated"),
+    "corrected": ("proved with corrections", "st-corrected"),
+    "restricted": ("proved under restrictions", "st-restricted"),
+    "incomplete": ("incomplete", "st-incomplete"),
+}
+SITE_LABEL_ORDER = ("stated", "corrected", "restricted", "incomplete")
+# Orthogonal markers shown after the label (word + icon, never colour only).
+MARKERS = {
+    "refuted": "✕ printed statement refuted in Lean",
+    "fails-paper": "⚠ printed statement appears to fail (paper argument)",
+    "new-proof": "new proof",
+    "also-corrected": "also corrected",
+}
+# Optional ledger-record fields (named-result-status.json) and their defaults.
+PROOF_ORIGINS = ("source-proof", "source-proof-repaired", "own-proof:source-cites", "own-proof:source-omits",
+                 "unclassified")
+CORRECTION_STATUSES = ("proposed-by-project", "author-confirmed")
+STATUS_OVERRIDES = ("incomplete",)  # downgrade-only
+INCOMPLETE_REASONS = {
+    "refuted": "printed statement refuted in Lean; nothing proved",
+    "partial": "partial",
+    "open": "not yet formalized",
+    "prose-claim": "not yet formalized",
+    "implied": "implied by a proved entry (not separately proved)",
+    "cited-out-of-scope": "cited from the literature; out of scope (project decision)",
+    "related": "a related statement is proved, not the printed result",
+}
+
+
+def record_fields(rec: dict) -> dict:
+    """The optional reader fields of one ledger record, validated, with safe defaults."""
+    origin = rec.get("proof_origin") or "unclassified"
+    if origin not in PROOF_ORIGINS:
+        raise SystemExit(f"{rec.get('lean_statement')}: unknown proof_origin {origin!r}")
+    corr = rec.get("correction_status") or "proposed-by-project"
+    if corr not in CORRECTION_STATUSES:
+        raise SystemExit(f"{rec.get('lean_statement')}: unknown correction_status {corr!r}")
+    override = rec.get("status_override")
+    if override is not None and override not in STATUS_OVERRIDES:
+        raise SystemExit(f"{rec.get('lean_statement')}: status_override may only be 'incomplete' "
+                         f"(downgrade only), got {override!r}")
+    note = rec.get("display_note") or ""
+    if not isinstance(note, str):
+        raise SystemExit(f"{rec.get('lean_statement')}: display_note must be a string")
+    return {"proof_origin": origin, "correction_status": corr, "status_override": override,
+            "display_note": note.strip()}
+
+
+def display_name(n: dict) -> str:
+    """Reader name of a node ("Theorem 7.11", "Eq. (5.146)"); never an internal id."""
+    kind = n.get("kind", "")
+    num = n.get("number")
+    if kind in ("display", "subequations"):
+        if num:
+            return f"Eq. ({num})"
+        t = (n.get("tex") or [{}])[0]
+        if t:
+            a, b = t.get("line_start"), t.get("line_end")
+            where = f'{t["file"].rsplit("/", 1)[-1]}:{a}' + (f"–{b}" if b and b != a else "")
+            return f"Unnumbered display ({where})"
+        return "Unnumbered display"
+    word = kind.capitalize() if kind else "Item"
+    return f"{word} {num}".strip() if num else word
+
+
+def site_label(n: dict):
+    """(label key or None, markers, sub_reason) for a node: the only status the reader shows.
+
+    proved + printed -> stated; proved + corrected -> corrected; proved + restricted -> restricted
+    (with an "also corrected" marker when a counted entry is corrected too); everything else ->
+    incomplete with a sub-reason; `explanatory` (no mathematical claim) -> no label at all.
+    Markers: `refuted` for a Lean refutation of the printed form (ledger field `printed_refuted`);
+    `fails-paper` when only a paper argument shows a failure; `new-proof` when every ledger record's
+    proof_origin is an own proof."""
+    st, pf = n["statement_status"], n["proof_status"]
+    markers = []
+    if n.get("refutations_cited") or st == "refuted":
+        markers.append("refuted")
+    elif (n.get("printed_refuted") or {}).get("paper"):
+        markers.append("fails-paper")
+    origins = n.get("proof_origins") or []
+    if pf == "proved" and origins and all(o.startswith("own-proof") for o in origins):
+        markers.append("new-proof")
+    if st == "explanatory":
+        return None, markers, "no mathematical claim"
+    if pf == "proved" and st in ("printed", "corrected", "restricted"):
+        key = {"printed": "stated", "corrected": "corrected", "restricted": "restricted"}[st]
+        if key == "restricted" and any("corrected" in e["name"].rsplit(".", 1)[-1].lower()
+                                       for e in n.get("statement_entries", []) if e.get("counted", True)):
+            markers.append("also-corrected")
+        return key, markers, ""
+    if st == "implied" and n.get("implied_variant"):
+        sub = f'implied by a proved {n["implied_variant"]} entry (not separately proved)'
+    elif st == "partial" and n.get("statement_entries") and not n.get("coverage_rows"):
+        sub = "Lean statement without a reviewed status record"
+    else:
+        sub = INCOMPLETE_REASONS.get(st, "not yet formalized")
+    return "incomplete", markers, sub
+
+
+def parse_printed_refuted(field: dict, issue_ids) -> dict:
+    """Validate the ledger field `printed_refuted` (keys starting with `_` are comments)."""
+    if not isinstance(field, dict):
+        raise SystemExit("printed_refuted must map source labels to records")
+    out = {}
+    for key, rec in field.items():
+        if key.startswith("_"):
+            continue
+        if not isinstance(rec, dict) or set(rec) - {"lean", "paper", "reading", "issues"}:
+            raise SystemExit(f"printed_refuted[{key!r}]: fields are lean, paper, reading, issues")
+        lean = rec.get("lean")
+        if lean is not None and (not isinstance(lean, list) or not lean
+                                 or not all(isinstance(x, str) and x.startswith("StatisticalRL.") for x in lean)):
+            raise SystemExit(f"printed_refuted[{key!r}].lean must be null or a nonempty list of StatisticalRL names")
+        paper = rec.get("paper")
+        if not isinstance(paper, bool):
+            raise SystemExit(f"printed_refuted[{key!r}].paper must be true or false")
+        if lean is None and not paper:
+            raise SystemExit(f"printed_refuted[{key!r}]: neither a Lean refutation nor a paper argument")
+        reading = rec.get("reading")
+        if not isinstance(reading, str) or not reading.strip():
+            raise SystemExit(f"printed_refuted[{key!r}].reading must state the reading under which it fails")
+        issues = rec.get("issues") or []
+        bad = [c for c in issues if not re.fullmatch(r"C\d+", str(c)) or c[1:] not in issue_ids]
+        if bad:
+            raise SystemExit(f"printed_refuted[{key!r}]: unknown source issue(s) {bad}")
+        out[key] = {"lean": list(lean) if lean else None, "paper": paper, "reading": reading.strip(),
+                    "issues": list(issues)}
+    return out
 
 
 def coverage_issue_ids(text: str) -> list:
@@ -408,7 +550,13 @@ class Builder:
         self.inv = json.loads(inv_text)
         self.ledger = json.loads(self.read("docs/named-result-status.json"))
         self.coverage = parse_coverage(self.read("docs/COVERAGE.md"))
+        # Reader notes for statement entries without a ledger record (keyed by entry name; optional).
+        notes = self.ledger.get("entry_display_notes") or {}
+        if not isinstance(notes, dict) or not all(isinstance(v, str) for v in notes.values()):
+            raise SystemExit("entry_display_notes must map entry names to strings")
+        self.entry_notes = {k: v.strip() for k, v in notes.items() if not k.startswith("_") and v.strip()}
         self.issue_ids = parse_issue_ids(self.read("docs/SOURCE-ISSUES.md"))
+        self.printed_refuted = parse_printed_refuted(self.ledger.get("printed_refuted") or {}, self.issue_ids)
         self.entries = parse_statement_entries(reader)
         for f in statement_files(reader):
             self.read(f)
@@ -511,6 +659,31 @@ class Builder:
             info["anchor"] = m.group(1)
         return info
 
+    def apply_printed_refuted(self, nodes: dict):
+        """Attach the ledger field `printed_refuted` to its nodes and cross-check the name heuristic."""
+        claimed = {}
+        for key, info in self.printed_refuted.items():
+            if key.startswith("id:"):
+                n = nodes.get(key[3:])
+            else:
+                e = self.label_owner.get(key)
+                n = nodes.get(e["id"]) if e else None
+            if n is None:
+                raise SystemExit(f"printed_refuted[{key!r}]: no tracked numbered result, remark or display")
+            if n["id"] in claimed:
+                raise SystemExit(f"printed_refuted: {key!r} and {claimed[n['id']]!r} name the same item")
+            claimed[n["id"]] = key
+            n["printed_refuted"] = dict(info, key=key)
+        for n in nodes.values():
+            info = n["printed_refuted"]
+            lean = [x.rsplit(".", 1)[-1] for x in ((info or {}).get("lean") or [])]
+            stray = [x for x in n["refutations_cited"] if x not in lean]
+            if stray:
+                raise SystemExit(f"{n['id']}: the ledgers cite Lean refutation(s) {', '.join(stray)} by name, but "
+                                 f"named-result-status.json `printed_refuted` does not list them for this item; "
+                                 f"add them (or correct the citation)")
+            n["refutations_cited"] = lean
+
     def ledger_entry(self, rec):
         sid, lab = rec.get("source_inventory_id"), rec.get("source_label")
         if sid and sid in self.by_id:
@@ -538,6 +711,8 @@ class Builder:
                     "ledger_records": [], "coverage_rows": [], "issues": set(), "evidence": [],
                     "refutations_cited": [], "partial_lead": False, "refuted_lead": False, "uses": [],
                     "closing": {}, "reviewed_rows": 0,
+                    "display_name": "", "proof_origins": [], "display_notes": [], "correction_status": None,
+                    "status_override": None, "printed_refuted": None,
                 }
             return nodes[e["id"]]
 
@@ -555,8 +730,14 @@ class Builder:
                     raise SystemExit(f"ledger record {rec.get('lean_statement')} has no inventory entry")
                 n = node_for(e)
                 recorded[rec["lean_statement"]] = (kind, rec, n)
+                f = record_fields(rec)
                 n["ledger_records"].append({"ledger": "certified" if kind == "certified_named_results" else "variant",
-                                            "name": rec.get("name"), "lean_statement": rec["lean_statement"]})
+                                            "name": rec.get("name"), "lean_statement": rec["lean_statement"],
+                                            "proof_origin": f["proof_origin"],
+                                            "correction_status": f["correction_status"],
+                                            "status_override": f["status_override"]})
+                if f["display_note"]:
+                    n["display_notes"].append({"entry": rec["lean_statement"], "note": f["display_note"]})
                 if rec.get("evidence"):
                     n["evidence"].append(rec["evidence"])
                 n["issues"].update(CID_RE.findall(rec.get("statement_scope", "")))
@@ -647,7 +828,10 @@ class Builder:
                                  for f, a, b in self.ranges(o) for mf, ma, mb in main_ranges)
                     if inside and not nested and node_for(o) not in attached:
                         attached.append(node_for(o))
+            extra = self.entry_notes.get(ent["name"]) or self.entry_notes.get(ent["full"])
             for n in attached:
+                if extra and not any(d["entry"] == ent["full"] for d in n["display_notes"]):
+                    n["display_notes"].append({"entry": ent["full"], "note": extra})
                 n["statement_entries"].append({
                     "name": ent["full"], "variant": variant,
                     "ledger": None if kind is None else ("certified" if kind == "certified_named_results" else "variant"),
@@ -750,26 +934,40 @@ class Builder:
                 if re.search(r"\brefuted\b", lead) and "proved" not in lead:
                     n["refuted_lead"] = True
 
+        # printed-statement failures: the ledger field decides; the name heuristic must agree --------
+        self.apply_printed_refuted(nodes)
+
         # statuses ------------------------------------------------------------------------
         for n in nodes.values():
+            over_names = {r["lean_statement"] for r in n["ledger_records"] if r["status_override"]}
             variants = [s["variant"] for s in n["statement_entries"]
-                        if n["class"] == "prose" or s["ledger"] is not None]
+                        if (n["class"] == "prose" or s["ledger"] is not None) and s["name"] not in over_names]
+            # A ledger record with `status_override: "incomplete"` never counts as proving the node
+            # (downgrade only); the node is proved only by its other records.
+            counted = [r for r in n["ledger_records"] if not r["status_override"]]
+            overridden = len(counted) < len(n["ledger_records"])
             if n["class"] == "named":
-                proved = bool(n["ledger_records"])
+                proved = bool(counted)
             else:
                 # a closing row (implied / explanatory / out of scope) never makes an entry count as proved
                 proved = bool(n["statement_entries"]) and n["reviewed_rows"] > 0
             if proved and (n["partial_lead"] or n["refuted_lead"]):
-                self.warnings.append(f"{n['id']}: proved by the ledgers, but a COVERAGE headline says "
-                                     f"{'partial' if n['partial_lead'] else 'refuted'}; the headline wins")
+                # A numbered result's ledger record and its COVERAGE headline disagree: warn. For a remark
+                # or display the COVERAGE row is its only reviewed record, so the headline is its status.
+                if n["class"] == "named":
+                    self.warnings.append(f"{n['id']}: proved by the ledgers, but a COVERAGE headline says "
+                                         f"{'partial' if n['partial_lead'] else 'refuted'}; the headline wins")
                 proved = False
             if proved:
                 st = ("printed" if "printed" in variants else "corrected" if "corrected" in variants
                       else "restricted")
+            elif overridden and n["class"] == "named":
+                st = "related"
+            elif n["partial_lead"]:
+                # part of the item is proved (a refutation of the rest is shown by the marker)
+                st = "partial"
             elif n["refutations_cited"]:
                 st = "refuted"
-            elif n["partial_lead"]:
-                st = "partial"
             elif n["closing"] and not n["reviewed_rows"]:
                 # The reviewed row classifies the item (a joint entry may cite a step-definition display).
                 # A remainder cited out of scope keeps the node out of scope; otherwise implied beats
@@ -791,6 +989,19 @@ class Builder:
             n["issues"] = [f"C{c}" for c in n["issues"]]
             n["evidence"] = sorted(set(n["evidence"]))
             n["proof_wrappers"] = sorted(set(n["proof_wrappers"]))
+            over = {r["lean_statement"] for r in n["ledger_records"] if r["status_override"]}
+            for se in n["statement_entries"]:
+                se["counted"] = se["name"] not in over and (proved if n["class"] == "prose" else se["ledger"] is not None)
+            n["status_override"] = "incomplete" if overridden and not counted else None
+            n["proof_origins"] = sorted({r["proof_origin"] for r in counted} - {"unclassified"}) if proved else []
+            corr = [r["correction_status"] for r in counted]
+            n["correction_status"] = (("author-confirmed" if corr and all(c == "author-confirmed" for c in corr)
+                                       else "proposed-by-project")
+                                      if proved and st in ("corrected", "restricted") or n["refutations_cited"]
+                                      else None)
+            n["display_name"] = display_name(n)
+            lab, markers, sub = site_label(n)
+            n["site_label"], n["site_markers"], n["site_sub_reason"] = lab, markers, sub
 
         # an implication is only as good as the entry it comes from: that entry's node must be proved
         for n in nodes.values():
@@ -902,8 +1113,17 @@ class Builder:
             ch = by_chapter.setdefault(n["chapter"], {"named": {s: 0 for s in STATEMENT_STATUSES},
                                                       "prose": {s: 0 for s in STATEMENT_STATUSES},
                                                       "named_total": 0, "named_proved": 0,
-                                                      "named_printed_with_cited_printed": 0})
+                                                      "named_printed_with_cited_printed": 0,
+                                                      "named_by_label": {k: 0 for k in SITE_LABEL_ORDER},
+                                                      "prose_by_label": dict({k: 0 for k in SITE_LABEL_ORDER},
+                                                                             no_claim=0),
+                                                      "named_refuted_marker": 0, "prose_refuted_marker": 0,
+                                                      "named_fails_paper_marker": 0, "prose_fails_paper_marker": 0})
             ch[n["class"]][n["statement_status"]] += 1
+            lab = n["site_label"] or "no_claim"
+            ch[f'{n["class"]}_by_label'][lab] += 1
+            ch[f'{n["class"]}_refuted_marker'] += "refuted" in n["site_markers"]
+            ch[f'{n["class"]}_fails_paper_marker'] += "fails-paper" in n["site_markers"]
             if n["class"] == "named":
                 ch["named_total"] += 1
                 ch["named_proved"] += n["proof_status"] == "proved"
@@ -916,13 +1136,23 @@ class Builder:
         named_label_id = {l: e["id"] for e in self.inv_entries if e["kind"] in NAMED_KINDS
                           for l in e.get("labels", [])}
         ledger_ids = set()
+        overridden_ids = set()
         for kind in ("certified_named_results", "proved_variants"):
             for rec in self.ledger.get(kind, []):
                 sid, lab = rec.get("source_inventory_id"), rec.get("source_label")
+                if rec.get("status_override"):
+                    key = sid if sid in named_ids else named_label_id.get(lab)
+                    if key:
+                        overridden_ids.add(key)
+                    continue
                 if sid in named_ids:
                     ledger_ids.add(sid)
                 elif lab in named_label_id:
                     ledger_ids.add(named_label_id[lab])
+        # A named label without a counted record must be "named_by_label" incomplete, never proved.
+        for n in named:
+            if n["site_label"] is None:
+                raise SystemExit(f"{n['id']}: a numbered result can never be unlabelled")
         proved_named = sum(n["proof_status"] == "proved" for n in named)
         if proved_named != len(ledger_ids):
             raise SystemExit(f"node count {proved_named} disagrees with ledger count {len(ledger_ids)}")
@@ -944,6 +1174,25 @@ class Builder:
             "closing_not_proved": {k: {"nodes": tally(lambda n, k=k: n["statement_status"] == k),
                                        "rows_without_node": sum(1 for r in self.closing_rows if r["kind"] == k)}
                                    for k in CLOSING_STATUSES},
+            # Reader labels (exactly four; `no_claim` = explanatory prose, excluded from every denominator).
+            "named_by_label": {k: tally(lambda n, k=k: n["class"] == "named" and n["site_label"] == k)
+                               for k in SITE_LABEL_ORDER},
+            "named_refuted_marker": tally(lambda n: n["class"] == "named" and "refuted" in n["site_markers"]),
+            "named_overridden_incomplete": len(overridden_ids - ledger_ids),
+            "prose_by_label": dict({k: tally(lambda n, k=k: n["class"] == "prose" and n["site_label"] == k)
+                                    for k in SITE_LABEL_ORDER},
+                                   no_claim=tally(lambda n: n["class"] == "prose" and n["site_label"] is None)),
+            "prose_refuted_marker": tally(lambda n: n["class"] == "prose" and "refuted" in n["site_markers"]),
+            "refuted_marker_nodes": tally(lambda n: "refuted" in n["site_markers"]),
+            # printed statements that appear to fail by a paper argument only (no Lean refutation)
+            "named_fails_paper_marker": tally(lambda n: n["class"] == "named" and "fails-paper" in n["site_markers"]),
+            "prose_fails_paper_marker": tally(lambda n: n["class"] == "prose" and "fails-paper" in n["site_markers"]),
+            "fails_paper_marker_nodes": tally(lambda n: "fails-paper" in n["site_markers"]),
+            "refutation_theorems": len({x for n in node_list for x in n["refutations_cited"]}),
+            "own_proof_by_origin": {o: tally(lambda n, o=o: n["class"] == "named" and n["proof_status"] == "proved"
+                                             and o in n["proof_origins"])
+                                    for o in PROOF_ORIGINS if o != "unclassified"},
+            "new_proof_marker": tally(lambda n: "new-proof" in n["site_markers"]),
             "uses_edges": sum(len(n["uses"]) for n in node_list),
             "uses_edges_reviewed": 0,
             "context_items": {k: kinds.get(k, 0) for k in CONTEXT_KINDS},
@@ -994,7 +1243,8 @@ def render_next(data: dict) -> str:
         "",
         "**The formalization of the monograph is INCOMPLETE.** "
         f"{s['named_results_with_ledger_record']} of the {s['named_results_in_inventory']} numbered theorems, "
-        "lemmas and claims have a reviewed ledger record (printed, corrected or restricted form); prose claims, "
+        "lemmas and claims are counted as proved (a reviewed ledger record in printed, corrected or restricted "
+        "form, excluding any result downgraded to incomplete by a status override); prose claims, "
         "algorithms, definitions and source-gap candidates are outside that count.",
         "",
         "Dependencies (`uses`) are candidates read from TeX cross-references inside each result and its proof. "
@@ -1143,7 +1393,7 @@ def main(argv=None) -> int:
         p.write_text(text, encoding="utf-8")
     s = data["summary"]
     print(f"wrote {NODES_PATH} ({len(data['nodes'])} nodes, {s['uses_edges']} unreviewed uses edges) and {NEXT_PATH}")
-    print(f"named results with ledger record: {s['named_results_with_ledger_record']} of {s['named_results_in_inventory']}")
+    print(f"named results counted as proved (ledger record, no downgrade override): {s['named_results_with_ledger_record']} of {s['named_results_in_inventory']}")
     for w in data["warnings"]:
         print("warning: " + w)
     return 0
