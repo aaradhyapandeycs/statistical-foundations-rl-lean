@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-07",
+  "updated_at": "2026-11-09",
   "source": "arXiv:2610.41903v1; docs/source-inventory.json; docs/COVERAGE.md",
   "policy": "Conservative manually maintained ledger, supported by independent reviews that may be performed by AI agents. Add a certification only after the full named environment has source review, compiled actual exports and permitted transitive axioms. Partial components, algorithms and source obstructions do not count. All unlisted named environments remain uncounted. This is not a percentage of the entire monograph.",
   "certified_named_results": [
@@ -466,19 +466,6 @@
       "coverage": "docs/COVERAGE.md"
     },
     {
-      "name": "Theorem 7.10",
-      "source_label": "thm:lower_bound",
-      "source_file": "chapters/federated_RL.tex",
-      "source_lines": "227–239",
-      "source_context_lines": "166–220 (Algorithm 7.3)",
-      "lean_export": "StatisticalRL.Ch7Rest.FedGeneric.lowerBound_of_fewRounds_onRange",
-      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_10",
-      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_10_holds",
-      "statement_scope": "Printed lower bound under the natural reading with the universal constant c₀ quantified first, for every schedule with few communication rounds, both printed learning-rate families and K≥2 agents; with c₀ inside the hypothesis the statement is refuted (not_thm7_10_innerConstant). Only exact averaging is modelled, not an arbitrary distributed mean-estimation routine, and the constant C_γ is doubly exponentially small, so the discussion after the theorem is not established (C42).",
-      "evidence": "docs/critic-thm7-10.md",
-      "coverage": "docs/COVERAGE.md"
-    },
-    {
       "name": "Lemma 2.6",
       "source_label": "empirical bernstein",
       "source_file": "chapters/prelim.tex",
@@ -861,7 +848,7 @@
       "lean_export": "StatisticalRL.OnlineRL.qLearning_sourceOptimism_confidence",
       "lean_statement": "StatisticalRL.Statements.Lemma5_18_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Lemma5_18_restricted_holds",
-      "statement_scope": "Both source clauses on one actual-law event: simultaneous nonnegative Q-error with the weighted prior-visit continuation-gap bound, plus all-stage V optimism, strict success >1-delta, H,K>=1, 0<delta<1, cb=2 and residual constant8. Fixed deterministic maximizing tie and initial nonterminal V=H are disclosed in C20. Observed successor/count law and uniform concentration are proved, not additional hypotheses."
+      "statement_scope": "Both source clauses on one actual-law event: simultaneous nonnegative Q-error with the weighted prior-visit continuation-gap bound, plus all-stage V optimism, strict success >1-delta, H,K>=1, 0<delta<1, every bonus coefficient cb>=2 (the algorithm's cb=2 included) with residual constant 4cb. Fixed deterministic maximizing tie and initial nonterminal V=H are disclosed in C20. Observed successor/count law and uniform concentration are proved, not additional hypotheses."
     },
     {
       "name": "Theorem 3.7 (corrected variant)",
@@ -944,7 +931,7 @@
       "lean_export": "StatisticalRL.OfflineRL.LCBQ.lcbq_useful",
       "lean_statement": "StatisticalRL.Statements.Ch6.Lemma6_11_restricted",
       "lean_statement_proof": "StatisticalRL.Statements.Ch6.Lemma6_11_restricted_holds",
-      "statement_scope": "Restricted: with explicit universal constant 84 for the actual time-j state laws and discounted occupancy of the optimal greedy policy, every 0<δ<1, T≥1 and W≥0, under the added sufficient premise log(SAT/δ)≥1. The printed lemma is false without some such premise (C22); its uses with δ>SAT/e are not covered by this entry, and Theorem 6.8 handles that corner inside its own proof.",
+      "statement_scope": "Restricted: with explicit universal constant 84 for the actual time-j state laws and discounted occupancy of every Q⋆-greedy deterministic policy π⋆ (every optimal deterministic policy, no tie rule fixed), every 0<δ<1, T≥1 and W≥0, under the added sufficient premise log(SAT/δ)≥1. The printed lemma is false without some such premise (C22); its uses with δ>SAT/e are not covered by this entry, and Theorem 6.8 handles that corner inside its own proof.",
       "evidence": "docs/critic-lemma6-11-restricted.md",
       "supporting_evidence": [
         "docs/critic-c22-lemma6-11-disclosure.md",
@@ -1284,6 +1271,19 @@
       "supporting_evidence": [
         "docs/critic-thm7-7-plan-check.md"
       ],
+      "coverage": "docs/COVERAGE.md"
+    },
+    {
+      "name": "Theorem 7.10 (restricted to exact averaging)",
+      "source_label": "thm:lower_bound",
+      "source_file": "chapters/federated_RL.tex",
+      "source_lines": "227–239",
+      "source_context_lines": "166–220 (Algorithm 7.3)",
+      "lean_export": "StatisticalRL.Ch7Rest.FedGeneric.lowerBound_of_fewRounds_onRange",
+      "lean_statement": "StatisticalRL.Statements.Ch7.Thm7_10_restricted",
+      "lean_statement_proof": "StatisticalRL.Statements.Ch7.Thm7_10_restricted_holds",
+      "statement_scope": "Restricted: the printed lower bound under the natural reading with the universal constant c₀ quantified first, for every schedule with few communication rounds, both printed learning-rate families and K≥2 agents, for the exact-averaging sub-class of the generic algorithm. Line 196 puts any distributed mean-estimation routine (including compression) in the algorithm class; those routines are not covered, so this is a restricted variant (moved from certified_named_results on 2026-11-09 after a statement audit). With c₀ inside the hypothesis the statement is refuted (not_thm7_10_innerConstant). The constant C_γ is doubly exponentially small, so the discussion after the theorem is not established (C42).",
+      "evidence": "docs/critic-thm7-10.md",
       "coverage": "docs/COVERAGE.md"
     }
   ]

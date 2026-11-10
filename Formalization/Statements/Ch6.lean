@@ -83,10 +83,11 @@ section SampleSplitCorrected
 universe w
 
 open Classical in
-/-- **Lemma 6.5, restricted sample-splitting result** (`lem:sample-split-infinite`,
+/-- **Lemma 6.5, corrected sample-splitting result** (`lem:sample-split-infinite`,
 `chapters/offlineRL.tex:1104–1114`; sampling model `:28–37`, count definition
-`:672–678`). This formalized version assumes `2 ≤ N`; the standalone source lemma
-does not state that restriction. The parent theorem's sample-size condition
+`:672–678`). This formalized version adds the premise `2 ≤ N`, which the standalone
+source lemma does not state; the printed lemma is false at `N = 1` (C19 addendum), so this
+is a correction, not only a scope restriction. The parent theorem's sample-size condition
 implies it. See `docs/SOURCE-ISSUES.md#C19`. The event is under the actual iid
 joint law of state-action-next-state triples; the row-projection and emitted
 sample laws are proved dependencies. -/
@@ -211,9 +212,10 @@ def Lemma6_15 : Prop :=
 
 /-- **Lemma 6.11, restricted** (`lemma:useful`, `chapters/offlineRL.tex:2292–2300`; proof
 `:4674–4785`), with `H = ⌈4 log(SAT/δ)/(1-γ)⌉` (`eq:defn-H-lcbq-stepsize-proof`, `:1667–1672`),
-`κ = γ(1+1/H)³` (`eq:defn-kappa-proof-lcbq`) and the source's `≲` made explicit as one universal
-constant `C`. `ρᵀ P_π^j` is the actual time-`j` state law of the policy `π⋆` (the optimal greedy
-policy) started from `ρ`, `d_ρ^⋆` its discounted occupancy and `‖W‖` the sup norm; `S = |𝒮|`.
+`κ = γ(1+1/H)³` (`eq:defn-kappa-proof-lcbq`, `chapters/offlineRL.tex:2284–2287`) and the source's `≲` made explicit as one universal
+constant `C`. `π⋆` is any deterministic policy that is greedy for `Q⋆` (every optimal
+deterministic policy; no tie rule is fixed), `ρᵀ P_π^j` is the actual time-`j` state law of `π⋆`
+started from `ρ`, `d_ρ^⋆` its discounted occupancy and `‖W‖` the sup norm; `S = |𝒮|`.
 The printed lemma is false without a premise of this kind: `κ < 1` can fail, and even with
 `κ < 1` no universal constant works when `log(SAT/δ)` is small (candidate C22). This entry
 assumes `log(SAT/δ) ≥ 1`, a sufficient condition. Theorem 6.8's hypotheses do not imply it. In
@@ -224,15 +226,20 @@ corner. See
 def Lemma6_11_restricted : Prop :=
   ∃ C : ℝ, 0 < C ∧
     ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A] (M : DiscountedMDP S A)
-      (ρ : FiniteDistribution S) (δ : ℝ) (T : ℕ) (W : S → ℝ),
+      (ρ : FiniteDistribution S) (πstar : S → A),
+      (∀ s, letI : Nonempty A := M.action_nonempty
+        M.optimalityFixedPoint s (πstar s) = actionMaximum (M.optimalityFixedPoint s)) →
+      ∀ (δ : ℝ) (T : ℕ) (W : S → ℝ),
       0 < δ → δ < 1 → 1 ≤ T →
       1 ≤ Real.log ((Fintype.card S : ℝ) * Fintype.card A * T / δ) →
       (∀ s, 0 ≤ W s) →
       let γ := M.discount
       let H : ℕ := ⌈4 / (1 - γ) * Real.log ((Fintype.card S : ℝ) * Fintype.card A * T / δ)⌉₊
       let κ := γ * (1 + 1 / (H : ℝ)) ^ 3
-      ∑' j : ℕ, κ ^ j * ∑ s, M.occupancyStateAt M.optimalGreedyPolicy ρ j s * W s ≤
-        C * ((∑ s, M.discountedStateOccupancy M.optimalGreedyPolicy ρ s * W s) / (1 - γ) +
+      ∑' j : ℕ, κ ^ j * ∑ s,
+          M.occupancyStateAt (OfflineRL.LCBQ.detPolicy πstar) ρ j s * W s ≤
+        C * ((∑ s, M.discountedStateOccupancy (OfflineRL.LCBQ.detPolicy πstar) ρ s * W s) /
+            (1 - γ) +
           δ * ‖W‖ / ((Fintype.card S : ℝ) * (T : ℝ) ^ 4 * (1 - γ)))
 
 /-- **Theorem 6.13** (`thm:infinite-lwoer-bound`, `chapters/offlineRL.tex:2367–2402`; hard
@@ -772,7 +779,7 @@ leaves the algorithm under-specified. This entry is instantiated with one explic
 * monotone `V_h(s) ← max{V_h(s), max_a Q_h(s,a)}`;
 * **output rule**: `π̂_h(s)` changes only on a strict increase of `V_h(s)`, to `sel(Q_h(s,·))`,
   where `sel` is any deterministic selector of a maximizer (universally quantified); this is the
-  rule of `alg:q-infinite-lcb` (`:1726–1731`). It **departs** from the literal reading of `:3145`
+  rule of `alg:q-infinite-lcb` (`chapters/offlineRL.tex:1701–1745`, update rule `:1726–1731`). It **departs** from the literal reading of `:3145`
   (greedy with respect to the final `Q`), for which the claim is not proved here.
 The algorithm reads only `c_b`, `L`, `sel`, `π₀`, the rewards and the data.
 

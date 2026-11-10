@@ -162,9 +162,9 @@ def Thm4_6 : Prop :=
       |qSampledIterate M η T Q₀ data s a -
         M.trajectoryExpectedQ M.optimalGreedyPolicy s a| ≤ ε}
 
-/-- Learning-rate discussion after Theorem 4.6 (`thm:infinite-horizon-simple`),
-`chapters/generative_model_model_free.tex:945–953` (schedule `eq:thm:infinite-horizaon-eta`,
-:881–886; iteration condition `eq:thm:infinite-horizon-T`, :896–899): the schedule "permits"
+/-- Learning-rate discussion after Theorem 4.6 (`thm:infinite-horizon-simple`,
+`chapters/generative_model_model_free.tex:891–912`), `chapters/generative_model_model_free.tex:945–953` (schedule `eq:thm:infinite-horizaon-eta`,
+`chapters/generative_model_model_free.tex:882–886`; iteration condition `eq:thm:infinite-horizon-T`, :896–899): the schedule "permits"
 the constant rate `η ≡ 1/(1 + c₁(1−γ)T/log³T)`, which is `Õ((1−γ)³ε²)` when `T` is at the
 threshold. Stated for all constants `c₁ ≥ c₂ > 0` (in particular for the witnesses of `Thm4_6`):
 (i) the constant rate satisfies both schedule bounds at every `0 ≤ k ≤ T`; (ii) when `T` meets
@@ -228,8 +228,8 @@ def Thm4_6_underestimation : Prop :=
         qPolicySampledIterate M f η T Q₀ data s a -
           M.trajectoryExpectedQ M.optimalGreedyPolicy s a}
 /-- Corrected Lemma 4.3, `lemma:TD-step-size`, `chapters/generative_model_model_free.tex:317–327`,
-with the schedule `eq:thm:eta-TD` (lines 182–184) and the weights `η_k^{(t)}` of
-`def:eta-k-t` (lines 307–313) written out (the `k = 0` branch takes precedence at `t = 0`).
+with the schedule `eq:thm:eta-TD` (`chapters/generative_model_model_free.tex:182–185`) and the weights `η_k^{(t)}` of
+`def:eta-k-t` (`chapters/generative_model_model_free.tex:308–313`) written out (the `k = 0` branch takes precedence at `t = 0`).
 
 Differences from the printed lemma (see `docs/SOURCE-ISSUES.md`, Candidate C5): the printed
 statement omits the γ-dependent sample-size premise `log² T ≤ c₁ (1-γ) T` used by its appendix
@@ -252,9 +252,9 @@ def Lemma4_3_corrected : Prop :=
       (t < 2 * k → w ≤ η k ∧ η k ≤ 2 * Real.log (T : ℝ) ^ 3 / ((1 - γ) * T))
 
 /-- Lemma 4.9, `lemma:Q-step-size`, `chapters/generative_model_model_free.tex:1093–1112`, under
-the learning-rate schedule `eq:thm:infinite-horizaon-eta` (lines 882–886), with
-`η̄ = min{1, 2 log³T / (c₂(1-γ)T)}` of `eq:Q-comparison-parameters` (lines 1087–1089) and the
-weights `η_i^{(t)}` of `def:eta-i-t-simple` (lines 1075–1083) written out; the `i = 0` branch
+the learning-rate schedule `eq:thm:infinite-horizaon-eta` (`chapters/generative_model_model_free.tex:882–886`), with
+`η̄ = min{1, 2 log³T / (c₂(1-γ)T)}` of `eq:Q-comparison-parameters` (`chapters/generative_model_model_free.tex:1087–1089`) and the
+weights `η_i^{(t)}` of `def:eta-i-t-simple` (`chapters/generative_model_model_free.tex:1075–1083`) written out; the `i = 0` branch
 takes precedence at `t = 0`. `T / 2` is natural-number division, i.e. `⌊T/2⌋`. The horizon is
 assumed to satisfy `T ≥ 2`, so that `log T > 0` and the schedule is well defined. The source's
 standing `c₁ ≥ c₂` is not needed; the square-sum bound is stated for every `t ≤ T` (it is an
@@ -310,7 +310,7 @@ entry `Thm4_7`.
 Encoding: `max_s E[|V_T(s) - V⋆(s)|²] ≥ b` is written `∃ s, b ≤ E[…]` (finite state set). The
 MDP has `S = 4` states (`Fin 4`) and `A = 2` actions (`Bool`) at every state, with rewards in
 `[0,1]` and discount `γ` (fields of `DiscountedMDP`). `V_T` is the output of Algorithm
-`alg:q-infinite` (synchronous generative Q-learning, `qSampledIterate`) after `T` rounds from
+`alg:q-infinite` (`chapters/generative_model_model_free.tex:841–870`; synchronous generative Q-learning, `qSampledIterate`) after `T` rounds from
 `Q₀ ≡ 0` under the genuine product sampling law `qSamplingLaw M T`. `V⋆` is the trajectory value of
 the optimal greedy policy (the project convention). `log` is the natural logarithm.
 
@@ -335,8 +335,8 @@ proof lines 3707–3944.
 The implicit Step-5 context (lines 3270–3420) is written out: `3/4 ≤ γ < 1`, `T ≥ c₃/(1-γ)²`, and
 the moderate constant rate `4/((1-γ)T) < η < 1/((1-γ)²T)`. The hard instance is `qLbMDP γ` (`M_hard`
 with dominated dummy actions), `p = (4γ-1)/(3γ)`. `ξ_{t,max} = max_a ξ_t(a)` (`qLbXiMax`,
-`eqn:defn-xi-t`, lines 3405–3411) is built from the auxiliary sequence `Q̂_t` (`qLbAuxIterate`,
-`eqn:Qhat-schumann`, lines 3316–3324, initialized at `Q⋆(1,a) = 1/(1-γp)`) driven by the state-1
+`eqn:defn-xi-t`, `chapters/generative_model_model_free.tex:3406–3412`) is built from the auxiliary sequence `Q̂_t` (`qLbAuxIterate`,
+`eqn:Qhat-schumann`, `chapters/generative_model_model_free.tex:3316–3324`, initialized at `Q⋆(1,a) = 1/(1-γp)`) driven by the state-1
 draws of the independent generative sample stream. `τ̂` is the largest natural number `τ` with
 `(1-η(1-γp))^{T-τ+1} ≤ 6/7` (`eq:tau-hat-byproduct-duplicate`); its existence (the source's
 remark) is part of the Prop. "For all `t ≥ τ̂`" is encoded by running the experiment to any horizon
@@ -430,9 +430,9 @@ def QLearning_singleAction_eq_TD : Prop :=
 
 /-- Corrected Theorem 4.13, `thm:finite-horizon-simple-Q-generative`,
 `source/upstream/tex/chapters/generative_model_model_free.tex:2215–2236`, with the schedule
-`eq:thm:finite-horizaon-eta` (lines 2203–2209), the sample-size condition `eq:thm:finite-horizon-T`
-(lines 2220–2223) and synchronous Q-learning `eqn:q-learning-finite` with its empirical Bellman
-operator (lines 2181–2200).
+`eq:thm:finite-horizaon-eta` (`chapters/generative_model_model_free.tex:2205–2208`), the sample-size condition `eq:thm:finite-horizon-T`
+(lines 2220–2223) and synchronous Q-learning `eqn:q-learning-finite` (`chapters/generative_model_model_free.tex:2175–2179`) with its
+empirical Bellman operator (`chapters/generative_model_model_free.tex:2181–2200`).
 
 The only change from the printed result is the premise `2 ≤ T`. The printed schedule divides by
 `H log² T`, which is `0` at `T = 1`. Without the premise the Lean statement is false, not merely
@@ -533,8 +533,8 @@ argument (line 2711 defers it to li2024q; `docs/SOURCE-ISSUES.md#C30`); the form
 Quantifiers: `c₃` and `c_lb` are universal (chosen first, independent of `γ`, `T`, `c_η`, `η₀`).
 The schedule parameter (`c_η > 0` in case (i), `η₀ ∈ (0,1)` in case (ii)) is quantified after `γ`
 and `T`, and the MDP after the schedule. The schedule is `η : ℕ → ℝ` with `η t` given for every
-`t ≥ 0` as printed; `η 0` is never used, since round `t+1` of Algorithm `alg:q-infinite`
-(`qLearningIterate`) uses `η (t+1)`.
+`t ≥ 0` as printed; `η 0` is never used, since round `t+1` of Algorithm `alg:q-infinite` (`chapters/generative_model_model_free.tex:841–870`;
+`qLearningIterate`) uses `η (t+1)`.
 
 Encoding (as for `Thm4_7_restricted`): `max_s E[|V_T(s) - V⋆(s)|²] ≥ b` is written
 `∃ s, b ≤ E[…]` (finite state set). The MDP has `S = 4` states (`Fin 4`) and `A = 2` actions

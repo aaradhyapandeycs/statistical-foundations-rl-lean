@@ -112,8 +112,9 @@ theorem Lemma6_15_holds : Lemma6_15 :=
     StatisticalRL.OfflineRL.LowerBound.lb_transition_kl m hm γ ε C hγ hγ1 hε hεmax hC θ θ' i a⟩
 
 theorem Lemma6_11_restricted_holds : Lemma6_11_restricted :=
-  ⟨84, by norm_num, fun S A _ _ M ρ δ T W hδ hδ1 hT hι hW =>
-    StatisticalRL.OfflineRL.LCBQ.lcbq_useful M M.optimalGreedyPolicy ρ δ T W hδ hδ1 hT hι hW⟩
+  ⟨84, by norm_num, fun S A _ _ M ρ πstar _ δ T W hδ hδ1 hT hι hW =>
+    StatisticalRL.OfflineRL.LCBQ.lcbq_useful M (StatisticalRL.OfflineRL.LCBQ.detPolicy πstar)
+      ρ δ T W hδ hδ1 hT hι hW⟩
 
 /-- Apply the library theorem `offline_minimax_lower_bound`; no new proof. -/
 theorem Thm6_13_holds : Thm6_13 :=

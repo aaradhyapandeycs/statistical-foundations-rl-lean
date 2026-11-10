@@ -163,8 +163,9 @@ theorem Lemma7_1_holds : Lemma7_1 := by
       StatisticalRL.FiniteDistribution.expectation] using hmax'
 
 
-/-- `Thm7_10` from `lowerBound_of_fewRounds_onRange` with `c₀ = 1`, `C_γ = lbConst 1 γ`. -/
-theorem Thm7_10_holds : Thm7_10 := by
+/-- `Thm7_10_restricted` from `lowerBound_of_fewRounds_onRange` with `c₀ = 1`,
+`C_γ = lbConst 1 γ`. -/
+theorem Thm7_10_restricted_holds : Thm7_10_restricted := by
   refine ⟨1, one_pos, StatisticalRL.Ch7Rest.FedGeneric.lbConst 1, fun γ hγ hγ1 ↦
     ⟨StatisticalRL.Ch7Rest.FedGeneric.lbConst_pos 1 γ (by linarith) hγ1, ?_⟩⟩
   intro State Action _ _ hS hA T B 𝒞 η hT _ hB _ hT𝒞 hη hround
@@ -324,32 +325,39 @@ theorem Thm7_7_restricted_holds : Thm7_7_restricted :=
 
 end Thm7_7
 
-section Eq_mdp_value_Q
+section Eq_mdp_value_Q_restricted
 
-/-- `Eq_mdp_value_Q` from `StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_tv`
-and `exists_det_robust_value_Q_optimal_chi` (`f = optPolicy`, greedy for the robust optimality
-fixed point). -/
-theorem Eq_mdp_value_Q_holds : Eq_mdp_value_Q := by
-  intro State Action _ _ M σ hσ
-  exact ⟨StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_tv M hσ.le,
-    StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal_chi M hσ.le⟩
+open StatisticalRL StatisticalRL.RobustRL.Ch7 StatisticalRL.RobustRL.DRVI in
+/-- `Eq_mdp_value_Q_restricted` from `StatisticalRL.RobustRL.DRVI.exists_det_robust_value_Q_optimal`
+(`f = optPolicy`, greedy for the robust optimality fixed point), with `RowAttains` from
+`tvBall_family_rowAttains` / `chiBall_family_rowAttains` or from the attainment hypothesis. -/
+theorem Eq_mdp_value_Q_restricted_holds : Eq_mdp_value_Q_restricted := by
+  intro State Action _ _ M σ hσ ball hball
+  have hU : ∀ s a, RowAttains (ball (M.transition s a) σ) := by
+    rcases hball with rfl | rfl | hatt
+    · exact tvBall_family_rowAttains M hσ.le
+    · exact chiBall_family_rowAttains M hσ.le
+    · exact fun s a V ↦ hatt s a V
+  exact exists_det_robust_value_Q_optimal ball M σ hU
 
-end Eq_mdp_value_Q
+end Eq_mdp_value_Q_restricted
 
 section RobustBellmanProofs
 universe v
 
 open StatisticalRL StatisticalRL.RobustRL.Ch7 StatisticalRL.RobustRL.DRVI in
-/-- `Eq_bellman_equ_infinite_all` from `robustPolicyQ_eq_reward_add_iInf`,
+/-- `Eq_bellman_equ_infinite_all_restricted` from `robustPolicyQ_eq_reward_add_iInf`,
 `sSup_robustPolicyQ_eq_reward_add_iInf`, `robustPolicyValue_eq_optFix_of_dominates`,
 `robustPolicyQ_eq_optQ_of_dominates` (`RobustBellmanDisplays.lean`), with `RowAttains` from
-`tvBall_family_rowAttains` / `chiBall_family_rowAttains`. -/
-theorem Eq_bellman_equ_infinite_all_holds : Eq_bellman_equ_infinite_all.{u, v} := by
+`tvBall_family_rowAttains` / `chiBall_family_rowAttains` or from the attainment hypothesis. -/
+theorem Eq_bellman_equ_infinite_all_restricted_holds :
+    Eq_bellman_equ_infinite_all_restricted.{u, v} := by
   intro State Action _ _ M σ hσ ball hball
   have hU : ∀ s a, RowAttains (ball (M.transition s a) σ) := by
-    rcases hball with rfl | rfl
+    rcases hball with rfl | rfl | hatt
     · exact tvBall_family_rowAttains M hσ.le
     · exact chiBall_family_rowAttains M hσ.le
+    · exact fun s a V ↦ hatt s a V
   refine ⟨robustPolicyQ_eq_reward_add_iInf ball M σ hU,
     sSup_robustPolicyQ_eq_reward_add_iInf ball M σ hU, fun πs h ↦ ⟨fun s ↦ ?_, fun s a ↦ ?_⟩⟩
   · rw [robustPolicyValue_eq_optFix_of_dominates ball M σ hU πs h,
@@ -357,16 +365,18 @@ theorem Eq_bellman_equ_infinite_all_holds : Eq_bellman_equ_infinite_all.{u, v} :
   · rw [robustPolicyQ_eq_optQ_of_dominates ball M σ hU πs h, sSup_robustPolicyQ_eq_optQ ball M σ hU]
 
 open StatisticalRL StatisticalRL.RobustRL.Ch7 StatisticalRL.RobustRL.DRVI in
-/-- `Eq_robust_bellman_fixedPoint` from `robustPolicyQ_eq_optQ_of_dominates`,
+/-- `Eq_robust_bellman_fixedPoint_restricted` from `robustPolicyQ_eq_optQ_of_dominates`,
 `robustBellman_optQ`, `eq_optQ_of_robustBellman`, `norm_robustBellman_sub_le`,
 `norm_robustBellman_iterate_sub_le`, `drviIterate_eq_iterate` (`RobustBellmanDisplays.lean`) and
 `drviIterate_error` (`Planning.lean`). -/
-theorem Eq_robust_bellman_fixedPoint_holds : Eq_robust_bellman_fixedPoint.{u, v} := by
+theorem Eq_robust_bellman_fixedPoint_restricted_holds :
+    Eq_robust_bellman_fixedPoint_restricted.{u, v} := by
   intro State Action _ _ M σ hσ ball hball πs h T Qs
   have hU : ∀ s a, RowAttains (ball (M.transition s a) σ) := by
-    rcases hball with rfl | rfl
+    rcases hball with rfl | rfl | hatt
     · exact tvBall_family_rowAttains M hσ.le
     · exact chiBall_family_rowAttains M hσ.le
+    · exact fun s a V ↦ hatt s a V
   have hT : T = robustBellman ball M σ :=
     funext fun Q ↦ (robustBellman_eq_inline ball M σ Q).symm
   have hQs : Qs = optQ (ballFamily ball M σ) M :=

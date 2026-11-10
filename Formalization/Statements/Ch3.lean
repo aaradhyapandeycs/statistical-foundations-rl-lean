@@ -232,7 +232,7 @@ def Eq_lemma_VarP_V_bound : Prop :=
 open scoped Matrix in
 /-- Lemma 3.6, `lem:empirical-value-residual`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:1395–1410`, on the event
-`eq:Bernstein-empirical-optimal-value` (lines 1373–1376). `π̂⋆` is any deterministic policy
+`eq:Bernstein-empirical-optimal-value` (`chapters/generative_model_model_based.tex:1373–1376`). `π̂⋆` is any deterministic policy
 `f` that is optimal for the empirical model `P̂` built from `N > 0` samples per state-action pair
 (the source does not fix a tie rule), `V̂⋆` is the empirical optimal value
 (`valueEstimator`), `P_{π̂⋆}` is written out as the matrix `(s,t) ↦ (P_{π̂⋆}(s))(t)` and
@@ -259,7 +259,7 @@ def Lemma3_6 : Prop :=
 /-- Lemma 3.8, `lem:properties-M01-lower-generative`,
 `source/upstream/tex/chapters/generative_model_model_based.tex:1747–1767`, for the parameters
 `p = (4γ-1)/(3γ)` and `α = 32(1-γ)²ε/(9γ²)` of `eq:choise-p-alpha-lower-bound-generative`
-(lines 1731–1734). `M₀` and `M₁` are the source two-state, one-action MDPs with `p_M = p` and
+(`chapters/generative_model_model_based.tex:1730–1735`). `M₀` and `M₁` are the source two-state, one-action MDPs with `p_M = p` and
 `p_M = p + α` (`hardMDP`, state `true` = `s₁`); `Q⋆(s₁, a)` is the trajectory Q-value of the
 optimal greedy policy at the single action `()`. Clause (ii) is stated for any proofs that `p`
 and `p + α` lie in `[0,1]`, which clause (i) supplies. -/
@@ -468,7 +468,7 @@ independent next-state draws from `P_h(·|s,a)` for every stage `h`, state `s` a
 and is not separately tested: the hard instances use only copy `0` of the family (states `0` and
 `⌊S/2⌋`) and the actions `0, 1`.
 
-Estimators (randomized): a seed from an arbitrary probability space `(Seed, ν)` (universe `0`),
+Estimators (randomized): a seed from an arbitrary probability space `(Seed, ν)` (any universe),
 independent of the samples, and a map `piHat` of the seed, the known reward tables and the sample
 array to a deterministic nonstationary policy (`ℕ → Fin S → Fin A`, step `h` from `0`); for each
 seed value the output is a deterministic policy, so estimators that output a stochastic Markov
@@ -484,15 +484,18 @@ probability `1/8` is fixed (no `δ`-dependent lower bound is claimed), and the p
 `c·H³/ε²` has no logarithmic factor; it matches Theorem 3.9's `H³ log(HSA/δ)/ε²` per tuple up to
 that factor, which is the "up to logarithmic factors" reading of the prose.
 
-Domain (scope disclosure, see `docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`):
+Restricted (named `_restricted`; scope disclosure, see
+`docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`): the domain, protocol, deterministic
+policy outputs, seed measurability and fixed failure probability above narrow the prose claim.
+Domain:
 `S, A, H ≥ 2` and `0 < ε ≤ c₁·H` with an existential `c₁`; each exclusion is necessary (for `H = 1`,
 `A = 1`, `S = 1` or `ε ≥ H` zero samples suffice). Witnesses in the proof: `c = 2⁻²⁸`,
 `c₁ = 1/4096`. -/
-def Thm3_9_minimaxLowerBound : Prop :=
+def Thm3_9_minimaxLowerBound_restricted : Prop :=
   ∃ c c₁ : ℝ, 0 < c ∧ 0 < c₁ ∧
     ∀ (S A H N : ℕ) (ε : ℝ), 2 ≤ S → 2 ≤ A → 2 ≤ H → 0 < ε → ε ≤ c₁ * H →
       (N : ℝ) ≤ c * (H : ℝ) ^ 3 / ε ^ 2 →
-      ∀ (Seed : Type) [MeasurableSpace Seed] (ν : Measure Seed) [IsProbabilityMeasure ν]
+      ∀ (Seed : Type*) [MeasurableSpace Seed] (ν : Measure Seed) [IsProbabilityMeasure ν]
         (piHat : Seed → (Fin H → Fin S → Fin A → ℝ) →
           StatisticalRL.FiniteHorizonGenerative.Samples (Fin S) (Fin A) H N →
           ℕ → Fin S → Fin A),

@@ -239,7 +239,7 @@ def classify(name: str, ledger_kind: str | None, scope: str = "", coverage_rows:
     Entries with a named-ledger record follow the ledger.  Entries without one (prose
     claims, displays, remarks) take the variant from the coverage-ledger row that names them
     (`coverage_variant`); with no such row they are `printed` only when the name has no
-    suffix after the source number (`Remark4_1`, `Eq_mdp_value_Q`), else `restricted`."""
+    suffix after the source number (`Remark4_1`, `Eq_lemma_VarP_V_bound`), else `restricted`."""
     low = name.lower()
     if "corrected" in low:
         return "corrected"
