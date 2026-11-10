@@ -232,14 +232,22 @@ def coverage_variant(name: str, coverage_rows: list) -> str | None:
     return None
 
 
-def classify(name: str, ledger_kind: str | None, scope: str = "", coverage_rows: list | None = None) -> str:
+def classify(name: str, ledger_kind: str | None, scope: str = "", coverage_rows: list | None = None,
+             declared: str | None = None) -> str:
     """Variant of one statement entry; mirrors site/reader/lean.py `classify`.
 
+    An explicit ledger field `statement_variant: "restricted"` wins over everything (used where an
+    entry named `_corrected` is also restricted, e.g. `Thm7_11_corrected_halfspace`); it may only
+    downgrade (to restricted), never declare a variant `printed` or `corrected`.
     A name marker (`_corrected`, `_positiveN`, `_restricted`, `_causal`, `_K2`) always wins.
     Entries with a named-ledger record follow the ledger.  Entries without one (prose
     claims, displays, remarks) take the variant from the coverage-ledger row that names them
     (`coverage_variant`); with no such row they are `printed` only when the name has no
     suffix after the source number (`Remark4_1`, `Eq_lemma_VarP_V_bound`), else `restricted`."""
+    if declared is not None:
+        if declared != "restricted":
+            raise SystemExit(f"{name}: statement_variant may only be 'restricted', got {declared!r}")
+        return "restricted"
     low = name.lower()
     if "corrected" in low:
         return "corrected"
@@ -570,7 +578,8 @@ class Builder:
             rec = recorded.get(ent["full"])
             if rec:
                 kind, record, n = rec
-                variant = classify(ent["name"], kind, record.get("statement_scope", ""))
+                variant = classify(ent["name"], kind, record.get("statement_scope", ""),
+                                   declared=record.get("statement_variant"))
             else:
                 kind, record = None, None
                 target = None

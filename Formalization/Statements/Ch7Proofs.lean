@@ -23,6 +23,7 @@ import Formalization.Ch7Rest.TDInferencePluginConsistency711
 import Formalization.Ch7Rest.TDInferencePluginCorrected711
 import Formalization.Ch7Rest.TDInferencePluginRefute711
 import Formalization.Ch7Rest.TDInferencePluginCoverage711
+import Formalization.Ch7Rest.TDInferenceConfRegion711
 import Formalization.RobustRL.DRVI.RobustBellmanDisplays
 import Formalization.Ch7Rest.VPODisplays712
 import Formalization.Ch7Rest.MarlBestResponse
@@ -437,6 +438,35 @@ theorem Eq_convex_Cdelta_corrected_oracle_holds : Eq_convex_Cdelta_corrected_ora
 theorem Eq_convex_Cdelta_corrected_plugin_holds : Eq_convex_Cdelta_corrected_plugin := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
   exact StatisticalRL.Ch7Rest.TDInference.plugin_coverage_tendsto M π μ h0 (by linarith) V₀ hμ hΓ
+
+/-- `Eq_convex_Cdelta_fixedShape_corrected_oracle` from
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds` (the export needs only `η₀ ≤ 1`). -/
+theorem Eq_convex_Cdelta_fixedShape_corrected_oracle_holds :
+    Eq_convex_Cdelta_fixedShape_corrected_oracle := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds
+    M π μ h0 (by linarith) V₀ hμ hΓ
+  exact ⟨K₀, hK₀, fun T hT ↦ (hb T hT).1⟩
+
+/-- `Eq_convex_Cdelta_ellipsoid_corrected_oracle` from
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds` (the export needs only `η₀ ≤ 1`
+and holds for every `q`). -/
+theorem Eq_convex_Cdelta_ellipsoid_corrected_oracle_holds :
+    Eq_convex_Cdelta_ellipsoid_corrected_oracle := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds
+    M π μ h0 (by linarith) V₀ hμ hΓ
+  exact ⟨K₀, hK₀, fun T hT q _ ↦ (hb T hT).2.1 q⟩
+
+/-- `Eq_convex_Cdelta_rectangle_corrected_oracle` from
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds` (the export needs only `η₀ ≤ 1`
+and holds for every `r`). -/
+theorem Eq_convex_Cdelta_rectangle_corrected_oracle_holds :
+    Eq_convex_Cdelta_rectangle_corrected_oracle := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds
+    M π μ h0 (by linarith) V₀ hμ hΓ
+  exact ⟨K₀, hK₀, fun T hT r _ ↦ (hb T hT).2.2 r⟩
 
 end EqConvexCdeltaProofs
 

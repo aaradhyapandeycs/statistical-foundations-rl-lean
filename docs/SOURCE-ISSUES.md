@@ -1422,7 +1422,7 @@ Proposed correction: T ≥ 2, minimization over {θ : ‖θ‖₂ ≤ r_max}, an
 cited (cen2025vpo), not proved in the monograph. Found by a source preflight and confirmed by an independent source check. Machine-checked in Lean (`Formalization/Ch7Rest/VPOIllPosed712.lean`): the printed α formula is undefined at T = 1 (`vpoAlpha_T_one`, `not_vpoAlpha_T_one_pos`; Lean's 0 is the junk value of x/0), and the update has no minimizer over full-support policies (`no_vpoMinimizer`, `not_vpoUpdate_exists_printed`, `no_vpoMinimizer_gibbs`). Over the closed simplex with log 0 = −∞ the value −∞ is attained at a boundary policy that no real θ induces, so ‖θ^{(t)}‖ ≤ r_max fails; the status is ill-posed or vacuous, not false. Corrected result (2026-11-08): `Thm7_12_corrected` and `Thm7_12_corrected_local` (`Formalization/Ch7Rest/VPO*712.lean`) prove, for finite context and response sets, linear Bradley–Terry rewards with ‖θ⋆‖ ≤ r_max, and the VPO update taken over Gibbs policies with parameter in the ball (a minimizer exists by compactness), that with probability ≥ 1−δ the realized regret is at most T·B′/α + K·Γ·α (order d√(κT) at tuned α), and also at most a local-curvature bound with √(dT) scaling for large T, for every α > 0 and T ≥ 1 with explicit constants. The printed Õ(e^{2r_max + r_max/β}√(κdT)) bound is neither proved nor refuted. The ball-selection rule extends any printed run whose argmin breaks ties deterministically from the data (an informal remark; only the dataset-level extension is checked). The update's sum starts at round 1 (`:196`), so the round-0 sample is unused. Proved from scratch (cen2025vpo not used); independently plan-checked and source-reviewed. Not author-approved.
 
 <a id="C45"></a>
-## Candidate C45: Theorem 7.6 is false when the planning oracle may return any equilibrium
+## Candidate C45: Theorem 7.6 fails (refuted in Lean) when the planning oracle may return any equilibrium
 
 Theorem 7.6 (`marl.tex:384–399`) applies an unspecified planning oracle (`:377`) to the empirical Markov game and claims that the
 returned Nash equilibrium (NE) and coarse correlated equilibrium (CCE) both have gap ≤ ε with probability ≥ 1 − δ once
@@ -1615,6 +1615,9 @@ two-sided Gaussian quantile; nothing about the S-dimensional ℓ∞ quantile is 
 suffices to refute the printed general claim. The finite-T figures in (2) (coverage 2Φ(1.96/√T) − 1, 0.16 at
 T = 100, violation of `eq:convex.Cdelta` for T > 1) remain paper calculations. Independently critic-reviewed
 ([review](critic-c47r.md)). Not author-approved.
+
+
+**Corrected rectangle and ellipsoid, oracle covariance (2026-11-10, `TDInferenceConfRegion711.lean`, entries `Eq_convex_Cdelta_fixedShape_corrected_oracle`, `Eq_convex_Cdelta_ellipsoid_corrected_oracle`, `Eq_convex_Cdelta_rectangle_corrected_oracle`).** The proposed corrections of (2) (√T applied once: half-width r/√T with r an ℓ∞ level under Λ) and (3) (threshold q, not R²), and the fixed-shape rule V̄_T + T^(-1/2)K, are machine-checked with the oracle Λ = A⁻¹Γ_trueA⁻ᵀ (Γ_true ≻ 0): coverage is within K₀T^(-1/3)log(2T) of the Gaussian mass, with one instance constant. Still open: the plug-in Λ̂_T versions with a rate, exact 1−α calibration (χ²(S) identification, ℓ∞ quantile), and the rate without log(2T). [Independent review](critic-confregion.md). Not author-approved.
 
 <a id="C48"></a>
 ## Candidate C48: Theorem 5.10 fails under the literal MVP trigger

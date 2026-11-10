@@ -693,8 +693,9 @@ Differs from the printed text: (1) the printed claim for arbitrary convex sets c
 `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ`, the population target of the printed plug-in `Λ̂_T` (:180–182), unknown in practice;
 `Γ_true` is the true residual covariance, not the printed `Γ` of `Λ*` (:115, C43). The plug-in rule is the separate
 entry `Eq_convex_Cdelta_corrected_plugin` (limits only, no rate).
-(3) Only half-lines, slabs and a Bonferroni box; the printed `ℓ∞`-quantile rectangle (C47(2)) and the ellipsoid
-(C47(3)) are not addressed. `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`,
+(3) Only half-lines, slabs and a Bonferroni box; corrected forms of the `ℓ∞` rectangle (C47(2)) and the ellipsoid
+(C47(3)) are the separate entries `Eq_convex_Cdelta_rectangle_corrected_oracle` and
+`Eq_convex_Cdelta_ellipsoid_corrected_oracle` (rate `T^{-1/3} log(2T)`). `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`,
 `0 < η₀ < 1/4` (:133), every `V₀`, the rate `T^{-1/3}` with an instance constant `K`.
 
 Statement: there is one `K > 0` such that for all `T ≥ 1`, with `Φ(z) = N(0,1)(−∞, z]` and `S = |State|`:
@@ -750,7 +751,9 @@ half-space result). Separately, by C43 this target `Λ` differs from the printed
 handling is needed: the proof charges every outcome with `Λ̂_T` entrywise `ε₁`-far from `Λ`, and since `diag Λ ≻ 0`
 under `Γ_true ≻ 0` the singular event is contained in that bad event for small `ε₁`. Its probability is at most
 `∑_s (1 − μ(s))^T → 0`, so the limits do not depend on how the procedure is defined there. Not covered:
-data-selected convex sets (C47(1)), the printed `ℓ∞`-quantile rectangle (C47(2)), the ellipsoid (C47(3)), any rate.
+data-selected convex sets (C47(1)), the printed `ℓ∞`-quantile rectangle (C47(2)), the ellipsoid (C47(3)), any rate
+(oracle-covariance corrected rectangle and ellipsoid: `Eq_convex_Cdelta_rectangle_corrected_oracle`,
+`Eq_convex_Cdelta_ellipsoid_corrected_oracle`).
 Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 
 Statement, with `Φ(z) = N(0,1)(−∞, z]`, `S = |State|`, `Λ̂_T = lambdaHat`:
@@ -783,6 +786,96 @@ def Eq_convex_Cdelta_corrected_plugin : Prop :=
             {ω' : Fin T → Tuple State Action | ∀ s,
               |prAverage M η₀ V₀ ω' s - M.valueFixedPoint π s| ≤
                 z * Real.sqrt (lambdaHat M η₀ V₀ ω' s s / T)}.indicator 1 ω)
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix Pointwise in
+/-- Corrected (fixed-shape), oracle-covariance variant of the confidence-set rule `eq:convex.Cdelta`
+(`chapters/inference.tex:187–196`, display :191–193, claim "such sets serve as approximate confidence
+regions" :196). See `docs/SOURCE-ISSUES.md#C47` and `#C43`.
+
+Differs from the printed text: (1) the printed rule lets the convex set `𝒞_α` be chosen from the data
+(through `V̄_T`, `Λ̂_T`), which is false in general (C47(1)); here the shape `K` is a convex set fixed before
+the data and the region is the translate-and-scale `V̄_T + T^{-1/2} K` (the C47 proposed correction).
+(2) The Gaussian reference is the oracle `N(0, Λ)`, `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (the population target of the
+printed plug-in `Λ̂_T`, unknown in practice); `Γ_true` is the true residual covariance, not the printed `Γ`
+(C43). The plug-in version with a rate remains open. (3) The rate is `T^{-1/3} log(2T)`, weaker than the
+printed `T^{-1/3}` of Theorem 7.11 by the factor `log(2T)`, with an instance constant `K₀`. `Γ_true ≻ 0` is
+assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
+
+Statement: one `K₀ > 0` such that for all `T ≥ 1` and every convex `K ⊆ ℝ^S`,
+`|P(V^π ∈ V̄_T + T^{-1/2} K) − N(0, Λ)(K)| ≤ K₀ T^{-1/3} log(2T)`. -/
+def Eq_convex_Cdelta_fixedShape_corrected_oracle : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
+    ∃ K₀ : ℝ, 0 < K₀ ∧ ∀ T : ℕ, 1 ≤ T → ∀ K : Set (State → ℝ), Convex ℝ K →
+      |(∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+          {ω' : Fin T → Tuple State Action |
+            M.valueFixedPoint π ∈ prAverage M η₀ V₀ ω' +ᵥ (Real.sqrt T)⁻¹ • K}.indicator 1 ω) -
+        (gaussCov (tdA M π μ) (trueGamma M π μ)).real K| ≤
+        K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
+/-- Corrected, oracle-covariance variant of the ellipsoid confidence region (`chapters/inference.tex:207–213`,
+item (ii) of the rule `eq:convex.Cdelta` :187–196). See `docs/SOURCE-ISSUES.md#C47` (item (3)) and `#C43`.
+
+Differs from the printed text: (1) the printed region `{V : T(V − V̄_T)ᵀ Λ̂_T⁻¹ (V − V̄_T) ≤ R²}` with `R` the
+`1 − α` quantile of `χ²(d)` is compared with `R²`, although `R` is already on the `χ²` scale (C47(3)); here the threshold is `q` itself and the
+Gaussian side is `N(0,Λ){x | xᵀΛ⁻¹x ≤ q}` (for the true `Λ` this is the `χ²(S)` probability of `[0, q]`; that
+identification and the existence of an exact `1 − α` threshold are not part of this entry). (2) The matrix is
+the oracle `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not the plug-in `Λ̂_T`; `Γ_true` is the true
+residual covariance (C43); under the hypotheses `Λ` is invertible, so `Λ⁻¹` is the genuine inverse. The plug-in
+version with a rate remains open. (3) Rate `T^{-1/3} log(2T)` (weaker than Theorem 7.11's printed `T^{-1/3}` by
+`log(2T)`), instance constant `K₀`. `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
+
+Statement: one `K₀ > 0` such that for all `T ≥ 1` and `q ≥ 0`, with `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ`,
+`|P(T (V^π − V̄_T)ᵀ Λ⁻¹ (V^π − V̄_T) ≤ q) − N(0,Λ){x | xᵀΛ⁻¹x ≤ q}| ≤ K₀ T^{-1/3} log(2T)`. -/
+def Eq_convex_Cdelta_ellipsoid_corrected_oracle : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
+    ∃ K₀ : ℝ, 0 < K₀ ∧ ∀ T : ℕ, 1 ≤ T → ∀ q : ℝ, 0 ≤ q →
+      |(∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+          {ω' : Fin T → Tuple State Action | (T : ℝ) * ∑ s, ∑ s',
+            (M.valueFixedPoint π s - prAverage M η₀ V₀ ω' s) *
+              (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
+                ((tdA M π μ)⁻¹ * diagonal (trueGamma M π μ) * (tdA M π μ)⁻¹ᵀ)⁻¹ s s' ≤
+              q}.indicator 1 ω) -
+        (gaussCov (tdA M π μ) (trueGamma M π μ)).real
+          {x | ∑ s, ∑ s', x s * x s' *
+            ((tdA M π μ)⁻¹ * diagonal (trueGamma M π μ) * (tdA M π μ)⁻¹ᵀ)⁻¹ s s' ≤ q}| ≤
+        K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
+
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
+/-- Corrected, oracle-covariance variant of the hyper-rectangle confidence region (`chapters/inference.tex:198–205`,
+item (i) of the rule `eq:convex.Cdelta` :187–196). See `docs/SOURCE-ISSUES.md#C47` (item (2)) and `#C43`.
+
+Differs from the printed text: (1) the printed half-width `R̂/√T`, with `R̂` the `ℓ∞` quantile under covariance
+`Λ̂_T/T`, applies `√T` twice (C47(2)); here the half-width is `r/√T` with the Gaussian side
+`N(0,Λ){x | ‖x‖∞ ≤ r}`, i.e. `r` is an `ℓ∞` level under covariance `Λ` (not `Λ/T`). (2) The covariance is the oracle
+`Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not `Λ̂_T`; the plug-in version with a rate remains open;
+`Γ_true` is the true residual covariance (C43). (3) Rate `T^{-1/3} log(2T)` (weaker than Theorem 7.11's printed
+`T^{-1/3}` by `log(2T)`), instance constant `K₀`. `Γ_true ≻ 0` is assumed. The existence of an exact `1 − α` level `r` is not part of this entry.
+Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
+
+Statement: one `K₀ > 0` such that for all `T ≥ 1` and `r ≥ 0`,
+`|P(∀ s, V̄_T(s) − r/√T ≤ V^π(s) ≤ V̄_T(s) + r/√T) − N(0,Λ){x | ∀ s, |x s| ≤ r}| ≤ K₀ T^{-1/3} log(2T)`. -/
+def Eq_convex_Cdelta_rectangle_corrected_oracle : Prop :=
+  ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
+    [Fintype Action] [Nonempty Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
+    (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
+    ∃ K₀ : ℝ, 0 < K₀ ∧ ∀ T : ℕ, 1 ≤ T → ∀ r : ℝ, 0 ≤ r →
+      |(∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+          {ω' : Fin T → Tuple State Action | ∀ s,
+            prAverage M η₀ V₀ ω' s - r / Real.sqrt T ≤ M.valueFixedPoint π s ∧
+              M.valueFixedPoint π s ≤ prAverage M η₀ V₀ ω' s + r / Real.sqrt T}.indicator 1 ω) -
+        (gaussCov (tdA M π μ) (trueGamma M π μ)).real {x | ∀ s, |x s| ≤ r}| ≤
+        K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
 
 end EqConvexCdelta
 

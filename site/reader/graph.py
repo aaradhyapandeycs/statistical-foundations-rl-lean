@@ -31,11 +31,22 @@ STATEMENT_WORDS = {
     # closing statuses: never proofs (gen_nodes.CLOSING_STATUSES)
     "implied": "Implied by a proved entry, not separately proved",
     "explanatory": "Explanatory, no mathematical claim",
-    "cited-out-of-scope": "Cited result, out of scope by user decision; not proved",
+    "cited-out-of-scope": "Cited from the literature; not formalized here (project scope decision); not proved",
     "open": "Open",
     "prose-claim": "Prose claim, no statement entry",
 }
+# Extra words for a node whose counted status alone would undersell or oversell it (display only; the
+# status and every count are unchanged), keyed by source label.
+STATEMENT_NOTES = {
+    "thm:Berry-Esseen-linear": "Corrected and restricted (closed half-spaces only); all-convex bound with an "
+                               "extra log factor is partial; printed all-convex rate open",
+}
 PROOF_WORDS = {"proved": "Proved in Lean", "refuted": "Refuted in Lean", "open": "Not proved"}
+# Numbers that were assigned to a candidate later withdrawn (the numbers are not reused).
+WITHDRAWN_ISSUES = {
+    "C11": "withdrawn. An earlier candidate about the learning-rate hypothesis of Lemma 4.8 turned out not to be a "
+           "source discrepancy and was removed; the number is not reused.",
+}
 KIND_SHORT = {"theorem": "Thm", "lemma": "Lem", "claim": "Claim", "remark": "Rem",
               "display": "Eq", "subequations": "Eq"}
 
@@ -63,11 +74,16 @@ class GitReader:
 
 def status_phrase(n: dict) -> str:
     if n["proof_status"] == "proved":
-        return {"printed": "proved as printed", "corrected": "corrected form proved",
-                "restricted": "restricted form proved"}.get(n["statement_status"], "proved")
+        return {"printed": "statement proved as printed in Lean", "corrected": "corrected form proved",
+                "restricted": "restricted form proved"}.get(n["statement_status"], "proved") + statement_note(n)
     if n["statement_status"] == "implied":
         return f'implied by a {n.get("implied_variant") or "proved"} entry, not separately proved'
     return STATEMENT_WORDS[n["statement_status"]].lower()
+
+
+def statement_note(n: dict) -> str:
+    return "".join(f"; {STATEMENT_NOTES[l][0].lower()}{STATEMENT_NOTES[l][1:]}"
+                   for l in n["labels"][:1] if l in STATEMENT_NOTES)
 
 
 def fill_class(n: dict) -> str:
@@ -92,7 +108,14 @@ def long_name(n: dict) -> str:
     kind = "Display" if n["kind"] in ("display", "subequations") else n["kind"].capitalize()
     num = n.get("number") or ""
     if kind == "Display":
-        return f"Display ({num})" if num else "Display"
+        if num:
+            return f"Display ({num})"
+        if n.get("tex"):
+            t = n["tex"][0]
+            lines = (f'{t["line_start"]}' if t["line_start"] == t["line_end"]
+                     else f'{t["line_start"]}–{t["line_end"]}')
+            return f'Unnumbered display ({t["file"].rsplit("/", 1)[-1]}:{lines})'
+        return "Unnumbered display"
     return f"{kind} {num}".strip()
 
 
@@ -155,15 +178,15 @@ complete, and no chapter is certified. The counts below are numbers of source re
 the project's ledgers, whose reviews are independent AI-agent reviews (no human referee, no author approval); they are not a percentage of the book, which also contains prose claims, algorithms and arguments that
 these counts do not cover.</div>
 <section class="dash">
-<div class="tile"><div class="big">{recorded} <span>of {tot_named}</span></div>
-<div>numbered theorems, lemmas and claims have a ledger record, reviewed by independent AI agents (in printed, corrected or restricted
-form). Counted from <code>docs/named-result-status.json</code> at <code>{rev[:10]}</code>.</div></div>
 <div class="tile"><div class="big">{named["printed"]} <span>of {tot_named}</span></div>
-<div>proved as printed. {named["corrected"]} more are proved only in corrected form and {named["restricted"]}
-only in restricted form; those are <em>not</em> proofs of the printed statement.{esc(self.site.restricted_note(named["restricted"]))}</div></div>
-<div class="tile"><div class="big">{named["refuted"] + named["open"] + named["partial"]} <span>of {tot_named}</span></div>
-<div>{"has" if named["refuted"] + named["open"] + named["partial"] == 1 else "have"} no proved Lean statement: {named["refuted"]} printed statement refuted in Lean{self.refuted_readings()} with no corrected
-version proved, {named["open"]} open, {named["partial"]} partial.</div></div>
+<div>numbered theorems, lemmas and claims are proved as printed. Counted from
+<code>docs/named-result-status.json</code> at <code>{rev[:10]}</code>.</div></div>
+<div class="tile"><div class="big">{named["corrected"] + named["restricted"]} <span>of {tot_named}</span></div>
+<div>are proved only in a changed form: {named["corrected"]} in corrected form and {named["restricted"]} in
+restricted form. These are <em>not</em> proofs of the printed statement.{esc(self.site.restricted_note(named["restricted"]))}</div></div>
+<div class="tile"><div class="big">{recorded} <span>of {tot_named}</span></div>
+<div>have a ledger record in some form (printed, corrected or restricted), reviewed by independent AI agents.
+{self.unproved_sentence(named, tot_named)}</div></div>
 <div class="tile"><div class="big">{s["named_printed_with_cited_printed"]} <span>of {tot_named}</span></div>
 <div>are proved as printed and every result they cite (transitively) is too. The citations are
 <strong>unreviewed</strong> TeX cross-references: this is not a reviewed proof-dependency check, and it does not
@@ -202,13 +225,25 @@ are in <a href="{attr(self.site.lean.git.blob('docs/NEXT.md'))}">docs/NEXT.md</a
 <a href="graph.html">dependency graph</a>.</p>"""
         return self.site.shell(f"Status · {self.site_title()}", body, "status", toc=False)
 
+    def unproved_sentence(self, named: dict, total: int) -> str:
+        k = named["refuted"] + named["open"] + named["partial"]
+        if k == 0:
+            return (f"Every one of the {total} has at least a corrected or restricted form proved; none is only "
+                    "refuted, open or partial.")
+        bits = [f"{named['refuted']} printed statement{'s' if named['refuted'] != 1 else ''} refuted in Lean"
+                f"{self.refuted_readings()} with no corrected version proved" if named["refuted"] else "",
+                f"{named['open']} open" if named["open"] else "",
+                f"{named['partial']} partial" if named["partial"] else ""]
+        return (f"{k} {'has' if k == 1 else 'have'} no proved Lean statement: "
+                + ", ".join(b for b in bits if b) + ".")
+
     def closing_counts(self) -> str:
         c = self.data["summary"]["closing_not_proved"]
         words = {"implied": "implied by a proved entry (the implication is not a separate Lean statement; "
                             "it inherits the entry's corrected or restricted form)",
                  "explanatory": "explanatory, making no mathematical claim",
-                 "cited-out-of-scope": "results the book cites from the literature, recorded as out of scope "
-                                       "by a dated user decision"}
+                 "cited-out-of-scope": "results the book cites from the literature, not formalized here "
+                                       "(project scope decision, 2026-11-09)"}
         return "; ".join(f'{c[k]["nodes"]} nodes and {c[k]["rows_without_node"]} unlabelled ledger rows '
                          f'{esc(words[k])}' for k in gen_nodes.CLOSING_STATUSES)
 
@@ -222,11 +257,22 @@ are in <a href="{attr(self.site.lean.git.blob('docs/NEXT.md'))}">docs/NEXT.md</a
         w = self.data["warnings"]
         if not w:
             return ""
-        items = "".join(f"<li>{esc(x)}</li>" for x in w)
-        return (f'<details class="gwarn-box"><summary>Coverage rows not matched to a node ({len(w)})</summary>'
-                f'<p class="lede">Generator warnings: these coverage-ledger rows or statement entries could not be '
-                f'attached to a source result, so they are not reflected in the counts or the graph. The full list is '
-                f'in <a href="{attr(self.site.lean.git.blob("docs/NEXT.md"))}">docs/NEXT.md</a>.</p>'
+        def plain(x: str) -> str:
+            m = re.match(r"(.+?): proved by the ledgers, but a COVERAGE headline says (\w+); the headline wins$", x)
+            if m:
+                n = self.nodes.get(m.group(1))
+                who = (f"{long_name(n)}{' (' + n['labels'][0] + ')' if n['labels'] else ''}" if n
+                       else m.group(1).replace("label:", "item ", 1))
+                return (f"{who}: the ledgers record a "
+                        f"proof, but the coverage-ledger headline says {m.group(2)}; counted as {m.group(2)}.")
+            return x
+        items = "".join(f"<li>{esc(plain(x))}</li>" for x in w)
+        return (f'<details class="gwarn-box"><summary>Known bookkeeping notes ({len(w)})</summary>'
+                f'<p class="lede">Notes for the maintainers from the program that computes these counts. Where the '
+                f'two ledgers disagree, the more cautious reading is used: for example, an item whose coverage-ledger '
+                f'headline says “partial” is counted as partial even if a named record says proved. A coverage row '
+                f'that cannot be attached to a source result is left out of the counts. The full list is in '
+                f'<a href="{attr(self.site.lean.git.blob("docs/NEXT.md"))}">docs/NEXT.md</a>.</p>'
                 f'<ul class="gwarn">{items}</ul></details>')
 
     def site_title(self) -> str:
@@ -276,7 +322,7 @@ are in <a href="{attr(self.site.lean.git.blob('docs/NEXT.md'))}">docs/NEXT.md</a
         for n in self.data["nodes"]:
             x, y = pos[n["id"]]
             title = (f'{long_name(n)} {n["labels"][0] if n["labels"] else ""} — statement: '
-                     f'{STATEMENT_WORDS[n["statement_status"]]}; proof: {PROOF_WORDS[n["proof_status"]]}'
+                     f'{STATEMENT_WORDS[n["statement_status"]]}{statement_note(n)}; proof: {PROOF_WORDS[n["proof_status"]]}'
                      f'{"; proved as printed, and every result it cites (unreviewed TeX references) also proved as printed" if n["printed_with_cited_printed"] else ""}'
                      f'{"; " + ", ".join(n["issues"]) if n["issues"] else ""}')
             mark = "✕ " if n["proof_status"] == "refuted" else ""
@@ -336,6 +382,8 @@ are in <a href="{attr(self.site.lean.git.blob('docs/NEXT.md'))}">docs/NEXT.md</a
             name = f'<a href="{attr(link)}">{name}</a>' if link else name
             lab = f'<div class="label"><code>{esc(n["labels"][0])}</code></div>' if n["labels"] else ""
             st = f'<span class="gstatus">{esc(STATEMENT_WORDS[n["statement_status"]])}</span>'
+            st += "".join(f'<div class="label">{esc(STATEMENT_NOTES[l])}</div>' for l in n["labels"][:1]
+                          if l in STATEMENT_NOTES)
             if n.get("implied_variant"):
                 st += f'<div class="label">from a {esc(n["implied_variant"])} entry</div>'
             pf = esc(PROOF_WORDS[n["proof_status"]]) + (" · cited results also printed*" if n["printed_with_cited_printed"] else "")
@@ -403,7 +451,7 @@ algorithms are context, not nodes; references to them are counted but never bloc
             f'<tr><td>{node_link(n)}<div class="label"><code>{esc(n["labels"][0] if n["labels"] else "")}</code></div></td>'
             f'<td>{" ".join(f"<code>{esc(x)}</code>" for x in n["refutations_cited"])}</td>'
             f'<td>{esc(STATEMENT_WORDS[n["statement_status"]] if n["proof_status"] == "proved" else "Nothing proved")}'
-            f'{"" if n["proof_status"] != "proved" else " proved"}</td>'
+            f'{"" if n["proof_status"] != "proved" else " proved"}{esc(statement_note(n))}</td>'
             f'<td>{lean.issue_links([c[1:] for c in n["issues"] if c[1:] in lean.issue_slugs])}</td></tr>'
             for n in refuted)
         crows = []
@@ -412,9 +460,12 @@ algorithms are context, not nodes; references to them are counted but never bloc
             items = ", ".join(f'{node_link(n)} ({esc(status_phrase(n))})' for n in ns)
             crows.append(f'<tr><td><a href="{attr(issues_url)}#{attr(info["slug"])}">C{esc(cid)}</a></td>'
                          f'<td>{esc(re.sub(r"^(Candidate )?C[0-9]+: *", "", info["title"]))}</td>'
-                         f'<td>{items or "—"}</td></tr>')
+                         f'<td>{items or "No tracked result row cites it (see the entry)"}</td></tr>')
+        ids = sorted(int(c) for c in lean.issue_slugs)
+        gaps = [f"C{i}" for i in range(ids[0], ids[-1] + 1) if str(i) not in lean.issue_slugs] if ids else []
+        gap_note = "".join(f" {g}: {WITHDRAWN_ISSUES.get(g, 'not used.')}" for g in gaps)
         rev = lean.git.rev
-        body = f"""<h1>Errata and source issues</h1>
+        body = f"""<h1>Source issues (candidates)</h1>
 <div class="incomplete" role="note"><strong>Candidates, not confirmed errata.</strong> Every item below was found
 by independent reviews performed by AI agents against the pinned TeX of arXiv:2610.41903v1. None has been confirmed
 by the authors or refereed by a human mathematician. A Lean refutation is a machine-checked proof that the printed
@@ -423,19 +474,22 @@ should check.</div>
 <p class="lede">Generated at build time from <code>docs/SOURCE-ISSUES.md</code>, the coverage ledger and the
 named-result ledger at commit <code>{rev[:10]}</code>. The curated record with effects on each result is
 <a href="{attr(lean.git.blob("docs/ERRATA-AND-DEVIATIONS.md"))}">docs/ERRATA-AND-DEVIATIONS.md</a>.</p>
-<h2>Printed statements refuted in Lean</h2>
+<h2>Statements the project could not prove as printed (Lean refutation under a stated reading)</h2>
 <p class="lede">Source items whose coverage-ledger row or named-result ledger record cites a Lean theorem named
 <code>not_…_printed…</code> (the project convention). Each refutation is of the printed statement under the reading
 formalized; the card and the coverage row say which reading. Some other source issues are refuted in Lean under other names or only on paper; see
 the full list below and the record above.</p>
 <div class="table-wrap"><table class="results"><thead><tr><th>Item</th><th>Lean refutation</th>
 <th>What is proved instead</th><th>Source issue</th></tr></thead><tbody>{rrows}</tbody></table></div>
+<p class="lede">Each refutation holds only under the reading formalized; see the card and the coverage row.</p>
 <h2>All source-issue candidates ({len(crows)})</h2>
 <p class="lede">Each links to its entry in SOURCE-ISSUES.md, which states the evidence and any proposed correction.
-“Results” lists the tracked source results whose ledger rows cite the issue.</p>
+“Results” lists the tracked source results whose ledger rows cite the issue. “Statement proved as printed”
+refers to the statement only: an issue may concern the book's proof (a gap or a slip), which the Lean proof does
+not follow, so it says nothing about whether the book's argument is complete.{gap_note}</p>
 <div class="table-wrap"><table class="results"><thead><tr><th>Id</th><th>Candidate</th><th>Results</th></tr></thead>
 <tbody>{"".join(crows)}</tbody></table></div>"""
-        return self.site.shell(f"Errata · {self.site_title()}", body, "errata", toc=False)
+        return self.site.shell(f"Source issues · {self.site_title()}", body, "errata", toc=False)
 
     def nodes_json(self) -> str:
         return gen_nodes.dumps(self.data)

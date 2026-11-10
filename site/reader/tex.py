@@ -850,7 +850,10 @@ class FileConverter:
         for ra, rb in ranges:
             parts.extend(self.conv(s, ra, rb, True))
         body = self.alg_html(parts)
-        body = re.sub(r"^(\s|<br>)+", "", body)
+        body = re.sub(r"^\s*((?:<span class=\"anchor\"[^>]*></span>\s*)*)(\s|<br>)+", r"\1", body)
+        # a line break right after a block opener or before a closer would show as an empty line
+        body = re.sub(r'(<div class="alg-indent">)(\s|<br>)+', r"\1", body)
+        body = re.sub(r"(\s|<br>)+(</div>)", r"\2", body)
         body += "</div>" * max(0, body.count("<div") - body.count("</div>"))
         number = entry.get("number") if entry else None
         anchor = f"E-{entry['id']}" if entry else None
