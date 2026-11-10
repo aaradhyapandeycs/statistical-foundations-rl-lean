@@ -293,7 +293,7 @@ class Site(InfoPages):
         # The entry's status follows the node graph's `counted` flag (one rule for card and nodes.json).
         if not (se and se.get("counted")):
             if n["class"] == "prose" and n["statement_status"] == "partial":
-                return "incomplete", [], "partial result toward this item (not counted as proved)"
+                return "incomplete", [], "Note, not a status: partial result toward this item (not counted as proved)"
             if n["class"] == "prose" and n["proof_status"] != "proved":
                 return "incomplete", [], n.get("site_sub_reason") or "not counted as proved"
             return "supporting", [], SUPPORTING
@@ -531,7 +531,7 @@ class Site(InfoPages):
         return "".join(out)
 
     NAV = [("index", "Overview"), ("results", "Results"), ("book", "Book"), ("graph", "Dependency graph"),
-           ("status", "Status", [("status", "Progress"), ("errata", "Source issues")]),
+           ("status", "Progress", [("status", "Counts by chapter"), ("errata", "Source issues")]),
            ("methodology", "Methodology"), ("contribute", "Contribute"), ("credits", "Credits")]
 
     def nav_html(self, current: str | None, mobile: bool = False) -> str:
@@ -558,7 +558,7 @@ class Site(InfoPages):
         rev = self.lean.git.rev
         layout = (f'<div class="layout">{self.toc(current)}<main id="main">{body}</main></div>' if toc
                   else f'<div class="layout single"><main id="main">{body}</main></div>')
-        toc_btn = '<button class="toc-toggle" type="button" aria-label="Show book contents">☰</button>' if toc else ""
+        toc_btn = '<button class="toc-toggle" type="button" aria-label="Show book contents">Contents</button>' if toc else ""
         return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -570,7 +570,7 @@ class Site(InfoPages):
 <script>{self.inline_mathjax_config()}</script>
 <script defer src="{MATHJAX}"></script>
 </head>
-<body class="tex2jax_ignore">
+<body class="tex2jax_ignore{" has-toc" if toc else ""}">
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   {toc_btn}<a class="brand" href="index.html">Statistical Foundations of RL <span>in Lean</span></a>
@@ -718,7 +718,7 @@ endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{
                            f'{self.chapter_title(last_ch)}</th></tr>')
             n = self.nodes.get(r["id"]) or self.inv_by_id.get(r["id"], {})
             st = (self.node_chip(self.nodes[r["id"]], issues=True) if r["id"] in self.nodes
-                  else '<span class="subreason">context item, no label</span>')
+                  else '<span class="entry-note">Context item (not a status): no label</span>')
             name = esc(r["name"])
             name = f'<a href="{attr(r["href"])}">{name}</a>' if r["href"] else name
             lean = " ".join(f'<code>{esc(x)}</code>' for x in r["lean"])
@@ -749,7 +749,8 @@ endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{
 <p class="lede">Every source item the project tracks, in book order: the numbered theorems, lemmas and claims,
 the remarks and displayed claims, and (with no label) the algorithms, definitions and assumptions. Each label is
 read from the node graph generated from the project's ledgers at commit <code>{self.lean.git.rev[:10]}</code>.
-{self.count_sentence()}</p>
+The counts by label are on <a href="status.html">Progress</a>. The TeX label under each title is shown exactly as written in the
+book's source, including any misspelling.</p>
 <div class="filters" role="search"><input type="search" id="q" placeholder="Search number, title, label, Lean name or C-id" aria-label="Search results">
 <div class="chips" role="group" aria-label="Filter by label"><button type="button" class="chip on" data-filter="" aria-pressed="true">All</button>{chips}
 <label class="toggle"><input type="checkbox" id="f-refuted"> <span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span></label>
@@ -827,9 +828,14 @@ reviews were done by AI agents, <strong>not by a human referee</strong>.</p>
 <p class="actions"><a class="button primary" href="book.html">Read the book</a>
 <a class="button" href="#main-results">Main results</a> <a class="button" href="methodology.html">Methodology</a></p>
 </section>
+{self.explainer()}
 <section><h2>At a glance</h2>
 <p class="lede">The {self.cnt("named_results_in_inventory")} numbered theorems, lemmas and claims, by label:</p>
 {self.stacked_bar()}
+<p class="bar-caption">This bar counts only the {self.cnt("named_results_in_inventory")} numbered results. It is
+<strong>not a completion percentage</strong>: algorithms, definitions, assumptions, remarks and displayed claims are
+tracked separately, and the corrected and restricted segments are variants of the printed statement, not the printed
+statement itself. All counts are on <a href="status.html">Progress</a>.</p>
 <p>{self.cntw("named_refuted_marker", "numbered result", "numbered results")} and {self.cntw("prose_refuted_marker", "remark or display", "remarks or displays")}
 have a printed statement refuted in Lean under the reading formalized
 (<a href="results.html#m=refuted&amp;all=1">show them</a>); {self.cntw("named_boundary_marker", "numbered result", "numbered results")} and
@@ -862,6 +868,20 @@ disclosures. Every card links its <code>.tex</code> lines and the pinned Lean li
 <section><h2>Chapters</h2><ol class="chapters">{''.join(lis)}</ol></section>
 <section class="abstract"><details><summary><h2>Abstract of the book (by the authors)</h2></summary>{front}</details></section>"""
         return self.shell(TITLE, body, "index", toc=False)
+
+    def explainer(self) -> str:
+        return ('''<section class="explain" id="what-is-lean"><h2>What does “proved in Lean” mean here?</h2>
+<p><strong>Lean</strong> is a proof assistant: a statement and its proof are written in full detail, and a small
+trusted program, the kernel, checks every inference step. Nothing is accepted on the strength of an argument that
+“looks right”.</p>
+<p><strong>Proved in Lean</strong> on this site means that a formal statement, written by this project from the
+book’s text, was checked by the kernel, using only Lean’s logic, the Mathlib library and three standard axioms
+(<code>propext</code>, <code>Classical.choice</code>, <code>Quot.sound</code>).</p>
+<p>It does <strong>not</strong> mean that the authors approved the formal statement, and it does not by itself show
+that the formal statement is what the book means. That match is checked by AI review (not by a human referee), and
+the authors can judge it by reading the statement beside the book text. When the formal statement differs from the
+printed one, the label says so.</p>
+<p>Technical terms are explained in the <a href="methodology.html#glossary">glossary</a>.</p></section>''')
 
     def whats_new(self) -> str:
         named = [n for n in self.node_data["nodes"] if n["class"] == "named"]
