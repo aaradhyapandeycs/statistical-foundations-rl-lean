@@ -4,6 +4,7 @@ import Formalization.RobustRL.ChiSquaredSourceMaximum
 import Formalization.Ch7Rest.LowerBound710
 import Formalization.RobustRL.Ch7.LowerBound73
 import Formalization.RobustRL.Ch7.LowerBound75
+import Formalization.RobustRL.Ch7.RandomizedLowerBound
 import Formalization.Ch7Rest.Marl78Main
 import Formalization.Ch7Rest.FedSync79Main
 import Formalization.Ch7Rest.FedSync79ReadOff
@@ -24,6 +25,9 @@ import Formalization.Ch7Rest.TDInferencePluginConsistency711
 import Formalization.Ch7Rest.TDInferencePluginCorrected711
 import Formalization.Ch7Rest.TDInferencePluginRefute711
 import Formalization.Ch7Rest.TDInferencePluginCoverage711
+import Formalization.Ch7Rest.TDInferencePluginIntervalRate711
+import Formalization.Ch7Rest.TDInferencePluginEllipsoidRate711
+import Formalization.Ch7Rest.TDInferencePluginRectRate711
 import Formalization.Ch7Rest.TDInferenceConfRegion711
 import Formalization.Ch7Rest.TDInferenceConfCalib711
 import Formalization.Ch7Rest.TDInferenceConfChiSq711
@@ -34,6 +38,7 @@ import Formalization.Ch7Rest.MarlBestResponse
 import Formalization.Ch7Rest.ConvexDistanceTV711
 import Formalization.Ch7Rest.TDInferencePluginRect711
 import Formalization.Ch7Rest.TDInferenceConvexSharp711
+import Formalization.Ch7Rest.TDInferenceConfRegionSharp711
 
 open scoped BigOperators
 namespace StatisticalRL.Statements.Ch7
@@ -198,6 +203,22 @@ theorem Thm7_5_corrected_holds : Thm7_5_corrected :=
 `StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward`. -/
 theorem Thm7_5_corrected_knownReward_holds : Thm7_5_corrected_knownReward :=
   StatisticalRL.RobustRL.Ch7.LowerBound75.thm7_5_corrected_knownReward
+
+/-- `Thm7_3_corrected_randomized` from `StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_3_corrected_randomized`. -/
+theorem Thm7_3_corrected_randomized_holds : Thm7_3_corrected_randomized.{u} :=
+  StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_3_corrected_randomized.{u}
+
+/-- `Thm7_3_corrected_knownReward_randomized` from `StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_3_corrected_knownReward_randomized`. -/
+theorem Thm7_3_corrected_knownReward_randomized_holds : Thm7_3_corrected_knownReward_randomized.{u} :=
+  StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_3_corrected_knownReward_randomized.{u}
+
+/-- `Thm7_5_corrected_randomized` from `StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_5_corrected_randomized`. -/
+theorem Thm7_5_corrected_randomized_holds : Thm7_5_corrected_randomized.{u} :=
+  StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_5_corrected_randomized.{u}
+
+/-- `Thm7_5_corrected_knownReward_randomized` from `StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_5_corrected_knownReward_randomized`. -/
+theorem Thm7_5_corrected_knownReward_randomized_holds : Thm7_5_corrected_knownReward_randomized.{u} :=
+  StatisticalRL.RobustRL.Ch7.RandomizedLowerBound.thm7_5_corrected_knownReward_randomized.{u}
 
 /-- `Thm7_8_corrected` from `StatisticalRL.Ch7Rest.Marl.thm7_8_corrected`. -/
 theorem Thm7_8_corrected_holds : Thm7_8_corrected :=
@@ -457,98 +478,96 @@ theorem Eq_convex_Cdelta_corrected_oracle_holds : Eq_convex_Cdelta_corrected_ora
     hμ hΓ
 
 /-- `Eq_convex_Cdelta_corrected_plugin` from
-`StatisticalRL.Ch7Rest.TDInference.plugin_coverage_tendsto` (the export needs only `η₀ ≤ 1`). -/
+`StatisticalRL.Ch7Rest.TDInference.plugin_coverage_rate` (the export needs only `η₀ ≤ 1`). -/
 theorem Eq_convex_Cdelta_corrected_plugin_holds : Eq_convex_Cdelta_corrected_plugin := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
-  exact StatisticalRL.Ch7Rest.TDInference.plugin_coverage_tendsto M π μ h0 (by linarith) V₀ hμ hΓ
+  exact StatisticalRL.Ch7Rest.TDInference.plugin_coverage_rate M π μ h0 (by linarith) V₀ hμ hΓ
 
 /-- `Eq_convex_Cdelta_fixedShape_corrected_oracle` from
-`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds` (the export needs only `η₀ ≤ 1`). -/
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds_sharp` (the export needs only `η₀ ≤ 1`). -/
 theorem Eq_convex_Cdelta_fixedShape_corrected_oracle_holds :
     Eq_convex_Cdelta_fixedShape_corrected_oracle := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
-  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds_sharp
     M π μ h0 (by linarith) V₀ hμ hΓ
   exact ⟨K₀, hK₀, fun T hT ↦ (hb T hT).1⟩
 
 /-- `Eq_convex_Cdelta_ellipsoid_corrected_oracle` from
-`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds` (the export needs only `η₀ ≤ 1`
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds_sharp` (the export needs only `η₀ ≤ 1`
 and holds for every `q`). -/
 theorem Eq_convex_Cdelta_ellipsoid_corrected_oracle_holds :
     Eq_convex_Cdelta_ellipsoid_corrected_oracle := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
-  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds_sharp
     M π μ h0 (by linarith) V₀ hμ hΓ
   exact ⟨K₀, hK₀, fun T hT q _ ↦ (hb T hT).2.1 q⟩
 
 /-- `Eq_convex_Cdelta_rectangle_corrected_oracle` from
-`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds` (the export needs only `η₀ ≤ 1`
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds_sharp` (the export needs only `η₀ ≤ 1`
 and holds for every `r`). -/
 theorem Eq_convex_Cdelta_rectangle_corrected_oracle_holds :
     Eq_convex_Cdelta_rectangle_corrected_oracle := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
-  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds_sharp
     M π μ h0 (by linarith) V₀ hμ hΓ
   exact ⟨K₀, hK₀, fun T hT r _ ↦ (hb T hT).2.2 r⟩
 
 /-- `Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated` from
-`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated` (the export needs only
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated_sharp` (the export needs only
 `η₀ ≤ 1`; the ellipsoid component is taken). -/
 theorem Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated_holds :
     Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
-  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated_sharp
     M π μ hμ h0 (by linarith) V₀ hΓ
   refine ⟨K₀, hK₀, fun α hα0 hα1 ↦ ?_⟩
   obtain ⟨q, hq0, _, _, hq, _, hT⟩ := hb α hα0 hα1
   exact ⟨q, hq0, hq, fun T hT1 ↦ (hT T hT1).1⟩
 
 /-- `Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated` from
-`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated` (the export needs only
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated_sharp` (the export needs only
 `η₀ ≤ 1`; the rectangle component is taken). -/
 theorem Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated_holds :
     Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
-  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated_sharp
     M π μ hμ h0 (by linarith) V₀ hΓ
   refine ⟨K₀, hK₀, fun α hα0 hα1 ↦ ?_⟩
   obtain ⟨_, _, r, hr0, _, hr, hT⟩ := hb α hα0 hα1
   exact ⟨r, hr0, hr, fun T hT1 ↦ (hT T hT1).2⟩
 
 /-- `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared` from
-`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_chiSquared` (the export needs only `η₀ ≤ 1`)
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_chiSquared_sharp` (the export needs only `η₀ ≤ 1`)
 and `StatisticalRL.Ch7Rest.TDInference.exists_chiSquared_quantile`. -/
 theorem Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared_holds :
     Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
-  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_chiSquared
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_chiSquared_sharp
     M π μ hμ h0 (by linarith) V₀ hΓ
   refine ⟨K₀, hK₀, fun α hα0 hα1 ↦ ⟨?_, fun R hR ↦ hb α hα0 hα1 R hR⟩⟩
   exact StatisticalRL.Ch7Rest.TDInference.exists_chiSquared_quantile Fintype.card_pos hα0 hα1
 
 /-- `Eq_convex_Cdelta_ellipsoid_corrected_plugin` from
-`StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin` and
-`StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin_chiSquared` (the exports need only
-`η₀ ≤ 1`). -/
+`StatisticalRL.Ch7Rest.TDInference.exists_coverage_ellipsoid_plugin_rate` (the export needs only `η₀ ≤ 1`); the
+`χ²(S)` form is the same bound at `q = R`. -/
 theorem Eq_convex_Cdelta_ellipsoid_corrected_plugin_holds :
     Eq_convex_Cdelta_ellipsoid_corrected_plugin := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
-  have h1' : η₀ ≤ 1 := by linarith
-  exact ⟨fun q ↦ StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin
-      M π μ h0 h1' V₀ hμ hΓ q,
-    fun α hα0 hα1 R hR ↦
-      StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_ellipsoid_plugin_chiSquared
-        M π μ h0 h1' V₀ hμ hΓ hα0 hα1 hR⟩
+  obtain ⟨K, hK, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_coverage_ellipsoid_plugin_rate
+    M π μ h0 (by linarith) V₀ hμ hΓ
+  refine ⟨K, hK, fun T hT q ↦ hb T hT q, fun α _ _ R hR T hT ↦ ?_⟩
+  rw [← hR]
+  exact hb T hT R
 
 open StatisticalRL.Ch7Rest.TDInference in
 /-- `Eq_convex_Cdelta_rectangle_corrected_plugin` from
-`StatisticalRL.Ch7Rest.TDInference.tendsto_coverage_rect_plugin`, with `posSemidef_lambdaHat`,
+`StatisticalRL.Ch7Rest.TDInference.exists_coverage_rect_plugin_rate`, with `posSemidef_lambdaHat`,
 `isSupBoxQuantile_supBoxQuantile` and `gaussOfCov_eq_map` for the existence conjunct and the law of `Q Z`. -/
 theorem Eq_convex_Cdelta_rectangle_corrected_plugin_holds :
     Eq_convex_Cdelta_rectangle_corrected_plugin := by
   intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ α hα0 hα1
   have h1' : η₀ ≤ 1 := by linarith
-  refine ⟨⟨fun _ ω ↦ supBoxQuantile (lambdaHat M η₀ V₀ ω) α, fun T ω ↦ ?_⟩, fun rhat hrhat ↦ ?_⟩
+  refine ⟨⟨fun _ ω ↦ supBoxQuantile (lambdaHat M η₀ V₀ ω) α, fun T ω ↦ ?_⟩, ?_⟩
   · have hS := posSemidef_lambdaHat M η₀ V₀ ω
     obtain ⟨Q, hQ⟩ := StatisticalRL.Probability.exists_mul_transpose_eq_of_posSemidef hS
     have hG := gaussOfCov_eq_map hS Q hQ
@@ -556,7 +575,8 @@ theorem Eq_convex_Cdelta_rectangle_corrected_plugin_holds :
     refine ⟨Q, hQ, fun r hr ↦ q1 r ?_, fun r hr ↦ q2 r ?_⟩
     · rw [supBoxProb, hG]; exact hr
     · rw [supBoxProb, hG]; exact hr
-  · refine tendsto_coverage_rect_plugin M π μ h0 h1' V₀ hμ hΓ hα0 hα1 rhat fun T ω ↦ ?_
+  · obtain ⟨K, hK, hb⟩ := exists_coverage_rect_plugin_rate M π μ h0 h1' V₀ hμ hΓ hα0 hα1
+    refine ⟨K, hK, fun rhat hrhat ↦ hb rhat fun T ω ↦ ?_⟩
     obtain ⟨Q, hQ, q1, q2⟩ := hrhat T ω
     have hG := gaussOfCov_eq_map (posSemidef_lambdaHat M η₀ V₀ ω) Q hQ
     refine ⟨fun r hr ↦ q1 r ?_, fun r hr ↦ q2 r ?_⟩

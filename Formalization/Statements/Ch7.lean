@@ -146,6 +146,8 @@ there are two RMDPs `M₀, M₁` on the given states and actions (discount `γ`,
 `[0,1]`, `(s,a)`-rectangular TV balls of radius `σ` around the nominal kernel) and an initial
 distribution `μ` such that every estimator (a map from the `N` samples per state-action pair
 to a stationary randomized policy) has `max_i P_i(V_i^{⋆,σ}(μ) - V_i^{π̂,σ}(μ) > ε) ≥ 1/8`.
+Here an estimator is a deterministic function of the samples; estimators with an independent random
+seed are covered by `Thm7_3_corrected_randomized`, of which this entry is the `Ω = Unit` case.
 
 Disclosure on the estimator class. `M₀` and `M₁` may have different rewards, and the
 estimators see the samples only, not the reward.
@@ -185,7 +187,8 @@ that convention. It is corrected by adding the hypotheses `S ≥ 2` and `A ≥ 2
 `S = 1` makes the printed claim false under known rewards (paper argument, not machine-checked:
 `argmax r` is then robust-optimal). Every other constant, range and the conclusion are
 as printed (see `Thm7_3_corrected`). The two models of the proof differ only in the nominal
-rows at `(s₀, a₀)` and `(s₀, a₁)`. -/
+rows at `(s₀, a₀)` and `(s₀, a₁)`. Estimators here are deterministic functions of the samples;
+seeded randomized estimators are covered by `Thm7_3_corrected_knownReward_randomized`. -/
 def Thm7_3_corrected_knownReward : Prop :=
   ∀ c₀ : ℝ, 0 < c₀ → c₀ ≤ 1 / 8 →
   ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
@@ -203,6 +206,58 @@ def Thm7_3_corrected_knownReward : Prop :=
           ((ModelBasedPolicyLearning.samplingLaw M₁ N).real
             {data | ε < robustOptimalValueAt tvBall M₁ σ μ -
               robustPolicyValueAt tvBall M₁ σ (est data) μ})
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 MeasureTheory in
+/-- Corrected Theorem 7.3 for externally randomized estimators, `thm:l1-lower-bound`,
+`chapters/robust_RL.tex:377–391` (the printed infimum is over all estimators, `:389`). It extends
+`Thm7_3_corrected` (same constants `0 < c₀ ≤ 1/8`, ranges and budget; only the hypothesis `A ≥ 2` is
+added, `docs/SOURCE-ISSUES.md#C38`; also `docs/SOURCE-ISSUES.md#C7`) to estimators that use an
+independent random seed. Randomized estimators: a seed space `Ω` (in any universe, with any σ-algebra) with a probability measure `ν` and a map `π̂ : Ω → samples → stationary randomized policy`. The seed law does not depend on the model `i`, and the failure probability is taken under the product law `ν ⊗ P_i` of the seed and the samples. No measurability of `π̂` in the seed is assumed: for a non-measurable failure set the real measure is the outer probability (as in `Thm6_13_randomized`); when the set is measurable it is the probability. An inner-probability version is false in general. Every Markov-kernel estimator on the finite data space is of seeded form. The constant `1/8` is the printed one (`max ≥ 1/8`); the internal bound `P₀(E₀)+P₁(E₁) ≥ 1/4` loses nothing. The models `M₀, M₁, μ` and all constants are chosen before `(Ω, ν, π̂)`. The deterministic entry is the case `Ω = Unit`, `ν = δ_()`. Review: `docs/critic-rand73.md`. -/
+def Thm7_3_corrected_randomized : Prop :=
+    ∀ c₀ : ℝ, 0 < c₀ → c₀ ≤ 1 / 8 →
+    ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
+      [Nonempty Action] (γ σ ε : ℝ) (N : ℕ),
+      2 ≤ Fintype.card Action →
+      0 < σ → σ ≤ 1 - c₀ → 1 / 2 ≤ γ → γ < 1 → 0 < ε → ε ≤ c₀ / (256 * (1 - γ)) →
+      (N : ℝ) ≤ c₀ * Real.log 2 / (8192 * (1 - γ) ^ 2 * max (1 - γ) σ * ε ^ 2) →
+      ∃ (M₀ M₁ : DiscountedMDP State Action) (μ : FiniteDistribution State),
+        M₀.discount = γ ∧ M₁.discount = γ ∧
+        ∀ (Ω : Type u) [MeasurableSpace Ω] (ν : Measure Ω) [IsProbabilityMeasure ν]
+          (est : Ω → ModelBasedPolicyLearning.Samples State Action N →
+            StationaryPolicy State Action),
+          1 / 8 ≤ max
+            ((ν.prod (ModelBasedPolicyLearning.samplingLaw M₀ N)).real
+              {p | ε < robustOptimalValueAt tvBall M₀ σ μ -
+                robustPolicyValueAt tvBall M₀ σ (est p.1 p.2) μ})
+            ((ν.prod (ModelBasedPolicyLearning.samplingLaw M₁ N)).real
+              {p | ε < robustOptimalValueAt tvBall M₁ σ μ -
+                robustPolicyValueAt tvBall M₁ σ (est p.1 p.2) μ})
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 MeasureTheory in
+/-- Corrected Theorem 7.3 for externally randomized estimators under the book's known-reward
+convention, `thm:l1-lower-bound`, `chapters/robust_RL.tex:377–391` (known reward:
+`generative_model_model_based.tex:31`; `robust_RL.tex:25`, `:206–215`). It extends
+`Thm7_3_corrected_knownReward`: the two RMDPs share their reward (`M₀.reward = M₁.reward`), and the
+hypotheses `S ≥ 2`, `A ≥ 2` are added (`docs/SOURCE-ISSUES.md#C38`; also `#C7`). Randomized estimators: a seed space `Ω` (in any universe, with any σ-algebra) with a probability measure `ν` and a map `π̂ : Ω → samples → stationary randomized policy`. The seed law does not depend on the model `i`, and the failure probability is taken under the product law `ν ⊗ P_i` of the seed and the samples. No measurability of `π̂` in the seed is assumed: for a non-measurable failure set the real measure is the outer probability (as in `Thm6_13_randomized`); when the set is measurable it is the probability. An inner-probability version is false in general. Every Markov-kernel estimator on the finite data space is of seeded form. The constant `1/8` is the printed one (`max ≥ 1/8`); the internal bound `P₀(E₀)+P₁(E₁) ≥ 1/4` loses nothing. The models `M₀, M₁, μ` and all constants are chosen before `(Ω, ν, π̂)`. The deterministic entry is the case `Ω = Unit`, `ν = δ_()`. Review: `docs/critic-rand73.md`. -/
+def Thm7_3_corrected_knownReward_randomized : Prop :=
+    ∀ c₀ : ℝ, 0 < c₀ → c₀ ≤ 1 / 8 →
+    ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
+      [Nonempty Action] (γ σ ε : ℝ) (N : ℕ),
+      2 ≤ Fintype.card State → 2 ≤ Fintype.card Action →
+      0 < σ → σ ≤ 1 - c₀ → 1 / 2 ≤ γ → γ < 1 → 0 < ε → ε ≤ c₀ / (256 * (1 - γ)) →
+      (N : ℝ) ≤ c₀ * Real.log 2 / (8192 * (1 - γ) ^ 2 * max (1 - γ) σ * ε ^ 2) →
+      ∃ (M₀ M₁ : DiscountedMDP State Action) (μ : FiniteDistribution State),
+        M₀.discount = γ ∧ M₁.discount = γ ∧ M₀.reward = M₁.reward ∧
+        ∀ (Ω : Type u) [MeasurableSpace Ω] (ν : Measure Ω) [IsProbabilityMeasure ν]
+          (est : Ω → ModelBasedPolicyLearning.Samples State Action N →
+            StationaryPolicy State Action),
+          1 / 8 ≤ max
+            ((ν.prod (ModelBasedPolicyLearning.samplingLaw M₀ N)).real
+              {p | ε < robustOptimalValueAt tvBall M₀ σ μ -
+                robustPolicyValueAt tvBall M₀ σ (est p.1 p.2) μ})
+            ((ν.prod (ModelBasedPolicyLearning.samplingLaw M₁ N)).real
+              {p | ε < robustOptimalValueAt tvBall M₁ σ μ -
+                robustPolicyValueAt tvBall M₁ σ (est p.1 p.2) μ})
 
 end Thm7_3
 
@@ -226,6 +281,8 @@ distribution `μ` such that every estimator (a map from the `N` samples per stat
 to a stationary randomized policy) has `max_i P_i(V_i^{⋆,σ}(μ) - V_i^{π̂,σ}(μ) > ε) ≥ 1/8`.
 No `ε > 0` is added: for `ε < 0` the claim is trivial; at `ε = 0` the Lean value `c₄/0 = 0`
 forces `N = 0`, and the instance also holds for every `N` under the reading `c₄/0 = ∞`.
+Here an estimator is a deterministic function of the samples; estimators with an independent random
+seed are covered by `Thm7_5_corrected_randomized`, of which this entry is the `Ω = Unit` case.
 
 Disclosure on the estimator class. `M₀` and `M₁` may have different rewards, and the
 estimators see the samples only, not the reward.
@@ -264,7 +321,9 @@ that convention. It is corrected by adding the hypotheses `S ≥ 2` and `A ≥ 2
 (`docs/SOURCE-ISSUES.md#C7`); both are needed there, and both necessities are machine-checked
 (with one of them dropped the statement is false for every `c₃, c₄ > 0`). No `ε > 0` is added.
 Every other constant, range and the conclusion are as printed (see `Thm7_5_corrected`). The
-two models of the proof differ only in the nominal rows at `(s₀, a₀)` and `(s₀, a₁)`. -/
+two models of the proof differ only in the nominal rows at `(s₀, a₀)` and `(s₀, a₁)`. Estimators
+here are deterministic functions of the samples; seeded randomized estimators are covered by
+`Thm7_5_corrected_knownReward_randomized`. -/
 def Thm7_5_corrected_knownReward : Prop :=
   ∃ c₃ c₄ : ℝ, 0 < c₃ ∧ 0 < c₄ ∧
   ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
@@ -282,6 +341,58 @@ def Thm7_5_corrected_knownReward : Prop :=
           ((ModelBasedPolicyLearning.samplingLaw M₁ N).real
             {data | ε < robustOptimalValueAt chiBall M₁ σ μ -
               robustPolicyValueAt chiBall M₁ σ (est data) μ})
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 MeasureTheory in
+/-- Corrected Theorem 7.5 for externally randomized estimators, `thm:chi2-lower-bound`,
+`chapters/robust_RL.tex:461–480` (the printed infimum is over all estimators). It extends
+`Thm7_5_corrected` (same universal constants `c₃, c₄ > 0`, ranges and budget; only the hypothesis
+`A ≥ 2` is added, `docs/SOURCE-ISSUES.md#C7`; also `#C38`) to estimators that use an independent
+random seed. Randomized estimators: a seed space `Ω` (in any universe, with any σ-algebra) with a probability measure `ν` and a map `π̂ : Ω → samples → stationary randomized policy`. The seed law does not depend on the model `i`, and the failure probability is taken under the product law `ν ⊗ P_i` of the seed and the samples. No measurability of `π̂` in the seed is assumed: for a non-measurable failure set the real measure is the outer probability (as in `Thm6_13_randomized`); when the set is measurable it is the probability. An inner-probability version is false in general. Every Markov-kernel estimator on the finite data space is of seeded form. The constant `1/8` is the printed one (`max ≥ 1/8`); the internal bound `P₀(E₀)+P₁(E₁) ≥ 1/4` loses nothing. The models `M₀, M₁, μ` and all constants are chosen before `(Ω, ν, π̂)`. The deterministic entry is the case `Ω = Unit`, `ν = δ_()`. Review: `docs/critic-rand73.md`. -/
+def Thm7_5_corrected_randomized : Prop :=
+    ∃ c₃ c₄ : ℝ, 0 < c₃ ∧ 0 < c₄ ∧
+    ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
+      [Nonempty Action] (γ σ ε : ℝ) (N : ℕ),
+      2 ≤ Fintype.card Action →
+      3 / 4 ≤ γ → γ < 1 → 0 < σ → ε ≤ c₃ / (1 - γ) →
+      (N : ℝ) ≤ c₄ / ((1 - γ) ^ 3 * ε ^ 2) * (1 + σ / (1 - γ)) →
+      ∃ (M₀ M₁ : DiscountedMDP State Action) (μ : FiniteDistribution State),
+        M₀.discount = γ ∧ M₁.discount = γ ∧
+        ∀ (Ω : Type u) [MeasurableSpace Ω] (ν : Measure Ω) [IsProbabilityMeasure ν]
+          (est : Ω → ModelBasedPolicyLearning.Samples State Action N →
+            StationaryPolicy State Action),
+          1 / 8 ≤ max
+            ((ν.prod (ModelBasedPolicyLearning.samplingLaw M₀ N)).real
+              {p | ε < robustOptimalValueAt chiBall M₀ σ μ -
+                robustPolicyValueAt chiBall M₀ σ (est p.1 p.2) μ})
+            ((ν.prod (ModelBasedPolicyLearning.samplingLaw M₁ N)).real
+              {p | ε < robustOptimalValueAt chiBall M₁ σ μ -
+                robustPolicyValueAt chiBall M₁ σ (est p.1 p.2) μ})
+
+open StatisticalRL StatisticalRL.RobustRL.Ch7 MeasureTheory in
+/-- Corrected Theorem 7.5 for externally randomized estimators under the book's known-reward
+convention, `thm:chi2-lower-bound`, `chapters/robust_RL.tex:461–480` (known reward:
+`generative_model_model_based.tex:31`; `robust_RL.tex:25`, `:206–215`). It extends
+`Thm7_5_corrected_knownReward`: the two RMDPs share their reward, and the hypotheses `S ≥ 2`,
+`A ≥ 2` are added (`docs/SOURCE-ISSUES.md#C7`; also `#C38`). Randomized estimators: a seed space `Ω` (in any universe, with any σ-algebra) with a probability measure `ν` and a map `π̂ : Ω → samples → stationary randomized policy`. The seed law does not depend on the model `i`, and the failure probability is taken under the product law `ν ⊗ P_i` of the seed and the samples. No measurability of `π̂` in the seed is assumed: for a non-measurable failure set the real measure is the outer probability (as in `Thm6_13_randomized`); when the set is measurable it is the probability. An inner-probability version is false in general. Every Markov-kernel estimator on the finite data space is of seeded form. The constant `1/8` is the printed one (`max ≥ 1/8`); the internal bound `P₀(E₀)+P₁(E₁) ≥ 1/4` loses nothing. The models `M₀, M₁, μ` and all constants are chosen before `(Ω, ν, π̂)`. The deterministic entry is the case `Ω = Unit`, `ν = δ_()`. Review: `docs/critic-rand73.md`. -/
+def Thm7_5_corrected_knownReward_randomized : Prop :=
+    ∃ c₃ c₄ : ℝ, 0 < c₃ ∧ 0 < c₄ ∧
+    ∀ (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]
+      [Nonempty Action] (γ σ ε : ℝ) (N : ℕ),
+      2 ≤ Fintype.card State → 2 ≤ Fintype.card Action →
+      3 / 4 ≤ γ → γ < 1 → 0 < σ → ε ≤ c₃ / (1 - γ) →
+      (N : ℝ) ≤ c₄ / ((1 - γ) ^ 3 * ε ^ 2) * (1 + σ / (1 - γ)) →
+      ∃ (M₀ M₁ : DiscountedMDP State Action) (μ : FiniteDistribution State),
+        M₀.discount = γ ∧ M₁.discount = γ ∧ M₀.reward = M₁.reward ∧
+        ∀ (Ω : Type u) [MeasurableSpace Ω] (ν : Measure Ω) [IsProbabilityMeasure ν]
+          (est : Ω → ModelBasedPolicyLearning.Samples State Action N →
+            StationaryPolicy State Action),
+          1 / 8 ≤ max
+            ((ν.prod (ModelBasedPolicyLearning.samplingLaw M₀ N)).real
+              {p | ε < robustOptimalValueAt chiBall M₀ σ μ -
+                robustPolicyValueAt chiBall M₀ σ (est p.1 p.2) μ})
+            ((ν.prod (ModelBasedPolicyLearning.samplingLaw M₁ N)).real
+              {p | ε < robustOptimalValueAt chiBall M₁ σ μ -
+                robustPolicyValueAt chiBall M₁ σ (est p.1 p.2) μ})
 
 end Thm7_5
 
@@ -779,10 +890,10 @@ Differs from the printed text: (1) the printed claim for arbitrary convex sets c
 `z` are fixed before the data, the C47 proposed correction. (2) The covariance is the oracle
 `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ`, the population target of the printed plug-in `Λ̂_T` (:180–182), unknown in practice;
 `Γ_true` is the true residual covariance, not the printed `Γ` of `Λ*` (:115, C43). The plug-in rule is the separate
-entry `Eq_convex_Cdelta_corrected_plugin` (limits only, no rate).
+entry `Eq_convex_Cdelta_corrected_plugin` (with the finite-`T` rate `T^{-1/3}`).
 (3) Only half-lines, slabs and a Bonferroni box; corrected forms of the `ℓ∞` rectangle (C47(2)) and the ellipsoid
 (C47(3)) are the separate entries `Eq_convex_Cdelta_rectangle_corrected_oracle` and
-`Eq_convex_Cdelta_ellipsoid_corrected_oracle` (rate `T^{-1/3} log(2T)`). `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`,
+`Eq_convex_Cdelta_ellipsoid_corrected_oracle` (rate `T^{-1/3}`). `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`,
 `0 < η₀ < 1/4` (:133), every `V₀`, the rate `T^{-1/3}` with an instance constant `K`.
 
 Statement: there is one `K > 0` such that for all `T ≥ 1`, with `Φ(z) = N(0,1)(−∞, z]` and `S = |State|`:
@@ -822,54 +933,40 @@ def Eq_convex_Cdelta_corrected_oracle : Prop :=
                   (tdA M π μ)⁻¹ᵀ) s s) / T)}.indicator 1 ω)
 
 open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
-/-- Corrected (fixed-shape) variant, with the printed plug-in covariance, of the confidence-set rule
-`eq:convex.Cdelta` (`chapters/inference.tex:187–196`, display :191–193, claim :196); plug-in `Λ̂_T` from
-`eq:defn-hat-Lambda` (:180–182); rectangle prose :198–205. See `docs/SOURCE-ISSUES.md#C47` and `#C43`.
+/-- Corrected (fixed-shape) plug-in rule `eq:convex.Cdelta` (`chapters/inference.tex:187–196`,
+display :191–193, claim :196; plug-in `Λ̂_T` `eq:defn-hat-Lambda` :180–182; rectangles :198–205),
+finite-`T` rate. See `docs/SOURCE-ISSUES.md#C47` and `#C43`.
 
-Differs from the printed text: (1) the printed claim for arbitrary convex sets chosen from the data is false
-(C47(1)); here the direction `u` and level `z` are fixed before the data (the C47 proposed correction): one-sided
-half-lines, two-sided intervals for a linear functional `uᵀV^π`, and a Bonferroni box with the plug-in diagonal
-`Λ̂_T(s,s)`. (2) Asymptotic coverage only, pointwise in `(u, z)`, not uniform: the plug-in consistency
-`Eq_defn_hat_Lambda_corrected` has no rate, so no finite-`T` bound is claimed. (3) Added non-degeneracy hypothesis
-`Γ_true ≻ 0` (so `uᵀΛu > 0` for `u ≠ 0`, with `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ`, the limit of `Λ̂_T`; it is also needed by the
-half-space result). Separately, by C43 this target `Λ` differs from the printed `Λ⋆` unless rewards are state-only.
-(4) Junk value: when some state is unsampled `Ā_T` is singular and the printed `Λ̂_T` is undefined (C47(4)); Lean's
-`Matrix.inv` returns 0, so `lambdaHat = 0` and the interval degenerates to the point estimate there. No special
-handling is needed: the proof charges every outcome with `Λ̂_T` entrywise `ε₁`-far from `Λ`, and since `diag Λ ≻ 0`
-under `Γ_true ≻ 0` the singular event is contained in that bad event for small `ε₁`. Its probability is at most
-`∑_s (1 − μ(s))^T → 0`, so the limits do not depend on how the procedure is defined there. Not covered
-here: data-selected convex sets (C47(1)); the plug-in ellipsoid and rectangle are the separate entries
-`Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin`; any rate
-(oracle-covariance versions with rate: `Eq_convex_Cdelta_rectangle_corrected_oracle`,
-`Eq_convex_Cdelta_ellipsoid_corrected_oracle`).
-Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
-
-Statement, with `Φ(z) = N(0,1)(−∞, z]`, `S = |State|`, `Λ̂_T = lambdaHat`:
-(1) all `u ≠ 0`, `z ∈ ℝ`: `P(uᵀV̄_T − z√(uᵀΛ̂_Tu/T) ≤ uᵀV^π) → Φ(z)`;
-(2) `u ≠ 0`, `z ≥ 0`: `P(|uᵀ(V̄_T − V^π)| ≤ z√(uᵀΛ̂_Tu/T)) → 2Φ(z) − 1`;
-(3) `z ≥ 0`, `η > 0`: eventually `P(∀ s, |V̄_T(s) − V^π(s)| ≤ z√(Λ̂_T(s,s)/T)) ≥ 1 − 2S(1 − Φ(z)) − η`. -/
+Differs from the printed text: (1) direction `u` and level `z` fixed before the data (C47(1); the
+printed claim for data-selected convex sets is false). (2) One instance constant `K > 0` (depends on
+`M, π, μ, η₀, V₀`; not on `T`, `u`, `z`), rate `T^{-1/3}` as in Theorem 7.11; no printed coefficient.
+(3) Added `Γ_true ≻ 0`; target `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (C43), not the printed `Λ⋆`. (4) Junk value
+`Λ̂_T = 0` on the singular event (C47(4)); that event lies in the charged bad event, so the bound does
+not depend on the convention. This rate statement implies the earlier asymptotic limits.
+Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`. -/
 def Eq_convex_Cdelta_corrected_plugin : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
     (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
     (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
-    (∀ u : State → ℝ, u ≠ 0 → ∀ z : ℝ,
-      Filter.Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
-          {ω' : Fin T → Tuple State Action | ∑ s, u s * prAverage M η₀ V₀ ω' s -
-            z * Real.sqrt ((∑ s, ∑ s', u s * u s' * lambdaHat M η₀ V₀ ω' s s') / T) ≤
-            ∑ s, u s * M.valueFixedPoint π s}.indicator 1 ω) Filter.atTop
-        (nhds ((gaussianReal 0 1).real (Set.Iic z)))) ∧
-    (∀ u : State → ℝ, u ≠ 0 → ∀ z : ℝ, 0 ≤ z →
-      Filter.Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
-          {ω' : Fin T → Tuple State Action |
-            |∑ s, u s * (prAverage M η₀ V₀ ω' s - M.valueFixedPoint π s)| ≤
-              z * Real.sqrt ((∑ s, ∑ s', u s * u s' * lambdaHat M η₀ V₀ ω' s s') / T)}.indicator
-            1 ω) Filter.atTop
-        (nhds (2 * (gaussianReal 0 1).real (Set.Iic z) - 1))) ∧
-    (∀ z : ℝ, 0 ≤ z → ∀ η : ℝ, 0 < η →
-      ∀ᶠ T : ℕ in Filter.atTop,
-        1 - 2 * (Fintype.card State : ℝ) * (1 - (gaussianReal 0 1).real (Set.Iic z)) - η ≤
+    ∃ K : ℝ, 0 < K ∧ ∀ T : ℕ, 1 ≤ T →
+      (∀ u : State → ℝ, u ≠ 0 → ∀ z : ℝ,
+        |∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+            {ω' : Fin T → Tuple State Action | ∑ s, u s * prAverage M η₀ V₀ ω' s -
+              z * Real.sqrt ((∑ s, ∑ s', u s * u s' * lambdaHat M η₀ V₀ ω' s s') / T) ≤
+              ∑ s, u s * M.valueFixedPoint π s}.indicator 1 ω -
+          (gaussianReal 0 1).real (Set.Iic z)| ≤ K * (T : ℝ) ^ (-(1 / 3 : ℝ))) ∧
+      (∀ u : State → ℝ, u ≠ 0 → ∀ z : ℝ, 0 ≤ z →
+        |∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+            {ω' : Fin T → Tuple State Action |
+              |∑ s, u s * (prAverage M η₀ V₀ ω' s - M.valueFixedPoint π s)| ≤
+                z * Real.sqrt ((∑ s, ∑ s', u s * u s' * lambdaHat M η₀ V₀ ω' s s') /
+                  T)}.indicator 1 ω -
+          (2 * (gaussianReal 0 1).real (Set.Iic z) - 1)| ≤ K * (T : ℝ) ^ (-(1 / 3 : ℝ))) ∧
+      (∀ z : ℝ, 0 ≤ z →
+        1 - 2 * (Fintype.card State : ℝ) * (1 - (gaussianReal 0 1).real (Set.Iic z)) -
+            K * (T : ℝ) ^ (-(1 / 3 : ℝ)) ≤
           ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
             {ω' : Fin T → Tuple State Action | ∀ s,
               |prAverage M η₀ V₀ ω' s - M.valueFixedPoint π s| ≤
@@ -885,12 +982,12 @@ Differs from the printed text: (1) the printed rule lets the convex set `𝒞_α
 the data and the region is the translate-and-scale `V̄_T + T^{-1/2} K` (the C47 proposed correction).
 (2) The Gaussian reference is the oracle `N(0, Λ)`, `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (the population target of the
 printed plug-in `Λ̂_T`, unknown in practice); `Γ_true` is the true residual covariance, not the printed `Γ`
-(C43). The plug-in version with a rate remains open. (3) The rate is `T^{-1/3} log(2T)`, weaker than the
-printed `T^{-1/3}` of Theorem 7.11 by the factor `log(2T)`, with an instance constant `K₀`. `Γ_true ≻ 0` is
+(C43). The plug-in version with the same rate is the entry `Eq_convex_Cdelta_corrected_plugin`. (3) The rate is the printed `T^{-1/3}` of Theorem 7.11, but
+with an instance constant `K₀` (it may depend on `M, π, μ, η₀, V₀`), not a printed coefficient. `Γ_true ≻ 0` is
 assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 
 Statement: one `K₀ > 0` such that for all `T ≥ 1` and every convex `K ⊆ ℝ^S`,
-`|P(V^π ∈ V̄_T + T^{-1/2} K) − N(0, Λ)(K)| ≤ K₀ T^{-1/3} log(2T)`. -/
+`|P(V^π ∈ V̄_T + T^{-1/2} K) − N(0, Λ)(K)| ≤ K₀ T^{-1/3}`. -/
 def Eq_convex_Cdelta_fixedShape_corrected_oracle : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
@@ -902,7 +999,7 @@ def Eq_convex_Cdelta_fixedShape_corrected_oracle : Prop :=
           {ω' : Fin T → Tuple State Action |
             M.valueFixedPoint π ∈ prAverage M η₀ V₀ ω' +ᵥ (Real.sqrt T)⁻¹ • K}.indicator 1 ω) -
         (gaussCov (tdA M π μ) (trueGamma M π μ)).real K| ≤
-        K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
+        K₀ * (T : ℝ) ^ (-(1 / 3 : ℝ))
 
 open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
 /-- Corrected, oracle-covariance variant of the ellipsoid confidence region (`chapters/inference.tex:207–213`,
@@ -916,11 +1013,11 @@ identification is not part of this entry but is proved in the separate entry
 separate entry `Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated`). (2) The matrix is
 the oracle `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not the plug-in `Λ̂_T`; `Γ_true` is the true
 residual covariance (C43); under the hypotheses `Λ` is invertible, so `Λ⁻¹` is the genuine inverse. The plug-in
-version with a rate remains open. (3) Rate `T^{-1/3} log(2T)` (weaker than Theorem 7.11's printed `T^{-1/3}` by
-`log(2T)`), instance constant `K₀`. `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
+version, with the same rate, is `Eq_convex_Cdelta_ellipsoid_corrected_plugin`. (3) Rate `T^{-1/3}` as printed, with an instance constant `K₀` (it may depend on
+`M, π, μ, η₀, V₀`). `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 
 Statement: one `K₀ > 0` such that for all `T ≥ 1` and `q ≥ 0`, with `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ`,
-`|P(T (V^π − V̄_T)ᵀ Λ⁻¹ (V^π − V̄_T) ≤ q) − N(0,Λ){x | xᵀΛ⁻¹x ≤ q}| ≤ K₀ T^{-1/3} log(2T)`. -/
+`|P(T (V^π − V̄_T)ᵀ Λ⁻¹ (V^π − V̄_T) ≤ q) − N(0,Λ){x | xᵀΛ⁻¹x ≤ q}| ≤ K₀ T^{-1/3}`. -/
 def Eq_convex_Cdelta_ellipsoid_corrected_oracle : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
@@ -937,7 +1034,7 @@ def Eq_convex_Cdelta_ellipsoid_corrected_oracle : Prop :=
         (gaussCov (tdA M π μ) (trueGamma M π μ)).real
           {x | ∑ s, ∑ s', x s * x s' *
             ((tdA M π μ)⁻¹ * diagonal (trueGamma M π μ) * (tdA M π μ)⁻¹ᵀ)⁻¹ s s' ≤ q}| ≤
-        K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
+        K₀ * (T : ℝ) ^ (-(1 / 3 : ℝ))
 
 open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
 /-- Corrected, oracle-covariance variant of the hyper-rectangle confidence region (`chapters/inference.tex:198–205`,
@@ -946,14 +1043,14 @@ item (i) of the rule `eq:convex.Cdelta` :187–196). See `docs/SOURCE-ISSUES.md#
 Differs from the printed text: (1) the printed half-width `R̂/√T`, with `R̂` the `ℓ∞` quantile under covariance
 `Λ̂_T/T`, applies `√T` twice (C47(2)); here the half-width is `r/√T` with the Gaussian side
 `N(0,Λ){x | ‖x‖∞ ≤ r}`, i.e. `r` is an `ℓ∞` level under covariance `Λ` (not `Λ/T`). (2) The covariance is the oracle
-`Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not `Λ̂_T`; the plug-in version is asymptotic only (`Eq_convex_Cdelta_rectangle_corrected_plugin`) and with a rate remains open;
-`Γ_true` is the true residual covariance (C43). (3) Rate `T^{-1/3} log(2T)` (weaker than Theorem 7.11's printed
-`T^{-1/3}` by `log(2T)`), instance constant `K₀`. `Γ_true ≻ 0` is assumed. The existence of an exact `1 − α` level `r` is not part of this entry
+`Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not `Λ̂_T`; the plug-in version, with rate `T^{-1/3}`, is `Eq_convex_Cdelta_rectangle_corrected_plugin`;
+`Γ_true` is the true residual covariance (C43). (3) Rate `T^{-1/3}` as printed, with an instance
+constant `K₀` (it may depend on `M, π, μ, η₀, V₀`). `Γ_true ≻ 0` is assumed. The existence of an exact `1 − α` level `r` is not part of this entry
 (see `Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated`).
 Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 
 Statement: one `K₀ > 0` such that for all `T ≥ 1` and `r ≥ 0`,
-`|P(∀ s, V̄_T(s) − r/√T ≤ V^π(s) ≤ V̄_T(s) + r/√T) − N(0,Λ){x | ∀ s, |x s| ≤ r}| ≤ K₀ T^{-1/3} log(2T)`. -/
+`|P(∀ s, V̄_T(s) − r/√T ≤ V^π(s) ≤ V̄_T(s) + r/√T) − N(0,Λ){x | ∀ s, |x s| ≤ r}| ≤ K₀ T^{-1/3}`. -/
 def Eq_convex_Cdelta_rectangle_corrected_oracle : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
@@ -966,7 +1063,7 @@ def Eq_convex_Cdelta_rectangle_corrected_oracle : Prop :=
             prAverage M η₀ V₀ ω' s - r / Real.sqrt T ≤ M.valueFixedPoint π s ∧
               M.valueFixedPoint π s ≤ prAverage M η₀ V₀ ω' s + r / Real.sqrt T}.indicator 1 ω) -
         (gaussCov (tdA M π μ) (trueGamma M π μ)).real {x | ∀ s, |x s| ≤ r}| ≤
-        K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
+        K₀ * (T : ℝ) ^ (-(1 / 3 : ℝ))
 
 open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
 /-- Calibrated, corrected, oracle-covariance variant of the ellipsoid confidence region
@@ -976,16 +1073,16 @@ open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTh
 Differs from the printed text exactly as `Eq_convex_Cdelta_ellipsoid_corrected_oracle`: (1) corrected shape,
 threshold `q` compared with `T (V − V̄_T)ᵀ Λ⁻¹ (V − V̄_T)` instead of the printed `R²` (C47(3)); (2) oracle
 covariance `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not the plug-in `Λ̂_T`; `Γ_true` is the true residual
-covariance (C43); (3) rate `T^{-1/3} log(2T)` (weaker than the printed `T^{-1/3}` by `log(2T)`), instance constant
+covariance (C43); (3) rate `T^{-1/3}` as printed, with an instance constant
 `K₀` (it may depend on `M, π, μ, η₀, V₀`, but not on `α`). In addition to that entry, for every `α ∈ (0,1)` an
 exact Gaussian `1 − α` level `q_α ≥ 0` exists, `N(0,Λ){x | xᵀΛ⁻¹x ≤ q_α} = 1 − α`, and the coverage is within
-`K₀ T^{-1/3} log(2T)` of `1 − α`. This entry only asserts that the level exists; its identification with the
+`K₀ T^{-1/3}` of `1 − α`. This entry only asserts that the level exists; its identification with the
 `χ²(S)` `(1 − α)`-quantile is the separate entry `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared`
-(threshold `R`, not the printed `R²`). These are not the printed formulas; the plug-in versions (with `Λ̂_T`) are the asymptotic entries `Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin`; with a rate they remain open.
+(threshold `R`, not the printed `R²`). These are not the printed formulas; the plug-in versions (with `Λ̂_T`) are the entries `Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin`, also with rate `T^{-1/3}`.
 `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 
 Statement: one `K₀ > 0` such that for every `α ∈ (0,1)` there is `q ≥ 0` with `N(0,Λ){x | xᵀΛ⁻¹x ≤ q} = 1 − α`
-and, for all `T ≥ 1`, `|P(T (V^π − V̄_T)ᵀ Λ⁻¹ (V^π − V̄_T) ≤ q) − (1 − α)| ≤ K₀ T^{-1/3} log(2T)`. -/
+and, for all `T ≥ 1`, `|P(T (V^π − V̄_T)ᵀ Λ⁻¹ (V^π − V̄_T) ≤ q) − (1 − α)| ≤ K₀ T^{-1/3}`. -/
 def Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
@@ -1003,7 +1100,7 @@ def Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated : Prop :=
                 (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
                   ((tdA M π μ)⁻¹ * diagonal (trueGamma M π μ) * (tdA M π μ)⁻¹ᵀ)⁻¹ s s' ≤
                 q}.indicator 1 ω) - (1 - α)| ≤
-          K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
+          K₀ * (T : ℝ) ^ (-(1 / 3 : ℝ))
 
 open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
 /-- Calibrated, corrected, oracle-covariance variant of the hyper-rectangle confidence region
@@ -1013,15 +1110,15 @@ open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTh
 Differs from the printed text exactly as `Eq_convex_Cdelta_rectangle_corrected_oracle`: (1) corrected shape,
 half-width `r/√T` with `r` an `ℓ∞` level under covariance `Λ` (the printed `R̂/√T` applies `√T` twice, C47(2));
 (2) oracle covariance `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not `Λ̂_T`; `Γ_true` is the true
-residual covariance (C43); (3) rate `T^{-1/3} log(2T)` (weaker than the printed `T^{-1/3}` by `log(2T)`),
-instance constant `K₀` (independent of `α`). In addition to that entry, for every `α ∈ (0,1)` an exact Gaussian
+residual covariance (C43); (3) rate `T^{-1/3}` as printed, with an
+instance constant `K₀` (it may depend on `M, π, μ, η₀, V₀`, but not on `α`). In addition to that entry, for every `α ∈ (0,1)` an exact Gaussian
 `1 − α` level `r_α ≥ 0` exists, `N(0,Λ){x | ∀ s, |x s| ≤ r_α} = 1 − α`, and the coverage is within
-`K₀ T^{-1/3} log(2T)` of `1 − α`. The level is only shown to exist: it is not identified with the printed `ℓ∞`
-quantile formula. These are not the printed formulas; the plug-in versions (with `Λ̂_T`) are the asymptotic entries `Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin`; with a rate they remain open.
+`K₀ T^{-1/3}` of `1 − α`. The level is only shown to exist: it is not identified with the printed `ℓ∞`
+quantile formula. These are not the printed formulas; the plug-in versions (with `Λ̂_T`) are the entries `Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin`, also with rate `T^{-1/3}`.
 `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 
 Statement: one `K₀ > 0` such that for every `α ∈ (0,1)` there is `r ≥ 0` with `N(0,Λ){x | ∀ s, |x s| ≤ r} = 1 − α`
-and, for all `T ≥ 1`, `|P(∀ s, V̄_T(s) − r/√T ≤ V^π(s) ≤ V̄_T(s) + r/√T) − (1 − α)| ≤ K₀ T^{-1/3} log(2T)`. -/
+and, for all `T ≥ 1`, `|P(∀ s, V̄_T(s) − r/√T ≤ V^π(s) ≤ V̄_T(s) + r/√T) − (1 − α)| ≤ K₀ T^{-1/3}`. -/
 def Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
@@ -1036,7 +1133,7 @@ def Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated : Prop :=
               prAverage M η₀ V₀ ω' s - r / Real.sqrt T ≤ M.valueFixedPoint π s ∧
                 M.valueFixedPoint π s ≤ prAverage M η₀ V₀ ω' s + r / Real.sqrt T}.indicator 1 ω) -
           (1 - α)| ≤
-          K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
+          K₀ * (T : ℝ) ^ (-(1 / 3 : ℝ))
 
 open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
 /-- Corrected, oracle-covariance ellipsoid confidence region at the printed `χ²(S)` quantile
@@ -1046,14 +1143,14 @@ open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTh
 Differs from the printed text: (1) the threshold is the `χ²(S)` `(1 − α)`-quantile `R` itself, not the printed
 `R²` (`R` is already on the `χ²` scale, C47(3)); `d = S = |State|`. (2) The matrix is the oracle
 `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (unknown in practice), not the plug-in `Λ̂_T`; `Γ_true` is the true residual
-covariance (C43); the plug-in version with a rate remains open. (3) Rate `T^{-1/3} log(2T)` (weaker than
-Theorem 7.11's printed `T^{-1/3}` by `log(2T)`), instance constant `K₀` (independent of `α` and `R`).
+covariance (C43); the plug-in version with the same rate is `Eq_convex_Cdelta_ellipsoid_corrected_plugin`. (3) Rate `T^{-1/3}` as printed, with an
+instance constant `K₀` (it may depend on `M, π, μ, η₀, V₀`, but not on `α` or `R`).
 `Γ_true ≻ 0` is assumed. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
 `χ²(S)` is written out as Mathlib's gamma law `gammaMeasure (S/2) (1/2)` (shape `S/2`, rate `1/2`).
 
 Statement: one `K₀ > 0` such that for every `α ∈ (0,1)` a `χ²(S)` `(1 − α)`-quantile `R ≥ 0` exists, and for
 every `R` with `F_{χ²(S)}(R) = 1 − α`: `N(0,Λ){x | xᵀΛ⁻¹x ≤ R} = 1 − α` and, for all `T ≥ 1`,
-`|P(T (V^π − V̄_T)ᵀ Λ⁻¹ (V^π − V̄_T) ≤ R) − (1 − α)| ≤ K₀ T^{-1/3} log(2T)`. -/
+`|P(T (V^π − V̄_T)ᵀ Λ⁻¹ (V^π − V̄_T) ≤ R) − (1 − α)| ≤ K₀ T^{-1/3}`. -/
 def Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
@@ -1073,66 +1170,49 @@ def Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared : Prop :=
                   (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
                     ((tdA M π μ)⁻¹ * diagonal (trueGamma M π μ) * (tdA M π μ)⁻¹ᵀ)⁻¹ s s' ≤
                   R}.indicator 1 ω) - (1 - α)| ≤
-            K₀ * ((T : ℝ) ^ (-(1 / 3 : ℝ)) * Real.log (2 * T))
+            K₀ * (T : ℝ) ^ (-(1 / 3 : ℝ))
 
 open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
-/-- Corrected, plug-in-covariance ellipsoid confidence region at the printed `χ²(S)` quantile
-(`chapters/inference.tex:207–213`, item (ii) of `eq:convex.Cdelta` :187–196; plug-in `Λ̂_T`
-`eq:defn-hat-Lambda` :180–182). See `docs/SOURCE-ISSUES.md#C47` (items (3), (4)) and `#C43`.
-
-Differs from the printed text: (1) the threshold is the `χ²(S)` `(1 − α)`-quantile `R` itself, not the
-printed `R²` (C47(3)); `d = S = |State|`. (2) Asymptotic coverage only, pointwise in `q` and `R`; there is
-no rate, because the plug-in consistency `Eq_defn_hat_Lambda_corrected` has no rate. (3) Added
-non-degeneracy hypothesis `Γ_true ≻ 0`. The limit covariance of `Λ̂_T` is
-`Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (C43), not the printed `Λ⋆`. (4) Junk value: when `Ā_T` is singular the
-printed `Λ̂_T` is undefined (C47(4)). Lean's `Matrix.inv` gives `Λ̂_T = 0` and `Λ̂_T⁻¹ = 0`, and that event
-has vanishing probability. Not covered here: data-selected sets (C47(1)); the plug-in `ℓ∞` rectangle is
-`Eq_convex_Cdelta_rectangle_corrected_plugin`. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133), every `V₀`.
-`χ²(S)` is Mathlib's `gammaMeasure (S/2) (1/2)`.
-
-Statement: (1) for every `q`, `P(T (V^π − V̄_T)ᵀ Λ̂_T⁻¹ (V^π − V̄_T) ≤ q) → F_{χ²(S)}(q)`; (2) for every
-`α ∈ (0,1)` and every `R` with `F_{χ²(S)}(R) = 1 − α`, `P(T (V^π − V̄_T)ᵀ Λ̂_T⁻¹ (V^π − V̄_T) ≤ R) → 1 − α`. -/
+/-- Corrected plug-in ellipsoid (`chapters/inference.tex:207–213`, item (ii) of `eq:convex.Cdelta`
+:187–196; `Λ̂_T` :180–182), finite-`T` rate. See `docs/SOURCE-ISSUES.md#C47` ((3), (4)) and `#C43`.
+Differs: threshold `R` (the `χ²(S)` quantile), not `R²` (C47(3)), `d = S`; instance constant `K`
+(independent of `T`, `q`, `α`, `R`), rate `T^{-1/3}`; added `Γ_true ≻ 0`; target per C43; junk inverse
+`Λ̂_T⁻¹ = 0` on singular outcomes, inside the charged bad event (C47(4)). `χ²(S)` is
+`gammaMeasure (S/2) (1/2)`. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4`, every `V₀`. -/
 def Eq_convex_Cdelta_ellipsoid_corrected_plugin : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
     (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ),
     (∀ s, 0 < μ.prob s) → 0 < η₀ → η₀ < 1 / 4 → (∀ s, 0 < trueGamma M π μ s) →
-    (∀ q : ℝ,
-      Filter.Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
-          {ω' : Fin T → Tuple State Action | (T : ℝ) * ∑ s, ∑ s',
-            (M.valueFixedPoint π s - prAverage M η₀ V₀ ω' s) *
-              (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
-                (lambdaHat M η₀ V₀ ω')⁻¹ s s' ≤ q}.indicator 1 ω) Filter.atTop
-        (nhds (cdf (gammaMeasure ((Fintype.card State : ℝ) / 2) (1 / 2)) q))) ∧
-    (∀ α : ℝ, 0 < α → α < 1 → ∀ R : ℝ,
-      cdf (gammaMeasure ((Fintype.card State : ℝ) / 2) (1 / 2)) R = 1 - α →
-      Filter.Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
-          {ω' : Fin T → Tuple State Action | (T : ℝ) * ∑ s, ∑ s',
-            (M.valueFixedPoint π s - prAverage M η₀ V₀ ω' s) *
-              (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
-                (lambdaHat M η₀ V₀ ω')⁻¹ s s' ≤ R}.indicator 1 ω) Filter.atTop
-        (nhds (1 - α)))
+    ∃ K : ℝ, 0 < K ∧
+      (∀ T : ℕ, 1 ≤ T → ∀ q : ℝ,
+        |∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+            {ω' : Fin T → Tuple State Action | (T : ℝ) * ∑ s, ∑ s',
+              (M.valueFixedPoint π s - prAverage M η₀ V₀ ω' s) *
+                (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
+                  (lambdaHat M η₀ V₀ ω')⁻¹ s s' ≤ q}.indicator 1 ω -
+          cdf (gammaMeasure ((Fintype.card State : ℝ) / 2) (1 / 2)) q| ≤
+          K * (T : ℝ) ^ (-(1 / 3 : ℝ))) ∧
+      (∀ α : ℝ, 0 < α → α < 1 → ∀ R : ℝ,
+        cdf (gammaMeasure ((Fintype.card State : ℝ) / 2) (1 / 2)) R = 1 - α →
+        ∀ T : ℕ, 1 ≤ T →
+          |∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+              {ω' : Fin T → Tuple State Action | (T : ℝ) * ∑ s, ∑ s',
+                (M.valueFixedPoint π s - prAverage M η₀ V₀ ω' s) *
+                  (M.valueFixedPoint π s' - prAverage M η₀ V₀ ω' s') *
+                    (lambdaHat M η₀ V₀ ω')⁻¹ s s' ≤ R}.indicator 1 ω - (1 - α)| ≤
+            K * (T : ℝ) ^ (-(1 / 3 : ℝ)))
 
-open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix Filter Topology in
-/-- Corrected, plug-in-covariance hyper-rectangle confidence region (`chapters/inference.tex:198–205`, item (i)
-of the rule `eq:convex.Cdelta` :187–196; plug-in `Λ̂_T` `eq:defn-hat-Lambda` :180–182). See
-`docs/SOURCE-ISSUES.md#C47` (items (2), (4)) and `#C43`.
-
-Differs from the printed text: (1) half-width `r̂_T/√T` with `r̂_T` a `(1 − α)` quantile of `‖X‖∞`,
-`X ~ N(0, Λ̂_T)`; the printed `R̂/√T` with `R̂` the quantile under `Λ̂_T/T` applies `√T` twice (C47(2)). Since
-`R̂ = r̂_T/√T` (Gaussian scaling; not formalized), this is the rectangle with half-width `R̂` in place of the printed `R̂/√T`.
-(2) Asymptotic coverage only; no rate (plug-in consistency `Eq_defn_hat_Lambda_corrected` has none).
-(3) Added non-degeneracy hypothesis `Γ_true ≻ 0`; the limit covariance is `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ` (C43).
-(4) Junk value: on the singular event `Ā_T` (C47(4)) Lean's `Matrix.inv` gives `Λ̂_T = 0`, so `N(0, Λ̂_T)` is
-the point mass at `0` and `r̂_T = 0`; that event has vanishing probability.
-`N(0, Λ̂_T)` is written as the law of `Q Z`, `Z` standard Gaussian on `State → ℝ`, `Q Qᵀ = Λ̂_T` (`Λ̂_T` is always
-PSD; the law does not depend on `Q`). `r̂` is a quantile when every `r` with box mass `< 1 − α` is `≤ r̂` and
-every `r` with box mass `> 1 − α` is `≥ r̂`. Kept: i.i.d. sampling, full-support `μ`, `0 < η₀ < 1/4` (:133),
-every `V₀`, `α ∈ (0,1)` (:189).
-
-Statement: such quantile levels `r̂_T(ω)` exist, and for every choice of them,
-`P(∀ s, V̄_T(s) − r̂_T/√T ≤ V^π(s) ≤ V̄_T(s) + r̂_T/√T) → 1 − α`. -/
+open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTheory Matrix in
+/-- Corrected plug-in hyper-rectangle (`chapters/inference.tex:198–205`, item (i) of
+`eq:convex.Cdelta` :187–196; `Λ̂_T` :180–182), finite-`T` rate. See `docs/SOURCE-ISSUES.md#C47`
+((2), (4)) and `#C43`. Differs: half-width `r̂_T/√T`, `r̂_T` a `(1 − α)` quantile of `‖X‖∞`,
+`X ~ N(0, Λ̂_T)` (not the printed double-`√T` scaling, C47(2)); `K` depends on the instance AND on `α`
+(through `min(α, 1 − α)`), not on `T` or the quantile choice; rate `T^{-1/3}`; added `Γ_true ≻ 0`;
+target per C43; junk `Λ̂_T = 0` (so `r̂_T = 0`) on the singular event, charged (C47(4)).
+`N(0, Λ̂_T)` is the law of `Q Z`, `Q Qᵀ = Λ̂_T`. Kept: i.i.d. sampling, full-support `μ`,
+`0 < η₀ < 1/4`, every `V₀`, `α ∈ (0,1)`. -/
 def Eq_convex_Cdelta_rectangle_corrected_plugin : Prop :=
   ∀ (State Action : Type) [Fintype State] [DecidableEq State] [Nonempty State]
     [Fintype Action] [Nonempty Action]
@@ -1147,18 +1227,19 @@ def Eq_convex_Cdelta_rectangle_corrected_plugin : Prop :=
             {x | ∀ s, |x s| ≤ r} < 1 - α → r ≤ rhat T ω) ∧
         (∀ r : ℝ, 1 - α < ((Measure.pi fun _ : State ↦ gaussianReal 0 1).map (Q *ᵥ ·)).real
             {x | ∀ s, |x s| ≤ r} → rhat T ω ≤ r)) ∧
-    ∀ rhat : (T : ℕ) → (Fin T → Tuple State Action) → ℝ,
+    ∃ K : ℝ, 0 < K ∧ ∀ rhat : (T : ℕ) → (Fin T → Tuple State Action) → ℝ,
       (∀ (T : ℕ) (ω : Fin T → Tuple State Action), ∃ Q : Matrix State State ℝ,
         Q * Qᵀ = lambdaHat M η₀ V₀ ω ∧
         (∀ r : ℝ, ((Measure.pi fun _ : State ↦ gaussianReal 0 1).map (Q *ᵥ ·)).real
             {x | ∀ s, |x s| ≤ r} < 1 - α → r ≤ rhat T ω) ∧
         (∀ r : ℝ, 1 - α < ((Measure.pi fun _ : State ↦ gaussianReal 0 1).map (Q *ᵥ ·)).real
             {x | ∀ s, |x s| ≤ r} → rhat T ω ≤ r)) →
-      Tendsto (fun T : ℕ ↦ ∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
-          {ω' : Fin T → Tuple State Action | ∀ s,
-            prAverage M η₀ V₀ ω' s - rhat T ω' / Real.sqrt T ≤ M.valueFixedPoint π s ∧
-              M.valueFixedPoint π s ≤ prAverage M η₀ V₀ ω' s + rhat T ω' / Real.sqrt T}.indicator 1 ω)
-        atTop (𝓝 (1 - α))
+      ∀ T : ℕ, 1 ≤ T →
+        |∑ ω : Fin T → Tuple State Action, pathWeight M π μ ω *
+            {ω' : Fin T → Tuple State Action | ∀ s,
+              prAverage M η₀ V₀ ω' s - rhat T ω' / Real.sqrt T ≤ M.valueFixedPoint π s ∧
+                M.valueFixedPoint π s ≤ prAverage M η₀ V₀ ω' s + rhat T ω' / Real.sqrt T}.indicator
+              1 ω - (1 - α)| ≤ K * (T : ℝ) ^ (-(1 / 3 : ℝ))
 
 end EqConvexCdelta
 
@@ -1563,9 +1644,13 @@ Differences from the printed statement:
   convention, the empirical kernel needs it).
 * Oracles are deterministic maps of the empirical game, and the equilibrium property is required
   for every data set (`∀ data`).
-* Non-vacuity: clause (a) is non-vacuous in Lean (a causal backward-induction CCE planner is
-  constructed, `causalCCEOracle_exists`). Clauses (b) and (c) are not shown non-vacuous in Lean:
-  a causal NE oracle for general-sum games needs Nash's existence theorem, which is not in Mathlib.
+* Non-vacuity: clause (a) is non-vacuous in Lean (a causal backward-induction CCE planner,
+  `causalCCEOracle_exists`). For two-player constant-sum games (`r₀ + r₁ = c` at steps `1..H`,
+  e.g. `c = 1` with rewards in `[0,1]`; strict zero-sum with rewards in `[0,1]` forces zero rewards)
+  clauses (b) and (c) are also non-vacuous: the product of the marginals of that planner is a causal
+  exact-NE oracle (`exists_causalNEOracle_constSum`, `thm7_6_clauseB_hypotheses_constSum`). For
+  general-sum games and for `m ≥ 3` players, clauses (b) and (c) are not shown non-vacuous in Lean:
+  a causal NE oracle there needs Nash's existence theorem, which is not in Mathlib.
 The constant proved is `C₁ = 400`. -/
 def Thm7_6_restricted : Prop :=
   ∃ C₁ : ℝ, 0 < C₁ ∧

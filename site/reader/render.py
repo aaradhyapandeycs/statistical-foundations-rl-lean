@@ -11,7 +11,7 @@ from .book import Book, ENV_NAMES
 from .graph import GitReader, gen_nodes
 from .info import InfoPages
 from .lean import ENTRY_ORDER, LABELS, MARKERS, REPO, LeanIndex, chip
-from .tex import RESULT_KINDS, label_id
+from .tex import RESULT_KINDS, html_id, label_id
 
 # Items that are never "proved": they get no status chip, only "cited by" links.
 CONTEXT_KINDS = {"algorithm", "assumption", "definition"}
@@ -35,7 +35,7 @@ ORIGIN_WORDS = {
     "own-proof:source-omits": "New proof by this project: the book omits the proof.",
 }
 OURS = "proposed by this project; not confirmed by the authors"
-SUPPORTING = "supporting Lean statement (not separately counted)"
+SUPPORTING = "not separately counted for this item"
 
 
 def esc(t: str) -> str:
@@ -263,6 +263,15 @@ class Site(InfoPages):
                     if pr.get("paper") else "")
             refuted = (f'<p class="refuted-line tex2jax_process"><strong>Refuted in Lean</strong> under this reading: '
                        f'{reading} Lean: {names}.{more} {what} The refutation and any correction are {OURS}.</p>')
+        elif "boundary" in n.get("site_markers", ()):
+            names = ", ".join(f'<code title="{attr(x)}">{esc(x.rsplit(".", 1)[-1])}</code>'
+                              for x in (pr.get("lean") or n["refutations_cited"])) or "see the coverage ledger"
+            more = (" Some further boundary cases are paper arguments by this project, not checked in Lean."
+                    if pr.get("paper") else "")
+            refuted = (f'<p class="refuted-line boundary tex2jax_process"><strong>Fails at a boundary case '
+                       f'(checked in Lean):</strong> {reading} Lean: {names}.{more} Only a degenerate boundary or '
+                       f'domain case fails; the repair restricts the domain. {what} The finding and any correction '
+                       f'are {OURS}.</p>')
         elif "fails-paper" in n.get("site_markers", ()):
             refuted = (f'<p class="refuted-line paper tex2jax_process"><strong>Appears to fail (paper argument, not '
                        f'checked in Lean):</strong> {reading} {what} The argument and any correction are {OURS}.</p>')
@@ -279,14 +288,15 @@ class Site(InfoPages):
         to_label = {"printed": "stated", "corrected": "corrected", "restricted": "restricted"}
         rec = e.record or {}
         if rec.get("status_override"):
-            return "incomplete", [], gen_nodes.INCOMPLETE_REASONS["related"]
+            # The entry itself is proved; it is shown as a related result, not as the printed item.
+            return "incomplete", [], "this entry: a related result, not counted for the printed item"
         # The entry's status follows the node graph's `counted` flag (one rule for card and nodes.json).
         if not (se and se.get("counted")):
             if n["class"] == "prose" and n["statement_status"] == "partial":
                 return "incomplete", [], "partial result toward this item (not counted as proved)"
             if n["class"] == "prose" and n["proof_status"] != "proved":
                 return "incomplete", [], n.get("site_sub_reason") or "not counted as proved"
-            return "incomplete", [], SUPPORTING
+            return "supporting", [], SUPPORTING
         if n["proof_status"] != "proved" or e.status == "partial" or variant not in to_label:
             return "incomplete", [], n.get("site_sub_reason") or "partial"
         label = to_label[variant]
@@ -437,11 +447,12 @@ class Site(InfoPages):
                     view = ({"label": ln.get("site_label"), "markers": ln.get("site_markers", ()),
                              "sub": ln.get("site_sub_reason", "")} if ln else
                             {"label": None, "markers": (), "sub": "ledger note (not a tracked item)"})
-                    if ln and "refuted" in ln.get("site_markers", ()):
+                    if ln and {"refuted", "boundary"} & set(ln.get("site_markers", ())):
                         out.append(self.item_header(ln))
                         view = {"label": None, "markers": (), "sub": ""}  # shown once, in the header
                     out.append(self.lean.ledger_card(shown, self.lean.coverage[lab], view))
-            if not home and not (set(b.labels or []) & ledger_seen) and b.kind == "env" \
+            own_keys = set(b.labels or []) | ({"id:" + b.entry["id"]} if b.entry else set())
+            if not home and not (own_keys & ledger_seen) and b.kind == "env" \
                     and getattr(b, "kind_name", "") in RESULT_KINDS | {"remark"} and n is not None:
                 out.append(f'<div class="lean-none">{self.node_chip(n)}'
                            f'{(" " + esc(n["display_name"])) if b is not top else ""}</div>')
@@ -519,8 +530,8 @@ class Site(InfoPages):
         out.append('<li class="toc-extra"><a href="references.html">References</a></li></ol></nav>')
         return "".join(out)
 
-    NAV = [("index", "Overview"), ("results", "Results"), ("book", "Book"),
-           ("status", "Status", [("status", "Progress"), ("graph", "Dependency graph"), ("errata", "Source issues")]),
+    NAV = [("index", "Overview"), ("results", "Results"), ("book", "Book"), ("graph", "Dependency graph"),
+           ("status", "Status", [("status", "Progress"), ("errata", "Source issues")]),
            ("methodology", "Methodology"), ("contribute", "Contribute"), ("credits", "Credits")]
 
     def nav_html(self, current: str | None, mobile: bool = False) -> str:
@@ -613,6 +624,10 @@ endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{
         """A count from `summary` (dotted path), tagged so build.py can check it against nodes.json."""
         return f'<span class="n" data-count="{attr(path)}">{self.count_value(path)}</span>'
 
+    def cntw(self, path: str, one: str, many: str) -> str:
+        """A tagged count followed by the singular or plural noun phrase."""
+        return f'{self.cnt(path)} {one if self.count_value(path) == 1 else many}'
+
     def label_counts(self, prefix: str, with_zero: bool = False) -> str:
         parts = []
         for k in gen_nodes.SITE_LABEL_ORDER:
@@ -624,7 +639,9 @@ endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{
         return (f'Of the {self.cnt("named_results_in_inventory")} numbered theorems, lemmas and claims: '
                 f'{self.label_counts("named_by_label", True)}. Of these, {self.cnt("named_refuted_marker")} have '
                 f'a printed statement refuted in Lean under the reading formalized, marked '
-                f'<span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span>, and '
+                f'<span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span>; '
+                f'{self.cnt("named_boundary_marker")} more fail in Lean only at a degenerate boundary case '
+                f'(the domain is repaired), marked <span class="marker mk-boundary">{esc(MARKERS["boundary"])}</span>, and '
                 f'{self.cnt("named_fails_paper_marker")} more appear to fail by a paper argument of this project '
                 f'(not checked in Lean), marked <span class="marker mk-fails-paper">{esc(MARKERS["fails-paper"])}'
                 f'</span>. Remarks and displayed claims are counted separately ({self.cnt("prose_nodes")} tracked): '
@@ -639,7 +656,12 @@ endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{
                 self.where.setdefault(html.unescape(m.group(1)), pid)
 
     def href(self, n: dict) -> str | None:
-        for a in [label_id(l) for l in n.get("labels", [])] + ["E-" + n["id"]]:
+        for a in [label_id(l) for l in n.get("labels", [])] + ["E-" + html_id(n["id"])]:
+            if a in self.where:
+                return f"{self.where[a]}.html#{a}"
+        # An unlabelled display with no anchor of its own: link the first of its Lean cards.
+        for se in n.get("statement_entries", []):
+            a = "lean-" + se["name"].rsplit(".", 1)[-1]
             if a in self.where:
                 return f"{self.where[a]}.html#{a}"
         return None
@@ -706,7 +728,7 @@ endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{
             title = self.title_html(self.inv_by_id.get(r["id"], {}))
             trs.append(f'<tr data-label="{attr(r["label"] or "none")}" data-markers="{attr(" ".join(r["markers"]))}" '
                        f'data-ch="{attr(r["chapter"])}" data-named="{1 if r["class"] == "named" else 0}" '
-                       f'data-search="{attr(search)}" id="r-{attr(r["id"])}">'
+                       f'data-search="{attr(search)}" id="r-{attr(html_id(r["id"]))}">'
                        f'<td data-th="Item">{name}</td>'
                        f'<td data-th="{"Title" if title else "Label"}">{title}<div class="label"><code>{esc(r["tex_label"])}</code></div></td>'
                        f'<td data-th="Status">{st}</td><td data-th="Lean" class="lean-names">{lean_cell}</td></tr>')
@@ -731,6 +753,7 @@ read from the node graph generated from the project's ledgers at commit <code>{s
 <div class="filters" role="search"><input type="search" id="q" placeholder="Search number, title, label, Lean name or C-id" aria-label="Search results">
 <div class="chips" role="group" aria-label="Filter by label"><button type="button" class="chip on" data-filter="" aria-pressed="true">All</button>{chips}
 <label class="toggle"><input type="checkbox" id="f-refuted"> <span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span></label>
+<label class="toggle"><input type="checkbox" id="f-boundary"> <span class="marker mk-boundary">{esc(MARKERS["boundary"])}</span></label>
 <label class="toggle"><input type="checkbox" id="f-paper"> <span class="marker mk-fails-paper">{esc(MARKERS["fails-paper"])}</span></label>
 <label class="toggle"><input type="checkbox" id="f-new"> <span class="marker mk-new-proof">{esc(MARKERS["new-proof"])}</span></label>
 <label class="toggle"><input type="checkbox" id="f-named" checked> numbered results only</label>
@@ -807,10 +830,12 @@ reviews were done by AI agents, <strong>not by a human referee</strong>.</p>
 <section><h2>At a glance</h2>
 <p class="lede">The {self.cnt("named_results_in_inventory")} numbered theorems, lemmas and claims, by label:</p>
 {self.stacked_bar()}
-<p>{self.cnt("named_refuted_marker")} numbered results and {self.cnt("prose_refuted_marker")} remarks or displays
+<p>{self.cntw("named_refuted_marker", "numbered result", "numbered results")} and {self.cntw("prose_refuted_marker", "remark or display", "remarks or displays")}
 have a printed statement refuted in Lean under the reading formalized
-(<a href="results.html#m=refuted&amp;all=1">show them</a>); {self.cnt("named_fails_paper_marker")} numbered results and
-{self.cnt("prose_fails_paper_marker")} remarks or displays appear to fail by a paper argument of this project, not
+(<a href="results.html#m=refuted&amp;all=1">show them</a>); {self.cntw("named_boundary_marker", "numbered result", "numbered results")} and
+{self.cntw("prose_boundary_marker", "remark or display", "remarks or displays")} fail in Lean only at a degenerate boundary case, with the
+domain repaired (<a href="results.html#m=boundary&amp;all=1">show them</a>); {self.cntw("named_fails_paper_marker", "numbered result", "numbered results")} and
+{self.cntw("prose_fails_paper_marker", "remark or display", "remarks or displays")} appear to fail by a paper argument of this project, not
 checked in Lean (<a href="results.html#m=fails-paper&amp;all=1">show them</a>). Remarks and displayed claims
 ({self.cnt("prose_nodes")} tracked): {self.label_counts("prose_by_label")}; {self.cnt("prose_by_label.no_claim")}
 make no mathematical claim. <a href="status.html">Progress by chapter</a>.</p>
@@ -828,6 +853,7 @@ claims, remarks and displays are in the <a href="results.html">results index</a>
 <li><span class="status st-restricted">proved under restrictions</span> a special case of the printed result is proved; the card states the restriction.</li>
 <li><span class="status st-incomplete">incomplete</span> nothing counted as proved for the printed item yet (the small text says why).</li>
 <li><span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span> Lean proves the printed statement false under the reading formalized.</li>
+<li><span class="marker mk-boundary">{esc(MARKERS["boundary"])}</span> Lean shows the printed statement fails only at a degenerate boundary or domain case (for example T = 1, where a formula divides by log T = 0, or a single action); a domain restriction repairs it. Not counted as refuted.</li>
 <li><span class="marker mk-fails-paper">{esc(MARKERS["fails-paper"])}</span> a paper argument by this project (not checked in Lean) shows the printed statement fails.</li>
 </ul>
 <p>On a book page the book text is on the left and the Lean card on the right (below it on narrow screens). The
@@ -863,6 +889,12 @@ disclosures. Every card links its <code>.tex</code> lines and the pinned Lean li
 <p>{self.cnt("refutation_theorems")} Lean theorems refute a printed statement, under the reading formalized, for
 these {self.cnt("refuted_marker_nodes")} items. A refutation is only as good as the reading; each card states it.</p>
 {self.node_list(refuted)}
+<h3>Boundary cases (domain repaired)</h3>
+<p>For these {self.cnt("boundary_marker_nodes")} items, {self.cnt("boundary_refutation_theorems")} Lean theorems show
+that the printed statement fails only at a degenerate boundary or domain case (for example T = 1, where the printed
+schedule divides by log T = 0, or a single action, where every policy is optimal). Adding the missing domain condition
+repairs it; these are not counted as refutations.</p>
+{self.node_list([n for n in self.node_data["nodes"] if "boundary" in n.get("site_markers", ())])}
 <h3>Failures shown by a paper argument only</h3>
 <p>For these {self.cnt("fails_paper_marker_nodes")} items a paper argument by this project (not checked in Lean)
 shows that the printed statement fails; each card states the case.</p>
@@ -935,8 +967,8 @@ shows that the printed statement fails; each card states the case.</p>
             pid = where.get(anchor)
             if not pid:
                 owner = self.book.label_owner.get(label)
-                if owner and ("E-" + owner["id"]) in where:
-                    anchor = "E-" + owner["id"]
+                if owner and ("E-" + html_id(owner["id"])) in where:
+                    anchor = "E-" + html_id(owner["id"])
                     pid = where[anchor]
             if not pid:
                 return esc(text)

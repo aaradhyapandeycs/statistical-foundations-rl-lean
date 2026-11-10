@@ -32,7 +32,10 @@ Status rules (also shown in words on the site's Status and Graph pages):
   generator fails.  G4 in static_gates.py checks that the listed names resolve.
 * `refuted`: nothing is proved for the node and the field lists a Lean refutation.  A node that
   is proved in some form is never `refuted`; it carries the refuted marker instead.  A node with
-  only a paper argument gets the separate `fails-paper` marker ("appears to fail").
+  only a paper argument gets the separate `fails-paper` marker ("appears to fail").  A field record with
+  `"kind": "boundary"` (the Lean refutation shows only a degenerate boundary or domain case, e.g. T = 1
+  with a junk value, or a single action, and the repair is a domain restriction) gets the `boundary`
+  marker instead of `refuted`; it is excluded from every refuted count and tallied separately.
   `partial`: a COVERAGE row whose bold lead starts with "Partial" or proves only part of the
   item ("First two sentences proved"), or a statement entry without the reviewed record it needs.
 * Source-issue ids are read from ledger scopes and docstrings as `Cnn` (not `C1 = 2`), and from
@@ -60,6 +63,11 @@ Status rules (also shown in words on the site's Status and Graph pages):
   attaches to a label the docstring pairs with its own range ("`eq:x`, `chapters/f.tex:a–b`") when a
   proving COVERAGE row lists that label in its item (before any parenthesis) and names the entry.
 * A closing row may never target a numbered result (the generator fails).
+* An unrecorded entry whose range target is an unlabelled display lying inside the "lines a–b" span of a
+  reviewed COVERAGE row that lists a label the entry cites (as its item) and names the entry belongs to
+  that label's item (`reviewed_parent`; the rectangles and ellipsoids inside `eq:convex.Cdelta`).
+* Gate G7 (write and `--check` modes): the generator fails if any node is incomplete only because its
+  entries have no reviewed status record, or if any statement entry matches no inventory item.
 * A `_holds` wrapper's body ends at the next top-level command (declaration, `open`, `section`, `end`,
   docstring, comment), so later names never count as exports it applies.
 * A COVERAGE row headed **Supporting ...** records infrastructure for other rows: it is never
@@ -152,16 +160,18 @@ SITE_LABEL_ORDER = ("stated", "corrected", "restricted", "incomplete")
 MARKERS = {
     "refuted": "✕ printed statement refuted in Lean",
     "fails-paper": "⚠ printed statement appears to fail (paper argument)",
+    "boundary": "∂ printed statement fails at a boundary case (domain repaired)",
     "new-proof": "new proof",
     "also-corrected": "also corrected",
 }
 # Optional ledger-record fields (named-result-status.json) and their defaults.
+REFUTATION_KINDS = ("counterexample", "boundary")
 PROOF_ORIGINS = ("source-proof", "source-proof-repaired", "own-proof:source-cites", "own-proof:source-omits",
                  "unclassified")
 CORRECTION_STATUSES = ("proposed-by-project", "author-confirmed")
 STATUS_OVERRIDES = ("incomplete",)  # downgrade-only
 INCOMPLETE_REASONS = {
-    "refuted": "printed statement refuted in Lean; nothing proved",
+    "refuted": "nothing proved",
     "partial": "partial",
     "open": "not yet formalized",
     "prose-claim": "not yet formalized",
@@ -169,6 +179,10 @@ INCOMPLETE_REASONS = {
     "cited-out-of-scope": "cited from the literature; out of scope (project decision)",
     "related": "a related statement is proved, not the printed result",
 }
+
+
+# Sub-reason of a remark or display whose only entries have no reviewed COVERAGE row (gate G7 fails on it).
+UNRECORDED_SUB_REASON = "Lean statement without a reviewed status record"
 
 
 def record_fields(rec: dict) -> dict:
@@ -218,7 +232,9 @@ def site_label(n: dict):
     proof_origin is an own proof."""
     st, pf = n["statement_status"], n["proof_status"]
     markers = []
-    if n.get("refutations_cited") or st == "refuted":
+    if n.get("refutations_cited") and (n.get("printed_refuted") or {}).get("kind") == "boundary":
+        markers.append("boundary")
+    elif n.get("refutations_cited") or st == "refuted":
         markers.append("refuted")
     elif (n.get("printed_refuted") or {}).get("paper"):
         markers.append("fails-paper")
@@ -236,7 +252,7 @@ def site_label(n: dict):
     if st == "implied" and n.get("implied_variant"):
         sub = f'implied by a proved {n["implied_variant"]} entry (not separately proved)'
     elif st == "partial" and n.get("statement_entries") and not n.get("coverage_rows"):
-        sub = "Lean statement without a reviewed status record"
+        sub = UNRECORDED_SUB_REASON
     else:
         sub = INCOMPLETE_REASONS.get(st, "not yet formalized")
     return "incomplete", markers, sub
@@ -250,8 +266,11 @@ def parse_printed_refuted(field: dict, issue_ids) -> dict:
     for key, rec in field.items():
         if key.startswith("_"):
             continue
-        if not isinstance(rec, dict) or set(rec) - {"lean", "paper", "reading", "issues"}:
-            raise SystemExit(f"printed_refuted[{key!r}]: fields are lean, paper, reading, issues")
+        if not isinstance(rec, dict) or set(rec) - {"lean", "paper", "reading", "issues", "kind"}:
+            raise SystemExit(f"printed_refuted[{key!r}]: fields are lean, paper, reading, issues, kind")
+        kind = rec.get("kind", "counterexample")
+        if kind not in REFUTATION_KINDS:
+            raise SystemExit(f"printed_refuted[{key!r}].kind must be one of {', '.join(REFUTATION_KINDS)}")
         lean = rec.get("lean")
         if lean is not None and (not isinstance(lean, list) or not lean
                                  or not all(isinstance(x, str) and x.startswith("StatisticalRL.") for x in lean)):
@@ -261,6 +280,8 @@ def parse_printed_refuted(field: dict, issue_ids) -> dict:
             raise SystemExit(f"printed_refuted[{key!r}].paper must be true or false")
         if lean is None and not paper:
             raise SystemExit(f"printed_refuted[{key!r}]: neither a Lean refutation nor a paper argument")
+        if kind == "boundary" and lean is None:
+            raise SystemExit(f"printed_refuted[{key!r}]: kind 'boundary' qualifies a Lean refutation; none is listed")
         reading = rec.get("reading")
         if not isinstance(reading, str) or not reading.strip():
             raise SystemExit(f"printed_refuted[{key!r}].reading must state the reading under which it fails")
@@ -269,7 +290,7 @@ def parse_printed_refuted(field: dict, issue_ids) -> dict:
         if bad:
             raise SystemExit(f"printed_refuted[{key!r}]: unknown source issue(s) {bad}")
         out[key] = {"lean": list(lean) if lean else None, "paper": paper, "reading": reading.strip(),
-                    "issues": list(issues)}
+                    "issues": list(issues), "kind": kind}
     return out
 
 
@@ -635,6 +656,35 @@ class Builder:
                 return True
         return False
 
+    def reviewed_parent(self, ent: dict, target: dict):
+        """The labelled item an unrecorded entry belongs to when its range target is an unlabelled display.
+
+        An unlabelled display (no label, so no COVERAGE row can name it) lying inside the line span of a
+        reviewed COVERAGE row is part of that row's item: the rectangles and ellipsoids at
+        `inference.tex:198–213` belong to the rule `eq:convex.Cdelta` (row item "lines 187–213"). The entry
+        moves to the item's node when the entry cites the item's label, the row lists that label as its item
+        (before any parenthesis), names the entry, and its first "lines a–b" span contains the display."""
+        if target["kind"] not in ("display", "subequations") or target.get("labels"):
+            return None
+        tr = self.ranges(target)
+        for lab in ent["labels"]:
+            o = self.label_owner.get(lab)
+            if not o or o["kind"] in CONTEXT_KINDS or o["id"] == target["id"]:
+                continue
+            files = {f for f, _, _ in self.ranges(o)}
+            for row in self.coverage:
+                if SUPPORTING_LEAD_RE.match(row["lead"].strip()) or closing_kind(row["lead"]):
+                    continue
+                head = row["item"].split("(", 1)[0]
+                if f"`{lab}`" not in head or "lines " not in head:
+                    continue
+                if not re.search(r"`(?:[\w.']*\.)?%s`" % re.escape(ent["name"]), row["evidence"] + " " + row["scope"]):
+                    continue
+                m = re.search(r"(\d+)[–-](\d+)", head.split("lines ", 1)[1])
+                if m and all(f in files and int(m.group(1)) <= a and b <= int(m.group(2)) for f, a, b in tr):
+                    return o
+        return None
+
     def closing_info(self, row: dict, closing: str, entry_variant: dict) -> dict:
         """Validate a closing COVERAGE row (fail-closed) and return what the node records."""
         info = {"line": row["line"], "kind": closing, "entries": [], "variant": None, "anchor": None}
@@ -802,6 +852,7 @@ class Builder:
                 if target is None:
                     self.warnings.append(f"statement entry {ent['full']} matches no inventory entry")
                     continue
+                target = self.reviewed_parent(ent, target) or target
                 n = node_for(target)
                 variant = classify(ent["name"], None, "", self.coverage)
             self.entry_node[ent["full"]] = n["id"]
@@ -1118,12 +1169,14 @@ class Builder:
                                                       "prose_by_label": dict({k: 0 for k in SITE_LABEL_ORDER},
                                                                              no_claim=0),
                                                       "named_refuted_marker": 0, "prose_refuted_marker": 0,
-                                                      "named_fails_paper_marker": 0, "prose_fails_paper_marker": 0})
+                                                      "named_fails_paper_marker": 0, "prose_fails_paper_marker": 0,
+                                                      "named_boundary_marker": 0, "prose_boundary_marker": 0})
             ch[n["class"]][n["statement_status"]] += 1
             lab = n["site_label"] or "no_claim"
             ch[f'{n["class"]}_by_label'][lab] += 1
             ch[f'{n["class"]}_refuted_marker'] += "refuted" in n["site_markers"]
             ch[f'{n["class"]}_fails_paper_marker'] += "fails-paper" in n["site_markers"]
+            ch[f'{n["class"]}_boundary_marker'] += "boundary" in n["site_markers"]
             if n["class"] == "named":
                 ch["named_total"] += 1
                 ch["named_proved"] += n["proof_status"] == "proved"
@@ -1188,7 +1241,14 @@ class Builder:
             "named_fails_paper_marker": tally(lambda n: n["class"] == "named" and "fails-paper" in n["site_markers"]),
             "prose_fails_paper_marker": tally(lambda n: n["class"] == "prose" and "fails-paper" in n["site_markers"]),
             "fails_paper_marker_nodes": tally(lambda n: "fails-paper" in n["site_markers"]),
-            "refutation_theorems": len({x for n in node_list for x in n["refutations_cited"]}),
+            # printed statements refuted in Lean only at a degenerate boundary/domain case (kind "boundary")
+            "named_boundary_marker": tally(lambda n: n["class"] == "named" and "boundary" in n["site_markers"]),
+            "prose_boundary_marker": tally(lambda n: n["class"] == "prose" and "boundary" in n["site_markers"]),
+            "boundary_marker_nodes": tally(lambda n: "boundary" in n["site_markers"]),
+            "refutation_theorems": len({x for n in node_list if "refuted" in n["site_markers"]
+                                        for x in n["refutations_cited"]}),
+            "boundary_refutation_theorems": len({x for n in node_list if "boundary" in n["site_markers"]
+                                                 for x in n["refutations_cited"]}),
             "own_proof_by_origin": {o: tally(lambda n, o=o: n["class"] == "named" and n["proof_status"] == "proved"
                                              and o in n["proof_origins"])
                                     for o in PROOF_ORIGINS if o != "unclassified"},
@@ -1360,6 +1420,18 @@ def render_next(data: dict) -> str:
     return "\n".join(lines)
 
 
+def g7_problems(data: dict) -> list:
+    """Gate G7: every statement entry resolves to a reviewed status.
+
+    Fails on a node whose only status is "Lean statement without a reviewed status record" (an entry on
+    a remark or display that no COVERAGE row reviews) and on an entry that matches no inventory item."""
+    out = [f"{n['id']} ({n['display_name']}): {UNRECORDED_SUB_REASON}: "
+           + ", ".join(e["name"].rsplit(".", 1)[-1] for e in n["statement_entries"])
+           for n in data["nodes"] if n.get("site_sub_reason") == UNRECORDED_SUB_REASON]
+    out += [w for w in data["warnings"] if w.startswith("statement entry ") and "matches no inventory entry" in w]
+    return out
+
+
 def dumps(data: dict) -> str:
     return json.dumps(data, ensure_ascii=False, indent=1) + "\n"
 
@@ -1376,6 +1448,11 @@ def main(argv=None) -> int:
     if args.summary:
         print(json.dumps(data["summary"], indent=1))
         return 0
+    g7 = g7_problems(data)
+    if g7:
+        print("G7 failed: statement entries without a reviewed status (attach them to a reviewed item or add a "
+              "COVERAGE row):\n  " + "\n  ".join(g7))
+        return 1
     if args.check:
         stale = []
         for path, text in outputs.items():

@@ -26,7 +26,8 @@ sys.path.insert(0, str(HERE))
 
 from reader.book import Book  # noqa: E402
 from reader.graph import GraphPages, gen_nodes  # noqa: E402
-from reader.lean import Git, LeanIndex  # noqa: E402
+from reader.lean import REPO, Git, LeanIndex  # noqa: E402
+from reader.links import repo_link_problems  # noqa: E402
 from reader.render import Site  # noqa: E402
 
 
@@ -50,7 +51,8 @@ def check_counts(pages: dict, data: dict) -> list:
             direct = sum(1 for n in nodes if n["class"] == cls and n["site_label"] == k)
             if s[f"{cls}_by_label"][k] != direct:
                 problems.append(f"summary {cls}_by_label.{k}={s[f'{cls}_by_label'][k]} but {direct} nodes have it")
-        for mk, key in (("refuted", "refuted_marker"), ("fails-paper", "fails_paper_marker")):
+        for mk, key in (("refuted", "refuted_marker"), ("fails-paper", "fails_paper_marker"),
+                        ("boundary", "boundary_marker")):
             direct = sum(1 for n in nodes if n["class"] == cls and mk in n["site_markers"])
             if s[f"{cls}_{key}"] != direct:
                 problems.append(f"summary {cls}_{key} disagrees with the nodes ({direct})")
@@ -153,6 +155,10 @@ def main() -> int:
     problems = check_counts(html_pages, graph.data)
     if problems:
         raise SystemExit("counts on the site disagree with the node-graph summary:\n  " + "\n  ".join(problems[:40]))
+    link_problems = repo_link_problems(html_pages, REPO, git.rev, set(git.ls(".")), git.show)
+    if link_problems:
+        raise SystemExit("links into the repository with no target at the pinned commit:\n  "
+                         + "\n  ".join(link_problems[:60]))
 
     for pid, text in html_pages.items():
         (out / f"{pid}.html").write_text(text)
@@ -186,7 +192,8 @@ def main() -> int:
     gs = graph.data["summary"]
     print("labels (numbered results): " + ", ".join(f"{gen_nodes.SITE_LABELS[k][0]}={gs['named_by_label'][k]}"
                                                     for k in gen_nodes.SITE_LABEL_ORDER)
-          + f"; refuted in Lean={gs['named_refuted_marker']}, fails on paper={gs['named_fails_paper_marker']}")
+          + f"; refuted in Lean={gs['named_refuted_marker']}, boundary case={gs['named_boundary_marker']}, "
+            f"fails on paper={gs['named_fails_paper_marker']}")
     print("old status -> label: printed->proved as stated, corrected->proved with corrections, "
           "restricted->proved under restrictions, everything else->incomplete (explanatory: no label)")
     print(f"node graph: {len(graph.data['nodes'])} nodes, {gs['uses_edges']} unreviewed edges; "

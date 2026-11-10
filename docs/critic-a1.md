@@ -1,12 +1,12 @@
 # CRITIC a1: A=1 policy-evaluation lower bound (independent review, 2026-11-10)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/Generative/PolicyEvalLowerBoundA1.lean` and the entry `Thm3_7_policyEvaluation_A1_restricted`. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/Generative/PolicyEvalLowerBoundA1.lean` and the entry `Thm3_7_policyEvaluation_A1`. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT-WITH-FIXES; findings 1-3 applied (COVERAGE rows for the model-based and model-free A = 1 comparisons rewritten, SOURCE-ISSUES "Candidate repair of Theorem 3.7" names the entry, the entry docstring now says randomized estimators are in the printed domain but not covered). The entry is PASS-DISCLOSED (deterministic estimators only).
 
 Targets: `Formalization/Generative/PolicyEvalLowerBoundA1.lean`
 (`StatisticalRL.GenerativeLowerBound.policyEvaluation_lowerBound_singleAction`, c_N = 1/32768);
-entry `Thm3_7_policyEvaluation_A1_restricted` (Formalization/Statements/Ch3.lean:337) and
+entry `Thm3_7_policyEvaluation_A1` (Formalization/Statements/Ch3.lean:337) and
 `_holds` (Ch3Proofs.lean:92).
 Source read: `theorem:azar`, generative_model_model_based.tex:1443–1464; comparisons
 :1468–1474 and generative_model_model_free.tex:240–251 (claim at 248–249);
@@ -85,10 +85,10 @@ vacuous here; the only deviation is deterministic-only estimators.
 
 ## Proposed COVERAGE wording
 Row 217 (model-based 1468–1474), status cell:
-**Implied by `Thm3_1`, `Thm3_2_positiveN`, `Thm3_7_corrected` and `Thm3_7_policyEvaluation_A1_restricted`,
+**Implied by `Thm3_1`, `Thm3_2_positiveN`, `Thm3_7_corrected` and `Thm3_7_policyEvaluation_A1`,
 in the lower-bound regime only.** Policy learning: Theorem 3.2's upper bound against the corrected
 Theorem 3.7 (S ≥ 2, SA ≥ 16, γ ≥ 2/3, A ≥ 2 for part (i); [C1], [C2]). Policy evaluation (A = 1):
-Theorem 3.1's upper bound against `Thm3_7_policyEvaluation_A1_restricted` (S ≥ 16, γ ∈ [2/3,1),
+Theorem 3.1's upper bound against `Thm3_7_policyEvaluation_A1` (S ≥ 16, γ ∈ [2/3,1),
 0 < ε < 1/(32(1−γ)), N ≤ (1/32768) log S/((1−γ)³ε²) draws per state from Theorem 3.1's own sampling law,
 deterministic value estimators seeing the known rewards and discount); both match up to logarithmic
 factors. The Õ comparison is not formalized as a separate Prop (decision F1, 2026-11-09).
@@ -98,7 +98,7 @@ estimators (printed part (ii) quantifies over any estimator).
 
 Row 218 (model-free 240–251), replace the "Not implied, open" sentence with:
 **Implied, in the lower-bound regime only:** the minimax-optimality claim (lines 248–249) against
-Theorem 3.7 at A = 1 is `Thm3_7_policyEvaluation_A1_restricted`, stated on TD's own experiment
+Theorem 3.7 at A = 1 is `Thm3_7_policyEvaluation_A1`, stated on TD's own experiment
 (`tdSourceSamplingLaw` is `ModelBasedPolicyEvaluation.samplingLaw`, T draws per state; TD with fixed
 rates and V₀ is an admissible estimator): S·T ≳ S log S/((1−γ)³ε²) samples are necessary, matching
 `Thm4_1`'s Õ(S/((1−γ)³ε²)) up to log factors, for S ≥ 16, γ ∈ [2/3,1), ε < 1/(32(1−γ)).
@@ -106,7 +106,7 @@ rates and V₀ is an admissible estimator): S·T ≳ S log S/((1−γ)³ε²) sa
 (covered by `Thm4_1` but not by the lower bound), and randomized estimators.
 
 ## Proposed SOURCE-ISSUES note (append to "Candidate repair of Theorem 3.7")
-**A = 1 policy-evaluation form (2026-11-10).** `Thm3_7_policyEvaluation_A1_restricted` specializes
+**A = 1 policy-evaluation form (2026-11-10).** `Thm3_7_policyEvaluation_A1` specializes
 corrected part (ii) to one action and restates it on the policy-evaluation experiment of Theorem 3.1 and
 TD learning (estimator: deterministic map of the known rewards, discount and N draws per state; error
 ‖V̂ − V^{π₀}‖∞, equal to ‖Q̂ − Q⋆‖∞ at A = 1), with c_N = 1/32768 and the printed γ, ε, SA ≥ 16 (= S ≥ 16)

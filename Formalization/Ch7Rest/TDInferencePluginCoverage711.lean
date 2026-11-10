@@ -29,7 +29,7 @@ half-spaces `{uᵀ√TΔ̄_T ≤ z√q ∓ ε}` up to the bad event. The half-sp
 (`exists_abs_lawProb_halfSpace_pivot_sub_le`, rate `K T^{-1/3}`, uniform in the threshold), the
 continuity of `Φ` and the plug-in consistency `eq_defn_hat_Lambda_corrected` close the argument.
 
-**Qualitative only.** The consistency result has no rate, so these are limits (asymptotic
+**Qualitative only in this file** (the finite-`T` rate is in `TDInferencePluginIntervalRate711.lean`). The consistency result has no rate, so these are limits (asymptotic
 coverage), not finite-`T` bounds. The limits are pointwise in `(u, z)`, not uniform.
 
 **Hypothesis `Γ_true ≻ 0`.** This is an added non-degeneracy hypothesis: it gives `uᵀΛu > 0`

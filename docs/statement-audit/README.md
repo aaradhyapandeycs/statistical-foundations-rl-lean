@@ -1,6 +1,6 @@
 # Five-bin statement audit of the statement index
 
-Date: 2026-11-09/10. Scope: every statement-index entry in `Formalization/Statements/Ch1.lean`–`Ch7.lean` (174 entries at the time of the audit, 185 after the later additions listed below) together with its `_holds` wrapper in `ChNProofs.lean`.
+Date: 2026-11-09/10. Scope: every statement-index entry in `Formalization/Statements/Ch1.lean`–`Ch7.lean` (174 entries at the time of the audit, 191 after the later additions listed below) together with its `_holds` wrapper in `ChNProofs.lean`.
 
 ## Method
 
@@ -31,12 +31,14 @@ The audit follows the `lean-statement-audit` skill (`skills/lean/skills/lean-sta
 | [Ch7, part B](ch7b.md) | 19 | 4 | 15 | 3 | 0 |
 | **Total** | **174** | **87** | **87** | **7** | **0** |
 | [Later additions, Ch7](../critic-confregion.md) ([and](../critic-confcalib.md), [and](../critic-chisq.md), [and](../critic-pluginregion.md), [and](../critic-c41.md)) | 8 | 0 | 8 | 0 | 0 |
-| [Later addition, Ch3](../critic-a1.md) | 1 | 0 | 1 | 0 | 0 |
-| [Later addition, Ch7 plug-in rectangle](../critic-pluginrect.md) | 1 | 0 | 1 | 0 | 0 |
+| [Later addition, Ch3](../critic-a1.md) ([strengthened to randomized estimators](../critic-rand37.md)) | 1 | 1 | 0 | 0 | 0 |
+| [Later addition, Ch7 plug-in rectangle](../critic-pluginrect.md) ([strengthened to the finite-T rate](../critic-pluginrate345.md)) | 1 | 0 | 1 | 0 | 0 |
 | [Later addition, Ch7 all-convex Theorem 7.11](../critic-711-sharp.md) | 1 | 0 | 1 | 0 | 0 |
-| **Total now** | **185** | **87** | **98** | **7** | **0** |
+| [Later additions, Ch7 randomized Theorems 7.3 and 7.5](../critic-rand73.md) | 4 | 0 | 4 | 0 | 0 |
+| [Later additions, Ch3 printed Theorem 3.2 and Lemma 3.5](../critic-thm32.md) | 2 | 2 | 0 | 0 | 0 |
+| **Total now** | **191** | **90** | **101** | **7** | **0** |
 
-The PASS and PASS-DISCLOSED columns are the verdicts after re-audit. The later additions (2026-11-10) are the oracle-covariance confidence-region entries `Eq_convex_Cdelta_{fixedShape,ellipsoid,rectangle}_corrected_oracle` `Eq_convex_Cdelta_{ellipsoid,rectangle}_corrected_oracle_calibrated` `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared` and `Eq_convex_Cdelta_ellipsoid_corrected_plugin` (plug-in Λ̂_T, asymptotic only), the federated read-off `Eq_sample_size_per_agent_fedQ_restricted` (PASS-DISCLOSED, K-range restriction; review `docs/critic-c41.md`), the plug-in rectangle `Eq_convex_Cdelta_rectangle_corrected_plugin` (PASS-DISCLOSED; review `docs/critic-pluginrect.md`), the corrected Theorem 7.11 over all convex sets `Thm7_11_corrected` (PASS-DISCLOSED: true noise covariance Γ_true ≻ 0, instance constant; review `docs/critic-711-sharp.md`), and the Chapter 3 entry `Thm3_7_policyEvaluation_A1_restricted` (PASS-DISCLOSED: deterministic estimators only); each was five-bin audited by its independent reviewer.
+The PASS and PASS-DISCLOSED columns are the verdicts after re-audit. The later additions (2026-11-10) are the oracle-covariance confidence-region entries `Eq_convex_Cdelta_{fixedShape,ellipsoid,rectangle}_corrected_oracle` `Eq_convex_Cdelta_{ellipsoid,rectangle}_corrected_oracle_calibrated` `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared` and `Eq_convex_Cdelta_ellipsoid_corrected_plugin` (plug-in Λ̂_T, asymptotic only), the federated read-off `Eq_sample_size_per_agent_fedQ_restricted` (PASS-DISCLOSED, K-range restriction; review `docs/critic-c41.md`), the plug-in rectangle `Eq_convex_Cdelta_rectangle_corrected_plugin` (PASS-DISCLOSED; review `docs/critic-pluginrect.md`), the corrected Theorem 7.11 over all convex sets `Thm7_11_corrected` (PASS-DISCLOSED: true noise covariance Γ_true ≻ 0, instance constant; review `docs/critic-711-sharp.md`), and the Chapter 3 entry `Thm3_7_policyEvaluation_A1` (first PASS-DISCLOSED as `Thm3_7_policyEvaluation_A1_restricted`, deterministic estimators only; strengthened to randomized estimators and re-audited PASS, no deviation; review `docs/critic-rand37.md`; `Thm3_7_corrected` part (ii) and `Eq_P_Mi_Q_inaccurate_lower_generative` were strengthened to randomized estimators in the same change, verdicts PASS-DISCLOSED and PASS unchanged), and the four seeded-randomized lower-bound entries `Thm7_3_corrected_randomized`, `Thm7_3_corrected_knownReward_randomized`, `Thm7_5_corrected_randomized`, `Thm7_5_corrected_knownReward_randomized` (PASS-DISCLOSED: A ≥ 2, S ≥ 2 with shared reward for the known-reward reading, outer probability for non-measurable failure sets; review `docs/critic-rand73.md`); and the printed Chapter 3 entries `Thm3_2` and `Lemma3_5` (PASS: the `0 < N` witness inside the event is TYPING, since N = 0 is outside the printed domain; the `_positiveN` entries are kept as supporting entries; review `docs/critic-thm32.md`); each was five-bin audited by its independent reviewer. The three plug-in entries `Eq_convex_Cdelta_corrected_plugin`, `Eq_convex_Cdelta_ellipsoid_corrected_plugin` and `Eq_convex_Cdelta_rectangle_corrected_plugin` were strengthened in place from asymptotic limits to the finite-T rate T^(-1/3) (instance constant; rectangle constant depending on α) and re-audited PASS-DISCLOSED (review `docs/critic-pluginrate345.md`); the counts above are unchanged.
 
 ## First-pass failures and their fixes
 

@@ -75,15 +75,21 @@ shown on cards come from the ledger fields `display_note` (per record) and
 
 - Four labels: *proved as stated*, *proved with corrections*, *proved under
   restrictions*, *incomplete* (with a sub-reason). Markers: *✕ printed statement
-  refuted*, *new proof* (only where `proof_origin` is an own proof), *also
-  corrected*. Explanatory items (no mathematical claim) get no label and are left
+  refuted*, *∂ fails at a boundary case (domain repaired)* (a `printed_refuted`
+  record with `"kind": "boundary"`: Lean shows only a degenerate boundary or
+  domain case fails, such as T = 1 or a single action; never counted as
+  refuted), *⚠ appears to fail (paper argument)*, *new proof* (only where
+  `proof_origin` is an own proof), *also corrected*. Explanatory items (no mathematical claim) get no label and are left
   out of every count; algorithms, assumptions and definitions get no label.
 - A ledger record with `"status_override": "incomplete"` never counts as proving
   its item (downgrade only; any other value fails the generator).
 - Every count on a page is written as
   `<span class="n" data-count="summary.path">N</span>`; `site/build.py` fails if
   any shown number differs from the summary, or if the summary's label counts
-  differ from a direct tally of the nodes.
+  differ from a direct tally of the nodes. It also fails if a link into the
+  repository at the pinned commit names no file (for example a directory) or a
+  `#anchor` that the linked Markdown file does not define (an `<a id>` or a
+  heading slug); see `site/reader/links.py` and `scripts/tests/test_site_links.py`.
 - `status.html` (counts by chapter), `graph.html` (graph with a
   numbered-results-only view, chapter filter and click highlight of cited and
   citing results, plus a table of every node) and `errata.html` (refuted printed
@@ -102,7 +108,11 @@ chapter pages) → Status (`status.html`, `graph.html`, `errata.html`) →
 old anchors (`#status`, `#verify`, `#cite`) as pointers to the new pages.
 `build.py --ci-run-url <url>` adds a sentence naming the Lean CI run that gated a
 deploy, and `--audit-log <file>` prints that run's axiom-audit line verbatim;
-both are omitted for local builds.
+both are omitted for local builds. Without `--ci-run-url` the Methodology page
+says the build records no gating CI run and that the commit's Lean CI status
+(linked) may still be pending. The workflow passes `--ci-run-url` only when the
+checked-out commit's `build.py --help` lists it, since `workflow_run` uses the
+default branch's workflow file with an older commit's `build.py`.
 
 ## Placement rules
 

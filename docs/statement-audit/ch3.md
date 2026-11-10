@@ -124,6 +124,12 @@ Counts: SRC 6, TYP 1, DIS 1, EXC 0. V⋆ and Q⋆ are values of the proved-optim
 (log 0) and the algorithm undefined, so the disclosure is honest. Wrapper: library export with `.le`.
 Verdict: **PASS-DISCLOSED**.
 
+**Update 2026-11-10 (printed entry `Thm3_2`).** The printed form is now indexed as `Thm3_2` (Ch3.lean:127), with
+`hN : 0 < N` as a witness inside the event instead of a hypothesis. Since N = 0 is outside the printed domain
+(log of SAN = 0 in the threshold, empirical kernel 0/0), the `hN` bin moves from DISCLOSED to **TYPING**
+(SOURCE 7, STANDING 1, TYPING 2, DISCLOSED 0, EXCESS 0): **PASS**, no suffix. `Thm3_2_positiveN` is kept as a
+supporting entry. Independent review: [critic-thm32.md](../critic-thm32.md) §1–§2.
+
 ## 5. `Lemma3_3` — Ch3.lean:114; source `LemAbsToNormalV`, MB:1254–1263 (construction 1222–1252)
 
 Reconstruction: for any MDP and state s, with u⋆ = V⋆(s), V⋆_{s,u⋆} = V⋆.
@@ -175,6 +181,11 @@ N ≥ c₀β₁/(1−γ) ⇒ w.p. ≥ 1−δ: ‖V̂^{π̂⋆} − V^{π̂⋆}�
 Counts: SRC 5, TYP 1, DIS 1, EXC 0. β₁ matches `leaveOneOutBeta` exactly. Both displayed conclusions kept
 (norm bound and the two-sided pointwise bound). Wrapper: library export, drops one extra conjunct
 (export concludes more). Verdict: **PASS-DISCLOSED**.
+
+**Update 2026-11-10 (printed entry `Lemma3_5`).** The printed form is now indexed as `Lemma3_5` (Ch3.lean:223), with
+`hN : 0 < N` as a witness inside the event. At N = 0, β₁ contains log(SAN) = log 0, both bounds divide by N and P̂ is
+0/0, so the `hN` bin moves from DISCLOSED to **TYPING** (SOURCE 7, STANDING 1, TYPING 2, EXCESS 0): **PASS**, no
+suffix. `Lemma3_5_positiveN` is kept as a supporting entry. Independent review: [critic-thm32.md](../critic-thm32.md) §1–§2.
 
 ## 8. `Thm3_9_causal_positiveN` — Ch3.lean:180; source `Thm:sample-compl-finite`, MB:2551–2570
 
@@ -487,3 +498,15 @@ library `minimaxLowerBound`, which is universe-polymorphic, with the level-set m
   (PROGRESS:22 says the ledger is unchanged).
 
 Updated batch totals: PASS 11, PASS-DISCLOSED 8, FAIL 0, UNSURE 0.
+
+---
+
+## Addendum 2026-11-10: printed entries `Thm3_2` and `Lemma3_5`
+
+Two entries were added after this audit: `Thm3_2` (Ch3.lean:127) and `Lemma3_5` (Ch3.lean:223), the printed forms of
+Theorem 3.2 and Lemma 3.5 with the `0 < N` witness inside the event (the `Thm3_9` pattern). An independent critic
+([critic-thm32.md](../critic-thm32.md)) five-bin audited both: the witness is TYPING, because at N = 0 both printed
+statements are undefined (log 0, division by N, empirical kernel 0/0), and no binder is DISCLOSED or EXCESS. Verdicts:
+`Thm3_2` **PASS**, `Lemma3_5` **PASS**. The `_positiveN` entries (§4, §7) remain PASS-DISCLOSED as supporting entries.
+
+Updated batch totals including these two entries: PASS 13, PASS-DISCLOSED 8, FAIL 0, UNSURE 0.

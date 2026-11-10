@@ -65,7 +65,16 @@ jobs:
       - name: Install PDF figure converter
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends poppler-utils
       - name: Build the reader (no Lean, reads committed files only)
-        run: python3 site/build.py --rev HEAD ${{ github.event.workflow_run.html_url && format('--ci-run-url {0}', github.event.workflow_run.html_url) || '' }}
+        env:
+          CI_RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          # The workflow file comes from the default branch, but the checked-out commit's
+          # site/build.py may predate --ci-run-url; pass it only when that build accepts it.
+          if [ -n "$CI_RUN_URL" ] && python3 site/build.py --help | grep -q -- --ci-run-url; then
+            python3 site/build.py --rev HEAD --ci-run-url "$CI_RUN_URL"
+          else
+            python3 site/build.py --rev HEAD
+          fi
       - name: Check the site against the arXiv PDF and TeX
         run: python3 site/check_fidelity.py --dump-pdf-text "$RUNNER_TEMP/pdf-text.txt"
       - name: Keep the built site and PDF text for debugging

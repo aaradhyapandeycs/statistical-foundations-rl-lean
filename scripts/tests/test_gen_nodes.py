@@ -200,6 +200,27 @@ class GenNodesTest(unittest.TestCase):
         self.assertEqual(data["summary"]["named_fails_paper_marker"], 1)
         self.assertEqual(data["summary"]["named_refuted_marker"], 2)
 
+    def test_boundary_kind_gets_its_own_marker_and_count(self):
+        ledger = json.loads(json.dumps(LEDGER))
+        ledger["printed_refuted"]["thm:c"]["kind"] = "boundary"
+        (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertIn("boundary", n["label:thm:c"]["site_markers"])
+        self.assertNotIn("refuted", n["label:thm:c"]["site_markers"])
+        self.assertEqual(data["summary"]["named_boundary_marker"], 1)
+        self.assertEqual(data["summary"]["named_refuted_marker"], 1)
+        self.assertEqual(data["summary"]["boundary_marker_nodes"], 1)
+
+    def test_boundary_kind_needs_a_lean_refutation(self):
+        for bad in ({"lean": None, "paper": True, "reading": "x", "kind": "boundary"},
+                    {"lean": ["StatisticalRL.x"], "paper": False, "reading": "x", "kind": "edge"}):
+            ledger = json.loads(json.dumps(LEDGER))
+            ledger["printed_refuted"]["lem:b"] = bad
+            (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+            with self.assertRaises(SystemExit):
+                gn.build(gn.Reader(self.tmp))
+
     def test_printed_refuted_field_is_validated(self):
         for bad in ({"lean": None, "paper": False, "reading": "x"}, {"lean": [], "paper": True, "reading": "x"},
                     {"lean": None, "paper": True, "reading": ""}, {"lean": None, "paper": True, "reading": "x",
@@ -492,6 +513,37 @@ class GenNodesTest(unittest.TestCase):
         (self.tmp / "docs/COVERAGE.md").write_text(COVERAGE + "| `eq:s` | `Eq_s` | **Proved** (`Eq_s`). |\n")
         n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
         self.assertNotIn("label:eq:t", n)
+
+    def test_entry_on_unlabelled_display_inside_reviewed_span_joins_the_item(self):
+        self.write_inventory([entry("label:eq:r", "display", "2.8", 200, 202, ["eq:r"]),
+                              entry("ch2-display-x", "display", None, 206, 208)])
+        ch2 = CH2.replace("end StatisticalRL.Statements",
+                          "/-- Item of `eq:r`, `chapters/prelim.tex:206–208`. -/\n"
+                          "def Eq_r_box_corrected : Prop := True\n\nend StatisticalRL.Statements")
+        (self.tmp / "Formalization/Statements/Ch2.lean").write_text(ch2)
+        (self.tmp / "Formalization/Statements/Ch2Proofs.lean").write_text(CH2_PROOFS.replace(
+            "end StatisticalRL.Statements", "theorem Eq_r_box_corrected_holds : Eq_r_box_corrected := "
+            "StatisticalRL.Foo.r\n\nend StatisticalRL.Statements"))
+        # without a reviewed row the entry sits on the unlabelled display, and G7 fails
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertEqual(n["ch2-display-x"]["site_sub_reason"], gn.UNRECORDED_SUB_REASON)
+        self.assertTrue(gn.g7_problems(data))
+        self.assertEqual(gn.main(["--check", "--root", str(self.tmp)]), 1)
+        # a reviewed row for `eq:r` spanning the display and naming the entry takes it
+        (self.tmp / "docs/COVERAGE.md").write_text(
+            COVERAGE + "| Rule `eq:r`, prelim lines 199–210 (box 206–208) | x | **Partial:** `Eq_r_box_corrected`. |\n")
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertNotIn("ch2-display-x", n)
+        self.assertEqual([e["name"].rsplit(".", 1)[-1] for e in n["label:eq:r"]["statement_entries"]],
+                         ["Eq_r_box_corrected"])
+        self.assertEqual(gn.g7_problems(data), [])
+        # a span that does not contain the display does not move it
+        (self.tmp / "docs/COVERAGE.md").write_text(
+            COVERAGE + "| Rule `eq:r`, prelim lines 199–203 | x | **Partial:** `Eq_r_box_corrected`. |\n")
+        n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}
+        self.assertIn("ch2-display-x", n)
 
     def closing_fixture(self, rows: str):
         self.write_inventory(

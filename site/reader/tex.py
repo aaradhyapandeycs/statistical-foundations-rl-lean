@@ -261,8 +261,15 @@ def _balanced_outer(t: str) -> bool:
     return depth == 0
 
 
+def html_id(raw: str) -> str:
+    """A valid HTML id fragment: every character outside [A-Za-z0-9:_.-] becomes `_` (no spaces, so
+    `E-`, `r-` and `n-` anchors of ids such as `label:empirical bernstein` are valid; the inventory ids
+    have no collisions under this rule). app.js maps an old unsanitized hash to the same id."""
+    return re.sub(r"[^A-Za-z0-9:_.\-]", "_", raw)
+
+
 def label_id(label: str) -> str:
-    return "L-" + re.sub(r"[^A-Za-z0-9:_.\-]", "_", label)
+    return "L-" + html_id(label)
 
 
 class FileConverter:
@@ -753,7 +760,7 @@ class FileConverter:
             head = self.inline(self.conv(s, o[0], o[1])) if o else "Proof"
             start = o[2] if o else body_start
             pentry = self.book.inventory_at(self.file, line, ("proof",)) if line else None
-            panchor = f'<span class="anchor" id="{attr("E-" + pentry["id"])}"></span>' if pentry else ""
+            panchor = f'<span class="anchor" id="{attr("E-" + html_id(pentry["id"]))}"></span>' if pentry else ""
             parts.append(("proof_on",))
             parts.append(("p",))
             parts.append(("i", f'{panchor}<em class="proof-head">{head}.</em> '))
@@ -808,7 +815,7 @@ class FileConverter:
         body_parts = self.conv(s, start, b)
         inner = [("i", f'<span class="env-head">{head}.</span> ')] + body_parts
         labels = list(entry.get("labels", [])) if entry else re.findall(r"\\label\s*\{([^{}]*)\}", s[a:b])
-        anchor = f"E-{entry['id']}" if entry else None
+        anchor = f"E-{html_id(entry['id'])}" if entry else None
         html_ = (f'<div class="env env-{kind}"{f" id={chr(34)}{attr(anchor)}{chr(34)}" if anchor else ""}>'
                  f'{self.flow(inner)}</div>')
         blk = Block("env", html_, self.file, line, self.line(s, end - 1), entry, labels,
@@ -875,7 +882,7 @@ class FileConverter:
         # copies of a page): indent each block inline, with the same values as style.css.
         body = body.replace('<div class="alg-indent">', f'<div class="alg-indent" style="{ALG_INDENT_STYLE}">')
         number = entry.get("number") if entry else None
-        anchor = f"E-{entry['id']}" if entry else None
+        anchor = f"E-{html_id(entry['id'])}" if entry else None
         labels = list(entry.get("labels", [])) if entry else []
         head = f'<strong>Algorithm{(" " + esc(number)) if number else ""}</strong>'
         html_ = (f'<figure class="algorithm"{f" id={chr(34)}{attr(anchor)}{chr(34)}" if anchor else ""}>'
@@ -965,7 +972,7 @@ class FileConverter:
             parts.extend(self.conv(s, ra, rb))
         body = self.inline(parts)
         number = entry.get("number") if entry else None
-        anchor = f"E-{entry['id']}" if entry else None
+        anchor = f"E-{html_id(entry['id'])}" if entry else None
         word = "Figure" if kind == "figure" else "Table"
         head = f'<strong>{word}{(" " + esc(number)) if number else ""}.</strong>'
         html_ = (f'<figure class="figure"{f" id={chr(34)}{attr(anchor)}{chr(34)}" if anchor else ""}>'

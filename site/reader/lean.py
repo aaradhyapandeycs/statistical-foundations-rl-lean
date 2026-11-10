@@ -25,6 +25,10 @@ REPO = "https://github.com/aaradhyapandeycs/statistical-foundations-rl-lean"
 # node graph; the reader never classifies a status on its own.
 LABELS = gen_nodes.SITE_LABELS
 MARKERS = gen_nodes.MARKERS
+# A statement entry (never an item) may also be a supporting entry: its `_holds` wrapper proves it in Lean,
+# but the item's ledger record is another entry, so it is not counted for the item. Items keep exactly
+# the four labels above; this chip appears only on entry cards.
+ENTRY_LABELS = dict(LABELS, supporting=("supporting entry, proved in Lean", "st-supporting"))
 # Internal order of a statement entry's own classification (for sorting cards only; never shown).
 ENTRY_ORDER = ["original", "corrected", "restricted", "cov-printed", "cov-corrected", "cov-restricted",
                "unrecorded", "partial"]
@@ -34,11 +38,11 @@ def chip(label, markers=(), sub: str = "", issues: str = "") -> str:
     """Status chip: one of the four labels (or none), then markers and the incomplete sub-reason."""
     out = []
     if label:
-        word, cls = LABELS[label]
+        word, cls = ENTRY_LABELS[label]
         out.append(f'<span class="status {cls}">{esc(word)}</span>')
     for m in markers:
         out.append(f'<span class="marker mk-{m}">{esc(MARKERS[m])}</span>')
-    if sub and label in ("incomplete", None):
+    if sub and label in ("incomplete", "supporting", None):
         out.append(f'<span class="subreason">{esc(sub)}</span>')
     if issues:
         out.append(f'<span class="issues">{issues}</span>')
@@ -307,8 +311,9 @@ class LeanIndex:
         return out
 
     # rendering -----------------------------------------------------------------
-    def md(self, text: str, base: str = "docs/") -> str:
-        """Tiny Markdown subset: links, bold, code. Ledger shorthand is reworded for readers."""
+    def md(self, text: str, base: str = "docs/", doc: str | None = None) -> str:
+        """Tiny Markdown subset: links, bold, code. Ledger shorthand is reworded for readers.
+        `doc` is the Markdown file the text was taken from: a bare `#anchor` link points into it."""
         parts = re.split(r"(`[^`]*`)", reader_wording(text))
         out = []
         for p in parts:
@@ -320,7 +325,9 @@ class LeanIndex:
 
             def link(m):
                 href = m.group(2)
-                if not re.match(r"https?://", href):
+                if href.startswith("#") and doc:
+                    href = self.git.blob(doc) + href
+                elif not re.match(r"https?://", href):
                     target = str((Path(base) / href).as_posix())
                     parts_ = []
                     for seg in target.split("/"):
@@ -383,9 +390,9 @@ class LeanIndex:
             href = f'{attr(self.git.blob("docs/SOURCE-ISSUES.md"))}#statement-index-scope-disclosures'
             first, rest = split_first_sentence(d)
             more = (f'<details class="more"><summary>Full disclosure</summary><p class="scope tex2jax_process">'
-                    f'{self.md(d)}</p></details>' if rest else "")
+                    f'{self.md(d, doc="docs/SOURCE-ISSUES.md")}</p></details>' if rest else "")
             body.append(f'<p class="scope disclosure tex2jax_process"><strong>Disclosed restriction</strong> '
-                        f'(<a href="{href}">source issues: scope disclosures</a>): {self.md(first)}'
+                        f'(<a href="{href}">source issues: scope disclosures</a>): {self.md(first, doc="docs/SOURCE-ISSUES.md")}'
                         f'{" …" if rest else ""}</p>{more}')
         if view.get("explain"):
             body.append(f'<p class="scope">{view["explain"]}</p>')
@@ -421,9 +428,8 @@ class LeanIndex:
         """A coverage-ledger row with no statement entry beside it; the label comes from the node."""
         cards = []
         for row in rows:
-            cards.append(f'<article class="lean-card ledger"><header>'
-                         f'{chip(view.get("label"), view.get("markers", ()), view.get("sub", ""))}'
-                         f'<code class="decl">{esc(label)}</code></header>'
+            cards.append(f'<article class="lean-card ledger"><header><code class="decl">{esc(label)}</code> '
+                         f'{chip(view.get("label"), view.get("markers", ()), view.get("sub", ""))}</header>'
                          f'<p class="scope tex2jax_process">{self.md(row["scope"])}</p>'
                          f'<div class="meta">Lean evidence: {self.md(row["evidence"])} · '
                          f'<a href="{attr(self.git.blob("docs/COVERAGE.md"))}">coverage ledger</a></div></article>')
@@ -526,6 +532,8 @@ KEYWORDS = re.compile(r"(?<![\w.'])(theorem|lemma|def|noncomputable|fun|by|have|
                       r"calc|let|in|with|match|at|simp|rw|simpa|constructor|rcases|rintro|apply|linarith|"
                       r"nlinarith|positivity|gcongr|field_simp|ring|norm_num|omega|classical|open|namespace|"
                       r"end|where|structure|instance|Prop|Type|Sort|if|then|else|do|return|sorry)(?![\w'])")
+# Binders and big operators, highlighted like keywords so quantifier structure stands out.
+BINDERS = re.compile(r"([∀∃λ∑∏∫⨆⨅])")
 
 
 def code_block(src: str, first: int) -> str:
@@ -541,6 +549,6 @@ def code_block(src: str, first: int) -> str:
                 in_comment = False if line.rstrip().endswith("-/") or "/-" not in line else in_comment
             body = f'<span class="c">{text}</span>'
         else:
-            body = KEYWORDS.sub(r'<span class="k">\1</span>', text)
+            body = BINDERS.sub(r'<span class="k">\1</span>', KEYWORDS.sub(r'<span class="k">\1</span>', text))
         rows.append(f'<span class="ln">{first + k}</span>{body}')
     return f'<pre class="lean"><code>{chr(10).join(rows)}</code></pre>'
