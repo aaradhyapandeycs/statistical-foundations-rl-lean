@@ -514,6 +514,7 @@ READER_WORDING = [
     (r"\bopen source-fidelity finding\b", "open source issue"),
     (r"\bsource-fidelity finding\b", "source issue"),
     (r"\buser decision (\d{4}-\d{2}-\d{2})(?: \(cited-results rule\))?", r"project decision (\1)"),
+    (r"\bUser decision (\d{4}-\d{2}-\d{2})(?: \(cited-results rule\))?", r"Project scope decision (\1)"),
     (r"\bby (?:a |the )?project decision \((\d{4}-\d{2}-\d{2})\)", r"by a project decision (\1)"),
     # the "no author approval" banner is on every page; keep the per-card point about the printed theorem
     (r"Not author-approved; this does not prove the printed theorem\.", "This does not prove the printed theorem."),

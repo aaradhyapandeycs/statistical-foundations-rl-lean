@@ -108,6 +108,11 @@ class Book:
             body = mathjax_compat(body)
             if "\\begin{comment}" in body or "\\end{comment}" in body:
                 continue
+            # Class and hyperref internals (`\Hy@colorlink`, `\nowfntstandardcitation`, built
+            # from `\nowfnt@...`): `@` is not a letter in the book's text, so no formula can
+            # use them, and their bodies are not math.
+            if "@" in name or "@" in body:
+                continue
             if n == 0:
                 out[name] = body
             elif default is None:

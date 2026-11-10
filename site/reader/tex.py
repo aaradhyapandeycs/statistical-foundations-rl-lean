@@ -61,6 +61,8 @@ ACCENTS = {"'": "\u0301", "`": "\u0300", "^": "\u0302", '"': "\u0308", "~": "\u0
 ALG_BLOCK = {"For": "for", "ForEach": "for each", "ForAll": "for all", "While": "while",
              "If": "if", "uIf": "if", "ElseIf": "else if", "lIf": "if", "lFor": "for",
              "lForEach": "for each", "lWhile": "while", "uElseIf": "else if"}
+TRAILING_PUNCT = re.compile(r"[.,;:!?)]+")
+ALG_INDENT_STYLE = "margin-left:0.5em;padding-left:1.5em"
 ALG_DO = {"For": "do", "ForEach": "do", "ForAll": "do", "While": "do", "lFor": "do",
           "lForEach": "do", "lWhile": "do"}
 
@@ -314,8 +316,7 @@ class FileConverter:
                     parts.append(("b", self.display(s, "$$", start, end, p, end + 2)))
                     p = end + 2
                 else:
-                    parts.append(("i", self.inline_math(s[start:end])))
-                    p = end + 1
+                    p = self.math_with_punct(s, start, end, end + 1, j, parts)
             elif c == "{":
                 a, b, after = read_group(s, p, j)
                 parts.extend(self.conv(s, a, b, alg))
@@ -428,7 +429,11 @@ class FileConverter:
             a, b, after = read_group(s, q, j)
             inner = self.inline(self.conv(s, a, b, alg))
             tag = WRAP[name]
-            parts.append(("i", f"<{tag}>{inner}</{tag.split()[0]}>" if tag else inner))
+            # TeX keeps a space at either end of the argument (`\textbf{initialize }$Q$`);
+            # emit it outside the tag so the word does not run into what follows.
+            pre = " " if s[a:b][:1].isspace() and inner else ""
+            post = " " if s[a:b][-1:].isspace() and inner else ""
+            parts.append(("i", pre + (f"<{tag}>{inner}</{tag.split()[0]}>" if tag else inner) + post))
             return after
         if name in SWITCH:
             rest = self.conv(s, q, j, alg)
@@ -532,8 +537,7 @@ class FileConverter:
             end = find_closing(s, q, j, ")")
             if end < 0:
                 return q
-            parts.append(("i", self.inline_math(s[q:end])))
-            return end + 2
+            return self.math_with_punct(s, q, end, end + 2, j, parts)
         if sym in "%&$#_{}":
             parts.append(("i", esc(sym)))
             return q
@@ -658,6 +662,18 @@ class FileConverter:
                    lambda x: "\\text{" + self.book.cite_plain(x.group(1)) + "}", m)
         m = re.sub(r"\\(arxiv)\s*\{[^{}]*\}", "", m)
         return m
+
+    def math_with_punct(self, s: str, a: int, b: int, after: int, j: int, parts: list) -> int:
+        """Inline math s[a:b]; punctuation right after it is kept on the same line
+        (a typeset formula is an atomic box, so browsers would otherwise break before
+        a trailing period or semicolon)."""
+        math = self.inline_math(s[a:b])
+        m = TRAILING_PUNCT.match(s, after, j)
+        if not m:
+            parts.append(("i", math))
+            return after
+        parts.append(("i", f'<span class="nobr">{math}{esc(m.group(0))}</span>'))
+        return m.end()
 
     def inline_math(self, m: str) -> str:
         return f'<span class="tex2jax_process">\\({esc(self.clean_math(m))}\\)</span>'
@@ -855,6 +871,9 @@ class FileConverter:
         body = re.sub(r'(<div class="alg-indent">)(\s|<br>)+', r"\1", body)
         body = re.sub(r"(\s|<br>)+(</div>)", r"\2", body)
         body += "</div>" * max(0, body.count("<div") - body.count("</div>"))
+        # Nesting must survive without the stylesheet (reader modes, saved or snapshot
+        # copies of a page): indent each block inline, with the same values as style.css.
+        body = body.replace('<div class="alg-indent">', f'<div class="alg-indent" style="{ALG_INDENT_STYLE}">')
         number = entry.get("number") if entry else None
         anchor = f"E-{entry['id']}" if entry else None
         labels = list(entry.get("labels", [])) if entry else []
@@ -918,7 +937,9 @@ class FileConverter:
             parts.append(("i", f'{close}<div class="alg-line"><b>{word}</b> {cond} <b>{tail}</b></div><div class="alg-indent">'))
             return after
         if name in ("ENDFOR", "ENDWHILE", "ENDIF"):
-            parts.append(("i", '</div><div class="alg-line"><b>end</b></div>'))
+            # algorithmic prints \algorithmicend\ \algorithmicfor etc.: "end for", "end while", "end if"
+            word = {"ENDFOR": "end for", "ENDWHILE": "end while", "ENDIF": "end if"}[name]
+            parts.append(("i", f'</div><div class="alg-line"><b>{word}</b></div>'))
             return q
         if name == "ELSE":
             parts.append(("i", '</div><div class="alg-line"><b>else</b></div><div class="alg-indent">'))

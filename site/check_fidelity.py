@@ -3,7 +3,7 @@
 
     python3 site/check_fidelity.py [--build site/_build]
 
-Two independent checks, neither using the site's own converter:
+Three independent checks, none using the site's own converter:
 
 1. Prose, against the arXiv PDF (source/upstream/2610.41903v1.pdf, hash-pinned).
    Every prose word on the site must be found, in order, in the PDF's text, and
@@ -15,6 +15,9 @@ Two independent checks, neither using the site's own converter:
 2. Formulas, against the TeX: every formula extracted from the chapter files by
    a separate scanner must appear verbatim on the site, modulo the intended
    changes (labels removed, equation tags added, references resolved).
+3. Macros (site/check_macros.py): no raw TeX control sequence outside typeset
+   math, and every macro inside math defined by the page's MathJax
+   configuration or by MathJax itself.
 
 Exit status 1 if anything is unresolved. Needs `pdftotext` (poppler) or, on
 macOS, Swift with PDFKit (site/tools/pdftext.swift).
@@ -313,6 +316,15 @@ def main() -> int:
     for f, m in missing[:20]:
         out(f"    {f}: {m.strip()[:120]!r}")
     failures += len(missing)
+
+    # 3. macros: nothing left as raw TeX, every macro in math defined (site/check_macros.py)
+    sys.path.insert(0, str(HERE))
+    import check_macros
+    problems = check_macros.check(build)
+    out(f"macros: {len(problems)} raw or undefined TeX macros on the site")
+    for page, kind, detail in problems[:20]:
+        out(f"    {page}: {kind}: {detail}")
+    failures += len(problems)
 
     out("FIDELITY OK" if not failures else f"FIDELITY PROBLEMS: {failures}")
     annotate(failures)

@@ -116,10 +116,13 @@ figcaption { font: 14px/1.5 var(--sans); color: var(--muted); margin-top: 6px; }
 .algorithm { border-top: 2px solid var(--fg); border-bottom: 2px solid var(--fg); padding: 0 0 8px; }
 .algorithm figcaption { color: var(--fg); border-bottom: 1px solid var(--fg); padding: 6px 0; margin: 0 0 8px; }
 .alg-body { font-size: 0.95em; line-height: 1.7; }
+/* margin-left and padding-left are also inlined by site/reader/tex.py (ALG_INDENT_STYLE), so nesting
+   survives without this stylesheet; keep the two in step. */
 .alg-indent { border-left: 1px solid var(--muted); margin: 0.1em 0 0.1em 0.5em; padding-left: 1.5em; }
 .alg-line { margin: 0.1em 0; }
 .alg-comment { color: var(--muted); font-style: italic; }
 .alg-comment::before { content: "▷ "; font-style: normal; }
+.nobr { white-space: nowrap; }
 .missing-figure { display: inline-block; padding: 12px; border: 1px dashed var(--line); color: var(--muted); font: 14px var(--sans); }
 .table-wrap { overflow-x: auto; }
 .book-col table { border-collapse: collapse; margin: 1em auto; }
@@ -273,3 +276,5 @@ svg.depgraph a:hover rect, svg.depgraph a:focus rect { stroke-width: 3; }
   .links { gap: 2px 12px; }
   body { font-size: 16px; }
 }
+
+.variants-note { display: block; font-size: 0.8em; color: var(--muted, #666); }
