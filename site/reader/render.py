@@ -360,7 +360,7 @@ class Site:
 <title>{esc(title)}</title>
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/theme.js"></script>
-<script src="assets/mathjax-config.js"></script>
+<script>{self.inline_mathjax_config()}</script>
 <script defer src="{MATHJAX}"></script>
 </head>
 <body class="tex2jax_ignore">
@@ -438,11 +438,13 @@ endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{
                 ch = next((p for p in self.pages if p.level == 0 and p.chapter == last_ch), None)
                 trs.append(f'<tr class="ch-row"><th colspan="4">{esc(last_ch or "")} {ch.title if ch else ""}</th></tr>')
             st = "".join(f'<span class="status {STATUS[s][1]}">{esc(STATUS[s][0])}</span>' for s in r["statuses"])
+            if len(r["lean"]) > 1 and len(set(r["statuses"])) > 1:
+                st += f'<span class="variants-note">({len(r["lean"])} Lean variants)</span>'
             lean = " ".join(f'<code>{esc(n)}</code>' for n in r["lean"])
             search = " ".join([r["kind"], r["number"], r["title"], r["label"], *r["lean"]]).lower()
             trs.append(f'<tr data-status="{" ".join(r["statuses"]) or "other"}" data-search="{attr(search)}">'
                        f'<td><a href="{r["page"]}.html#{attr(r["anchor"])}">{esc(r["kind"])} {esc(r["number"])}</a></td>'
-                       f'<td>{esc(r["title"])}<div class="label"><code>{esc(r["label"])}</code></div></td>'
+                       f'<td><span class="tex2jax_process">{esc(r["title"])}</span><div class="label"><code>{esc(r["label"])}</code></div></td>'
                        f'<td>{st}</td><td class="lean-names">{lean}</td></tr>')
         unplaced = ""
         if self.unplaced:
@@ -680,6 +682,14 @@ files from the arXiv archive are not republished.</p>"""
             out[pid] = re.sub(r"@@REF\|(\w)\|(\w+)\|([^@]*)@@", lambda m: fmt(m.group(1), m.group(2), m.group(3)), text)
         self.missing_refs = missing
         return out
+
+    def inline_mathjax_config(self) -> str:
+        """The configuration inlined in every page, so the book's macros are defined even
+        when `assets/` is not reachable (a saved page, a snapshot preview); identical to
+        `assets/mathjax-config.js`."""
+        if not hasattr(self, "_mathjax_inline"):
+            self._mathjax_inline = self.mathjax_config().replace("</", "<\\/")
+        return self._mathjax_inline
 
     def mathjax_config(self) -> str:
         macros = self.book.mathjax_macros()

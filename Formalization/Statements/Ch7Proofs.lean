@@ -24,6 +24,8 @@ import Formalization.Ch7Rest.TDInferencePluginCorrected711
 import Formalization.Ch7Rest.TDInferencePluginRefute711
 import Formalization.Ch7Rest.TDInferencePluginCoverage711
 import Formalization.Ch7Rest.TDInferenceConfRegion711
+import Formalization.Ch7Rest.TDInferenceConfCalib711
+import Formalization.Ch7Rest.TDInferenceConfChiSq711
 import Formalization.RobustRL.DRVI.RobustBellmanDisplays
 import Formalization.Ch7Rest.VPODisplays712
 import Formalization.Ch7Rest.MarlBestResponse
@@ -467,6 +469,41 @@ theorem Eq_convex_Cdelta_rectangle_corrected_oracle_holds :
   obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_bounds
     M π μ h0 (by linarith) V₀ hμ hΓ
   exact ⟨K₀, hK₀, fun T hT r _ ↦ (hb T hT).2.2 r⟩
+
+/-- `Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated` from
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated` (the export needs only
+`η₀ ≤ 1`; the ellipsoid component is taken). -/
+theorem Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated_holds :
+    Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated
+    M π μ hμ h0 (by linarith) V₀ hΓ
+  refine ⟨K₀, hK₀, fun α hα0 hα1 ↦ ?_⟩
+  obtain ⟨q, hq0, _, _, hq, _, hT⟩ := hb α hα0 hα1
+  exact ⟨q, hq0, hq, fun T hT1 ↦ (hT T hT1).1⟩
+
+/-- `Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated` from
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated` (the export needs only
+`η₀ ≤ 1`; the rectangle component is taken). -/
+theorem Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated_holds :
+    Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_calibrated
+    M π μ hμ h0 (by linarith) V₀ hΓ
+  refine ⟨K₀, hK₀, fun α hα0 hα1 ↦ ?_⟩
+  obtain ⟨_, _, r, hr0, _, hr, hT⟩ := hb α hα0 hα1
+  exact ⟨r, hr0, hr, fun T hT1 ↦ (hT T hT1).2⟩
+
+/-- `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared` from
+`StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_chiSquared` (the export needs only `η₀ ≤ 1`)
+and `StatisticalRL.Ch7Rest.TDInference.exists_chiSquared_quantile`. -/
+theorem Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared_holds :
+    Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared := by
+  intro State Action _ _ _ _ _ M π μ η₀ V₀ hμ h0 h1 hΓ
+  obtain ⟨K₀, hK₀, hb⟩ := StatisticalRL.Ch7Rest.TDInference.exists_confRegion_oracle_chiSquared
+    M π μ hμ h0 (by linarith) V₀ hΓ
+  refine ⟨K₀, hK₀, fun α hα0 hα1 ↦ ⟨?_, fun R hR ↦ hb α hα0 hα1 R hR⟩⟩
+  exact StatisticalRL.Ch7Rest.TDInference.exists_chiSquared_quantile Fintype.card_pos hα0 hα1
 
 end EqConvexCdeltaProofs
 

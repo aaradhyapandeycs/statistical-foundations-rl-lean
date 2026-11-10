@@ -947,6 +947,9 @@ import Formalization.Probability.ConvexLindebergReservoirSharp
 import Formalization.Ch7Rest.TDInferenceConvexLinSharp711
 import Formalization.Ch7Rest.TDInferenceConvexThird711
 import Formalization.Ch7Rest.TDInferenceConfRegion711
+import Formalization.Ch7Rest.TDInferenceConfCalib711
+import Formalization.Probability.ChiSquaredQuadForm
+import Formalization.Ch7Rest.TDInferenceConfChiSq711
 import Formalization.Probability.PathAzumaBridge
 import Formalization.Ch7Rest.TDInferenceAzuma711
 import Formalization.Ch7Rest.TDInferenceRemainderTail711
