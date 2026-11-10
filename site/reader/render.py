@@ -261,7 +261,13 @@ class Site(InfoPages):
                               for x in (pr.get("lean") or n["refutations_cited"])) or "see the coverage ledger"
             more = (" Some further failures are paper arguments by this project, not checked in Lean."
                     if pr.get("paper") else "")
-            refuted = (f'<p class="refuted-line tex2jax_process"><strong>Refuted in Lean</strong> under this reading: '
+            lab = n.get("site_label")
+            lead = ""
+            if lab in ("corrected", "restricted"):
+                lead = (f'<strong>The printed statement is not proved (Lean refutes it); a '
+                        f'{"corrected" if lab == "corrected" or "also-corrected" in n.get("site_markers", ()) else "restricted"} '
+                        f'statement is proved.</strong> ')
+            refuted = (f'<p class="refuted-line tex2jax_process">{lead}<strong>Refuted in Lean</strong> under this reading: '
                        f'{reading} Lean: {names}.{more} {what} The refutation and any correction are {OURS}.</p>')
         elif "boundary" in n.get("site_markers", ()):
             names = ", ".join(f'<code title="{attr(x)}">{esc(x.rsplit(".", 1)[-1])}</code>'
