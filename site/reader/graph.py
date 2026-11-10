@@ -386,8 +386,9 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
         cnt = self.site.cnt
         body = f"""<h1>Dependency graph</h1>
 <div class="incomplete" role="note"><strong>AI-reviewed edges.</strong> Arrows are read from the TeX
-cross-references (<code>\\ref</code>, <code>\\eqref</code>, …) inside each result and its proof. Of {cnt("uses_edges")}
-candidate edges, {cnt("uses_edges_reviewed")} were classified by an AI critic and an independent AI verifier (not
+cross-references (<code>\\ref</code>, <code>\\eqref</code>, …) inside each result and its proof, plus
+{cnt("uses_edges_added_by_review")} dependencies the review found without a reference. Of these {cnt("uses_edges")}
+edges, {cnt("uses_edges_reviewed")} were classified by an AI critic; an independent AI verifier re-checked every comparison, wrong-target and added edge and a random sample of 40 others (not
 author-reviewed); arrows are proof dependencies only, while definition and comparison references are listed as context
 and wrong-target references are dropped. A real dependency may still be cited without a reference. The graph does not
 certify a chapter or the book.</div>
