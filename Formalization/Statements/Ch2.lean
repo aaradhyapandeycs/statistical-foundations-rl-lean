@@ -44,7 +44,10 @@ def Lemma2_2 : Prop :=
       (4 / (1 - M.discount)) * ‖Vhat - V‖
 
 /-- `lem:Freedman-prelim`, `chapters/prelim.tex:1056–1075`. The increments
-are indexed from zero, corresponding to the source's indexing from one. -/
+are indexed from zero, corresponding to the source's indexing from one.
+The printed "`W_n ≤ σ²` holds deterministically" is assumed almost surely:
+conditional expectations are defined only up to null sets, and the a.s.
+hypothesis implies every pointwise reading for a fixed representative. -/
 def Lemma2_9 : Prop :=
   ∀ (Ω : Type u) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
     (X : ℕ → Ω → ℝ),
@@ -54,7 +57,7 @@ def Lemma2_9 : Prop :=
     (∀ n, μ[X n | ⨆ k, ⨆ (_ : k < n), MeasurableSpace.comap (X k) (borel ℝ)]
       =ᵐ[μ] fun _ ↦ 0) →
     ∀ (n K : ℕ), 0 < K →
-    (∀ ω, (∑ k ∈ Finset.range n,
+    (∀ᵐ ω ∂μ, (∑ k ∈ Finset.range n,
       μ[fun ω' ↦ X k ω' ^ 2 |
         ⨆ j, ⨆ (_ : j < k), MeasurableSpace.comap (X j) (borel ℝ)] ω) ≤ σ ^ 2) →
     ∀ (δ : ℝ), 0 < δ → δ < 1 →
@@ -142,8 +145,8 @@ noncomputable def Eq_Qpi_Vpi_matrix_notation_inf : Prop :=
     Q = (1 - γ • Ppi)⁻¹ *ᵥ r
 
 /-- Linear convergence of value iteration and policy iteration,
-`chapters/prelim.tex:319–343`, equations `eq:value_iteration` and
-`eq:policy_iteration`. Fixed points denote actual trajectory values by the separately proved
+`chapters/prelim.tex:317–343`, equations `eq:value_iteration` (`chapters/prelim.tex:317–319`) and
+`eq:policy_iteration` (`chapters/prelim.tex:328–330`). Fixed points denote actual trajectory values by the separately proved
 trajectory identification and optimality theorems;
 policy iteration permits arbitrary maximizing tie choices at each update. -/
 def Lemma2_1 : Prop :=
@@ -208,7 +211,7 @@ def Lemma2_7 : Prop :=
           2 * Real.exp (-(0.19 : ℝ) * τ))
 
 /-- Lemma 2.13, `lem:KL-quadratic-lower-bound`, `chapters/prelim.tex:1335–1346`, with the
-Bernoulli KL divergence of `eq:defn-KL-bern` written out:
+Bernoulli KL divergence of `eq:defn-KL-bern` (`chapters/prelim.tex:1326–1329`) written out:
 `KL(p ‖ q) = p log(p/q) + (1-p) log((1-p)/(1-q))`. For all `0 < p, q < 1`,
 `KL(p ‖ q) ≤ (p-q)²/(q(1-q))`; and if `1/2 ≤ q < p < 1`, then
 `KL(p ‖ q) ≤ KL(q ‖ p) ≤ (p-q)²/(p(1-p))`. -/

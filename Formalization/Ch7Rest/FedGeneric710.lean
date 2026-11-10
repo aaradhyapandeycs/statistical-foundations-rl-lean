@@ -98,7 +98,7 @@ noncomputable def supError (Q Q' : State → Action → ℝ) : ℝ :=
 /-- Theorem 7.10, `thm:lower_bound`, `chapters/federated_RL.tex:227–239`, under the alternative
 reading in which "for some universal constant `c₀ > 0`" sits inside the hypothesis:
 "if there is some `c₀ > 0` with `C_round ≤ c₀ / ((1-γ) log² N)`, then …". All other quantifiers
-and objects are as in the statement-index entry `Thm7_10` (universal `c₀` first). This reading
+and objects are as in the statement-index entry `Thm7_10_restricted` (universal `c₀` first). This reading
 is false (`docs/SOURCE-ISSUES.md#C42`): since
 `N ≥ 16`, the hypothesis always holds, and full synchronization with many agents makes the
 expected error exponentially small in `T`. Refuted by `not_thm7_10_innerConstant` in

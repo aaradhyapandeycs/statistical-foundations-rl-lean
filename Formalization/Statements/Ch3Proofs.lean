@@ -115,7 +115,7 @@ theorem Eq_P_Mi_Q_inaccurate_lower_generative_holds : Eq_P_Mi_Q_inaccurate_lower
   exact StatisticalRL.GenerativeLowerBound.sourceHardMDP_full_Q_estimation_lower
     γ ε hγ hγ1 hε hεmax N hN' (fun data _ _ ↦ QHat data)
 
-theorem Thm3_9_minimaxLowerBound_holds : Thm3_9_minimaxLowerBound := by
+theorem Thm3_9_minimaxLowerBound_restricted_holds : Thm3_9_minimaxLowerBound_restricted := by
   refine ⟨1 / 2 ^ 28, 1 / 4096, by norm_num, by norm_num, ?_⟩
   intro S A H N ε hS hA hH hε hεH hN Seed _ ν _ piHat hmeas
   exact StatisticalRL.FiniteHorizonLowerBound.minimaxLowerBound S A H N ε hS hA hH hε hεH hN ν

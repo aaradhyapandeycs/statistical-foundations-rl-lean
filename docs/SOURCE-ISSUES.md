@@ -235,7 +235,7 @@ Originally proposed correction (superseded): make `S ≥ 2`, `A ≥ 2` and `ε >
 Corrected result (2026-11-07). The cited bound is proved in Lean with explicit constants (`c₃ = 1/512`, `c₄ = 1/5308416`, hence every smaller pair) and the printed shape of the ε and N conditions, by a self-contained two-point construction (the cited paper was not used; `Formalization/RobustRL/Ch7/LowerBound75.lean`; index entries in `Statements/Ch7.lean`):
 - `Thm7_5_corrected`: the printed statement with only `2 ≤ A` added. Estimators map samples to policies and do not see the reward; the S = 1 case holds only for that reason. `ε > 0` is not needed: for ε < 0 the claim is trivial, and at ε = 0 the Lean value `c₄/0 = 0` forces N = 0 (the instance also holds for every N if `c₄/0` is read as ∞).
 - `Thm7_5_corrected_knownReward`: the faithful form under the book's known-reward convention: `2 ≤ S`, `2 ≤ A`, shared reward. Both hypotheses are shown necessary in Lean (`knownReward_needs_two_states`, `knownReward_needs_two_actions`), and the printed statement is refuted for every pair of positive constants (`printed_at_fails`).
-Independently reviewed in two rounds. Not author-approved. The earlier evidence below concerns the singleton-action case.
+Estimator class (both entries): estimators are deterministic maps from the sample array to policies; randomized estimators are not covered. Independently reviewed in two rounds. Not author-approved. The earlier evidence below concerns the singleton-action case.
 
 Earlier evidence: a
 [stationary-policy robust-value foundation](../Formalization/RobustRL/ChiSquaredPolicyValue.lean)
@@ -291,7 +291,10 @@ same C8-completed UCBVI tables; the greedy identity itself does not depend on
 the bonus. The burn-in and asymptotic-regret displays `eq:burn-in-ucbvi` and
 `eq:regret-asymptotic-ucbvi` (lines 491–506) are indexed as
 `Eq_regret_asymptotic_ucbvi_corrected`, inheriting the premises of
-`Thm5_2_corrected`. See the [review](critic-trivial-c.md).
+`Thm5_2_corrected`. See the [review](critic-trivial-c.md). Remark 5.13
+(`onlineRL.tex:3510–3524`) is indexed as `Remark5_13_corrected` because its
+`T₆` quantities are those of the same C8-completed tables; its inequalities
+are otherwise as printed.
 
 MVP uses the same Bernstein bonus at `onlineRL.tex:1303–1307`,
 after initializing every row count to zero in Algorithm `alg:main-mvp`
@@ -429,9 +432,23 @@ These are limitations of the currently proved formalizations, not asserted
 errors in the manuscript. Where an item links to a source-issue candidate, that
 candidate records the asserted error.
 
+- Definition-level conventions recorded after the 2026-11-10 definition audit:
+  - LCB-Q sequences (Chapter 6; `psiSeq` and the α, θ, ξ, ψ, φ sequences used by Lemma 6.11 and
+    Lemma 6.12): the ratio `d_j/d^b` is set to 0 when `d^b = 0`. That event has probability zero
+    under the source's assumptions, so no statement that uses these sequences depends on the value.
+  - Online VPO (Theorem 7.12; `Thm7_12_corrected`): the first policy π^(1) is computed from the
+    empty dataset, and π^(0) never enters the regret sum. This is the indexing of the corrected
+    statement; see [C44](#C44).
+  - Greedy selectors (the Chapter 5 planners and `optimalGreedyPolicy` used in Chapter 6): the
+    maximizer is chosen by `Classical.choose`, so each fixes one unspecified tie rule. Every
+    statement entry that depends on the tie rule discloses it; entries that use only the value do
+    not depend on it.
+
 - Lemma 6.11 (`lemma:useful`, `offlineRL.tex:2292–2300`) is indexed as
   `Lemma6_11_restricted`, with the source's `≲` made explicit (constant 84) and the added
-  premise `log(SAT/δ) ≥ 1`, which is sufficient for `κ = γ(1+1/H)³ < 1`. The premise is not
+  premise `log(SAT/δ) ≥ 1`, which is sufficient for `κ = γ(1+1/H)³ < 1`. `π⋆` ranges over every
+  `Q⋆`-greedy deterministic policy (every optimal deterministic policy; no tie rule is fixed;
+  generalized on 2026-11-09 from the library tie choice `optimalGreedyPolicy`). The premise is not
   implied by Theorem 6.8's sample-size condition, so the entry does not formally cover that
   theorem's uses with `δ > SAT/e`; see [C22](#C22) for the source error and why Theorem 6.8 is
   unaffected.
@@ -465,6 +482,25 @@ candidate records the asserted error.
   restriction: O(log(SAN/((1−γ)δ))/N²) is read as c_opt·log(SAN/((1−γ)δ))/N² with ∀ c_opt ∃ c₂ (proved with
   c₂ = 10⁶ + 8c_opt); only deterministic stationary planner outputs are covered, and the premises are those of
   `Thm7_4_corrected` (N > 0). The event is uniform over all such outputs ([review](critic-trivial-b.md)).
+
+- `eq:mdp-value-Q` (`robust_RL.tex:88–98`), `eq:bellman-equ-infinite-all` (`:102–113`) and the
+  robust Bellman operator and DRVI claims (`:114–133`, `:261–262`) are indexed as
+  `Eq_mdp_value_Q_restricted`, `Eq_bellman_equ_infinite_all_restricted` and
+  `Eq_robust_bellman_fixedPoint_restricted` (renamed 2026-11-09 from the unsuffixed names). The
+  source builds the `(s,a)`-rectangular set from an unspecified "distance-like metric" ρ
+  (`:36–46`) and names the TV and χ² balls as its instances (`:52`). The entries cover the TV ball,
+  the χ² ball and every row-set family in which each linear functional `q ↦ ⟨q, V⟩` attains its
+  infimum on every nominal row's set. Reading "distance-like" as implying that attainment is an
+  interpretation; families without attained infima are not claimed. Policies are the book's
+  stationary randomized policies with a static adversary; history-dependent policies and dynamic
+  adversaries are not claimed. Not an asserted source error.
+
+- Remark 4.5 (`generative_model_model_free.tex:3455–3457`) is indexed as `Remark4_5`. Its clause
+  (iii), `E ξ_{t,max} > 0`, is stated for `t ≥ τ̂`, the range of Lemma 4.15 which the remark
+  follows; at `t = 0` one has `ξ₀ = 0`, so the clause is false there. Theorem 4.6's "for some
+  small enough universal constants `c₁ ≥ c₂ > 0`" is read existentially, as printed; the export
+  witnesses `c₁ = c₂ = 1`, and schedules with `c₂ < 1` are not covered (see the `Thm4_6`
+  docstring).
 
 - `eq:DPO` (`RLHF.tex:62–74`), `eq:policy_RBMLE` (`:115–141`) and `eq:online_RBMLE` (`:158–198`) are indexed as
   `Eq_DPO_restricted`, `Eq_policy_RBMLE_restricted` and `Eq_online_RBMLE_restricted`. The main restriction is the
@@ -529,7 +565,15 @@ candidate records the asserted error.
   The approximate-planner extension of Theorem 3.2 stated in prose at
   `generative_model_model_based.tex:943` (`Thm3_2_approxPlanner_positiveN`) keeps the same
   `N > 0` restriction; the companion iteration-count claim (`Thm3_2_planningIterations`)
-  divides by `N`, so `N > 0` is implicit in the printed claim.
+  divides by `N`, so `N > 0` is implicit in the printed claim. Its VI clause also reads the
+  unspecified initialization (`prelim.tex:316`) as any `Q₀` with entries in `[0, 1/(1−γ)]`
+  (covering `Q₀ = 0`); for unbounded `Q₀` no uniform constant exists, so a bounded start is
+  implicit in the printed `O(·)` claim. PI starts from an arbitrary stationary policy.
+- `eq:lemma-VarP-V-bound` with `eq:I-gamma-P-Var-bound`
+  (`generative_model_model_based.tex:327–352`) is indexed as `Eq_lemma_VarP_V_bound` on the
+  domain `0 < γ`: the printed bounds divide by `γ` and `γ²`, so they are undefined at `γ = 0`
+  (under Lean's `x/0 = 0` they would be false there). This is the domain of definition of the
+  printed display, not a source error.
 - Theorem 3.9 (`Thm:sample-compl-finite`,
   `generative_model_model_based.tex:2551–2570`) is indexed as `Thm3_9` in its printed form, for every
   deterministic policy that is optimal for the empirical MDP at every stage and state (no tie rule is fixed).
@@ -538,8 +582,9 @@ candidate records the asserted error.
   N = 0 the printed threshold implies δ ≥ HSA ≥ 1 and the claim is trivial there; the entry is never vacuous
   ([review](critic-trivial-c.md), R1). `Thm3_9_positiveN` (explicit `N > 0`) and the earlier entry
   `Thm3_9_causal_positiveN`, for the concrete backward-greedy tie rule, are retained.
-- `Thm3_9_minimaxLowerBound` (formal reading of the prose minimax-optimality
-  claim at `generative_model_model_based.tex:2585`, context 2573–2585): domain
+- `Thm3_9_minimaxLowerBound_restricted` (formal reading of the prose minimax-optimality
+  claim at `generative_model_model_based.tex:2585`, context 2573–2585; renamed from
+  `Thm3_9_minimaxLowerBound` on 2026-11-09 because the items below narrow the claim): domain
   S, A, H ≥ 2 and 0 < ε ≤ c₁H with existential c₁ (witness 1/4096). Each
   exclusion is a domain exclusion, not a source error: for H = 1, A = 1, S = 1
   or ε ≥ H, zero samples already give an ε-optimal policy. The "(0,H]" range of
@@ -548,8 +593,8 @@ candidate records the asserted error.
   protocol, not tested; only copy 0 and actions {0,1} are used. R1: output
   actions must be measurable in the seed for every reward table. R2: the output
   is a deterministic nonstationary policy for each seed (seed-randomized
-  estimators); stochastic-policy outputs are not covered. R3: the seed space
-  lives in universe 0. R4: the threshold is H³/ε² per tuple without the
+  estimators); stochastic-policy outputs are not covered. R3 (removed
+  2026-11-09): the seed space may live in any universe. R4: the threshold is H³/ε² per tuple without the
   log(HSA/δ) factor, with fixed failure probability 1/8; no δ-dependent lower
   bound is claimed. The cited domingues2021episodic total-budget/adaptive
   theorem is not established. No source error. See [source review](critic-fhlb.md).
@@ -915,8 +960,9 @@ The resulting actual-law regret bound is
 `max(1,19 exp(1)) sqrt(S A H⁵ K (1+log(4SAT/delta)))`, with probability
 strictly exceeding 1−delta for every H,K≥1 and 0<delta<1. It implies the printed
 soft-O rate for this implementation. Lemma 5.18 includes both its weighted
-Q-error bound and simultaneous Q/V optimism, with an explicit residual
-constant 8. No refutation of the final printed regret rate is claimed, and no
+Q-error bound and simultaneous Q/V optimism, for every bonus coefficient
+`c_b ≥ 2` with explicit residual constant `4c_b` (8 at the algorithm's `c_b = 2`;
+`Lemma5_18_restricted` quantifies over all `c_b ≥ 2` since 2026-11-09). No refutation of the final printed regret rate is claimed, and no
 claim is made that every printed proof step is valid.
 
 See the [independent source-review record](critic-online-qlearning-source.md)
@@ -1204,6 +1250,7 @@ readings (witness S = 2, A = 1, γ = σ = 1/2, ε = c₀/128, N = 1).
 Corrected result (2026-11-07). The cited bound is now proved in Lean with the printed constants, by a self-contained construction (the cited paper was not used), in two forms (`Formalization/RobustRL/Ch7/LowerBound73.lean`; index entries in `Statements/Ch7.lean`):
 - `Thm7_3_corrected`: the printed statement with only `2 ≤ A` added. Here estimators map samples to policies and do not see the reward, and the two hard models may differ in reward; the S = 1 case holds only for that reason.
 - `Thm7_3_corrected_knownReward`: the faithful form under the book's known-reward convention: `2 ≤ S`, `2 ≤ A`, and the two hard models share their reward. Under that convention the printed claim is false at S = 1 (`argmax r` is robust-optimal; a paper argument, not machine-checked), so S ≥ 2 is needed there.
+Estimator class (both entries): estimators are deterministic maps from the sample array to policies; randomized estimators are not covered.
 Both passed independent reviews. Not author-approved.
 
 <a id="C39"></a>
@@ -1284,7 +1331,7 @@ force log²N ≤ c0/(1−γ). So N is bounded in terms of γ and the bound follo
 bound, from the r ≡ 1 instance (error ≥ γ^T/(1−γ)). This is weaker than the discussion at `federated_RL.tex:244`.
 If "for some c0" is read inside the hypothesis, the hypothesis is vacuous and the statement is false (full
 synchronization with K → ∞ gives error ≤ (1−η(1−γ))^T/(1−γ)). Proposed reading: a universal c0 quantified first,
-with an explicit C_γ. Found by a source preflight; the reading dependence was established by an independent source check. Machine-checked in Lean: under the c₀-first reading the printed theorem is proved (`Thm7_10`, `Formalization/Ch7Rest/LowerBound710.lean`; the export `lowerBound_of_fewRounds` holds for every c₀, with C_γ = γ^{⌊exp √(c₀/(1−γ))⌋}/(1−γ), doubly exponentially small, so the discussion at `:242–248` is not established); under the inner-c₀ reading it is refuted (`not_thm7_10_innerConstant`, `InnerConstant710.lean`). Only exact averaging is modelled; the remark at `:196` allowing any distributed mean-estimation routine is not covered. Not author-approved.
+with an explicit C_γ. Found by a source preflight; the reading dependence was established by an independent source check. Machine-checked in Lean: under the c₀-first reading the printed bound is proved for the exact-averaging sub-class of the algorithm (`Thm7_10_restricted`, renamed from `Thm7_10` on 2026-11-09; `Formalization/Ch7Rest/LowerBound710.lean`; the export `lowerBound_of_fewRounds` holds for every c₀, with C_γ = γ^{⌊exp √(c₀/(1−γ))⌋}/(1−γ), doubly exponentially small, so the discussion at `:242–248` is not established); under the inner-c₀ reading it is refuted (`not_thm7_10_innerConstant`, `InnerConstant710.lean`). Only exact averaging is modelled; line `:196` places any distributed mean-estimation routine (including compression) in the generic algorithm class, so the entry is a restriction of the printed algorithm class and is counted as a restricted variant. Not author-approved.
 
 <a id="C43"></a>
 ## Candidate C43: Theorem 7.11's covariance Γ omits the reward variance across actions
@@ -1514,6 +1561,8 @@ and level z fixed before the data, the one-sided interval for uᵀV^π has cover
 two-sided interval (z ≥ 0) within 2K·T^(-1/3) of 2Φ(z) − 1, and the Bonferroni box of half-widths z√(Λ_ss/T) has
 coverage at least 1 − 2S(1 − Φ(z)) − 2SK·T^(-1/3), with one instance constant K. Still open: the plug-in Λ̂_T rule
 (a covariance-perturbation coverage bound; consistency of Λ̂_T is now proved, see (4) below), (2), (3) and (4).
+[Superseded in part by the later addenda below: the plug-in rule's coverage limits, consistency of Λ̂_T, and Lean
+evidence that the printed rectangle (2) fails on one instance are now proved; see the plug-in and (2) addenda.]
 Independently critic-reviewed ([review](critic-confint.md)). Not author-approved.
 
 **Machine-checked for (4) (2026-11-09, `Formalization/Ch7Rest/TDInferencePluginSingular711.lean`).** Ā_T
@@ -1547,8 +1596,25 @@ For (4): Lean's convention Λ̂_T = 0 on the singular event (a degenerate interv
 Because that event has vanishing probability, any definition there gives the same asymptotic coverage. The printed
 procedure is still undefined there for finite T.
 
-Still open: a rate, (2), (3), and the Λ̂_T version of the (1) refutation. Independently critic-reviewed
+Still open: a rate, (3), and the Λ̂_T version of the (1) refutation; (2) now has Lean evidence of failure on one
+instance (next paragraph), and its finite-T figures remain paper calculations. Independently critic-reviewed
 ([review](critic-pluginD.md)). Not author-approved.
+
+**Lean evidence for (2) (2026-11-09, `Formalization/Ch7Rest/TDInferenceC47Rectangle711.lean`).** On the
+one-state instance of (1) (S = 1, oracle Λ = 1; all 0 < η₀ ≤ 1, which contains the printed range
+0 < η₀ < 1/4 of `:133`, and all V₀), the printed rectangle `∏_s [V̄_T(s) − R̂/√T, V̄_T(s) + R̂/√T]`
+(`:201–203`), with R̂ any number at most the lower (1−α)-quantile of `‖X‖∞`, X ~ N(0, covariance/T)
+(`:205`), has coverage tending to 0, for every 0 < α < 1, both with the oracle covariance Λ
+(`C47_rectangle_printed_undercovers`, via the bound coverage ≤ 2Φ(z/√T) − 1 + 2K·T^(-1/3) for any z ≥ 0
+with 2Φ(z) − 1 ≥ 1 − α, `oracleRectangle_coverage_le`, a corollary of the half-space result, no CLT) and with
+the printed plug-in Λ̂_T taken pathwise (`C47_rectangle_printed_undercovers_plugin`, via the plug-in two-sided
+limit and consistency of Λ̂_T; qualitative, no rate). The quantile hypotheses are satisfiable: R = z√v is the
+exact lower quantile for every variance v ≥ 0, including the point mass v = 0
+(`exists_oracle_rectangle_quantile`, `exists_plugin_rectangle_quantile`). For S = 1 the ℓ∞ quantile is the
+two-sided Gaussian quantile; nothing about the S-dimensional ℓ∞ quantile is formalized, and one instance
+suffices to refute the printed general claim. The finite-T figures in (2) (coverage 2Φ(1.96/√T) − 1, 0.16 at
+T = 100, violation of `eq:convex.Cdelta` for T > 1) remain paper calculations. Independently critic-reviewed
+([review](critic-c47r.md)). Not author-approved.
 
 <a id="C48"></a>
 ## Candidate C48: Theorem 5.10 fails under the literal MVP trigger

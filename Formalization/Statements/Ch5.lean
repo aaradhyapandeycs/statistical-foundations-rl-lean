@@ -112,7 +112,9 @@ uses the explicit finite zero-count convention Q = H (Candidate C8), the
 source domain 0 < δ ≤ 1, and one fixed deterministic greedy tie rule.
 The T₆ policy variance and squared difference are evaluated along the same
 actual path, against the true transition row and the same selected policy.
-No concentration event or variance estimate is assumed. -/
+No concentration event or variance estimate is assumed.
+The bonus constants range over `4 ≤ c₁`, `c₁² ≤ c₂`, the standing regime of Lemma 5.5
+(`chapters/onlineRL.tex:766`), under which all subsequent analysis is carried out (`:777`). -/
 noncomputable def Lemma5_7_W1_K2_corrected : Prop :=
   ∀ (State Action : Type) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H), 2 ≤ K →
@@ -148,7 +150,9 @@ The episode restriction K≥2 addresses the vanishing-log endpoint (Candidate
 C12 in `docs/SOURCE-ISSUES.md`). The algorithm uses the finite zero-count
 convention Q=H (Candidate C8), one fixed deterministic greedy tie rule,
 and the source confidence/bonus domains. Singleton state spaces are included.
-The original unrestricted K=1 source lemma is not certified by this entry. -/
+The original unrestricted K=1 source lemma is not certified by this entry.
+The bonus constants range over `4 ≤ c₁`, `c₁² ≤ c₂`, the standing regime of Lemma 5.5
+(`chapters/onlineRL.tex:766`), under which all subsequent analysis is carried out (`:777`). -/
 noncomputable def Lemma5_7_K2_corrected : Prop :=
   ∀ (State Action : Type) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H), 2 ≤ K →
@@ -239,7 +243,9 @@ tie rule; K ≥ 2 is explicit. Candidate C8 in `docs/SOURCE-ISSUES.md` records t
 zero-count correction, and C12 records the missing endpoint: at K=H=1 the
 printed strict probability bound would require probability > 1.
 The full unrestricted printed lemma and the final regret theorem are not
-asserted by this entry. -/
+asserted by this entry.
+The bonus constants range over `4 ≤ c₁`, `c₁² ≤ c₂`, the standing regime of Lemma 5.5
+(`chapters/onlineRL.tex:766`), under which all subsequent analysis is carried out (`:777`). -/
 noncomputable def Lemma5_8_K2_corrected : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H), 2 ≤ K →
@@ -573,7 +579,9 @@ resets and conditionally sampled transitions, and uses a fixed deterministic
 greedy tie rule. C8 gives the finite zero-count update, C13 uses the prose
 power-of-two trigger, and C16 replaces the printed allocation 100δ/(S²A²H²K²) by
 δ/(100S²A²H²K²). See `docs/SOURCE-ISSUES.md`. The standing regime K≥SAH·Iota at
-`chapters/onlineRL.tex:1402–1407` is retained in this indexed statement. -/
+`chapters/onlineRL.tex:1402–1407` is retained in this indexed statement.
+The bonus constants range over `4 ≤ c₁`, `c₁² ≤ c₂`, the standing regime of Lemma 5.5
+(`chapters/onlineRL.tex:766`, `:777`), recalled for MVP at `:1480–1487`. -/
 noncomputable def MVP_optimism_corrected : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
@@ -609,7 +617,9 @@ T2 uses the source bonus for positive counts and the C8 analysis charge H
 for zero counts. C13 reads the trigger as a power of two,
 and C16 uses the corrected reciprocal confidence allocation; one deterministic
 greedy tie rule is fixed. The K=1 case is included by a direct argument.
-See `docs/SOURCE-ISSUES.md`. -/
+See `docs/SOURCE-ISSUES.md`.
+The bonus constants range over `4 ≤ c₁`, `c₁² ≤ c₂`, the standing regime of Lemma 5.5
+(`chapters/onlineRL.tex:766`, `:777`), recalled for MVP at `:1480–1487`. -/
 noncomputable def Lemma5_15_corrected : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
@@ -853,7 +863,9 @@ transition sampling, and uses the retained empirical row, completed
 pre-episode history, and fixed maximizing tie. It includes the K=1 endpoint.
 The zero-count rule (C8), trigger convention (C13), confidence allocation
 (C16), profile cover (C15), and terminal-zero family (C17) are documented
-corrections or proof-scope repairs in `docs/SOURCE-ISSUES.md`. -/
+corrections or proof-scope repairs in `docs/SOURCE-ISSUES.md`.
+The bonus constants range over `4 ≤ c₁`, `c₁² ≤ c₂`, the standing regime of Lemma 5.5
+(`chapters/onlineRL.tex:766`, `:777`), recalled for MVP at `:1480–1487`. -/
 noncomputable def Lemma5_14_corrected : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
@@ -982,8 +994,9 @@ local instance qLearningIndexPathMeasurable (State : Type u) (K n : ℕ) :
 
 /-- Source Lemma 5.18 (`lemma:opt_model_free`, onlineRL.tex:2121–2150), for
 the explicitly completed Q-learning algorithm: a fixed deterministic greedy tie
-selector and initial nonterminal `V=min(H,max Q)=H`. The universal source
-bonus coefficient is witnessed by `c_b=2`, and the residual constant by `8`.
+selector and initial nonterminal `V=min(H,max Q)=H`. The source's
+"sufficiently large" universal bonus coefficient `c_b` is covered for every
+`c_b ≥ 2`, with residual constant `4c_b` (so `8` at `c_b = 2`).
 The probability is under the actual iid-reset, sequential-transition law;
 all episode indices below are zero-based. The algorithm completion and tie
 restriction are recorded in `docs/SOURCE-ISSUES.md`, C20. -/
@@ -992,14 +1005,14 @@ noncomputable def Lemma5_18_restricted : Prop :=
     (H K : ℕ) (hH : 0 < H) (hK : 0 < K)
     (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
     (fallback : State) (δ : ℝ),
-    0 < δ → δ < 1 →
+    0 < δ → δ < 1 → ∀ cb : ℝ, 2 ≤ cb →
     let L := Real.log ((Fintype.card (OnlineMDPRow State Action H):ℝ)*(K:ℝ)/δ)
-    let bonus := fun i : ℕ => 2*Real.sqrt ((H:ℝ)^3*L/(i:ℝ))
-    let beta := fun t : ℕ => if t=0 then 0 else 4*(2:ℝ)*Real.sqrt ((H:ℝ)^3*L/(t:ℝ))
+    let bonus := fun i : ℕ => cb*Real.sqrt ((H:ℝ)^3*L/(i:ℝ))
+    let beta := fun t : ℕ => if t=0 then 0 else 4*cb*Real.sqrt ((H:ℝ)^3*L/(t:ℝ))
     1-δ < (onlineSequentialEpisodeLaw H K hH E ρ fallback
       (qLearningActualEpisodePlanner hH E bonus) (K*H)).rowMeasure.real
       {sample : (Fin K → State) × OnlineOutcomePath.{u,0} State (K*H) |
-        (beta 0 = 0 ∧ ∀ t : ℕ, 0<t → beta t ≤ 4*(2:ℝ)*Real.sqrt ((H:ℝ)^3*L/(t:ℝ))) ∧
+        (beta 0 = 0 ∧ ∀ t : ℕ, 0<t → beta t ≤ 4*cb*Real.sqrt ((H:ℝ)^3*L/(t:ℝ))) ∧
         (∀ (k : Fin K) (r : OnlineMDPRow State Action H),
           let visits := qLearningActualVisitEpisodes hH E bonus sample.1 fallback sample.2 k r
           let t := visits.length
@@ -1061,7 +1074,7 @@ For every MDP `M_i` of the two-state family `C^sub_mdp` and every nonstationary 
 policy `π`, `V⋆_1(1) − V^π_1(1) ≥ ∑_{h=1}^H ε₀(H−h)/(16H²)(1 − π_h(a⋆_h | 1))`.
 Encodings: the source's 1-based step `h` is `(h : Fin H) + 1`; the source's arms `1, …, A` are
 `Fin A` with arm `1` the index `0` (`onlineLBq` follows the printed case split of
-`eqn:prob-astar-a-1`); the absorbing state `0` has the action set `Fin A` with all actions identical,
+`eqn:prob-astar-a-1`, `chapters/onlineRL.tex:2583–2611`); the absorbing state `0` has the action set `Fin A` with all actions identical,
 which meets the source's singleton action set there; `0 < ε ≤ H/2` is the construction's standing
 range (`:2602`), passed as arguments of `onlineLBSubStages`. Values are the project's
 backward-induction optimal value and actual trajectory value. -/
@@ -1166,7 +1179,7 @@ open StatisticalRL.Bandit StatisticalRL.GaussianBanditLB in
 counter), lower-bound part. This is the formal reading of an informal remark: the argument of
 Lemma 5.21 (`lem:online-lb-testing`, `:2709–2721`), with the Bernoulli KL replaced by the Gaussian
 one, gives a minimax lower bound of order `√(AT)` for the Gaussian bandit of `sec:bandits-UCB`
-(`chapters/bandits.tex:15–48`; pseudo-regret `:66–70`), matching Theorem 5.1 up to logarithmic
+(`chapters/bandits.tex:3–48`; pseudo-regret `:66–70`), matching Theorem 5.1 up to logarithmic
 factors (`:296`). The remark gives no constant; `1/16` is ours.
 
 For `2 ≤ A ≤ T` there is a family of `A` mean vectors `μ i ∈ [0,1]^A`, fixed before the learner,
@@ -1196,7 +1209,7 @@ def Remark5_12_lowerBound : Prop :=
 open StatisticalRL.Bandit StatisticalRL.GaussianBanditLB in
 /-- Restricted Remark 5.12 (`chapters/onlineRL.tex:2725–2729`): minimax optimality of UCB up to
 logarithmic factors (the notion of `chapters/bandits.tex:296`) for the Gaussian bandit of
-`sec:bandits-UCB`. Formal reading of an informal remark.
+`sec:bandits-UCB` (`chapters/bandits.tex:3–48`). Formal reading of an informal remark.
 
 For `2 ≤ A ≤ T`, `0 < δ < 1` and `L = log(T²/δ)`: there is a family of mean vectors in `[0,1]^A`
 such that for every learner (as in `Remark5_12_lowerBound`: a seed from an arbitrary probability

@@ -81,8 +81,8 @@ noncomputable def Lemma7_1 : Prop :=
 
 
 open MeasureTheory StatisticalRL.Ch7Rest.FedGeneric in
-/-- Theorem 7.10, `thm:lower_bound`, `chapters/federated_RL.tex:227–239` (generic algorithm
-`alg:general_fed_alg_with_inter_comm`, lines 166–220, box 200–220), read with the universal
+/-- Theorem 7.10, restricted, `thm:lower_bound`, `chapters/federated_RL.tex:227–239` (generic algorithm
+`alg:general_fed_alg_with_inter_comm`, `chapters/federated_RL.tex:166–220`, box `chapters/federated_RL.tex:200–220`), read with the universal
 constant `c₀` quantified first: "there is a universal constant `c₀ > 0` such that, if
 `C_round ≤ c₀ / ((1-γ) log² N)`, then …".
 
@@ -95,9 +95,10 @@ communication schedule `𝒞 = {t_r} ⊆ {1,…,T}` with the source's standing a
 The MDP instance has state set `State` (`S = |State|`), action set `Action`, discount `γ`,
 rewards in `[0,1]`, and is chosen before the number of agents `K ≥ 2`. `Q̂` is the output of
 Algorithm 𝒜 (`genericOutput`: update lines 186–188, averaging at `t ∈ 𝒞` lines 191–194,
-`Q_0 = 0` line 207, return line 219). Disclosure: only exact averaging is modelled; the sentence
-at line 196 allowing any distributed mean-estimation routine (including compressed variants) is
-not covered. The expectation is over the genuine independent generative sampling law
+`Q_0 = 0` line 207, return line 219). Restriction (hence the `_restricted` name,
+`docs/SOURCE-ISSUES.md#C42`): line 196 puts any distributed mean-estimation routine (including
+compressed variants) in the generic algorithm class; only exact averaging is modelled, so the
+lower bound is proved for that sub-class only and other mean-estimation routines are not covered. The expectation is over the genuine independent generative sampling law
 `fedSamplingLaw` (lines 183–184), `Q⋆` is the unique solution of the Bellman optimality equation
 (`optimalityFixedPoint`), `‖·‖_∞` is the max over state-action pairs (`supError`), and `log` is
 the natural logarithm.
@@ -110,7 +111,7 @@ establish the discussion at lines 242–248 (a communication requirement of orde
 Under the other reading ("for some `c₀ > 0`" inside the hypothesis) the hypothesis is vacuous
 and the statement is false: see `StatisticalRL.Ch7Rest.FedGeneric.Thm7_10_innerConstant`,
 refuted by `StatisticalRL.Ch7Rest.FedGeneric.not_thm7_10_innerConstant`. -/
-def Thm7_10 : Prop :=
+def Thm7_10_restricted : Prop :=
   ∃ c₀ : ℝ, 0 < c₀ ∧ ∃ Cγ : ℝ → ℝ, ∀ γ : ℝ, 5 / 6 ≤ γ → γ < 1 → 0 < Cγ γ ∧
     ∀ (State Action : Type) [Fintype State] [Fintype Action],
       4 ≤ Fintype.card State → 2 ≤ Fintype.card Action →
@@ -458,14 +459,14 @@ open StatisticalRL StatisticalRL.RobustRL.Ch7 in
 /-- Corrected Theorem 7.4, `thm:l2-upper-bound`, `chapters/robust_RL.tex:437–450` (χ²-robust
 MDP with the support-aware χ² ball, `intro.tex:228–234`). It differs from the printed result only
 in the iteration count (`docs/SOURCE-ISSUES.md#C37`): any `T ∈ ℕ` with
-`T ≥ c₁ log(N/(1−γ))/(1−γ)` instead of `T = c₁ log(N/(1−γ))` (`:438`). This is a minimal edit
+`T ≥ c₁ log(N/(1−γ))/(1−γ)` instead of `T = c₁ log(N/(1−γ))` (`chapters/robust_RL.tex:438`). This is a minimal edit
 of the printed formula; tightness of the log factor is not shown.
 
 For universal constants `c₁, c₂ > 0` (proved with `c₁ = 2`, `c₂ = 10⁶`), every finite `S`, `A`,
 every RMDP with `σ > 0`, `γ ∈ [1/4, 1)`, `δ ∈ (0,1)`, `ε ∈ (0, 1/(1−γ)]`, `N > 0` with
 `N ≥ c₂ (1 + max{√σ,σ}/(1−γ)) log(SAN/δ) / ((1−γ)³ ε²)`, every such `T` and every greedy
 selector `π̂` of `Q̂_T`: with probability at least `1−δ`, `V^{⋆,σ}(s) − V^{π̂,σ}(s) ≤ ε` for all
-`s`. The oracle-planner Remark (`:453–457`) is indexed separately as `Remark7_2_restricted`. Not
+`s`. The oracle-planner Remark (`chapters/robust_RL.tex:453–457`) is indexed separately as `Remark7_2_restricted`. Not
 covered: history-dependent policies. -/
 def Thm7_4_corrected : Prop :=
   ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
@@ -1065,7 +1066,7 @@ def Eq_reward_policy_eq_restricted : Prop :=
 open StatisticalRL.Ch7Rest.Rlhf in
 /-- Restricted `eq:Jstar`, `chapters/RLHF.tex:115–124`: all four printed expressions of
 `J⋆(r; π_cal)` (`eq:Jstar_calibrated`, `:99–102`, the supremum of the calibrated value
-`eq:calibrated_value` over all conditional policies, `optCalValue`), with `π_r` the Gibbs policy
+`eq:calibrated_value` (`chapters/RLHF.tex:92–96`) over all conditional policies, `optCalValue`), with `π_r` the Gibbs policy
 `π_r(y|x) = π_ref(y|x) exp(r(x,y)/β) / Z(r,x)` (`gibbsPolicy`) and `Z(r,x) = ∑_{y'} π_ref(y'|x) exp(r(x,y')/β)` (`eq:normalization`, `:56–59`) written out:
 first line `E_{ρ,π_r}[r − β(log π_r − log π_ref)] − E_{ρ,π_cal} r` (:118–119), second line
 `β E_ρ log Z(r,·) − E_{ρ,π_cal} r` (:120), (i) `E_{ρ,π_cal}[β log Z(r,x) − r(x,y)]` (:121) and
@@ -1122,9 +1123,9 @@ open StatisticalRL.Ch7Rest.Rlhf in
 `r₁(x,y) = r₂(x,y) + c(x)`:
 (a) `r₁(x,y₁) − r₁(x,y₂) = r₂(x,y₁) − r₂(x,y₂)`;
 (b) `ℓ(r₁, D) = ℓ(r₂, D)` for every dataset `D` of comparisons `(x, y₊, y₋)`, with the
-Bradley–Terry negative log-likelihood `ℓ(r, D) = −∑ log σ(r(x,y₊) − r(x,y₋))` (`eq:MLE`);
+Bradley–Terry negative log-likelihood `ℓ(r, D) = −∑ log σ(r(x,y₊) − r(x,y₋))` (`eq:MLE`, `chapters/RLHF.tex:32–35`);
 (c) `J⋆(r₁) = J⋆(r₂) + E_{x∼ρ} c(x)` for the uncalibrated `J⋆(r) = max_π J(r, π)` (:86–90) of the
-KL-regularized value `eq:KL_reward`, written as a supremum over conditional policies;
+KL-regularized value `eq:KL_reward` (`chapters/RLHF.tex:43–45`), written as a supremum over conditional policies;
 (d) `J(r₁, π; π_cal) = J(r₂, π; π_cal)` for every conditional policy `π` (calibrated value written
 out); (e) hence `J⋆(r₁; π_cal) = J⋆(r₂; π_cal)` (`eq:Jstar_calibrated`, :99–102), the supremum of the
 calibrated value over conditional policies written out (this is the definition of `optCalValue`).
@@ -1169,9 +1170,9 @@ with `S` states, horizon `H`, `A_i` actions and rewards in `[0,1]` at steps `1..
 `N` inside the logarithm), the model-based plug-in estimator (`N` independent generative samples per
 `(s, a, h)`, empirical game `empiricalGame G N hN data` with the true reward, `marl.tex:355–374`)
 satisfies, under the sampling law `gameSamplingLaw`:
-(a) for every causal planning oracle returning a CCE (`eq:defn-CCE`, step 1) of every empirical
+(a) for every causal planning oracle returning a CCE (`eq:defn-CCE`, `chapters/marl.tex:234–238`, step 1) of every empirical
 game, `gap(π̂_CCE) ≤ ε` with probability at least `1 − δ`;
-(b) the same for every causal oracle returning a product Nash equilibrium (`eq:defn-Nash-E`,
+(b) the same for every causal oracle returning a product Nash equilibrium (`eq:defn-Nash-E`, `chapters/marl.tex:217–221`,
 step-1 equality) of every empirical game, with the product-policy gap;
 (c) the printed joint conclusion `gap(π̂_NE) ≤ ε ∧ gap(π̂_CCE) ≤ ε` with probability at least
 `1 − δ` for any such pair of oracles.
@@ -1255,7 +1256,7 @@ generative model (`marl.tex:307–311`): a query rule choosing each `(h, s, a)` 
 distribution depending on all previous queries and answers, `N` queries in total, and an output
 joint (possibly correlated) Markov policy computed from the history, with
 `N ≤ C H⁴ S (Σ_i A_i) ε⁻² log(4 H S Σ_i A_i / δ)`, such that for every transition kernel `P`, with
-probability at least `1 − δ`, `gap(π̂_CCE) ≤ ε` (`eq:defn-NE-gap`, applied to the joint output);
+probability at least `1 − δ`, `gap(π̂_CCE) ≤ ε` (`eq:defn-NE-gap`, `chapters/marl.tex:328–343`, applied to the joint output);
 (a) for two players with `S ≥ 1`, `A₁, A₂ ≥ 1`, `δ ∈ (0,1)`, `0 < ε ≤ H` and every known zero-sum
 reward (`r₁ ∈ [0,1]`, `r₂ = −r₁` at steps `1..H`, `marl.tex:50–54`), there is such an algorithm
 outputting a *product* policy, with `N ≤ C H⁴ S A ε⁻² log(8 H S A / δ)`, `A := max(A₁, A₂)`, and
@@ -1313,7 +1314,7 @@ def Thm7_7_restricted : Prop :=
 
 end Thm7_7
 
-section Eq_mdp_value_Q
+section Eq_mdp_value_Q_restricted
 universe v
 
 open StatisticalRL StatisticalRL.RobustRL.Ch7 in
@@ -1324,40 +1325,43 @@ adds no numbered-ledger entry.
 
 Objects: RMDP `{S, A, γ, U^σ(P^0), r}` with finite `S`, `A`, reward in `[0,1]`, `0 ≤ γ < 1`
 (`:24–28`; a `DiscountedMDP` whose `transition` is the nominal kernel `P^0`); the
-`(s,a)`-rectangular set `U^σ(P^0)` of complete kernels whose rows lie in the TV ball
-(half-L1 distance, `tvBall`) or the support-aware χ² ball (`chiBall`) of radius `σ > 0`
-around the nominal rows (`:31–52`); `V^{π,σ}(s) = inf_P V^{π,P}(s)` and
+`(s,a)`-rectangular set `U^σ(P^0)` of complete kernels whose rows lie in `ball(P^0_{s,a}, σ)`,
+`σ > 0` (`:31–52`), where `ball` is the TV ball (half-L1 distance, `tvBall`), the support-aware
+χ² ball (`chiBall`), or any other row-set family in which every linear functional
+`q ↦ ⟨q, V⟩` attains its infimum on every nominal row's set; `V^{π,σ}(s) = inf_P V^{π,P}(s)` and
 `Q^{π,σ}(s,a) = inf_P Q^{π,P}(s,a)` (`:76–84`), where `V^{π,P}`, `Q^{π,P}` are the actual
 infinite-trajectory value and forced-first-action Q-value in the MDP with kernel `P`
 (static adversary: one kernel for the whole trajectory, `:78`). The policy class of `max_π` is
 the book's class of stationary randomized policies `π : S → Δ(A)` (`prelim.tex:66`).
 
-For each of the two balls separately: there is a single deterministic `f : S → A` whose policy
+For each such ball family separately: there is a single deterministic `f : S → A` whose policy
 `s ↦ δ_{f(s)}` dominates every stationary randomized policy in robust value at every state and
 in robust Q-value at every state-action pair. Since `detPolicy f` is itself such a policy, this
 is `V^{π⋆,σ}(s) = max_π V^{π,σ}(s)` and `Q^{π⋆,σ}(s,a) = max_π Q^{π,σ}(s,a)` with the maxima
 attained.
 
-Disclosures (none is a source issue): (a) one `f` serves both the value and the Q clause,
-whereas the source's "resp." would allow separate policies; (b) `DiscountedMDP` allows `γ = 0`;
-(c) the proof needs only `σ ≥ 0`. The statement concerns stationary randomized policies and the
-book's static adversary only; history-dependent policies (and dynamic adversaries) are not
-claimed. -/
-def Eq_mdp_value_Q : Prop :=
+Restricted (scope disclosure, `docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`): the
+source builds `U^σ` from an unspecified "distance-like metric" ρ (`:36–46`) and names TV and χ²
+as the instances it studies (`:52`). The entry covers TV, χ² and every row-set family with
+attained row infima; reading "distance-like" as implying attainment is an interpretation, and
+families without attainment are not claimed. Further disclosures: (a) one `f` serves both the
+value and the Q clause, whereas the source's "resp." would allow separate policies;
+(b) `DiscountedMDP` allows `γ = 0`; (c) for TV and χ² the proof needs only `σ ≥ 0`. The statement
+concerns stationary randomized policies and the book's static adversary only; history-dependent
+policies (and dynamic adversaries) are not claimed. -/
+def Eq_mdp_value_Q_restricted : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (σ : ℝ), 0 < σ →
-    (∃ f : State → Action,
+    ∀ ball : RowBall State, (ball = tvBall ∨ ball = chiBall ∨
+      ∀ (s : State) (a : Action) (V : State → ℝ), ∃ q ∈ ball (M.transition s a) σ,
+        ∀ q' ∈ ball (M.transition s a) σ, ∑ x, q.prob x * V x ≤ ∑ x, q'.prob x * V x) →
+    ∃ f : State → Action,
       (∀ (π : StationaryPolicy State Action) (s : State),
-        robustPolicyValue tvBall M σ π s ≤ robustPolicyValue tvBall M σ (detPolicy f) s) ∧
+        robustPolicyValue ball M σ π s ≤ robustPolicyValue ball M σ (detPolicy f) s) ∧
       (∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
-        robustPolicyQ tvBall M σ π s a ≤ robustPolicyQ tvBall M σ (detPolicy f) s a)) ∧
-    (∃ f : State → Action,
-      (∀ (π : StationaryPolicy State Action) (s : State),
-        robustPolicyValue chiBall M σ π s ≤ robustPolicyValue chiBall M σ (detPolicy f) s) ∧
-      (∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
-        robustPolicyQ chiBall M σ π s a ≤ robustPolicyQ chiBall M σ (detPolicy f) s a))
+        robustPolicyQ ball M σ π s a ≤ robustPolicyQ ball M σ (detPolicy f) s a)
 
-end Eq_mdp_value_Q
+end Eq_mdp_value_Q_restricted
 
 section RobustBellman
 universe v
@@ -1367,11 +1371,11 @@ open StatisticalRL StatisticalRL.RobustRL.Ch7 in
 `chapters/robust_RL.tex:102–113`, with the robust objects of `:71–84` and `V^{⋆,σ}`, `Q^{⋆,σ}` of
 `eq:mdp-value-Q` (`:88–98`).
 
-Objects as in `Eq_mdp_value_Q`: a `DiscountedMDP` whose `transition` is the nominal kernel `P^0`,
-the TV ball (half-L1 distance, `tvBall`) or the support-aware χ² ball (`chiBall`) of radius
-`σ > 0`, `V^{π,σ}` / `Q^{π,σ}` the infimum over `(s,a)`-rectangular admissible kernels of the actual
+Objects as in `Eq_mdp_value_Q_restricted`: a `DiscountedMDP` whose `transition` is the nominal
+kernel `P^0`, the TV ball (half-L1 distance, `tvBall`), the support-aware χ² ball (`chiBall`) or
+any row-set family with attained row infima, radius `σ > 0`, `V^{π,σ}` / `Q^{π,σ}` the infimum over `(s,a)`-rectangular admissible kernels of the actual
 infinite-trajectory value / forced-first-action Q-value (static adversary), and `⟨P, V⟩ =
-∑_{s'} P(s') V(s')`. For each of the two balls:
+∑_{s'} P(s') V(s')`. For each such ball family:
 (1) robust Bellman consistency `Q^{π,σ}(s,a) = r(s,a) + γ inf_{P ∈ U^σ(P^0_{s,a})} ⟨P, V^{π,σ}⟩`
 for every stationary randomized policy `π` ("π stands for any policy", `:113`);
 (2) robust Bellman optimality with `Q^{⋆,σ}(s,a) = max_π Q^{π,σ}(s,a)` and
@@ -1381,16 +1385,22 @@ policies, `robustOptimalValue`);
 `V^{π⋆,σ} = V^{⋆,σ}` and `Q^{π⋆,σ} = Q^{⋆,σ}`, so (2) is also the display with
 `Q^{⋆,σ} := Q^{π⋆,σ}`, `V^{⋆,σ} := V^{π⋆,σ}`.
 
-No source issue. Scope: the source states these displays for a general
-`(s,a)`-rectangular set built from a 'distance-like metric' ρ (`:36–46`); the entry covers the two
-instances the section focuses on (`:52`), the TV ball and the χ² ball. Other choices of ρ are not
-claimed. As in `Eq_mdp_value_Q`, 'any policy' is read as the book's stationary randomized policies
-(`prelim.tex:65`); history-dependent policies and dynamic adversaries are not claimed. Stronger than printed in two harmless ways: `π⋆` may be any (not necessarily
-deterministic) value-maximizing stationary policy, and the library needs only `σ ≥ 0`. -/
-def Eq_bellman_equ_infinite_all : Prop :=
+Restricted (scope disclosure, `docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`): the
+source states these displays for a general `(s,a)`-rectangular set built from a 'distance-like
+metric' ρ (`:36–46`) and names TV and χ² as its instances (`:52`). The entry covers TV, χ² and
+every row-set family whose row infima of linear functionals are attained; reading
+"distance-like" as implying attainment is an interpretation, and families without attainment are
+not claimed. As in `Eq_mdp_value_Q_restricted`, 'any policy' is read as the book's stationary
+randomized policies (`prelim.tex:65`); history-dependent policies and dynamic adversaries are not
+claimed. Stronger than printed in two harmless ways: `π⋆` may be any (not necessarily
+deterministic) value-maximizing stationary policy, and for TV and χ² the library needs only
+`σ ≥ 0`. -/
+def Eq_bellman_equ_infinite_all_restricted : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (σ : ℝ), 0 < σ →
-    ∀ ball : RowBall State, (ball = tvBall ∨ ball = chiBall) →
+    ∀ ball : RowBall State, (ball = tvBall ∨ ball = chiBall ∨
+      ∀ (s : State) (a : Action) (V : State → ℝ), ∃ q ∈ ball (M.transition s a) σ,
+        ∀ q' ∈ ball (M.transition s a) σ, ∑ x, q.prob x * V x ≤ ∑ x, q'.prob x * V x) →
       (∀ (π : StationaryPolicy State Action) (s : State) (a : Action),
         robustPolicyQ ball M σ π s a = M.reward s a + M.discount *
           ⨅ q : ball (M.transition s a) σ,
@@ -1414,26 +1424,31 @@ open StatisticalRL StatisticalRL.RobustRL.Ch7 in
 and `:261–262` (the DRVI iterates `Q̂_t`, `Q̂_0 = 0` (`:268`), "converge linearly to the unique fixed
 point `Q̂^{⋆,σ}`" of the empirical operator).
 
-Objects as in `Eq_bellman_equ_infinite_all`. The operator is written out:
+Objects as in `Eq_bellman_equ_infinite_all_restricted`. The operator is written out:
 `T^σ(Q)(s,a) = r(s,a) + γ inf_{P ∈ U^σ(P^0_{s,a})} ⟨P, V⟩`, `V(s) = max_b Q(s,b)` (`:118–127`).
 `Q^{⋆,σ} := Q^{π⋆,σ}` for an arbitrary stationary policy `π⋆` maximizing the robust value at every
-state (`eq:mdp-value-Q`; such a deterministic `π⋆` exists by `Eq_mdp_value_Q`). For each ball:
+state (`eq:mdp-value-Q`, `chapters/robust_RL.tex:93–98`; such a deterministic `π⋆` exists by `Eq_mdp_value_Q_restricted`). For each such ball family:
 (a) `T^σ Q^{⋆,σ} = Q^{⋆,σ}`; (b) every fixed point of `T^σ` equals `Q^{⋆,σ}`; (c) `T^σ` is a
 `γ`-contraction in the sup norm on `ℝ^{S×A}`; (d) from any initialization `Q₀`,
 `‖(T^σ)^t Q₀ − Q^{⋆,σ}‖_∞ ≤ γ^t ‖Q₀ − Q^{⋆,σ}‖_∞`; (e) the DRVI iterates from `0` satisfy
 `|Q_t(s,a) − Q^{⋆,σ}(s,a)| ≤ γ^t/(1−γ)`. The nominal kernel is arbitrary, so the statement
 applied to the empirical model `P̂^0` is the `:261` claim for `T̂^σ` and `Q̂^{⋆,σ}`.
 
-No source issue. Scope: the source states this operator and DRVI claim for a general
-`(s,a)`-rectangular set built from a 'distance-like metric' ρ (`:36–46`); the entry covers the two
-instances the section focuses on (`:52`), the TV ball and the χ² ball. Other choices of ρ are not
-claimed. As in `Eq_mdp_value_Q`, 'any policy' is read as the book's stationary randomized policies
-(`prelim.tex:65`); history-dependent policies and dynamic adversaries are not claimed. As in `Eq_bellman_equ_infinite_all`, `π⋆` may be randomized and `σ ≥ 0`
+Restricted (scope disclosure, `docs/SOURCE-ISSUES.md#statement-index-scope-disclosures`): the
+source states this operator and DRVI claim for a general `(s,a)`-rectangular set built from a
+'distance-like metric' ρ (`:36–46`) and names TV and χ² as its instances (`:52`). The entry covers
+TV, χ² and every row-set family with attained row infima; reading "distance-like" as implying
+attainment is an interpretation, and families without attainment are not claimed. As in
+`Eq_mdp_value_Q_restricted`, 'any policy' is read as the book's stationary randomized policies
+(`prelim.tex:65`); history-dependent policies and dynamic adversaries are not claimed. As in
+`Eq_bellman_equ_infinite_all_restricted`, `π⋆` may be randomized, and for TV and χ² `σ ≥ 0`
 suffices. -/
-def Eq_robust_bellman_fixedPoint : Prop :=
+def Eq_robust_bellman_fixedPoint_restricted : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (σ : ℝ), 0 < σ →
-    ∀ ball : RowBall State, (ball = tvBall ∨ ball = chiBall) →
+    ∀ ball : RowBall State, (ball = tvBall ∨ ball = chiBall ∨
+      ∀ (s : State) (a : Action) (V : State → ℝ), ∃ q ∈ ball (M.transition s a) σ,
+        ∀ q' ∈ ball (M.transition s a) σ, ∑ x, q.prob x * V x ≤ ∑ x, q'.prob x * V x) →
     ∀ πs : StationaryPolicy State Action,
       (∀ (π : StationaryPolicy State Action) (s : State),
         robustPolicyValue ball M σ π s ≤ robustPolicyValue ball M σ πs s) →
