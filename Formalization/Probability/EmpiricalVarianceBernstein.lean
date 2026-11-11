@@ -60,25 +60,6 @@ theorem correctedEmpiricalVariance_unbiased (d : FiniteDistribution State) (N : 
   rw [integral_const_mul, d.empiricalVariance_integral N hN V]
   field_simp
 
-/-- The empirical variance itself is bounded by the square of the range over four. -/
-theorem variance_le_range_sq_div_four (d : FiniteDistribution State) (V : State → ℝ)
-    (B : ℝ) (hV : ∀ s, V s ∈ Set.Icc 0 B) :
-    d.variance V ≤ B ^ 2 / 4 := by
-  have hm0 : 0 ≤ d.expectation V := d.expectation_nonneg (fun s ↦ (hV s).1)
-  have hmB : d.expectation V ≤ B := d.expectation_le_const (fun s ↦ (hV s).2)
-  have hs : d.expectation (fun s ↦ V s ^ 2) ≤ d.expectation (fun s ↦ B * V s) := by
-    apply d.expectation_mono
-    intro s
-    nlinarith [(hV s).1, (hV s).2]
-  rw [d.expectation_mul] at hs
-  unfold variance
-  nlinarith [sq_nonneg (d.expectation V - B / 2)]
-
-theorem empiricalVariance_le_range_sq_div_four (N : ℕ) (hN : 0 < N)
-    (V : State → ℝ) (B : ℝ) (hV : ∀ s, V s ∈ Set.Icc 0 B)
-    (ω : Fin N → State) : empiricalVariance N hN V ω ≤ B ^ 2 / 4 :=
-  (empiricalRow N hN ω).variance_le_range_sq_div_four V B hV
-
 /-- A deterministic comparison reduces empirical-variance error to first- and second-moment errors. -/
 theorem empiricalVariance_abs_sub_le (d : FiniteDistribution State) (N : ℕ)
     (hN : 0 < N) (V : State → ℝ) (B : ℝ) (hV : ∀ s, V s ∈ Set.Icc 0 B)

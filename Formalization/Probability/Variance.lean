@@ -86,10 +86,6 @@ def transitionVariance (M : DiscountedMDP State Action) (V : State → ℝ)
     (s : State) (a : Action) : ℝ :=
   (M.transition s a).variance V
 
-theorem transitionVariance_nonneg (M : DiscountedMDP State Action) (V : State → ℝ)
-    (s : State) (a : Action) : 0 ≤ M.transitionVariance V s a :=
-  (M.transition s a).variance_nonneg V
-
 /-- Lemma 2.2: exact transition-variance perturbation bound, with the original constant. -/
 theorem transitionVariance_perturbation (M : DiscountedMDP State Action)
     {V Vhat : State → ℝ}

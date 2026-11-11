@@ -46,9 +46,6 @@ theorem pathAt_snocPath_of_gt {n : ℕ} (x : Fin (n + 1) → X) (y : X) {i : ℕ
 theorem pathAt_last {n : ℕ} (x : Fin (n + 1) → X) : pathAt x n = x (Fin.last n) := by
   unfold pathAt; congr 1; ext; simp
 
-theorem pathAt_zero {n : ℕ} (x : Fin (n + 1) → X) : pathAt x 0 = x 0 := by
-  unfold pathAt; congr 1
-
 theorem pathMass_snocPath (ν : X → ℝ) (K : X → X → ℝ) {n : ℕ} (x : Fin (n + 1) → X) (y : X) :
     pathMass ν K (n + 1) (snocPath x y) = pathMass ν K n x * K (pathAt x n) y := by
   unfold pathMass
@@ -232,12 +229,6 @@ theorem pathExp_coord (hK : IsStochastic K) {n j : ℕ} (hj : j ≤ n) (f : X �
 noncomputable def blockValue (K : X → X → ℝ) (φ : X → ℝ) : ℕ → X → ℝ
   | 0 => fun _ ↦ 1
   | r + 1 => fun y ↦ φ y * ∑ w, K y w * blockValue K φ r w
-
-theorem blockValue_nonneg (hK : IsStochastic K) {φ : X → ℝ} (hφ : ∀ y, 0 ≤ φ y) (r : ℕ)
-    (y : X) : 0 ≤ blockValue K φ r y := by
-  induction r generalizing y with
-  | zero => simp [blockValue]
-  | succ r ih => exact mul_nonneg (hφ y) (sum_nonneg fun w _ ↦ mul_nonneg (hK.nonneg y w) (ih w))
 
 theorem pathExp_prod_block (hK : IsStochastic K) {n : ℕ} (φ : X → ℝ) (r : ℕ) :
     ∀ (s : ℕ), s + r ≤ n + 1 → ∀ (G : (Fin (n + 1) → X) → ℝ), DependsUpTo s G →

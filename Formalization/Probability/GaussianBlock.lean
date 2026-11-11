@@ -60,20 +60,6 @@ theorem continuous_blockOf (i : κ) : Continuous (fun w : κ × ι → ℝ ↦ b
 theorem measurable_blockOf (i : κ) : Measurable (fun w : κ × ι → ℝ ↦ blockOf w i) :=
   measurable_pi_lambda _ fun a ↦ measurable_pi_apply (i, a)
 
-theorem continuous_blockPw [DecidableEq κ] (i : κ) :
-    Continuous (fun q : (κ × ι → ℝ) × (κ × ι → ℝ) ↦ blockPw i q.1 q.2) := by
-  refine continuous_pi fun c ↦ ?_
-  by_cases h : c.1 = i
-  · simpa [blockPw, h] using (continuous_apply c).comp continuous_fst
-  · simpa [blockPw, h] using (continuous_apply c).comp continuous_snd
-
-theorem measurable_blockPw [DecidableEq κ] (i : κ) :
-    Measurable (fun q : (κ × ι → ℝ) × (κ × ι → ℝ) ↦ blockPw i q.1 q.2) := by
-  refine measurable_pi_lambda _ fun c ↦ ?_
-  by_cases h : c.1 = i
-  · simpa [blockPw, h] using (measurable_pi_apply c).comp measurable_fst
-  · simpa [blockPw, h] using (measurable_pi_apply c).comp measurable_snd
-
 /-! ## Gluing two independent Gaussian vectors (L2, L3) -/
 
 /-- L2. Gluing two independent standard Gaussian vectors along the coordinates where `P` holds
