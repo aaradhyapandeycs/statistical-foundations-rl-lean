@@ -24,7 +24,7 @@
   "docs/COVERAGE.md": "42768543f37c19138fc63f3a0d237bd16e5bdf6aec2a3e780fb0e98f748b14a7",
   "docs/SOURCE-ISSUES.md": "ab416bd20832ac9b6566346bfa120e2f00b9807b2f7d6ac0124687c5bf948319",
   "docs/graph/uses-review.json": "ec0fd31e102e3d6bb48ab1b0c5c493408c9508b4f9234fe09ba1d35e802250dc",
-  "docs/named-result-status.json": "a6dc624b3396a485ef981991fcfdf3032c938c11c142be6b6695030c206b199d",
+  "docs/named-result-status.json": "e963ac3ea4ca4a6b51e1f5ffc215c48e6d2de49780b5511a557b4db54adbdb2c",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
  "vocabulary": {
@@ -112,20 +112,20 @@
   "named_fails_paper_marker": 1,
   "prose_fails_paper_marker": 0,
   "fails_paper_marker_nodes": 1,
-  "named_boundary_marker": 10,
+  "named_boundary_marker": 11,
   "prose_boundary_marker": 1,
-  "named_reading_marker": 6,
+  "named_reading_marker": 5,
   "prose_reading_marker": 4,
   "named_domain_marker": 4,
   "prose_domain_marker": 0,
   "named_illposed_marker": 1,
   "prose_illposed_marker": 0,
-  "boundary_marker_nodes": 11,
-  "reading_marker_nodes": 10,
+  "boundary_marker_nodes": 12,
+  "reading_marker_nodes": 9,
   "domain_marker_nodes": 4,
   "illposed_marker_nodes": 1,
   "refutation_theorems": 7,
-  "boundary_refutation_theorems": 15,
+  "boundary_refutation_theorems": 16,
   "qualified_failure_theorems": 39,
   "own_proof_by_origin": {
    "source-proof": 31,
@@ -421,9 +421,9 @@
     "prose_refuted_marker": 1,
     "named_fails_paper_marker": 0,
     "prose_fails_paper_marker": 0,
-    "named_boundary_marker": 2,
+    "named_boundary_marker": 3,
     "prose_boundary_marker": 0,
-    "named_reading_marker": 3,
+    "named_reading_marker": 2,
     "prose_reading_marker": 1,
     "named_domain_marker": 0,
     "prose_domain_marker": 0,
@@ -9607,7 +9607,7 @@
     "issues": [
      "C16"
     ],
-    "kind": "reading",
+    "kind": "boundary",
     "key": "lemma:uniform"
    },
    "statement_status": "corrected",
@@ -9618,7 +9618,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "reading-dependent"
+    "boundary"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false

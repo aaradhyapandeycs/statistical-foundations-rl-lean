@@ -1582,7 +1582,7 @@
       "lean": [
         "StatisticalRL.SourceCounterexamples.MVPUniform.printed_uniform_probability_false"
       ],
-      "kind": "reading",
+      "kind": "boundary",
       "paper": false,
       "reading": "Fails only in a corner regime (log(1/δ') ≲ 1e-5, i.e. δ' near 1, tiny SAHK; instance S=2, A=H=1, K=4, batch l=2) and under the bounded continuation-family reading (the source's family index stops at H but the bound uses h+1). Not a failure for non-degenerate parameters. The allocation 100δ/(…) may be a typographical inversion of δ and 100.",
       "issues": [
