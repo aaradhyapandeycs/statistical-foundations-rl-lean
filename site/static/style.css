@@ -203,6 +203,11 @@ pre.lean .c { color: var(--comment); font-style: italic; }
 .st-corrected { color: var(--corrected); border-style: double; border-width: 3px; padding: 0 6px; }
 .st-restricted { color: var(--restricted); border-style: dashed; }
 .st-incomplete { color: var(--inc); border-style: dotted; font-weight: 500; }
+.issue-class { font: 12px/1.5 var(--sans); color: var(--muted); margin-left: 8px; white-space: nowrap; }
+.class-legend { margin: 8px 0 16px; }
+.class-legend dt { font-weight: 600; margin-top: 8px; }
+.class-legend dd { margin: 0 0 0 0; color: var(--muted); }
+.class-legend .n { font-weight: 600; }
 .entry-note { font: italic 12px/1.5 var(--sans); color: var(--muted); margin-right: 6px; }
 .bar-caption { font: 13.5px/1.5 var(--sans); color: var(--muted); margin: 4px 0 12px; }
 .explain { border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 6px; background: var(--surface);

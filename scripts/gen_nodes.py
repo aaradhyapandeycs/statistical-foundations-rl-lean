@@ -103,6 +103,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NODES_PATH = "docs/graph/nodes.json"
 NEXT_PATH = "docs/NEXT.md"
+CLASSES_PATH = "docs/issue-classes.json"
+ISSUE_CLASSES = ("A", "B", "C", "D")
 REVIEW_PATH = "docs/graph/uses-review.json"
 # Verdicts of the reviewed `uses` record.  Only `proof-dependency` is a dependency; an unreviewed edge
 # (no review entry) and an `unclear` one stay dependencies so that a gap in the record never unblocks work.
@@ -564,6 +566,33 @@ def parse_statement_entries(reader) -> list:
     return out
 
 
+def parse_issue_classes(rec: dict) -> dict:
+    """Validate docs/issue-classes.json: class definitions, class-tagged items and the per-entry classes."""
+    if not isinstance(rec, dict) or set(ISSUE_CLASSES) != set(rec.get("definitions") or {}):
+        raise SystemExit(f"{CLASSES_PATH}: `definitions` must give exactly the classes {', '.join(ISSUE_CLASSES)}")
+    items = rec.get("items")
+    if not isinstance(items, list) or not items:
+        raise SystemExit(f"{CLASSES_PATH}: `items` must be a nonempty list")
+    names = set()
+    for it in items:
+        if not isinstance(it, dict) or set(it) != {"item", "class", "labels", "record"}:
+            raise SystemExit(f"{CLASSES_PATH}: each item has exactly item, class, labels, record: {it!r}")
+        if it["class"] not in ISSUE_CLASSES:
+            raise SystemExit(f"{CLASSES_PATH}: item {it['item']!r} has class {it['class']!r}; "
+                             f"allowed: {', '.join(ISSUE_CLASSES)}")
+        if it["item"] in names:
+            raise SystemExit(f"{CLASSES_PATH}: duplicate item {it['item']!r}")
+        names.add(it["item"])
+        if not (isinstance(it["labels"], list) and it["labels"] and all(isinstance(x, str) for x in it["labels"])):
+            raise SystemExit(f"{CLASSES_PATH}: item {it['item']!r} needs a nonempty list of source labels")
+        if it["record"] is not None and not isinstance(it["record"], str):
+            raise SystemExit(f"{CLASSES_PATH}: item {it['item']!r}: record must be a string or null")
+    entries = rec.get("errata_entries")
+    if not isinstance(entries, dict) or not all(k.isdigit() and v in ISSUE_CLASSES for k, v in entries.items()):
+        raise SystemExit(f"{CLASSES_PATH}: `errata_entries` must map entry numbers to classes")
+    return {"definitions": dict(rec["definitions"]), "items": items, "errata_entries": dict(entries)}
+
+
 def parse_issue_ids(text: str) -> set:
     ids = set()
     for line in text.splitlines():
@@ -606,6 +635,7 @@ class Builder:
         self.entry_notes = {k: v.strip() for k, v in notes.items() if not k.startswith("_") and v.strip()}
         self.issue_ids = parse_issue_ids(self.read("docs/SOURCE-ISSUES.md"))
         self.printed_refuted = parse_printed_refuted(self.ledger.get("printed_refuted") or {}, self.issue_ids)
+        self.issue_classes = parse_issue_classes(json.loads(self.read(CLASSES_PATH)))
         self.entries = parse_statement_entries(reader)
         for f in statement_files(reader):
             self.read(f)
@@ -776,6 +806,25 @@ class Builder:
                                  f"add them (or correct the citation)")
             n["refutations_cited"] = lean
 
+    def apply_issue_classes(self, nodes: dict):
+        """Tag nodes with the issue classes of the items (docs/issue-classes.json) whose labels they carry.
+        Labels may be `id:<inventory id>` for unlabelled results. Fails on a label that is not in the inventory, and on an item none of whose labels names a node."""
+        def owner(lab):  # a source label, or `id:<inventory id>` as in printed_refuted
+            return self.by_id.get(lab[3:]) if lab.startswith("id:") else self.label_owner.get(lab)
+
+        for it in self.issue_classes["items"]:
+            bad = [lab for lab in it["labels"] if owner(lab) is None]
+            if bad:
+                raise SystemExit(f"{CLASSES_PATH}: item {it['item']!r} names label(s) not in the inventory "
+                                 f"(stale?): {', '.join(bad)}")
+            hit = {owner(lab)["id"] for lab in it["labels"] if owner(lab)["id"] in nodes}
+            if not hit:
+                raise SystemExit(f"{CLASSES_PATH}: no label of item {it['item']!r} names a tracked node")
+            for nid in hit:
+                nodes[nid]["issue_class_items"].append({"item": it["item"], "class": it["class"]})
+        for n in nodes.values():
+            n["issue_classes"] = sorted({x["class"] for x in n["issue_class_items"]})
+
     def ledger_entry(self, rec):
         sid, lab = rec.get("source_inventory_id"), rec.get("source_label")
         if sid and sid in self.by_id:
@@ -804,7 +853,7 @@ class Builder:
                     "refutations_cited": [], "partial_lead": False, "refuted_lead": False, "uses": [],
                     "closing": {}, "reviewed_rows": 0,
                     "display_name": "", "proof_origins": [], "display_notes": [], "correction_status": None,
-                    "status_override": None, "printed_refuted": None,
+                    "status_override": None, "printed_refuted": None, "issue_class_items": [], "issue_classes": [],
                 }
             return nodes[e["id"]]
 
@@ -1029,6 +1078,7 @@ class Builder:
 
         # printed-statement failures: the ledger field decides; the name heuristic must agree --------
         self.apply_printed_refuted(nodes)
+        self.apply_issue_classes(nodes)
 
         # statuses ------------------------------------------------------------------------
         for n in nodes.values():
@@ -1124,6 +1174,7 @@ class Builder:
             "inputs_sha256": dict(sorted(self.inputs.items())),
             "vocabulary": {"statement_status": list(STATEMENT_STATUSES), "proof_status": list(PROOF_STATUSES)},
             "summary": summary,
+            "issue_class_ledger": self.issue_classes,
             "nodes": node_list,
             "context": context,
             "closing_rows_without_node": self.closing_rows,
@@ -1317,6 +1368,12 @@ class Builder:
                for mk, k in KIND_COUNT_KEYS.items() for c in ("named", "prose")},
             **{f"{k}_marker_nodes": tally(lambda n, mk=mk: mk in n["site_markers"])
                for mk, k in KIND_COUNT_KEYS.items()},
+            # issue classes A-D (docs/issue-classes.json): per item, per numbered erratum entry, per node
+            "issue_classes": {
+                "by_item": {c: sum(i["class"] == c for i in self.issue_classes["items"]) for c in ISSUE_CLASSES},
+                "by_entry": {c: sum(v == c for v in self.issue_classes["errata_entries"].values())
+                             for c in ISSUE_CLASSES},
+                "by_node": {c: tally(lambda n, c=c: c in n["issue_classes"]) for c in ISSUE_CLASSES}},
             "refutation_theorems": len({x for n in node_list if "refuted" in n["site_markers"]
                                         for x in n["refutations_cited"]}),
             "boundary_refutation_theorems": len({x for n in node_list if "boundary" in n["site_markers"]

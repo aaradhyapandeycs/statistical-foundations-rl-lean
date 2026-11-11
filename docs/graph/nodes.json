@@ -24,6 +24,7 @@
   "docs/COVERAGE.md": "42768543f37c19138fc63f3a0d237bd16e5bdf6aec2a3e780fb0e98f748b14a7",
   "docs/SOURCE-ISSUES.md": "ab416bd20832ac9b6566346bfa120e2f00b9807b2f7d6ac0124687c5bf948319",
   "docs/graph/uses-review.json": "ec0fd31e102e3d6bb48ab1b0c5c493408c9508b4f9234fe09ba1d35e802250dc",
+  "docs/issue-classes.json": "c509b5f7d1115ec120cf5a33bddb64817f06f94784898fba33e05f85b033cac8",
   "docs/named-result-status.json": "e963ac3ea4ca4a6b51e1f5ffc215c48e6d2de49780b5511a557b4db54adbdb2c",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
@@ -124,6 +125,26 @@
   "reading_marker_nodes": 9,
   "domain_marker_nodes": 4,
   "illposed_marker_nodes": 1,
+  "issue_classes": {
+   "by_item": {
+    "A": 4,
+    "B": 11,
+    "C": 4,
+    "D": 21
+   },
+   "by_entry": {
+    "A": 4,
+    "B": 9,
+    "C": 4,
+    "D": 8
+   },
+   "by_node": {
+    "A": 5,
+    "B": 13,
+    "C": 6,
+    "D": 26
+   }
+  },
   "refutation_theorems": 7,
   "boundary_refutation_theorems": 16,
   "qualified_failure_theorems": 39,
@@ -544,6 +565,382 @@
    }
   }
  },
+ "issue_class_ledger": {
+  "definitions": {
+   "A": "Printed statement false in a non-degenerate case under its natural reading.",
+   "B": "Fails only at a boundary or degenerate case, or outside a parameter range assumed elsewhere in the book.",
+   "C": "A proof step or printed intermediate assertion is false; the stated conclusion survives.",
+   "D": "Ambiguous, ill-posed or undefined: a question for the authors."
+  },
+  "items": [
+   {
+    "item": "Lemma 5.22",
+    "class": "A",
+    "labels": [
+     "lemma:sqv"
+    ],
+    "record": "Erratum 10"
+   },
+   {
+    "item": "Theorem 6.8",
+    "class": "A",
+    "labels": [
+     "theorem:lcbq",
+     "eq:sample-size-lcbq-T-thm"
+    ],
+    "record": "Erratum 13"
+   },
+   {
+    "item": "Theorems 7.2 and 7.4",
+    "class": "A",
+    "labels": [
+     "thm:l1-upper-bound",
+     "thm:l2-upper-bound"
+    ],
+    "record": "Erratum 15"
+   },
+   {
+    "item": "Confidence sets, rectangle recipe (item 2)",
+    "class": "A",
+    "labels": [
+     "eq:convex.Cdelta"
+    ],
+    "record": "Erratum 23"
+   },
+   {
+    "item": "Theorem 3.7",
+    "class": "B",
+    "labels": [
+     "theorem:azar"
+    ],
+    "record": "Erratum 1"
+   },
+   {
+    "item": "Theorem 4.12 and Remark 4.3",
+    "class": "B",
+    "labels": [
+     "thm:infinite-horizon-asyn",
+     "id:ch4-remark-4.3"
+    ],
+    "record": "Erratum 3"
+   },
+   {
+    "item": "Lemmas 5.7 and 5.8",
+    "class": "B",
+    "labels": [
+     "lem:bound-W1-W2-ucbvi-proof",
+     "lem:bound-T234"
+    ],
+    "record": "Erratum 6"
+   },
+   {
+    "item": "Lemma 5.13",
+    "class": "B",
+    "labels": [
+     "lemma:uniform",
+     "assumption-X-mvp"
+    ],
+    "record": "Erratum 8"
+   },
+   {
+    "item": "Lemma 6.2",
+    "class": "B",
+    "labels": [
+     "lem:monotone-contraction"
+    ],
+    "record": "Erratum 12"
+   },
+   {
+    "item": "Lemma 6.5",
+    "class": "B",
+    "labels": [
+     "lem:sample-split-infinite"
+    ],
+    "record": "Erratum 25"
+   },
+   {
+    "item": "Lemma 6.11",
+    "class": "B",
+    "labels": [
+     "lemma:useful"
+    ],
+    "record": "Erratum 14"
+   },
+   {
+    "item": "Lemma 6.12",
+    "class": "B",
+    "labels": [
+     "lem:lcbq-alpha-xi-psi-phi-bound"
+    ],
+    "record": "Erratum 13"
+   },
+   {
+    "item": "Theorem 7.3",
+    "class": "B",
+    "labels": [
+     "thm:l1-lower-bound"
+    ],
+    "record": "Erratum 16"
+   },
+   {
+    "item": "Theorem 7.5",
+    "class": "B",
+    "labels": [
+     "thm:chi2-lower-bound"
+    ],
+    "record": "Erratum 17"
+   },
+   {
+    "item": "Theorem 7.8",
+    "class": "B",
+    "labels": [
+     "thm:lower-marl"
+    ],
+    "record": "Erratum 19"
+   },
+   {
+    "item": "Regret-to-PAC conversion",
+    "class": "C",
+    "labels": [
+     "eq:PAC-from-regret-conversion"
+    ],
+    "record": "Erratum 5"
+   },
+   {
+    "item": "Lemma 5.12",
+    "class": "C",
+    "labels": [
+     "lem:sum-inv-Nhk-mvp",
+     "lem:sum-inv-Nhk-ucbvi"
+    ],
+    "record": "Erratum 7"
+   },
+   {
+    "item": "Lemma 5.14 proof, eq:Vk-Itrue",
+    "class": "C",
+    "labels": [
+     "eq:Vk-Itrue",
+     "claim:PV-l-UB"
+    ],
+    "record": "Erratum 11"
+   },
+   {
+    "item": "Theorem 5.16 proof, Step 4",
+    "class": "C",
+    "labels": [
+     "thm-ucbq-regret"
+    ],
+    "record": "Erratum 9"
+   },
+   {
+    "item": "Theorem 3.2 and Lemma 3.5, N>=1",
+    "class": "D",
+    "labels": [
+     "Thm:sample-compl-main",
+     "lem:policy-learning-evaluation"
+    ],
+    "record": "Deviation 1"
+   },
+   {
+    "item": "Lemma 4.3",
+    "class": "D",
+    "labels": [
+     "lemma:TD-step-size"
+    ],
+    "record": "Erratum 2"
+   },
+   {
+    "item": "Theorem 4.13",
+    "class": "D",
+    "labels": [
+     "thm:finite-horizon-simple-Q-generative"
+    ],
+    "record": "Erratum 4"
+   },
+   {
+    "item": "Explicit constants (Lemma 4.5, Theorems 4.1, 4.6, 5.2)",
+    "class": "D",
+    "labels": [
+     "thm:policy-evaluation-TD",
+     "thm-ucbvi-regret"
+    ],
+    "record": "Deviation 12 and 3"
+   },
+   {
+    "item": "UCBVI zero-visit update",
+    "class": "D",
+    "labels": [
+     "alg:main-ucbvi",
+     "thm-ucbvi-regret"
+    ],
+    "record": "Deviation 2"
+   },
+   {
+    "item": "Theorem 5.10 trigger",
+    "class": "D",
+    "labels": [
+     "thm-mvp-regret"
+    ],
+    "record": "Erratum 24"
+   },
+   {
+    "item": "Lemma 5.11 profile-family rounding",
+    "class": "D",
+    "labels": [
+     "lemma:key2"
+    ],
+    "record": "Deviation 6"
+   },
+   {
+    "item": "UCB-Q initialization and tie rule",
+    "class": "D",
+    "labels": [
+     "alg:main-q-ucb",
+     "thm-ucbq-regret",
+     "lemma:opt_model_free"
+    ],
+    "record": "Deviation 13"
+   },
+   {
+    "item": "Theorem 6.1 zero-count branch",
+    "class": "D",
+    "labels": [
+     "thm:MAB_LCB_upper",
+     "alg:MAB-LCB"
+    ],
+    "record": "Deviation 9"
+   },
+   {
+    "item": "Lemma 6.10",
+    "class": "D",
+    "labels": [
+     "lemma:pessimistic-Q"
+    ],
+    "record": "Erratum 14"
+   },
+   {
+    "item": "Eq. 6.63",
+    "class": "D",
+    "labels": [
+     "eq:sample-size-LCBQ-bernstein"
+    ],
+    "record": null
+   },
+   {
+    "item": "Theorems 7.3 and 7.5 estimator class",
+    "class": "D",
+    "labels": [
+     "thm:l1-lower-bound",
+     "thm:chi2-lower-bound"
+    ],
+    "record": "Deviation 15"
+   },
+   {
+    "item": "Theorem 7.6",
+    "class": "D",
+    "labels": [
+     "thm:sample-complexity-plug-in-marl",
+     "eq:defn-Nash-E",
+     "eq:defn-CCE"
+    ],
+    "record": "Erratum 18"
+   },
+   {
+    "item": "Theorem 7.7",
+    "class": "D",
+    "labels": [
+     "thm:Q-FTRL"
+    ],
+    "record": "Deviation 16"
+   },
+   {
+    "item": "Theorem 7.9",
+    "class": "D",
+    "labels": [
+     "thm:dist-syncq-local",
+     "eq:sample-size-per-agent-fedQ"
+    ],
+    "record": "Erratum 20"
+   },
+   {
+    "item": "Theorem 7.10",
+    "class": "D",
+    "labels": [
+     "thm:lower_bound"
+    ],
+    "record": "Deviation 14"
+   },
+   {
+    "item": "Theorem 7.11",
+    "class": "D",
+    "labels": [
+     "thm:Berry-Esseen-linear",
+     "eqn:classic-clt",
+     "eq:iid-samples"
+    ],
+    "record": "Erratum 21"
+   },
+   {
+    "item": "Theorem 7.12",
+    "class": "D",
+    "labels": [
+     "thm_online"
+    ],
+    "record": "Erratum 22"
+   },
+   {
+    "item": "Confidence sets, data-selected sets (item 1)",
+    "class": "D",
+    "labels": [
+     "eq:convex.Cdelta"
+    ],
+    "record": "Erratum 23"
+   },
+   {
+    "item": "Confidence sets, ellipsoid threshold (item 3)",
+    "class": "D",
+    "labels": [
+     "eq:convex.Cdelta"
+    ],
+    "record": "Erratum 23"
+   },
+   {
+    "item": "Confidence sets, singular plug-in (item 4)",
+    "class": "D",
+    "labels": [
+     "eq:defn-hat-Lambda"
+    ],
+    "record": "Erratum 23"
+   }
+  ],
+  "errata_entries": {
+   "10": "A",
+   "13": "A",
+   "15": "A",
+   "23": "A",
+   "1": "B",
+   "3": "B",
+   "6": "B",
+   "8": "B",
+   "12": "B",
+   "16": "B",
+   "17": "B",
+   "19": "B",
+   "25": "B",
+   "5": "C",
+   "7": "C",
+   "9": "C",
+   "11": "C",
+   "2": "D",
+   "4": "D",
+   "14": "D",
+   "18": "D",
+   "20": "D",
+   "21": "D",
+   "22": "D",
+   "24": "D"
+  }
+ },
  "nodes": [
   {
    "id": "label:eq:TV",
@@ -595,6 +992,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -656,6 +1055,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -716,6 +1117,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -774,6 +1177,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -832,6 +1237,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -890,6 +1297,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -948,6 +1357,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1006,6 +1417,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1064,6 +1477,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1122,6 +1537,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1180,6 +1597,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1238,6 +1657,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1296,6 +1717,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1354,6 +1777,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1412,6 +1837,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1510,6 +1937,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1566,6 +1995,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1613,6 +2044,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -1664,6 +2097,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -1752,6 +2187,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1821,6 +2258,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1894,6 +2333,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -1952,6 +2393,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2010,6 +2453,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2068,6 +2513,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2126,6 +2573,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2184,6 +2633,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2242,6 +2693,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2300,6 +2753,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2373,6 +2828,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2460,6 +2917,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2535,6 +2994,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2610,6 +3071,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2685,6 +3148,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2765,6 +3230,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2841,6 +3308,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2927,6 +3396,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -2983,6 +3454,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -3060,6 +3533,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -3136,6 +3611,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -3250,6 +3727,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -3310,6 +3789,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -3371,6 +3852,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -3432,6 +3915,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -3494,6 +3979,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -3678,6 +4165,15 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Theorem 3.2 and Lemma 3.5, N>=1",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -3745,6 +4241,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -3790,6 +4288,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -3841,6 +4341,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -3918,6 +4420,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -4002,6 +4506,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -4134,6 +4640,15 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Theorem 3.2 and Lemma 3.5, N>=1",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -4208,6 +4723,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -4274,6 +4791,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -4427,6 +4946,15 @@
     "kind": "boundary",
     "key": "theorem:azar"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 3.7",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -4497,6 +5025,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -4565,6 +5095,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -4641,6 +5173,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -4740,6 +5274,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -4800,6 +5336,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -4955,6 +5493,15 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Explicit constants (Lemma 4.5, Theorems 4.1, 4.6, 5.2)",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -5022,6 +5569,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -5096,6 +5645,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -5200,6 +5751,15 @@
     "kind": "domain",
     "key": "lemma:TD-step-size"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 4.3",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -5275,6 +5835,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -5364,6 +5926,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -5513,6 +6077,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -5580,6 +6146,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -5630,6 +6198,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -5807,6 +6377,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -5865,6 +6437,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -5951,6 +6525,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -6024,6 +6600,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -6071,6 +6649,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -6172,6 +6752,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -6245,6 +6827,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -6301,6 +6885,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -6418,6 +7004,15 @@
     "kind": "boundary",
     "key": "thm:infinite-horizon-asyn"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 4.12 and Remark 4.3",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -6499,6 +7094,15 @@
     "kind": "boundary",
     "key": "id:ch4-remark-4.3"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 4.12 and Remark 4.3",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -6550,6 +7154,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -6649,6 +7255,15 @@
     "kind": "ill-posed",
     "key": "thm:finite-horizon-simple-Q-generative"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 4.13",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -6738,6 +7353,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -6839,6 +7456,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -6895,6 +7514,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -6967,6 +7588,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -7060,6 +7683,15 @@
     "kind": "reading",
     "key": "eq:PAC-from-regret-conversion"
    },
+   "issue_class_items": [
+    {
+     "item": "Regret-to-PAC conversion",
+     "class": "C"
+    }
+   ],
+   "issue_classes": [
+    "C"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -7122,6 +7754,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -7182,6 +7816,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -7273,6 +7909,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -7318,6 +7956,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "cited-out-of-scope",
    "proof_status": "open",
    "implied_by": [],
@@ -7371,6 +8011,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -7516,6 +8158,19 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Explicit constants (Lemma 4.5, Theorems 4.1, 4.6, 5.2)",
+     "class": "D"
+    },
+    {
+     "item": "UCBVI zero-visit update",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -7572,6 +8227,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "cited-out-of-scope",
    "proof_status": "open",
    "implied_by": [],
@@ -7643,6 +8300,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -7708,6 +8367,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -7755,6 +8416,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -7843,6 +8506,15 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Lemma 5.12",
+     "class": "C"
+    }
+   ],
+   "issue_classes": [
+    "C"
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -7927,6 +8599,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -7993,6 +8667,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -8044,6 +8720,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -8140,6 +8818,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -8214,6 +8894,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -8294,6 +8976,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -8438,6 +9122,15 @@
     "kind": "boundary",
     "key": "lem:bound-W1-W2-ucbvi-proof"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemmas 5.7 and 5.8",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -8488,6 +9181,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -8539,6 +9234,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -8678,6 +9375,15 @@
     "kind": "boundary",
     "key": "lem:bound-T234"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemmas 5.7 and 5.8",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -8842,6 +9548,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -8901,6 +9609,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -8984,6 +9694,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -9195,6 +9907,15 @@
     "kind": "reading",
     "key": "thm-mvp-regret"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 5.10 trigger",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -9268,6 +9989,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -9359,6 +10082,15 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Lemma 5.11 profile-family rounding",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -9473,6 +10205,15 @@
     "kind": "reading",
     "key": "lem:sum-inv-Nhk-mvp"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 5.12",
+     "class": "C"
+    }
+   ],
+   "issue_classes": [
+    "C"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -9610,6 +10351,15 @@
     "kind": "boundary",
     "key": "lemma:uniform"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 5.13",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -9727,6 +10477,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -9789,6 +10541,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -9888,6 +10642,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -9966,6 +10722,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -10048,6 +10806,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -10179,6 +10939,20 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Theorem 5.16 proof, Step 4",
+     "class": "C"
+    },
+    {
+     "item": "UCB-Q initialization and tie rule",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "C",
+    "D"
+   ],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -10254,6 +11028,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -10310,6 +11086,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -10415,6 +11193,15 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "UCB-Q initialization and tie rule",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -10527,6 +11314,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -10600,6 +11389,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -10694,6 +11485,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -10779,6 +11572,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -10842,6 +11637,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -10936,6 +11733,15 @@
     "kind": "counterexample",
     "key": "lemma:sqv"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 5.22",
+     "class": "A"
+    }
+   ],
+   "issue_classes": [
+    "A"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -11083,6 +11889,15 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Lemma 5.14 proof, eq:Vk-Itrue",
+     "class": "C"
+    }
+   ],
+   "issue_classes": [
+    "C"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -11147,6 +11962,15 @@
     "kind": "counterexample",
     "key": "eq:Vk-Itrue"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 5.14 proof, eq:Vk-Itrue",
+     "class": "C"
+    }
+   ],
+   "issue_classes": [
+    "C"
+   ],
    "statement_status": "refuted",
    "proof_status": "refuted",
    "implied_by": [],
@@ -11194,6 +12018,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "cited-out-of-scope",
    "proof_status": "open",
    "implied_by": [],
@@ -11258,6 +12084,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -11322,6 +12150,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "partial",
    "proof_status": "open",
    "implied_by": [],
@@ -11388,6 +12218,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -11448,6 +12280,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -11507,6 +12341,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -11588,6 +12424,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -11699,6 +12537,15 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Theorem 6.1 zero-count branch",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -11809,6 +12656,15 @@
     "kind": "domain",
     "key": "lem:monotone-contraction"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 6.2",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -11974,6 +12830,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -12021,6 +12879,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -12116,6 +12976,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -12220,6 +13082,15 @@
     "kind": "boundary",
     "key": "lem:sample-split-infinite"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 6.5",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -12314,6 +13185,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -12370,6 +13243,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -12463,6 +13338,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -12519,6 +13396,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -12579,6 +13458,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -12754,6 +13635,15 @@
     "kind": "counterexample",
     "key": "theorem:lcbq"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 6.8",
+     "class": "A"
+    }
+   ],
+   "issue_classes": [
+    "A"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -12805,6 +13695,15 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Eq. 6.63",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "prose-claim",
    "proof_status": "open",
    "implied_by": [],
@@ -12916,6 +13815,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -13016,6 +13917,15 @@
     "kind": "domain",
     "key": "lemma:pessimistic-Q"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 6.10",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -13122,6 +14032,15 @@
     "kind": "boundary",
     "key": "lemma:useful"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 6.11",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -13275,6 +14194,15 @@
     "kind": "boundary",
     "key": "lem:lcbq-alpha-xi-psi-phi-bound"
    },
+   "issue_class_items": [
+    {
+     "item": "Lemma 6.12",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -13408,6 +14336,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -13474,6 +14404,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "cited-out-of-scope",
    "proof_status": "open",
    "implied_by": [],
@@ -13558,6 +14490,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -13644,6 +14578,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -13738,6 +14674,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -13789,6 +14727,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -13890,6 +14830,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -13996,6 +14938,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -14059,6 +15003,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -14122,6 +15068,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -14185,6 +15133,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -14292,6 +15242,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -14398,6 +15350,15 @@
     "kind": "counterexample",
     "key": "thm:l1-upper-bound"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorems 7.2 and 7.4",
+     "class": "A"
+    }
+   ],
+   "issue_classes": [
+    "A"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -14489,6 +15450,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -14629,6 +15592,20 @@
     "kind": "boundary",
     "key": "thm:l1-lower-bound"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.3",
+     "class": "B"
+    },
+    {
+     "item": "Theorems 7.3 and 7.5 estimator class",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "B",
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -14682,6 +15659,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -14740,6 +15719,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -14851,6 +15832,15 @@
     "kind": "counterexample",
     "key": "thm:l2-upper-bound"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorems 7.2 and 7.4",
+     "class": "A"
+    }
+   ],
+   "issue_classes": [
+    "A"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -14942,6 +15932,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -15080,6 +16072,20 @@
     "kind": "boundary",
     "key": "thm:chi2-lower-bound"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.5",
+     "class": "B"
+    },
+    {
+     "item": "Theorems 7.3 and 7.5 estimator class",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "B",
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -15133,6 +16139,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -15204,6 +16212,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -15269,6 +16279,15 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.6",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -15373,6 +16392,15 @@
     "kind": "reading",
     "key": "thm:sample-complexity-plug-in-marl"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.6",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -15425,6 +16453,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -15514,6 +16544,15 @@
    "correction_status": null,
    "status_override": "incomplete",
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.7",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "related",
    "proof_status": "open",
    "implied_by": [],
@@ -15629,6 +16668,15 @@
     "kind": "boundary",
     "key": "thm:lower-marl"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.8",
+     "class": "B"
+    }
+   ],
+   "issue_classes": [
+    "B"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -15738,6 +16786,15 @@
     "kind": "domain",
     "key": "thm:dist-syncq-local"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.9",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -15808,6 +16865,15 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.9",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -15912,6 +16978,15 @@
     "kind": "reading",
     "key": "thm:lower_bound"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.10",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -15960,6 +17035,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "cited-out-of-scope",
    "proof_status": "open",
    "implied_by": [],
@@ -16062,6 +17139,15 @@
     "kind": "reading",
     "key": "eqn:classic-clt"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.11",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -16124,6 +17210,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -16247,6 +17335,15 @@
     "kind": "reading",
     "key": "thm:Berry-Esseen-linear"
    },
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.11",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -16309,6 +17406,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "printed",
    "proof_status": "proved",
    "implied_by": [],
@@ -16406,6 +17505,15 @@
     "kind": "reading",
     "key": "eq:defn-hat-Lambda"
    },
+   "issue_class_items": [
+    {
+     "item": "Confidence sets, singular plug-in (item 4)",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
@@ -16589,6 +17697,24 @@
     "kind": "reading",
     "key": "eq:convex.Cdelta"
    },
+   "issue_class_items": [
+    {
+     "item": "Confidence sets, rectangle recipe (item 2)",
+     "class": "A"
+    },
+    {
+     "item": "Confidence sets, data-selected sets (item 1)",
+     "class": "D"
+    },
+    {
+     "item": "Confidence sets, ellipsoid threshold (item 3)",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "A",
+    "D"
+   ],
    "statement_status": "partial",
    "proof_status": "open",
    "implied_by": [],
@@ -16649,6 +17775,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -16707,6 +17835,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -16765,6 +17895,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -16837,6 +17969,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -16900,6 +18034,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -16958,6 +18094,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -17030,6 +18168,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -17093,6 +18233,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -17158,6 +18300,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "explanatory",
    "proof_status": "open",
    "implied_by": [],
@@ -17227,6 +18371,8 @@
    "correction_status": null,
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "implied",
    "proof_status": "open",
    "implied_by": [
@@ -17298,6 +18444,8 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [],
+   "issue_classes": [],
    "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
@@ -17411,6 +18559,15 @@
    "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
+   "issue_class_items": [
+    {
+     "item": "Theorem 7.12",
+     "class": "D"
+    }
+   ],
+   "issue_classes": [
+    "D"
+   ],
    "statement_status": "corrected",
    "proof_status": "proved",
    "implied_by": [],
