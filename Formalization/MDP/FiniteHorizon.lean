@@ -30,15 +30,6 @@ theorem valueBackup_le (stage : DecisionStage State Action) {V : State → ℝ} 
   intro a
   exact add_le_add (stage.reward_le_one s a) ((stage.transition s a).expectation_le_const h)
 
-/-- Pointwise nonexpansiveness of the undiscounted policy-evaluation backup. -/
-theorem abs_valueBackup_sub_le (stage : DecisionStage State Action)
-    {V₁ V₂ : State → ℝ} {ε : ℝ} (h : ∀ s, |V₁ s - V₂ s| ≤ ε) (s : State) :
-    |stage.valueBackup V₁ s - stage.valueBackup V₂ s| ≤ ε := by
-  apply (stage.policy s).abs_expectation_sub_le
-  intro a
-  simpa only [qBackup, add_sub_add_left_eq_sub] using
-    (stage.transition s a).abs_expectation_sub_le h
-
 /-- Backward evaluation of a finite sequence of controlled MDP stages. -/
 def backwardValue : List (DecisionStage State Action) → State → ℝ
   | [] => fun _ ↦ 0
