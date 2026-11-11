@@ -301,17 +301,14 @@ import Formalization.Generative.GenerativeLowerBoundFamilySparseKL
 import Formalization.Generative.GenerativeLowerBoundFamilyDecision
 import Formalization.Generative.GenerativeLowerBoundFamilyFano
 import Formalization.Generative.GenerativeLowerBoundFanoThreshold
-import Formalization.Generative.GenerativeLowerBoundLargeFamilyRisk
 import Formalization.Generative.GenerativeLowerBoundTwoPointRisk
 import Formalization.ModelFree.TDSynchronousSampling
 import Formalization.Generative.GenerativeLowerBoundRandomSeed
 import Formalization.Generative.GenerativeLowerBoundSeededAveraging
 import Formalization.Generative.GenerativeLowerBoundSeededTwoPoint
-import Formalization.Generative.GenerativeLowerBoundSeededLargeRisk
 import Formalization.Generative.GenerativeLowerBoundSeededTwoPointRisk
 import Formalization.Generative.GenerativeLowerBoundUnifiedThreshold
 import Formalization.Generative.GenerativeLowerBoundFiniteKernelSeed
-import Formalization.Generative.GenerativeLowerBoundKernelRisk
 import Formalization.Generative.GenerativeLowerBoundKernelQuarter
 import Formalization.Generative.FiniteHorizonAuxiliaryVariance
 import Formalization.Generative.FiniteHorizonAuxiliaryGrowth
@@ -377,7 +374,6 @@ import Formalization.ModelFree.QLearningConditionalIncrement
 import Formalization.ModelFree.TDActualErrorDecomposition
 import Formalization.ModelFree.TDActualErrorUnroll
 import Formalization.ModelFree.QLearningNaturalHistory
-import Formalization.ModelFree.QLearningHistoryAdaptation
 import Formalization.ModelFree.TDCausality
 import Formalization.ModelFree.TDConditionalMoments
 import Formalization.ModelFree.TDErrorCaps
@@ -409,7 +405,6 @@ import Formalization.ModelFree.QLearningRobustComparator
 import Formalization.ModelFree.QLearningRobustContraction
 import Formalization.ModelFree.QLearningChiUpper
 import Formalization.ModelFree.QLearningRobustBallCompact
-import Formalization.ModelFree.QLearningRobustAttainment
 import Formalization.ModelFree.QLearningRobustRange
 import Formalization.ModelFree.TDSquareEnergy
 import Formalization.ModelFree.QLearningChiLower
@@ -418,7 +413,6 @@ import Formalization.ModelFree.QLearningChiComparison
 import Formalization.ModelFree.QLearningChiKL
 import Formalization.ModelFree.TDSharpEnergy
 import Formalization.ModelFree.QLearningChiResidual
-import Formalization.ModelFree.QLearningOptimalFreedmanUnion
 
 import Formalization.ModelFree.QLearningChiSourceParameters
 import Formalization.ModelFree.QLearningChiResidualUpper
@@ -430,7 +424,6 @@ import Formalization.ModelFree.QLearningTrajectoryKL
 import Formalization.ModelFree.TDSharpMartingale
 
 import Formalization.ModelFree.QLearningChiFixedValueFreedman
-import Formalization.ModelFree.QLearningChiFixedValueUnion
 import Formalization.ModelFree.QLearningChiSourceRadius
 import Formalization.ModelFree.QLearningChiSourceRadiusUnion
 import Formalization.ModelFree.TDVariancePairwise
@@ -477,7 +470,6 @@ import Formalization.ModelFree.QLearningGeometricKLAtom
 import Formalization.ModelFree.QLearningStoppedPrefixKLAbsSummable
 import Formalization.ModelFree.QLearningStoppedPrefixKLMixtureIdentity
 import Formalization.ModelFree.QLearningStoppedPrefixGeometricBound
-import Formalization.ModelFree.QLearningCountableKLNonneg
 import Formalization.ModelFree.QLearningStoppedPrefixPinskerInputs
 import Formalization.Probability.InformationTheory.CountableTailLogSum
 import Formalization.Probability.InformationTheory.CountableL1Difference
@@ -487,7 +479,6 @@ import Formalization.ModelFree.TDSourceRateProxyTransport
 import Formalization.ModelFree.QLearningGeometricPrefixReward
 import Formalization.ModelFree.QLearningGeometricPrefixBellman
 import Formalization.ModelFree.QLearningStoppedPrefixRewardMixture
-import Formalization.ModelFree.QLearningStoppedPrefixRewardMeasure
 import Formalization.Probability.InformationTheory.BoundedPayoffTV
 import Formalization.ModelFree.QLearningStoppedPrefixOptimalTransfer
 import Formalization.ModelFree.QLearningStoppedPrefixStabilityAssembly
@@ -505,7 +496,6 @@ import Formalization.ModelFree.TDSourceFreedmanLogComparison
 import Formalization.ModelFree.TDSourceFreedmanDyadicCutoff
 import Formalization.ModelFree.TDSourceFreedmanBudgetSmallness
 import Formalization.ModelFree.TDSharpSecondFreedman
-import Formalization.ModelFree.TDSharpSecondFreedmanEligibleUnion
 import Formalization.ModelFree.TDSourceFixedTerminalProxy
 import Formalization.ModelFree.TDSourceFixedTerminalProxyBudget
 
@@ -515,7 +505,6 @@ import Formalization.ModelFree.TDOriginalVarianceSplitBudget
 import Formalization.ModelFree.TDOriginalVarianceScale
 import Formalization.ModelFree.TDOriginalVarianceCommonEvent
 import Formalization.ModelFree.TDSourceVarianceProxyLemma
-import Formalization.ModelFree.TDSourceUniversalConstants
 import Formalization.ModelFree.TDSourceVarianceProxyUniversal
 
 import Formalization.RobustRL.TVCore
@@ -749,7 +738,6 @@ import Formalization.TDInference.PluginCovariance.Coverage
 import Formalization.TDInference.Confidence.PrintedRectangleEvidence
 import Formalization.MultiAgent.Equilibria
 import Formalization.Probability.ConvexDistanceTV
-import Formalization.Online.Regret.FixedOptimalSplit
 import Formalization.Online.Regret.ProbabilityTransfer
 import Formalization.Online.Regret.NonnegativeTelescope
 import Formalization.Online.Regret.W1.OnlineW1RestrictedSourceBudget
@@ -844,7 +832,6 @@ import Formalization.Online.Regret.MVP.Model.OnlineMVPActualPlanningAdapter
 import Formalization.Online.Regret.MVP.Optimism.MVPBatchLaw
 import Formalization.Online.Regret.MVP.Optimism.MVPBatchFuture
 import Formalization.Online.Regret.MVP.Optimism.MVPBatchBonus
-import Formalization.Online.Regret.MVP.Optimism.MVPTrueSuffixBonus
 import Formalization.Online.Regret.MVP.Optimism.MVPBatchSliceList
 import Formalization.Online.Regret.MVP.Optimism.MVPActualStackRowVisit
 import Formalization.Online.Regret.MVP.Optimism.MVPCommittedBatchSlice
@@ -853,7 +840,6 @@ import Formalization.Online.Regret.MVP.Optimism.MVPFiniteStackBatch
 import Formalization.Online.Regret.MVP.Optimism.MVPFiniteStackPlanningRow
 import Formalization.Online.Regret.MVP.Optimism.MVPBatchEventTransfer
 import Formalization.Online.Regret.MVP.Optimism.MVPActualStackOptimism
-import Formalization.Online.Regret.MVP.Optimism.MVPExpandedStackLaw
 import Formalization.Online.Regret.MVP.Optimism.MVPActualStackOptimismProbability
 import Formalization.Online.Regret.MVP.Optimism.MVPSourceOptimismStatement
 import Formalization.Online.Regret.MVP.Optimism.MVPOptimismLawTransport
@@ -879,7 +865,6 @@ import Formalization.Online.Regret.MVP.T6.MVPVarianceScalar
 import Formalization.Online.Regret.MVP.T6.MVPActualSuccessor
 import Formalization.Online.Regret.MVP.T6.MVPActualRowAlignment
 import Formalization.Online.Regret.MVP.T6.MVPActualSuccessorValue
-import Formalization.Online.Regret.MVP.T6.MVPActualEpisodeBudget
 import Formalization.Online.Regret.MVP.T6.MVPActualEpisodeRemainder
 import Formalization.Online.Regret.MVP.T6.MVPActualT6Decomposition
 import Formalization.Online.Regret.MVP.T6.MVPVarianceIota
