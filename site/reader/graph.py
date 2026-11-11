@@ -17,6 +17,7 @@ import re
 import sys
 from pathlib import Path
 
+from .lean import marker_toggles
 from .tex import html_id, label_id
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
@@ -64,6 +65,12 @@ class GitReader:
 
     def ls(self, prefix: str) -> list:
         return self.git.ls(prefix)
+
+
+# status-table marker columns: (summary key, heading); the order of the columns.
+MARKER_COLS = ("refuted", "boundary", "reading", "domain", "illposed", "fails_paper")
+MARKER_HEADS = (("refuted", "✕ refuted"), ("boundary", "∂ boundary"), ("reading-dependent", "◇ reading"),
+                ("domain", "⊘ domain"), ("ill-posed", "∅ ill-posed"), ("fails-paper", "⚠ paper"))
 
 
 def status_phrase(n: dict) -> str:
@@ -146,17 +153,14 @@ class GraphPages:
                 f'<tr><td>{esc(ch)}</td><td>{self.chapter_title(ch)}</td>'
                 f'<td class="num">{cnt(p + ".named_total")}</td>'
                 + "".join(f'<td class="num">{cnt(f"{p}.named_by_label.{k}")}</td>' for k in order)
-                + f'<td class="num">{cnt(p + ".named_refuted_marker")}</td>'
-                + f'<td class="num">{cnt(p + ".named_boundary_marker")}</td>'
-                + f'<td class="num">{cnt(p + ".named_fails_paper_marker")}</td>'
+                + "".join(f'<td class="num">{cnt(f"{p}.named_{k}_marker")}</td>' for k in MARKER_COLS)
                 + "".join(f'<td class="num">{cnt(f"{p}.prose_by_label.{k}")}</td>' for k in order)
-                + f'<td class="num">{cnt(p + ".prose_refuted_marker")}</td>'
-                + f'<td class="num">{cnt(p + ".prose_boundary_marker")}</td>'
-                + f'<td class="num">{cnt(p + ".prose_fails_paper_marker")}</td></tr>')
+                + "".join(f'<td class="num">{cnt(f"{p}.prose_{k}_marker")}</td>' for k in MARKER_COLS) + '</tr>')
         short = {"stated": "as stated", "corrected": "corrected", "restricted": "restricted", "incomplete": "incomplete"}
         heads = "".join(f'<th><span class="status {gen_nodes.SITE_LABELS[k][1]}" '
                         f'title="{attr(gen_nodes.SITE_LABELS[k][0])}">{esc(short.get(k, gen_nodes.SITE_LABELS[k][0]))}</span></th>'
                         for k in order)
+        mheads = "".join(f'<th title="{attr(gen_nodes.MARKERS[m])}">{esc(w)}</th>' for m, w in MARKER_HEADS)
         rev = site.lean.git.rev
         c = s["closing_not_proved"]
         n_issues = len(site.lean.issue_slugs)
@@ -170,15 +174,17 @@ approval). They are not a percentage of the book.</div>
 <h2>By chapter</h2>
 <p class="scroll-hint">The table is wide: scroll it sideways →</p>
 <div class="table-wrap"><table class="results dash-table"><thead>
-<tr><th rowspan="2">Ch.</th><th rowspan="2">Title</th><th colspan="8">Numbered theorems, lemmas and claims</th>
-<th colspan="7">Remarks and displayed claims</th></tr>
-<tr><th>Total</th>{heads}<th>✕ refuted in Lean</th><th>∂ boundary case</th><th>⚠ fails on paper</th>{heads}<th>✕ refuted in Lean</th><th>∂ boundary case</th><th>⚠ fails on paper</th></tr></thead>
+<tr><th rowspan="2">Ch.</th><th rowspan="2">Title</th><th colspan="11">Numbered theorems, lemmas and claims</th>
+<th colspan="10">Remarks and displayed claims</th></tr>
+<tr><th>Total</th>{heads}{mheads}{heads}{mheads}</tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
-<p class="lede">✕ refuted in Lean counts items whose printed statement is refuted in Lean under the reading
-formalized; ∂ boundary case counts items whose printed statement Lean shows to fail only at a degenerate boundary or
-domain case (such as T = 1 or a single action), repaired by a domain restriction, and not counted as refuted; ⚠ fails on
-paper counts items with no Lean refutation whose printed statement fails by a paper argument of this project (not
-checked in Lean). All three also carry one of the four labels (a corrected form may be proved). A chapter whose numbered results all have a label
+<p class="lede">✕ refuted in Lean counts items whose printed statement appears false in a non-degenerate case under its
+natural reading. The other marker columns are qualified failures, none counted as refuted: ∂ boundary case (fails only at a
+degenerate boundary point, domain repaired); ◇ reading (refuted only under a stated reading of an ambiguous printed form);
+⊘ domain (fails only outside an assumed range or standalone); ∅ ill-posed (the printed formula is undefined at the point,
+so Lean's value is a convention); ⚠ fails on paper counts items with no Lean refutation whose printed statement fails by a
+paper argument of this project (not checked in Lean). All of them also carry one of the four labels (a corrected form may
+be proved). A chapter whose numbered results all have a label
 other than incomplete is still not certified: its prose claims, algorithms and arguments are not all formalized.</p>
 <h2>What is not in these counts</h2>
 <ul>
@@ -311,8 +317,9 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                      f'{"; " + ", ".join(n["issues"]) if n["issues"] else ""}')
             lab = n.get("site_label") or "none"
             marks = n.get("site_markers", [])
-            text = ("✕ " if "refuted" in marks else "∂ " if "boundary" in marks else
-                    "⚠ " if "fails-paper" in marks else "") + short_name(n)
+            text = next((g + " " for m, g in (("refuted", "✕"), ("boundary", "∂"), ("reading-dependent", "◇"),
+                                              ("domain", "⊘"), ("ill-posed", "∅"), ("fails-paper", "⚠"))
+                         if m in marks), "") + short_name(n)
             cls = f'gn gl-{lab}{" mk-new" if "new-proof" in marks else ""}{" named" if n["class"] == "named" else " prose"}'
             node = (f'<g class="{cls}" data-id="{attr(html_id(n["id"]))}" data-ch="{attr(n["chapter"])}" '
                     f'data-named="{1 if n["class"] == "named" else 0}" '
@@ -336,7 +343,9 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
             lab = n.get("site_label") or "none"
             style = "filled,dashed" if "new-proof" in n.get("site_markers", []) else "filled"
             mk = n.get("site_markers", [])
-            color = "red" if "refuted" in mk else "orange" if "boundary" in mk or "fails-paper" in mk else "black"
+            color = ("red" if "refuted" in mk else
+                     "orange" if {"boundary", "reading-dependent", "domain", "ill-posed", "fails-paper"} & set(mk)
+                     else "black")
             lines.append(f'  "{n["id"]}" [label="{long_name(n)}", style="{style}", color={color}, '
                          f'fillcolor={fill[lab]}];')
         for n in self.data["nodes"]:
@@ -353,9 +362,14 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
             for k in gen_nodes.SITE_LABEL_ORDER)
         legend += ('<li><svg width="46" height="20" aria-hidden="true"><g class="gn gl-none">'
                    '<rect x="2" y="2" width="42" height="16" rx="3"/></g></svg> no mathematical claim (no label)</li>'
-                   '<li><span class="gmark">✕</span> printed statement refuted in Lean</li>'
-                   '<li><span class="gmark soft">∂</span> printed statement fails in Lean only at a boundary case '
+                   '<li><span class="gmark">✕</span> printed statement refuted in Lean (non-degenerate case, '
+                   'natural reading)</li>'
+                   '<li><span class="gmark soft">∂</span> printed statement fails only at a boundary case '
                    '(domain repaired)</li>'
+                   '<li><span class="gmark soft">◇</span> refuted only under a stated reading</li>'
+                   '<li><span class="gmark soft">⊘</span> fails only outside an assumed domain</li>'
+                   '<li><span class="gmark soft">∅</span> printed formula undefined at the point (Lean value is a '
+                   'convention)</li>'
                    '<li><span class="gmark soft">⚠</span> printed statement appears to fail (paper argument, not '
                    'checked in Lean)</li>'
                    '<li><svg width="46" height="20" aria-hidden="true"><g class="gn gl-stated mk-new">'
@@ -421,8 +435,7 @@ row. <a href="status.html">Counts by chapter</a> · <a href="graph/nodes.json">n
     f'<button type="button" class="chip" data-filter="{k}" aria-pressed="false"><span class="status {gen_nodes.SITE_LABELS[k][1]}">'
     f'{esc(gen_nodes.SITE_LABELS[k][0])}</span></button>' for k in gen_nodes.SITE_LABEL_ORDER)}
 <label class="toggle"><input type="checkbox" id="f-refuted"> <span class="marker mk-refuted">{esc(gen_nodes.MARKERS["refuted"])}</span></label>
-<label class="toggle"><input type="checkbox" id="f-boundary"> <span class="marker mk-boundary">{esc(gen_nodes.MARKERS["boundary"])}</span></label>
-<label class="toggle"><input type="checkbox" id="f-paper"> <span class="marker mk-fails-paper">{esc(gen_nodes.MARKERS["fails-paper"])}</span></label>
+{marker_toggles()}
 <label class="toggle"><input type="checkbox" id="f-named"> numbered results only</label></div>
 <p class="filter-count" aria-live="polite"></p></div>
 <div class="table-wrap"><table class="results stack graph-table"><thead><tr><th>Item</th><th>Status</th>
@@ -464,6 +477,9 @@ never block.</p>"""
         refuted = [n for n in nodes if "refuted" in n.get("site_markers", [])]
         paper = [n for n in nodes if "fails-paper" in n.get("site_markers", [])]
         boundary = [n for n in nodes if "boundary" in n.get("site_markers", [])]
+        reading = [n for n in nodes if "reading-dependent" in n.get("site_markers", [])]
+        domain = [n for n in nodes if "domain" in n.get("site_markers", [])]
+        illposed = [n for n in nodes if "ill-posed" in n.get("site_markers", [])]
         corrected = [n for n in nodes if n.get("site_label") == "corrected" or "also-corrected" in n.get("site_markers", [])]
         restricted = [n for n in nodes if n.get("site_label") == "restricted" and n not in corrected]
         repaired = [n for n in nodes if "source-proof-repaired" in n.get("proof_origins", [])]
@@ -497,24 +513,39 @@ never block.</p>"""
 <div class="incomplete" role="note"><strong>Candidates, not confirmed errata.</strong> Every item below was found by
 reviews performed by AI agents against the pinned TeX of arXiv:2610.41903v1. Every refutation, correction and
 restriction here is {ours}. A Lean refutation is a machine-checked proof that the printed statement, <em>under the
-reading the project formalized</em>, is false; the reading itself is part of what a reader should check.</div>
+reading the project formalized</em>, is false; the reading itself is part of what a reader should check. Only the
+items in section (a) are false in a non-degenerate case under their natural reading; the sections after it are
+qualified (degenerate boundary, ambiguous reading, outside an assumed domain, undefined formula).</div>
 <p class="lede">Generated at build time from <code>docs/SOURCE-ISSUES.md</code>, the coverage ledger and the
 named-result ledger at commit <code>{rev[:10]}</code>. The curated record with effects on each result is
 <a href="{attr(lean.git.blob("docs/ERRATA-AND-DEVIATIONS.md"))}">docs/ERRATA-AND-DEVIATIONS.md</a>.</p>
-<nav class="page-toc"><a href="#refuted">Refuted in Lean</a> · <a href="#boundary">Boundary cases</a> · <a href="#paper">Failing on paper</a> · <a href="#corrections">Corrections</a> ·
+<nav class="page-toc"><a href="#refuted">Refuted in Lean</a> · <a href="#boundary">Boundary cases</a> · <a href="#reading">Reading-dependent</a> · <a href="#domain">Outside assumed domain</a> · <a href="#illposed">Ill-posed</a> · <a href="#paper">Failing on paper</a> · <a href="#corrections">Corrections</a> ·
 <a href="#restrictions">Restrictions</a> · <a href="#repaired">Proof gaps repaired</a> · <a href="#all">All candidates</a></nav>
-<h2 id="refuted">(a) Printed statements refuted in Lean</h2>
-<p class="lede">Items for which the named-result ledger (field <code>printed_refuted</code>) lists Lean theorems that
-refute the printed statement under the stated reading. Most items are proved in a corrected or restricted form as
-well; the label says so.</p>
+<h2 id="refuted">(a) Printed statements refuted in Lean (non-degenerate case, natural reading)</h2>
+<p class="lede">Items for which the named-result ledger (field <code>printed_refuted</code>, kind
+<code>counterexample</code>) lists Lean theorems that refute the printed statement in a non-degenerate case under its
+natural reading. Most items are proved in a corrected or restricted form as well; the label says so. Items classed
+below as boundary, reading-dependent, outside an assumed domain or ill-posed are not counted here.</p>
 {table(refuted, "Lean refutation", refs)}
 <h2 id="boundary">(a″) Printed statements that fail only at a boundary case (domain repaired)</h2>
 <p class="lede">Items for which Lean shows the printed statement fails, but only at a degenerate boundary or domain case
 (for example T = 1, where the printed schedule divides by log T = 0, or a single action, where every policy is
 optimal); adding the missing domain condition repairs it. They are not counted with (a).</p>
 {table(boundary, "Lean theorem (boundary case)", refs)}
+<h2 id="reading">(a‴) Printed statements refuted only under a stated reading</h2>
+<p class="lede">The printed form is ambiguous; Lean refutes it under the reading stated in each row, and under the other
+natural reading no counterexample is claimed. They are not counted with (a).</p>
+{table(reading, "Lean theorem (stated reading)", refs)}
+<h2 id="domain">(a⁗) Printed statements that fail only outside an assumed domain</h2>
+<p class="lede">The failure lies outside a parameter range or premise assumed elsewhere in the book, or the statement is
+read standalone. They are not counted with (a).</p>
+{table(domain, "Failing case", refs)}
+<h2 id="illposed">(a⁵) Printed formula undefined at the point</h2>
+<p class="lede">The printed formula is undefined where Lean's statement fails, so Lean's value is a convention (for
+example x/0 = 0) and this is not a refutation of a well-defined case. They are not counted with (a).</p>
+{table(illposed, "Lean theorem (convention)", refs)}
 <h2 id="paper">(a′) Printed statements that appear to fail (paper argument)</h2>
-<p class="lede">Items with no Lean refutation for which a paper argument by this project, not checked in Lean, shows
+<p class="lede">Items of kind <code>counterexample</code> with no Lean refutation for which a paper argument by this project, not checked in Lean, shows
 that the printed statement fails. These are weaker evidence than (a).</p>
 {table(paper, "Failing case", paper_case)}
 <h2 id="corrections">(b) Corrections we propose</h2>

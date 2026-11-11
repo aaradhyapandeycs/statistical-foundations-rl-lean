@@ -52,7 +52,7 @@ def check_counts(pages: dict, data: dict) -> list:
             if s[f"{cls}_by_label"][k] != direct:
                 problems.append(f"summary {cls}_by_label.{k}={s[f'{cls}_by_label'][k]} but {direct} nodes have it")
         for mk, key in (("refuted", "refuted_marker"), ("fails-paper", "fails_paper_marker"),
-                        ("boundary", "boundary_marker")):
+                        *((m, f"{k}_marker") for m, k in gen_nodes.KIND_COUNT_KEYS.items())):
             direct = sum(1 for n in nodes if n["class"] == cls and mk in n["site_markers"])
             if s[f"{cls}_{key}"] != direct:
                 problems.append(f"summary {cls}_{key} disagrees with the nodes ({direct})")
@@ -193,7 +193,8 @@ def main() -> int:
     print("labels (numbered results): " + ", ".join(f"{gen_nodes.SITE_LABELS[k][0]}={gs['named_by_label'][k]}"
                                                     for k in gen_nodes.SITE_LABEL_ORDER)
           + f"; refuted in Lean={gs['named_refuted_marker']}, boundary case={gs['named_boundary_marker']}, "
-            f"fails on paper={gs['named_fails_paper_marker']}")
+            f"reading-dependent={gs['named_reading_marker']}, outside domain={gs['named_domain_marker']}, "
+            f"ill-posed={gs['named_illposed_marker']}, fails on paper={gs['named_fails_paper_marker']}")
     print("old status -> label: printed->proved as stated, corrected->proved with corrections, "
           "restricted->proved under restrictions, everything else->incomplete (explanatory: no label)")
     print(f"node graph: {len(graph.data['nodes'])} nodes, {gs['uses_edges']} edges ({gs['uses_edges_reviewed']} AI-reviewed); "

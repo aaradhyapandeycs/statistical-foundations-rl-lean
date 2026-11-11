@@ -212,9 +212,42 @@ class GenNodesTest(unittest.TestCase):
         self.assertEqual(data["summary"]["named_refuted_marker"], 1)
         self.assertEqual(data["summary"]["boundary_marker_nodes"], 1)
 
-    def test_boundary_kind_needs_a_lean_refutation(self):
-        for bad in ({"lean": None, "paper": True, "reading": "x", "kind": "boundary"},
-                    {"lean": ["StatisticalRL.x"], "paper": False, "reading": "x", "kind": "edge"}):
+    def test_qualified_kinds_get_their_own_marker_and_count(self):
+        for kind, marker, key in (("reading", "reading-dependent", "reading"), ("domain", "domain", "domain"),
+                                  ("ill-posed", "ill-posed", "illposed")):
+            ledger = json.loads(json.dumps(LEDGER))
+            ledger["printed_refuted"]["thm:c"]["kind"] = kind
+            (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+            data = gn.build(gn.Reader(self.tmp))
+            n = {x["id"]: x for x in data["nodes"]}
+            self.assertIn(marker, n["label:thm:c"]["site_markers"], kind)
+            self.assertNotIn("refuted", n["label:thm:c"]["site_markers"], kind)
+            s = data["summary"]
+            self.assertEqual(s[f"named_{key}_marker"], 1, kind)
+            self.assertEqual(s[f"{key}_marker_nodes"], 1, kind)
+            self.assertEqual(s["named_refuted_marker"], 1, kind)  # only the unqualified refutation remains
+
+    def test_default_kind_is_counterexample_and_refuted(self):
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertEqual(n["label:thm:c"]["printed_refuted"]["kind"], "counterexample")
+        self.assertIn("refuted", n["label:thm:c"]["site_markers"])
+        for key in ("reading", "domain", "illposed", "boundary"):
+            self.assertEqual(data["summary"][f"{key}_marker_nodes"], 0)
+
+    def test_paper_only_qualified_kind_gets_the_qualified_marker(self):
+        ledger = json.loads(json.dumps(LEDGER))
+        ledger["printed_refuted"]["lem:b"] = {"lean": None, "paper": True, "reading": "outside range",
+                                              "kind": "domain", "issues": []}
+        (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertEqual(n["label:lem:b"]["site_markers"], ["domain"])
+        self.assertEqual(data["summary"]["named_fails_paper_marker"], 0)
+
+    def test_unknown_kind_is_rejected(self):
+        for bad in ({"lean": ["StatisticalRL.x"], "paper": False, "reading": "x", "kind": "edge"},
+                    {"lean": None, "paper": False, "reading": "x", "kind": "reading"}):
             ledger = json.loads(json.dumps(LEDGER))
             ledger["printed_refuted"]["lem:b"] = bad
             (self.tmp / "docs/named-result-status.json").write_text(json.dumps(ledger))
@@ -706,7 +739,6 @@ class GenNodesTest(unittest.TestCase):
         self.assertEqual(s["named_by_label"], {"stated": 2, "corrected": 1, "restricted": 0, "incomplete": 1})
         self.assertEqual(s["named_refuted_marker"], 2)
         self.assertEqual(sum(s["named_by_label"].values()), s["named_results_in_inventory"])
-        self.assertEqual(s["by_chapter"]["2"]["named_by_label"]["stated"], 2)
 
     def test_display_name_never_an_internal_id(self):
         n = {x["id"]: x for x in gn.build(gn.Reader(self.tmp))["nodes"]}

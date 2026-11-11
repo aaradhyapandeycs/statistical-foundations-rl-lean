@@ -37,8 +37,10 @@
     var chips = document.querySelectorAll(".filters .chip");
     var fRef = document.getElementById("f-refuted");
     var fNew = document.getElementById("f-new");
-    var fPaper = document.getElementById("f-paper");
-    var fBound = document.getElementById("f-boundary");
+    var markerBoxes = [["f-paper", "fails-paper"], ["f-boundary", "boundary"], ["f-reading", "reading-dependent"],
+                       ["f-domain", "domain"], ["f-illposed", "ill-posed"]].map(function (p) {
+      return { el: document.getElementById(p[0]), mark: p[1] };
+    }).filter(function (b) { return b.el; });
     var fNamed = document.getElementById("f-named");
     var fCh = document.getElementById("f-ch");
     var count = document.querySelector(".filter-count");
@@ -50,8 +52,7 @@
       if (fCh && h.has("ch")) fCh.value = h.get("ch");
       if (fRef) fRef.checked = (h.get("m") || "").split(",").indexOf("refuted") >= 0;
       if (fNew) fNew.checked = (h.get("m") || "").split(",").indexOf("new-proof") >= 0;
-      if (fPaper) fPaper.checked = (h.get("m") || "").split(",").indexOf("fails-paper") >= 0;
-      if (fBound) fBound.checked = (h.get("m") || "").split(",").indexOf("boundary") >= 0;
+      markerBoxes.forEach(function (b) { b.el.checked = (h.get("m") || "").split(",").indexOf(b.mark) >= 0; });
       if (fNamed && h.has("all")) fNamed.checked = h.get("all") !== "1";
       if (q && h.has("q")) q.value = h.get("q");
       chips.forEach(function (x) {
@@ -67,8 +68,7 @@
       var m = [];
       if (fRef && fRef.checked) m.push("refuted");
       if (fNew && fNew.checked) m.push("new-proof");
-      if (fPaper && fPaper.checked) m.push("fails-paper");
-      if (fBound && fBound.checked) m.push("boundary");
+      markerBoxes.forEach(function (b) { if (b.el.checked) m.push(b.mark); });
       if (m.length) h.set("m", m.join(","));
       if (fNamed && !fNamed.checked && fNamed.defaultChecked) h.set("all", "1");
       if (fNamed && fNamed.checked && !fNamed.defaultChecked) h.set("all", "0");
@@ -85,8 +85,7 @@
           (!text || r.dataset.search.indexOf(text) >= 0) &&
           (!fRef || !fRef.checked || mk.indexOf(" refuted ") >= 0) &&
           (!fNew || !fNew.checked || mk.indexOf(" new-proof ") >= 0) &&
-          (!fPaper || !fPaper.checked || mk.indexOf(" fails-paper ") >= 0) &&
-          (!fBound || !fBound.checked || mk.indexOf(" boundary ") >= 0) &&
+          markerBoxes.every(function (b) { return !b.el.checked || mk.indexOf(" " + b.mark + " ") >= 0; }) &&
           (!fNamed || !fNamed.checked || r.dataset.named === "1") &&
           (!fCh || !fCh.value || r.dataset.ch === fCh.value);
         r.hidden = !ok;
@@ -105,7 +104,7 @@
       if (params.get("q")) q.value = params.get("q");
       q.addEventListener("input", changed);
     }
-    [fRef, fNew, fPaper, fBound, fNamed, fCh].forEach(function (el) { if (el) el.addEventListener("change", changed); });
+    [fRef, fNew, fNamed, fCh].concat(markerBoxes.map(function (b) { return b.el; })).forEach(function (el) { if (el) el.addEventListener("change", changed); });
     chips.forEach(function (c) {
       c.addEventListener("click", function () {
         filter = c.dataset.filter;

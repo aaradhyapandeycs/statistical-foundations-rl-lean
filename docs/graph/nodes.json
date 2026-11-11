@@ -22,9 +22,9 @@
   "Formalization/Statements/Ch7.lean": "bf6b16acf57e183b9670cffb2057a30da5fa356db7f9c8d8bb4345ff41c3eaa7",
   "Formalization/Statements/Ch7Proofs.lean": "dfa6e0f58d8e9617e6ecb31b8fd1d0063cfeb29af86759a9f909b1b82e4d42f7",
   "docs/COVERAGE.md": "42768543f37c19138fc63f3a0d237bd16e5bdf6aec2a3e780fb0e98f748b14a7",
-  "docs/SOURCE-ISSUES.md": "2acd372e95f8f33fbcba6d8c98d4161d22554de4052a24625d8ff7e7f8f9cad2",
+  "docs/SOURCE-ISSUES.md": "ab416bd20832ac9b6566346bfa120e2f00b9807b2f7d6ac0124687c5bf948319",
   "docs/graph/uses-review.json": "ec0fd31e102e3d6bb48ab1b0c5c493408c9508b4f9234fe09ba1d35e802250dc",
-  "docs/named-result-status.json": "4cd5b9bcda43df261a708b443607868e51e9accda0a740ebafd055600bd6763c",
+  "docs/named-result-status.json": "a6dc624b3396a485ef981991fcfdf3032c938c11c142be6b6695030c206b199d",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
  "vocabulary": {
@@ -98,7 +98,7 @@
    "restricted": 14,
    "incomplete": 1
   },
-  "named_refuted_marker": 11,
+  "named_refuted_marker": 3,
   "named_overridden_incomplete": 1,
   "prose_by_label": {
    "stated": 47,
@@ -107,16 +107,26 @@
    "incomplete": 24,
    "no_claim": 16
   },
-  "prose_refuted_marker": 5,
-  "refuted_marker_nodes": 16,
-  "named_fails_paper_marker": 5,
+  "prose_refuted_marker": 1,
+  "refuted_marker_nodes": 4,
+  "named_fails_paper_marker": 1,
   "prose_fails_paper_marker": 0,
-  "fails_paper_marker_nodes": 5,
-  "named_boundary_marker": 9,
+  "fails_paper_marker_nodes": 1,
+  "named_boundary_marker": 10,
   "prose_boundary_marker": 1,
-  "boundary_marker_nodes": 10,
-  "refutation_theorems": 30,
-  "boundary_refutation_theorems": 16,
+  "named_reading_marker": 6,
+  "prose_reading_marker": 4,
+  "named_domain_marker": 4,
+  "prose_domain_marker": 0,
+  "named_illposed_marker": 1,
+  "prose_illposed_marker": 0,
+  "boundary_marker_nodes": 11,
+  "reading_marker_nodes": 10,
+  "domain_marker_nodes": 4,
+  "illposed_marker_nodes": 1,
+  "refutation_theorems": 7,
+  "boundary_refutation_theorems": 15,
+  "qualified_failure_theorems": 39,
   "own_proof_by_origin": {
    "source-proof": 31,
    "source-proof-repaired": 35,
@@ -188,7 +198,13 @@
     "named_fails_paper_marker": 0,
     "prose_fails_paper_marker": 0,
     "named_boundary_marker": 0,
-    "prose_boundary_marker": 0
+    "prose_boundary_marker": 0,
+    "named_reading_marker": 0,
+    "prose_reading_marker": 0,
+    "named_domain_marker": 0,
+    "prose_domain_marker": 0,
+    "named_illposed_marker": 0,
+    "prose_illposed_marker": 0
    },
    "2": {
     "named": {
@@ -238,7 +254,13 @@
     "named_fails_paper_marker": 0,
     "prose_fails_paper_marker": 0,
     "named_boundary_marker": 0,
-    "prose_boundary_marker": 0
+    "prose_boundary_marker": 0,
+    "named_reading_marker": 0,
+    "prose_reading_marker": 0,
+    "named_domain_marker": 0,
+    "prose_domain_marker": 0,
+    "named_illposed_marker": 0,
+    "prose_illposed_marker": 0
    },
    "3": {
     "named": {
@@ -288,7 +310,13 @@
     "named_fails_paper_marker": 0,
     "prose_fails_paper_marker": 0,
     "named_boundary_marker": 1,
-    "prose_boundary_marker": 0
+    "prose_boundary_marker": 0,
+    "named_reading_marker": 0,
+    "prose_reading_marker": 0,
+    "named_domain_marker": 0,
+    "prose_domain_marker": 0,
+    "named_illposed_marker": 0,
+    "prose_illposed_marker": 0
    },
    "4": {
     "named": {
@@ -333,12 +361,18 @@
      "incomplete": 4,
      "no_claim": 0
     },
-    "named_refuted_marker": 1,
+    "named_refuted_marker": 0,
     "prose_refuted_marker": 0,
     "named_fails_paper_marker": 0,
     "prose_fails_paper_marker": 0,
-    "named_boundary_marker": 2,
-    "prose_boundary_marker": 1
+    "named_boundary_marker": 1,
+    "prose_boundary_marker": 1,
+    "named_reading_marker": 0,
+    "prose_reading_marker": 0,
+    "named_domain_marker": 1,
+    "prose_domain_marker": 0,
+    "named_illposed_marker": 1,
+    "prose_illposed_marker": 0
    },
    "5": {
     "named": {
@@ -383,12 +417,18 @@
      "incomplete": 6,
      "no_claim": 6
     },
-    "named_refuted_marker": 4,
-    "prose_refuted_marker": 2,
-    "named_fails_paper_marker": 1,
+    "named_refuted_marker": 1,
+    "prose_refuted_marker": 1,
+    "named_fails_paper_marker": 0,
     "prose_fails_paper_marker": 0,
-    "named_boundary_marker": 1,
-    "prose_boundary_marker": 0
+    "named_boundary_marker": 2,
+    "prose_boundary_marker": 0,
+    "named_reading_marker": 3,
+    "prose_reading_marker": 1,
+    "named_domain_marker": 0,
+    "prose_domain_marker": 0,
+    "named_illposed_marker": 0,
+    "prose_illposed_marker": 0
    },
    "6": {
     "named": {
@@ -435,10 +475,16 @@
     },
     "named_refuted_marker": 0,
     "prose_refuted_marker": 0,
-    "named_fails_paper_marker": 4,
+    "named_fails_paper_marker": 1,
     "prose_fails_paper_marker": 0,
-    "named_boundary_marker": 2,
-    "prose_boundary_marker": 0
+    "named_boundary_marker": 3,
+    "prose_boundary_marker": 0,
+    "named_reading_marker": 0,
+    "prose_reading_marker": 0,
+    "named_domain_marker": 2,
+    "prose_domain_marker": 0,
+    "named_illposed_marker": 0,
+    "prose_illposed_marker": 0
    },
    "7": {
     "named": {
@@ -483,12 +529,18 @@
      "incomplete": 7,
      "no_claim": 1
     },
-    "named_refuted_marker": 6,
-    "prose_refuted_marker": 3,
+    "named_refuted_marker": 2,
+    "prose_refuted_marker": 0,
     "named_fails_paper_marker": 0,
     "prose_fails_paper_marker": 0,
     "named_boundary_marker": 3,
-    "prose_boundary_marker": 0
+    "prose_boundary_marker": 0,
+    "named_reading_marker": 3,
+    "prose_reading_marker": 3,
+    "named_domain_marker": 1,
+    "prose_domain_marker": 0,
+    "named_illposed_marker": 0,
+    "prose_illposed_marker": 0
    }
   }
  },
@@ -4367,7 +4419,7 @@
      "StatisticalRL.Obstructions.c1_literal_displayed_domain_obstruction"
     ],
     "paper": true,
-    "reading": "Standalone reading with the book's known-reward convention: both parts fail at S = 1 (C2; Lean refutes part (ii) literally, `not_printedTheorem37ii`); part (i) fails at A = 1 (C1; Lean obstruction for a fixed estimator) unless the A ≥ 2 convention of the policy-learning section is read into the theorem.",
+    "reading": "Standalone reading with the book's known-reward convention: both parts fail at S = 1 (C2; Lean refutes part (ii) literally, `not_printedTheorem37ii`); part (i) fails at A = 1 (C1; Lean obstruction for a fixed estimator) unless the A ≥ 2 convention of the policy-learning section is read into the theorem. A ≥ 2 is the standing assumption of §3.3 (tex 787).",
     "issues": [
      "C1",
      "C2"
@@ -5141,11 +5193,11 @@
      "StatisticalRL.TemporalDifference.c5_initial_weight_fails_standalone_bound"
     ],
     "paper": false,
-    "reading": "The standalone lemma without the sample-size premise its appendix proof uses: the early-weight bound fails at c₁ = c₂ = 1/4, T = t = 100, γ = 1 − 10⁻⁶ with the printed lower-endpoint step sizes.",
+    "reading": "Read in isolation, without the sample-size condition of Theorem 4.1 that its appendix proof invokes (T ≥ log²T/(c₁(1−γ)), t ≤ T), the early-weight bound fails at c₁=c₂=1/4, T=t=100, γ=1−10⁻⁶ with lower-endpoint step sizes. Under Theorem 4.1's hypotheses this instance is excluded; we do not claim Theorem 4.1 fails.",
     "issues": [
      "C5"
     ],
-    "kind": "counterexample",
+    "kind": "domain",
     "key": "lemma:TD-step-size"
    },
    "statement_status": "corrected",
@@ -5156,7 +5208,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted"
+    "domain"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -6359,7 +6411,7 @@
      "StatisticalRL.AsyncQ.not_Thm4_12_printedAt"
     ],
     "paper": true,
-    "reading": "T = 1 with S = A = 1 (log³T = 0, so the rate is 0 and Q₁ = Q₀; machine-checked for the ∃c₁∃c₂ Prop and, per constant, for every c₁, c₂, so every quantifier order fails). Read with $\\eta_{t}$ ∈ (0,1) (:1937) the instance is ill-posed, as in C35; domain repair T ≥ 2 or SA ≥ 2. $\\mu_{\\mathsf{min}} = 0$ (C34(2)) is a paper argument.",
+    "reading": "At T=1 the step size c₁log³T/((1−γ)Tμ_min) equals 0, a well-defined value but outside the algorithm's stated range η_t∈(0,1) (tex 1937); the iterate never moves and the bound fails for every c₁, c₂ (S=A=1, so also SA=1; machine-checked for the ∃c₁∃c₂ Prop and per constant). Repair: T≥2 or SA≥2. μ_min=0 (C34(2)) is a paper argument.",
     "issues": [
      "C34"
     ],
@@ -6440,7 +6492,7 @@
      "StatisticalRL.AsyncQ.not_Remark4_3_printedAt"
     ],
     "paper": false,
-    "reading": "This project's reading (Remark4_3_corrected without the C34 premises; the remark has no formula), at the same T = 1, SA = 1 instance with ε = 1/4: mean error ≥ 1 exceeds both ε(1−δ)+δ/(1−γ) = 23/64 and the bare 2ε = 1/2, for every c₁, c₂.",
+    "reading": "Remark 4.3 itself states no formula; this is the expected-error version obtained by reading it as Remarks 4.1 and 4.2. This project's reading (Remark4_3_corrected without the C34 premises; the remark has no formula), at the same T = 1, SA = 1 instance with ε = 1/4: mean error ≥ 1 exceeds both ε(1−δ)+δ/(1−γ) = 23/64 and the bare 2ε = 1/2, for every c₁, c₂.",
     "issues": [
      "C34"
     ],
@@ -6590,11 +6642,11 @@
      "StatisticalRL.FiniteQLearning.not_thm4_13_from_one"
     ],
     "paper": false,
-    "reading": "The literal Lean transcription at T = 1, where the printed schedule divides by H log²T = 0 (Lean: log 1 = 0, x/0 = 0). The book leaves the schedule undefined there, so this is a domain repair (add T ≥ 2) rather than a refutation of a meaningful printed case.",
+    "reading": "At T=1 the printed schedule divides by H log²T = 0, so it is undefined, and the book's own requirement 0<η_t<1 cannot hold. The Lean witness uses Lean's x/0=0 (η=1) and is an artefact of that convention, not a refutation of a well-defined printed case. Repair: T≥2 (as in Theorem 4.6).",
     "issues": [
      "C35"
     ],
-    "kind": "boundary",
+    "kind": "ill-posed",
     "key": "thm:finite-horizon-simple-Q-generative"
    },
    "statement_status": "corrected",
@@ -6605,7 +6657,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "boundary",
+    "ill-posed",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -7001,11 +7053,11 @@
      "StatisticalRL.OnlineRL.RegretToPAC.not_Eq_PAC_from_regret_conversion_printed_fixedCarrier"
     ],
     "paper": false,
-    "reading": "The printed constant $C_{S,A,H+1}$, even under the weakest reading (one algorithm on every class, strictly positive constants); the counterexample uses constants that are not monotone in H.",
+    "reading": "Fails for a constant C_{S,A,H} that is not nondecreasing in H (witness: S=1, A=2, H=1 vs H=2, one algorithm for all H). The printed C_{S,A,H+1} form holds for constants nondecreasing in H; the defect is the unjustified augmentation step, and the C_{S,A,H} version is proved.",
     "issues": [
      "C46"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "eq:PAC-from-regret-conversion"
    },
    "statement_status": "corrected",
@@ -7016,7 +7068,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted"
+    "reading-dependent"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -8379,11 +8431,11 @@
    "printed_refuted": {
     "lean": null,
     "paper": true,
-    "reading": "K = 1, where the printed factor ι vanishes and the W1 inequality fails on every path (source-level counterexample, not formalized).",
+    "reading": "K=1 (ι=0), with the lemma claiming probability exceeding 1; paper argument, not Lean-checked. The conclusion of Theorem 5.2 is unaffected; the proof's reduction (tex 736-745) does not cover K=1.",
     "issues": [
      "C12"
     ],
-    "kind": "counterexample",
+    "kind": "boundary",
     "key": "lem:bound-W1-W2-ucbvi-proof"
    },
    "statement_status": "corrected",
@@ -8394,7 +8446,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "fails-paper"
+    "boundary"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -8619,7 +8671,7 @@
      "StatisticalRL.OnlineRL.not_Lemma5_8_printed"
     ],
     "paper": false,
-    "reading": "K = H = 1: the confidence 1 − 4log₂(KH)δ' equals 1 and no probability exceeds it. Repair K ≥ 2; the four inequalities and Theorem 5.2 are not refuted.",
+    "reading": "K = H = 1: the confidence 1 − 4log₂(KH)δ' equals 1 and no probability exceeds it. Repair K ≥ 2; the four inequalities and Theorem 5.2 are not refuted. The conclusion of Theorem 5.2 at K=1 is unaffected (Regret ≤ H), but the proof's preliminary reduction (tex 736-745) does not cover K=1 since ι=0 there.",
     "issues": [
      "C12"
     ],
@@ -9135,12 +9187,12 @@
      "StatisticalRL.OnlineRL.not_Thm5_10_literalTrigger_printed_rule"
     ],
     "paper": true,
-    "reading": "Literal trigger set $\\{1,2,\\dots,2^{\\log_{2}K}\\}$ (C13); Õ as ∃C,p polylog(SAHK/δ); universal c₁, c₂ > 0 (the refutation needs c₂ independent of K); any zero-count completion b₀ ≥ 0; every deterministic argmax tie rule (also each fixed rule separately), with regret exactly K surely. Uniform random tie-breaking (regret about K/2) is a paper argument only; history-dependent tie rules are outside the model.",
+    "reading": "Fails under the literal reading of the trigger set {1,2,…,2^{log₂K}} as consecutive integers (regret exactly K on a two-action instance, for every deterministic argmax tie rule, universal c₁,c₂, any b₀≥0). The book's prose (visitation count reaches a power of two, O(log₂K) model updates) fixes the doubling reading, under which we found no counterexample; we regard it as a typesetting ambiguity.",
     "issues": [
      "C48",
      "C13"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "thm-mvp-regret"
    },
    "statement_status": "corrected",
@@ -9151,7 +9203,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted"
+    "reading-dependent"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -9414,11 +9466,11 @@
      "StatisticalRL.OnlineRL.not_Lemma5_12_literalTrigger_printed"
     ],
     "paper": false,
-    "reading": "The literal consecutive-integer trigger $\\{1, 2, \\dots, 2^{\\log_{2}K}\\}$ of the displayed algorithm (the prose describes powers of two).",
+    "reading": "Fails only under the literal consecutive-integer trigger set of the pseudocode (tex 1280); with the trigger at powers of two, as the prose (tex 1213, 1217) says, the bound holds (proved as Lemma5_12_powerOfTwo_corrected).",
     "issues": [
      "C13"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "lem:sum-inv-Nhk-mvp"
    },
    "statement_status": "corrected",
@@ -9429,7 +9481,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted"
+    "reading-dependent"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -9551,11 +9603,11 @@
      "StatisticalRL.SourceCounterexamples.MVPUniform.printed_uniform_probability_false"
     ],
     "paper": false,
-    "reading": "The printed numerator-100 confidence allocation, under the natural bounded continuation-family reading (the source's endpoint index is ambiguous).",
+    "reading": "Fails only in a corner regime (log(1/δ') ≲ 1e-5, i.e. δ' near 1, tiny SAHK; instance S=2, A=H=1, K=4, batch l=2) and under the bounded continuation-family reading (the source's family index stops at H but the bound uses h+1). Not a failure for non-degenerate parameters. The allocation 100δ/(…) may be a typographical inversion of δ and 100.",
     "issues": [
      "C16"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "lemma:uniform"
    },
    "statement_status": "corrected",
@@ -9566,7 +9618,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted"
+    "reading-dependent"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -10877,7 +10929,7 @@
      "StatisticalRL.SourceCounterexamples.centeredSquare_measure_coefficient_one_false"
     ],
     "paper": false,
-    "reading": "The second clause Var((X − EX)²) ≤ Cmax²·Var(X) for a signed variable (X = ±1); the first clause is not refuted.",
+    "reading": "The second clause Var((X − EX)²) ≤ Cmax²·Var(X) for a signed variable (X = ±1); the first clause is not refuted. This is applied downstream only to nonnegative bounded value functions, so there is no downstream effect.",
     "issues": [
      "C14"
     ],
@@ -11088,7 +11140,7 @@
      "StatisticalRL.OnlineRL.not_eq_Vk_Itrue_printed_sourceParameters"
     ],
     "paper": false,
-    "reading": "The printed fixed-profile program, whose auxiliary terminal value H differs from the learner's terminal zero; no final regret or decoupling conclusion is refuted.",
+    "reading": "The printed fixed-profile program, whose auxiliary terminal value H differs from the learner's terminal zero; no final regret or decoupling conclusion is refuted. This is a proof-step identification, not a stated theorem; the mismatch is generic at stage H whenever the bonus is unsaturated.",
     "issues": [
      "C17"
     ],
@@ -11750,11 +11802,11 @@
    "printed_refuted": {
     "lean": null,
     "paper": true,
-    "reading": "γ = 0.1, $c_{b} = 1$: the uniqueness-plus-order conjunction fails on an explicit dataset (numerical check, not Lean-checked); the sup-norm rate is not refuted.",
+    "reading": "Fails for γ<1/2 (three-state example, γ=0.1, c_b=1; python-checked, not Lean-checked). The lemma states no range, but its proof (tex 3343) uses γ≥1/2, the range assumed by Theorem 6.3, which is unaffected. The sup-norm rate is not refuted.",
     "issues": [
      "C10"
     ],
-    "kind": "counterexample",
+    "kind": "domain",
     "key": "lem:monotone-contraction"
    },
    "statement_status": "corrected",
@@ -11765,7 +11817,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "fails-paper"
+    "domain"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -12161,7 +12213,7 @@
      "StatisticalRL.OfflineRL.not_Lemma6_5_printed"
     ],
     "paper": false,
-    "reading": "The standalone lemma at S·N = 1 (S = 1, A = 2, N = 1, δ = 31/32): the event is empty. Repair N ≥ 2; Theorem 6.3's regime implies it.",
+    "reading": "The standalone lemma at S·N = 1 (S = 1, A = 2, N = 1, δ = 31/32): the event is empty. Repair N ≥ 2; Theorem 6.3's regime implies it. (The printed proof step needs SN ≥ 2; our corrected version assumes N ≥ 2.)",
     "issues": [
      "C19"
     ],
@@ -12695,7 +12747,7 @@
    "printed_refuted": {
     "lean": null,
     "paper": true,
-    "reading": "The single-logarithm sample-size condition: one state, two actions, γ = 0 (paper argument with exact simulation).",
+    "reading": "The single-logarithm sample-size condition: one state, two actions, γ = 0 (paper argument with exact simulation). If the condition hides logarithmic factors (a tilde-O bound) this is a notational imprecision; as printed, with an explicit single logarithm, it fails.",
     "issues": [
      "C24"
     ],
@@ -12957,11 +13009,11 @@
    "printed_refuted": {
     "lean": null,
     "paper": true,
-    "reading": "Small $c_{b}$ (exact enumeration on a two-state instance, not Lean-checked).",
+    "reading": "Fails for small c_b (exact enumeration, 1/16 failure probability, not Lean-checked); Lemma 6.9 and Theorem 6.8 assume c_b sufficiently large, which this lemma does not restate. With that premise it is proved as Lemma6_10_restricted.",
     "issues": [
      "C28"
     ],
-    "kind": "counterexample",
+    "kind": "domain",
     "key": "lemma:pessimistic-Q"
    },
    "statement_status": "restricted",
@@ -12972,7 +13024,7 @@
    "closing_rows": {},
    "site_label": "restricted",
    "site_markers": [
-    "fails-paper"
+    "domain"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -13216,11 +13268,11 @@
    "printed_refuted": {
     "lean": null,
     "paper": true,
-    "reading": "log(SAT/δ) < 1, possible only when SAT ≤ 2 (paper argument).",
+    "reading": "Fails only when log(SAT/δ) < 1, possible only when SAT ≤ 2 (γ=1/2, ι ≤ 1/8, V⋆ not identically zero); paper argument, not Lean-checked. Repair: add log(SAT/δ) ≥ 1.",
     "issues": [
      "C24"
     ],
-    "kind": "counterexample",
+    "kind": "boundary",
     "key": "lem:lcbq-alpha-xi-psi-phi-bound"
    },
    "statement_status": "restricted",
@@ -13231,7 +13283,7 @@
    "closing_rows": {},
    "site_label": "restricted",
    "site_markers": [
-    "fails-paper"
+    "boundary"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -15314,11 +15366,11 @@
      "StatisticalRL.Ch7Rest.Marl76.not_thm7_6_printed_cce"
     ],
     "paper": false,
-    "reading": "A planning oracle that may return any equilibrium of the empirical game; false for every C₁.",
+    "reading": "Fails if the planning oracle may return any equilibrium in the sense of eq:defn-Nash-E / eq:defn-CCE (conditions on step-1 values only), for every C₁ (2 players, 2 actions, H=2, oracle reads the empirical kernel). The book says only 'an appropriate planning oracle'; for causal oracles (Nash value iteration, LP, no-regret) the statement is proved (Thm7_6_restricted).",
     "issues": [
      "C45"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "thm:sample-complexity-plug-in-marl"
    },
    "statement_status": "restricted",
@@ -15329,7 +15381,7 @@
    "closing_rows": {},
    "site_label": "restricted",
    "site_markers": [
-    "refuted",
+    "reading-dependent",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -15679,11 +15731,11 @@
      "StatisticalRL.Ch7Rest.Fed.not_thm7_9_at"
     ],
     "paper": false,
-    "reading": "The literal reading, in which the prescribed learning rate can exceed 1.",
+    "reading": "Fails only when the prescribed learning rate η = c_η K(1−γ)⁴ε²/log(SAKT/δ) exceeds 1, outside the algorithm's stated range 0<η<1 (tex 51, 76). With η<1 read in, the statement is vacuous for large K rather than false; whether FedSynQ attains the linear speedup for large K with another step size is open.",
     "issues": [
      "C41"
     ],
-    "kind": "counterexample",
+    "kind": "domain",
     "key": "thm:dist-syncq-local"
    },
    "statement_status": "corrected",
@@ -15694,7 +15746,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted",
+    "domain",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -15853,11 +15905,11 @@
      "StatisticalRL.Ch7Rest.FedGeneric.not_thm7_10_innerConstant"
     ],
     "paper": false,
-    "reading": "The constant c₀ read inside the hypothesis. Under the c₀-first reading the printed bound is proved for exact averaging (the restricted variant).",
+    "reading": "Fails if 'for some universal c₀' is read inside the hypothesis (then C_round ≤ c₀/((1−γ)log²N) is vacuous and the lower bound fails for every C_γ). With c₀ chosen first (the natural reading) the printed bound is proved for exact averaging (Thm7_10_restricted, with a doubly exponentially small C_γ).",
     "issues": [
      "C42"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "thm:lower_bound"
    },
    "statement_status": "restricted",
@@ -15868,7 +15920,7 @@
    "closing_rows": {},
    "site_label": "restricted",
    "site_markers": [
-    "refuted",
+    "reading-dependent",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -16003,11 +16055,11 @@
      "StatisticalRL.Ch7Rest.TDInference.not_eq_classic_clt_printed_someInit"
     ],
     "paper": false,
-    "reading": "Action-dependent rewards with $r(s) = r_{\\pi}(s)$, for the step sizes $\\eta_{0}t^{-2/3}$; other schedules are not covered (\"some schedule and some V₀\" is not refuted).",
+    "reading": "Γ is printed with an undefined r(s). With r(s)=r_π(s)=E_{a~π} r(s,a) (the reading formalized) the printed bound fails on a zero-noise instance, for any η₀∈(0,1] and any V₀. Under state-only rewards or deterministic π it is neither proved nor refuted. The corrected statement with Γ^true is proved with rate T^{-1/3} (not the book's proof; the book cites Wu et al. 2024). Only step sizes η₀t^{-2/3} are covered.",
     "issues": [
      "C43"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "eqn:classic-clt"
    },
    "statement_status": "corrected",
@@ -16018,7 +16070,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted"
+    "reading-dependent"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -16188,11 +16240,11 @@
      "StatisticalRL.Ch7Rest.TDInference.not_thm7_11_printed_someEta_someInit"
     ],
     "paper": false,
-    "reading": "Action-dependent rewards with $r(s) = r_{\\pi}(s)$ in Γ. Under the state-only-reward reading the printed statement is neither proved nor refuted.",
+    "reading": "Γ is printed with an undefined r(s). With r(s)=r_π(s)=E_{a~π} r(s,a) (the reading formalized) the printed bound fails on a zero-noise instance, for any η₀∈(0,1] and any V₀. Under state-only rewards or deterministic π it is neither proved nor refuted. The corrected statement with Γ^true is proved with rate T^{-1/3} (not the book's proof; the book cites Wu et al. 2024).",
     "issues": [
      "C43"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "thm:Berry-Esseen-linear"
    },
    "statement_status": "corrected",
@@ -16203,7 +16255,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted",
+    "reading-dependent",
     "new-proof"
    ],
    "site_sub_reason": "",
@@ -16347,11 +16399,11 @@
      "StatisticalRL.Ch7Rest.TDInference.not_eq_defn_hat_Lambda_printed_consistent_someInit"
     ],
     "paper": false,
-    "reading": "Consistency for the printed Λ⋆ under action-dependent rewards with $r(s) = r_{\\pi}(s)$.",
+    "reading": "Γ is printed with an undefined r(s). With r(s)=r_π(s)=E_{a~π} r(s,a) (the reading formalized) the printed bound fails on a zero-noise instance, for any η₀∈(0,1] and any V₀. Under state-only rewards or deterministic π it is neither proved nor refuted. The corrected statement with Γ^true is proved with rate T^{-1/3} (not the book's proof; the book cites Wu et al. 2024). The claim is consistency for the printed Λ⋆ under r(s)=r_π(s).",
     "issues": [
      "C43"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "eq:defn-hat-Lambda"
    },
    "statement_status": "corrected",
@@ -16362,7 +16414,7 @@
    "closing_rows": {},
    "site_label": "corrected",
    "site_markers": [
-    "refuted"
+    "reading-dependent"
    ],
    "site_sub_reason": "",
    "printed_with_cited_printed": false
@@ -16530,11 +16582,11 @@
      "StatisticalRL.Ch7Rest.TDInference.c47_rectangle_printed_undercovers_plugin"
     ],
     "paper": true,
-    "reading": "On one TD instance: convex sets chosen from the data (C47(1)) and the printed ℓ∞ rectangle with half-width R̂/√T (C47(2)) under-cover. The Gaussian-estimator witness and the ellipsoid threshold R² (C47(3)) are paper arguments.",
+    "reading": "Fails if the shape of C_α may be chosen from the data (sign-selected half-lines, coverage → 1−2α); for fixed-shape rules it is the intended statement. Separately, the printed ℓ∞ rectangle with half-width R̂/√T double-scales (R̂ is already the quantile for covariance Λ̂/T) and undercovers: a scaling slip, one factor of 1/√T too many. The ellipsoid threshold R² is a paper argument and depends on whether R is a χ² or a χ quantile.",
     "issues": [
      "C47"
     ],
-    "kind": "counterexample",
+    "kind": "reading",
     "key": "eq:convex.Cdelta"
    },
    "statement_status": "partial",
@@ -16545,7 +16597,7 @@
    "closing_rows": {},
    "site_label": "incomplete",
    "site_markers": [
-    "refuted"
+    "reading-dependent"
    ],
    "site_sub_reason": "partial",
    "printed_with_cited_printed": false
