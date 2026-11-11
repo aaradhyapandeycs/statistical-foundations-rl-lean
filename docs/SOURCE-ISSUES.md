@@ -296,7 +296,7 @@ for one fixed deterministic tie rule. The printed zero-count behavior remains
 undefined, and the proposed convention is not an author-approved correction.
 
 The corrected deterministic telescope is now proved as
-`StatisticalRL.Statements.Lemma5_6_corrected`: it assigns H as the finite
+`StatisticalRL.Statements.Ch5.Lemma5_6_corrected`: it assigns H as the finite
 analysis charge at zero visits and agrees with the printed bonus at
 positive counts. Its generic statement permits every greedy maximizing
 tie choice. The supporting actual-law probability decomposition retains
@@ -322,7 +322,7 @@ The corrected MVP planner therefore uses the same explicit Q=H branch at
 zero stored count and retains the initialized uniform row. Positive counts
 use the printed capped bonus; counts one and two saturate under the proved
 constant/logarithm conditions. The actual-law corrected displayed optimism
-claim is now proved as `StatisticalRL.Statements.MVP_optimism_corrected`.
+claim is now proved as `StatisticalRL.Statements.Ch5.MVP_optimism_corrected`.
 It also discloses the C13 power-of-two trigger interpretation, C16 reciprocal
 confidence allocation and fixed deterministic greedy tie. No fictitious
 observation or independence-at-random-count premise is introduced. This is
@@ -332,7 +332,7 @@ corrected fixed-profile decoupling and main MVP regret are now proved separately
 [verification](online-MVP-actual-optimism-verification.md).
 
 The actual-law corrected MVP variance lemma is also proved as
-`StatisticalRL.Statements.Lemma5_15_corrected`. Its T2 uses the printed
+`StatisticalRL.Statements.Ch5.Lemma5_15_corrected`. Its T2 uses the printed
 bonus at positive stored counts and an explicit analysis charge H at zero.
 The printed bonus divides by the zero stored count; no equivalence to an
 unwritten max-one denominator convention is asserted. The final export
@@ -463,8 +463,8 @@ candidate records the asserted error.
   - LCB-Q sequences (Chapter 6; `psiSeq` and the α, θ, ξ, ψ, φ sequences used by Lemma 6.11 and
     Lemma 6.12): the ratio `d_j/d^b` is set to 0 when `d^b = 0`. That event has probability zero
     under the source's assumptions, so no statement that uses these sequences depends on the value.
-  - Online VPO (Theorem 7.12; `Thm7_12_corrected`): the first policy π^(1) is computed from the
-    empty dataset, and π^(0) never enters the regret sum. This is the indexing of the corrected
+  - Online VPO (Theorem 7.12; `Thm7_12_corrected`): the first policy $\pi^{(1)}$ is computed from the
+    empty dataset, and $\pi^{(0)}$ never enters the regret sum. This is the indexing of the corrected
     statement; see [C44](#C44).
   - Greedy selectors (the Chapter 5 planners and `optimalGreedyPolicy` used in Chapter 6): the
     maximizer is chosen by `Classical.choose`, so each fixes one unspecified tie rule. Every
@@ -500,16 +500,16 @@ candidate records the asserted error.
 
 - Lemma 6.12 (`lem:lcbq-alpha-xi-psi-phi-bound`, `offlineRL.tex:2309–2324`) is indexed as `Lemma6_12_restricted`. It has the added premise `log(SAT/δ) ≥ 1`, which is sufficient for `κ < 1` and `H ≍ ι/(1−γ)`; the printed lemma fails for small `ι` (see [C24](#C24)). The premise is not minimal: any `ι ≥ c > 3/4` would do with a larger constant, and the excluded band requires `SAT ≤ 2`. The source's `c_b` "sufficiently large" is stated as `∃ c_b₀, ∀ c_b ≥ c_b₀` (`c_b₀ = 4`, as in [C28](#C28)). The `≲` constant is an existential `C` that depends only on `c_b` (`C = 400000 + 5600 c_b`). `α = 0` is stated as `α_j → 0`; `ξ, θ, ψ, φ` are stated as `HasSum` limits. The `θ` and `ψ+φ` bounds are stated under `C⋆ < ∞`, since otherwise the printed right sides are `+∞`. No sample-size condition on `T` is assumed, although the printed proof uses Theorem 6.8's. The hypotheses that `π⋆` is optimal and that ties are broken by a maximiser are carried as in the source but are not used.
 - Lemma 6.9 (`lemma:Q-recursion-pessimistic-Q`, `offlineRL.tex:1866–1893`) is indexed as `Lemma6_9_restricted` (renamed from `Lemma6_9` on 2026-11-07 for consistency with the tie-rule convention used for Theorem 5.1). The printed algorithm (`alg:q-infinite-lcb`, `:1701–1745`) leaves the arg-max tie rule unspecified; the entry covers every deterministic tie rule that depends only on the current Q-row (for example any rule on the arg-max set), not rules depending on the state, the iteration or the history. The same tie scope applies to `Lemma6_10_restricted`, `Lemma6_12_restricted` and `Thm6_8_corrected`.
-- Theorem 5.1 (`thm:bandit-pure-ucb`, `bandits.tex:258–277`) is indexed as `Thm5_1_restricted`. Both printed bounds and all printed hypotheses (2 ≤ A ≤ T, means in [0,1], 0 < δ < 1) are kept unchanged. The restriction is the tie rule: the algorithm (`:232`) leaves the choice inside the argmax unspecified, and the entry quantifies over every deterministic rule that depends only on the round and the argmax set. History-dependent and randomized tie-breaking are not covered; the mathematical repair ([C36](#C36)) extends to any non-anticipating rule, but that is not formalized. Reading conventions: an unpulled arm has index +∞ (`:387`); rounds are 0-indexed; the noise is the iid N(0,1) table over (round, arm); regret is the pseudo-regret T r⋆ − Σ r(a_t) with r⋆ = max_a r(a), integrated over the noise; integrability is proved as an extra conclusion.
+- Theorem 5.1 (`thm:bandit-pure-ucb`, `bandits.tex:258–277`) is indexed as `Thm5_1_restricted`. Both printed bounds and all printed hypotheses (2 ≤ A ≤ T, means in [0,1], 0 < δ < 1) are kept unchanged. The restriction is the tie rule: the algorithm (`:232`) leaves the choice inside the argmax unspecified, and the entry quantifies over every deterministic rule that depends only on the round and the argmax set. History-dependent and randomized tie-breaking are not covered; the mathematical repair ([C36](#C36)) extends to any non-anticipating rule, but that is not formalized. Reading conventions: an unpulled arm has index +∞ (`:387`); rounds are 0-indexed; the noise is the iid N(0,1) table over (round, arm); regret is the pseudo-regret T r⋆ − Σ $r(a_{t})$ with $r^{\star} = \max_{a}$ r(a), integrated over the noise; integrability is proved as an extra conclusion.
 - Remark 5.12 (unlabeled, `onlineRL.tex:2725–2729`; numbered by the per-chapter remark counter) is an informal claim and is indexed as its formal reading. `Remark5_12_lowerBound` (unrestricted): an Ω(√(AT)) minimax lower bound, constant 1/16 and range 2 ≤ A ≤ T chosen by us, learners = seed from any probability space (`Seed : Type`) plus arm maps measurable in (seed, past (arm, reward) pairs). `Remark5_12_restricted`: the UCB optimality comparison (factor 128√log(T²/δ)) inherits the deterministic tie-rule restriction of `Thm5_1_restricted` above. No source error.
 - The regret-to-PAC conversion (`onlineRL.tex:113–141`, [C46](#C46)) is indexed as `Eq_PAC_from_regret_conversion_corrected` and `Eq_PAC_from_regret_conversion_restricted`. Algorithm class: internal randomness with finite support and deployed policies that are deterministic Markov given the seed and the completed history; the source allows randomized deployed policies, which are not covered. Only `δ > 0` is assumed, as printed.
 - Remark 7.1 (`remark:tv-upper`, `robust_RL.tex:361–372`) is indexed as `Remark7_1_restricted`: Õ((1−γ)²/N) is read
-  as c_opt(1−γ)²log(SAN/((1−γ)δ))/N with ∀ c_opt ∃ C₂; only deterministic stationary planner outputs are covered
+  as $c_{\mathsf{opt}}(1-\gamma)^{2}\log (SAN/((1-\gamma)\delta))/N$ with ∀ $c_{\mathsf{opt}}$ ∃ C₂; only deterministic stationary planner outputs are covered
   (randomized or history-dependent outputs are not), and N > 0 is assumed as in `Thm7_2_corrected`. The event is
   uniform over all such outputs, so no measurability of the planner is needed.
   Remark 7.2 (`remark:chi2-upper`, `robust_RL.tex:453–457`) is indexed as `Remark7_2_restricted` with the same
-  restriction: O(log(SAN/((1−γ)δ))/N²) is read as c_opt·log(SAN/((1−γ)δ))/N² with ∀ c_opt ∃ c₂ (proved with
-  c₂ = 10⁶ + 8c_opt); only deterministic stationary planner outputs are covered, and the premises are those of
+  restriction: O(log(SAN/((1−γ)δ))/N²) is read as $c_{\mathsf{opt}}\cdot \log (SAN/((1-\gamma)\delta))/N^{2}$ with ∀ $c_{\mathsf{opt}}$ ∃ c₂ (proved with
+  $c_{2} = 10^{6} + 8c_{\mathsf{opt}}$); only deterministic stationary planner outputs are covered, and the premises are those of
   `Thm7_4_corrected` (N > 0). The event is uniform over all such outputs ([review](critic-trivial-b.md)).
 
 - `eq:mdp-value-Q` (`robust_RL.tex:88–98`), `eq:bellman-equ-infinite-all` (`:102–113`) and the
@@ -540,22 +540,22 @@ candidate records the asserted error.
   Lean's log 0 = 0 such a boundary policy takes the junk loss −log σ(β log(π(y₁|x)/π_ref(y₁|x))) instead of 0. The
   same example shows that the printed reward–policy correspondence holds only on full-support policies: over all
   policies the DPO argmin can be a nonempty set of boundary policies while ℓ(·, D) has no minimizer. The book's
-  derivation works with the Gibbs policies π_r, which have full support. Further: π_ref has full support (implicit
-  in the source, where log π_ref appears in `eq:reward-policy-eq`), and X and Y are finite (as in
+  derivation works with the Gibbs policies $\pi_{r}$, which have full support. Further: $\pi_{\mathsf{ref}}$ has full support (implicit
+  in the source, where log $\pi_{\mathsf{ref}}$ appears in `eq:reward-policy-eq`), and X and Y are finite (as in
   `Thm7_12_corrected`; the source's Z(r,x) is a finite sum over Y). Existence of minimizers is not claimed (cf.
   [C44](#C44)). The online entry states the policy step with the printed uncalibrated J(r,π) of `eq:KL_reward`;
   uniqueness of its maximizer is not claimed (it fails off the support of ρ). See the [review](critic-trivial-b.md).
   `eq:reward-policy-eq` (`RLHF.tex:62–66`) and `eq:Jstar` (`:115–124`) are indexed as
   `Eq_reward_policy_eq_restricted` and `Eq_Jstar_restricted`, and the prompt-shift claims of `:90–98` as
-  `Eq_calibrated_value_shiftInvariant_restricted`, with the same full-support π_ref and finite X, Y. For the
-  prompt-shift claims the printed statements hold for every π_ref under the extended-real KL; the restriction
-  comes from the formal KL, which equals the KL divergence only when π_ref has full support.
+  `Eq_calibrated_value_shiftInvariant_restricted`, with the same full-support $\pi_{\mathsf{ref}}$ and finite X, Y. For the
+  prompt-shift claims the printed statements hold for every $\pi_{\mathsf{ref}}$ under the extended-real KL; the restriction
+  comes from the formal KL, which equals the KL divergence only when $\pi_{\mathsf{ref}}$ has full support.
   `eq:RLHF-policy-closed-form` (`:41–59`) is indexed as `Eq_RLHF_policy_closed_form_restricted`: the Gibbs
-  policy π_r maximizes J(r,·) over all conditional policies, and a conditional policy is a maximizer iff it
-  agrees with π_r on supp ρ. The printed `π_r := arg max_π J(r,π)` treats the maximizer as unique; that holds
+  policy $\pi_{r}$ maximizes J(r,·) over all conditional policies, and a conditional policy is a maximizer iff it
+  agrees with $\pi_{r}$ on supp ρ. The printed `π_r := arg max_π J(r,π)` treats the maximizer as unique; that holds
   exactly when ρ has full support (off supp ρ every row gives the same value; machine-checked witness with
-  ρ = δ_true in the P3a non-vacuity probe). This is a scope note, not an asserted source error. Same
-  full-support π_ref and finite X, Y ([review](critic-p3a.md)).
+  $\rho = \delta_{\mathsf{true}}$ in the P3a non-vacuity probe). This is a scope note, not an asserted source error. Same
+  full-support $\pi_{\mathsf{ref}}$ and finite X, Y ([review](critic-p3a.md)).
 
 - The iteration count after Lemma 6.2 (`offlineRL.tex:892`) is indexed as `Lemma6_2_iterationCount_restricted`,
   stated on γ ≥ 1/2, the domain of `Lemma6_2_corrected`. For γ < 1/2 the iteration count is open: neither proved
@@ -715,7 +715,7 @@ The final sum bound is true for the prose-intended power-of-two rule. A dyadic-b
 actual per-successor pending counters and resets, proves the stored-batch
 closed form and chronological visit-rank budget, and sums over rows/stages.
 It yields the printed `4SAH log₂K` for every K≥2. The full statement is
-`StatisticalRL.Statements.Lemma5_12_powerOfTwo_corrected`; it covers arbitrary realized traces,
+`StatisticalRL.Statements.Ch5.Lemma5_12_powerOfTwo_corrected`; it covers arbitrary realized traces,
 so it applies to the corrected dyadic algorithm without an assumed probability event
 or policy restriction. The first-visit max-one charge is retained.
 The corrected suffix discloses the trigger change; the alternate proof does
@@ -757,7 +757,7 @@ A valid repair replaces the centered-square coefficient 1 by 4. Since
 |X−E[X]|≤2Cmax, its fourth centered moment is at most 4Cmax²Var(X), and
 Var((X−E[X])²) is at most that fourth moment. The general probability-space
 repair is proved in [SquaredVarianceBounds.lean](../Formalization/Probability/SquaredVarianceBounds.lean)
-and indexed as `StatisticalRL.Statements.Lemma5_22_corrected`. Measurability
+and indexed as `StatisticalRL.Statements.Ch5.Lemma5_22_corrected`. Measurability
 and the source absolute bound suffice; integrability is derived in Lean.
 The printed source remains unchanged and its false general clause is not
 certified.
@@ -794,7 +794,7 @@ actual pre-episode cumulative count has an index below it. It counts the
 finite row-table profiles inside a rowwise monotone ceiling family, applies
 stars-and-bars, and proves the same printed bound
 `(4SAHK)^(SAH log₂K+1)`. K=1 is handled by the all-zero profile. The full
-statement `StatisticalRL.Statements.Lemma5_11` counts a superset of algorithm
+statement `StatisticalRL.Statements.Ch5.Lemma5_11` counts a superset of algorithm
 profiles from all finite episode-by-stage state-action row tables; the
 source large-K premise is retained. The unchanged final conclusion is
 certified, while the literal printed intermediate inclusion is not.
@@ -925,8 +925,8 @@ See [independent review](critic-online-MVP-uniform-confidence.md).
 The terminal-zero repair has now been implemented and proved through the
 actual retained-history learner, future-dependent family membership,
 per-stage row-rank identities and sequential transcript-law transport.
-`StatisticalRL.Statements.Lemma5_14_corrected` and
-`StatisticalRL.Statements.MVP_regret_corrected` consume that corrected bridge
+`StatisticalRL.Statements.Ch5.Lemma5_14_corrected` and
+`StatisticalRL.Statements.Ch5.MVP_regret_corrected` consume that corrected bridge
 without assuming its conclusion or probability. This does not validate the
 printed terminal-H program (the printed counterexample is machine-checked above). The related final regret statement is Theorem 5.10, source label
 `thm-mvp-regret` (`onlineRL.tex:1339–1352`); this auxiliary identity issue does

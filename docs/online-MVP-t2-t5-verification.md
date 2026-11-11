@@ -2,8 +2,8 @@
 
 The source displayed estimates are `eq:T2-ub-analysis-mvp` and
 `eq:T5-ub-analysis-mvp` (onlineRL.tex:1793–1810). The complete statement
-Props are `StatisticalRL.Statements.MVP_T2_K2_corrected` and
-`StatisticalRL.Statements.MVP_T5_corrected`, with corresponding `_holds`
+Props are `StatisticalRL.Statements.Ch5.MVP_T2_K2_corrected` and
+`StatisticalRL.Statements.Ch5.MVP_T5_corrected`, with corresponding `_holds`
 wrappers. They use the actual retained-table path and sequential law.
 
 T2 uses the source bonus for positive counts and analysis charge H at zero

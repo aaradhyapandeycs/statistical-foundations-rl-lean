@@ -33,8 +33,8 @@ find Formalization -name '*.lean' | xargs -n1 dirname | sort | uniq -c
   `Statements/Ch\d+.lean` and the proofs file by replacing `.lean` with `Proofs.lean`. Library exports are found by
   declaration name and namespace. So library files may move; Statements files must not
   (`scripts/move_modules.py` refuses).
-- Namespace quirks, kept as is: Ch2 and Ch5 entries use `StatisticalRL.Statements`; Ch3, Ch4, Ch6 and Ch7 use
-  `StatisticalRL.Statements.ChN`. `Statements/QLearningProofs.lean` is a one-line legacy shim
+- Namespaces are unified: every entry is `StatisticalRL.Statements.ChN.<Name>` and every wrapper
+  `StatisticalRL.Statements.ChN.<Name>_holds`. `Statements/QLearningProofs.lean` is a one-line legacy shim
   (`import Formalization.Statements.Ch5Proofs`). The former library module `Statements/Ch3Definitions.lean` now lives at
   `Generative/ModelBasedDefinitions.lean`, so no library module imports `Statements/` and
   `scripts/gates/g2_library_to_statements.txt` is empty (header only).

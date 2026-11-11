@@ -5,8 +5,8 @@ Source: arXiv:2610.41903v1, `chapters/onlineRL.tex:1480–1487`, displayed
 `393a4d26c228d833a27e54a4913489e499d2143f2f9b80ebf3c55d9a9ccb8c53`.
 
 The complete self-contained index is
-`StatisticalRL.Statements.MVP_optimism_corrected`, proved by
-`StatisticalRL.Statements.MVP_optimism_corrected_holds` using
+`StatisticalRL.Statements.Ch5.MVP_optimism_corrected`, proved by
+`StatisticalRL.Statements.Ch5.MVP_optimism_corrected_holds` using
 `StatisticalRL.OnlineRL.mvp_sourceOptimismCorrected_holds`.
 
 The final theorem proves Q*/V* domination simultaneously for every episode,

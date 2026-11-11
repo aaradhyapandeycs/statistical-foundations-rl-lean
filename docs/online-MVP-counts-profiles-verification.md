@@ -7,7 +7,7 @@ at 1506–1525. Lemma 5.12 is `lem:sum-inv-Nhk-mvp`, lines 1570–1577.
 
 - Exports: `StatisticalRL.OnlineRL.MVPProfile.sourceMVPFinitePossibleProfiles_card_bound_all`
   and `StatisticalRL.OnlineRL.onlineMVP_operationalHistory_sourceCountBudget`.
-- Full statements: `StatisticalRL.Statements.Lemma5_11` and `Lemma5_12_powerOfTwo_corrected`;
+- Full statements: `StatisticalRL.Statements.Ch5.Lemma5_11` and `Lemma5_12_powerOfTwo_corrected`;
   applying proofs have the `_holds` suffix. Their direct project imports
   are definition modules only; the proof imports stay in Ch5Proofs.
 - The profile theorem keeps the source K-budget and exact cardinality bound.

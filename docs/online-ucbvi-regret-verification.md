@@ -6,8 +6,8 @@ Pinned chapter SHA-256:
 `393a4d26c228d833a27e54a4913489e499d2143f2f9b80ebf3c55d9a9ccb8c53`.
 
 - Actual export: `StatisticalRL.OnlineRL.onlineUCBVI_actual_regret_high_probability`.
-- Full statement: `StatisticalRL.Statements.Thm5_2_corrected`.
-- Applying proof: `StatisticalRL.Statements.Thm5_2_corrected_holds`.
+- Full statement: `StatisticalRL.Statements.Ch5.Thm5_2_corrected`.
+- Applying proof: `StatisticalRL.Statements.Ch5.Thm5_2_corrected_holds`.
 - Explicit rate 20(√(SAH³K)+S²AH³)(1+iota), fixed universal bonus constants 4,16,
   all K≥1 and 0<δ<1. The producer's strict probability bound implies the
   printed at-least1−δ form. Regret is true optimal-minus-selected-policy

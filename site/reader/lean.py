@@ -37,12 +37,17 @@ ENTRY_ORDER = ["original", "corrected", "restricted", "cov-printed", "cov-correc
 def chip(label, markers=(), sub: str = "", issues: str = "") -> str:
     """Status chip: one of the four labels (or none), then markers and the incomplete sub-reason."""
     out = []
-    if label:
+    if label == "supporting":
+        # Not one of the four status labels: plain muted text, never a badge.
+        note = "Supporting Lean entry (not a status)" + (f": {sub}" if sub else "")
+        out.append(f'<span class="entry-note">{esc(note)}</span>')
+        sub = ""
+    elif label:
         word, cls = ENTRY_LABELS[label]
         out.append(f'<span class="status {cls}">{esc(word)}</span>')
     for m in markers:
         out.append(f'<span class="marker mk-{m}">{esc(MARKERS[m])}</span>')
-    if sub and label in ("incomplete", "supporting", None):
+    if sub and label in ("incomplete", None):
         out.append(f'<span class="subreason">{esc(sub)}</span>')
     if issues:
         out.append(f'<span class="issues">{issues}</span>')

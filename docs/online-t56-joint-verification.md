@@ -5,8 +5,8 @@ Source: arXiv:2610.41903v1, `lem:bound-T56`,
 `393a4d26c228d833a27e54a4913489e499d2143f2f9b80ebf3c55d9a9ccb8c53`.
 
 - Actual export: `StatisticalRL.OnlineRL.onlineSourceAllocated_T3_T56_simplified_actual_confidence`.
-- Complete statement: `StatisticalRL.Statements.Lemma5_9_K2_corrected`.
-- Applying proof: `StatisticalRL.Statements.Lemma5_9_K2_corrected_holds`.
+- Complete statement: `StatisticalRL.Statements.Ch5.Lemma5_9_K2_corrected`.
+- Applying proof: `StatisticalRL.Statements.Ch5.Lemma5_9_K2_corrected_holds`.
 - The first event contains all three printed initial bounds at probability
   at least 1−14 S²AH²K delta-prime. Under the printed large-K premise, the
   second contains both simplified bounds at probability at least 1−30 S²AH²K

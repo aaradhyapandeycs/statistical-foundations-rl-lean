@@ -7,8 +7,8 @@ Assumption X at `:1670–1685`, source SHA-256
 The actual export is
 `StatisticalRL.FiniteHorizonGenerative.mvp_corrected_sourceUniform_full`.
 Its complete indexed statement is
-`StatisticalRL.Statements.Lemma5_13_confidence_corrected`, proved by
-`StatisticalRL.Statements.Lemma5_13_confidence_corrected_holds`.
+`StatisticalRL.Statements.Ch5.Lemma5_13_confidence_corrected`, proved by
+`StatisticalRL.Statements.Ch5.Lemma5_13_confidence_corrected_holds`.
 
 This is the reciprocal-allocation correction δ′=δ/(100S²A²H²K²), not the
 printed numerator 100 allocation refuted by C16. The finite continuation

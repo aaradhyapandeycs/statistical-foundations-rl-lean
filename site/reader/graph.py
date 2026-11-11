@@ -153,7 +153,9 @@ class GraphPages:
                 + f'<td class="num">{cnt(p + ".prose_refuted_marker")}</td>'
                 + f'<td class="num">{cnt(p + ".prose_boundary_marker")}</td>'
                 + f'<td class="num">{cnt(p + ".prose_fails_paper_marker")}</td></tr>')
-        heads = "".join(f'<th><span class="status {gen_nodes.SITE_LABELS[k][1]}">{esc(gen_nodes.SITE_LABELS[k][0])}</span></th>'
+        short = {"stated": "as stated", "corrected": "corrected", "restricted": "restricted", "incomplete": "incomplete"}
+        heads = "".join(f'<th><span class="status {gen_nodes.SITE_LABELS[k][1]}" '
+                        f'title="{attr(gen_nodes.SITE_LABELS[k][0])}">{esc(short.get(k, gen_nodes.SITE_LABELS[k][0]))}</span></th>'
                         for k in order)
         rev = site.lean.git.rev
         c = s["closing_not_proved"]
@@ -166,6 +168,7 @@ approval). They are not a percentage of the book.</div>
 <p class="lede">{site.count_sentence()}</p>
 {site.stacked_bar()}
 <h2>By chapter</h2>
+<p class="scroll-hint">The table is wide: scroll it sideways →</p>
 <div class="table-wrap"><table class="results dash-table"><thead>
 <tr><th rowspan="2">Ch.</th><th rowspan="2">Title</th><th colspan="8">Numbered theorems, lemmas and claims</th>
 <th colspan="7">Remarks and displayed claims</th></tr>
@@ -242,14 +245,18 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                 pos[n["id"]] = (LEFT + ci * (W + GX), TOP + ri * (H + GY))
         # a second layout with numbered results only (default view); edges through hidden nodes collapse
         npos = {}
-        for ci, ch in enumerate(chapters):
+        # chapters with no numbered result get no column in this view (no blank panel on narrow screens)
+        ncols = [ch for ch in chapters if any(x["class"] == "named" for x in cols[ch])]
+        nx = {ch: LEFT + i * (W + GX) for i, ch in enumerate(ncols)}
+        for ch in ncols:
             for ri, n in enumerate([x for x in cols[ch] if x["class"] == "named"]):
-                npos[n["id"]] = (LEFT + ci * (W + GX), TOP + ri * (H + GY))
+                npos[n["id"]] = (nx[ch], TOP + ri * (H + GY))
         width = LEFT * 2 + len(chapters) * (W + GX) - GX
+        nwidth = LEFT * 2 + len(ncols) * (W + GX) - GX
         height = TOP + max(len(v) for v in cols.values()) * (H + GY) + 10
         nheight = TOP + max(sum(1 for x in v if x["class"] == "named") for v in cols.values()) * (H + GY) + 10
         out = [f'<svg class="depgraph" xmlns="http://www.w3.org/2000/svg" width="{width}" height="{nheight}" '
-               f'viewBox="0 0 {width} {nheight}" data-w="{width}" data-h-all="{height}" data-h-named="{nheight}" '
+               f'viewBox="0 0 {width} {nheight}" data-w="{width}" data-w-named="{nwidth}" data-h-all="{height}" data-h-named="{nheight}" '
                f'role="group" aria-labelledby="gtitle">'
                '<title id="gtitle">Dependency graph of the book\'s results, one column per chapter</title>'
                '<defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" '
@@ -257,7 +264,8 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                '<clipPath id="nclip"><rect x="0" y="0" width="124" height="22"/></clipPath></defs>']
         for ci, ch in enumerate(chapters):
             x = LEFT + ci * (W + GX)
-            out.append(f'<text x="{x}" y="22" class="gn-col" data-ch="{attr(ch)}">Chapter {esc(ch)}</text>')
+            out.append(f'<text x="{x}" y="22" class="gn-col" data-ch="{attr(ch)}" data-x="{x}" '
+                       f'data-nx="{nx.get(ch, "")}">Chapter {esc(ch)}</text>')
 
         def path(p1, p2):
             (x1, y1), (x2, y2) = p1, p2
@@ -269,7 +277,7 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                 return f"M{x1 + W},{y1c} C{x1 + W + GX / 2},{y1c} {x2 - GX / 2},{y2c} {x2},{y2c}"
             return f"M{x1},{y1c} C{x1 - GX / 2},{y1c} {x2 + W + GX / 2},{y2c} {x2 + W},{y2c}"
 
-        uses = {n["id"]: [u["id"] for u in n["uses"] if u["target"] == "node" and u["id"] in pos]
+        uses = {n["id"]: [u["id"] for u in n["uses"] if gen_nodes.is_dependency(u) and u["id"] in pos]
                 for n in self.data["nodes"]}
 
         def named_uses(nid):
@@ -333,7 +341,7 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
                          f'fillcolor={fill[lab]}];')
         for n in self.data["nodes"]:
             for u in n["uses"]:
-                if u["target"] == "node":
+                if gen_nodes.is_dependency(u):
                     lines.append(f'  "{u["id"]}" -> "{n["id"]}";')
         lines.append("}")
         return "\n".join(lines) + "\n"
@@ -364,10 +372,10 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
             lab = f'<div class="label"><code>{esc(n["labels"][0])}</code></div>' if n["labels"] else ""
             uses = ", ".join(
                 f'<a href="#n-{attr(html_id(u["id"]))}">{esc(long_name(self.nodes[u["id"]]))}</a>'
-                for u in n["uses"] if u["target"] == "node")
-            ctx = [u for u in n["uses"] if u["target"] == "context"]
+                for u in n["uses"] if gen_nodes.is_dependency(u))
+            ctx = [u for u in n["uses"] if not gen_nodes.is_dependency(u) and u.get("verdict") != "wrong-target"]
             if ctx:
-                uses += (", " if uses else "") + f'{len(ctx)} definition/algorithm reference{"s" if len(ctx) > 1 else ""}'
+                uses += (", " if uses else "") + f'{len(ctx)} context reference{"s" if len(ctx) > 1 else ""} (definition, algorithm or comparison)'
             lean = " ".join(f'<code title="{attr(e["name"])}">{esc(e["name"].rsplit(".", 1)[-1])}</code>'
                             for e in n["statement_entries"])
             search = " ".join([long_name(n), n["labels"][0] if n["labels"] else "", lean,
@@ -385,10 +393,13 @@ of the ledger). Open items are in <a href="{attr(site.lean.git.blob('docs/NEXT.m
         s = self.data["summary"]
         cnt = self.site.cnt
         body = f"""<h1>Dependency graph</h1>
-<div class="incomplete" role="note"><strong>Unreviewed edges.</strong> Arrows are candidates read from the TeX
-cross-references (<code>\\ref</code>, <code>\\eqref</code>, …) inside each result and its proof: a reference may be
-a comparison rather than a dependency, and a real dependency may be cited without one. {cnt("uses_edges")} such edges,
-{cnt("uses_edges_reviewed")} reviewed. The graph does not certify a chapter or the book.</div>
+<div class="incomplete" role="note"><strong>AI-reviewed edges.</strong> Arrows are read from the TeX
+cross-references (<code>\\ref</code>, <code>\\eqref</code>, …) inside each result and its proof, plus
+{cnt("uses_edges_added_by_review")} dependencies the review found without a reference. Of these {cnt("uses_edges")}
+edges, {cnt("uses_edges_reviewed")} were classified by an AI critic; an independent AI verifier re-checked every comparison, wrong-target and added edge and a random sample of 40 others (not
+author-reviewed); arrows are proof dependencies only, while definition and comparison references are listed as context
+and wrong-target references are dropped. A real dependency may still be cited without a reference. The graph does not
+certify a chapter or the book.</div>
 <p class="lede">One node per numbered theorem, lemma and claim ({cnt("named_results_in_inventory")}), plus remarks and
 displayed claims ({cnt("prose_nodes")}). The fill is the item's label; arrows point from a cited result to the result
 that cites it. Click a node to highlight what it cites (transitively) and what cites it; click it again to go to its
@@ -415,7 +426,7 @@ row. <a href="status.html">Counts by chapter</a> · <a href="graph/nodes.json">n
 <label class="toggle"><input type="checkbox" id="f-named"> numbered results only</label></div>
 <p class="filter-count" aria-live="polite"></p></div>
 <div class="table-wrap"><table class="results stack graph-table"><thead><tr><th>Item</th><th>Status</th>
-<th>Statement entries</th><th>Cites (unreviewed)</th></tr></thead>
+<th>Statement entries</th><th>Cites (proof dependencies; AI-reviewed)</th></tr></thead>
 <tbody>{''.join(trs)}</tbody></table></div>
 <p class="lede">Definitions, assumptions and algorithms are context, not nodes; references to them are counted but
 never block.</p>"""
@@ -476,11 +487,12 @@ never block.</p>"""
             pr = n.get("printed_refuted") or {}
             names = " ".join(f'<code title="{attr(x)}">{esc(x.rsplit(".", 1)[-1])}</code>'
                              for x in (pr.get("lean") or n["refutations_cited"])) or "see the coverage ledger"
-            return names + (f'<br><span class="reading">Reading: {lean.md(pr["reading"])}</span>' if pr.get("reading") else "")
+            return names + (f'<br><span class="reading tex2jax_process">Reading: {lean.md(pr["reading"])}</span>' if pr.get("reading") else "")
 
         def paper_case(n):
             pr = n.get("printed_refuted") or {}
-            return lean.md(pr.get("reading", "")) or "see the source issue"
+            r = lean.md(pr.get("reading", ""))
+            return f'<span class="tex2jax_process">{r}</span>' if r else "see the source issue"
         body = f"""<h1>Source issues</h1>
 <div class="incomplete" role="note"><strong>Candidates, not confirmed errata.</strong> Every item below was found by
 reviews performed by AI agents against the pinned TeX of arXiv:2610.41903v1. Every refutation, correction and

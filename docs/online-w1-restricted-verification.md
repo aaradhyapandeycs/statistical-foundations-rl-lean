@@ -6,7 +6,7 @@ the source and validation evidence below is retained as history.
 
 The verified endpoint is the W1 clause only of
 `lem:bound-W1-W2-ucbvi-proof`, `chapters/onlineRL.tex:928–953`.
-`StatisticalRL.Statements.Lemma5_7_W1_K2_corrected` states the printed
+`StatisticalRL.Statements.Ch5.Lemma5_7_W1_K2_corrected` states the printed
 coefficients and confidence, for K≥2, the corrected zero-count convention,
 fixed deterministic greedy tie, and source confidence/bonus domains. The
 proof consumes the stronger 6SAHK failure-budget export and derives the
