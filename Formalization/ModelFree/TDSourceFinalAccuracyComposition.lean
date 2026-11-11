@@ -1,9 +1,10 @@
 import Formalization.ModelFree.TDSourceFirstFreedmanAssembly
-import Formalization.ModelFree.TDVarianceLemmaComposition
 import Formalization.ModelFree.TDOriginalVarianceScale
 import Formalization.ModelFree.TDInitialErrorContraction
 import Formalization.ModelFree.TDActualErrorUnroll
 import Formalization.ModelFree.TDSourceFinalScalarBudgetConsumer
+import Formalization.ModelFree.TDSourceFixedTerminalProxyBudget
+import Formalization.ModelFree.TDVarianceSum
 
 set_option maxHeartbeats 500000
 

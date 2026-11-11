@@ -18,67 +18,10 @@ noncomputable def tdSharpSquarePotential
     (data : TDSamples State T) : State → ℝ :=
   fun s ↦ tdValueBefore M π η T j V₀ data s ^ 2
 
-/-- Exact source innovation: actual squared iterate minus its conditional
-expectation given the strict used prefix before source update `k`. -/
-noncomputable def tdSharpSquareInnovation
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (T : ℕ) (V₀ : State → ℝ) (k : ℕ)
-    (data : TDSamples State T) : State → ℝ :=
-  fun s ↦ tdSquareCentered M π η T V₀ k s data
-
 /-- Source active sample indices. `n=k−1`, so this is exactly
 `floor(t/2)+1≤k≤t`. -/
 def tdSharpEnergyWindow (t : ℕ) : Finset ℕ :=
   Finset.Icc (t / 2 + 1) t
-
-/-- Row positivity comes from the actual stochastic transition and source rate
-bounds, not an assumed positive matrix. -/
-theorem tdSharpEnergyProxy_tailRow_nonneg
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (t k : ℕ)
-    (hη : ∀ i, 1 ≤ i → i ≤ t → 0 ≤ η i ∧ η i ≤ 1)
-    (q r : State) :
-    0 ≤ tdPropagatorRow M π η k t q r :=
-  tdPropagatorRow_nonneg M π η k t hη q r
-
-/-- The actual chronological tail row has mass at most one. The product in the
-identity is over updates `k+1,...,t`, so no `η_k γ` multiplier is folded into
-the tail row. -/
-theorem tdSharpEnergyProxy_tailRow_mass
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (t k : ℕ) (hkt : k ≤ t) (q : State)
-    (hη : ∀ i, 1 ≤ i → i ≤ t → 0 ≤ η i ∧ η i ≤ 1) :
-    (∑ r, tdPropagatorRow M π η k t q r) ≤ 1 := by
-  rw [tdPropagatorRow_sum M π η k t hkt q]
-  apply Finset.prod_le_one
-  · intro i hi
-    have hii := Finset.mem_Icc.mp hi
-    exact (tdRateContraction_bounds M.discount η i M.discount_nonneg
-      M.discount_lt_one.le (hη i (by omega) hii.2)).1
-  · intro i hi
-    have hii := Finset.mem_Icc.mp hi
-    exact (tdRateContraction_bounds M.discount η i M.discount_nonneg
-      M.discount_lt_one.le (hη i (by omega) hii.2)).2
-
-/-- Actual iterate range used to bound the squared potential by `H²`. -/
-theorem tdSharpSquarePotential_range
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (T : ℕ) (V₀ : State → ℝ)
-    (h₀ : ∀ s, 0 ≤ V₀ s ∧ V₀ s ≤ M.effectiveHorizon)
-    (hη : ∀ i, 1 ≤ i → 0 ≤ η i ∧ η i ≤ 1)
-    (j : ℕ) (hj : j ≤ T) (data : TDSamples State T) :
-    ∀ s, 0 ≤ tdSharpSquarePotential M π η T V₀ j data s ∧
-      tdSharpSquarePotential M π η T V₀ j data s ≤ M.effectiveHorizon ^ 2 := by
-  intro s
-  have hv := tdIterate_bounds_of_positive_rates M π η
-    (tdSamplesExtend M T data) V₀ h₀ j
-    (fun i hi1 hij ↦ hη i hi1) s
-  have hv' : 0 ≤ tdValueBefore M π η T j V₀ data s ∧
-      tdValueBefore M π η T j V₀ data s ≤ M.effectiveHorizon := by
-    simpa [tdValueBefore] using hv
-  change 0 ≤ tdValueBefore M π η T j V₀ data s ^ 2 ∧
-    tdValueBefore M π η T j V₀ data s ^ 2 ≤ M.effectiveHorizon ^ 2
-  exact ⟨sq_nonneg _, (sq_le_sq₀ hv'.1 M.effectiveHorizon_nonneg).2 hv'.2⟩
 
 /-- The compiled arbitrary-sequence telescope instantiated at the actual
 squared iterates. -/

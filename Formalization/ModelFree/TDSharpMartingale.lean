@@ -187,24 +187,4 @@ theorem tdSquareTerminalIncrement_priorSigma_le_past
   exact ((tdSquareTerminalIncrement_strong_nextPast M π η T t ht V₀ s j).measurable.mono
     (tdPastSigma_mono T (j + 1) n (by omega)) le_rfl).comap_le
 
-theorem tdSquareTerminalIncrement_condExp_natural_zero
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (T t : ℕ) (ht : t ≤ T) (V₀ : State → ℝ)
-    (s : State) (n : ℕ) :
-    (tdSamplingLaw M π T)[tdSquareTerminalIncrement M π η T t V₀ s n |
-      priorIncrementSigma (tdSquareTerminalIncrement M π η T t V₀ s) n]
-        =ᵐ[tdSamplingLaw M π T] fun _ ↦ 0 := by
-  let m := priorIncrementSigma (tdSquareTerminalIncrement M π η T t V₀ s) n
-  have htower := condExp_condExp_of_le (μ := tdSamplingLaw M π T)
-    (f := tdSquareTerminalIncrement M π η T t V₀ s n)
-    (tdSquareTerminalIncrement_priorSigma_le_past M π η T t ht V₀ s n)
-    (tdPastSigma_le T n)
-  have hz := condExp_congr_ae (m := m)
-    (tdSquareTerminalIncrement_condExp_past_zero M π η T t ht V₀ s n)
-  have hzero : (tdSamplingLaw M π T)[(0 : TDSamples State T → ℝ) | m] = 0 := condExp_zero
-  exact htower.symm.trans (hz.trans (Filter.Eventually.of_forall fun data ↦ by
-    change (tdSamplingLaw M π T)[(0 : TDSamples State T → ℝ) | m] data = 0
-    rw [hzero]
-    rfl))
-
 end StatisticalRL.TemporalDifference

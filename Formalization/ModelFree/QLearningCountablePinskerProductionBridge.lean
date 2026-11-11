@@ -214,35 +214,4 @@ theorem qActualStoppedPrefixPinsker
           ((qForcedPrefixLaw M π s a z.1).prob_nonneg z.2))
     hM'Norm hMNorm hstopSupport hklAbs
 
-/-- At zero discount the two actual stopped-prefix laws coincide with the
-unit mass on the unique zero-transition prefix. Their half-L1 distance and
-oriented countable KL are both exactly zero; no transition-row hypothesis is
-needed at this endpoint. -/
-theorem qActualStoppedPrefixPinsker_zero_discount
-    {State Action : Type*} [Fintype State] [Fintype Action]
-    (M M' : StatisticalRL.DiscountedMDP State Action)
-    (π : StatisticalRL.StationaryPolicy State Action) (s : State) (a : Action) :
-    qCountableTotalVariation
-        (qActualStoppedPrefixMass M' π 0 s a)
-        (qActualStoppedPrefixMass M π 0 s a) = 0 ∧
-    (∑' z : qStoppedPrefixAbsCarrier (State := State) (Action := Action),
-      klAtom (qActualStoppedPrefixMass M' π 0 s a z)
-        (qActualStoppedPrefixMass M π 0 s a z)) = 0 := by
-  have hmass : qActualStoppedPrefixMass M' π 0 s a =
-      qActualStoppedPrefixMass M π 0 s a := by
-    funext z
-    cases z with
-    | mk k path =>
-        by_cases hk : k = 0
-        · subst k
-          cases path
-          simp [qActualStoppedPrefixMass, qGeometricStopWeight_zero,
-            qForcedPrefixWeight]
-        · simp [qActualStoppedPrefixMass, qGeometricStopWeight_zero, hk]
-  constructor
-  · rw [hmass]
-    simp [qCountableTotalVariation]
-  · simpa [klAtom, qStoppedPrefixKLAtom] using
-      qActualStoppedPrefixKL_zero_discount M M' π s a
-
 end StatisticalRL.QLearning.CountablePinsker

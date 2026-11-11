@@ -130,34 +130,6 @@ theorem tdIterate_eq_sourceRateExtend (M : DiscountedMDP State Action)
   intro i hi hit
   rw [tdSourceRateExtend_eq η (le_trans hit ht)]
 
-/-- The actual source scalar contraction factor is unchanged for every update
-index through T. -/
-theorem tdRateContraction_eq_sourceRateExtend (γ : ℝ) (η : ℕ → ℝ)
-    (T i : ℕ) (hi : i ≤ T) :
-    tdRateContraction γ (tdSourceRateExtend T η) i =
-      tdRateContraction γ η i := by
-  unfold tdRateContraction
-  rw [tdSourceRateExtend_eq η hi]
-
-/-- Exact source weights at every terminal t≤T are unchanged. This includes
-the initial k=0 weight and every propagator factor in its finite product. -/
-theorem tdRateWeight_eq_sourceRateExtend (γ : ℝ) (η : ℕ → ℝ)
-    (T t k : ℕ) (ht : t ≤ T) :
-    tdRateWeight γ (tdSourceRateExtend T η) t k = tdRateWeight γ η t k := by
-  unfold tdRateWeight
-  by_cases hkt : k ≤ t
-  · simp only [if_pos hkt]
-    congr 1
-    · by_cases hk0 : k = 0
-      · simp [hk0]
-      · simp only [if_neg hk0]
-        exact tdSourceRateExtend_eq η (le_trans hkt ht)
-    · apply Finset.prod_congr rfl
-      intro i hi
-      have hii := Finset.mem_Icc.mp hi
-      exact tdRateContraction_eq_sourceRateExtend γ η T i (le_trans hii.2 ht)
-  · simp [hkt]
-
 /-- A single actual transition agrees whenever its update-rate coordinates
 agree; this is the local step for propagator preservation. -/
 theorem tdErrorTransition_eq_of_rate_eq (M : DiscountedMDP State Action)
@@ -197,16 +169,5 @@ theorem tdPropagatorRow_eq_sourceRateExtend (M : DiscountedMDP State Action)
   exact congrArg (fun f : State → ℝ ↦ f s)
     (tdErrorPropagate_eq_sourceRateExtend M π η T start t ht
       (fun x ↦ if x = r then 1 else 0))
-
-/-- The weighted actual propagator row preserves its explicit γη_k factor as
-well as the suffix row. -/
-theorem tdWeightedPropagatorRow_eq_sourceRateExtend
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (T t k : ℕ) (hkt : k ≤ t) (ht : t ≤ T) (s r : State) :
-    tdWeightedPropagatorRow M π (tdSourceRateExtend T η) t k s r =
-      tdWeightedPropagatorRow M π η t k s r := by
-  unfold tdWeightedPropagatorRow
-  rw [tdSourceRateExtend_eq η (le_trans hkt ht),
-    tdPropagatorRow_eq_sourceRateExtend M π η T k t ht s r]
 
 end StatisticalRL.TemporalDifference

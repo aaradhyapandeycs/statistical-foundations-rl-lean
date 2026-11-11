@@ -39,10 +39,6 @@ theorem qLbvProd_nonneg (η : ℕ → ℝ) (x : ℝ) (k t : ℕ)
     (h : ∀ j, x * η j ≤ 1) : 0 ≤ qLbvProd η x k t :=
   Finset.prod_nonneg fun j _ ↦ sub_nonneg.mpr (h j)
 
-theorem qLbvProd_le_one (η : ℕ → ℝ) (x : ℝ) (k t : ℕ)
-    (h0 : ∀ j, 0 ≤ x * η j) (h1 : ∀ j, x * η j ≤ 1) : qLbvProd η x k t ≤ 1 :=
-  Finset.prod_le_one (fun j _ ↦ sub_nonneg.mpr (h1 j)) (fun j _ ↦ by linarith [h0 j])
-
 /-- `Π ≤ exp(-∑ x η_j)`. -/
 theorem qLbvProd_le_exp (η : ℕ → ℝ) (x : ℝ) (k t : ℕ) (h1 : ∀ j, x * η j ≤ 1) :
     qLbvProd η x k t ≤ Real.exp (-∑ j ∈ Finset.Ioc k t, x * η j) := by
@@ -98,11 +94,6 @@ theorem qLbvSq2_nonneg (η : ℕ → ℝ) (t : ℕ) : 0 ≤ qLbvSq2 η t := by
   induction t with
   | zero => simp [qLbvSq2]
   | succ t ih => simp only [qLbvSq2]; positivity
-
-theorem qLbvSq4_nonneg (η : ℕ → ℝ) (t : ℕ) : 0 ≤ qLbvSq4 η t := by
-  induction t with
-  | zero => simp [qLbvSq4]
-  | succ t ih => simp only [qLbvSq4]; positivity
 
 /-- `S₂(t) ≤ η_t` under the weight condition `(1-η_{t+1}) η_t ≤ η_{t+1}` (`(A3)`). -/
 theorem qLbvSq2_le (η : ℕ → ℝ) (hη : ∀ t, 0 ≤ η t ∧ η t ≤ 1)

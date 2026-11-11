@@ -26,11 +26,6 @@ theorem tdSamplingLaw_independent (M : DiscountedMDP State Action)
     iIndepFun (fun i (data : TDSamples State T) ↦ data i) (tdSamplingLaw M π T) :=
   ModelBasedPolicyEvaluation.samplingLaw_independent M π (T + 1)
 
-/-- The finite-array TD output is measurable. -/
-theorem tdSampledIterate_measurable (M : DiscountedMDP State Action)
-    (π : StationaryPolicy State Action) (η : ℕ → ℝ) (T : ℕ) (V₀ : State → ℝ) :
-    Measurable (tdSampledIterate M π η T V₀) := measurable_of_countable _
-
 /-- The deterministic bounded-iterate theorem holds for every outcome of the
 actual sampling law, hence almost surely. -/
 theorem tdSampledIterate_bounds_ae (M : DiscountedMDP State Action)

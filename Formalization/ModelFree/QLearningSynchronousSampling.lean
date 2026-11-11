@@ -32,27 +32,6 @@ theorem qSamplesExtend_succ (M : DiscountedMDP State Action) (T : ℕ)
     qSamplesExtend M T data (t + 1) s a = data ((s,a), ⟨t,ht⟩) := by
   simp [qSamplesExtend, show 0 < t + 1 ∧ t + 1 ≤ T by omega]
 
-/-- The sample-to-iterate function is measurable on the finite product data
-space. -/
-theorem qSampledIterate_measurable (M : DiscountedMDP State Action) (η : ℕ → ℝ)
-    (T : ℕ) (Q₀ : State → Action → ℝ) : Measurable (qSampledIterate M η T Q₀) :=
-  measurable_of_countable _
-
-/-- The Q and value interval bounds hold for every realization, hence under
-the actual sampling law almost surely. -/
-theorem qSampledIterate_bounds_ae (M : DiscountedMDP State Action) (η : ℕ → ℝ)
-    (T : ℕ) (Q₀ : State → Action → ℝ)
-    (h₀ : ∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ M.effectiveHorizon)
-    (hη : ∀ k, 1 ≤ k → k ≤ T → 0 ≤ η k ∧ η k ≤ 1) :
-    ∀ᵐ data ∂qSamplingLaw M T,
-      (∀ s a, 0 ≤ qSampledIterate M η T Q₀ data s a ∧
-        qSampledIterate M η T Q₀ data s a ≤ M.effectiveHorizon) ∧
-      (∀ s, 0 ≤ qLearningValue M (qSampledIterate M η T Q₀ data) s ∧
-        qLearningValue M (qSampledIterate M η T Q₀ data) s ≤ M.effectiveHorizon) := by
-  exact Filter.Eventually.of_forall fun data ↦ ⟨
-    fun s a ↦ qLearningIterate_bounds M η (qSamplesExtend M T data) Q₀ h₀ T hη s a,
-    fun s ↦ qLearningIterate_value_bounds M η (qSamplesExtend M T data) Q₀ h₀ T hη s⟩
-
 /-- The pathwise bound also controls actual optimal-trajectory Q error under
 the genuine product experiment. -/
 theorem qSampledIterate_error_ae (M : DiscountedMDP State Action) (η : ℕ → ℝ)

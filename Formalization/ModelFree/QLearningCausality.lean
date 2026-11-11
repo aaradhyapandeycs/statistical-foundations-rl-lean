@@ -90,21 +90,4 @@ theorem qPast_indep_fresh (M : DiscountedMDP State Action) (T t : ℕ) (ht : t <
     (fun data : QSamples State Action T ↦ data ((s,a), ⟨t,ht⟩)) (qSamplingLaw M T) at h
   exact h
 
-/-- The iterate is independent of the fresh draw, with no data-independence premise. -/
-theorem qIterate_indep_fresh (M : DiscountedMDP State Action) (η : ℕ → ℝ)
-    (T t : ℕ) (ht : t < T) (Q₀ : State → Action → ℝ) (s : State) (a : Action) :
-    IndepFun (fun data : QSamples State Action T ↦
-      qLearningIterate M η (qSamplesExtend M T data) Q₀ t)
-      (fun data : QSamples State Action T ↦ data ((s,a), ⟨t,ht⟩)) (qSamplingLaw M T) := by
-  let F := fun code ↦ qLearningIterate M η
-    (qSamplesExtend M T (qCompletePast M T t code)) Q₀ t
-  have hm : Measurable F := measurable_of_countable _
-  have h := (qPast_indep_fresh M T t ht s a).comp hm measurable_id
-  have heq : F ∘ qPastData T t = fun data : QSamples State Action T ↦
-      qLearningIterate M η (qSamplesExtend M T data) Q₀ t := by
-    funext data
-    exact (qIterate_factors_past M η T t (Nat.le_of_lt ht) Q₀ data).symm
-  rw [heq] at h
-  exact h
-
 end StatisticalRL.QLearning

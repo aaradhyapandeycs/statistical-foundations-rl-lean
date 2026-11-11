@@ -103,19 +103,4 @@ theorem tdPast_indep_fresh (M : DiscountedMDP State Action)
   have hm : Measurable getFresh := measurable_of_countable _
   exact (tdPast_indep_layer M π T t).comp measurable_id hm
 
-theorem tdIterate_indep_fresh (M : DiscountedMDP State Action)
-    (π : StationaryPolicy State Action) (η : ℕ → ℝ) (T t : ℕ) (ht : t < T)
-    (V₀ : State → ℝ) (s : State) :
-    IndepFun (fun data : TDSamples State T ↦ tdIterate M π η (tdSamplesExtend M T data) V₀ t)
-      (fun data : TDSamples State T ↦ data (s, (⟨t + 1, by omega⟩ : Fin (T + 1)))) (tdSamplingLaw M π T) := by
-  let F := fun code ↦ tdIterate M π η (tdSamplesExtend M T (tdCompletePast M T t code)) V₀ t
-  have hm : Measurable F := measurable_of_countable _
-  have hp := (tdPast_indep_fresh M π T t ht s).comp hm measurable_id
-  have he : F ∘ tdPastData T t = fun data : TDSamples State T ↦
-      tdIterate M π η (tdSamplesExtend M T data) V₀ t := by
-    funext data
-    exact (tdIterate_factors_past M π η T t ht.le V₀ data).symm
-  rw [he] at hp
-  exact hp
-
 end StatisticalRL.TemporalDifference

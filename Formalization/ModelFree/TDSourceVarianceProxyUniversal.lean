@@ -1,5 +1,4 @@
 import Formalization.ModelFree.TDSourceVarianceProxyLemma
-import Formalization.ModelFree.TDSourceUniversalConstants
 
 /-!
 

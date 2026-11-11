@@ -1,6 +1,6 @@
-import Formalization.ModelFree.QLearningStoppedPrefixRewardMeasure
 import Formalization.Probability.InformationTheory.BoundedPayoffTV
 import Formalization.ModelFree.QLearningStoppedPrefixOptimalTransfer
+import Formalization.ModelFree.QLearningStoppedPrefixRewardMixture
 
 /-! Conditional fixed-policy and optimal-Q stability from explicit stopped-law information bounds. -/
 namespace StatisticalRL.QLearning
@@ -84,30 +84,5 @@ theorem qStopped_fixed_policy_stability_of_pinsker_kl
           (Real.sqrt_le_sqrt (div_le_div_of_nonneg_right hKL (by norm_num)))
           (le_of_lt hgap)
     _ = _ := qStopped_sqrt_radius_identity ρ M.discount (1 - M.discount) hgap
-
-/-- Only the two own-model greedy policies are needed from the uniform
-countable-law inputs; no maximizer over an unbounded policy space is introduced. -/
-theorem qStopped_optimal_stability_of_pinsker_kl
-    (M M' : DiscountedMDP State Action)
-    (hr : M'.reward = M.reward) (hγ : M'.discount = M.discount)
-    (ρ : ℝ) (K : StationaryPolicy State Action → State → Action → ℝ)
-    (hPinsker : ∀ π s a, (1 / 2 : ℝ) * ∑' z : qStoppedPrefixAbsCarrier
-        (State := State) (Action := Action),
-        |qActualStoppedPrefixMass M' π M.discount s a z -
-          qActualStoppedPrefixMass M π M.discount s a z| ≤ Real.sqrt (K π s a / 2))
-    (hKL : ∀ π s a, K π s a ≤ ρ * M.discount / (1 - M.discount))
-    (s : State) (a : Action) :
-    |M'.trajectoryExpectedQ M'.optimalGreedyPolicy s a -
-      M.trajectoryExpectedQ M.optimalGreedyPolicy s a| ≤
-      Real.sqrt (ρ * M.discount / (2 * (1 - M.discount) ^ 3)) := by
-  apply qStopped_optimal_transfer_of_two_policy_bounds M M'
-  · intro x b
-    exact qStopped_fixed_policy_stability_of_pinsker_kl M M' M'.optimalGreedyPolicy
-      hr hγ ρ (K M'.optimalGreedyPolicy x b) x b
-      (hPinsker _ _ _) (hKL _ _ _)
-  · intro x b
-    exact qStopped_fixed_policy_stability_of_pinsker_kl M M' M.optimalGreedyPolicy
-      hr hγ ρ (K M.optimalGreedyPolicy x b) x b
-      (hPinsker _ _ _) (hKL _ _ _)
 
 end StatisticalRL.QLearning

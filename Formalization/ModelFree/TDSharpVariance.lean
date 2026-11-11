@@ -47,15 +47,6 @@ noncomputable def tdSquareCenteredRow (M : DiscountedMDP State Action)
     (data : TDSamples State T) : ℝ :=
   ∑ r, u r * tdSquareCentered M π η T V₀ k r data
 
-/-- Conditional second-moment expression for the row in the preceding
-definition, under the actual finite synchronous sampling law. -/
-noncomputable def tdSquareCenteredRowConditionalSecondMoment
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (T : ℕ) (V₀ : State → ℝ) (k : ℕ) (u : State → ℝ) :
-    TDSamples State T → ℝ :=
-  (tdSamplingLaw M π T)[(fun data ↦
-    tdSquareCenteredRow M π η T V₀ k u data ^ 2) | tdPastSigma T (k - 1)]
-
 /-! Intended exact-source lemmas, still open:
 
 * For `1 ≤ k ≤ T`, `tdSquareCenteredConditionalSecondMoment ... k s` equals

@@ -60,26 +60,4 @@ theorem qRowIncrement_condExp_zero (M : DiscountedMDP State Action) (η : ℕ �
   simp only [Pi.sub_apply, hv, sub_self] at hd
   exact hd
 
-/-- The conditional square equals the actual true-row variance of V_t. -/
-theorem qRowIncrement_condExp_sq (M : DiscountedMDP State Action) (η : ℕ → ℝ)
-    (T t : ℕ) (ht : t < T) (Q₀ : State → Action → ℝ) (s : State) (a : Action) :
-    (qSamplingLaw M T)[(fun data ↦ (qRowIncrement M η T t ht Q₀ s a data)^2) | qPastSigma T t]
-      =ᵐ[qSamplingLaw M T] fun data ↦ qRowVariance M s a (qValueBefore M η T t Q₀ data) := by
-  classical
-  let c : State → QSamples State Action T → ℝ := fun x data ↦
-    (qValueBefore M η T t Q₀ data x - qRowMean M s a (qValueBefore M η T t Q₀ data))^2
-  have hc : ∀ x, StronglyMeasurable[qPastSigma T t] (c x) := by
-    intro x
-    exact ((qValue_stronglyMeasurable_past M η T t (Nat.le_of_lt ht) Q₀ x).sub
-      (qRowMean_stronglyMeasurable_past M η T t (Nat.le_of_lt ht) Q₀ s a)).pow 2
-  have heq : (fun data : QSamples State Action T ↦ (qRowIncrement M η T t ht Q₀ s a data)^2) =
-      ∑ x, c x * qFreshIndicator T t ht s a x := by
-    funext data
-    simpa only [c, Finset.sum_apply, Pi.mul_apply] using
-      qFresh_increment_sq_decomposition M η T t ht Q₀ s a data
-  rw [heq]
-  have h := qFresh_predictable_sum_condExp M T t ht s a c hc
-  filter_upwards [h] with data hd
-  simpa [c, qRowVariance, Finset.sum_apply, mul_comm] using hd
-
 end StatisticalRL.QLearning
