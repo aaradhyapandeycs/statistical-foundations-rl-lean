@@ -1,3 +1,4 @@
+import Formalization.Probability.FiniteTotalVariance
 import Formalization.MDP.FiniteTrajectory
 import Formalization.Online.Regret.PolicyVariance.TrajectoryVarianceDefinitions
 
