@@ -445,6 +445,45 @@ row. <a href="status.html">Counts by chapter</a> · <a href="graph/nodes.json">n
 never block.</p>"""
         return self.site.shell(f"Dependency graph · {self.site_title()}", body, "graph", toc=False)
 
+    def class_section(self, node_link) -> str:
+        """Issue classes A to D: legend, counts from the summary, and the items of each class."""
+        led, cnt = self.data["issue_class_ledger"], self.site.cnt
+        by_class: dict = {c: [] for c in gen_nodes.ISSUE_CLASSES}
+        for it in led["items"]:
+            by_class[it["class"]].append(it)
+        owners = {}
+        for n in self.data["nodes"]:
+            for x in n["issue_class_items"]:
+                owners.setdefault(x["item"], []).append(n)
+        legend = "".join(
+            f'<dt>Class {c}</dt><dd>{esc(led["definitions"][c])} '
+            f'<span class="n-line">{cnt(f"issue_classes.by_item.{c}")} items, '
+            f'{cnt(f"issue_classes.by_entry.{c}")} numbered errata entries, '
+            f'{cnt(f"issue_classes.by_node.{c}")} results.</span></dd>' for c in gen_nodes.ISSUE_CLASSES)
+        groups = []
+        for c in gen_nodes.ISSUE_CLASSES:
+            rows = "".join(
+                f'<tr><td data-th="Item">{esc(it["item"])}</td>'
+                f'<td data-th="Results">{", ".join(node_link(n) for n in owners.get(it["item"], [])) or "—"}</td>'
+                f'<td data-th="Record">{esc(it["record"] or "SOURCE-ISSUES.md only")}</td></tr>'
+                for it in by_class[c])
+            groups.append(f'<h3 id="class-{c.lower()}">Class {c} ({cnt(f"issue_classes.by_item.{c}")} items)</h3>'
+                          f'<div class="table-wrap"><table class="results stack"><thead><tr><th>Item</th>'
+                          f'<th>Results</th><th>Record entry</th></tr></thead><tbody>{rows}</tbody></table></div>')
+        return (f'<h2 id="classes">Issue classes</h2>'
+                f'<p class="lede">Each candidate is classed A to D by how the printed text is contradicted. The classes '
+                f'are this project&#8217;s findings, not confirmed by the authors, and are separate from the four '
+                f'status labels. The class of each item is in <code>docs/issue-classes.json</code>.</p>'
+                f'<dl class="class-legend">{legend}</dl>'
+                f'<p class="lede">An <em>item</em> is one claim, so one numbered erratum entry in '
+                f'<a href="{attr(self.site.lean.git.blob("docs/ERRATA-AND-DEVIATIONS.md"))}">'
+                f'docs/ERRATA-AND-DEVIATIONS.md</a> may hold items of several classes; entries are counted once, by their '
+                f'primary class (A {cnt("issue_classes.by_entry.A")}, B {cnt("issue_classes.by_entry.B")}, '
+                f'C {cnt("issue_classes.by_entry.C")}, D {cnt("issue_classes.by_entry.D")}, matching that record&#8217;s counts '
+                f'table), while the item counts classify every item separately. Some items are recorded as deviations, '
+                f'or only in SOURCE-ISSUES.md, so the item total exceeds the entry total.</p>'
+                + "".join(groups))
+
     def errata_page(self) -> str:
         """Source issues grouped by what they mean for a result, from SOURCE-ISSUES.md and the node graph."""
         lean = self.site.lean
@@ -464,7 +503,7 @@ never block.</p>"""
 
         def table(ns, extra_head, extra):
             rows = "".join(f'<tr><td data-th="Item">{node_link(n)}<div class="label"><code>'
-                           f'{esc(n["labels"][0] if n["labels"] else "")}</code></div></td>'
+                           f'{esc(n["labels"][0] if n["labels"] else "")}</code>{self.site.issue_class_note(n)}</div></td>'
                            f'<td data-th="Status">{self.chip(n)}</td><td data-th="{extra_head}">{extra(n)}</td>'
                            f'<td data-th="Source issue">{issues(n) or "—"}</td></tr>' for n in ns)
             if not rows:
@@ -509,6 +548,7 @@ never block.</p>"""
             pr = n.get("printed_refuted") or {}
             r = lean.md(pr.get("reading", ""))
             return f'<span class="tex2jax_process">{r}</span>' if r else "see the source issue"
+        classes_html = self.class_section(node_link)
         body = f"""<h1>Source issues</h1>
 <div class="incomplete" role="note"><strong>Candidates, not confirmed errata.</strong> Every item below was found by
 reviews performed by AI agents against the pinned TeX of arXiv:2610.41903v1. Every refutation, correction and
@@ -519,8 +559,9 @@ qualified (degenerate boundary, ambiguous reading, outside an assumed domain, un
 <p class="lede">Generated at build time from <code>docs/SOURCE-ISSUES.md</code>, the coverage ledger and the
 named-result ledger at commit <code>{rev[:10]}</code>. The curated record with effects on each result is
 <a href="{attr(lean.git.blob("docs/ERRATA-AND-DEVIATIONS.md"))}">docs/ERRATA-AND-DEVIATIONS.md</a>.</p>
-<nav class="page-toc"><a href="#refuted">Refuted in Lean</a> · <a href="#boundary">Boundary cases</a> · <a href="#reading">Reading-dependent</a> · <a href="#domain">Outside assumed domain</a> · <a href="#illposed">Ill-posed</a> · <a href="#paper">Failing on paper</a> · <a href="#corrections">Corrections</a> ·
+<nav class="page-toc"><a href="#classes">Issue classes</a> · <a href="#refuted">Refuted in Lean</a> · <a href="#boundary">Boundary cases</a> · <a href="#reading">Reading-dependent</a> · <a href="#domain">Outside assumed domain</a> · <a href="#illposed">Ill-posed</a> · <a href="#paper">Failing on paper</a> · <a href="#corrections">Corrections</a> ·
 <a href="#restrictions">Restrictions</a> · <a href="#repaired">Proof gaps repaired</a> · <a href="#all">All candidates</a></nav>
+{classes_html}
 <h2 id="refuted">(a) Printed statements refuted in Lean (non-degenerate case, natural reading)</h2>
 <p class="lede">Items for which the named-result ledger (field <code>printed_refuted</code>, kind
 <code>counterexample</code>) lists Lean theorems that refute the printed statement in a non-degenerate case under its
