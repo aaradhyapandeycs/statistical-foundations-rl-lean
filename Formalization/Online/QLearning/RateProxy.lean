@@ -1,3 +1,4 @@
+import Formalization.Online.QLearning.WeightedRowMGF
 import Formalization.Online.QLearning.RateSquared
 
 /-! Source learning-rate proxy for the fixed-row concentration step. -/

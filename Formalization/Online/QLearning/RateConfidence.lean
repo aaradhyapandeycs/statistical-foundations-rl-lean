@@ -1,4 +1,3 @@
-import Formalization.Probability.FiniteDistribution
 import Formalization.Online.QLearning.RateProxy
 import Formalization.Probability.AzumaStrictTwoSided
 
