@@ -5,7 +5,7 @@ proved, corrected, restricted or refuted is recorded only in [COVERAGE.md](COVER
 [named-result-status.json](named-result-status.json) and [SOURCE-ISSUES.md](SOURCE-ISSUES.md). The formalization
 is incomplete.
 
-Counts below were measured on 2026-11-10 (1,514 `.lean` files under `Formalization/`, after the Option A move). The tree is moving, so
+Counts below were measured on 2026-11-10 (1,514 `.lean` files under `Formalization/`, after the Option A move; 1,515 with `Probability/FiniteDistribution`). The tree is moving, so
 re-measure before you rely on a number:
 
 ```sh
@@ -54,12 +54,12 @@ find Formalization -name '*.lean' | xargs -n1 dirname | sort | uniq -c
 | --- | ---: | --- | --- |
 | `Analysis/` | 12 | Ch2 contraction; step-size sums for Ch4 and Ch7 TD; resolvent series; Taylor bounds | `StatisticalRL`, `.Analysis`, `.Probability` |
 | `PrelimKL/` | 7 | Ch2 KL facts (chain rule, products) | `.PrelimKL` |
-| `Probability/` (root) | 81 | Ch2 concentration (Hoeffding, Bernstein, Freedman, Azuma), variance, Gaussian tools, `ConvexDistanceTV`, `GaussianSubgaussian` | `.FiniteDistribution`, `.Probability`, `StatisticalRL` |
+| `Probability/` (root) | 82 | `FiniteDistribution` (the probability simplex), Ch2 concentration (Hoeffding, Bernstein, Freedman, Azuma), variance, Gaussian tools, `ConvexDistanceTV`, `GaussianSubgaussian` | `.FiniteDistribution`, `.Probability`, `StatisticalRL` |
 | `Probability/EmpiricalBernsteinSharp/` | 43 | Ch2 sharp empirical Bernstein | `.EmpiricalBernsteinEntropy` |
 | `Probability/Fano/` | 12 | Ch2 Fano (Lemma 2.10), finite-partition KL | `.PrelimFano` |
 | `Probability/FiniteMarkov/` | 5 | Ch4 Theorem 4.12 support | |
 | `Probability/InformationTheory/` | 4 | generic Pinsker, countable L1/tail-log-sum and stopped-prefix TV lemmas (from `ModelFree/QLearning*`) | |
-| `MDP/` | 44 | Ch2 MDP basics shared by all chapters (`FiniteDistribution` is in `CoreDefinitions`) | `.DiscountedMDP`, `.DecisionStage`, `.EnvironmentStage` |
+| `MDP/` | 44 | Ch2 MDP basics shared by all chapters (`FiniteDistribution` now lives in `Probability/FiniteDistribution`) | `.DiscountedMDP`, `.DecisionStage`, `.EnvironmentStage` |
 | `Generative/` | 158 | Ch3 model-based generative model (incl. `ModelBasedDefinitions`); `GenerativeLowerBound*` lower-bound machinery used by Fano | `.GenerativeLowerBound`, `.ModelBasedPolicy{Evaluation,Learning}`, `.FiniteHorizonGenerative` |
 | `Obstructions/` | 9 | Ch3 Theorem 3.7 obstructions (`HardMDP`, singleton action) | `.Obstructions` |
 | `ModelFree/` (root) | 183 | Ch4 TD and Q-learning (upper and lower bounds) | `.QLearning`, `.TemporalDifference` |
@@ -153,9 +153,10 @@ them (2 × `MDP` → `Online`, `Probability` → `Online`, 17 × library → `St
 | | | `Probability.Fano.FinitePartitionKL` → `Generative.GenerativeLowerBoundFiniteKLDataProcessing` |
 | `Probability/` (0) | `TDInference/` (2) | `Probability.GaussianCovCompare` → `TDInference.{Definitions,SmoothApproximation}` (2 edges; pre-existing as `→ Ch7Rest.*`) |
 
-Most of the `MDP/CoreDefinitions` edges exist because `FiniteDistribution` lives there. Removing any of these
-edges needs content edits (narrower imports, splitting a file, or moving `FiniteDistribution`), so they are out of
-scope for a pure move. A layering gate would freeze this list and let it only shrink.
+`FiniteDistribution` and `FiniteDistribution.expectation` (done, 2026-11-11) were split out of `MDP/CoreDefinitions`
+into `Probability/FiniteDistribution` (Mathlib-only imports; names and namespaces unchanged, `CoreDefinitions` imports
+it). The remaining `MDP/CoreDefinitions` edges above still import the whole file, so removing them needs content edits
+(narrower imports or splitting `DiscountedMDP` off), so they are out of scope for a pure move. A layering gate would freeze this list and let it only shrink.
 
 ## 4. Known duplicates (documented debt)
 

@@ -36,6 +36,7 @@ import Formalization.Obstructions.OneStateTrajectory
 import Formalization.Obstructions.OneStateExperiment
 import Formalization.Obstructions.OneStatePolicyExperiment
 import Formalization.Obstructions.Theorem37Negation
+import Formalization.Probability.FiniteDistribution
 import Formalization.Probability.Variance
 import Formalization.Probability.KLChiSquared
 import Formalization.Probability.EmpiricalRow
