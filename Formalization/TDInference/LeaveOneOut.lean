@@ -80,13 +80,6 @@ theorem looDiff_of_le [DecidableEq State] (M : DiscountedMDP State Action) (η�
     (ω : Fin T → Tuple State Action) {t : ℕ} (ht : t ≤ i) : looDiff M η₀ V₀ i xs t ω = 0 := by
   rw [looDiff, tdIter_update_of_le M η₀ V₀ ω i xs ht, sub_self]
 
-theorem sampleA_sub [DecidableEq State] (M : DiscountedMDP State Action)
-    (x : Tuple State Action) (v w : State → ℝ) :
-    sampleA M x v - sampleA M x w = sampleA M x (v - w) := by
-  funext s
-  simp only [Pi.sub_apply, sampleA_apply]
-  split_ifs <;> ring
-
 /-- After the replaced index the difference follows the zero-noise recursion. -/
 theorem looDiff_succ_of_lt [DecidableEq State] (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (η₀ : ℝ) (V₀ : State → ℝ) {T : ℕ} (i : Fin T)
