@@ -15,20 +15,4 @@ theorem onlineControlledStages_length
   | nil => rfl
   | cons e es ih => simp [EnvironmentStage.controlled, ih]
 
-/-- For any specified pre-episode history and initial state, the selected
-frozen policy's static controlled-trajectory law has expected cumulative
-successor-value transition variance at most H². -/
-theorem onlineFrozenEpisode_expected_variance_le_horizon_sq
-    (H : ℕ) (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
-    (history : List (OnlineMDPRow State Action H × State)) (k : ℕ)
-    (initial : State) (L c₁ c₂ : ℝ) :
-    let π := onlineCappedEpisodePolicy H hH E history k L c₁ c₂
-    let stages := EnvironmentStage.controlled (List.ofFn E) π
-    (DecisionStage.trajectoryLaw stages initial).expectation (finiteTrajectoryVarianceSum stages initial) ≤
-      (H : ℝ)^2 := by
-  let π := onlineCappedEpisodePolicy H hH E history k L c₁ c₂
-  let stages := EnvironmentStage.controlled (List.ofFn E) π
-  have hh := finiteTrajectory_expected_variance_le_horizon_sq stages initial
-  have hlen : stages.length = H := by simp [stages, onlineControlledStages_length]
-  simpa [hlen] using hh
 end StatisticalRL.OnlineRL

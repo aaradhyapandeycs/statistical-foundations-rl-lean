@@ -27,19 +27,6 @@ theorem onlineRowOutcomes_append_one
   · simp [onlineRowOutcomes, List.filterMap_append, h]
   · simp [onlineRowOutcomes, List.filterMap_append, h]
 
-/-- Every read index is bounded by the number of revealed transitions. -/
-theorem onlineRowOutcomes_length_le
-    (history : List (Row × Outcome)) (r : Row) :
-    (onlineRowOutcomes history r).length ≤ history.length := by
-  induction history with
-  | nil => simp [onlineRowOutcomes]
-  | cons pair history ih =>
-    by_cases h : pair.1=r
-    · simp [onlineRowOutcomes, h] at ih ⊢
-      omega
-    · simp [onlineRowOutcomes, h] at ih ⊢
-      omega
-
 /-- One transition is revealed at each chronological step. -/
 theorem onlineStackHistory_length
     (choose : List (Row × Outcome) → Row) (stream : Row → ℕ → Outcome) (n : ℕ) :
@@ -77,15 +64,5 @@ theorem onlineStackHistory_row_prefix
       exact congrArg (fun xs => xs++[stream r (onlineRowOutcomes history r).length]) hp
     · simp only [if_neg hq, List.append_nil]
       exact hp
-
-/-- A run of n≤K reads only stream coordinates strictly below K. This permits
-an eventual finite product sample space without an infinite-product premise. -/
-theorem onlineStackHistory_next_index_lt
-    (choose : List (Row × Outcome) → Row) (stream : Row → ℕ → Outcome)
-    (n K : ℕ) (hn : n < K) :
-    (onlineRowOutcomes (onlineStackHistory choose stream n)
-      (choose (onlineStackHistory choose stream n))).length < K := by
-  exact lt_of_le_of_lt
-    ((onlineRowOutcomes_length_le _ _).trans_eq (onlineStackHistory_length choose stream n)) hn
 
 end StatisticalRL.OnlineRL

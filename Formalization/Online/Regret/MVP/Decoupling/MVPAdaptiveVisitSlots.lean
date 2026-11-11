@@ -20,12 +20,4 @@ theorem mvp_adaptiveVisit_sum_dyadicSlots [DecidableEq Row]
   intro u hu
   rw [mvp_visitValueLookup_zero_of_ge rows K r u V hu, hG]
 
-/-- The adaptive lookup retains the chosen finite family even when the row
-or visit rank is data-dependent, since the helper is purely pathwise. -/
-theorem mvp_adaptiveVisit_slot_mem (rows : ℕ → Row) (K : ℕ) (r : Row)
-    (V : Fin K → Value) (family : Finset Value) (hzero : 0 ∈ family)
-    (hV : ∀ k, V k ∈ family) (j i : ℕ) :
-    mvp_visitValueLookup rows K r (2*2^j+i) V ∈ family :=
-  mvp_visitValueLookup_mem rows K r _ V family hzero hV
-
 end StatisticalRL.OnlineRL

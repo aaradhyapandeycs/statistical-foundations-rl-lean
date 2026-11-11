@@ -62,20 +62,4 @@ theorem onlineFixedPrefix_union_strict
   rw [← hset]
   linarith
 
-/-- The simultaneous deterministic-prefix event covers every realized adaptive
-pre-episode count. This inclusion is pathwise and assumes no independence. -/
-theorem onlineFixedPrefix_event_covers_adaptive_counts
-    (K : ℕ) (rowAt : Data → ℕ → Row) (Good : Row → ℕ → Set Data) :
-    {data | ∀ r n,3≤n → n<K → data∈Good r n} ⊆
-      {data | ∀ j, j<K → ∀ r,
-        3≤onlineVisitCount (rowAt data) j r →
-        data∈Good r (onlineVisitCount (rowAt data) j r)} := by
-  classical
-  intro data hp j hj r hcount
-  apply hp r _ hcount
-  have hc : onlineVisitCount (rowAt data) j r≤j := by
-    unfold onlineVisitCount
-    simpa using Finset.card_filter_le (Finset.range j) (fun k => rowAt data k=r)
-  exact hc.trans_lt hj
-
 end StatisticalRL.OnlineRL

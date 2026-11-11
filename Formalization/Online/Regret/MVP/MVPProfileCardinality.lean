@@ -11,7 +11,6 @@ namespace StatisticalRL.OnlineRL.MVPProfile
 
 open scoped BigOperators
 
-
 /-- The symmetric-power encoding forgets order; monotonicity makes the sorted
 list recover the original profile. -/
 noncomputable def encodeMonotoneRowProfile {K J : ℕ}
@@ -50,7 +49,6 @@ theorem monotoneRowProfile_card_le_choose (K J : ℕ) :
       rw [hindex]
       exact Nat.choose_symm_of_eq_add (n := K + J) (a := K) (b := J) (by omega)
 
-
 noncomputable def monotoneProfilesToRows {K d J : ℕ}
     (p : MonotoneProfiles K d J) : Fin d → MonotoneRowProfile K J :=
   fun r => ⟨fun k => p.val k r, p.property r⟩
@@ -63,24 +61,12 @@ theorem monotoneProfilesToRows_injective {K d J : ℕ} :
   have h := congrFun hpq r
   exact congrFun (congrArg Subtype.val h) k
 
-theorem monotoneProfiles_card_le_choose_pow (K d J : ℕ) :
-    Fintype.card (MonotoneProfiles K d J) ≤ ((K + J).choose J) ^ d := by
-  classical
-  calc
-    Fintype.card (MonotoneProfiles K d J) ≤
-        Fintype.card (Fin d → MonotoneRowProfile K J) :=
-      Fintype.card_le_of_injective _ monotoneProfilesToRows_injective
-    _ = (Fintype.card (MonotoneRowProfile K J)) ^ d := by simp
-    _ ≤ ((K + J).choose J) ^ d := by
-      exact Nat.pow_le_pow_left (monotoneRowProfile_card_le_choose K J) d
-
 /-- One factorial comparison for the stars-and-bars estimate. -/
 theorem two_pow_pred_le_factorial (n : ℕ) (hn : 1 ≤ n) :
     2 ^ (n - 1) ≤ n.factorial := by
   have h := Nat.factorial_mul_pow_le_factorial (m := 1) (n := n - 1)
   have hsum : 1 + (n - 1) = n := by omega
   simpa [Nat.factorial_one, hsum] using h
-
 
 theorem profileLevelCap_bounds (K : ℕ) (hK : 2 ≤ K) :
     1 ≤ profileLevelCap K ∧ profileLevelCap K ≤ K ∧

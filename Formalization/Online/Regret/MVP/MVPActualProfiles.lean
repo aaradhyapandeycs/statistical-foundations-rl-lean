@@ -10,85 +10,6 @@ namespace StatisticalRL.OnlineRL.MVPProfile
 
 open StatisticalRL.OnlineRL
 
-
-theorem sourceMVPFlattenRows_stage {H : ℕ} {Row : Type*}
-    (rows : EpisodeRowTable H Row) (hH : 0 < H) (t : ℕ) :
-    (sourceMVPFlattenRows rows hH t).1.val = t % H := by
-  simp [sourceMVPFlattenRows]
-
-theorem sourceMVPFlattenRows_episode_stage {H : ℕ} {Row : Type*}
-    (rows : EpisodeRowTable H Row) (hH : 0 < H) (e : ℕ) (h : Fin H) :
-    sourceMVPFlattenRows rows hH (e * H + h.val) = (h, rows e h) := by
-  apply Prod.ext
-  · apply Fin.ext
-    change (e * H + h.val) % H = h.val
-    rw [Nat.add_comm, Nat.mul_comm e H, Nat.add_mul_mod_self_left]
-    exact Nat.mod_eq_of_lt h.isLt
-  · change rows ((e * H + h.val) / H) ⟨(e * H + h.val) % H, _⟩ = rows e h
-    have hmod : (e * H + h.val) % H = h.val := by
-      rw [Nat.add_comm, Nat.mul_comm e H, Nat.add_mul_mod_self_left]
-      exact Nat.mod_eq_of_lt h.isLt
-    have hdiv : (e * H + h.val) / H = e := by
-      rw [Nat.add_comm, Nat.mul_comm e H, Nat.add_mul_div_left _ _ hH,
-        Nat.div_eq_of_lt h.isLt, Nat.zero_add]
-    simp [hmod, hdiv]
-
-theorem sourceMVP_visitCount_eq_episode_rows {H : ℕ} {Row : Type*}
-    [DecidableEq Row] (rows : EpisodeRowTable H Row) (hH : 0 < H)
-    (k : ℕ) (h : Fin H) (r : Row) :
-    onlineVisitCount (sourceMVPFlattenRows rows hH) (k * H) (h, r) =
-      onlineVisitCount (fun e => rows e h) k r := by
-  classical
-  rw [onlineVisitCount_stage_episode_eq (sourceMVPFlattenRows rows hH) h k hH
-    (h, r) rfl (fun _ _ => sourceMVPFlattenRows_stage rows hH _)]
-  rw [onlineVisitCount, onlineVisitCount]
-  congr 1
-  ext e
-  simp only [Finset.mem_filter, Finset.mem_range]
-  constructor
-  · rintro ⟨he, heq⟩
-    rw [sourceMVPFlattenRows_episode_stage rows hH e h] at heq
-    exact ⟨he, (Prod.mk.inj heq).2⟩
-  · rintro ⟨he, heq⟩
-    rw [sourceMVPFlattenRows_episode_stage rows hH e h]
-    exact ⟨he, Prod.ext rfl heq⟩
-
-theorem sourceMVP_operationalTotal_eq_episode_count
-    {H K : ℕ} {Row Outcome : Type*} [Fintype Outcome]
-    [DecidableEq Row] [DecidableEq Outcome]
-    (rows : EpisodeRowTable H Row) (nextAt : ℕ → Outcome)
-    (hH : 0 < H) (k : Fin K) (h : Fin H) (r : Row) :
-    (onlineMVPCountTablesRun (sourceMVPFlattenRows rows hH) nextAt (k.val * H)).total
-        (h, r) = onlineVisitCount (fun e => rows e h) k.val r := by
-  rw [(onlineMVPCountTablesRun_row_invariant (sourceMVPFlattenRows rows hH)
-    nextAt (k.val * H) (h, r)).1]
-  exact sourceMVP_visitCount_eq_episode_rows rows hH k.val h r
-
-
-theorem sourceMVPProfileIndex_eq_log_succ {n : ℕ} (hn : 0 < n) :
-    sourceMVPProfileIndex n = Nat.log2 n + 1 := by
-  simp [sourceMVPProfileIndex, Nat.ne_of_gt hn]
-
-/-- The floor-log index is exactly the source's positive-count threshold:
-`2^(index−1) ≤ n < 2^index`. -/
-theorem sourceMVPProfileIndex_threshold {n : ℕ} (hn : 0 < n) :
-    2 ^ (sourceMVPProfileIndex n - 1) ≤ n ∧
-      n < 2 ^ sourceMVPProfileIndex n := by
-  rw [sourceMVPProfileIndex_eq_log_succ hn]
-  constructor
-  · simpa only [Nat.log2_eq_log_two] using
-      Nat.pow_log_le_self 2 (Nat.ne_of_gt hn)
-  · simpa [Nat.log2_eq_log_two] using Nat.lt_pow_succ_log_self Nat.one_lt_two n
-
-theorem sourceMVPProfileIndex_mono : Monotone sourceMVPProfileIndex := by
-  intro m n hmn
-  by_cases hm : m = 0
-  · simp [sourceMVPProfileIndex, hm]
-  · have hn : n ≠ 0 := by omega
-    simp [sourceMVPProfileIndex, hm, hn]
-    simpa only [Nat.log2_eq_log_two] using
-      (Nat.log_mono_right (b := 2) hmn)
-
 theorem onlineVisitCount_le_prefix {Row : Type*} (rows : ℕ → Row)
     (n : ℕ) (r : Row) : onlineVisitCount rows n r ≤ n := by
   classical
@@ -107,27 +28,6 @@ theorem onlineVisitCount_mono {Row : Type*} (rows : ℕ → Row)
   have hx' := Finset.mem_filter.mp hx
   apply Finset.mem_filter.mpr
   exact ⟨Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp hx'.1) hmn), hx'.2⟩
-
-theorem sourceMVPProfileIndex_le_Kcap (K n : ℕ)
-    (hn : n ≤ K - 1) : sourceMVPProfileIndex n ≤ profileLevelCap K := by
-  by_cases hzero : n = 0
-  · simp [sourceMVPProfileIndex, hzero, profileLevelCap]
-  · have hmono : Nat.log2 n ≤ Nat.log2 (K - 1) := by
-      simpa only [Nat.log2_eq_log_two] using
-        (Nat.log_mono_right (b := 2) hn)
-    simp [sourceMVPProfileIndex, hzero, profileLevelCap]
-    omega
-
-
-/-- Any actual episode-by-stage row table produces a member of the finite
-monotone-profile family counted above. This is the path-to-family bridge;
-the uniform cardinal bound is supplied by `monotoneProfiles_card_le_choose_pow`
-and its real stars-and-bars estimate. -/
-theorem sourceMVPActualProfileTable_mem {K H : ℕ} {Row : Type*}
-    [Fintype Row] (rows : EpisodeRowTable H Row) :
-    ∃ p : MonotoneProfiles K (Fintype.card (Fin H × Row)) (profileLevelCap K),
-      p = sourceMVPActualProfileTable rows :=
-  ⟨sourceMVPActualProfileTable rows, rfl⟩
 
 end StatisticalRL.OnlineRL.MVPProfile
 
@@ -193,7 +93,6 @@ end StatisticalRL.OnlineRL.MVPProfile
 
 namespace StatisticalRL.OnlineRL.MVPProfile
 
-
 theorem sourceMVPFinitePossibleProfiles_card_le_family {K H : ℕ} {Row : Type*}
     [Fintype Row] [Nonempty Row] :
     (sourceMVPFinitePossibleProfiles (K := K) (H := H) (Row := Row)).card ≤
@@ -218,22 +117,6 @@ theorem sourceMVPFinitePossibleProfiles_card_bound {K H : ℕ} {Row : Type*}
         (Fintype.card (MonotoneProfiles K (Fintype.card (Fin H × Row))
           (profileLevelCap K)) : ℝ) := by exact_mod_cast hsubset
   exact hsubsetR.trans hfamily
-
-theorem sourceMVPActualProfile_eq_operationalTotal
-    {K H : ℕ} {Row Outcome : Type*} [Fintype Outcome]
-    [DecidableEq Row] [DecidableEq Outcome] [Fintype Row]
-    (rows : EpisodeRowTable H Row) (nextAt : ℕ → Outcome)
-    (hH : 0 < H) (k : Fin K) (h : Fin H) (r : Row) :
-    sourceMVPActualProfile rows k h r =
-      sourceMVPProfileIndex
-        ((onlineMVPCountTablesRun (sourceMVPFlattenRows rows hH) nextAt (k.val * H)).total
-          (h, r)) := by
-  change sourceMVPProfileIndex
-      (onlineVisitCount (fun e => rows e h) k.val r) =
-    sourceMVPProfileIndex
-      ((onlineMVPCountTablesRun (sourceMVPFlattenRows rows hH) nextAt (k.val * H)).total
-        (h, r))
-  rw [sourceMVP_operationalTotal_eq_episode_count rows nextAt hH k h r]
 
 end StatisticalRL.OnlineRL.MVPProfile
 

@@ -373,7 +373,6 @@ theorem onlineT3PaddedY_condExp_zero
     rw [hy]
     simp
 
-
 /-- Every padded process value is measurable at the next actual prefix
 sigma-field: it is explicitly a function of that observed prefix. -/
 theorem onlineT3PaddedY_measurable_next
@@ -419,85 +418,5 @@ theorem onlineT3PaddedFiltration_mono
     onlineT3CommonPrefixSigma H K (K * H) hH fallback planner n ≤
       onlineT3CommonPrefixSigma H K (K * H) hH fallback planner j :=
   onlineT3CommonPrefixSigma_mono H K (K * H) hH fallback planner hnj
-
-/-- Each actual process filtration is below the ambient full-path measurable
-space. -/
-theorem onlineT3PaddedFiltration_le_ambient
-    (H K : ℕ) (hH : 0 < H) (fallback : State)
-    (planner : OnlineEpisodePlanner State Action H) (n : ℕ) :
-    onlineT3CommonPrefixSigma H K (K * H) hH fallback planner n ≤
-      (⊤ : MeasurableSpace ((Fin K → State) × OnlineOutcomePath.{uState, 0} State (K * H))) :=
-  le_top
-
-/-- The source residual at a finite global time, expressed on the one actual
-`K*H`-draw experiment. Episode, stage, and remaining suffix length are all
-derived from the time index. -/
-noncomputable def onlineT3FullHorizonResidual
-    (H K : ℕ) (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
-    (ρ : FiniteDistribution State) (fallback : State)
-    (planner : OnlineEpisodePlanner State Action H) (L c₁ c₂ : ℝ)
-    (n : Fin (K * H))
-    (sample : (Fin K → State) × OnlineOutcomePath.{uState, 0} State (K * H)) : ℝ := by
-  classical
-  let k : Fin K := ⟨n.val / H,
-    (onlineT3NaturalTime_decomposition H hH K n.val n.isLt).1⟩
-  let h : Fin H := ⟨n.val % H, Nat.mod_lt n.val hH⟩
-  let m := K * H - n.val - 1
-  have hT : K * H = (m + 1) + (k.val * H + h.val) := by
-    dsimp [m]
-    rw [show k.val = n.val / H from rfl, show h.val = n.val % H from rfl]
-    rw [← (onlineT3NaturalTime_decomposition H hH K n.val n.isLt).2.2]
-    omega
-  exact onlineT3SourceResidualAtPrefix H K hH E fallback planner k h L c₁ c₂ m
-    (hT ▸ sample)
-
-/-- At each finite global time, the padded increment is exactly the source
-residual evaluated on the same full-horizon sample, with its episode/stage
-indices obtained by Euclidean division. -/
-theorem onlineT3PaddedY_eq_fullHorizonResidual
-    (H K : ℕ) (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
-    (ρ : FiniteDistribution State) (fallback : State)
-    (planner : OnlineEpisodePlanner State Action H) (L c₁ c₂ : ℝ)
-    (n : Fin (K * H))
-    (sample : (Fin K → State) × OnlineOutcomePath.{uState, 0} State (K * H)) :
-    onlineT3PaddedY H K hH E ρ fallback planner L c₁ c₂ n.val sample =
-      onlineT3FullHorizonResidual H K hH E ρ fallback planner L c₁ c₂ n sample := by
-  classical
-  dsimp [onlineT3FullHorizonResidual]
-  exact onlineT3PaddedY_eq_sourceT3Residual H K hH E ρ fallback planner
-    L c₁ c₂ n.val n.isLt sample
-
-/-- Reindexing the full padded T₃ sum into source episode/stage order is an
-exact finite-sum identity. The summand is the actual source residual, not an
-abstract centered array. -/
-theorem onlineT3PaddedY_sum_eq_episode_stage
-    (H K : ℕ) (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
-    (ρ : FiniteDistribution State) (fallback : State)
-    (planner : OnlineEpisodePlanner State Action H) (L c₁ c₂ : ℝ)
-    (sample : (Fin K → State) × OnlineOutcomePath.{uState, 0} State (K * H)) :
-    (∑ n : Fin (K * H),
-      onlineT3PaddedY H K hH E ρ fallback planner L c₁ c₂ n.val sample) =
-      ∑ k : Fin K, ∑ h : Fin H,
-        onlineT3FullHorizonResidual H K hH E ρ fallback planner L c₁ c₂
-          (finProdFinEquiv (k, h)) sample := by
-  classical
-  let e : Fin (K * H) ≃ Fin K × Fin H := finProdFinEquiv.symm
-  let f := fun n : Fin (K * H) =>
-    onlineT3PaddedY H K hH E ρ fallback planner L c₁ c₂ n.val sample
-  let g := fun ij : Fin K × Fin H =>
-    onlineT3FullHorizonResidual H K hH E ρ fallback planner L c₁ c₂
-      (finProdFinEquiv (ij.1, ij.2)) sample
-  have hsum : (∑ n : Fin (K * H), f n) = ∑ ij : Fin K × Fin H, g ij := by
-    apply Fintype.sum_equiv e f g
-    intro n
-    have he : finProdFinEquiv (e n) = n := Equiv.apply_symm_apply _ n
-    have hpoint := onlineT3PaddedY_eq_fullHorizonResidual
-      H K hH E ρ fallback planner L c₁ c₂ n sample
-    change onlineT3PaddedY H K hH E ρ fallback planner L c₁ c₂ n.val sample =
-      onlineT3FullHorizonResidual H K hH E ρ fallback planner L c₁ c₂
-        (finProdFinEquiv (e n)) sample
-    rw [he]
-    exact hpoint
-  simpa [f, g, Fintype.sum_prod_type] using hsum
 
 end StatisticalRL.OnlineRL

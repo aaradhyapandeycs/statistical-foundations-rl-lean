@@ -97,28 +97,4 @@ theorem onlineActualW3CoarseBudget_implies_restrictedIota
   rw [hpEq, hdEq] at hc
   nlinarith
 
-theorem onlineSourceAllocated_actualW3RestrictedIota_strict
-    (H K : ℕ) (hH : 0 < H) (hK : 2 ≤ K)
-    (E : Fin H → EnvironmentStage State Action) (ρ : FiniteDistribution State)
-    (fallback : State) (δ c₁ c₂ : ℝ) (hδ : 0 < δ) (hδone : δ ≤ 1)
-    (hc₁ : 4 ≤ c₁) (hc₂ : c₁^2 ≤ c₂) :
-    let δ' := onlineSourceOptimismDeltaPrime δ (Fintype.card State) (Fintype.card Action) H K
-    let planner := onlineCappedGreedyPlanner E (Real.log (1 / δ')) c₁ c₂
-    1 - (4 * (Fintype.card State : ℝ) + 6) *
-      (Fintype.card (OnlineMDPRow State Action H) : ℝ) * K * δ' <
-      (onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K * H)).rowMeasure.real
-        (onlineActualW3RestrictedIotaEvent H K hH E fallback δ' c₁ c₂) := by
-  letI : Nonempty State := (E ⟨0, hH⟩).state_nonempty
-  letI : Nonempty Action := (E ⟨0, hH⟩).action_nonempty
-  let δ' := onlineSourceOptimismDeltaPrime δ (Fintype.card State) (Fintype.card Action) H K
-  let planner := onlineCappedGreedyPlanner E (Real.log (1 / δ')) c₁ c₂
-  let ν := onlineSequentialEpisodeLaw H K hH E ρ fallback planner (K * H)
-  have hk : 0 < K := by omega
-  have hd := onlineSourceOptimismDeltaPrime_domain δ (Fintype.card State)
-    (Fintype.card Action) H K hδ hδone Fintype.card_pos Fintype.card_pos hH hk
-  have hp := onlineSequential_actualW3CoarseBudget_strict H K hH hk E ρ fallback δ' c₁ c₂
-    hd.1 hd.2 hc₁ hc₂
-  have hsub := onlineActualW3CoarseBudget_implies_restrictedIota H K hH hK E fallback δ' c₁ c₂ hd.1 hd.2
-  have hm := measureReal_mono hsub (measure_ne_top ν.rowMeasure _)
-  exact hp.trans_le hm
 end StatisticalRL.OnlineRL

@@ -1,6 +1,5 @@
 import Formalization.Online.Regret.T0.OnlineT0SuffixTelescope
 import Formalization.Online.Regret.T4.OnlineT4SuffixTelescope
-import Formalization.Online.Regret.FixedOptimalSplit
 
 /-! Same-experiment suffix proof component: OnlineT0ActualSuffix.
 Scope and source confidence are established only by the final applying theorem. -/

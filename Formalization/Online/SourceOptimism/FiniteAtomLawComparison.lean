@@ -72,22 +72,4 @@ theorem onlineFiniteAtom_law_comparison
     have heq : observe data=transcript := hd
     simpa only [heq] using hmem
 
-
-/-- The finite direct atom carrier itself is a common carrier after decoding.
-The decoder can be arbitrary away from the derived full-mass encoded image. -/
-theorem onlineFiniteAtom_decodedLaw [Nonempty Atom]
-    (μ : Measure Data) [IsProbabilityMeasure μ] (ν : FiniteDistribution Atom)
-    (observe : Data → Transcript) (encode : Atom → Transcript)
-    (hinj : Function.Injective encode)
-    (hatom : ∀ a, μ {data | observe data=encode a}=ENNReal.ofReal (ν.prob a)) :
-    μ.map (fun data => Function.invFun encode (observe data))=ν.rowMeasure := by
-  have hm := (onlineFiniteAtom_law_comparison μ ν observe encode hinj hatom).2
-  have h := congrArg (fun law : Measure Transcript => law.map (Function.invFun encode)) hm
-  dsimp only at h
-  rw [Measure.map_map (measurable_of_countable _) (measurable_of_countable _),
-    Measure.map_map (measurable_of_countable _) (measurable_of_countable _)] at h
-  have hid : Function.invFun encode ∘ encode = id :=
-    funext (Function.leftInverse_invFun hinj)
-  simpa only [hid,Measure.map_id] using h
-
 end StatisticalRL.OnlineRL

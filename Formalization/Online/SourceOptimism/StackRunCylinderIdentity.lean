@@ -1,6 +1,6 @@
-import Formalization.Online.SourceOptimism.StackCylinderStep
 import Formalization.Online.SourceOptimism.VisitCoordinateDistinct
 import Mathlib.Data.List.TakeDrop
+import Formalization.Online.SourceOptimism.SuccessorStackPrefix
 
 /-! Exact deterministic adaptive run-event
 identity and fixed transcript count conversion; no path-law equality assumed. -/

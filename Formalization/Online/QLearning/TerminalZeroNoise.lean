@@ -15,10 +15,4 @@ theorem qLearningTrueOptimalNext_last_zero {H : ℕ}
     simp
   simp [hd, EnvironmentStage.optimalValue]
 
-theorem qLearningTerminal_centeredSample_zero {H n : ℕ}
-    (E : Fin H → EnvironmentStage State Action) (r : OnlineMDPRow State Action H)
-    (hr : r.1.val+1 = H) (i : Fin n) (ω : Fin n → State) :
-    (onlineMDPSuccessorRowLaw E r).centeredSample (qLearningTrueOptimalNext E r) n i ω = 0 := by
-  rw [qLearningTrueOptimalNext_last_zero E r hr]
-  simp [FiniteDistribution.centeredSample, FiniteDistribution.expectation_const]
 end StatisticalRL.OnlineRL

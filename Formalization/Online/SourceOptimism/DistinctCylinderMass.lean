@@ -39,21 +39,4 @@ theorem onlineDistinctCylinder_mass
   rw [hevent] at h
   simpa only [hmass] using h
 
-/-- In particular, appending a previously unread coordinate multiplies the
-history cylinder mass by the true row mass. No conditional division is used. -/
-theorem onlineDistinctCylinder_append_mass
-    (d : Index → FiniteDistribution Outcome) (n : ℕ)
-    (label : Fin (n+1) → Index) (hinj : Function.Injective label)
-    (value : Fin (n+1) → Outcome) :
-    onlineStackProductLaw d {data | ∀ j, data (label j)=value j} =
-      (onlineStackProductLaw d {data | ∀ j : Fin n,
-        data (label j.castSucc)=value j.castSucc}) *
-      ENNReal.ofReal ((d (label (Fin.last n))).prob (value (Fin.last n))) := by
-  have hprefix : Function.Injective (fun j : Fin n => label j.castSucc) :=
-    hinj.comp (Fin.castSucc_injective n)
-  rw [onlineDistinctCylinder_mass d (n+1) label hinj value,
-    onlineDistinctCylinder_mass d n (fun j => label j.castSucc) hprefix
-      (fun j => value j.castSucc)]
-  exact Fin.prod_univ_castSucc _
-
 end StatisticalRL.OnlineRL

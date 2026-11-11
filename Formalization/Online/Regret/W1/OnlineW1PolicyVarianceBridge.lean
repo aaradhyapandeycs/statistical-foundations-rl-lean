@@ -37,10 +37,6 @@ theorem onlineVariance_ordered_three
   nlinarith [Real.sqrt_nonneg (d.variance V), Real.sqrt_nonneg (d.variance P),
     Real.sqrt_nonneg (d.variance D)]
 
-
-
-
-
 /-- The same actual all-stage optimism event supplies every ordering needed
 for T₆-optimal ≤ 2 T₆-policy + 2 T₆-difference, including the terminal
 continuation. -/

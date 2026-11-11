@@ -26,11 +26,6 @@ theorem onlineMVPRowVisitList_succ (rowAt : ℕ → Row) (nextAt : ℕ → Outco
     by_cases h : rowAt n = r <;> simp [List.filterMap, h]
   rw [hlast]
 
-/-- Histogram of a finite outcome list. -/
-def onlineMVPOutcomeListHistogram [Fintype Outcome]
-    (xs : List Outcome) (x : Outcome) : ℕ :=
-  ((Finset.range xs.length).filter fun i => xs[i]? = some x).card
-
 /-- A row-local copy of the four pieces of information needed to describe
 pending and committed batches. -/
 structure OnlineMVPRowBatchState (Outcome : Type*) where

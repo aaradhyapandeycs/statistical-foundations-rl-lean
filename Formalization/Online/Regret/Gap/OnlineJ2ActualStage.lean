@@ -9,23 +9,6 @@ namespace StatisticalRL.OnlineRL
 open scoped BigOperators
 universe uState uAction
 variable {State : Type uState} {Action : Type uAction} [Fintype State] [Fintype Action]
-
-/-- Generic finite aggregation: a nonnegative per-stage sum bounded by T0
-for each active stage yields the source coarse H*T0 bound. The source-path
-identification and positivity are separate obligations. -/
-theorem onlineJ2_stage_budget_of_stagewise
-    (H : ℕ) (a : Fin H → ℝ) (T0 : ℝ) (hT0 : 0 ≤ T0)
-    (ha : ∀ h, a h ≤ T0) :
-    (∑ h : Fin H, a h) ≤ (H : ℝ) * T0 := by
-  calc
-    _ ≤ ∑ _h : Fin H, T0 := Finset.sum_le_sum (fun h _ => ha h)
-    _ = (H : ℝ) * T0 := by simp
-end StatisticalRL.OnlineRL
-
-namespace StatisticalRL.OnlineRL
-open scoped BigOperators
-universe uState uAction
-variable {State : Type uState} {Action : Type uAction} [Fintype State] [Fintype Action]
 noncomputable local instance j2StateDecidable : DecidableEq State := Classical.decEq State
 noncomputable local instance j2ActionDecidable : DecidableEq Action := Classical.decEq Action
 

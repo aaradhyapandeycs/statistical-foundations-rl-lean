@@ -34,14 +34,6 @@ def profileLevelCap (K : ℕ) : ℕ := Nat.log2 (K - 1) + 1
 /-- A complete episode-by-stage row table. -/
 abbrev EpisodeRowTable (H : ℕ) (Row : Type*) := ℕ → Fin H → Row
 
-/-- Flatten an episode-by-stage table into the chronological stage-tagged row
-sequence used by the operational counter fold. -/
-noncomputable def sourceMVPFlattenRows {H : ℕ} {Row : Type*}
-    (rows : EpisodeRowTable H Row) (hH : 0 < H) : ℕ → Fin H × Row :=
-  fun t =>
-    let h : Fin H := ⟨t % H, Nat.mod_lt _ hH⟩
-    (h, rows (t / H) h)
-
 /-- The source's integer threshold maximum: zero at zero count and
 `floor(log₂ n)+1` at positive count. -/
 def sourceMVPProfileIndex (n : ℕ) : ℕ :=
@@ -122,13 +114,5 @@ noncomputable def sourceMVPFinitePossibleProfiles {K H : ℕ} {Row : Type*}
   letI : DecidableEq Row := Classical.decEq Row
   exact Finset.univ.image fun rows : Fin K → Fin H → Row =>
     sourceMVPActualProfileTable (sourceMVPExtendFiniteRows rows)
-
-/-- The operational per-row counter table after `k*H` actual chronological
-row/successor records. -/
-noncomputable def sourceMVPOperationalTablesAt {K H : ℕ} {Row Outcome : Type*}
-    [Fintype Outcome] [DecidableEq Row] [DecidableEq Outcome]
-    (rows : EpisodeRowTable H Row) (nextAt : ℕ → Outcome) (hH : 0 < H) (k : Fin K) :
-    OnlineMVPCountTables (Fin H × Row) Outcome :=
-  onlineMVPCountTablesRun (sourceMVPFlattenRows rows hH) nextAt (k.val * H)
 
 end StatisticalRL.OnlineRL.MVPProfile

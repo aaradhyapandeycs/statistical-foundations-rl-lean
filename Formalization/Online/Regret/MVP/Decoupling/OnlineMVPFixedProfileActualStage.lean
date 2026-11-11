@@ -165,30 +165,4 @@ theorem onlineMVPActualPlanningStage_eq_fixedProfile
           congrArg (fun j => onlineMVPFixedProfileBatch
             (onlineFiniteStackExtend K fallback data) r j) hprofile
 
-/-- The full actual episode stage list equals the fixed-profile stage list
-whose profile was determined by that episode's prehistory. -/
-theorem onlineMVPActualPlanningStages_eq_fixedProfile
-    {H K : ℕ} (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
-    (initial : Fin K → State) (fallback : State)
-    (planner : OnlineEpisodePlanner State Action H)
-    (data : OnlineMDPRow State Action H × Fin K → State) (k : Fin K) :
-    letI : Nonempty State := (E ⟨0, hH⟩).state_nonempty
-    List.ofFn (fun h : Fin H => onlineMVPActualPlanningStage E
-      (onlineMVPActualStackRowAt hH initial fallback planner data)
-      (onlineMVPActualStackNextAt hH initial fallback planner data)
-      (k.val * H + h.val) h) =
-    onlineMVPFixedProfileStages E (onlineFiniteStackExtend K fallback data)
-      (onlineMVPActualPreEpisodeProfile hH initial fallback planner data) k := by
-  letI : Nonempty State := (E ⟨0, hH⟩).state_nonempty
-  change List.ofFn (fun h : Fin H => onlineMVPActualPlanningStage E
-      (onlineMVPActualStackRowAt hH initial fallback planner data)
-      (onlineMVPActualStackNextAt hH initial fallback planner data)
-      (k.val * H + h.val) h) =
-    List.ofFn (onlineMVPFixedProfileStage E (onlineFiniteStackExtend K fallback data)
-      (onlineMVPActualPreEpisodeProfile hH initial fallback planner data) k)
-  apply congrArg List.ofFn
-  funext h
-  exact onlineMVPActualPlanningStage_eq_fixedProfile hH E initial fallback
-    planner data k h
-
 end StatisticalRL.OnlineRL

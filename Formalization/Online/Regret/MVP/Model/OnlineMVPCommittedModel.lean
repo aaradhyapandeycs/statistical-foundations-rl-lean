@@ -118,32 +118,6 @@ theorem onlineMVP_storedCount_eq_profile_batch (n : ℕ) :
       have hexp : Nat.log2 n + 1 - 2 = Nat.log2 n - 1 := by omega
       rw [hexp]
 
-/-- At profile level `j ≥ 2`, the retained batch is exactly the source's
-half-power interval `[2^(j-2), 2^(j-1))` in zero-based visit indices. -/
-theorem onlineMVPSourceBatch_bounds_profile (n : ℕ) (hn : 2 ≤ n) :
-    let j := sourceMVPProfileIndex n
-    onlineMVPSourceBatchStart n = 2 ^ (j - 2) ∧
-      onlineMVPSourceBatchEnd n = 2 ^ (j - 1) := by
-  have h0 : n ≠ 0 := by omega
-  have hlog : 1 ≤ Nat.log2 n := by
-    apply (Nat.le_log2 h0).2
-    simpa using hn
-  have hj : sourceMVPProfileIndex n = Nat.log2 n + 1 := by
-    simp [sourceMVPProfileIndex, h0]
-  dsimp
-  constructor
-  · rw [onlineMVPSourceBatchStart, if_neg (by omega : ¬ n < 2),
-      onlineMVP_storedCount_closedForm, if_neg (by omega : ¬ n < 2), hj]
-    congr 1 <;> omega
-  · rw [onlineMVPSourceBatchEnd, if_neg (by omega : ¬ n < 2),
-      onlineMVP_storedCount_closedForm, if_neg (by omega : ¬ n < 2), hj]
-    have hright : Nat.log2 n + 1 - 1 = Nat.log2 n := by omega
-    rw [hright]
-    calc
-      2 * 2 ^ (Nat.log2 n - 1) = 2 ^ (Nat.log2 n - 1) * 2 := by ring
-      _ = 2 ^ (Nat.log2 n - 1 + 1) := by rw [Nat.pow_succ]
-      _ = 2 ^ Nat.log2 n := by congr 1 <;> omega
-
 /-- The actual committed model's zero/first/positive-batch branch is selected
 by the same source profile of the actual row visit count. -/
 theorem onlineMVPCommittedPlanningRow_profile_index

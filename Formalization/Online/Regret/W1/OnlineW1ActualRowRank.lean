@@ -9,7 +9,6 @@ variable {State Action : Type*} [Fintype State] [Fintype Action]
 noncomputable local instance OnlineW1ActualRowRankDraftStateDecidable : DecidableEq State := Classical.decEq State
 noncomputable local instance OnlineW1ActualRowRankDraftActionDecidable : DecidableEq Action := Classical.decEq Action
 
-
 /-- The actual observed count before episode k of the row played at stage h
 is precisely its strict-past episode visit rank. -/
 theorem onlineSequential_playedRow_count_eq_rank

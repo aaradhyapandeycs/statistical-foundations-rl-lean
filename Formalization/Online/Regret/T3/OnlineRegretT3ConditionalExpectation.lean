@@ -1,5 +1,4 @@
 import Formalization.Online.Regret.T3.OnlineRegretT3PrefixSetSum
-import Formalization.Online.SourceOptimism.FiniteAtomDefaultSigmaTransport
 import Formalization.Probability.EmpiricalRow
 import Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic
 

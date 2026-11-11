@@ -27,27 +27,6 @@ theorem onlinePreEpisodePlanningStages_environments {H : ℕ}
   simp [onlinePlanningEnvironments, onlinePreEpisodePlanningStages,
     onlineHistoryPlanningStage, List.map_ofFn, Function.comp_def]
 
-/-- The count is exactly the number of recorded row outcomes; no current
-unobserved transition or future episode is counted. -/
-theorem onlineHistoryPlanningStage_count {H : ℕ}
-    (E : Fin H → EnvironmentStage State Action)
-    (history : List (OnlineMDPRow State Action H × State)) (h : Fin H)
-    (s : State) (a : Action) :
-    ((onlineHistoryPlanningStage E history h).observations s a).length =
-      (onlineRowOutcomes history (h, (s, a))).length := rfl
-
-/-- Recording one completed transition performs exactly the source count
-increment in its row and leaves every other row count unchanged. The current
-sample is recorded before subsequent planning uses the updated count. -/
-theorem onlineObservedCount_append_transition {H : ℕ}
-    (history : List (OnlineMDPRow State Action H × State))
-    (row queried : OnlineMDPRow State Action H) (successor : State) :
-    (onlineRowOutcomes (history ++ [(row, successor)]) queried).length =
-      (onlineRowOutcomes history queried).length + if row = queried then 1 else 0 := by
-  by_cases heq : row = queried
-  · simp [onlineRowOutcomes, List.filterMap_append, heq]
-  · simp [onlineRowOutcomes, List.filterMap_append, heq]
-
 /-- Positive-count empirical rows agree on the exact chronological data and
 count, including dependent Fin indices; there is no conditional iid claim. -/
 theorem onlineHistoryPlanningStage_row_eq {H : ℕ}

@@ -20,7 +20,6 @@ noncomputable def mvpT2ActualRetainedCount
     (onlineMVPHistoryNextAt fallback hist) hist.length h).observations
     (rows k.val).1 (rows k.val).2).length
 
-
 noncomputable def mvpActualT5 (H K : ℕ) (hH : 0 < H)
     (E : Fin H → EnvironmentStage State Action) (initial : Fin K → State)
     (fallback : State) (path : OnlineOutcomePath State (K*H)) (δ c₁ c₂ : ℝ) : ℝ :=

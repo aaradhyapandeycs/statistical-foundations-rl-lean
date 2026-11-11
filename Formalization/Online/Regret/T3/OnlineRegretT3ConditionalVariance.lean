@@ -432,4 +432,3 @@ theorem onlineT3PaddedY_sq_condExp_eq_rowVariance
     rw [hcond]
     exact Filter.Eventually.of_forall (fun _ => by
       simp [onlineT3PaddedRowVariance, hn])
-

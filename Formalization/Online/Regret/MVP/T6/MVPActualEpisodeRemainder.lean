@@ -1,5 +1,8 @@
-import Formalization.Online.Regret.MVP.T6.MVPActualEpisodeBudget
 import Formalization.Online.Regret.MVP.T6.MVPActualSuccessorValue
+import Formalization.Online.Regret.MVP.T6.MVPActualGreedyAlignment
+import Formalization.Online.Regret.MVP.T6.MVPActualRowAlignment
+import Formalization.Online.Regret.MVP.T6.MVPVarianceEpisodeBudget
+import Formalization.Online.Regret.T4.OnlineRegretT4ActualBridge
 
 /-! Actual same-path MVP episode remainder; no optimism premise. -/
 namespace StatisticalRL.OnlineRL
