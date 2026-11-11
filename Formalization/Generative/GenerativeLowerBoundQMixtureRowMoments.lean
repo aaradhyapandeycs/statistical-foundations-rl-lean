@@ -35,19 +35,4 @@ theorem qMixtureBernoulliLikelihood_sq_integral (p q : ℝ≥0)
     qMixture_bernoulli_likelihood_second_moment (p : ℝ) (q : ℝ)
       (by exact_mod_cast hp) (by exact_mod_cast hp1)
 
-/-- The actual N-fold baseline row law has exactly the Nth-power diagonal
-likelihood moment. The statement includes N=0. -/
-theorem qMixtureRowLikelihood_sq_integral (N : ℕ) (p q : ℝ≥0)
-    (hp : 0 < p) (hp1 : p < 1) (hq1 : q ≤ 1) :
-    ∫ x, (qMixtureRowLikelihood N (p : ℝ) (q : ℝ) x) ^ 2
-      ∂(bernoulliProductLaw N p hp1.le) =
-      (1 + ((q : ℝ) - (p : ℝ)) ^ 2 / ((p : ℝ) * (1 - (p : ℝ)))) ^ N := by
-  unfold qMixtureRowLikelihood bernoulliProductLaw
-  simp_rw [← Finset.prod_pow]
-  have hprod := integral_fintype_prod_eq_prod
-    (μ := fun _ : Fin N ↦ (PMF.bernoulli p hp1.le).toMeasure)
-    (fun (_ : Fin N) (b : Bool) ↦ (qMixtureBernoulliLikelihood (p : ℝ) (q : ℝ) b) ^ 2)
-  rw [hprod]
-  simp [qMixtureBernoulliLikelihood_sq_integral p q hp hp1 hq1]
-
 end StatisticalRL.GenerativeLowerBound

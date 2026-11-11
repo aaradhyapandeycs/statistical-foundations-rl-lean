@@ -56,13 +56,6 @@ theorem optimalResidualCharges_length
   | nil => rfl
   | cons p tail ih => rcases p with ⟨E,F⟩; simpa only [optimalResidualCharges, List.length_cons] using congrArg Nat.succ ih
 
-theorem optimalResidualCharges_sum_nonneg
-    (pairs : List (EnvironmentStage State Action × EnvironmentStage State Action)) :
-    0 ≤ (optimalResidualCharges pairs).sum := by
-  induction pairs with
-  | nil => exact le_rfl
-  | cons p tail ih => rcases p with ⟨E,F⟩; exact add_nonneg (norm_nonneg _) ih
-
 private theorem row_abs_le_norm (R : State → Action → ℝ) (s : State) (a : Action) : |R s a| ≤ ‖R‖ := by
   simpa only [Real.norm_eq_abs] using (norm_le_pi_norm (R s) a).trans (norm_le_pi_norm R s)
 

@@ -1,8 +1,8 @@
 import Formalization.Generative.StateRelabelSampling
 import Formalization.Generative.GenerativeLowerBoundQMixtureAnyAction
-import Formalization.Generative.GenerativeLowerBoundLargeFamilyRisk
 import Formalization.Generative.GenerativeLowerBoundFamilyFano
 import Formalization.Generative.GenerativeLowerBoundUnifiedThreshold
+import Formalization.Generative.GenerativeLowerBoundFamilyDecision
 
 /-!
 # Corrected Theorem 3.7 on `Fin S × Fin A` carriers

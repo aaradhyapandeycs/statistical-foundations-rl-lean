@@ -73,7 +73,6 @@ theorem source_policyLearning_evaluation_with_pointwise (M : DiscountedMDP State
   · intro s
     exact ⟨(hv s).1, (hv s).2.trans hsum⟩
 
-
 /-- Lean's totalized logarithm makes the unguarded N=0 threshold vacuous. -/
 theorem leaveOneOutBeta_zero_samples (M : DiscountedMDP State Action) (δ : ℝ) :
     leaveOneOutBeta M 0 δ = 0 := by

@@ -15,9 +15,4 @@ theorem qMixture_bernoulli_likelihood_second_moment (p q : ℝ)
   field_simp
   ring
 
-/-- With no samples the product likelihood has unit second moment. -/
-theorem qMixture_zero_samples_second_moment (p q : ℝ) :
-    (p * (q / p) ^ 2 + (1 - p) * ((1 - q) / (1 - p)) ^ 2) ^ (0 : ℕ) = 1 := by
-  simp
-
 end StatisticalRL.GenerativeLowerBound

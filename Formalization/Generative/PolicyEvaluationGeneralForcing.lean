@@ -148,21 +148,4 @@ theorem forcingPolicyValue_unique (M : DiscountedMDP State Action)
     linarith [hW s]
   exact (Matrix.inv_mulVec_eq_vec he).symm
 
-/-- Source-shaped auxiliary-level estimate, with constant one instead of √2. -/
-theorem forcingPolicyValue_varianceResolvent_bound_of_pos (M : DiscountedMDP State Action)
-    (π : StationaryPolicy State Action) (f : State → ℝ) (hf : ∀ s, 0 ≤ f s)
-    (hγ : 0 < M.discount) :
-    ‖(1 - M.discount • evaluationPolicyMatrix M π : Matrix State State ℝ)⁻¹ *ᵥ
-      (fun s ↦ Real.sqrt ((M.policyTransition π s).variance (forcingPolicyValue M π f)))‖ ≤
-      ‖forcingPolicyValue M π f‖ / (M.discount * Real.sqrt (1 - M.discount)) := by
-  have hs : 0 < Real.sqrt (1 - M.discount) := Real.sqrt_pos.2 (sub_pos.mpr M.discount_lt_one)
-  have hb := forcingPolicyValue_varianceResolvent_bound M π f hf
-  have hh := (le_div_iff₀ hs).mp hb
-  apply (le_div_iff₀ (mul_pos hγ hs)).2
-  calc
-    _ = M.discount * ‖(1 - M.discount • evaluationPolicyMatrix M π : Matrix State State ℝ)⁻¹ *ᵥ
-      (fun s ↦ Real.sqrt ((M.policyTransition π s).variance (forcingPolicyValue M π f)))‖ *
-        Real.sqrt (1 - M.discount) := by ring
-    _ ≤ _ := hh
-
 end StatisticalRL.DiscountedMDP

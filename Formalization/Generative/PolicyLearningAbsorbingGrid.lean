@@ -14,11 +14,6 @@ noncomputable local instance gridValueDecidable : DecidableEq (State → ℝ) :=
 noncomputable def absorbingParameterGrid (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) :
     Finset ℝ := Finset.univ.image (absorbingGridPoint M N hN)
 
-theorem absorbingGridStep_pos (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) :
-    0 < absorbingGridStep M N hN := by
-  unfold absorbingGridStep
-  exact one_div_pos.mpr (mul_pos (by exact_mod_cast hN) (sub_pos.mpr M.discount_lt_one))
-
 theorem absorbingGridPoint_bounds (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
     (i : Fin (N + 1)) :
     0 ≤ absorbingGridPoint M N hN i ∧ absorbingGridPoint M N hN i ≤ 1 / (1 - M.discount) := by
@@ -34,46 +29,10 @@ theorem absorbingGridPoint_bounds (M : DiscountedMDP State Action) (N : ℕ) (hN
     rw [heq]
     exact hi
 
-theorem absorbingGridPoint_zero (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) :
-    absorbingGridPoint M N hN ⟨0, by omega⟩ = 0 := by simp [absorbingGridPoint]
-
-theorem absorbingGridPoint_last (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) :
-    absorbingGridPoint M N hN ⟨N, Nat.lt_succ_self N⟩ = 1 / (1 - M.discount) := by
-  unfold absorbingGridPoint
-  have hn : (N : ℝ) ≠ 0 := by exact_mod_cast (ne_of_gt hN)
-  field_simp
-
-theorem absorbingGridPoint_injective (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) :
-    Function.Injective (absorbingGridPoint M N hN) := by
-  intro i j hij
-  have hd : (N : ℝ) * (1 - M.discount) ≠ 0 :=
-    ne_of_gt (mul_pos (by exact_mod_cast hN) (sub_pos.mpr M.discount_lt_one))
-  have he : (i : ℝ) = (j : ℝ) := (div_left_inj' hd).mp hij
-  apply Fin.ext
-  exact_mod_cast he
-
-theorem absorbingParameterGrid_card (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N) :
-    (absorbingParameterGrid M N hN).card = N + 1 := by
-  rw [absorbingParameterGrid, Finset.card_image_of_injective _ (absorbingGridPoint_injective M N hN)]
-  simp
-
-theorem absorbingGridPoint_eq_mul_step (M : DiscountedMDP State Action)
-    (N : ℕ) (hN : 0 < N) (i : Fin (N + 1)) :
-    absorbingGridPoint M N hN i = (i : ℝ) * absorbingGridStep M N hN := by
-  unfold absorbingGridPoint absorbingGridStep
-  ring
-
 theorem absorbingGridPoint_mem (M : DiscountedMDP State Action)
     (N : ℕ) (hN : 0 < N) (i : Fin (N + 1)) :
     absorbingGridPoint M N hN i ∈ absorbingParameterGrid M N hN :=
   Finset.mem_image.mpr ⟨i, Finset.mem_univ i, rfl⟩
-
-theorem absorbingParameterGrid_endpoints (M : DiscountedMDP State Action)
-    (N : ℕ) (hN : 0 < N) :
-    0 ∈ absorbingParameterGrid M N hN ∧ 1 / (1 - M.discount) ∈ absorbingParameterGrid M N hN := by
-  constructor
-  · simpa only [absorbingGridPoint_zero] using absorbingGridPoint_mem M N hN ⟨0, by omega⟩
-  · simpa only [absorbingGridPoint_last] using absorbingGridPoint_mem M N hN ⟨N, Nat.lt_succ_self N⟩
 
 /-- The parameter grid is deterministic even when applied to the empirical model. -/
 theorem absorbingParameterGrid_empirical (M : DiscountedMDP State Action)
@@ -111,26 +70,6 @@ theorem absorbingGrid_covers_interval (M : DiscountedMDP State Action) (N : ℕ)
 noncomputable def absorbingGridValueFamily (M : DiscountedMDP State Action)
     (N : ℕ) (hN : 0 < N) (x : State) : Finset (State → ℝ) :=
   Finset.univ.image (absorbingGridValue M N hN x)
-
-/-- At the absorbing state distinct grid parameters give distinct value vectors. -/
-theorem absorbingGridValue_injective (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (x : State) : Function.Injective (absorbingGridValue M N hN x) := by
-  intro i j hij
-  have hx := congrFun hij x
-  change (stateAbsorbingModel M x _ _ _).trajectoryExpectedValue _ x =
-    (stateAbsorbingModel M x _ _ _).trajectoryExpectedValue _ x at hx
-  rw [stateAbsorbingModel_trajectoryValue_at, stateAbsorbingModel_trajectoryValue_at] at hx
-  exact absorbingGridPoint_injective M N hN hx
-
-theorem absorbingGridValueFamily_card (M : DiscountedMDP State Action)
-    (N : ℕ) (hN : 0 < N) (x : State) : (absorbingGridValueFamily M N hN x).card = N + 1 := by
-  rw [absorbingGridValueFamily, Finset.card_image_of_injective _ (absorbingGridValue_injective M N hN x)]
-  simp
-
-/-- For any further map of grid indices, duplicate images can only reduce cardinality. -/
-theorem absorbingGrid_image_card_le {α : Type*} [DecidableEq α] (N : ℕ) (f : Fin (N + 1) → α) :
-    (Finset.univ.image f).card ≤ N + 1 := by
-  exact (Finset.card_image_le).trans_eq (by simp)
 
 /-- The source value cover follows from interval coverage, actual value
 preservation and the proved fixed-parameter Lipschitz bound. -/

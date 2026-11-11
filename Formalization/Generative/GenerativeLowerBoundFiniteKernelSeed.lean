@@ -25,9 +25,6 @@ theorem finiteKernelSeed_eval_marginal (κ : X → PMF Y) (x : X) :
   rw [Measure.toPMF_toMeasure]
   exact (measurePreserving_eval (fun x ↦ (κ x).toMeasure) x).map_eq
 
-/-- The resulting rule uses the same seed law for every hypothesis. -/
-def finiteKernelSeedEstimator (f : X → Y) (x : X) : Y := f x
-
 /-- The actual observation/output law obtained from the kernel itself. -/
 noncomputable def finiteKernelJointLaw (μ : Measure X) [IsProbabilityMeasure μ]
     (κ : X → PMF Y) : Measure (X × Y) :=

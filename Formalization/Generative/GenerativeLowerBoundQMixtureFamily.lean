@@ -43,14 +43,4 @@ noncomputable def qMixtureOptimalQCandidate {m A : ℕ} (i : QMixtureIndex m A)
     | none => 0
     | some j => 1 + γ * qMixtureStay i p q j a / (1 - γ * qMixtureBestStay i p q j)
 
-/-- A matching active row is changed exactly in its designated alternative. -/
-theorem qMixtureStay_alternative {m A : ℕ} (j : Fin m) (a : Fin A) (p q : ℝ) :
-    qMixtureStay (some (j,a)) p q j a = q := by
-  simp [qMixtureStay]
-
-/-- Every baseline active row uses p. -/
-theorem qMixtureStay_baseline {m A : ℕ} (j : Fin m) (a : Fin A) (p q : ℝ) :
-    qMixtureStay none p q j a = p := by
-  simp [qMixtureStay]
-
 end StatisticalRL.GenerativeLowerBound

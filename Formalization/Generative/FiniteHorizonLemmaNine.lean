@@ -91,20 +91,4 @@ theorem auxiliaryErrorNormAt_le_lemmaNine
   simpa only [auxiliaryErrorNorm, comparisonAuxiliaryValueAt, trueAuxiliaryValueAt,
     List.map_drop] using hh
 
-/-- The printed real-log level domain suffices for the natural-depth proof.
-This theorem adds no residual level beyond l≤log₂H. -/
-theorem auxiliaryErrorNormAt_le_source_lemmaNine
-    (pairs : List (EnvironmentStage State Action × EnvironmentStage State Action))
-    (f : ℕ → State → Action) (H N : ℕ) (β : ℝ)
-    (hH : 0 < H) (hβ : 0 ≤ β) (hlen : pairs.length ≤ H)
-    (hsize : 12 * (H : ℝ) * β < N)
-    (hres : ∀ l : ℕ, (l : ℝ) ≤ Real.logb 2 (H : ℝ) →
-      auxiliaryResidualCondition pairs f l (Real.sqrt (β / (N : ℝ))) (β / (N : ℝ)))
-    (h : ℕ) :
-    ‖comparisonAuxiliaryValueAt pairs f 0 h - trueAuxiliaryValueAt (pairs.map Prod.fst) f 0 h‖ ≤
-      6 * H * Real.sqrt (3 * β * H / (N : ℝ)) := by
-  apply auxiliaryErrorNormAt_le_lemmaNine pairs f H N β hH hβ hlen hsize _ h
-  intro l hl
-  exact hres l ((Nat.cast_le.mpr hl).trans (Real.natLog_le_logb H 2))
-
 end StatisticalRL.FiniteHorizonGenerative

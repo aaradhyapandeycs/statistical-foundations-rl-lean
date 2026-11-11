@@ -34,15 +34,6 @@ theorem controlled_backwardGreedyActions (fallback : Action)
     rw [ih]
     rfl
 
-/-- This selected policy is an exact optimizer for the comparison environment. -/
-theorem backwardGreedyActions_optimalValue (fallback : Action)
-    (es : List (EnvironmentStage State Action)) (s : State) :
-    DecisionStage.trajectoryValue (EnvironmentStage.controlled es
-      (deterministicPolicy (backwardGreedyActions fallback es))) s =
-      EnvironmentStage.optimalValue es s := by
-  rw [controlled_backwardGreedyActions]
-  exact EnvironmentStage.greedy_trajectoryValue es s
-
 /-- The actual true-model auxiliary value evaluated at the empirical backward
 planner's policy, after the current stage. Its policy is selected from data. -/
 noncomputable def fittedTrueAuxiliaryContinuation {H : ℕ}
@@ -50,17 +41,6 @@ noncomputable def fittedTrueAuxiliaryContinuation {H : ℕ}
     (fallback : Action) (h : Fin H) (l : ℕ) (data : Samples State Action H N) : State → ℝ :=
   trueAuxiliaryValueAt (List.ofFn E)
     (backwardGreedyActions fallback (empiricalStages E N hN data)) l (h.val + 1)
-
-/-- At level zero this is an actual true-model policy trajectory value, with
-the fitted suffix policy rather than the empirical optimal value substituted. -/
-theorem fittedTrueAuxiliaryContinuation_zero_eq_trajectory {H : ℕ}
-    (E : Fin H → EnvironmentStage State Action) (N : ℕ) (hN : 0 < N)
-    (fallback : Action) (h : Fin H) (data : Samples State Action H N) (s : State) :
-    fittedTrueAuxiliaryContinuation E N hN fallback h 0 data s =
-      DecisionStage.trajectoryValue (EnvironmentStage.controlled ((List.ofFn E).drop (h.val + 1))
-        (deterministicPolicy (fun k ↦ backwardGreedyActions fallback
-          (empiricalStages E N hN data) (h.val + 1 + k)))) s :=
-  trueAuxiliaryValue_zero_eq_trajectory _ _ _
 
 /-- All selected suffix decisions are functions of future empirical stages;
 no current-row information enters through tie breaking. -/
@@ -85,27 +65,5 @@ theorem fittedTrueAuxiliaryContinuation_nonneg {H : ℕ}
     (fallback : Action) (h : Fin H) (l : ℕ) (data : Samples State Action H N) (s : State) :
     0 ≤ fittedTrueAuxiliaryContinuation E N hN fallback h l data s :=
   trueAuxiliaryValue_nonneg _ _ _ _
-
-theorem fittedTrueAuxiliaryContinuation_measurable {H : ℕ}
-    (E : Fin H → EnvironmentStage State Action) (N : ℕ) (hN : 0 < N)
-    (fallback : Action) (h : Fin H) (l : ℕ) :
-    Measurable (fittedTrueAuxiliaryContinuation E N hN fallback h l) := measurable_of_countable _
-
-/-- Independence follows from causal factorization and the actual product law,
-not from assuming a data-selected policy is independent of its training samples. -/
-theorem fittedTrueAuxiliaryContinuation_indep_row {H : ℕ}
-    (E : Fin H → EnvironmentStage State Action) (N : ℕ) (hN : 0 < N)
-    (fallback : Action) (h : Fin H) (l : ℕ) (s : State) (a : Action) :
-    IndepFun (fittedTrueAuxiliaryContinuation E N hN fallback h l)
-      (fun data : Samples State Action H N ↦ fun i : Fin N ↦ data ((h,s,a),i)) (samplingLaw E N) := by
-  let x := Classical.choice (E h).state_nonempty
-  let F : FutureCode (State := State) (Action := Action) h N → State → ℝ :=
-    fun code ↦ fittedTrueAuxiliaryContinuation E N hN fallback h l (completeFutureData h N x code)
-  have hp := futureStatistic_indep_row E N h s a F
-  have he : (fun data ↦ F (futureData h N data)) = fittedTrueAuxiliaryContinuation E N hN fallback h l := by
-    funext data
-    exact (fittedTrueAuxiliaryContinuation_factors_future E N hN fallback h l x data).symm
-  rw [he] at hp
-  exact hp
 
 end StatisticalRL.FiniteHorizonGenerative

@@ -85,23 +85,6 @@ theorem offStateData_indep_removedRow (M : DiscountedMDP State Action) (N : ℕ)
       (fun data : Samples State Action N ↦ fun i : Fin N ↦ data ((x,a),i)) (samplingLaw M N) at h
   exact h
 
-/-- For a fixed u, the actual absorbing optimal trajectory-value vector is
-independent of the full removed row samples under the genuine product law. -/
-theorem fixedAbsorbingValue_indep_removedRow (M : DiscountedMDP State Action) (N : ℕ)
-    (hN : 0 < N) (x : State) (a : Action) (u : ℝ) (hu0 : 0 ≤ u)
-    (hu1 : u ≤ 1 / (1 - M.discount)) :
-    IndepFun (fixedAbsorbingValue M N hN x u hu0 hu1)
-      (fun data : Samples State Action N ↦ fun i : Fin N ↦ data ((x,a),i)) (samplingLaw M N) := by
-  let F : OffStateCode (Action := Action) x N → State → ℝ := fun code ↦
-    fixedAbsorbingValue M N hN x u hu0 hu1 (completeOffStateData x N code)
-  have hm : Measurable F := measurable_of_countable _
-  have h := (offStateData_indep_removedRow M N x a).comp hm measurable_id
-  have heq : F ∘ offStateData (Action := Action) x N = fixedAbsorbingValue M N hN x u hu0 hu1 := by
-    funext data
-    exact (fixedAbsorbingValue_factors_offState M N hN x u hu0 hu1 data).symm
-  rw [heq] at h
-  exact h
-
 /-- The off-state code is independent of the empirical frequency row; this
 is the code-level input needed for random-family Bernstein. -/
 theorem offStateData_indep_empiricalRow (M : DiscountedMDP State Action) (N : ℕ)
@@ -113,45 +96,6 @@ theorem offStateData_indep_empiricalRow (M : DiscountedMDP State Action) (N : �
   have h := (offStateData_indep_removedRow M N x a).comp measurable_id hm
   change IndepFun (offStateData (Action := Action) x N)
       (fun data : Samples State Action N ↦ empiricalRow N hN data x a) (samplingLaw M N) at h
-  exact h
-
-/-- Fixed-u optimal values are also independent of the empirical frequency
-row itself, viewed with the discrete measurable structure. -/
-theorem fixedAbsorbingValue_indep_empiricalRow (M : DiscountedMDP State Action) (N : ℕ)
-    (hN : 0 < N) (x : State) (a : Action) (u : ℝ) (hu0 : 0 ≤ u)
-    (hu1 : u ≤ 1 / (1 - M.discount)) :
-    IndepFun (fixedAbsorbingValue M N hN x u hu0 hu1)
-      (fun data : Samples State Action N ↦ empiricalRow N hN data x a) (samplingLaw M N) := by
-  have hm : Measurable (fun ω : Fin N → State ↦ FiniteDistribution.empiricalRow N hN ω) := measurable_of_countable _
-  have h := (fixedAbsorbingValue_indep_removedRow M N hN x a u hu0 hu1).comp measurable_id hm
-  change IndepFun (fixedAbsorbingValue M N hN x u hu0 hu1)
-      (fun data : Samples State Action N ↦ empiricalRow N hN data x a) (samplingLaw M N) at h
-  exact h
-
-/-- Every fixed finite indexed family of absorbing optimal values is jointly
-independent of the removed empirical row. The parameters are fixed before
-sampling; the index chosen after observing data is not asserted independent. -/
-theorem fixedAbsorbingValue_family_indep_empiricalRow
-    {ι : Type*} [Fintype ι] (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (x : State) (a : Action) (u : ι → ℝ) (hu0 : ∀ j, 0 ≤ u j)
-    (hu1 : ∀ j, u j ≤ 1 / (1 - M.discount)) :
-    IndepFun (fun data : Samples State Action N ↦ fun j : ι ↦
-      fixedAbsorbingValue M N hN x (u j) (hu0 j) (hu1 j) data)
-      (fun data ↦ empiricalRow N hN data x a) (samplingLaw M N) := by
-  let F : OffStateCode (Action := Action) x N → ι → State → ℝ := fun code j ↦
-    fixedAbsorbingValue M N hN x (u j) (hu0 j) (hu1 j) (completeOffStateData x N code)
-  have hF : Measurable F := measurable_of_countable _
-  have hrow : Measurable (fun ω : Fin N → State ↦ FiniteDistribution.empiricalRow N hN ω) := measurable_of_countable _
-  have h := (offStateData_indep_removedRow M N x a).comp hF hrow
-  have heq : F ∘ offStateData (Action := Action) x N =
-      (fun data : Samples State Action N ↦ fun j : ι ↦
-        fixedAbsorbingValue M N hN x (u j) (hu0 j) (hu1 j) data) := by
-    funext data j
-    exact (fixedAbsorbingValue_factors_offState M N hN x (u j) (hu0 j) (hu1 j) data).symm
-  rw [heq] at h
-  change IndepFun (fun data : Samples State Action N ↦ fun j : ι ↦
-      fixedAbsorbingValue M N hN x (u j) (hu0 j) (hu1 j) data)
-      (fun data ↦ empiricalRow N hN data x a) (samplingLaw M N) at h
   exact h
 
 end StatisticalRL.ModelBasedPolicyLearning
