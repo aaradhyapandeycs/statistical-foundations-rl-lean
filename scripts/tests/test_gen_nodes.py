@@ -377,6 +377,58 @@ class GenNodesTest(unittest.TestCase):
         (self.tmp / "docs/COVERAGE.md").write_text(COVERAGE.replace("refuted", "noted"))
         self.assertEqual(gn.main(["--root", str(self.tmp), "--check"]), 1)
 
+    def write_review(self, *edges):
+        rec = {"schema_version": 1, "edges": [
+            {"owner": o, "target": t, "file": "chapters/prelim.tex", "line": ln, "verdict": v, "evidence": "",
+             "source": src} for o, t, ln, v, src in edges]}
+        (self.tmp / gn.REVIEW_PATH).parent.mkdir(parents=True, exist_ok=True)
+        (self.tmp / gn.REVIEW_PATH).write_text(json.dumps(rec))
+
+    def test_review_verdicts_attach_and_unreviewed_stays_unreviewed(self):
+        self.write_review(("label:lem:a", "label:lem:b", 25, "proof-dependency", "candidate"),
+                          ("label:thm:c", "label:lem:a", 80, "comparison", "candidate"))
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        ab = n["label:lem:a"]["uses"][0]
+        self.assertTrue(ab["reviewed"])
+        self.assertEqual(ab["verdict"], "proof-dependency")
+        uses_c = {u["id"]: u for u in n["label:thm:c"]["uses"]}
+        self.assertEqual(uses_c["label:lem:a"]["verdict"], "comparison")
+        self.assertFalse(gn.is_dependency(uses_c["label:lem:a"]))
+        self.assertFalse(uses_c["label:lem:d"]["reviewed"])
+        self.assertNotIn("verdict", uses_c["label:lem:d"])
+        self.assertTrue(gn.is_dependency(uses_c["label:lem:d"]))  # fail-safe: unreviewed still counts
+        s = data["summary"]
+        self.assertEqual((s["uses_edges"], s["uses_edges_reviewed"]), (4, 2))
+        self.assertEqual(s["uses_edges_by_verdict"]["comparison"], 1)
+
+    def test_wrong_target_is_kept_but_not_a_dependency(self):
+        self.write_review(("label:thm:c", "label:lem:d", 85, "wrong-target", "candidate"))
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        u = {x["id"]: x for x in n["label:thm:c"]["uses"]}["label:lem:d"]
+        self.assertEqual(u["verdict"], "wrong-target")
+        self.assertFalse(gn.is_dependency(u))
+        self.assertNotIn("waits on Lemma 2.4", gn.render_next(data))
+        self.write_review()
+        self.assertIn("Lemma 2.4", gn.render_next(gn.build(gn.Reader(self.tmp))))
+
+    def test_edge_added_by_review(self):
+        self.write_review(("label:lem:b", "label:lem:d", 45, "proof-dependency", "added-by-review"))
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        added = [u for u in n["label:lem:b"]["uses"] if u["id"] == "label:lem:d"]
+        self.assertEqual([(u["via"], u["reviewed"], u["verdict"]) for u in added],
+                         [("review", True, "proof-dependency")])
+        self.assertEqual(data["summary"]["uses_edges_added_by_review"], 1)
+
+    def test_stale_review_entry_fails_check(self):
+        self.assertEqual(gn.main(["--root", str(self.tmp)]), 0)
+        self.write_review(("label:lem:a", "label:lem:b", 999, "proof-dependency", "candidate"))
+        self.assertEqual(gn.main(["--root", str(self.tmp), "--check"]), 1)
+        self.write_review(("label:lem:a", "label:lem:nope", 25, "proof-dependency", "added-by-review"))
+        self.assertEqual(gn.main(["--root", str(self.tmp), "--check"]), 1)
+
     def test_inventory_count_mismatch_fails(self):
         inv = inventory()
         inv["counts"]["by_kind"]["lemma"] = 4

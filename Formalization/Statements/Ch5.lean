@@ -28,7 +28,7 @@ import Formalization.Online.Bandit.UCBDefinitions
 /-! Corrected source-facing Chapter 5 statement index. -/
 open scoped BigOperators
 open MeasureTheory ProbabilityTheory
-namespace StatisticalRL.Statements
+namespace StatisticalRL.Statements.Ch5
 open StatisticalRL.OnlineRL
 local instance stateMeasurable (State : Type*) : MeasurableSpace State := ⊤
 
@@ -1352,4 +1352,4 @@ def Eq_PAC_from_regret_conversion_restricted : Prop :=
           ρ.expectation Vstar - ρ.expectation (V (πk ω sample k)) ≤
             C (Fintype.card State) (Fintype.card Action) (H + 1) * (K : ℝ) ^ (-α) / δ})
 
-end StatisticalRL.Statements
+end StatisticalRL.Statements.Ch5

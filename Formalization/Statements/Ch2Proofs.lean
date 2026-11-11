@@ -21,7 +21,7 @@ import Formalization.MDP.DiscountedOccupancy
 import Formalization.MDP.FiniteOccupancy
 import Formalization.MDP.FiniteQTrajectory
 
-namespace StatisticalRL.Statements
+namespace StatisticalRL.Statements.Ch2
 open MeasureTheory
 
 theorem Lemma2_2_holds : Lemma2_2 := by
@@ -277,4 +277,4 @@ theorem Eq_Bellman_finite_opt_holds : Eq_Bellman_finite_opt := by
     rw [List.drop_eq_getElem_cons i.isLt]
     exact actionMaximum_eq_ciSup _
 
-end StatisticalRL.Statements
+end StatisticalRL.Statements.Ch2

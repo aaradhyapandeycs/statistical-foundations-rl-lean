@@ -6,7 +6,7 @@ Source: arXiv:2610.41903v1, `lem:cum-var-ub-Hsquare-ucbvi-mean`,
 - Actual source export:
   `StatisticalRL.OnlineRL.finitePolicy_expected_cumulative_variance_le_horizon_sq`.
 - Full statement and applying proof:
-  `StatisticalRL.Statements.Lemma5_4` and `Lemma5_4_holds`.
+  `StatisticalRL.Statements.Ch5.Lemma5_4` and `Lemma5_4_holds`.
 - Seven qualified definition/proof modules compiled freshly; a seven-export
   probe passed with standard axioms. The Chapter 5 statement and proof modules
   then compiled; a probe printed five actual statement proofs, including the

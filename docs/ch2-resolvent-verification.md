@@ -4,7 +4,7 @@ Source: `lem:basic-property-matrix-notation-inf`, `chapters/prelim.tex:544–574
 Randomized policies are explicit in `prelim.tex:66`. The book defines its matrix
 norm as maximum row-wise absolute sum in `chapters/intro.tex:204–209`.
 The source export is `StatisticalRL.DiscountedMDP.policyMatrices_resolvent_properties`;
-the index definitions are `StatisticalRL.Statements.Lemma2_3` and `Lemma2_3_holds`.
+the index definitions are `StatisticalRL.Statements.Ch2.Lemma2_3` and `Lemma2_3_holds`.
 
 For both policy matrices the result includes a genuine inverse, exact Neumann
 expansion, all-ones action, row norm equality and nonnegative entries. Model fields

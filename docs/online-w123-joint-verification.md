@@ -2,7 +2,7 @@
 
 The endpoint is the complete corrected/restricted Lemma 5.7,
 `lem:bound-W1-W2-ucbvi-proof`, `chapters/onlineRL.tex:925–957`.
-`StatisticalRL.Statements.Lemma5_7_K2_corrected` expands all three actual
+`StatisticalRL.Statements.Ch5.Lemma5_7_K2_corrected` expands all three actual
 W sums, T6 quantities, coefficients, iota, confidence allocation and one
 joint probability event. Its proof applies the existing joint export.
 Scope is K≥2 (C12), the finite zero-count completion (C8), fixed deterministic

@@ -5,8 +5,8 @@ Source: arXiv:2610.41903v1, Lemma 5.3, `lem:sum-inv-Nhk-ucbvi`,
 `393a4d26c228d833a27e54a4913489e499d2143f2f9b80ebf3c55d9a9ccb8c53`.
 
 - Actual export: `StatisticalRL.OnlineRL.onlineSequential_maxOne_reciprocal_count_budget`.
-- Statement: `StatisticalRL.Statements.Lemma5_3`.
-- Applying proof: `StatisticalRL.Statements.Lemma5_3_holds`.
+- Statement: `StatisticalRL.Statements.Ch5.Lemma5_3`.
+- Applying proof: `StatisticalRL.Statements.Ch5.Lemma5_3_holds`.
 - The denominator is the printed max(N,1), including first-visit mass;
   K≥2 and the source sum order are preserved. The arbitrary finite planner/
   path formulation generalizes the printed algorithm-specific counting

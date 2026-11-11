@@ -296,7 +296,7 @@ for one fixed deterministic tie rule. The printed zero-count behavior remains
 undefined, and the proposed convention is not an author-approved correction.
 
 The corrected deterministic telescope is now proved as
-`StatisticalRL.Statements.Lemma5_6_corrected`: it assigns H as the finite
+`StatisticalRL.Statements.Ch5.Lemma5_6_corrected`: it assigns H as the finite
 analysis charge at zero visits and agrees with the printed bonus at
 positive counts. Its generic statement permits every greedy maximizing
 tie choice. The supporting actual-law probability decomposition retains
@@ -322,7 +322,7 @@ The corrected MVP planner therefore uses the same explicit Q=H branch at
 zero stored count and retains the initialized uniform row. Positive counts
 use the printed capped bonus; counts one and two saturate under the proved
 constant/logarithm conditions. The actual-law corrected displayed optimism
-claim is now proved as `StatisticalRL.Statements.MVP_optimism_corrected`.
+claim is now proved as `StatisticalRL.Statements.Ch5.MVP_optimism_corrected`.
 It also discloses the C13 power-of-two trigger interpretation, C16 reciprocal
 confidence allocation and fixed deterministic greedy tie. No fictitious
 observation or independence-at-random-count premise is introduced. This is
@@ -332,7 +332,7 @@ corrected fixed-profile decoupling and main MVP regret are now proved separately
 [verification](online-MVP-actual-optimism-verification.md).
 
 The actual-law corrected MVP variance lemma is also proved as
-`StatisticalRL.Statements.Lemma5_15_corrected`. Its T2 uses the printed
+`StatisticalRL.Statements.Ch5.Lemma5_15_corrected`. Its T2 uses the printed
 bonus at positive stored counts and an explicit analysis charge H at zero.
 The printed bonus divides by the zero stored count; no equivalence to an
 unwritten max-one denominator convention is asserted. The final export
@@ -715,7 +715,7 @@ The final sum bound is true for the prose-intended power-of-two rule. A dyadic-b
 actual per-successor pending counters and resets, proves the stored-batch
 closed form and chronological visit-rank budget, and sums over rows/stages.
 It yields the printed `4SAH log₂K` for every K≥2. The full statement is
-`StatisticalRL.Statements.Lemma5_12_powerOfTwo_corrected`; it covers arbitrary realized traces,
+`StatisticalRL.Statements.Ch5.Lemma5_12_powerOfTwo_corrected`; it covers arbitrary realized traces,
 so it applies to the corrected dyadic algorithm without an assumed probability event
 or policy restriction. The first-visit max-one charge is retained.
 The corrected suffix discloses the trigger change; the alternate proof does
@@ -757,7 +757,7 @@ A valid repair replaces the centered-square coefficient 1 by 4. Since
 |X−E[X]|≤2Cmax, its fourth centered moment is at most 4Cmax²Var(X), and
 Var((X−E[X])²) is at most that fourth moment. The general probability-space
 repair is proved in [SquaredVarianceBounds.lean](../Formalization/Probability/SquaredVarianceBounds.lean)
-and indexed as `StatisticalRL.Statements.Lemma5_22_corrected`. Measurability
+and indexed as `StatisticalRL.Statements.Ch5.Lemma5_22_corrected`. Measurability
 and the source absolute bound suffice; integrability is derived in Lean.
 The printed source remains unchanged and its false general clause is not
 certified.
@@ -794,7 +794,7 @@ actual pre-episode cumulative count has an index below it. It counts the
 finite row-table profiles inside a rowwise monotone ceiling family, applies
 stars-and-bars, and proves the same printed bound
 `(4SAHK)^(SAH log₂K+1)`. K=1 is handled by the all-zero profile. The full
-statement `StatisticalRL.Statements.Lemma5_11` counts a superset of algorithm
+statement `StatisticalRL.Statements.Ch5.Lemma5_11` counts a superset of algorithm
 profiles from all finite episode-by-stage state-action row tables; the
 source large-K premise is retained. The unchanged final conclusion is
 certified, while the literal printed intermediate inclusion is not.
@@ -925,8 +925,8 @@ See [independent review](critic-online-MVP-uniform-confidence.md).
 The terminal-zero repair has now been implemented and proved through the
 actual retained-history learner, future-dependent family membership,
 per-stage row-rank identities and sequential transcript-law transport.
-`StatisticalRL.Statements.Lemma5_14_corrected` and
-`StatisticalRL.Statements.MVP_regret_corrected` consume that corrected bridge
+`StatisticalRL.Statements.Ch5.Lemma5_14_corrected` and
+`StatisticalRL.Statements.Ch5.MVP_regret_corrected` consume that corrected bridge
 without assuming its conclusion or probability. This does not validate the
 printed terminal-H program (the printed counterexample is machine-checked above). The related final regret statement is Theorem 5.10, source label
 `thm-mvp-regret` (`onlineRL.tex:1339–1352`); this auxiliary identity issue does
