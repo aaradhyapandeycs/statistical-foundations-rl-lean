@@ -136,18 +136,4 @@ theorem visitCount_lower_tail
         field_simp
         ring
 
-/-- The state-action form used by the source: `Y i = (s_i, a_i)` and
-`N_{s,a}` counts the pair `(s, a)`. -/
-theorem stateActionCount_lower_tail
-    {S A : Type*} [MeasurableSpace S] [MeasurableSingletonClass S] [DecidableEq S]
-    [MeasurableSpace A] [MeasurableSingletonClass A] [DecidableEq A]
-    {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (ρ : Measure (S × A)) [IsProbabilityMeasure ρ] (N : ℕ) (Y : Fin N → Ω → S × A)
-    (hYm : ∀ i, Measurable (Y i)) (hYind : iIndepFun Y μ)
-    (hYlaw : ∀ i, HasLaw (Y i) ρ μ) (s : S) (a : A) :
-    μ.real {ω | ((∑ i, if Y i ω = (s, a) then 1 else 0 : ℕ) : ℝ) <
-        (N : ℝ) * ρ.real {(s, a)} / 2} ≤
-      Real.exp (-((N : ℝ) * ρ.real {(s, a)} / 8)) :=
-  visitCount_lower_tail μ ρ N Y hYm hYind hYlaw (s, a)
-
 end StatisticalRL.OfflineRL

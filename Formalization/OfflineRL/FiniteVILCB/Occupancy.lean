@@ -65,10 +65,6 @@ theorem trajSnoc_init {H : ℕ} (τ : Traj S A H) (a : A) (s' : S) (i : Fin (H +
     (trajSnoc H (τ, a, s')).1 i.castSucc = τ.1 i := by
   simp [trajSnoc, Fin.snoc_castSucc]
 
-theorem trajSnoc_act {H : ℕ} (τ : Traj S A H) (a : A) (s' : S) (h : Fin H) :
-    (trajSnoc H (τ, a, s')).2 h.castSucc = τ.2 h := by
-  simp [trajSnoc, Fin.snoc_castSucc]
-
 theorem trajSnoc_lastAct {H : ℕ} (τ : Traj S A H) (a : A) (s' : S) :
     (trajSnoc H (τ, a, s')).2 (Fin.last H) = a := by
   simp [trajSnoc, Fin.snoc_last]

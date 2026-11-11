@@ -45,14 +45,4 @@ theorem lcbFallback_regret {N : ℕ} (r : Arm → ℝ) (hr0 : ∀ b, 0 ≤ r b)
     rw [if_neg (by omega)]
   linarith [hS.1]
 
-/-- The fallback and the active formula (under Lean's real `x/0 = 0`) give
-different LCB values at an unseen arm. -/
-theorem lcbFallback_ne_active_example {N : ℕ} (r : Arm → ℝ) (a : Fin N → Arm)
-    (z : Fin N → ℝ) (δ : ℝ) (b : Arm) (hb : armCount a b = 0) :
-    lcbFallback r a z δ b ≠ empiricalArmMean r a z b -
-      armRadius (Fintype.card Arm) δ (armCount a b) := by
-  unfold lcbFallback empiricalArmMean armRadius
-  rw [if_pos hb, hb]
-  simp
-
 end StatisticalRL.OfflineRL

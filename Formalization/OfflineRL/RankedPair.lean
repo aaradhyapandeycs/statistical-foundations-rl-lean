@@ -9,11 +9,6 @@ namespace StatisticalRL.OfflineRL.RankedPair
 
 variable {Row : Type*} [DecidableEq Row] {n : ℕ}
 
-/-- Number of indices `j` with `j < m` (as naturals) whose label is `r`: the
-visit count of `r` in the length-`m` prefix. -/
-def prefixVisitCount (l : Fin n → Row) (m : ℕ) (r : Row) : ℕ :=
-  (Finset.univ.filter fun j : Fin n => j.val < m ∧ l j = r).card
-
 /-- Strict-past visits of index `i`: earlier indices with the same label. -/
 def pastVisits (l : Fin n → Row) (i : Fin n) : Finset (Fin n) :=
   Finset.univ.filter fun j : Fin n => j.val < i.val ∧ l j = l i
@@ -21,11 +16,6 @@ def pastVisits (l : Fin n → Row) (i : Fin n) : Finset (Fin n) :=
 /-- Strict-past visit rank of `i`. -/
 def visitRank (l : Fin n → Row) (i : Fin n) : ℕ :=
   (pastVisits l i).card
-
-/-- Exact cardinality identity: the rank of `i` is the visit count of its own
-label in the prefix strictly before `i`. -/
-theorem visitRank_eq_prefixVisitCount (l : Fin n → Row) (i : Fin n) :
-    visitRank l i = prefixVisitCount l i.val (l i) := rfl
 
 /-- The rank is at most the position. -/
 theorem visitRank_le_val (l : Fin n → Row) (i : Fin n) : visitRank l i ≤ i.val := by

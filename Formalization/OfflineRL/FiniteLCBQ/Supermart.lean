@@ -114,8 +114,6 @@ local instance smMT (H : ℕ) : MeasurableSpace (Traj S A H) := ⊤
 variable {H : ℕ} (E : Fin H → EnvironmentStage S A) (πb : Fin H → StationaryPolicy S A)
   (ρb : FiniteDistribution S)
 
-theorem trajProb_nonneg' (τ : Traj S A H) : 0 ≤ trajProb E πb ρb τ := trajProb_nonneg E πb ρb τ
-
 /-- **Stage-triple law**: `E[φ(s_h, a_h, s_{h+1})] = Σ_{s,a} d^b_h(s,a) Σ_{s'} P_h(s'|s,a) φ(s,a,s')`. -/
 theorem sum_traj_triple (h : Fin H) (φ : S → A → S → ℝ) :
     ∑ τ, trajProb E πb ρb τ * φ (τ.1 h.castSucc) (τ.2 h) (τ.1 h.succ) =
