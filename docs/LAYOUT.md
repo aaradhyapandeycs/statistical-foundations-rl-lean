@@ -200,7 +200,8 @@ additionally leaves `docs/critic-*` and `docs/builder-*` untouched. `--lean-comm
 comments and docstrings only. A map entry may carry `"allow_statements_source": true` to move a non-index module out of
 `Statements/`; the index files themselves (`ChN`, `ChNProofs`, `QLearningProofs`) are always refused. The 2026-11-10 move
 used `--all-docs --lean-comments`, so review records now cite post-move paths (prose that names old file stems
-was left as is).
+was left as is). A sha256 that a review record gives next to a rewritten path is the hash of the file as reviewed,
+before the move; the moved file differs from it in import and comment lines only.
 
 - It rewrites only header `import` lines in `Formalization/**/*.lean`, `Formalization.lean` and `Audit.lean`;
   `Formalization/<path>.lean` links and `Formalization.<module>` names in `docs/COVERAGE.md`,
