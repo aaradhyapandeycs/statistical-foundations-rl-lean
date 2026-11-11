@@ -21,14 +21,8 @@ noncomputable local instance outcomeDecidableEq : DecidableEq Outcome := Classic
 
 /-- Extensionality for the project's finite probability-vector structure. -/
 theorem onlineMVP_finiteDistribution_ext {Ω : Type*} [Fintype Ω]
-    (p q : FiniteDistribution Ω) (h : ∀ x, p.prob x = q.prob x) : p = q := by
-  cases p with
-  | mk p hp hs =>
-    cases q with
-    | mk q hq hsum =>
-      have hpq : p = q := funext h
-      cases hpq
-      rfl
+    (p q : FiniteDistribution Ω) (h : ∀ x, p.prob x = q.prob x) : p = q :=
+  FiniteDistribution.ext (funext h)
 
 /-- A finite-list indicator sum is the count of the selected value. -/
 theorem onlineMVP_list_count_eq_fin_indicator_sum (xs : List Outcome) (x : Outcome) :

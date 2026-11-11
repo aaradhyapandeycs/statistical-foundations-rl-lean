@@ -133,9 +133,8 @@ theorem stateMarg_le_one (E : Fin H → EnvironmentStage S A) (π : Fin H → St
   have := trajProb_nonneg E π ρ τ
   split_ifs <;> nlinarith
 
-theorem prob_le_one {X : Type*} [Fintype X] (d : FiniteDistribution X) (x : X) : d.prob x ≤ 1 := by
-  rw [← d.sum_prob]
-  exact Finset.single_le_sum (fun y _ ↦ d.prob_nonneg y) (Finset.mem_univ x)
+theorem prob_le_one {X : Type*} [Fintype X] (d : FiniteDistribution X) (x : X) : d.prob x ≤ 1 :=
+  FiniteDistribution.prob_le_one d x
 
 /-- `C⋆ ≥ 1`. -/
 theorem one_le_conc (hH : 0 < H) (E : Fin H → EnvironmentStage S A)

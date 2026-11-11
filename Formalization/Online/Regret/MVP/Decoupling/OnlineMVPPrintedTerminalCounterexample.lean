@@ -57,9 +57,8 @@ def printedFixedProfileFamily [Nonempty Action] (H : ℕ) (L c₁ c₂ : ℝ) (K
     {fun _ => 0}
 
 theorem finiteDistribution_expectation_const (P : FiniteDistribution State) (c : ℝ) :
-    P.expectation (fun _ => c) = c := by
-  unfold FiniteDistribution.expectation
-  rw [← Finset.sum_mul, P.sum_prob, one_mul]
+    P.expectation (fun _ => c) = c :=
+  FiniteDistribution.expectation_const P c
 
 /-- Scalar core: against the continuation `H·1`, any nonnegative reward and any nonnegative
 bonus clip to `H`, because `⟨P̂, H·1⟩ = H` for every probability vector `P̂`. -/

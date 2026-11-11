@@ -36,22 +36,14 @@ open StatisticalRL.TemporalDifference
 
 /-- Two finite probability vectors with the same masses are equal. -/
 theorem finiteDistribution_ext {Ω : Type*} [Fintype Ω] {d e : FiniteDistribution Ω}
-    (h : ∀ x, d.prob x = e.prob x) : d = e := by
-  obtain ⟨p, hp0, hp1⟩ := d
-  obtain ⟨q, hq0, hq1⟩ := e
-  have : p = q := funext h
-  subst this
-  rfl
+    (h : ∀ x, d.prob x = e.prob x) : d = e :=
+  FiniteDistribution.ext (funext h)
 
 variable {State Action : Type*} [Fintype State] [Fintype Action] [Subsingleton Action]
 
 /-- With one action, every probability vector on actions is the same. -/
-theorem finiteDistribution_eq_of_subsingleton (d e : FiniteDistribution Action) : d = e := by
-  have hprob : ∀ (d : FiniteDistribution Action) (a : Action), d.prob a = 1 := by
-    intro d a
-    have h := d.sum_prob
-    rwa [Fintype.sum_subsingleton _ a] at h
-  exact finiteDistribution_ext fun a ↦ by rw [hprob d a, hprob e a]
+theorem finiteDistribution_eq_of_subsingleton (d e : FiniteDistribution Action) : d = e :=
+  FiniteDistribution.eq_of_subsingleton d e
 
 /-- With one action `a`, the policy transition row is the row of `a`. -/
 theorem policyTransition_singleAction (M : DiscountedMDP State Action)

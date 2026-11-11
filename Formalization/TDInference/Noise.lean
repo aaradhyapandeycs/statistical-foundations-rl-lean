@@ -336,9 +336,8 @@ theorem tdSecondMoment_le_sq [DecidableEq State] (M : DiscountedMDP State Action
 
 /-- `μ(s) ≤ 1`. (Duplicates `DiscountedMDP.finiteDistribution_prob_le_one` in
 `Formalization/MDP/DiscountedOccupancy.lean`; to be deduplicated at integration.) -/
-theorem prob_le_one (μ : FiniteDistribution State) (s : State) : μ.prob s ≤ 1 := by
-  rw [← μ.sum_prob]
-  exact Finset.single_le_sum (fun s _ ↦ μ.prob_nonneg s) (Finset.mem_univ s)
+theorem prob_le_one (μ : FiniteDistribution State) (s : State) : μ.prob s ≤ 1 :=
+  FiniteDistribution.prob_le_one μ s
 
 /-- The second-moment recursion: if `q_t ≤ Q` coordinatewise and `μmin ≤ μ(s)`, then
 `q_{t+1}(s) ≤ (1 − μmin(1−γ)η_{t+1}) Q + (B² + 2BD) η_{t+1}²`. -/

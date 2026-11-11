@@ -24,10 +24,8 @@ open StatisticalRL.Online.Hedge StatisticalRL.AdaptiveKL
 variable {m S H : ℕ} {A : Fin m → ℕ}
 
 theorem FiniteDistribution.ext_prob {Ω : Type*} [Fintype Ω] {d d' : FiniteDistribution Ω}
-    (h : ∀ x, d.prob x = d'.prob x) : d = d' := by
-  cases d; cases d'
-  simp only [FiniteDistribution.mk.injEq]
-  exact funext h
+    (h : ∀ x, d.prob x = d'.prob x) : d = d' :=
+  FiniteDistribution.ext (funext h)
 
 /-! ### Stage-level Bellman value and second moments -/
 
