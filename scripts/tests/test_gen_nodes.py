@@ -67,6 +67,13 @@ LEDGER = {"certified_named_results": [
         "thm:c": {"lean": ["StatisticalRL.Foo.not_thm2_3_printed"], "paper": False, "reading": "as printed",
                   "issues": ["C7"]}}}
 
+CLASSES = {"definitions": {"A": "a", "B": "b", "C": "c", "D": "d"},
+           "items": [{"item": "Lemma 2.1", "class": "B", "labels": ["lem:a"], "record": "Erratum 1"},
+                     {"item": "Theorem 2.3", "class": "A", "labels": ["thm:c", "eq:nowhere"], "record": None},
+                     {"item": "Lemma 2.1 again", "class": "D", "labels": ["lem:a"], "record": None}],
+           "errata_entries": {"1": "B"}}
+CLASSES["items"][1]["labels"] = ["thm:c"]
+
 CH2 = '''namespace StatisticalRL.Statements
 
 /-- `lem:a`, `chapters/prelim.tex:10–20`. -/
@@ -117,6 +124,7 @@ class GenNodesTest(unittest.TestCase):
         files = {"docs/source-inventory.json": json.dumps(inventory()),
                  "docs/named-result-status.json": json.dumps(LEDGER),
                  "docs/COVERAGE.md": COVERAGE,
+                 "docs/issue-classes.json": json.dumps(CLASSES),
                  "docs/SOURCE-ISSUES.md": "## Candidate C7: something\n",
                  "Formalization/Statements/Ch2.lean": CH2,
                  "Formalization/Statements/Ch2Proofs.lean": CH2_PROOFS}
@@ -163,6 +171,35 @@ class GenNodesTest(unittest.TestCase):
         for nid in ("label:eq:p", "label:eq:q"):
             self.assertEqual([e["name"] for e in n[nid]["statement_entries"]], ["StatisticalRL.Statements.Eq_p_q"])
             self.assertEqual((n[nid]["statement_status"], n[nid]["proof_status"]), ("printed", "proved"))
+
+    def write_classes(self, rec):
+        (self.tmp / "docs/issue-classes.json").write_text(json.dumps(rec))
+
+    def test_issue_classes_tag_nodes_and_summary(self):
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}
+        self.assertEqual(n["label:lem:a"]["issue_classes"], ["B", "D"])
+        self.assertEqual(n["label:thm:c"]["issue_classes"], ["A"])
+        self.assertEqual(n["label:lem:b"]["issue_classes"], [])
+        ic = data["summary"]["issue_classes"]
+        self.assertEqual(ic["by_item"], {"A": 1, "B": 1, "C": 0, "D": 1})
+        self.assertEqual(ic["by_entry"], {"A": 0, "B": 1, "C": 0, "D": 0})
+        self.assertEqual(ic["by_node"], {"A": 1, "B": 1, "C": 0, "D": 1})
+
+    def test_issue_classes_reject_bad_class_stale_label_and_untracked(self):
+        for mutate, msg in (
+                (lambda r: r["items"][0].update({"class": "E"}), "allowed"),
+                (lambda r: r["items"][0].update({"labels": ["lem:gone"]}), "not in the inventory"),
+                (lambda r: r["items"][0].update({"labels": ["id:no-such-id"]}), "not in the inventory"),
+                (lambda r: r["items"][0].update({"labels": ["alg:x"]}), "no label of item"),
+                (lambda r: r["errata_entries"].update({"2": "Z"}), "errata_entries"),
+                (lambda r: r["definitions"].pop("D"), "definitions")):
+            rec = json.loads(json.dumps(CLASSES))
+            mutate(rec)
+            self.write_classes(rec)
+            with self.assertRaises(SystemExit) as cm:
+                gn.build(gn.Reader(self.tmp))
+            self.assertIn(msg, str(cm.exception))
 
     def test_refuted_needs_a_cited_refutation(self):
         cov = COVERAGE.replace(" `not_lemma2_4_printed`", "")
