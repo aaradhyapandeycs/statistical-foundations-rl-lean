@@ -26,11 +26,6 @@ namespace FiniteDistribution
 
 variable {Ω Ξ : Type*} [Fintype Ω] [Fintype Ξ]
 
-@[simp]
-theorem expectation_const (d : FiniteDistribution Ω) (c : ℝ) :
-    d.expectation (fun _ ↦ c) = c := by
-  rw [expectation, ← Finset.sum_mul, d.sum_prob, one_mul]
-
 theorem expectation_add (d : FiniteDistribution Ω) (f g : Ω → ℝ) :
     d.expectation (fun x ↦ f x + g x) = d.expectation f + d.expectation g := by
   simp only [expectation, mul_add, Finset.sum_add_distrib]

@@ -78,10 +78,8 @@ theorem choose_congr {α : Sort*} {p q : α → Prop} (hpq : p = q) (hp : ∃ x,
   subst hpq; rfl
 
 theorem finiteDistribution_ext {Ω : Type*} [Fintype Ω] {d d' : FiniteDistribution Ω}
-    (h : ∀ x, d.prob x = d'.prob x) : d = d' := by
-  cases d; cases d'
-  simp only [FiniteDistribution.mk.injEq]
-  exact funext h
+    (h : ∀ x, d.prob x = d'.prob x) : d = d' :=
+  FiniteDistribution.ext (funext h)
 
 theorem brPolicy_congr (G : MarkovGame m S H A) (π π' : JointPolicy m S A) (i : Fin m)
     (hAi : 0 < A i) (h : ℕ) (hπ : ∀ t, h ≤ t → π t = π' t) :

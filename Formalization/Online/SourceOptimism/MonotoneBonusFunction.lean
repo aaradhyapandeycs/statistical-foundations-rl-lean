@@ -38,12 +38,8 @@ noncomputable def monotoneBonusFunction (p : FiniteDistribution Ω) (c₁ H ι n
   p.expectation v + max (c₁ * Real.sqrt (p.variance v * ι / n)) (c₁ ^ 2 * H * ι / n)
 
 /-- A finite probability vector has a nonempty carrier. -/
-theorem nonempty_of_finiteDistribution (p : FiniteDistribution Ω) : Nonempty Ω := by
-  by_contra h
-  rw [not_nonempty_iff] at h
-  have := p.sum_prob
-  rw [Finset.univ_eq_empty, Finset.sum_empty] at this
-  exact zero_ne_one this
+theorem nonempty_of_finiteDistribution (p : FiniteDistribution Ω) : Nonempty Ω :=
+  p.nonempty
 
 /-- Lemma A of the derivative-free route: moving up inside `[0, H]` can lower the variance by at
 most `2H` times the increase of the mean. -/

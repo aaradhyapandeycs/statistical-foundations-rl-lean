@@ -37,9 +37,8 @@ section Expectation
 
 variable {Ω : Type*} [Fintype Ω]
 
-theorem prob_le_one (d : FiniteDistribution Ω) (x : Ω) : d.prob x ≤ 1 := by
-  rw [← d.sum_prob]
-  exact Finset.single_le_sum (fun y _ => d.prob_nonneg y) (Finset.mem_univ x)
+theorem prob_le_one (d : FiniteDistribution Ω) (x : Ω) : d.prob x ≤ 1 :=
+  FiniteDistribution.prob_le_one d x
 
 /-- Expectation under a law with an atom of mass one. -/
 theorem expectation_of_prob_eq_one (d : FiniteDistribution Ω) (x : Ω) (hx : d.prob x = 1)

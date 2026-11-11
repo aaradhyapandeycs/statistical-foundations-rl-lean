@@ -45,10 +45,8 @@ theorem occupancyJointAt_eq (M : DiscountedMDP State Action) (π : StationaryPol
     DecisionStage.stateOccupancy, stationaryStage]
 
 theorem finiteDistribution_prob_le_one {Ω : Type*} [Fintype Ω]
-    (d : FiniteDistribution Ω) (x : Ω) : d.prob x ≤ 1 := by
-  calc
-    d.prob x ≤ ∑ y, d.prob y := Finset.single_le_sum (fun y _ ↦ d.prob_nonneg y) (Finset.mem_univ x)
-    _ = 1 := d.sum_prob
+    (d : FiniteDistribution Ω) (x : Ω) : d.prob x ≤ 1 :=
+  FiniteDistribution.prob_le_one d x
 
 theorem occupancyStateAt_nonneg (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (ρ : FiniteDistribution State) (t : ℕ) (s : State) : 0 ≤ M.occupancyStateAt π ρ t s :=

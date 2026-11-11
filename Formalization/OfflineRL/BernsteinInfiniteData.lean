@@ -86,12 +86,8 @@ end Input
 namespace LeaveOneOut
 
 theorem finiteDistribution_ext {X : Type*} [Fintype X] {d₁ d₂ : FiniteDistribution X}
-    (h : ∀ x, d₁.prob x = d₂.prob x) : d₁ = d₂ := by
-  obtain ⟨p₁, _, _⟩ := d₁
-  obtain ⟨p₂, _, _⟩ := d₂
-  have : p₁ = p₂ := funext h
-  subst this
-  rfl
+    (h : ∀ x, d₁.prob x = d₂.prob x) : d₁ = d₂ :=
+  FiniteDistribution.ext (funext h)
 
 /-- A sum of indicators is a filter cardinality, for any decidability instance. -/
 theorem sum_ite_one_eq_card {ι : Type*} [Fintype ι] (p : ι → Prop) {inst : DecidablePred p} :

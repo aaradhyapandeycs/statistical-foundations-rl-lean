@@ -27,8 +27,8 @@ local instance rowMS : MeasurableSpace S := ⊤
 local instance rowMRow : MeasurableSpace (FiniteDistribution S) := ⊤
 
 theorem FiniteDistribution.ext_prob {d d' : FiniteDistribution S} (h : d.prob = d'.prob) :
-    d = d' := by
-  cases d; cases d'; simp only at h; subst h; rfl
+    d = d' :=
+  FiniteDistribution.ext h
 
 theorem expectation_div_const (d : FiniteDistribution S) (V : S → ℝ) (c : ℝ) :
     d.expectation (fun t ↦ V t / c) = d.expectation V / c := by

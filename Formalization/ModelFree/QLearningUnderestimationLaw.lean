@@ -17,11 +17,8 @@ local instance qLiftLawPairMeasurable :
     MeasurableSpace (State × Action) := ⊤
 
 theorem finiteDistribution_eq_of_prob {Ω : Type*} [Fintype Ω]
-    {d₁ d₂ : FiniteDistribution Ω} (h : d₁.prob = d₂.prob) : d₁ = d₂ := by
-  cases d₁
-  cases d₂
-  cases h
-  rfl
+    {d₁ d₂ : FiniteDistribution Ω} (h : d₁.prob = d₂.prob) : d₁ = d₂ :=
+  FiniteDistribution.ext h
 
 /-- Single-action mixture row: the policy row of the lifted chain is its unique
 transition row. -/

@@ -135,20 +135,8 @@ noncomputable def chiSquaredRobustOptimalValueAtDistribution
 
 /-- Probability vectors on a subsingleton carrier are extensionally equal. -/
 theorem finiteDistribution_eq_of_subsingleton [Subsingleton Action]
-    (p q : FiniteDistribution Action) : p = q := by
-  cases p with
-  | mk pp hp hsum =>
-    cases q with
-    | mk qp hq hqsum =>
-      simp only [FiniteDistribution.mk.injEq]
-      funext a
-      have hpp : pp a = 1 := by
-        simpa using (FiniteDistribution.prob_eq_one_of_subsingleton
-          (⟨pp,hp,hsum⟩ : FiniteDistribution Action) a)
-      have hqq : qp a = 1 := by
-        simpa using (FiniteDistribution.prob_eq_one_of_subsingleton
-          (⟨qp,hq,hqsum⟩ : FiniteDistribution Action) a)
-      rw [hpp, hqq]
+    (p q : FiniteDistribution Action) : p = q :=
+  FiniteDistribution.eq_of_subsingleton p q
 
 /-- Every stationary randomized policy is the same policy when there is only
 one action. -/

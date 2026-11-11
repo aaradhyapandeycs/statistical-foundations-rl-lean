@@ -97,8 +97,8 @@ theorem Alg.csec_nonneg (al : Alg m S H A) (G : MarkovGame m S H A)
   sum_nonneg fun a _ => mul_nonneg ((devDist _ i b).prob_nonneg a)
     (sum_nonneg fun s' _ => mul_nonneg ((G.transition _ s a).prob_nonneg s') (sq_nonneg _))
 
-theorem prob_le_one {n : ℕ} (p : FiniteDistribution (Fin n)) (b : Fin n) : p.prob b ≤ 1 := by
-  rw [← p.sum_prob]; exact single_le_sum (fun c _ => p.prob_nonneg c) (mem_univ _)
+theorem prob_le_one {n : ℕ} (p : FiniteDistribution (Fin n)) (b : Fin n) : p.prob b ≤ 1 :=
+  FiniteDistribution.prob_le_one p b
 
 /-- The averaged round variances are dominated by the variance of the output stage law. -/
 theorem Alg.avg_sJvar_le (al : Alg m S H A) (G : MarkovGame m S H A)
