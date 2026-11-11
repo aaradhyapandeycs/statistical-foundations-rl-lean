@@ -1,7 +1,7 @@
 import Formalization.Generative.FiniteHorizonPolicyPerturbation
 import Formalization.Probability.Variance
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! The true-variance-derived forcing/value recursion of Li et al. (61)-(62).
 Higher-level forcing is not constrained to the original reward interval.
 No growth estimate or conditional Lemma 9 premise is assumed. -/

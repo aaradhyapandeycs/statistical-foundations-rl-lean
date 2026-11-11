@@ -1,7 +1,7 @@
 import Formalization.Generative.FiniteHorizonGenerativeSampling
 import Mathlib.Data.List.OfFn
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! Actual empirical optimal continuation values factor through strictly
 future stage samples. No statistical sample-complexity bound is claimed. -/
 open MeasureTheory ProbabilityTheory

@@ -5,8 +5,8 @@ Public copy of the independent critic report; local paths removed.
 Reviewer: independent critic subagent, source only (no Lean compiled, no Lean edited). Date 2026-11-07.
 Inputs: `source/upstream/tex/chapters/marl.tex` sha256
 `8fadfab2c41ecad62349e27478adf2018047ad24a363c63a9918279238d12ffb` (matches the plan),
-`generative_model_model_based.tex:31`, `docs/SOURCE-ISSUES.md#C40`, `Formalization/Ch7Rest/MarlPrinted78.lean`,
-`Formalization/Ch7Rest/SingletonAction78.lean` (signatures only), the reused lemma statements in
+`generative_model_model_based.tex:31`, `docs/SOURCE-ISSUES.md#C40`, `Formalization/MultiAgent/LowerBound/PrintedStatement.lean`,
+`Formalization/MultiAgent/LowerBound/SingletonActionRefutation.lean` (signatures only), the reused lemma statements in
 `Online/LowerBound/{FamilyDefinitions,TestingTools}.lean`, `Probability/AdaptiveKL{,Definitions}.lean`,
 `Probability/Fano/ReverseTest.lean` (statements read, not re-verified), and the plan
 (the builder's private plan file).

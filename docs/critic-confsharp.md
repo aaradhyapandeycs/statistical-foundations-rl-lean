@@ -1,6 +1,6 @@
 # Critic: TDInferenceConfRegionSharp711 + six strengthened Ch7 entries (2026-11-10)
 
-Public copy, scrubbed (local paths and agent identifiers removed). Independent review and five-bin re-audit of `Formalization/Ch7Rest/TDInferenceConfRegionSharp711.lean` and the six oracle confidence-region statement entries strengthened to rate T^(-1/3). Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths and agent identifiers removed). Independent review and five-bin re-audit of `Formalization/TDInference/Confidence/RegionsSharp.lean` and the six oracle confidence-region statement entries strengthened to rate T^(-1/3). Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT; no changes required.
 Verdict: ACCEPT.

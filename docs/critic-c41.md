@@ -1,6 +1,6 @@
 # Critic report: federated per-agent read-off `eq:sample-size-per-agent-fedQ` (2026-11-10)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/Ch7Rest/FedSync79ReadOff.lean` and the drafted entry `Eq_sample_size_per_agent_fedQ_restricted`. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/Federated/Sync/PerAgentSampleSize.lean` and the drafted entry `Eq_sample_size_per_agent_fedQ_restricted`. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT-WITH-FIXES; findings 5, 6, 7 and 11 applied (docstring wording for large K, γ = 0 disclosure, SOURCE-ISSUES C41 addendum and COVERAGE row, direct import in `Formalization.lean`). The entry landed with no change to the Lean statement.
 
@@ -9,7 +9,7 @@ Verdict: **ACCEPT-WITH-FIXES** (fixes are wording/doc only; no Lean statement ch
 Entry verdict (five-bin): `Eq_sample_size_per_agent_fedQ_restricted` = **PASS-DISCLOSED** (conditional on finding 6 C41 addendum landing).
 
 ## Evidence (commands actually run; no lake, no git)
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/FedSync79ReadOff.lean` rc=0, no warnings (17 s).
+- `bash scripts/lean-local.sh Formalization/Federated/Sync/PerAgentSampleSize.lean` rc=0, no warnings (17 s).
 - `bash scripts/lean-local.sh Formalization/Statements/Ch7.lean` rc=0.
 - `bash scripts/lean-local.sh Formalization/Statements/Ch7Proofs.lean` rc=0.
 - `<local probe>` (#print axioms): exists_horizon_of_log_cube,
@@ -61,7 +61,7 @@ Theorem 7.9 (η = c_η K(1−γ)⁴ε²/log(SAKT/δ), τ obeying (106)) gives �
 9. **Wrapper** only applies `fedSynQ_readOff_restricted` with C = 270000216, c_η = 1/216 (`by norm_num` positivity);
    no second proof. Ch7.lean imports unchanged; Ch7Proofs imports FedSync79ReadOff.
 10. **Non-vacuity.** Hypotheses satisfiable (builder Probe: unitMDP, K=1, δ=1/2, ε=1); τ = 1 always meets (106).
-11. **Minor:** `Formalization.lean` does not import `Formalization.Ch7Rest.FedSync79ReadOff` directly (covered
+11. **Minor:** `Formalization.lean` does not import `Formalization.Federated.Sync.PerAgentSampleSize` directly (covered
     transitively via Ch7Proofs); add the direct import for library hygiene.
 
 ## Binder table — Eq_sample_size_per_agent_fedQ_restricted (Formalization/Statements/Ch7.lean:444)
@@ -85,12 +85,12 @@ Theorem 7.9 (η = c_η K(1−γ)⁴ε²/log(SAKT/δ), τ obeying (106)) gives �
 Counts: SOURCE 9, STANDING 2(+M), TYPING 1, DISCLOSED 1, EXCESS 0.
 
 ## Proposed COVERAGE row (~230)
-| Federated per-agent sample size, `eq:sample-size-per-agent-fedQ`, federated chapter lines 118–129 | `Eq_sample_size_per_agent_fedQ_restricted` (`Formalization/Ch7Rest/FedSync79ReadOff.lean`) | **Restricted variant proved.** From `Thm7_9_corrected` (c_η = 1/216, c_T = 10⁴): for K with c_η K(1−γ)⁴ε² ≤ log(SAK/δ), an explicit T has per-agent samples SA·T ≤ 270000216·SA/(K(1−γ)⁵ε²)·(1 + log(SAK/(δε(1−γ)²)))³ and FedSynQ is ε-accurate w.p. ≥ 1−δ for every τ obeying (106). The unrestricted read-off (all K) is not implied by the corrected theorem (`horizon_ge_exp_of_eta_le_one`: certified horizons grow like exp(c_ηK(1−γ)⁴ε²)) and is not refuted; open ([C41](SOURCE-ISSUES.md#C41)). Independently critic-checked. Not author-approved. |
+| Federated per-agent sample size, `eq:sample-size-per-agent-fedQ`, federated chapter lines 118–129 | `Eq_sample_size_per_agent_fedQ_restricted` (`Formalization/Federated/Sync/PerAgentSampleSize.lean`) | **Restricted variant proved.** From `Thm7_9_corrected` (c_η = 1/216, c_T = 10⁴): for K with c_η K(1−γ)⁴ε² ≤ log(SAK/δ), an explicit T has per-agent samples SA·T ≤ 270000216·SA/(K(1−γ)⁵ε²)·(1 + log(SAK/(δε(1−γ)²)))³ and FedSynQ is ε-accurate w.p. ≥ 1−δ for every τ obeying (106). The unrestricted read-off (all K) is not implied by the corrected theorem (`horizon_ge_exp_of_eta_le_one`: certified horizons grow like exp(c_ηK(1−γ)⁴ε²)) and is not refuted; open ([C41](SOURCE-ISSUES.md#C41)). Independently critic-checked. Not author-approved. |
 
 ## Proposed C41 addendum (append to SOURCE-ISSUES.md C41)
 Read-off (2026-11-10). The per-agent sample size eq:sample-size-per-agent-fedQ (`federated_RL.tex:118–129`) is
 proved only in the K-range c_η K(1−γ)⁴ε² ≤ log(SAK/δ), i.e. where the prescribed η is at most 1 already at T = 1
-(`Eq_sample_size_per_agent_fedQ_restricted`, `Formalization/Ch7Rest/FedSync79ReadOff.lean`, with explicit
+(`Eq_sample_size_per_agent_fedQ_restricted`, `Formalization/Federated/Sync/PerAgentSampleSize.lean`, with explicit
 Õ = 270000216·(1 + log(SAK/(δε(1−γ)²)))³). Because the corrected theorem needs η ≤ 1 and η grows linearly in K,
 any horizon it certifies satisfies T ≥ δ·exp(c_η K(1−γ)⁴ε²)/(SAK) for every c_η > 0
 (`horizon_ge_exp_of_eta_le_one`), so for K ≫ log(SAK/δ)/((1−γ)⁴ε²) the linear-speedup read-off does not follow

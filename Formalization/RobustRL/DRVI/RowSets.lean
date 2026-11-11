@@ -1,4 +1,4 @@
-import Formalization.RobustRL.Ch7.TrapInstance
+import Formalization.RobustRL.LowerBounds.TrapInstance
 import Formalization.ModelFree.QLearningRobustBallCompact
 import Mathlib.Topology.Order.Compact
 

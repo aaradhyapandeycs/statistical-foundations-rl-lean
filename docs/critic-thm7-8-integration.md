@@ -98,7 +98,7 @@ recorded output (`<builder working folder>/IntegrationProbe.out`) agrees. Grep o
 
 ### (d) Index and wrappers
 
-10. `Statements/Ch7.lean` section `Thm7_8` imports only `Formalization.Ch7Rest.Marl78Defs` (definitions; it
+10. `Statements/Ch7.lean` section `Thm7_8` imports only `Formalization.MultiAgent.LowerBound.Definitions` (definitions; it
     transitively provides `interactionLaw`, `MarkovGame`, `FiniteDistribution`), contains no proofs, writes
     every quantifier and hypothesis out with fully qualified names, and does not refer to another theorem's
     type. rfl-equal to the library Props (probe). Docstrings cite `thm:lower-marl`,
@@ -109,7 +109,7 @@ recorded output (`<builder working folder>/IntegrationProbe.out`) agrees. Grep o
 
 ### (e) SOURCE-ISSUES C40 "Corrected result"
 
-12. Accurate: module path `Formalization/Ch7Rest/Marl78Main.lean`, index names, `c₁ = 1/2048`, `c₂ = 2⁻³²`
+12. Accurate: module path `Formalization/MultiAgent/LowerBound/Main.lean`, index names, `c₁ = 1/2048`, `c₂ = 2⁻³²`
     (match `Marl78Main.lean`), strict rate, ≥ 1/4, correlated joint outputs, adaptive randomized sampling,
     known shared reward, ranges, the two m ≥ 3 readings, all D-disclosures, "Not author-approved".
 13. **E1 (overstatement).** "necessity of S, H, m ≥ 2 is argued in prose only (max A ≥ 2 is machine-checked)".

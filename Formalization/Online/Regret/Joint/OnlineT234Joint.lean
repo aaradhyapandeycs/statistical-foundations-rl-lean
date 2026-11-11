@@ -2,7 +2,7 @@ import Formalization.Online.Regret.Joint.T234Definitions
 import Formalization.Online.Regret.T2.OnlineT2SourceBound
 import Formalization.Online.Regret.T4.OnlineRegretT4SourceConfidence
 import Formalization.Online.Regret.T3.OnlineRegretT3SourceEvent
-import Formalization.Probability.OnlineT234ConfidenceAlgebra
+import Formalization.Online.Regret.Algebra.OnlineT234ConfidenceAlgebra
 
 /-! Joint source T2/T3/T4 bounds on one actual sequential experiment.
 Source: onlineRL.tex 988–1005, lem:bound-T234. The algorithm uses the explicit

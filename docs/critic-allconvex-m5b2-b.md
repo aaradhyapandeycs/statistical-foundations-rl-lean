@@ -1,6 +1,6 @@
 # CRITIC m5b2-B: pass-2 reservoir Lindeberg (T^-1/3), AC lemma / arithmetic / TD application
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). One of two independent infrastructure reviews (this one: the anti-concentration lemma, the final arithmetic and the TD application) of the convex Berry–Esseen bound at `n^{-1/3}` for the reservoir Lindeberg swap and its TD application (`Formalization/Probability/GaussianMixedThird.lean`, `Formalization/Probability/ConvexLindebergReservoirSharp.lean`, `Formalization/Ch7Rest/TDInferenceConvexLinSharp711.lean`). Not a source result: it covers only the linear part of the TD statistic; no statement-index entry. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). One of two independent infrastructure reviews (this one: the anti-concentration lemma, the final arithmetic and the TD application) of the convex Berry–Esseen bound at `n^{-1/3}` for the reservoir Lindeberg swap and its TD application (`Formalization/Probability/GaussianMixedThird.lean`, `Formalization/Probability/ConvexLindebergReservoirSharp.lean`, `Formalization/TDInference/ConvexSets/LinearisedSharp.lean`). Not a source result: it covers only the linear part of the TD statistic; no statement-index entry. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT; cosmetic fixes applied at integration (module docstring regimes use `⌈n^{2/3}⌉` and `max r₀ 1`; anti-concentration docstring says the reservoir is scaled by `3^{-1/2}`; unused `have` removed).
 
@@ -10,7 +10,7 @@ Reviewer: independent critic B (not the builder). Date 2026-11-10. No edits to F
 
 ## Evidence (commands actually run)
 - `bash scripts/lean-local.sh Formalization/Probability/ConvexLindebergReservoirSharp.lean`: clean, no errors or warnings (20.9 s).
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConvexLinSharp711.lean`: clean (2.4 s).
+- `bash scripts/lean-local.sh Formalization/TDInference/ConvexSets/LinearisedSharp.lean`: clean (2.4 s).
 - <local probe>: `#print axioms` of abs_linLaw_convex_sub_gaussCov_le_third, ..._of_burnIn, abs_pexp_convex_sub_twinLaw_le_third, pexp_shell_prefix_le, reservoirCond_acL, twelfth_facts, sum_range_le_three: all exactly [propext, Classical.choice, Quot.sound]. `reservoirThirdConst ι c r₀ B` unfolds by rfl to shellConst + thirdSmoothConst + sharpBurnIn^{1/3} (no n). `splitScale^2 c/2 = c/6` checked.
 - <local probe> (copy of builder probe): rad_convex_le_third (generic, every n >= 1) and g_linConvex_third (instance G, Gamma_true = (25/128, 1/128) > 0) compile, axiom-clean. Hypotheses are satisfiable; conclusion K T^{-1/3} -> 0 is non-trivial.
 - grep: no sorry/admit/axiom/set_option in the two targets or GaussianMixedThird.lean.

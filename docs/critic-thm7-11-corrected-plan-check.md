@@ -7,7 +7,7 @@ nothing except this report, changed no git state and fetched no paper.
 
 Read: `AGENTS.md`; `source/upstream/tex/chapters/inference.tex:100–146`; the plan (417 lines);
 the private M4 plan check §1–§2; `docs/critic-thm7-11-m4.md` (header, calibration);
-`Formalization/Ch7Rest/TDInference711Defs.lean` (defs 50–160), `TDInferencePrinted711.lean` (the `Thm7_11_printed*`
+`Formalization/TDInference/Definitions.lean` (defs 50–160), `TDInferencePrinted711.lean` (the `Thm7_11_printed*`
 Props), `TDInferenceNoise711.lean` (header, `tdSecondMoment_le`), `TDInferenceOperator711.lean`
 (`mul_norm_le_norm_tdA_mulVec`, `norm_tdA_inv_mulVec_le`), `TDInferencePRRemainder711.lean`
 (`weightedL2_scaledError_sub_prGaussPart_le_rpow`); the declaration lists of `GaussianAntiConcentration.lean`,
@@ -337,19 +337,19 @@ The total is T^{-1/3}; there is no tail argument, hence no log.
   - :104–117 (A, Λ⋆, Γ);
   - :134 (η_t = η₀t^{-2/3});
   - C43 (Γ := trueGamma).
-- **Imports.** `Formalization.Ch7Rest.TDInferenceNoise711`, `TDInferenceOperator711`, `TDInferenceStepSize711`,
+- **Imports.** `Formalization.TDInference.Noise`, `TDInferenceOperator711`, `TDInferenceStepSize711`,
   `TDInferencePRRemainder711` (for `WeightedL2` and orthogonality patterns), `Formalization.Probability.WeightedL2`.
 - **Owned files (new only).**
   - `Formalization/Analysis/MatrixContractionSup.lean`: B1. Generic statement: a matrix with nonnegative diagonal and
     absolute row sums ≤ 1 − c contracts the sup norm by 1 − c. TD instance: ‖(1 − η•tdA)v‖ ≤ (1 − η(1−γ)μmin)‖v‖ for
     0 ≤ η ≤ 1.
-  - `Formalization/Ch7Rest/TDInferenceLinearised711.lean`: definitions `linKernel` (G_{k,t}), `linWeight` (β_{k,T}),
+  - `Formalization/TDInference/Linearised.lean`: definitions `linKernel` (G_{k,t}), `linWeight` (β_{k,T}),
     `linSummand`, `linPart` (X^lin_T), `linCov` (Λ_T), and the pathwise decomposition B3 of
     `scaledError − linPart`. Lean indexing must match `tdIter` (tuple `ω t` uses `stepSize η₀ (t+1)`).
-  - `Formalization/Ch7Rest/TDInferenceKernel711.lean`: B2 (kernel decay, a k- and T-free K_β), the commutation and
+  - `Formalization/TDInference/Kernel.lean`: B2 (kernel decay, a k- and T-free K_β), the commutation and
     telescoping identity Σ_{t} η_{t+1}G_{k,t} = A⁻¹(I − G_{k,T+1}).
-  - `Formalization/Ch7Rest/TDInferenceLinRemainder711.lean`: B4.
-  - `Formalization/Ch7Rest/TDInferenceLinCov711.lean`: B5, plus the covariance identity of `linPart` (F3).
+  - `Formalization/TDInference/LinearisationRemainder.lean`: B4.
+  - `Formalization/TDInference/LinearisedCovariance.lean`: B5, plus the covariance identity of `linPart` (F3).
 - **Exports (signatures fixed up front; constants explicit and T-free).** The hypotheses throughout are
   `0 < η₀`, `η₀ ≤ 1`, `0 < μmin`, `∀ s, μmin ≤ μ.prob s`, `1 ≤ T`, and every `V₀`. No Γ hypothesis, no stationarity.
   - `weightedL2_scaledError_sub_linPart_le`: ∀ s, `weightedL2 (pathWeight M π μ) (fun ω ↦ scaledError M π η₀ V₀ ω s

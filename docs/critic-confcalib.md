@@ -1,6 +1,6 @@
 # Critic report: calibrated oracle confidence regions (eq:convex.Cdelta, C47(2)/(3)) — 2026-11-10
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of the exact `1 − α` Gaussian levels for the corrected, oracle-covariance ellipsoid and rectangle (`Formalization/Ch7Rest/TDInferenceConfCalib711.lean`, export `exists_confRegion_oracle_calibrated`), with drafted statement entries `Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated` and `Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated`. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of the exact `1 − α` Gaussian levels for the corrected, oracle-covariance ellipsoid and rectangle (`Formalization/TDInference/Confidence/Calibration.lean`, export `exists_confRegion_oracle_calibrated`), with drafted statement entries `Eq_convex_Cdelta_ellipsoid_corrected_oracle_calibrated` and `Eq_convex_Cdelta_rectangle_corrected_oracle_calibrated`. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT; findings 5–7 applied (entries use the printed range `0 < η₀ < 1/4`; module imported from `Formalization.lean`; the `_corrected_oracle` docstrings point to the new `_calibrated` entries; COVERAGE and SOURCE-ISSUES C47 updated). The entries landed as drafted below.
 
@@ -10,7 +10,7 @@ Source: chapters/inference.tex:196-213; docs/SOURCE-ISSUES.md C47(2)/(3).
 ## Verdict: ACCEPT (with minor integration fixes)
 
 ## Commands run (read-only; no lake, no git, no -o)
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConfCalib711.lean` -> exit 0, no output (no errors/warnings).
+- `bash scripts/lean-local.sh Formalization/TDInference/Confidence/Calibration.lean` -> exit 0, no output (no errors/warnings).
 - <local probe>: #print axioms of the 4 exports -> [propext, Classical.choice, Quot.sound];
   #check of the calibrated export; deliberate `1 = 2 := rfl` correctly reported as error (probe is live).
 - <local probe> (copy of the builder probe): g_calibrated and g_ellipsoid_95

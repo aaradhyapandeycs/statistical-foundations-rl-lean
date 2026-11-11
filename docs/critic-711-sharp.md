@@ -6,7 +6,7 @@ Integration note: verdict ACCEPT-WITH-FIXES; five-bin audit PASS-DISCLOSED. The 
 
 Date 2026-11-10. Independent critic (built none of this). Read-only except its own report and local probes.
 Target: `StatisticalRL.Ch7Rest.TDInference.abs_lawProb_convex_sub_gaussCov_le_third_sharp`,
-`Formalization/Ch7Rest/TDInferenceConvexSharp711.lean` (sha256 b3a0201a…65bd, 334 lines).
+`Formalization/TDInference/ConvexSets/Sharp.lean` (sha256 b3a0201a…65bd, 334 lines).
 Source read: `source/upstream/tex/chapters/inference.tex:47–141` (sampling :51–67, update :70–75, average :80–83,
 Δ̄_T :86–88, Λ⋆/A/Γ :99–117, d_cvx :121–127, theorem :132–141); `prelim.tex:42` (r ∈ [0,1]).
 
@@ -89,7 +89,7 @@ def Thm7_11_corrected : Prop :=
         K * (T : ℝ) ^ (-(1 / 3 : ℝ))
 ```
 
-Ch7Proofs.lean (needs `import Formalization.Ch7Rest.TDInferenceConvexSharp711`):
+Ch7Proofs.lean (needs `import Formalization.TDInference.ConvexSets.Sharp`):
 
 ```lean
 /-- `Thm7_11_corrected` from
@@ -133,7 +133,7 @@ be replaced by one for `Thm7_11_corrected` (no `statement_variant` field; gen_no
 COVERAGE Theorem 7.11 row, headline and the "Proved" sentence:
 > **Printed statement refuted; corrected variant proved over all convex sets at the printed rate (instance constant).**
 > … Proved (entry `Thm7_11_corrected`, export `abs_lawProb_convex_sub_gaussCov_le_third_sharp`,
-> [TDInferenceConvexSharp711.lean](../Formalization/Ch7Rest/TDInferenceConvexSharp711.lean)): with the true noise covariance
+> [Sharp.lean](../Formalization/TDInference/ConvexSets/Sharp.lean)): with the true noise covariance
 > Γ_true (assumed ≻ 0), η_t = η₀t^(-2/3), 0 < η₀ < 1/4, full-support i.i.d. sampling and every V₀, there is K > 0 such
 > that for all T ≥ 1 and every convex C ⊆ ℝ^S, |P(√TΔ̄_T ∈ C) − N(0, A⁻¹Γ_trueA⁻ᵀ)(C)| ≤ K·T^(-1/3). K depends on the
 > instance, η₀ and V₀; the printed coefficient and the polynomial C̃ are not established. Our own proof (randomized
@@ -156,7 +156,7 @@ named-result-status.json record:
 
 C43: replace "Still open: the convex-distance bound over all convex sets; the printed coefficient …" (half-space
 paragraph) and "The corrected statement … including its convex-set bound, remains open" (scope note) by a new paragraph:
-> **All convex sets (2026-11-10, `Formalization/Ch7Rest/TDInferenceConvexSharp711.lean`, entry `Thm7_11_corrected`).**
+> **All convex sets (2026-11-10, `Formalization/TDInference/ConvexSets/Sharp.lean`, entry `Thm7_11_corrected`).**
 > The corrected statement is machine-checked over all convex sets at the printed rate: with Γ_true ≻ 0, full-support μ,
 > 0 < η₀ ≤ 1 (the entry states 0 < η₀ < 1/4) and every V₀, there is an instance-, η₀- and V₀-dependent K with
 > sup_{C convex} |P(√TΔ̄_T ∈ C) − N(0, A⁻¹Γ_trueA⁻ᵀ)(C)| ≤ K·T^(-1/3) for all T ≥ 1 (outer measure for non-Borel C).
@@ -173,7 +173,7 @@ paragraph) and "The corrected statement … including its convex-set bound, rema
    `sum_looChenShao_abs_norm_sub_le`) are unreviewed. N1 changed since the N1N2 review (750a0a65… → 2cb73853…). Soundness is
    Lean-checked; docstring/infrastructure honesty review of these still needed before integration.
 3. (fix, integration) N3/N4 not imported by `Formalization.lean`, so `Audit.lean`/check.py do not yet cover them; add
-   `import Formalization.Ch7Rest.TDInferenceConvexSharp711` and the Ch7Proofs import.
+   `import Formalization.TDInference.ConvexSets.Sharp` and the Ch7Proofs import.
 4. (fix) Stale "all-convex remains open" text: half-space entry docstring, COVERAGE row (and C∆ row's "the rate without
    log(2T)" open item, now reachable by rerouting the oracle-region corollaries — optional), named-result scope, C43.
 5. (note) `Nonempty Action` binder redundant (M field); harmless, mirrors half-space entry.

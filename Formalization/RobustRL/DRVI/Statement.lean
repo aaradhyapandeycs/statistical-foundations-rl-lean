@@ -1,4 +1,4 @@
-import Formalization.RobustRL.Ch7.Ch7PrintedStatements
+import Formalization.RobustRL.LowerBounds.Ch7PrintedStatements
 
 /-!
 # Corrected Theorems 7.2 and 7.4 as propositions (definitions only)

@@ -1,7 +1,7 @@
 import Formalization.Generative.PolicyLearningAbsorbingLipschitz
 import Mathlib.Algebra.Order.Floor.Ring
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! The source finite parameter grid, its actual absorbing value family,
 covering property and Bernstein-logarithm count. No independence is asserted
 for the data-selected covering index. -/

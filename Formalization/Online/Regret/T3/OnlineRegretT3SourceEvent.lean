@@ -2,7 +2,7 @@ import Formalization.Online.Regret.T3.OnlineRegretT3PublicSum
 import Formalization.Online.Regret.T3.OnlineRegretT3VarianceTransport
 import Formalization.Online.Regret.T3.OnlineRegretT3SourceBound
 import Formalization.Online.SourceOptimism.SourceOptimismAllocation
-import Formalization.Probability.OnlineVarianceRadiusAlgebra
+import Formalization.Online.Regret.Algebra.OnlineVarianceRadiusAlgebra
 import Formalization.Online.Regret.T3.T3Definitions
 
 /-! Source-allocated T₃ event under the actual sequential law, with both printed T₃ inequalities. This is not the full regret theorem. -/

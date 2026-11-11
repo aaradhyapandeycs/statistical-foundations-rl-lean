@@ -1,11 +1,11 @@
 # Critic review: M8a' step 2 (TDInferenceRemainderTail711.lean)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route (second step of the remainder bound), not a source result: no COVERAGE row, statement-index entry or named-result change follows from it. Reviewed: `Formalization/Ch7Rest/TDInferenceRemainderTail711.lean`. Planning notes are local and not published; the route plan check is public as [critic-allconvex-p0.md](critic-allconvex-p0.md). Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route (second step of the remainder bound), not a source result: no COVERAGE row, statement-index entry or named-result change follows from it. Reviewed: `Formalization/TDInference/RemainderTail.lean`. Planning notes are local and not published; the route plan check is public as [critic-allconvex-p0.md](critic-allconvex-p0.md). Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT; at integration only docstring wording was changed (internal milestone and review-note labels removed). N1–N3 are informational.
 
-Date: 2026-11-09. Target: Formalization/Ch7Rest/TDInferenceRemainderTail711.lean (548 lines).
-Compile: `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceRemainderTail711.lean` -> clean, no errors or warnings (30 s wall), run when <2 lean procs and no check_parallel.
+Date: 2026-11-09. Target: Formalization/TDInference/RemainderTail.lean (548 lines).
+Compile: `bash scripts/lean-local.sh Formalization/TDInference/RemainderTail.lean` -> clean, no errors or warnings (30 s wall), run when <2 lean procs and no check_parallel.
 Axioms: builder probe-out.txt shows the 9 exports on [propext, Classical.choice, Quot.sound]; probe non-vacuity examples produce no errors. No sorry/admit/axiom in file. No name collisions (all new names unique repo-wide).
 
 ## Verdict: ACCEPT (two cosmetic notes)

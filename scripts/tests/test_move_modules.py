@@ -417,5 +417,139 @@ class TestReviewFixes(Fixture):
                          "[the proof](../Formalization/MultiAgent/Main.lean)\n")
 
 
+class TestStatementsDefinitionsMove(Fixture):
+    """Only a non-index Statements module, explicitly flagged, may move out of Statements/."""
+
+    def setUp(self):
+        super().setUp()
+        self.write_file("Formalization/Statements/Ch3Definitions.lean",
+                        "import Mathlib.Data.Real.Basic\nnamespace StatisticalRL.X\ndef d : Nat := 0\nend StatisticalRL.X\n")
+        self.write_file("Formalization/Generative/Use.lean", "import Formalization.Statements.Ch3Definitions\n")
+
+    def test_flagged_definitions_module_moves(self):
+        data = {"moves": [{"old": "Formalization.Statements.Ch3Definitions",
+                           "new": "Formalization.Generative.ModelBasedDefinitions",
+                           "allow_statements_source": True}]}
+        code, _, err = self.run_mm("--map", self.write_map(data), "--apply")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(self.read("Formalization/Generative/Use.lean"),
+                         "import Formalization.Generative.ModelBasedDefinitions\n")
+        self.assertIn("Formalization/Ch7Rest/Main.lean -> Formalization.Generative.ModelBasedDefinitions",
+                      self.read("scripts/gates/g2_library_to_statements.txt"))
+
+    def test_unflagged_definitions_module_refused(self):
+        self.assert_refused_map({"Formalization.Statements.Ch3Definitions": "Formalization.Generative.D"},
+                                "allow_statements_source")
+
+    def test_index_module_refused_even_when_flagged(self):
+        for old in ("Formalization.Statements.Ch7", "Formalization.Statements.Ch7Proofs",
+                    "Formalization.Statements.QLearningProofs"):
+            self.assert_refused_map({"moves": [{"old": old, "new": "Formalization.Other.X",
+                                                "allow_statements_source": True}]}, "index")
+
+    def assert_refused_map(self, data, needle):
+        before = self.snapshot()
+        code, _, err = self.run_mm("--map", self.write_map(data), "--apply")
+        self.assertEqual(code, 2)
+        self.assertIn(needle, err)
+        snap = self.snapshot()
+        snap.pop("moves.json", None)
+        before.pop("moves.json", None)
+        self.assertEqual(before, snap)
+
+
+class TestShortFormsAndScopes(Fixture):
+    def setUp(self):
+        super().setUp()
+        # a second Main.lean elsewhere makes the bare name `Main.lean` ambiguous
+        self.write_file("Formalization/Other/Main.lean", "import Mathlib.Data.Real.Basic\n")
+        self.write_file("docs/ERRATA-AND-DEVIATIONS.md",
+                        "See Ch7Rest/Defs.lean:12, `Defs.lean`, Ch7Rest/Main.lean and Main.lean.\n"
+                        "Namespace StatisticalRL.Ch7Rest.Defs.foo and module tail Ch7Rest.Defs stay.\n"
+                        "Glob Ch7Rest/De*.lean and stem Defs stay; dir Ch7Rest/ stays.\n")
+        self.write_file("docs/critic-old.md", "Historical: Formalization/Ch7Rest/Defs.lean\n")
+        self.write_file("docs/validation/run/manifest.json",
+                        '{"Formalization/Ch7Rest/Defs.lean": "00"}\n')
+        self.write_file("site/reader/x.py", "# see Formalization/Ch7Rest/Main.lean\n")
+        self.write_file("site/_build/page.html", "Formalization/Ch7Rest/Main.lean\n")
+
+    def test_tails_and_bare_names(self):
+        code, _, err = self.run_mm("--map", self.write_map(MOVES), "--apply", "--doc",
+                                   "docs/ERRATA-AND-DEVIATIONS.md")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(self.read("docs/ERRATA-AND-DEVIATIONS.md"),
+                         "See MultiAgent/Definitions.lean:12, `MultiAgent/Definitions.lean`, "
+                         "MultiAgent/Main.lean and Main.lean.\n"
+                         "Namespace StatisticalRL.Ch7Rest.Defs.foo and module tail Ch7Rest.Defs stay.\n"
+                         "Glob Ch7Rest/De*.lean and stem Defs stay; dir Ch7Rest/ stays.\n")
+        # default scope leaves review records and site sources alone
+        self.assertEqual(self.read("docs/critic-old.md"), "Historical: Formalization/Ch7Rest/Defs.lean\n")
+        self.assertEqual(self.read("site/reader/x.py"), "# see Formalization/Ch7Rest/Main.lean\n")
+
+    def test_all_docs_scope(self):
+        code, out, err = self.run_mm("--map", self.write_map(MOVES), "--apply", "--all-docs")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(self.read("docs/critic-old.md"), "Historical: Formalization/MultiAgent/Definitions.lean\n")
+        self.assertEqual(self.read("site/reader/x.py"), "# see Formalization/MultiAgent/Main.lean\n")
+        self.assertIn("MultiAgent/Definitions.lean:12", self.read("docs/ERRATA-AND-DEVIATIONS.md"))
+        # hash-pinned manifests and build output are never edited
+        self.assertIn("Formalization/Ch7Rest/Defs.lean", self.read("docs/validation/run/manifest.json"))
+        self.assertEqual(self.read("site/_build/page.html"), "Formalization/Ch7Rest/Main.lean\n")
+        self.assertIn("docs/ERRATA-AND-DEVIATIONS.md:3", out)  # stem leftover reported
+
+    def test_history_records_get_full_paths_only(self):
+        self.write_file("docs/critic-old.md", "Ran <builder folder>/Defs.lean; repo file Formalization/Ch7Rest/Defs.lean, "
+                        "tail Ch7Rest/Defs.lean, bare `Defs.lean`\n")
+        self.assertEqual(self.run_mm("--map", self.write_map(MOVES), "--apply", "--all-docs")[0], 0)
+        self.assertEqual(self.read("docs/critic-old.md"),
+                         "Ran <builder folder>/Defs.lean; repo file Formalization/MultiAgent/Definitions.lean, "
+                         "tail Ch7Rest/Defs.lean, bare `Defs.lean`\n")
+
+    def test_keep_history(self):
+        code, _, err = self.run_mm("--map", self.write_map(MOVES), "--apply", "--all-docs", "--keep-history")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(self.read("docs/critic-old.md"), "Historical: Formalization/Ch7Rest/Defs.lean\n")
+        self.assertEqual(self.read("site/reader/x.py"), "# see Formalization/MultiAgent/Main.lean\n")
+
+    def test_keep_history_requires_all_docs(self):
+        with self.assertRaises(SystemExit):
+            mm.main(["--root", self.root, "--map", self.write_map(MOVES), "--apply", "--keep-history"],
+                    out=io.StringIO())
+
+    def test_same_tail_namespace_untouched(self):
+        # a namespace whose tail equals a moved module's tail (RobustRL.Ch7.LowerBound73 case)
+        self.write_file("docs/COVERAGE.md", "`StatisticalRL.Ch7Rest.Main.thm` in Formalization.Ch7Rest.Main\n")
+        self.assertEqual(self.run_mm("--map", self.write_map(MOVES), "--apply")[0], 0)
+        self.assertEqual(self.read("docs/COVERAGE.md"),
+                         "`StatisticalRL.Ch7Rest.Main.thm` in Formalization.MultiAgent.Main\n")
+
+
+class TestLeanComments(Fixture):
+    def test_rewrites_comments_only(self):
+        code, _, err = self.run_mm("--map", self.write_map(MOVES), "--apply", "--lean-comments")
+        self.assertEqual(code, 0, err)
+        main = self.read("Formalization/MultiAgent/Main.lean")
+        self.assertIn("See `Formalization/MultiAgent/Definitions.lean` for definitions.", main)
+        self.assertIn("namespace StatisticalRL.Ch7Rest.Marl", main)
+        # the docstring in Defs that looks like an import is a comment: rewritten as a module name
+        self.assertIn("import Formalization.MultiAgent.Definitions\n-/",
+                      self.read("Formalization/MultiAgent/Definitions.lean"))
+
+    def test_without_flag_comments_untouched(self):
+        self.assertEqual(self.run_mm("--map", self.write_map(MOVES), "--apply")[0], 0)
+        self.assertIn("See `Formalization/Ch7Rest/Defs.lean`", self.read("Formalization/MultiAgent/Main.lean"))
+
+    def test_code_only_detects_code_change(self):
+        a = "import A\n/- c -/\ndef x := 1 -- note\n"
+        self.assertEqual(mm.code_only(a), mm.code_only("import B\n/- other -/\ndef x := 1 -- changed\n"))
+        self.assertNotEqual(mm.code_only(a), mm.code_only("import A\n/- c -/\ndef x := 2 -- note\n"))
+
+    def test_string_literal_not_a_comment(self):
+        text = 'def s := "-- Formalization/Ch7Rest/Defs.lean"\n-- Formalization/Ch7Rest/Defs.lean\n'
+        regs = mm.doc_regexes({"Formalization.Ch7Rest.Defs": "Formalization.MultiAgent.Definitions"})
+        new, _ = mm.rewrite_lean_comments(text, {"Formalization.Ch7Rest.Defs": "Formalization.MultiAgent.Definitions"}, regs)
+        self.assertEqual(new, 'def s := "-- Formalization/Ch7Rest/Defs.lean"\n-- Formalization/MultiAgent/Definitions.lean\n')
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -31,7 +31,7 @@ Abbreviations: `.tex` = the chapter file above; H = `M.effectiveHorizon` = `1/(1
 | `tdIterate`, `policyReward` | `ModelFree/TDIterateBounds.lean:11,16` | V_{t+1}(s)=(1−η_{t+1})V_t(s)+η_{t+1}(r_π(s)+γV_t(s_{t+1}(s))) — Algorithm alg:td-infinite exactly. |
 | `tdSourceSamplingLaw`, `tdSourceSamplesExtend`, `tdSourceSampledIterate` | `ModelFree/TDSourceSamplingDefinitions.lean` | product of T·S independent P_π rows; update k reads draw k−1. Faithful. |
 | `tdSamplingLaw`, `tdSamplesExtend` | `ModelFree/TDSamplingDefinitions.lean` | (T+1)-layer product with unused time-0 layer; marginal on used coordinates is the source law. OK. |
-| `ModelBasedPolicyEvaluation.samplingLaw`, `ModelBasedPolicyLearning.samplingLaw` | `Statements/Ch3Definitions.lean:24,69` | `Measure.pi` of true rows. OK. |
+| `ModelBasedPolicyEvaluation.samplingLaw`, `ModelBasedPolicyLearning.samplingLaw` | `Generative/ModelBasedDefinitions.lean:24,69` | `Measure.pi` of true rows. OK. |
 | `tdValueBefore`, `tdPastSigma` | `TDConditionalMomentDefinitions.lean`, `TDCausality.lean:24` | V_t from padded data; σ-algebra = comap of exactly the used coordinates with times 1..t (sub-σ-algebra of the ambient; so `μ[f|m]` is not junk). OK. |
 | `tdSourceFixedTerminalProxyVector` → `tdSquareLateWindowRandomProxy` | `TDSharpVarianceSum.lean:30` | Σ_{k=⌊t/2⌋+1}^{t} η̄ η_k γ² [∏_{i=k+1}^t(I−η_i(I−γP_π)) Var_{P_π}(V_{k−1})]_q = W̄_t of eq:TD-variance-proxy. OK. |
 | `tdSourceBarEta` | `TDSourceFreedmanBudgetSmallness.lean:11` | 2log³T/((1−γ)T) = η̄ of eq:defn-bar-eta-large-k-TD. OK. |

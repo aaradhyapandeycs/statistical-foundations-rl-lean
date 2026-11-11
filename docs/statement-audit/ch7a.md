@@ -17,18 +17,18 @@ the `.tex` before reading the docstrings and SOURCE-ISSUES.
 
 Project definitions opened and expanded: `MDP/CoreDefinitions.lean` (`FiniteDistribution`,
 `DiscountedMDP` – reward∈[0,1], 0≤γ<1, nonempty S/A bundled; `StationaryPolicy`),
-`RobustRL/Ch7/Ch7Definitions.lean` (`tvBall`, `chiBall`, `RobustAdmissible`,
+`RobustRL/LowerBounds/Ch7Definitions.lean` (`tvBall`, `chiBall`, `RobustAdmissible`,
 `robustPolicyValue` = sInf of actual trajectory values over rectangular admissible kernels,
 `robustOptimalValue` = sSup over stationary randomized policies, `…At`, `drviIterate`
-(Q̂₀=0), `empiricalDRVI`, `IsGreedy`, `detPolicy`), `Statements/Ch3Definitions.lean`
+(Q̂₀=0), `empiricalDRVI`, `IsGreedy`, `detPolicy`), `Generative/ModelBasedDefinitions.lean`
 (`Samples`, `samplingLaw` = genuine product of nominal rows, `empiricalModel` keeps reward and
 γ), `ModelFree/QLearningRobustDefinitions.lean` (`qChiSquared`, `qChiBall` with q≪p),
-`Ch7Rest/MarlPrinted78.lean` + `Marl78Defs.lean` (`MarkovGame`, `JointPolicy`, `deviate`,
+`MultiAgent/LowerBound/PrintedStatement.lean` + `MultiAgent/LowerBound/Definitions.lean` (`MarkovGame`, `JointPolicy`, `deviate`,
 `valueJ`, `bestResponseValueJ`, `gapJ`, `Query`, `genEnv`, `zeroSumAdm`, `constSumAdm`),
-`Probability/AdaptiveKLDefinitions.lean` (`interactionLaw`), `Ch7Rest/FedPrinted79.lean`
-(`greedyValue`, `localUpdate`, `fedStep`, `fedRun`, `fedOutput`), `Ch7Rest/FedGeneric710.lean`
+`Probability/AdaptiveKLDefinitions.lean` (`interactionLaw`), `Federated/Sync/PrintedStatement.lean`
+(`greedyValue`, `localUpdate`, `fedStep`, `fedRun`, `fedOutput`), `Federated/LowerBound/GenericAlgorithmDefinitions.lean`
 (`batchUpdate`, `genericStep`, `genericRun`, `genericOutput`, `fedSamplingLaw`,
-`fedSamplesExtend`, `supError`), `Ch7Rest/TDInference711Defs.lean` (all objects), 
+`fedSamplesExtend`, `supError`), `TDInference/Definitions.lean` (all objects), 
 `MDP/FixedPointDefinitions.lean` (`optimalityFixedPoint` via proved ∃!),
 `MDP/DiscountedFiniteTrajectory.lean` (`valueFixedPoint` via proved ∃!),
 `Probability/FiniteSampleDefinitions.lean` (`rowMeasure` = PMF measure).
@@ -235,7 +235,7 @@ As entry 6 plus `2 ≤ card State` (DISC, C7), `2 ≤ card Action` (DISC, C7), s
 conclusion (SRC, known-reward convention). Counts: SRC 10, TYP 1, DISC 2, EXC 0.
 Checks: docstring claim "both necessities machine-checked" matches C7 and the existence of
 `knownReward_needs_two_states`, `knownReward_needs_two_actions`, `printed_at_fails`
-(`RobustRL/Ch7/LowerBound75Necessity.lean`).
+(`RobustRL/LowerBounds/LowerBound75Necessity.lean`).
 Verdict: **PASS-DISCLOSED**.
 
 ## 8. Thm7_8_corrected — Ch7.lean:316
@@ -550,7 +550,7 @@ consistency across the ledgers. Read-only; no compilation by me (the fix log rep
   - `README.md` gives no per-status counts; its deviation text names the exact-averaging
     restriction.
   - No live reference to the old name remains in Formalization/, docs/, scripts/ or site/;
-    `FedGeneric710.lean:101` is already updated, so the fix log's "not done" note about it is stale.
+    `Federated/LowerBound/GenericAlgorithmDefinitions.lean:101` is already updated, so the fix log's "not done" note about it is stale.
 - **Minor, non-blocking:**
   1. `docs/PROGRESS.md:110` is a dated history paragraph and still says "Theorem 7.10 is proved as
      printed". Line 5 supersedes it, but a short "(superseded 2026-11-09: restricted)" note would

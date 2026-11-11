@@ -189,7 +189,7 @@ before I read the builder's docstrings, status notes or plan.
 ### S7. Library quality (R2–R3, F-items)
 
 - **Layering problem.** The SeqLawTail module (intended for `Probability/SeqLawExpTail.lean`) imports
-  `Formalization.Ch7Rest.VPOAdaptive712` for `Rlhf.adaptive_markov` and `union_bound_sum`. Through the shared
+  `Formalization.RLHF.VPO.Adaptive` for `Rlhf.adaptive_markov` and `union_bound_sum`. Through the shared
   helper `exp_le_one_add_add_sq`, the Hedge module (intended for `Online/Hedge/`) depends on it transitively. A generic
   Probability or Online module must not depend on a chapter-specific Ch7 module (R2).
 - **Wrong namespace for generic lemmas.** `sum_sq_sub_mean_le` and `mixture_variance_ge` are generic but sit in

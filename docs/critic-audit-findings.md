@@ -70,7 +70,7 @@ notes Γ = 0 when S = 1); the counterexample does not use Thm 7.11, only the pro
 Γ̂_T = Σ w_t (V̄_T/2 − r_t)² = 1/4 + (V̄_T−1)Σw_t(1/2−r_t) + (V̄_T−1)²/4, with Σw_t = 1 and |Σw_t(1/2−r_t)| ≤ 1/2, so
 Λ̂_T → 1 whenever V̄_T → 1 in probability. Selecting the half-line by sign(V̄_T − 1) with radius z√(Λ̂_T/T) gives
 coverage P(|√TΔ̄_T| ≤ z√Λ̂_T) → P(|Z| ≤ z) = 1−2α, given the scalar Polyak–Ruppert CLT √TΔ̄_T ⇒ N(0,1) and Slutsky.
-Checked: the Lean partial result `scaledError_smooth_gaussian_le` (`Formalization/Ch7Rest/TDInferenceSmooth711.lean:306`)
+Checked: the Lean partial result `scaledError_smooth_gaussian_le` (`Formalization/TDInference/SmoothApproximation.lean:306`)
 uses `trueGamma` (`TDInference711Defs.lean:121`, the true residual covariance), so applying it to x ↦ sin(ux), cos(ux)
 (C², bounded derivative, Lipschitz Hessian) gives characteristic-function convergence and, by Lévy continuity, the CLT.
 That corollary, Lévy continuity, and the Slutsky step are **paper-level, not Lean-checked**.

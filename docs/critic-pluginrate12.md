@@ -1,13 +1,13 @@
 # Critic report: plug-in rate stages 1-2, matrix-inverse perturbation and entrywise concentration (2026-11-10)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/Analysis/MatrixInversePerturbation.lean` and `Formalization/Ch7Rest/TDInferencePluginRate711.lean` (exports `exists_pathProb_lambdaHat_sub_gt_le`, `exists_pathProb_lambdaHat_inv_sub_gt_le` and the perturbation lemmas). Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/Analysis/MatrixInversePerturbation.lean` and `Formalization/TDInference/PluginCovariance/Rate.lean` (exports `exists_pathProb_lambdaHat_sub_gt_le`, `exists_pathProb_lambdaHat_inv_sub_gt_le` and the perturbation lemmas). Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT. Both modules are imported from `Formalization.lean`. No statement-index entry yet: the stage-2 bound holds only for `0 < ε ≤ 1` and targets the corrected `trueLambda` (SOURCE-ISSUES C43), so any later entry or prose must keep those restrictions and must not label it the printed Λ*.
 
 
 Files (sha256 match builder STATUS):
 - Formalization/Analysis/MatrixInversePerturbation.lean a0c522dd...
-- Formalization/Ch7Rest/TDInferencePluginRate711.lean 40de0bee...
+- Formalization/TDInference/PluginCovariance/Rate.lean 40de0bee...
 
 Commands: bash scripts/lean-local.sh on each file (no -o): both clean, no warnings/errors.
 <local probe>: #print axioms on abs_inv_mul_mul_inv_transpose_sub_le,

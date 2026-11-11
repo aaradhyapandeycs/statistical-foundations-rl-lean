@@ -1,6 +1,6 @@
 import Formalization.Online.Regret.T3.OnlineT3SuffixActualEpisodeFamily
 import Formalization.Online.Regret.T3.OnlineRegretT3SourceBound
-import Formalization.Probability.OnlineVarianceRadiusAlgebra
+import Formalization.Online.Regret.Algebra.OnlineVarianceRadiusAlgebra
 
 /-! Deterministic T₆-UCB radius comparison for the simultaneous source suffix
 array event. This is a pointwise extension of the already proved actual-law

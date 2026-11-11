@@ -2,7 +2,7 @@
 
 Public copy of the independent critic report; local paths removed.
 
-Post-review note (added to this public copy, 2026-11-08): this review was of the builder's pre-integration snapshot. The builder's modules were integrated as `Formalization/Ch7Rest/TDInference711Defs.lean` (Defs), `Formalization/Ch7Rest/TDInferencePrinted711.lean` (Printed), `Formalization/Ch7Rest/TDInferenceZeroNoise711.lean` (ZeroNoise), `Formalization/Ch7Rest/TDInferenceSomeInitVariants711.lean` (SomeInitVariants), `Formalization/Ch7Rest/TDInferencePathMarginals711.lean` (PathMarginals), `Formalization/Ch7Rest/TDInferenceAnyInit711.lean` (AnyInit), `Formalization/Probability/GaussianAntiConcentration.lean` (GaussianAntiConcentration) and `Formalization/Analysis/StepSizeSums.lean` (StepSizeSums), and module names below are given under their integrated names; the file hashes quoted below are those of the reviewed snapshot. The required docstring fix R2 was applied at integration. Theorem 7.11 is recorded as a refutation of the printed statement under the reading named below, not as a proved result, and no statement-index entry suggests a proved Theorem 7.11. The step-size file was placed under `Formalization/Analysis/` (the file location suggested in O3); the other optional items O1–O5 were not done. The review text below is otherwise unchanged.
+Post-review note (added to this public copy, 2026-11-08): this review was of the builder's pre-integration snapshot. The builder's modules were integrated as `Formalization/TDInference/Definitions.lean` (Defs), `Formalization/TDInference/PrintedStatement.lean` (Printed), `Formalization/TDInference/ZeroNoiseRefutation.lean` (ZeroNoise), `Formalization/TDInference/SomeInitVariants.lean` (SomeInitVariants), `Formalization/TDInference/PathMarginals.lean` (PathMarginals), `Formalization/TDInference/AnyInitRefutation.lean` (AnyInit), `Formalization/Probability/GaussianAntiConcentration.lean` (GaussianAntiConcentration) and `Formalization/Analysis/StepSizeSums.lean` (StepSizeSums), and module names below are given under their integrated names; the file hashes quoted below are those of the reviewed snapshot. The required docstring fix R2 was applied at integration. Theorem 7.11 is recorded as a refutation of the printed statement under the reading named below, not as a proved result, and no statement-index entry suggests a proved Theorem 7.11. The step-size file was placed under `Formalization/Analysis/` (the file location suggested in O3); the other optional items O1–O5 were not done. The review text below is otherwise unchanged.
 
 I am an independent critic, not the builder. I read the source (`inference.tex:47–141`, `prelim.tex:410–421`), AGENTS.md,
 SOURCE-ISSUES C43, the builder's private plan §1.2/§2.4/§2.7, the plan check (docs/critic-thm7-11-plan-check.md) F5/O4/O5 and the M1 critic report (docs/critic-thm7-11-m1.md), then the builder's
@@ -140,8 +140,8 @@ Good overall: real general statements, no theorem-specific hypotheses in the reu
 
 ## Required C43 addendum text (replaces the M1-critic text)
 
-"Machine-checked (2026-11-08, `Formalization/Ch7Rest/TDInferenceZeroNoise711.lean` and
-`Formalization/Ch7Rest/TDInferenceAnyInit711.lean`): Theorem 7.11 is false under the reading in which rewards depend on
+"Machine-checked (2026-11-08, `Formalization/TDInference/ZeroNoiseRefutation.lean` and
+`Formalization/TDInference/AnyInitRefutation.lean`): Theorem 7.11 is false under the reading in which rewards depend on
 (s,a) as printed at `inference.tex:62` and the undefined r(s) in Γ is r_π(s) (`prelim.tex:418`). This holds whether
 the bound must hold for every initialization V₀ (`not_thm7_11_printed`; also with the constants c and C̃ chosen per
 instance, `not_thm7_11_printed_instWise`, and over all convex sets, `not_thm7_11_printed_allConvex`) or only for one

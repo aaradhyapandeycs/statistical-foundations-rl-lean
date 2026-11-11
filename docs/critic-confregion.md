@@ -1,6 +1,6 @@
 # Critic report: oracle confidence regions (eq:convex.Cdelta, C47(2)/(3)) — 2026-11-10
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review and five-bin audit of the oracle-covariance confidence regions (`Formalization/Ch7Rest/TDInferenceConfRegion711.lean`) and the statement entries `Eq_convex_Cdelta_fixedShape_corrected_oracle`, `Eq_convex_Cdelta_ellipsoid_corrected_oracle`, `Eq_convex_Cdelta_rectangle_corrected_oracle`. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review and five-bin audit of the oracle-covariance confidence regions (`Formalization/TDInference/Confidence/Regions.lean`) and the statement entries `Eq_convex_Cdelta_fixedShape_corrected_oracle`, `Eq_convex_Cdelta_ellipsoid_corrected_oracle`, `Eq_convex_Cdelta_rectangle_corrected_oracle`. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT WITH FIXES; F1–F4 (docstrings) applied; F5 (ledger wording) applied in COVERAGE and SOURCE-ISSUES C47.
 
@@ -9,7 +9,7 @@ Independent critic; did not build. Read-only on Formalization/, docs/, Formaliza
 ## Verdict: ACCEPT-WITH-FIXES (docstring and ledger wording only; no Lean statement change needed)
 
 ## Evidence (commands actually run)
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConfRegion711.lean`: clean, no output.
+- `bash scripts/lean-local.sh Formalization/TDInference/Confidence/Regions.lean`: clean, no output.
 - `bash scripts/lean-local.sh Formalization/Statements/Ch7.lean`: clean.
 - `bash scripts/lean-local.sh Formalization/Statements/Ch7Proofs.lean`: clean.
 - <local probe>: `exists_confRegion_oracle_bounds` and the three

@@ -1,6 +1,6 @@
 import Formalization.Generative.FiniteHorizonBernsteinResidualBridge
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! Same-data actual trajectory consumption of the common auxiliary event.
 The explicit cardinality/log factor is retained throughout. -/
 open MeasureTheory ProbabilityTheory

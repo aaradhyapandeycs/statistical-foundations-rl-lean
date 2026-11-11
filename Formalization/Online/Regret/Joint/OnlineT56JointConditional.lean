@@ -4,7 +4,7 @@ import Formalization.Online.Regret.PolicyVariance.OnlineT6PolicyConfidence
 import Formalization.Online.Regret.Gap.OnlineT6DifferenceActualBound
 import Formalization.Online.Regret.Gap.OnlineJ1SourceConfidence
 import Formalization.Online.Regret.T0.OnlineT0ActualConfidence
-import Formalization.Probability.OnlineT56ConfidenceAlgebra
+import Formalization.Online.Regret.Algebra.OnlineT56ConfidenceAlgebra
 
 /-! Conditional actual-law T5/T6 joint source bounds. The sole confidence
 premise is the actual uniform T0 and optimism event; it is not yet discharged

@@ -2,7 +2,7 @@
 
 Public copy of the independent critic report; local paths removed.
 
-Post-review note (added to this public copy, 2026-11-08): this review was of the builder's pre-integration snapshot. The builder's three modules were integrated as `Formalization/Ch7Rest/TDInference711Defs.lean` (Defs), `Formalization/Ch7Rest/TDInferencePrinted711.lean` (Printed) and `Formalization/Ch7Rest/TDInferenceZeroNoise711.lean` (ZeroNoise), and module names below are given under their integrated names; the file hashes quoted below are those of the reviewed snapshot. The required docstring fix R3 was applied at integration. Theorem 7.11 is recorded as a refutation of the printed statement under the readings named below, not as a proved result, and no statement-index entry suggests a proved Theorem 7.11. The later M2 review (docs/critic-thm7-11-m2.md) refuted the some-V₀ reading that this review lists as open, and its addendum text replaced the C43 addendum text at the end of this report. The review text below is otherwise unchanged.
+Post-review note (added to this public copy, 2026-11-08): this review was of the builder's pre-integration snapshot. The builder's three modules were integrated as `Formalization/TDInference/Definitions.lean` (Defs), `Formalization/TDInference/PrintedStatement.lean` (Printed) and `Formalization/TDInference/ZeroNoiseRefutation.lean` (ZeroNoise), and module names below are given under their integrated names; the file hashes quoted below are those of the reviewed snapshot. The required docstring fix R3 was applied at integration. Theorem 7.11 is recorded as a refutation of the printed statement under the readings named below, not as a proved result, and no statement-index entry suggests a proved Theorem 7.11. The later M2 review (docs/critic-thm7-11-m2.md) refuted the some-V₀ reading that this review lists as open, and its addendum text replaced the C43 addendum text at the end of this report. The review text below is otherwise unchanged.
 
 I am an independent critic, not the builder. I read the source first (`inference.tex:40–210`, `prelim.tex:405–421`),
 then AGENTS.md, SOURCE-ISSUES C43, the plan check, and only then the builder's Lean and notes. I edited nothing except
@@ -126,7 +126,7 @@ In Z at s=1: 1/128 + ½(1/64 − 2·½·1/32) = 0. So the printed Γ also omits 
 
 ## Required C43 addendum text
 
-"Machine-checked (2026-11-08, `Formalization/Ch7Rest/TDInferenceZeroNoise711.lean`): Theorem 7.11 is false under
+"Machine-checked (2026-11-08, `Formalization/TDInference/ZeroNoiseRefutation.lean`): Theorem 7.11 is false under
 the reading in which rewards depend on (s,a) as printed at `inference.tex:62`, the undefined r(s) in Γ is r_π(s)
 (`prelim.tex:418`), and the bound must hold for every initialization V₀ (`not_thm7_11_printed`; also with the
 constants c and C̃ chosen per instance, `not_thm7_11_printed_instWise`, and over all convex sets,

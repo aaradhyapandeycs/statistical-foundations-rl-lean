@@ -8,7 +8,7 @@ Reviewer: independent source-fidelity critic (not the builder). Date 2026-11-09.
 
 Under review:
 - library export `StatisticalRL.Ch7Rest.TDInference.abs_lawProb_halfSpace_sub_gaussCov_le`
-  (`Formalization/Ch7Rest/TDInferenceHalfSpace711.lean:396`), imported from `Formalization.lean:729`;
+  (`Formalization/TDInference/HalfSpace.lean:396`), imported from `Formalization.lean:729`;
 - draft entry and wrapper `Thm7_11_restricted_halfspace` (`builder-probes/DRAFT-STATEMENT.lean`).
 
 Source: `source/upstream/tex/chapters/inference.tex` (pinned), theorem :132–141, setting :47–89, `Λ⋆`, `A`, `Γ`
@@ -44,7 +44,7 @@ The theorem does not quantify `V₀`. `‖Γ⁻¹‖` and `κ(Γ)` require `Γ �
 
 ## 2. Binder and definition check (item 1)
 
-I read every definition in `Formalization/Ch7Rest/TDInference711Defs.lean`.
+I read every definition in `Formalization/TDInference/Definitions.lean`.
 
 | Printed item | Lean | Verdict |
 | --- | --- | --- |
@@ -116,17 +116,17 @@ A double suffix such as `_corrected_restricted_halfspace` adds nothing: the clas
 
 - The wrapper only `intro`s and applies `abs_lawProb_halfSpace_sub_gaussCov_le` with `by linarith` for
   `η₀ ≤ 1`. It is not a re-proof. G3's `HOLDS_HEADER_RE` (`: X` exactly) is satisfied.
-- `Thm7_11_*` entries need `Formalization.Ch7Rest.TDInference711Defs`.
+- `Thm7_11_*` entries need `Formalization.TDInference.Definitions`.
   - `Statements/Ch7.lean` does not import it, and `scripts/gates/g2_statement_imports.txt` (frozen, shrink-only)
     has no such edge.
-  - **R2:** add the edge `Formalization/Statements/Ch7.lean -> Formalization.Ch7Rest.TDInference711Defs` with
+  - **R2:** add the edge `Formalization/Statements/Ch7.lean -> Formalization.TDInference.Definitions` with
     `python3 scripts/static_gates.py --write-allowlists --allow-grow`, and give the justification in the PR or
     commit message.
   - The justification: a definitions module (objects of :47–129 plus totality and measurability facts); no
     `*Proofs` module; no transitive import of the half-space proof module.
 - `TDInference711Defs` imports `ModelFree.TDIterateBounds` (proof-bearing). Existing allowlisted edges
   (`Ch7Rest.FedGeneric710`) set the precedent. Acceptable.
-- `Ch7Proofs.lean` must add `import Formalization.Ch7Rest.TDInferenceHalfSpace711` (proof file, not under G2's
+- `Ch7Proofs.lean` must add `import Formalization.TDInference.HalfSpace` (proof file, not under G2's
   statement allowlist).
 - G3 docstring rules are satisfied: the `.tex:a–b` range is present, and C43 and C47 are anchors (`C47(3)` matches
   `CID_RE`).
@@ -134,7 +134,7 @@ A double suffix such as `_corrected_restricted_halfspace` adds nothing: the clas
 **Compile evidence (one Lean process at a time, `bash scripts/lean-local.sh`; oleans current: `Formalization.olean`
 05:51 > `Formalization.lean` 05:50; `TDInferenceHalfSpace711.olean` 05:48 > source 05:47):**
 
-- `reviewer-probes/StmtOnly.lean` imports **only** `Formalization.Ch7Rest.TDInference711Defs` and
+- `reviewer-probes/StmtOnly.lean` imports **only** `Formalization.TDInference.Definitions` and
   elaborates the renamed entry. rc=0, no output (`stmt.out`). This confirms the entry is G2-compatible with the one
   new edge.
 - `reviewer-probes/Full.lean` imports `Formalization` and contains the entry, the wrapper and
@@ -194,7 +194,7 @@ choice. The threshold does not require it.
 
 ## 8. Recommended texts
 
-### Entry (`Formalization/Statements/Ch7.lean`; import `Formalization.Ch7Rest.TDInference711Defs`)
+### Entry (`Formalization/Statements/Ch7.lean`; import `Formalization.TDInference.Definitions`)
 
 ```lean
 open StatisticalRL StatisticalRL.Ch7Rest.TDInference in
@@ -235,7 +235,7 @@ The docstring-before-`open … in` order must match the file's existing style. I
 placed *before* `open … in theorem` failed to parse. Put the docstring after `open … in`, as the draft does, or use
 `open` at section level.
 
-### Wrapper (`Formalization/Statements/Ch7Proofs.lean`; import `Formalization.Ch7Rest.TDInferenceHalfSpace711`)
+### Wrapper (`Formalization/Statements/Ch7Proofs.lean`; import `Formalization.TDInference.HalfSpace`)
 
 ```lean
 open StatisticalRL.Ch7Rest.TDInference in
@@ -267,7 +267,7 @@ Add `TDInferenceHalfSpace711.lean`, `Ch7.lean` and `Ch7Proofs.lean` to the evide
 
 ### SOURCE-ISSUES C43 addendum
 
-> **Half-space result (2026-11-09, `Formalization/Ch7Rest/TDInferenceHalfSpace711.lean`, entry
+> **Half-space result (2026-11-09, `Formalization/TDInference/HalfSpace.lean`, entry
 > `Thm7_11_corrected_halfspace`).** The corrected statement is machine-checked on closed half-spaces at the printed
 > rate. With Γ replaced by the true residual covariance Γ_true ≻ 0, for every full-support μ, 0 < η₀ ≤ 1 (the entry
 > states the printed 0 < η₀ < 1/4) and every V₀, there is an instance-, η₀- and V₀-dependent K with

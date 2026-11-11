@@ -13,7 +13,7 @@ draft entry states what is proved.
 
 ## Under review (hashes)
 
-- `Formalization/Ch7Rest/TDInferencePluginCoverage711.lean`, sha256 `19dd28f2…8d06`, 449 lines.
+- `Formalization/TDInference/PluginCovariance/Coverage.lean`, sha256 `19dd28f2…8d06`, 449 lines.
 - the builder's draft statement file `DRAFT-STATEMENT.lean`, sha256 `d13b988c…b32f`.
 - Source `source/upstream/tex/chapters/inference.tex`, sha256 `82707713…648f2`, which matches the C47 pin.
   Rule :187–196 (display :191–193, claim :196), rectangles :198–205, ellipsoids :207–213, plug-in :156–185
@@ -21,8 +21,8 @@ draft entry states what is proved.
 
 ## Commands and evidence (one Lean process at a time; `pgrep -x lean` was 0 before each run)
 
-- `bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferencePluginCoverage711.lean`: clean, no output.
-- `reviewer-probes/CriticEntry.lean`: the draft entry, importing only `Formalization.Ch7Rest.TDInference711Defs`.
+- `bash scripts/lean-local.sh Formalization/TDInference/PluginCovariance/Coverage.lean`: clean, no output.
+- `reviewer-probes/CriticEntry.lean`: the draft entry, importing only `Formalization.TDInference.Definitions`.
   Clean, so G2 is satisfied, and `Statements/Ch7.lean` already imports that module.
 - `reviewer-probes/CriticProbe.lean`: imports `Formalization` and the new module, then the entry and the wrapper.
   Clean, with no name collisions. `#print axioms` gives `[propext, Classical.choice, Quot.sound]` for
@@ -108,7 +108,7 @@ singular event. That is optional to add (an S = 2 instance) and is not required.
 - **F2 (required, wording).** Entry item (3) attributes the Γ_true ≻ 0 assumption to C43. Split these: Γ_true ≻ 0
   is an added non-degeneracy hypothesis (needed for uᵀΛu > 0 and for the half-space result), and separately C43
   explains why the target covariance is A⁻¹diag(Γ_true)A⁻ᵀ rather than the printed Λ⋆.
-- **F3 (required, integration).** Add `import Formalization.Ch7Rest.TDInferencePluginCoverage711` to
+- **F3 (required, integration).** Add `import Formalization.TDInference.PluginCovariance.Coverage` to
   `Formalization.lean` and to `Statements/Ch7Proofs.lean`. Place the entry after `Eq_convex_Cdelta_corrected_oracle`.
   Then run `python3 scripts/check.py`. This critic did not run the full audit.
 - **R1 (recommended).** State in the docstring that the limits are pointwise in (u, z), not uniform.
@@ -163,7 +163,7 @@ Suggested edits:
 
 ## C47 addendum (proposed text)
 
-**Fixed-shape correction, plug-in covariance (2026-11-09, `Formalization/Ch7Rest/TDInferencePluginCoverage711.lean`,
+**Fixed-shape correction, plug-in covariance (2026-11-09, `Formalization/TDInference/PluginCovariance/Coverage.lean`,
 entry `Eq_convex_Cdelta_corrected_plugin`).** The proposed correction is machine-checked with the printed estimator
 Λ̂_T = Ā_T⁻¹Γ̂_TĀ_T⁻ᵀ, asymptotically. For a direction u and level z fixed before the data, under full-support i.i.d.
 sampling, 0 < η₀ < 1/4, every V₀ and Γ_true ≻ 0:

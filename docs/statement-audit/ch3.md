@@ -21,7 +21,7 @@ return); `trajectoryExpectedQ` (`MDP/ForcedActionReturn.lean:35`); `optimalGreed
 `trajectoryValue_le_optimalGreedy` proving genuine optimality); `policyFixedPoint`,
 `optimalityFixedPoint` (choice from proved ∃!), `valueFixedPoint`, `qOptimality`, `actionMaximum`
 (`Finset.sup'`); `rowMeasure`, `empiricalRow` (frequency vector, `Probability/FiniteSampleDefinitions.lean`);
-all of `Statements/Ch3Definitions.lean` (both `samplingLaw`s are `Measure.pi` of the true rows,
+all of `Generative/ModelBasedDefinitions.lean` (both `samplingLaw`s are `Measure.pi` of the true rows,
 `empiricalModel`s keep reward and discount, `EmpiricallyOptimal` = optimal against every stationary
 policy at every state, `stateAbsorbingModel` = MB (eqn:transition-kernel-M-su-inf)/(eqn:reward-M-su-inf),
 `absorbingGridStep = 1/(N(1−γ))`, `absorbingGridPoint i = i/(N(1−γ))`, `leaveOneOutBeta =

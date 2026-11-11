@@ -11,7 +11,7 @@ For the finite sequential law `seqLaw κ N` of `AdaptiveKLDefinitions`:
   probabilities along its prefixes.
 * `seqLaw_exp_tail`: if `f k` depends only on the entries `≤ k` and its conditional exponential
   moment given every prefix is at most one, then `P(L ≤ ∑_k f_k) ≤ e^{-L}`. This is a
-  specialisation of `adaptive_markov` (`VPOAdaptive712.lean`).
+  specialisation of `adaptive_markov` (`RLHF/VPO/Adaptive.lean`).
 * `seqPrefix k x`: the length-`k` prefix of a history.
 * One-step lemmas: `sum_exp_sub_sq_le_one` (mean-zero increments with `|X| ≤ 1`, Freedman-type)
   and `sum_exp_sub_two_mul_le_one` (increments in `[0,1]`, multiplicative).

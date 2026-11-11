@@ -34,7 +34,7 @@ Every `.tex` file read was compared with `source/provenance.json` (`source_files
 | `Formalization/Probability/EmpiricalRow.lean` | `12a24b4883e75ba3f6302573f46b7d7648f90052333dc1c1d268722964c9152b` | n/a | 1–30, 65–73 |
 | `Formalization/Probability/EmpiricalRowMeasurableDefinitions.lean` | `fc40126e0beac16c94075094551b34ffe2700ce31d83721f179581fb4cde4275` | n/a | whole |
 | `Formalization/Probability/Variance.lean` | `e9133f551400e38be5010bf6d3ca31416ae535a00ba71b3f17f24f875d52125f` | n/a | 27–43 |
-| `Formalization/Statements/Ch3Definitions.lean` | `8494b89e4a2c90c0ee41fd6fcc84796cfdb588b88320b352656e5dba5147b68c` | n/a | namespace grep only (name-clash check) |
+| `Formalization/Generative/ModelBasedDefinitions.lean` | `8494b89e4a2c90c0ee41fd6fcc84796cfdb588b88320b352656e5dba5147b68c` | n/a | namespace grep only (name-clash check) |
 | `Formalization.lean` | `697052168941c159e83d54a657a736da1d37e74290ab7f51ce6e04bf3b0e90a1` | n/a | grep: 436–437 import Ch2, Ch2Proofs |
 | `Audit.lean` | `29f6cd54e69586325be78af79809bda1f1d1c2b0c52f03ad3746eb6e8c3d06f3` | n/a | whole (22 lines) |
 | `AGENTS.md` | `1e28b54cc339575657234bd92b3e53f82c6d347ecd3bf37f0f000a4a4af12579` | n/a | provided as session context |

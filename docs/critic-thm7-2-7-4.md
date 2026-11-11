@@ -20,8 +20,8 @@ No blocking findings. The findings below are informational or concern integratio
 | --- | --- |
 | Repo HEAD | `73929ac3f43f9d3f2ced60d709b0dd04903c167d` |
 | `source/upstream/tex/chapters/robust_RL.tex` | `95ce19a9bcdb275c9d4c04e4b20e836c8e5f0965426e955999817e82141196d9` |
-| `Formalization/RobustRL/Ch7/Ch7Definitions.lean` | `ff3f0c13732dcbff34aa8734fee89e9d42bdbbd5fd4e5dd842acd5d698a3ea82` |
-| `Formalization/RobustRL/Ch7/Ch7PrintedStatements.lean` | `d04bb084e64e6590c696a8ab33492f74976a51dde29f9c587a0af680d1b3deb6` |
+| `Formalization/RobustRL/LowerBounds/Ch7Definitions.lean` | `ff3f0c13732dcbff34aa8734fee89e9d42bdbbd5fd4e5dd842acd5d698a3ea82` |
+| `Formalization/RobustRL/LowerBounds/Ch7PrintedStatements.lean` | `d04bb084e64e6590c696a8ab33492f74976a51dde29f9c587a0af680d1b3deb6` |
 | `<builder working folder>/Thm72Wip/Statement.lean` | `5ab18c75525ec3d93c663dbc7479e345fb33cfee730faa381d161d5f203c0ffc` |
 | `<builder working folder>/Thm72Wip/Thm72Main.lean` | `6aa9feeed8f28cb5cfd05017affaee30a9d6f194715bfd48cb89040b3b5be050` |
 | `<builder working folder>/Thm72Wip/Thm74Main.lean` | `7a2d8f11f1611f0fed3c56f871da95a195f39f0ea97a630f91a1015fb7e80fab` |

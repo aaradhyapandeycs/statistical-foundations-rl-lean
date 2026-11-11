@@ -152,7 +152,7 @@ and 2.
 
 ## Findings
 
-- **I1 (BLOCKING for integration, not for these files).** `Formalization/Ch7Rest/TDInferenceConvexReservoir711.lean`
+- **I1 (BLOCKING for integration, not for these files).** `Formalization/TDInference/ConvexSets/Reservoir.lean`
   defines two declarations that collide with Base, both in namespace `StatisticalRL.Probability`:
   - `ReservoirCond` (line 65). This one is already known (R8). The bodies are textually identical.
   - **`matrixMaxRowAbsSum_le_of_forall` (line 252).** This collision is new and absent from the builder's notes. The

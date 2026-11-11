@@ -1,12 +1,12 @@
 # Critic report: no-log infrastructure for Theorem 7.11 (independent critic, read-only)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review of `Formalization/Analysis/SignedDistanceConvex.lean` and `Formalization/Ch7Rest/TDInferenceLooVector711.lean`, groundwork toward the all-convex corrected Theorem 7.11 at the printed rate. Not a source result; no statement-index entry. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review of `Formalization/Analysis/SignedDistanceConvex.lean` and `Formalization/TDInference/LeaveOneOutVector.lean`, groundwork toward the all-convex corrected Theorem 7.11 at the printed rate. Not a source result; no statement-index entry. Probes are local scratch files (`<local probe>`).
 
 Integration note: both ACCEPT; finding 9 (the leave-one-out module header claimed a Euclidean cross term that is not exported) applied; findings 10–11 left for later stages.
 
 Date: 2026-11-10. Files reviewed (sha256):
 - Formalization/Analysis/SignedDistanceConvex.lean  841912a842ff3215114c09e51097cf4cadc9a64ba7bc247e5c03544002b5c42f
-- Formalization/Ch7Rest/TDInferenceLooVector711.lean  8a6aa3f68bdb75facbb76bd803c6e5d920faaf6c0d774a30822ca41c79de2628
+- Formalization/TDInference/LeaveOneOutVector.lean  8a6aa3f68bdb75facbb76bd803c6e5d920faaf6c0d774a30822ca41c79de2628
 
 Evidence: scratch copies with #print axioms appended for every declaration,
 <local probe> (34 decls) and ProbeLoo.lean (19 decls), compiled with

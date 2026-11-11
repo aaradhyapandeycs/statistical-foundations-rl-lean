@@ -2,7 +2,7 @@ import Formalization.Online.Regret.Main.OnlineUCBVIT0Closure
 import Formalization.Online.Regret.W1.OnlineUCBVISourceIota
 import Formalization.Online.Regret.T0.OnlineT0SourceDefinition
 import Formalization.Online.Regret.T2.OnlineT2SourceBound
-import Formalization.Probability.OnlineT56ScalarAlgebra
+import Formalization.Online.Regret.Algebra.OnlineT56ScalarAlgebra
 
 /-! Actual-source T0 scalar consumer at c₁=4,c₂=16. The simplified T5,
 policy-variance and difference-variance bounds are explicit event premises. -/

@@ -221,8 +221,8 @@ Required fixes:
 
 Owned new files:
 - `Formalization/Probability/WeakConvergenceSmoothTest.lean`
-- `Formalization/Ch7Rest/TDInferenceCLT711.lean`
-- `Formalization/Ch7Rest/TDInferenceCLTPrinted711.lean`
+- `Formalization/TDInference/ClassicCLT.lean`
+- `Formalization/TDInference/ClassicCLTPrintedRefutation.lean`
 - WIP in a private working folder.
 
 Validation: as in the plan (`scripts/lean-local.sh -o …`, one compile at a time, axiom probe, forbidden-token grep).
@@ -231,7 +231,7 @@ refutations are only `propext`, `Classical.choice` and `Quot.sound`. Hand back t
 docstrings for `Eq_classic_clt_corrected` / `_restricted`.
 
 **Builder 2: `thm7_11-confint` (Item B, then E2 and E1 oracle).**
-- Owned: `Formalization/Ch7Rest/TDInferenceConfInt711.lean` (B1–B3); later `Formalization/Ch7Rest/TDInferenceC47Oracle711.lean` (E2, E1 on the one-state instance). WIP in a private working folder.
+- Owned: `Formalization/TDInference/Confidence/Intervals.lean` (B1–B3); later `Formalization/Ch7Rest/TDInferenceC47Oracle711.lean` (E2, E1 on the one-state instance). WIP in a private working folder.
 - Imports: `TDInferenceHalfSpace711` (and `SteinGaussian` in library files only).
 - Exports: `abs_coverage_oneSided_sub_stdCDF_le` (∀ z), `abs_coverage_twoSided_sub_le` (z ≥ 0) and `coverage_rect_bonferroni_ge`, with K taken once from `abs_lawProb_halfSpace_sub_gaussCov_le`.
 - Draft entry text with `(gaussianReal 0 1).real (Set.Iic z)`, and the "Partial" COVERAGE headline text.

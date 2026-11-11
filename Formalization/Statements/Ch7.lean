@@ -1,11 +1,11 @@
 import Formalization.RobustRL.TVWeakDefinitions
 import Formalization.ModelFree.QLearningRobustDefinitions
-import Formalization.Ch7Rest.FedGeneric710
-import Formalization.RobustRL.Ch7.Ch7Definitions
-import Formalization.Ch7Rest.Marl78Defs
-import Formalization.Ch7Rest.VPODefs712
-import Formalization.Ch7Rest.Marl76Defs
-import Formalization.Ch7Rest.TDInference711Defs
+import Formalization.Federated.LowerBound.GenericAlgorithmDefinitions
+import Formalization.RobustRL.LowerBounds.Ch7Definitions
+import Formalization.MultiAgent.LowerBound.Definitions
+import Formalization.RLHF.VPO.Definitions
+import Formalization.MultiAgent.ModelBased.Definitions
+import Formalization.TDInference.Definitions
 import Mathlib.Probability.Distributions.Gamma
 import Mathlib.Probability.CDF
 
@@ -132,7 +132,7 @@ def Thm7_10_restricted : Prop :=
 section Thm7_3
 
 /-- Every finite carrier gets the discrete σ-algebra (as in the printed transcriptions of
-`Formalization/RobustRL/Ch7/Ch7PrintedStatements.lean`); the generative sampling law is the
+`Formalization/RobustRL/LowerBounds/Ch7PrintedStatements.lean`); the generative sampling law is the
 product of the nominal rows over all `((s,a), i)`. -/
 local instance ch7StatementStateMeasurable (State : Type*) : MeasurableSpace State := ⊤
 
@@ -264,7 +264,7 @@ end Thm7_3
 section Thm7_5
 
 /-- Every finite carrier gets the discrete σ-algebra (as in the printed transcriptions of
-`Formalization/RobustRL/Ch7/Ch7PrintedStatements.lean`); the generative sampling law is the
+`Formalization/RobustRL/LowerBounds/Ch7PrintedStatements.lean`); the generative sampling law is the
 product of the nominal rows over all `((s,a), i)`. -/
 local instance ch7StatementStateMeasurable75 (State : Type*) : MeasurableSpace State := ⊤
 
@@ -491,7 +491,7 @@ Differences from the printed statement. It differs from the printed statement in
 by the added hypothesis `η < 1`, i.e. `c_η K (1-γ)⁴ ε² < log(SAKT/δ)`: the printed `η` (114) is
 never constrained to the algorithm's input range `0 < η < 1` (:51, :76), and under the literal
 reading the printed statement is false (`Fed.Thm7_9_printed`, refuted by
-`not_thm7_9_printed` in `Formalization/Ch7Rest/LargeStep79.lean`; C41). Beyond that hypothesis
+`not_thm7_9_printed` in `Formalization/Federated/Sync/LargeStepRefutation.lean`; C41). Beyond that hypothesis
 the entry fixes or strengthens:
 * the probability is under the true independent generative law
   `FedGeneric.fedSamplingLaw M T K 1` (:23–26), and `Q⋆` is the true optimal Q-function
@@ -583,7 +583,7 @@ end Thm7_9
 section Thm7_2_7_4
 
 /-- Discrete σ-algebra on every finite carrier, as in the printed transcriptions of
-`Formalization/RobustRL/Ch7/Ch7PrintedStatements.lean`. -/
+`Formalization/RobustRL/LowerBounds/Ch7PrintedStatements.lean`. -/
 local instance ch7StatementStateMeasurable72 (State : Type*) : MeasurableSpace State := ⊤
 
 open StatisticalRL StatisticalRL.RobustRL.Ch7 in
@@ -886,7 +886,7 @@ open StatisticalRL StatisticalRL.Ch7Rest.TDInference MeasureTheory ProbabilityTh
 confidence regions" (:196); rectangle prose :198–205. See `docs/SOURCE-ISSUES.md#C47` and `#C43`.
 
 Differs from the printed text: (1) the printed claim for arbitrary convex sets chosen from the data is false
-(C47(1); Lean evidence for the oracle variant in `TDInferenceC47Evidence711.lean`); here the direction `u` and level
+(C47(1); Lean evidence for the oracle variant in `TDInference/Confidence/HalfLineEvidence.lean`); here the direction `u` and level
 `z` are fixed before the data, the C47 proposed correction. (2) The covariance is the oracle
 `Λ = A⁻¹ diag(Γ_true) A⁻ᵀ`, the population target of the printed plug-in `Λ̂_T` (:180–182), unknown in practice;
 `Γ_true` is the true residual covariance, not the printed `Γ` of `Λ*` (:115, C43). The plug-in rule is the separate
@@ -1998,7 +1998,7 @@ on `ℝ^d = Fin d → ℝ` with its Borel σ-algebra. Reading: a convex set need
 plus any subset of its boundary circle), so `P(A)` for convex `A` is the outer measure `P.real A`,
 the same reading as the library definition
 `StatisticalRL.Ch7Rest.TDInference.Thm7_11_printed_allConvex` in
-`Formalization/Ch7Rest/TDInferencePrinted711.lean` (a library definition, not a statement entry). Both suprema are of sets bounded by `1` and
+`Formalization/TDInference/PrintedStatement.lean` (a library definition, not a statement entry). Both suprema are of sets bounded by `1` and
 containing `|P(∅) − Q(∅)|`, so `sSup` is the genuine supremum. -/
 def Eq_convex_distance_le_TV : Prop :=
   ∀ (d : ℕ) (P Q : Measure (Fin d → ℝ)), IsProbabilityMeasure P → IsProbabilityMeasure Q →

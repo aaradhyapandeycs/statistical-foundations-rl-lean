@@ -1,6 +1,6 @@
 import Formalization.Generative.FiniteHorizonPolicyEvaluationConsumption
 
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 /-! Actual all-stage V and forced-action Q performance for the concrete causal
 selector, retaining the safe all-level confidence/log factor. -/
 open MeasureTheory ProbabilityTheory

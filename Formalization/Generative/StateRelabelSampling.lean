@@ -1,5 +1,5 @@
 import Formalization.MDP.StateRelabel
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 
 /-!
 # State relabeling of the generative-model sampling law

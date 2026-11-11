@@ -17,7 +17,7 @@ the current Chapter 2 through Chapter 5 index files, including the six Chapter
 | `Formalization/Statements/Ch2.lean` | `cd82b63af573a044be7e44423c5165e51b1215e57809199e89da49cc992b1d80` |
 | `Formalization/Statements/Ch2Proofs.lean` | `eb0a74fb0e0fce6221ae36af55f67bb82450206ba9b9c2af108839b5d2eb333e` |
 | `Formalization/Statements/Ch3.lean` | `f4104fe1cc8131125845af1a4f809d6f116042b25d78a202c063ac5e9e5dd6bd` |
-| `Formalization/Statements/Ch3Definitions.lean` | `5fbbcacc9f0052f71a07ee5af9b4c4d89f63813a177bdb939e96ec8d464c5950` |
+| `Formalization/Generative/ModelBasedDefinitions.lean` | `5fbbcacc9f0052f71a07ee5af9b4c4d89f63813a177bdb939e96ec8d464c5950` |
 | `Formalization/Statements/Ch3Proofs.lean` | `b9fa4dad0fcb4d16665301b941c5dc1cfb8eb9e625dd655ec95307b837c326b1` |
 | `Formalization/Statements/Ch4.lean` | `edb1867b9b4edb4a4df6c3504bd3bfa5277e9b5a52e02b2d40a76185229ece52` |
 | `Formalization/Statements/Ch4Proofs.lean` | `8c591e4e7bbb1d2fd0b38ce3d01bb4d9b5f309e008983e55875ed54f45176045` |

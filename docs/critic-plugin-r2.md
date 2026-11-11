@@ -9,7 +9,7 @@ Independent critic, not the builder. Date 2026-11-09. Source `chapters/inference
 local copy was re-hashed.
 
 Files reviewed:
-- `Formalization/Ch7Rest/TDInferencePlugin711.lean`
+- `Formalization/TDInference/PluginCovariance/Basic.lean`
 - `TDInferencePluginSingular711.lean`
 - `TDInferencePluginConsistency711.lean`
 - `TDInferencePluginRefute711.lean`

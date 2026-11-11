@@ -1,4 +1,4 @@
-import Formalization.ModelFree.QLearningPinskerBinary
+import Formalization.Probability.InformationTheory.PinskerBinary
 import Mathlib.Analysis.Convex.Deriv
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
 

@@ -1,6 +1,6 @@
 # Critic report: TDInferenceC47Singular711.lean -- ACCEPT-WITH-FIXES (cosmetic)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/Ch7Rest/TDInferenceC47Singular711.lean` (convention on the singular event, C47(4)). Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of `Formalization/TDInference/Confidence/SingularConvention.lean` (convention on the singular event, C47(4)). Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT-WITH-FIXES (cosmetic); the finding 4 docstring fixes are applied, and the proposed C47(4) and COVERAGE wording is in `docs/SOURCE-ISSUES.md` and `docs/COVERAGE.md`. No statement entry (not a printed result); module imported from `Formalization.lean`.
 

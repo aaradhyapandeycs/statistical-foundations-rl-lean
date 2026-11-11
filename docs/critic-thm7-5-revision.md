@@ -184,7 +184,7 @@ correct. The exceptions:
 
 ## 5. Integration items (outside the WIP; not blocking this review)
 
-* **I1.** Rename the imports `Thm73Wip.*` → `Formalization.RobustRL.Ch7.LowerBound73*` and the
+* **I1.** Rename the imports `Thm73Wip.*` → `Formalization.RobustRL.LowerBounds.LowerBound73*` and the
   namespace `Thm73Wip` → `StatisticalRL.RobustRL.Ch7.LowerBound73`. Update the docstring
   reference "`Thm75Wip.Necessity`" (`Statement.lean:100`) to the integrated module name. Move the
   `def`s to `Ch7PrintedStatements.lean` beside 7.3.

@@ -1,25 +1,25 @@
 # Critic report: chi-squared law of Gaussian quadratic forms + TD ellipsoid at the chi^2(S) quantile (2026-11-10)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of the χ²(k) law of Gaussian quadratic forms (`Formalization/Probability/ChiSquaredQuadForm.lean`) and the corrected oracle ellipsoid at the χ²(S) quantile (`Formalization/Ch7Rest/TDInferenceConfChiSq711.lean`, exports `gaussCov_ellipsoid_eq_chiSquared`, `exists_chiSquared_quantile`, `exists_confRegion_oracle_chiSquared`), with drafted statement entry `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared`. Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Independent review of the χ²(k) law of Gaussian quadratic forms (`Formalization/Probability/ChiSquaredQuadForm.lean`) and the corrected oracle ellipsoid at the χ²(S) quantile (`Formalization/TDInference/Confidence/ChiSquareQuantile.lean`, exports `gaussCov_ellipsoid_eq_chiSquared`, `exists_chiSquared_quantile`, `exists_confRegion_oracle_chiSquared`), with drafted statement entry `Eq_convex_Cdelta_ellipsoid_corrected_oracle_chiSquared`. Probes are local scratch files (`<local probe>`).
 
 Integration note: verdict ACCEPT-WITH-FIXES; findings 4, 6 and 7 applied (the entry includes the quantile-existence conjunct; χ²(S) is written inline as `gammaMeasure (card State / 2) (1/2)` with Mathlib gamma/CDF imports only, so the frozen `Formalization.*` imports of `Statements/Ch7.lean` are unchanged; both modules imported from `Formalization.lean` and the TD module from `Statements/Ch7Proofs.lean`; stale "χ²(S) identification not proved" text updated in the `_corrected_oracle` and `_calibrated` docstrings, `TDInferenceConfCalib711.lean`, the COVERAGE `eq:convex.Cdelta` row and the SOURCE-ISSUES C47 addendum). The entry landed as drafted below, with an expanded docstring.
 
 Reviewed files sha256: `TDInferenceConfChiSq711.lean` a7c44f38bbd278562c9345c79ca2cce77ff662c8bd920569da0f3dcdbe3e440c (108 lines), `ChiSquaredQuadForm.lean` 1266d744a3a7930fe70e40aea950a1562837108f2d76aada00583a619b8b190b (232 lines).
 
-Targets: Formalization/Probability/ChiSquaredQuadForm.lean, Formalization/Ch7Rest/TDInferenceConfChiSq711.lean (unimported at review time).
+Targets: Formalization/Probability/ChiSquaredQuadForm.lean, Formalization/TDInference/Confidence/ChiSquareQuantile.lean (unimported at review time).
 Source: chapters/inference.tex:207-213; SOURCE-ISSUES C47(3). Critic did not edit Formalization/, docs/, Formalization.lean.
 
 ## Verdict: ACCEPT-WITH-FIXES (fixes are integration/doc only; no Lean change required)
 
 ## Evidence (commands actually run, all EXIT 0, no errors/warnings)
 - bash scripts/lean-local.sh Formalization/Probability/ChiSquaredQuadForm.lean
-- bash scripts/lean-local.sh Formalization/Ch7Rest/TDInferenceConfChiSq711.lean
+- bash scripts/lean-local.sh Formalization/TDInference/Confidence/ChiSquareQuantile.lean
 - bash scripts/lean-local.sh <local probe> (sanity checks)
   #print axioms on 11 exports: all [propext, Classical.choice, Quot.sound].
   Sanity (proved): cdf (chiSquared 2) q = 1 - exp(-q/2) for q >= 0 (via Mathlib expMeasure = gammaMeasure 1 r),
   and cdf (chiSquared 2) (2 log 20) = 1 - 1/20, i.e. the textbook 95% chi^2(2) quantile 5.991.
 - bash scripts/lean-local.sh <local probe> (draft entry, imports only
-  Mathlib.Probability.Distributions.Gamma, Mathlib.Probability.CDF, Formalization.Ch7Rest.TDInference711Defs)
+  Mathlib.Probability.Distributions.Gamma, Mathlib.Probability.CDF, Formalization.TDInference.Definitions)
 - bash scripts/lean-local.sh <local probe> (draft entry + _holds wrapper; axioms clean)
 
 ## Findings
@@ -54,7 +54,7 @@ Source: chapters/inference.tex:207-213; SOURCE-ISSUES C47(3). Critic did not edi
    ChiSquaredQuadForm is a new edge and contains proofs, so it may NOT be imported by Ch7.lean. Mathlib imports are not
    gated (only bare `import Mathlib` is). So chi^2(S) is written inline as gammaMeasure (card State / 2) (1/2) with
    added imports Mathlib.Probability.Distributions.Gamma and Mathlib.Probability.CDF (verified to elaborate).
-   Ch7Proofs.lean must import Formalization.Ch7Rest.TDInferenceConfChiSq711; Formalization.lean must import both new files.
+   Ch7Proofs.lean must import Formalization.TDInference.Confidence.ChiSquareQuantile; Formalization.lean must import both new files.
 
 ## Draft entry (compiled in <local probe>)
 Prop: forall State Action [Fintype State][DecidableEq State][Nonempty State][Fintype Action][Nonempty Action] M pi mu eta0 V0,

@@ -1,11 +1,11 @@
 # CRITIC M6a: TD reservoir condition and gaussCov prerequisites (all-convex Thm 7.11 route)
 
-Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route, not a source result: no COVERAGE row, statement-index entry or named-result change follows from it. Reviewed: M6a (TD reservoir condition and Gaussian target), `Formalization/Ch7Rest/TDInferenceConvexReservoir711.lean`. Planning notes cited below (route plan, M5a design and design check, M6a interface note) are local and not published; the route plan check is public as [critic-allconvex-p0.md](critic-allconvex-p0.md). Probes are local scratch files (`<local probe>`).
+Public copy, scrubbed (local paths, probe files and agent identifiers removed). Infrastructure review for the all-convex Theorem 7.11 route, not a source result: no COVERAGE row, statement-index entry or named-result change follows from it. Reviewed: M6a (TD reservoir condition and Gaussian target), `Formalization/TDInference/ConvexSets/Reservoir.lean`. Planning notes cited below (route plan, M5a design and design check, M6a interface note) are local and not published; the route plan check is public as [critic-allconvex-p0.md](critic-allconvex-p0.md). Probes are local scratch files (`<local probe>`).
 
 Integration (2026-11-09): F2 applied (`gaussCov_eq_map_inv_mul_diagonal_sqrt` is now a documented alias proved by M4.1's `gaussCov_eq_map_mulVec`, signature unchanged); F3 applied (the module docstrings of this module and of `GaussianIBP.lean` no longer reference local planning files); F4 applied as I1 of the M5a-2 review (the duplicate `ReservoirCond` and `matrixMaxRowAbsSum_le_of_forall` were deleted here, `ConvexLindebergReservoirBase.lean` is imported, and the module is imported from `Formalization.lean`); F5 applied (`dotProduct_self_nonneg'` is `private`). F1 concerns local planning notes only. Line numbers below refer to the reviewed version.
 
 Critic: independent (not the builder). Date: 2026-11-09.
-Under review: `Formalization/Ch7Rest/TDInferenceConvexReservoir711.lean` (685 lines, mtime 19:31).
+Under review: `Formalization/TDInference/ConvexSets/Reservoir.lean` (685 lines, mtime 19:31).
 Briefs: the route plan (not published) §4 M6, [critic-allconvex-p0.md](critic-allconvex-p0.md) §3/F7, the M5a design check (not published) R8/R11,
 the M5a design (not published) §3 (contract) and L31/L32/L33.
 

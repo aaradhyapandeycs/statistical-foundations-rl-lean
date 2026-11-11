@@ -1,4 +1,4 @@
-import Formalization.Statements.Ch3Definitions
+import Formalization.Generative.ModelBasedDefinitions
 import Formalization.Generative.GenerativeLowerBoundTwoStateDefinitions
 import Formalization.Probability.VarianceDefinitions
 
