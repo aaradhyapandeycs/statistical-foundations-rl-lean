@@ -82,41 +82,6 @@ theorem tvDualObjective_continuousOn
       (continuous_id.sub continuous_const))
   exact hf.continuousOn.congr (fun α hα ↦ hobj α hα)
 
-/-- The source scalar supremum is attained on the exact closed interval
-`[Vmin,Vmax]`; this is the continuity/compactness step needed to report the
-source's literal `max` rather than a supremum. -/
-theorem tvDualSup_attained
-    (p : StatisticalRL.FiniteDistribution State) (V : State → ℝ)
-    (σ : ℝ) :
-    ∃ α ∈ Set.Icc (Finset.univ.inf' Finset.univ_nonempty V)
-        (Finset.univ.sup' Finset.univ_nonempty V),
-      TVObj p V σ α = TVSup p V σ := by
-  classical
-  let vmin := Finset.univ.inf' Finset.univ_nonempty V
-  let vmax := Finset.univ.sup' Finset.univ_nonempty V
-  have hminmax : vmin ≤ vmax := by
-    obtain ⟨s⟩ := (inferInstance : Nonempty State)
-    exact le_trans
-      (Finset.inf'_le (s := Finset.univ) (f := V) (Finset.mem_univ s))
-      (Finset.le_sup' (s := Finset.univ) (f := V) (Finset.mem_univ s))
-  letI : Nonempty (Set.Icc vmin vmax) := ⟨⟨vmin, le_rfl, hminmax⟩⟩
-  obtain ⟨α, hα, hmax⟩ := isCompact_Icc.exists_isMaxOn
-    (by exact ⟨vmin, le_rfl, hminmax⟩)
-    (tvDualObjective_continuousOn p V σ)
-  have hsup : TVSup p V σ = TVObj p V σ α := by
-    unfold StatisticalRL.RobustRL.tvDualSup
-    rw [iSup]
-    have hbounded : BddAbove (Set.range (fun β : Set.Icc vmin vmax ↦ TVObj p V σ β.1)) := by
-      refine ⟨TVObj p V σ α, ?_⟩
-      rintro _ ⟨β, rfl⟩
-      exact hmax β.property
-    apply le_antisymm
-    · apply csSup_le (Set.range_nonempty _)
-      rintro _ ⟨β, rfl⟩
-      exact hmax β.property
-    · exact le_csSup hbounded ⟨⟨α, hα⟩, rfl⟩
-  exact ⟨α, hα, hsup.symm⟩
-
 /-- Compose the weak and reverse inequalities for the source positive-radius TV branch. -/
 theorem tvDualSup_eq_tvPrimalInf
     (p : StatisticalRL.FiniteDistribution State) (V : State → ℝ)
@@ -125,17 +90,5 @@ theorem tvDualSup_eq_tvPrimalInf
   apply le_antisymm
   · exact StatisticalRL.RobustRL.tv_dualSup_le_primalInf p V σ hσ hVnonneg
   · exact StatisticalRL.RobustRL.TVProof.Reverse.tv_primalInf_le_dualSup p V σ hσ.le hVnonneg
-
-/-- Source-facing maximum form of the TV duality claim. This statement
-combines strong-duality equality with scalar maximum attainment. -/
-theorem tvPrimalInf_eq_attained_tvDualMax
-    (p : StatisticalRL.FiniteDistribution State) (V : State → ℝ)
-    (σ : ℝ) (hσ : 0 < σ) (hVnonneg : ∀ s, 0 ≤ V s) :
-    ∃ α ∈ Set.Icc (Finset.univ.inf' Finset.univ_nonempty V)
-        (Finset.univ.sup' Finset.univ_nonempty V),
-      TVObj p V σ α = TVInf p V σ := by
-  obtain ⟨α, hα, hmax⟩ := tvDualSup_attained p V σ
-  have heq := tvDualSup_eq_tvPrimalInf p V σ hσ hVnonneg
-  exact ⟨α, hα, hmax.trans (by rw [heq])⟩
 
 end StatisticalRL.RobustRL.TVProof.StrongDuality

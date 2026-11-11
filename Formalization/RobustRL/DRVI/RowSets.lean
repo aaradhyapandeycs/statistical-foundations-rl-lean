@@ -121,12 +121,6 @@ theorem rowAttains_singleton (p : FiniteDistribution State) : RowAttains {p} := 
   intro V
   exact ⟨p, rfl, fun q hq ↦ by rw [Set.mem_singleton_iff.mp hq]⟩
 
-theorem rowAttains_ite (c : Prop) [Decidable c] {U U' : Set (FiniteDistribution State)}
-    (hU : RowAttains U) (hU' : RowAttains U') : RowAttains (if c then U else U') := by
-  by_cases h : c
-  · simpa [h] using hU
-  · simpa [h] using hU'
-
 /-- Attainment from a compact nonempty coordinate representation of the row set. -/
 theorem rowAttains_of_vectors (U : Set (FiniteDistribution State)) (C : Set (State → ℝ))
     (hC : IsCompact C) (hne : C.Nonempty)

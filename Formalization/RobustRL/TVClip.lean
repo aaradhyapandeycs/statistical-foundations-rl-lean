@@ -21,26 +21,6 @@ theorem clipAbove_eq_min (V : State → ℝ) (α : ℝ) (s : State) :
   · have h' : V s ≤ α := le_of_not_gt h
     simp [clipAbove, h, min_eq_left h']
 
-theorem clipAbove_le_value (V : State → ℝ) (α : ℝ) (s : State) :
-    clipAbove V α s ≤ V s := by
-  rw [clipAbove_eq_min]
-  exact min_le_left _ _
-
-theorem clipAbove_le_cap (V : State → ℝ) (α : ℝ) (s : State) :
-    clipAbove V α s ≤ α := by
-  rw [clipAbove_eq_min]
-  exact min_le_right _ _
-
-theorem clipAbove_eq_value_of_le (V : State → ℝ) (α : ℝ) (s : State)
-    (h : V s ≤ α) : clipAbove V α s = V s := by
-  rw [clipAbove_eq_min]
-  exact min_eq_left h
-
-theorem clipAbove_eq_cap_of_le (V : State → ℝ) (α : ℝ) (s : State)
-    (h : α ≤ V s) : clipAbove V α s = α := by
-  rw [clipAbove_eq_min]
-  exact min_eq_right h
-
 /-- If `vmin` is the attained minimum of `V` and α lies above it, then
 clipping preserves that minimum. These hypotheses are the source finite-min
 facts, separated so no optimizer or duality premise is smuggled in. -/

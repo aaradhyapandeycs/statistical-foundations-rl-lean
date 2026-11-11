@@ -148,9 +148,4 @@ theorem trap_success_null (ball : RowBall (Fin (L + 3))) {σ : ℝ} (hσ0 : 0 �
   have := hdata 0
   linarith
 
-/-- Every `Q : S → Fin 2 → ℝ` has a greedy selector. -/
-theorem exists_greedy {State : Type*} (Q : State → Fin 2 → ℝ) : ∃ f, IsGreedy Q f := by
-  choose f hf using fun s ↦ Finite.exists_max (Q s)
-  exact ⟨f, fun s a ↦ hf s a⟩
-
 end StatisticalRL.RobustRL.Ch7.HorizonTrap

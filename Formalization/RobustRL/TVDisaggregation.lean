@@ -209,18 +209,6 @@ theorem stateRemoval_eq_zero_at_zero_cost
       simpa [hc₀] using hlevel)
     simp [stateRemoval, hlevel, hc₀, hpzero]
 
-/-- Zero radius endpoint: assigning zero to every level produces the zero
-state-removal vector. -/
-theorem zeroLevelAllocation_stateRemoval_eq_zero
-    (p c : State → ℝ) (hp : ∀ s, 0 ≤ p s) :
-    ∀ s, stateRemoval p c (fun _ ↦ 0) s = 0 := by
-  classical
-  intro s
-  by_cases hlevel : c s ∈ levelSet p c
-  · have hmpos := levelMass_pos p c hp hlevel
-    simp [stateRemoval, hlevel, hmpos]
-  · simp [stateRemoval, hlevel]
-
 /-- Full positive-cost endpoint allocation: remove every level with positive
 cost and none from the zero-cost anchor. This allocation is coordinatewise
 feasible; its total budget is the aggregate positive-cost mass. -/

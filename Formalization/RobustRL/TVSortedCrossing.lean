@@ -70,55 +70,6 @@ theorem sortedPositiveCostLevels_mass_eq_state_sum
       StatisticalRL.RobustRL.TVProof.CostLevels.sum_costLevelMass_eq_sum
         p c hp
 
-/-- The same sorting operation preserves the state-indexed cost payoff. -/
-theorem sortedPositiveCostLevels_payoff_eq_state_sum
-    (p c : State → ℝ) (hp : ∀ s, 0 ≤ p s) :
-    ((sortedPositiveCostLevels p c).map
-      (StatisticalRL.RobustRL.TVProof.CostLevels.costLevelPayoff p c)).sum =
-        ∑ s, p s * c s := by
-  classical
-  rw [sortedPositiveCostLevels]
-  calc
-    (((StatisticalRL.RobustRL.TVProof.CostLevels.positiveCostLevels
-        p c).sort (fun x y : ℝ ↦ y ≤ x)).map
-        (StatisticalRL.RobustRL.TVProof.CostLevels.costLevelPayoff p c)).sum =
-      ∑ level ∈ StatisticalRL.RobustRL.TVProof.CostLevels.positiveCostLevels
-          p c,
-        StatisticalRL.RobustRL.TVProof.CostLevels.costLevelPayoff p c level :=
-      sortedList_sum_eq_finset_sum _ _
-    _ = ∑ s, p s * c s :=
-      StatisticalRL.RobustRL.TVProof.CostLevels.sum_costLevelPayoff_eq_sum
-        p c hp
-
-/-- If no state has positive mass, the state-indexed total mass is zero.
-Thus the empty level carrier is an explicit all-zero mass boundary, not a
-missing crossing case. -/
-theorem total_mass_eq_zero_of_empty_positive_levels
-    (p c : State → ℝ) (hp : ∀ s, 0 ≤ p s)
-    (hempty : StatisticalRL.RobustRL.TVProof.CostLevels.positiveCostLevels
-      p c = ∅) :
-    (∑ s, p s) = 0 := by
-  have h := StatisticalRL.RobustRL.TVProof.CostLevels.sum_costLevelMass_eq_sum
-    p c hp
-  rw [hempty] at h
-  simpa using h.symm
-
-/-- If positive mass exists and all costs are zero, the exhaustive distinct
-cost-level carrier is exactly the singleton `{0}`. This handles the
-zero-objective case with a real crossing level instead of treating it as an
-empty-list failure. -/
-theorem positiveCostLevels_zero_cost
-    (p : State → ℝ)
-    (hpos : (StatisticalRL.RobustRL.TVProof.CostLevels.positiveMassStates
-      p).Nonempty) :
-    StatisticalRL.RobustRL.TVProof.CostLevels.positiveCostLevels
-      p (fun _ ↦ (0 : ℝ)) = {0} := by
-  classical
-  have hne : ∃ s, s ∈ StatisticalRL.RobustRL.TVProof.CostLevels.positiveMassStates p := hpos
-  ext level
-  simp [StatisticalRL.RobustRL.TVProof.CostLevels.positiveCostLevels,
-    hne, eq_comm]
-
 /-- For a positive capacity that does not exceed the level mass, sorting the
 finite image and applying the list crossing lemma yields a strict prefix
 above a threshold and a strict suffix below it. These are precisely the

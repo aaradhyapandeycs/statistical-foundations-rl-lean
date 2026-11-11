@@ -105,7 +105,6 @@ theorem chi_single_gap {σ : ℝ} (hσ0 : 0 ≤ σ) (π : StationaryPolicy State
 
 end Single
 
-
 /-- `ε ≤ 0` reduces to the core case at `ε' = (1/512)/(1-γ)`, `N = 0` (adapted from the
 independent review probe). -/
 theorem kr_nonpos (State Action : Type) [Fintype State] [Fintype Action] [Nonempty State]

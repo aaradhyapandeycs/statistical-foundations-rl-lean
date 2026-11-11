@@ -190,10 +190,6 @@ noncomputable def familyRobustValue (U : RowFamily State Action) (M : Discounted
   sInf {v | ∃ K : State → Action → FiniteDistribution State, (∀ s a, K s a ∈ U s a) ∧
     v = (withKernel M K).trajectoryExpectedValue π s}
 
-theorem robustPolicyValue_eq_familyRobustValue (ball : RowBall State)
-    (M : DiscountedMDP State Action) (σ : ℝ) (π : StationaryPolicy State Action) :
-    robustPolicyValue ball M σ π = familyRobustValue (ballFamily ball M σ) M π := rfl
-
 /-- A worst-case kernel for a value vector: every row attains the row infimum. -/
 noncomputable def worstKernel (U : RowFamily State Action) (hU : ∀ s a, RowAttains (U s a))
     (V : State → ℝ) (s : State) (a : Action) : FiniteDistribution State :=
