@@ -75,10 +75,12 @@ shown on cards come from the ledger fields `display_note` (per record) and
 
 - Four labels: *proved as stated*, *proved with corrections*, *proved under
   restrictions*, *incomplete* (with a sub-reason). Markers: *✕ printed statement
-  refuted*, *∂ fails at a boundary case (domain repaired)* (a `printed_refuted`
-  record with `"kind": "boundary"`: Lean shows only a degenerate boundary or
-  domain case fails, such as T = 1 or a single action; never counted as
-  refuted), *⚠ appears to fail (paper argument)*, *new proof* (only where
+  refuted* (ledger kind `counterexample`: a non-degenerate case under the natural
+  reading), and the qualified markers, never counted as refuted: *∂ boundary case*
+  (`"kind": "boundary"`: only a degenerate point, such as a single action),
+  *◇ reading-dependent* (`"reading"`), *⊘ outside the assumed domain* (`"domain"`),
+  *∅ ill-posed* (`"ill-posed"`: the printed formula is undefined and Lean's value is a
+  convention), *⚠ appears to fail (paper argument)*, *new proof* (only where
   `proof_origin` is an own proof), *also corrected*. Explanatory items (no mathematical claim) get no label and are left
   out of every count; algorithms, assumptions and definitions get no label.
 - A ledger record with `"status_override": "incomplete"` never counts as proving

@@ -217,6 +217,9 @@ table.dash-table td:nth-child(2) { min-width: 180px; }
 .mk-refuted { color: var(--refuted); background: var(--refuted-fill); }
 .mk-fails-paper { color: var(--partial); background: var(--corr-fill); }
 .mk-boundary { color: var(--muted); background: var(--code-bg); border: 1px dashed var(--line); }
+.mk-reading-dependent { color: var(--partial); background: var(--corr-fill); border: 1px dashed var(--line); }
+.mk-domain { color: var(--muted); background: var(--code-bg); border: 1px dashed var(--line); }
+.mk-ill-posed { color: var(--muted); background: var(--code-bg); border: 1px dotted var(--line); }
 .mk-new-proof { color: var(--accent); }
 .mk-new-proof::before { content: "★ "; }
 .mk-also-corrected { color: var(--corrected); }

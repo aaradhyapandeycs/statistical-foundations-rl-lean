@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from .book import Book, ENV_NAMES
 from .graph import GitReader, gen_nodes
 from .info import InfoPages
-from .lean import ENTRY_ORDER, LABELS, MARKERS, REPO, LeanIndex, chip
+from .lean import ENTRY_ORDER, LABELS, MARKERS, REPO, LeanIndex, chip, marker_toggles
 from .tex import RESULT_KINDS, html_id, label_id
 
 # Items that are never "proved": they get no status chip, only "cited by" links.
@@ -256,28 +256,48 @@ class Site(InfoPages):
                 else "Part of the item is proved (below); the item is not counted as proved."
                 if n["statement_status"] == "partial" else "Nothing is proved for the printed statement.")
         reading = self.lean.md(pr["reading"]) if pr.get("reading") else "see the coverage ledger"
-        if "refuted" in n.get("site_markers", ()):
-            names = ", ".join(f'<code title="{attr(x)}">{esc(x.rsplit(".", 1)[-1])}</code>'
-                              for x in (pr.get("lean") or n["refutations_cited"])) or "see the coverage ledger"
+        marks = n.get("site_markers", ())
+        qual = next((m for m in ("boundary", "reading-dependent", "domain", "ill-posed") if m in marks), None)
+        names = ", ".join(f'<code title="{attr(x)}">{esc(x.rsplit(".", 1)[-1])}</code>'
+                          for x in (pr.get("lean") or n["refutations_cited"])) or "see the coverage ledger"
+        lab = n.get("site_label")
+        variant = "corrected" if lab == "corrected" or "also-corrected" in marks else "restricted"
+        if "refuted" in marks:
             more = (" Some further failures are paper arguments by this project, not checked in Lean."
                     if pr.get("paper") else "")
-            lab = n.get("site_label")
             lead = ""
             if lab in ("corrected", "restricted"):
-                lead = (f'<strong>The printed statement is not proved (Lean refutes it); a '
-                        f'{"corrected" if lab == "corrected" or "also-corrected" in n.get("site_markers", ()) else "restricted"} '
+                lead = (f'<strong>The printed statement is not proved (Lean refutes it); a {variant} '
                         f'statement is proved.</strong> ')
             refuted = (f'<p class="refuted-line tex2jax_process">{lead}<strong>Refuted in Lean</strong> under this reading: '
                        f'{reading} Lean: {names}.{more} {what} The refutation and any correction are {OURS}.</p>')
-        elif "boundary" in n.get("site_markers", ()):
-            names = ", ".join(f'<code title="{attr(x)}">{esc(x.rsplit(".", 1)[-1])}</code>'
-                              for x in (pr.get("lean") or n["refutations_cited"])) or "see the coverage ledger"
+        elif qual == "boundary":
             more = (" Some further boundary cases are paper arguments by this project, not checked in Lean."
                     if pr.get("paper") else "")
-            refuted = (f'<p class="refuted-line boundary tex2jax_process"><strong>Fails at a boundary case '
-                       f'(checked in Lean):</strong> {reading} Lean: {names}.{more} Only a degenerate boundary or '
+            where = f"Lean: {names}." if (pr.get("lean") or n["refutations_cited"]) else "Paper argument, not checked in Lean."
+            refuted = (f'<p class="refuted-line boundary tex2jax_process"><strong>Fails at a boundary case:</strong> '
+                       f'{reading} {where}{more} Only a degenerate boundary or '
                        f'domain case fails; the repair restricts the domain. {what} The finding and any correction '
                        f'are {OURS}.</p>')
+        elif qual == "reading-dependent":
+            lead = (f'<strong>Under the reading stated below, Lean refutes the printed statement; a {variant} '
+                    f'statement is proved.</strong> ' if lab in ("corrected", "restricted") else
+                    '<strong>Under the reading stated below, Lean refutes the printed statement.</strong> ')
+            refuted = (f'<p class="refuted-line reading tex2jax_process">{lead}<strong>Reading-dependent:</strong> '
+                       f'{reading} Lean: {names}. Under the other natural reading no counterexample is claimed. '
+                       f'{what} The finding and any correction are {OURS}.</p>')
+        elif qual == "domain":
+            how = (f"Lean: {names}." if (pr.get("lean") or n["refutations_cited"])
+                   else "Paper argument, not checked in Lean.")
+            refuted = (f'<p class="refuted-line domain tex2jax_process"><strong>Fails only outside its assumed '
+                       f'domain:</strong> {reading} {how} The failure is outside a range assumed elsewhere in the '
+                       f'book (or the statement is read standalone); it is not a refutation within the assumed '
+                       f'range. {what} The finding and any correction are {OURS}.</p>')
+        elif qual == "ill-posed":
+            refuted = (f'<p class="refuted-line ill-posed tex2jax_process"><strong>Ill-posed at the point:</strong> '
+                       f'{reading} Lean: {names}. The printed formula is undefined there; the Lean statement uses a '
+                       f'convention for the undefined value, so this is not a refutation of a well-defined case. '
+                       f'{what} The finding and any correction are {OURS}.</p>')
         elif "fails-paper" in n.get("site_markers", ()):
             refuted = (f'<p class="refuted-line paper tex2jax_process"><strong>Appears to fail (paper argument, not '
                        f'checked in Lean):</strong> {reading} {what} The argument and any correction are {OURS}.</p>')
@@ -453,7 +473,7 @@ class Site(InfoPages):
                     view = ({"label": ln.get("site_label"), "markers": ln.get("site_markers", ()),
                              "sub": ln.get("site_sub_reason", "")} if ln else
                             {"label": None, "markers": (), "sub": "ledger note (not a tracked item)"})
-                    if ln and {"refuted", "boundary"} & set(ln.get("site_markers", ())):
+                    if ln and {"refuted", "boundary", "reading-dependent", "domain", "ill-posed"} & set(ln.get("site_markers", ())):
                         out.append(self.item_header(ln))
                         view = {"label": None, "markers": (), "sub": ""}  # shown once, in the header
                     out.append(self.lean.ledger_card(shown, self.lean.coverage[lab], view))
@@ -644,10 +664,16 @@ endorse this formalization. Lean code: Apache-2.0, commit <a href="{REPO}/tree/{
     def count_sentence(self) -> str:
         return (f'Of the {self.cnt("named_results_in_inventory")} numbered theorems, lemmas and claims: '
                 f'{self.label_counts("named_by_label", True)}. Of these, {self.cnt("named_refuted_marker")} have '
-                f'a printed statement refuted in Lean under the reading formalized, marked '
-                f'<span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span>; '
-                f'{self.cnt("named_boundary_marker")} more fail in Lean only at a degenerate boundary case '
-                f'(the domain is repaired), marked <span class="marker mk-boundary">{esc(MARKERS["boundary"])}</span>, and '
+                f'a printed statement that appears false in a non-degenerate case under its natural reading, '
+                f'refuted in Lean, marked <span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span>; '
+                f'{self.cnt("named_boundary_marker")} fail only at a degenerate boundary case '
+                f'(the domain is repaired), marked <span class="marker mk-boundary">{esc(MARKERS["boundary"])}</span>; '
+                f'{self.cnt("named_reading_marker")} are refuted only under a stated reading, marked '
+                f'<span class="marker mk-reading-dependent">{esc(MARKERS["reading-dependent"])}</span>; '
+                f'{self.cnt("named_domain_marker")} fail only outside an assumed domain, marked '
+                f'<span class="marker mk-domain">{esc(MARKERS["domain"])}</span>; '
+                f'{self.cnt("named_illposed_marker")} have a printed formula undefined at the point, marked '
+                f'<span class="marker mk-ill-posed">{esc(MARKERS["ill-posed"])}</span>; and '
                 f'{self.cnt("named_fails_paper_marker")} more appear to fail by a paper argument of this project '
                 f'(not checked in Lean), marked <span class="marker mk-fails-paper">{esc(MARKERS["fails-paper"])}'
                 f'</span>. Remarks and displayed claims are counted separately ({self.cnt("prose_nodes")} tracked): '
@@ -760,8 +786,7 @@ book's source, including any misspelling.</p>
 <div class="filters" role="search"><input type="search" id="q" placeholder="Search number, title, label, Lean name or C-id" aria-label="Search results">
 <div class="chips" role="group" aria-label="Filter by label"><button type="button" class="chip on" data-filter="" aria-pressed="true">All</button>{chips}
 <label class="toggle"><input type="checkbox" id="f-refuted"> <span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span></label>
-<label class="toggle"><input type="checkbox" id="f-boundary"> <span class="marker mk-boundary">{esc(MARKERS["boundary"])}</span></label>
-<label class="toggle"><input type="checkbox" id="f-paper"> <span class="marker mk-fails-paper">{esc(MARKERS["fails-paper"])}</span></label>
+{marker_toggles()}
 <label class="toggle"><input type="checkbox" id="f-new"> <span class="marker mk-new-proof">{esc(MARKERS["new-proof"])}</span></label>
 <label class="toggle"><input type="checkbox" id="f-named" checked> numbered results only</label>
 <select id="f-ch" aria-label="Chapter"><option value="">All chapters</option>{chapters}</select></div>
@@ -843,10 +868,17 @@ reviews were done by AI agents, <strong>not by a human referee</strong>.</p>
 tracked separately, and the corrected and restricted segments are variants of the printed statement, not the printed
 statement itself. All counts are on <a href="status.html">Progress</a>.</p>
 <p>{self.cntw("named_refuted_marker", "numbered result", "numbered results")} and {self.cntw("prose_refuted_marker", "remark or display", "remarks or displays")}
-have a printed statement refuted in Lean under the reading formalized
-(<a href="results.html#m=refuted&amp;all=1">show them</a>); {self.cntw("named_boundary_marker", "numbered result", "numbered results")} and
-{self.cntw("prose_boundary_marker", "remark or display", "remarks or displays")} fail in Lean only at a degenerate boundary case, with the
-domain repaired (<a href="results.html#m=boundary&amp;all=1">show them</a>); {self.cntw("named_fails_paper_marker", "numbered result", "numbered results")} and
+have a printed statement that appears false in a non-degenerate case under its natural reading, refuted in Lean
+(<a href="results.html#m=refuted&amp;all=1">show them</a>). Others are qualified, and are not counted as refuted:
+{self.cntw("named_boundary_marker", "numbered result", "numbered results")} and {self.cntw("prose_boundary_marker", "remark or display", "remarks or displays")} fail only at a degenerate boundary case, with the
+domain repaired (<a href="results.html#m=boundary&amp;all=1">show them</a>);
+{self.cntw("named_reading_marker", "numbered result", "numbered results")} and {self.cntw("prose_reading_marker", "remark or display", "remarks or displays")} are refuted only under a stated reading
+(<a href="results.html#m=reading-dependent&amp;all=1">show them</a>);
+{self.cntw("named_domain_marker", "numbered result", "numbered results")} and {self.cntw("prose_domain_marker", "remark or display", "remarks or displays")} fail only outside an assumed domain
+(<a href="results.html#m=domain&amp;all=1">show them</a>);
+{self.cntw("named_illposed_marker", "numbered result", "numbered results")} and {self.cntw("prose_illposed_marker", "remark or display", "remarks or displays")} have a printed formula undefined at the point
+(<a href="results.html#m=ill-posed&amp;all=1">show them</a>);
+{self.cntw("named_fails_paper_marker", "numbered result", "numbered results")} and
 {self.cntw("prose_fails_paper_marker", "remark or display", "remarks or displays")} appear to fail by a paper argument of this project, not
 checked in Lean (<a href="results.html#m=fails-paper&amp;all=1">show them</a>). Remarks and displayed claims
 ({self.cnt("prose_nodes")} tracked): {self.label_counts("prose_by_label")}; {self.cnt("prose_by_label.no_claim")}
@@ -864,8 +896,11 @@ claims, remarks and displays are in the <a href="results.html">results index</a>
 <li><span class="status st-corrected">proved with corrections</span> a corrected form is proved; the card says what differs from the print and links the source issue.</li>
 <li><span class="status st-restricted">proved under restrictions</span> a special case of the printed result is proved; the card states the restriction.</li>
 <li><span class="status st-incomplete">incomplete</span> nothing counted as proved for the printed item yet (the small text says why).</li>
-<li><span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span> Lean proves the printed statement false under the reading formalized.</li>
-<li><span class="marker mk-boundary">{esc(MARKERS["boundary"])}</span> Lean shows the printed statement fails only at a degenerate boundary or domain case (for example T = 1, where a formula divides by log T = 0, or a single action); a domain restriction repairs it. Not counted as refuted.</li>
+<li><span class="marker mk-refuted">{esc(MARKERS["refuted"])}</span> Lean proves the printed statement false in a non-degenerate case under its natural reading.</li>
+<li><span class="marker mk-boundary">{esc(MARKERS["boundary"])}</span> Lean shows the printed statement fails only at a degenerate boundary case (for example a single action, where every policy is optimal); a domain restriction repairs it. Not counted as refuted.</li>
+<li><span class="marker mk-reading-dependent">{esc(MARKERS["reading-dependent"])}</span> the printed statement is ambiguous and Lean refutes it only under the reading the card states; under the other natural reading no counterexample is claimed. Not counted as refuted.</li>
+<li><span class="marker mk-domain">{esc(MARKERS["domain"])}</span> the printed statement fails only outside a parameter range or premise assumed elsewhere in the book, or when read standalone. Not counted as refuted.</li>
+<li><span class="marker mk-ill-posed">{esc(MARKERS["ill-posed"])}</span> the printed formula is undefined at the point where Lean's statement fails, so Lean's value is a convention (for example x/0 = 0). Not counted as refuted.</li>
 <li><span class="marker mk-fails-paper">{esc(MARKERS["fails-paper"])}</span> a paper argument by this project (not checked in Lean) shows the printed statement fails.</li>
 </ul>
 <p>On a book page the book text is on the left and the Lean card on the right (below it on narrow screens). The
@@ -912,15 +947,27 @@ printed one, the label says so.</p>
 <p>Numbered results proved only in a corrected form (the printed statement needs a change):</p>
 {self.node_list(corrected)}
 <h3>Machine-checked counterexamples</h3>
-<p>{self.cnt("refutation_theorems")} Lean theorems refute a printed statement, under the reading formalized, for
-these {self.cnt("refuted_marker_nodes")} items. A refutation is only as good as the reading; each card states it.</p>
+<p>{self.cnt("refutation_theorems")} Lean theorems refute a printed statement in a non-degenerate case under its
+natural reading, for these {self.cnt("refuted_marker_nodes")} items. A refutation is only as good as the reading; each
+card states it.</p>
 {self.node_list(refuted)}
 <h3>Boundary cases (domain repaired)</h3>
-<p>For these {self.cnt("boundary_marker_nodes")} items, {self.cnt("boundary_refutation_theorems")} Lean theorems show
-that the printed statement fails only at a degenerate boundary or domain case (for example T = 1, where the printed
-schedule divides by log T = 0, or a single action, where every policy is optimal). Adding the missing domain condition
-repairs it; these are not counted as refutations.</p>
+<p>For these {self.cnt("boundary_marker_nodes")} items the printed statement fails only at a degenerate boundary case
+(for example a single action, where every policy is optimal, or K = 1, where a printed factor vanishes). Adding the
+missing domain condition repairs it; these are not counted as refutations.</p>
 {self.node_list([n for n in self.node_data["nodes"] if "boundary" in n.get("site_markers", ())])}
+<h3>Refuted only under a stated reading</h3>
+<p>For these {self.cnt("reading_marker_nodes")} items the printed form is ambiguous; Lean refutes it under the reading the
+card states, and under the other natural reading no counterexample is claimed. Not counted as refutations.</p>
+{self.node_list([n for n in self.node_data["nodes"] if "reading-dependent" in n.get("site_markers", ())])}
+<h3>Failing only outside an assumed domain</h3>
+<p>For these {self.cnt("domain_marker_nodes")} items the printed statement fails only outside a parameter range or premise
+assumed elsewhere in the book (or when read standalone). Not counted as refutations.</p>
+{self.node_list([n for n in self.node_data["nodes"] if "domain" in n.get("site_markers", ())])}
+<h3>Printed formula undefined at the point</h3>
+<p>For these {self.cnt("illposed_marker_nodes")} items the printed formula is undefined where Lean's statement fails, so
+Lean's value is a convention and the result is not a refutation of a well-defined case.</p>
+{self.node_list([n for n in self.node_data["nodes"] if "ill-posed" in n.get("site_markers", ())])}
 <h3>Failures shown by a paper argument only</h3>
 <p>For these {self.cnt("fails_paper_marker_nodes")} items a paper argument by this project (not checked in Lean)
 shows that the printed statement fails; each card states the case.</p>

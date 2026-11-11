@@ -33,9 +33,12 @@ Status rules (also shown in words on the site's Status and Graph pages):
 * `refuted`: nothing is proved for the node and the field lists a Lean refutation.  A node that
   is proved in some form is never `refuted`; it carries the refuted marker instead.  A node with
   only a paper argument gets the separate `fails-paper` marker ("appears to fail").  A field record with
-  `"kind": "boundary"` (the Lean refutation shows only a degenerate boundary or domain case, e.g. T = 1
-  with a junk value, or a single action, and the repair is a domain restriction) gets the `boundary`
-  marker instead of `refuted`; it is excluded from every refuted count and tallied separately.
+  `"kind"` other than `counterexample` (the default) gets its own marker instead of `refuted` and is
+  excluded from every refuted count, tallied separately: `boundary` (only a degenerate boundary or
+  parameter point, repaired by a domain restriction), `reading` (marker `reading-dependent`: fails only
+  under a stated reading of an ambiguous printed form), `domain` (fails only outside a standing or assumed
+  parameter range), `ill-posed` (the printed formula is undefined at the point; Lean's value is a
+  convention).  These kinds may also qualify a paper-only failure.
   `partial`: a COVERAGE row whose bold lead starts with "Partial" or proves only part of the
   item ("First two sentences proved"), or a statement entry without the reviewed record it needs.
 * Source-issue ids are read from ledger scopes and docstrings as `Cnn` (not `C1 = 2`), and from
@@ -178,11 +181,20 @@ MARKERS = {
     "refuted": "✕ printed statement refuted in Lean",
     "fails-paper": "⚠ printed statement appears to fail (paper argument)",
     "boundary": "∂ printed statement fails at a boundary case (domain repaired)",
+    "reading-dependent": "◇ printed statement fails only under a stated reading",
+    "domain": "⊘ printed statement fails only outside its assumed domain",
+    "ill-posed": "∅ printed formula is undefined at the point (Lean value is a convention)",
     "new-proof": "new proof",
     "also-corrected": "also corrected",
 }
 # Optional ledger-record fields (named-result-status.json) and their defaults.
-REFUTATION_KINDS = ("counterexample", "boundary")
+REFUTATION_KINDS = ("counterexample", "boundary", "reading", "domain", "ill-posed")
+# ledger `kind` -> site marker.  Only `counterexample` is a plain refutation (marker `refuted`, or `fails-paper`
+# when only a paper argument shows it); every other kind is a qualified failure with its own marker.
+KIND_MARKER = {"boundary": "boundary", "reading": "reading-dependent", "domain": "domain", "ill-posed": "ill-posed"}
+# per-kind marker counts in the summary (`named_<key>_marker`, `prose_<key>_marker`, `<key>_marker_nodes`)
+KIND_COUNT_KEYS = {"boundary": "boundary", "reading-dependent": "reading", "domain": "domain",
+                   "ill-posed": "illposed"}
 PROOF_ORIGINS = ("source-proof", "source-proof-repaired", "own-proof:source-cites", "own-proof:source-omits",
                  "unclassified")
 CORRECTION_STATUSES = ("proposed-by-project", "author-confirmed")
@@ -249,11 +261,12 @@ def site_label(n: dict):
     proof_origin is an own proof."""
     st, pf = n["statement_status"], n["proof_status"]
     markers = []
-    if n.get("refutations_cited") and (n.get("printed_refuted") or {}).get("kind") == "boundary":
-        markers.append("boundary")
+    pr = n.get("printed_refuted") or {}
+    if pr.get("kind") in KIND_MARKER and (n.get("refutations_cited") or pr.get("paper")):
+        markers.append(KIND_MARKER[pr["kind"]])
     elif n.get("refutations_cited") or st == "refuted":
         markers.append("refuted")
-    elif (n.get("printed_refuted") or {}).get("paper"):
+    elif pr.get("paper"):
         markers.append("fails-paper")
     origins = n.get("proof_origins") or []
     if pf == "proved" and origins and all(o.startswith("own-proof") for o in origins):
@@ -297,8 +310,6 @@ def parse_printed_refuted(field: dict, issue_ids) -> dict:
             raise SystemExit(f"printed_refuted[{key!r}].paper must be true or false")
         if lean is None and not paper:
             raise SystemExit(f"printed_refuted[{key!r}]: neither a Lean refutation nor a paper argument")
-        if kind == "boundary" and lean is None:
-            raise SystemExit(f"printed_refuted[{key!r}]: kind 'boundary' qualifies a Lean refutation; none is listed")
         reading = rec.get("reading")
         if not isinstance(reading, str) or not reading.strip():
             raise SystemExit(f"printed_refuted[{key!r}].reading must state the reading under which it fails")
@@ -1228,13 +1239,15 @@ class Builder:
                                                                              no_claim=0),
                                                       "named_refuted_marker": 0, "prose_refuted_marker": 0,
                                                       "named_fails_paper_marker": 0, "prose_fails_paper_marker": 0,
-                                                      "named_boundary_marker": 0, "prose_boundary_marker": 0})
+                                                      **{f"{c}_{k}_marker": 0 for k in KIND_COUNT_KEYS.values()
+                                                         for c in ("named", "prose")}})
             ch[n["class"]][n["statement_status"]] += 1
             lab = n["site_label"] or "no_claim"
             ch[f'{n["class"]}_by_label'][lab] += 1
             ch[f'{n["class"]}_refuted_marker'] += "refuted" in n["site_markers"]
             ch[f'{n["class"]}_fails_paper_marker'] += "fails-paper" in n["site_markers"]
-            ch[f'{n["class"]}_boundary_marker'] += "boundary" in n["site_markers"]
+            for mk, k in KIND_COUNT_KEYS.items():
+                ch[f'{n["class"]}_{k}_marker'] += mk in n["site_markers"]
             if n["class"] == "named":
                 ch["named_total"] += 1
                 ch["named_proved"] += n["proof_status"] == "proved"
@@ -1299,14 +1312,17 @@ class Builder:
             "named_fails_paper_marker": tally(lambda n: n["class"] == "named" and "fails-paper" in n["site_markers"]),
             "prose_fails_paper_marker": tally(lambda n: n["class"] == "prose" and "fails-paper" in n["site_markers"]),
             "fails_paper_marker_nodes": tally(lambda n: "fails-paper" in n["site_markers"]),
-            # printed statements refuted in Lean only at a degenerate boundary/domain case (kind "boundary")
-            "named_boundary_marker": tally(lambda n: n["class"] == "named" and "boundary" in n["site_markers"]),
-            "prose_boundary_marker": tally(lambda n: n["class"] == "prose" and "boundary" in n["site_markers"]),
-            "boundary_marker_nodes": tally(lambda n: "boundary" in n["site_markers"]),
+            # qualified failures, one count per ledger kind (boundary, reading, domain, ill-posed); none is a refuted count
+            **{f"{c}_{k}_marker": tally(lambda n, c=c, mk=mk: n["class"] == c and mk in n["site_markers"])
+               for mk, k in KIND_COUNT_KEYS.items() for c in ("named", "prose")},
+            **{f"{k}_marker_nodes": tally(lambda n, mk=mk: mk in n["site_markers"])
+               for mk, k in KIND_COUNT_KEYS.items()},
             "refutation_theorems": len({x for n in node_list if "refuted" in n["site_markers"]
                                         for x in n["refutations_cited"]}),
             "boundary_refutation_theorems": len({x for n in node_list if "boundary" in n["site_markers"]
                                                  for x in n["refutations_cited"]}),
+            "qualified_failure_theorems": len({x for n in node_list if set(KIND_MARKER.values()) & set(n["site_markers"])
+                                               for x in n["refutations_cited"]}),
             "own_proof_by_origin": {o: tally(lambda n, o=o: n["class"] == "named" and n["proof_status"] == "proved"
                                              and o in n["proof_origins"])
                                     for o in PROOF_ORIGINS if o != "unclassified"},

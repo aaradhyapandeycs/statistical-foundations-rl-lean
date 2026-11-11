@@ -25,6 +25,16 @@ REPO = "https://github.com/aaradhyapandeycs/statistical-foundations-rl-lean"
 # node graph; the reader never classifies a status on its own.
 LABELS = gen_nodes.SITE_LABELS
 MARKERS = gen_nodes.MARKERS
+# Marker filter toggles (checkbox id suffix, marker key) in display order; site/static/app.js reads the same ids.
+FILTER_MARKERS = (("refuted", "refuted"), ("boundary", "boundary"), ("reading", "reading-dependent"),
+                  ("domain", "domain"), ("illposed", "ill-posed"), ("paper", "fails-paper"))
+
+
+def marker_toggles() -> str:
+    """The marker filter checkboxes of the results index and the graph's node table."""
+    return "\n".join(f'<label class="toggle"><input type="checkbox" id="f-{i}"> '
+                     f'<span class="marker mk-{m}">{html.escape(MARKERS[m], quote=False)}</span></label>'
+                     for i, m in FILTER_MARKERS)
 # A statement entry (never an item) may also be a supporting entry: its `_holds` wrapper proves it in Lean,
 # but the item's ledger record is another entry, so it is not counted for the item. Items keep exactly
 # the four labels above; this chip appears only on entry cards.

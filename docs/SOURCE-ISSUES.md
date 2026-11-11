@@ -187,6 +187,8 @@ itself a counterexample.
 
 ## Candidate C5: missing premise in TD step-size Lemma 4.3
 
+**Classification (marker audit, 2026-11-11).** The failure is of the standalone statement only; under the sample-size condition of Theorem 4.1, which the appendix proof invokes, this instance is excluded, and Theorem 4.1 is not claimed to fail (ledger kind `domain`).
+
 The printed standalone `lemma:TD-step-size` (`generative_model_model_free.tex:317–327`) omits a gamma-dependent sample-size premise used in its appendix proof, and does not explicitly bound `t` by the horizon on which the schedule is constrained. The [independent source review](critic-td-step-size-premise.md) gives a concrete admissible counterexample to the early-weight bound: take `c₁=c₂=1/4`, `T=t=100`, `γ=1−10⁻⁶`, and each learning rate equal to the printed lower endpoint. Then the initial weight is at least `0.9999`, whereas the lemma asserts it is at most `0.0001`.
 
 The proof uses `T ≥ log²(T)/(c₁(1−γ))`; the [formal helper](../Formalization/ModelFree/TDStepSizeLate.lean) retains that condition and `t≤T`, while a [separate proof](../Formalization/ModelFree/TDStepSizeBudget.lean) derives the large-T condition from the enclosing main theorem’s sample budget for a sufficient constant relation. This is a statement gap for the standalone auxiliary lemma, not by itself a counterexample to the main TD theorem. No author-approved correction is asserted.
@@ -371,6 +373,8 @@ not covered.
 
 <a id="C10"></a>
 ## Candidate C10: discount endpoint in the offline VI-LCB lemma
+
+**Classification (marker audit, 2026-11-11).** The failure is for γ<1/2, outside the range that the proof (and the parent Theorem 6.3) assumes; it is not a refutation within that range (ledger kind `domain`).
 
 **Source:** Lemma 6.2, `lem:monotone-contraction`,
 `chapters/offlineRL.tex:872–890`; its proof uses `γ ≥ 1/2` at
@@ -683,6 +687,8 @@ candidate records the asserted error.
 
 ## Candidate C13: MVP trigger notation and stored-count comparison
 
+**Classification (marker audit, 2026-11-11).** The refutations of Theorem 5.10 and Lemma 5.12 hold only under the literal consecutive-integer reading of the trigger set; under the powers-of-two reading that the prose describes no counterexample is claimed, and Lemma 5.12 is proved (`Lemma5_12_powerOfTwo_corrected`) (ledger kind `reading`).
+
 **Status: source trigger inconsistency and invalid intermediate argument;
 a corrected power-of-two trigger variant of Lemma 5.12 is proved.**
 
@@ -804,6 +810,8 @@ See [independent review](critic-online-MVP-counts-profiles.md) and
 <a id="C16"></a>
 
 ## Candidate C16: MVP uniform concentration at small confidence logarithms
+
+**Classification (marker audit, 2026-11-11).** The refutation holds only in a corner regime (δ′ near 1, tiny SAHK) and under the bounded continuation-family reading; it is not a failure for non-degenerate parameters (ledger kind `reading`).
 
 **Status: generic Lemma 5.13 refuted under the natural bounded
 continuation-family interpretation; the source has an endpoint-index ambiguity.**
@@ -1131,6 +1139,8 @@ The printed condition `T ≥ c₂ S C⋆ log(SAT/((1−γ)δ))/((1−γ)⁵ε²)
 
 ## Candidate C28: Lemma 6.10 omits the c_b premise; Lemma 6.9 proof applies Azuma at undefined random visit times
 
+**Classification (marker audit, 2026-11-11).** Lemma 6.10 fails only without the large-c_b premise that Lemma 6.9 and Theorem 6.8 assume as a standing condition; with it the lemma is proved (ledger kind `domain`).
+
 **Source:** `chapters/offlineRL.tex`, Lemma 6.9 `lemma:Q-recursion-pessimistic-Q` (:1866–1893, proof :4415–4528) and Lemma 6.10 `lemma:pessimistic-Q` (:1907–1916, proof :4530–4672).
 
 (1) Lemma 6.10 does not repeat Lemma 6.9's requirement that `c_b` be large enough, and its proof depends on Lemma 6.9. As a standalone claim for an arbitrary universal `c_b > 0`, it fails. Counterexample: `S = {0,1}`, one action, `P(·|0) = (½,½)`, `P(·|1) = δ_1`, `r = (0,1)`, `γ = ½`, `d^b` uniform, `T = 3`, `δ = 0.01`. Exact enumeration gives `P(∃t: Q_t ≰ Q⋆) = 1/16 > δ` for `c_b ≤ 10⁻³`. The premise is the standing assumption of Theorem 6.8 (:1764). The formal entry states it as `∃ c_b₀, ∀ c_b ≥ c_b₀` (`c_b₀ = 4`).
@@ -1236,6 +1246,8 @@ Independently critic-reviewed ([review](critic-refute-batch.md)).
 
 <a id="C35"></a>
 ## Candidate C35: Theorem 4.13 needs T ≥ 2; its proof is outside the monograph
+
+**Classification (marker audit, 2026-11-11).** The printed schedule is undefined at T = 1, so the Lean witness depends on Lean's convention x/0 = 0 and is not a refutation of a well-defined printed case (ledger kind `ill-posed`).
 
 Source: `thm:finite-horizon-simple-Q-generative`, `generative_model_model_free.tex:2215–2236`; schedule
 `eq:thm:finite-horizaon-eta` `:2203–2209`; algorithm `:2181–2200`.
@@ -1390,6 +1402,8 @@ Corrected result (2026-11-07). The monograph states Theorem 7.8 without citation
 <a id="C41"></a>
 ## Candidate C41: Theorem 7.9's learning rate can exceed 1
 
+**Classification (marker audit, 2026-11-11).** The failure occurs only when the prescribed η exceeds 1, outside the algorithm's stated range 0<η<1; with that range read in, the statement is vacuous for large K rather than false (ledger kind `domain`).
+
 The algorithm requires 0 < η < 1 (`federated_RL.tex:51,76`),
 but the prescribed η = c_η K(1−γ)⁴ε²/log(SAKT/δ) (`federated_RL.tex:114`) is unbounded in K (and large as δ → 1).
 Witness, for any constants c_T, c_η: S = A = 1, r ≡ 1, Q_0 = 0, τ = T = 1, γ = 1/2, ε = 1, δ = 1/2 and K large;
@@ -1404,6 +1418,8 @@ Read-off (2026-11-10). The per-agent sample size eq:sample-size-per-agent-fedQ (
 <a id="C42"></a>
 ## Candidate C42: Theorem 7.10 is vacuous in N as printed; the placement of c0 matters
 
+**Classification (marker audit, 2026-11-11).** The statement is refuted only if "for some universal constant" is read inside the hypothesis; with the constant chosen first (the natural reading) the printed bound is proved for exact averaging (ledger kind `reading`).
+
 In Theorem 7.10
 (`federated_RL.tex:227–239`), C_round ≥ 1 (`federated_RL.tex:196`) and the hypothesis C_round ≤ c0/((1−γ)log²N)
 force log²N ≤ c0/(1−γ). So N is bounded in terms of γ and the bound follows with C_γ exponentially small in that
@@ -1414,6 +1430,8 @@ with an explicit C_γ. Found by a source preflight; the reading dependence was e
 
 <a id="C43"></a>
 ## Candidate C43: Theorem 7.11's covariance Γ omits the reward variance across actions
+
+**Classification (marker audit, 2026-11-11).** The refutation holds under the reading r(s) = E_{a~π} r(s,a) of the undefined printed r(s); under state-only rewards or a deterministic policy the statement is neither proved nor refuted (ledger kind `reading`).
 
 Γ_{s,s} (`inference.tex:115`) uses
 an undefined r(s) and averages only over s′ ∼ P_π. With rewards r(s,a) (`inference.tex:62`) and r(s) = r_π(s), it
@@ -1513,6 +1531,8 @@ cited (cen2025vpo), not proved in the monograph. Found by a source preflight and
 <a id="C45"></a>
 ## Candidate C45: Theorem 7.6 fails (refuted in Lean) when the planning oracle may return any equilibrium
 
+**Classification (marker audit, 2026-11-11).** The refutation holds if the planning oracle may return any equilibrium in the sense of the printed definitions; for causal oracles the statement is proved (ledger kind `reading`).
+
 Theorem 7.6 (`marl.tex:384–399`) applies an unspecified planning oracle (`:377`) to the empirical Markov game and claims that the
 returned Nash equilibrium (NE) and coarse correlated equilibrium (CCE) both have gap ≤ ε with probability ≥ 1 − δ once
 N ≥ C₁H³ε⁻² log(SHN∏A_i/δ). The NE and CCE definitions constrain only step 1 (`:213–238`). If the oracle may return any such
@@ -1533,6 +1553,8 @@ Mathlib, so the NE and joint clauses are proved for every causal NE oracle but n
 
 <a id="C46"></a>
 ## Candidate C46: regret-to-PAC conversion has the wrong constant `C_{S,A,H+1}`
+
+**Classification (marker audit, 2026-11-11).** The refutation uses a constant C_{S,A,H} that is not nondecreasing in H; for constants nondecreasing in H the printed form holds, and the C_{S,A,H} version is proved (ledger kind `reading`).
 
 Source: `eq:PAC-from-regret-conversion` (`-regret`, `-pac`) and `eq:uniform-policy-pihat`,
 `chapters/onlineRL.tex:113–141` (labels :116, :122, :129, :138), proof :145–183; protocol
@@ -1586,6 +1608,8 @@ author-approved.
 
 <a id="C47"></a>
 ## Candidate C47: Chapter 7 confidence sets: data-selected convex sets, rectangle scaling, ellipsoid radius, singular plug-in
+
+**Classification (marker audit, 2026-11-11).** The failure of "any convex set" holds only if the set may be chosen from the data (ledger kind `reading`); the rectangle scaling slip is a separate item that fails as printed.
 
 **Source:** `\subsection{Statistical inference}` (`sec:inference`), `chapters/inference.tex:150–213`: plug-in
 estimators `:156–185` (Λ̂_T = Ā_T⁻¹Γ̂_TĀ_T⁻ᵀ, `eq:defn-hat-Lambda` `:180–182`), confidence-set rule
@@ -1721,6 +1745,8 @@ T = 100, violation of `eq:convex.Cdelta` for T > 1) remain paper calculations. I
 
 <a id="C48"></a>
 ## Candidate C48: Theorem 5.10 fails under the literal MVP trigger
+
+**Classification (marker audit, 2026-11-11).** The refutation holds only under the literal consecutive-integer reading of the trigger set, which we regard as a typesetting ambiguity; under the doubling reading no counterexample is claimed (ledger kind `reading`).
 
 **Source:** Theorem 5.10 (`thm-mvp-regret`, `chapters/onlineRL.tex:1339–1352`); Algorithm `alg:main-mvp`
 (`:1256–1310`), trigger `line:trigger-set-mvp` `:1280`, stored count and reset `:1281–1285`, clipped update
