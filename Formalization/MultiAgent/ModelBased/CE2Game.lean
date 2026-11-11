@@ -180,11 +180,6 @@ theorem oracle_one (hS : 3 ≤ S) (G' : MarkovGame 2 S 2 A2) (s : Fin S) (j : Fi
     oracle hS G' j 1 s = EnvironmentStage.pointMass (stage1 hS G' s j) := by
   simp [oracle]
 
-theorem cst_eq_one_iff (b : Fin 2) : cst b = cst 1 ↔ b = 1 := by
-  constructor
-  · intro h; exact congrFun h 0
-  · intro h; rw [h]
-
 theorem reward_two_stage2 (hS : 3 ≤ S) (G' : MarkovGame 2 S 2 A2) (i : Fin 2) (s : Fin S) :
     (game hS).reward i 2 s (cst (stage2 hS G' s)) = contW hS (selB hS G') s := by
   simp only [game, contW, stage2, if_true]
