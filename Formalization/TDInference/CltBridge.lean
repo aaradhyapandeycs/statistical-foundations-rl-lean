@@ -45,9 +45,9 @@ theorem tdA_mul_inv_of_forall_pos [DecidableEq State] [Nonempty State]
     tdA M π μ * (tdA M π μ)⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ (isUnit_det_tdA_of_forall_pos M π μ hμ)
 
-/-- **Weak convergence bridge.** Convergence of the law of `√T Δ̄_T` to `N(0, A⁻¹ diag(Γ) A⁻ᵀ)` in
-Mathlib's topology on `ProbabilityMeasure (State → ℝ)` is equivalent to the formulation used in the
-statement index: `E g(√T Δ̄_T) → ∫ g d gaussCov A Γ` for every bounded continuous `g`. -/
+/-- **Weak convergence bridge.** Convergence of the law of `√T Δ̄_T` to `N(0, A⁻¹ diag(Γ) A⁻ᵀ)`
+in Mathlib's topology on `ProbabilityMeasure (State → ℝ)` is equivalent to the formulation used in
+the statement index: `E g(√T Δ̄_T) → ∫ g d gaussCov A Γ` for every bounded continuous `g`. -/
 theorem tendsto_lawProbabilityMeasure_iff_forall_bcf [DecidableEq State]
     (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ)

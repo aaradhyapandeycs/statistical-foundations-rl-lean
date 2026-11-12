@@ -1,5 +1,6 @@
 import Formalization.OfflineRL.FiniteVILCB.TapeDefinitions
 import Formalization.OfflineRL.StackProjection
+import Formalization.Probability.FiniteDistributionBridge
 import Formalization.Probability.EmpiricalRow
 import Formalization.Generative.FiniteHorizonGenerativeSampling
 
@@ -30,11 +31,8 @@ local instance tapeMA : MeasurableSpace A := ⊤
 local instance tapeMT (H : ℕ) : MeasurableSpace (Traj S A H) := ⊤
 
 theorem rowMeasure_singleton {X : Type*} [Fintype X] (d : FiniteDistribution X) (x : X) :
-    d.rowMeasure {x} = ENNReal.ofReal (d.prob x) := by
-  unfold FiniteDistribution.rowMeasure
-  rw [@PMF.toMeasure_apply_singleton X ⊤ d.toPMF x MeasurableSpace.measurableSet_top]
-  unfold FiniteDistribution.toPMF
-  rw [PMF.ofFintype_apply]
+    d.rowMeasure {x} = ENNReal.ofReal (d.prob x) :=
+  FiniteDistribution.rowMeasure_singleton d x
 
 /-- Mass of a cylinder fixing the coordinates along an injective index map. -/
 theorem pi_cylinder {ι J β : Type*} [Fintype ι] [Fintype J] [MeasurableSpace β]
@@ -254,7 +252,7 @@ theorem tapeMeasure_map_buildMain (E : Fin H → EnvironmentStage S A)
     FiniteHorizonGenerative.samplingLaw,
     pi_cylinder _ id Function.injective_id, pi_cylinder _ _ (actCell_injective x),
     pi_cylinder _ _ (nxtCell_injective x), ← Set.univ_pi_singleton x, Measure.pi_pi]
-  simp only [rowMeasure_singleton, trajMeasure_singleton, id, actCell, nxtCell]
+  simp only [rowMeasure_singleton, trajMeasure_singleton, actCell, nxtCell]
   -- regroup into trajectory products
   have hρ : ∀ k, 0 ≤ ρ.prob ((x k).1 0) := fun k ↦ ρ.prob_nonneg _
   simp only [trajProb]
