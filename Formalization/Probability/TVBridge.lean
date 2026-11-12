@@ -17,7 +17,7 @@ Mathlib has no total-variation distance between probability measures or probabil
 (there is no `tvDist`, `variationDist` or similar).  The only `totalVariation` is
 `MeasureTheory.SignedMeasure.totalVariation`, the total-variation measure of a signed measure
 built from its Jordan decomposition; no bridge from it to the half-L1 distance is provided here.
-This is the recorded reason for keeping a local TV.
+A bridge to `SignedMeasure.totalVariation` is future work; until then the local TV is kept.
 
 ## The notions and their relationships
 
@@ -121,7 +121,7 @@ theorem rowMeasure_real_eq_sum_toFinset (d : FiniteDistribution Ω) (A : Set Ω)
 /-- Total variation as a supremum over events.  For two finite distributions the half-L1 distance
 `FiniteMarkov.tvDist` equals `⨆ A measurable, |P(A) - Q(A)|` for the row measures (the sigma-algebra
 is the discrete one used by `rowMeasure`), the standard characterisation of total variation.  It
-is the form in which Chapter 1 states total variation. -/
+is the form in which the source states total variation (`intro.tex` 223–226). -/
 theorem tvDist_eq_iSup_abs_rowMeasure_real (P Q : FiniteDistribution Ω) :
     FiniteMarkov.tvDist P.prob Q.prob =
       ⨆ A : {A : Set Ω // MeasurableSet A},

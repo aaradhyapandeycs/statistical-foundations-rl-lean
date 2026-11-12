@@ -49,7 +49,13 @@ noncomputable def gibbsPolicy (π_ref r : X → Y → ℝ) (β : ℝ) (x : X) (y
 def IsCondPolicy (π : X → Y → ℝ) : Prop :=
   (∀ x y, 0 ≤ π x y) ∧ ∀ x, ∑ y, π x y = 1
 
-/-- `KL(p‖q) = ∑_y p(y) log(p(y)/q(y))` (with `0 log 0 = 0`). -/
+/-- `KL(p‖q) = ∑_y p(y) log(p(y)/q(y))` (with `0 log 0 = 0`).
+
+This is a totalised real-valued sum, not Mathlib's `InformationTheory.klDiv`: an atom with
+`p y > 0` and `q y = 0` contributes `0` (true KL is `⊤`), so it is a KL divergence only under
+`q y = 0 → p y = 0` (e.g. `π_ref` positive).  See
+`StatisticalRL.rlhfKlDiv_eq_toReal_klDiv_rowMeasure` (bridge) and
+`StatisticalRL.klDiv_rowMeasure_eq_top_of_off_support` in `Probability/KLBridge.lean`. -/
 noncomputable def klDiv (p q : Y → ℝ) : ℝ :=
   ∑ y, p y * Real.log (p y / q y)
 
