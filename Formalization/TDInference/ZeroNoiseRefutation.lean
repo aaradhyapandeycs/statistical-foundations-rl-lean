@@ -117,7 +117,8 @@ theorem zValueFixedPoint : zMDP.valueFixedPoint zPolicy = zV := by
 
 theorem zPolicyReward (s : Fin 2) :
     policyReward zMDP zPolicy s = ![5 / 8, 1 / 8] s := by
-  simp only [policyReward, FiniteDistribution.expectation, Fin.sum_univ_two, zPolicy,
+  simp only [policyReward, DiscountedMDP.policyExpectedReward, FiniteDistribution.expectation,
+    Fin.sum_univ_two, zPolicy,
     uniformRow_two_prob]
   fin_cases s <;> norm_num [zMDP]
 

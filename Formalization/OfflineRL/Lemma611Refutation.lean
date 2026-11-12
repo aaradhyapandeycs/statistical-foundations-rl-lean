@@ -57,10 +57,8 @@ theorem lemma611_unit_prob (d : FiniteDistribution Unit) (x : Unit) : d.prob x =
   simpa using d.sum_prob
 
 /-- The probability vector on the one-point type. -/
-noncomputable def lemma611UnitDist : FiniteDistribution Unit where
-  prob := fun _ ↦ 1
-  prob_nonneg := fun _ ↦ zero_le_one
-  sum_prob := by simp
+noncomputable def lemma611UnitDist : FiniteDistribution Unit :=
+  FiniteDistribution.ofUnique Unit
 
 /-- One state, one action, reward `0`, discount `γ`. -/
 noncomputable def lemma611MDP (γ : ℝ) (h0 : 0 ≤ γ) (h1 : γ < 1) : DiscountedMDP Unit Unit where

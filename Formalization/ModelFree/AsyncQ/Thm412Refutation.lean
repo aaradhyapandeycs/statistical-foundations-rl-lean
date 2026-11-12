@@ -140,10 +140,8 @@ theorem integral_pathLaw_const {decS : DecidableEq S} (M : DiscountedMDP S A) (�
 end General
 
 /-- The probability vector on the one-point type. -/
-noncomputable def thm412UnitDist : FiniteDistribution Unit where
-  prob := fun _ ↦ 1
-  prob_nonneg := fun _ ↦ zero_le_one
-  sum_prob := by simp
+noncomputable def thm412UnitDist : FiniteDistribution Unit :=
+  FiniteDistribution.ofUnique Unit
 
 /-- The probability vector on the one-point pair type. -/
 noncomputable def thm412PairDist : FiniteDistribution (Unit × Unit) where

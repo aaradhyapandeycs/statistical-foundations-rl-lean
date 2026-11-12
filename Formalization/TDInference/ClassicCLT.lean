@@ -157,7 +157,7 @@ theorem reward_eq_policyReward_of_const_on_support (M : DiscountedMDP State Acti
     rcases ((π s).prob_nonneg a').eq_or_lt with h | h
     · rw [← h, zero_mul, zero_mul]
     · rw [hr s a' a h ha]
-  simp only [policyReward, FiniteDistribution.expectation, h, ← Finset.sum_mul, (π s).sum_prob,
+  simp only [policyReward, DiscountedMDP.policyExpectedReward, FiniteDistribution.expectation, h, ← Finset.sum_mul, (π s).sum_prob,
     one_mul]
 
 /-- **Printed `Γ` = true `Γ` when `r(s,·)` is constant on the support of `π(·|s)`** (covers

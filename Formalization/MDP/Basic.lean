@@ -144,6 +144,13 @@ def qBellman (M : DiscountedMDP State Action) (π : StationaryPolicy State Actio
   M.reward s a + M.discount *
     (M.transition s a).expectation (fun t ↦ (π t).expectation (Q t))
 
+/-- The known one-step reward of a stationary policy: the `π s`-average of the model reward at `s`.
+This is the single canonical definition; `TemporalDifference.policyReward`,
+`ModelBasedPolicyEvaluation.policyReward` and `evaluationPolicyReward` are definitionally it. -/
+def policyExpectedReward (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+    (s : State) : ℝ :=
+  (π s).expectation (M.reward s)
+
 /-- The state-value Bellman consistency operator in `eq:bellman_consistency-V-all`. -/
 def valueBellman (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (V : State → ℝ) (s : State) : ℝ :=

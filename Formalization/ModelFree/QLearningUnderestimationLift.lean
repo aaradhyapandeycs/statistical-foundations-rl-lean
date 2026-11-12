@@ -57,7 +57,7 @@ theorem qPolicyLift_expectation (M : DiscountedMDP State Action) (f : State → 
 theorem qPolicyLift_policyReward (M : DiscountedMDP State Action) (f : State → Action)
     (x : State × Action) :
     policyReward (qPolicyLiftMDP M f) qPolicyLiftPolicy x = M.reward x.1 x.2 := by
-  unfold policyReward qPolicyLiftPolicy
+  unfold policyReward DiscountedMDP.policyExpectedReward qPolicyLiftPolicy
   rw [EnvironmentStage.expectation_pointMass]
   rfl
 
