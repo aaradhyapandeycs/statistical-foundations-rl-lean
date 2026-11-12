@@ -52,7 +52,8 @@ theorem thm7_4_corrected_holds : Thm7_4_corrected := by
   push_neg at hA1
   have hS : (1 : ℝ) ≤ Fintype.card State := by exact_mod_cast Fintype.card_pos
   have hA2 : (2 : ℝ) ≤ Fintype.card Action := by exact_mod_cast hA1
-  have hSA : (2 : ℝ) ≤ Fintype.card State * Fintype.card Action := by nlinarith
+  have hSA : (2 : ℝ) ≤ Fintype.card State * Fintype.card Action :=
+    le_trans hA2 (le_mul_of_one_le_left (by linarith) hS)
   have hL2 := chi_L_lower hSA hN1 hδ0 hδ1
   have hlog2 : (1 / 2 : ℝ) ≤ Real.log 2 := by
     have := Real.log_two_gt_d9; norm_num at this ⊢; linarith
@@ -83,7 +84,11 @@ theorem thm7_4_corrected_holds : Thm7_4_corrected := by
     rw [hℓdef, hcard]
     apply Real.log_nonneg
     rw [le_div_iff₀ hδ0]
-    nlinarith
+    have hN2 : (1 : ℝ) ≤ ((N : ℝ) + 1) ^ 2 := one_le_pow₀ (by linarith)
+    have h3 := one_le_mul_of_one_le_of_one_le
+      (one_le_mul_of_one_le_of_one_le (by norm_num : (1 : ℝ) ≤ 4) (by linarith : (1 : ℝ) ≤ 4 * ((N : ℝ) + 1) ^ 2))
+      (by linarith : (1 : ℝ) ≤ Fintype.card State * Fintype.card Action)
+    linarith
   -- sample-size hypothesis
   set mx := max (Real.sqrt σ) σ
   have hmx1 : Real.sqrt σ ≤ mx := le_max_left _ _
@@ -118,7 +123,9 @@ theorem thm7_4_corrected_holds : Thm7_4_corrected := by
           10 ^ 6 * (1 + mx / (1 - M.discount)) *
             Real.log (Fintype.card State * Fintype.card Action * N / δ) := by
         have : 0 ≤ mx / (1 - M.discount) := by positivity
-        nlinarith
+        have h5 : 0 ≤ mx / (1 - M.discount) *
+            Real.log (Fintype.card State * Fintype.card Action * N / δ) := mul_nonneg this hL0
+        linarith
       have h3 : N * ((1 - M.discount) ^ 3 * ε ^ 2) ≤ N :=
         (mul_le_mul_of_nonneg_left hsmall hNR.le).trans (by rw [mul_one])
       linarith

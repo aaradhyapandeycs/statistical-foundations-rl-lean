@@ -87,8 +87,12 @@ theorem tv_oracle_planner_guarantee :
     rw [hℓdef, hcard]
     apply Real.log_nonneg
     rw [le_div_iff₀ hδ0]
-    have : (1 : ℝ) ≤ Fintype.card State * Fintype.card Action := by nlinarith
-    nlinarith
+    have : (1 : ℝ) ≤ Fintype.card State * Fintype.card Action :=
+      one_le_mul_of_one_le_of_one_le hS hA
+    have hN2 : (1 : ℝ) ≤ ((N : ℝ) + 1) ^ 2 := one_le_pow₀ (by linarith)
+    have h3 := one_le_mul_of_one_le_of_one_le
+      (one_le_mul_of_one_le_of_one_le (by norm_num : (1 : ℝ) ≤ 4) (by linarith : (1 : ℝ) ≤ 2 * ((N : ℝ) + 1) ^ 2)) this
+    linarith
   -- the sample-size hypothesis
   have hsampleC : max (10 ^ 6) (2 * c_opt) * Real.log (Fintype.card State *
       Fintype.card Action * N / ((1 - M.discount) * δ)) ≤
@@ -106,7 +110,9 @@ theorem tv_oracle_planner_guarantee :
     (lt_of_lt_of_le (by norm_num) (le_max_left _ _)) hg (by linarith) hm0.le hε0 hεm hεm'
     (by linarith) hNR hsampleC
   have hB'0 : 0 ≤ 1 / (1 - M.discount + M.discount * σ) := by
-    have : 0 < 1 - M.discount + M.discount * σ := by nlinarith
+    have : 0 < 1 - M.discount + M.discount * σ := by
+      have := mul_nonneg M.discount_nonneg hσ0.le
+      linarith
     positivity
   have hB' := tv_span_constant hγ hγ1 hσ0.le
   have hnum := tv_selfBoundExpr_le_of_planning hγ hγ1 hm1 hm2 hσ0.le hσm hε0 hεm hL hℓ0 hℓ hN1

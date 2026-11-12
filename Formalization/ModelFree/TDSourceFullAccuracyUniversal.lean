@@ -57,7 +57,7 @@ theorem tdSource_policyEvaluation_accuracy_exists_universal_constants :
   have hc₁c₃ : (4 : ℝ) ≤ (1/4) * c₃ := by
     have hmul := mul_le_mul_of_nonneg_left hc₃low
       (by norm_num : (0 : ℝ) ≤ 1/4)
-    nlinarith [hmul]
+    linarith [hmul]
   have hprod : (1/4 : ℝ) * (1/4) ≤ 1/8 := by norm_num
   have hc₃large : (384 : ℝ) ≤ c₃ := le_trans (by norm_num) hc₃low
   have hc₃final : (3168 : ℝ) ≤ c₃ := le_trans (by norm_num) hc₃low
@@ -66,9 +66,11 @@ theorem tdSource_policyEvaluation_accuracy_exists_universal_constants :
       have hh := Real.one_sub_inv_le_log_of_pos (by norm_num : (0 : ℝ) < 2)
       norm_num at hh ⊢
       exact hh
-    have hsq : (1/4 : ℝ) ≤ Real.log 2 ^ 2 := by nlinarith
+    have hsq : (1/4 : ℝ) ≤ Real.log 2 ^ 2 :=
+      calc (1/4 : ℝ) = (1/2) ^ 2 := by norm_num
+        _ ≤ Real.log 2 ^ 2 := pow_le_pow_left₀ (by norm_num) hloghalf 2
     have hmul := mul_le_mul hc₁c₃ hsq (by norm_num) (by positivity)
-    nlinarith [hmul]
+    linarith [hmul]
   have hfirst := tdSource_firstFreedman_allStates_of_budget M π η T T hT
     (1/4) (1/4) c₃ ε δ (by norm_num) (by norm_num) hc₁c₃ hprod
     hc₃large hγ hδ hδ1 hε hεmax hbudget hstep V₀ h₀ (le_rfl : T ≤ T) htime

@@ -43,10 +43,12 @@ theorem log_two_le_logTerm (hγ : 1 / 2 ≤ I.γ) : Real.log 2 ≤ I.logTerm := 
   have hk := I.one_sub_γ_pos
   have hkδ : 0 < (1 - I.γ) * I.δ := mul_pos hk I.δ_pos
   have hN : (1 : ℝ) ≤ I.N := by exact_mod_cast I.N_pos
-  have hkδ1 : (1 - I.γ) * I.δ ≤ 1 / 2 := by nlinarith [I.δ_pos, I.δ_lt_one]
+  have hkδ1 : (1 - I.γ) * I.δ ≤ 1 / 2 := by
+    have := mul_le_mul_of_nonneg_right (show 1 - I.γ ≤ 1 / 2 by linarith) I.δ_pos.le
+    linarith [I.δ_lt_one]
   apply Real.log_le_log (by norm_num)
   rw [le_div_iff₀ hkδ]
-  nlinarith
+  linarith
 
 /-- `ℓ = log(4N/((1-γ)δ)) = log 4 + L`. -/
 theorem log_four_mul_eq : Real.log (4 * I.N / ((1 - I.γ) * I.δ)) = Real.log 4 + I.logTerm := by
@@ -98,7 +100,9 @@ theorem bonus_dominates (hγ : 1 / 2 ≤ I.γ) (hcb : 96 ≤ I.cb) (d : FiniteDi
     have hk := I.one_sub_γ_pos
     have hL0 : 0 < L := I.logTerm_pos
     have hℓL : ℓ ≤ 3 * L := ell_le_three_logTerm I hγ
-    have hcbL : 32 * ℓ ≤ I.cb * L := by nlinarith
+    have hcbL : 32 * ℓ ≤ I.cb * L := by
+      have := mul_le_mul_of_nonneg_right hcb hL0.le
+      linarith
     -- the square-root term
     have hsq : Real.sqrt (8 * ℓ / n * v) ≤ Real.sqrt (I.cb * L / n * v) / 2 := by
       rw [Real.sqrt_le_iff]
@@ -107,13 +111,15 @@ theorem bonus_dominates (hγ : 1 / 2 ≤ I.γ) (hcb : 96 ≤ I.cb) (d : FiniteDi
       have : 8 * ℓ / n * v * 4 ≤ I.cb * L / n * v := by
         rw [div_mul_eq_mul_div, div_mul_eq_mul_div, div_mul_eq_mul_div,
           div_le_div_iff_of_pos_right hn0]
-        nlinarith
+        have := mul_le_mul_of_nonneg_right hcbL hv0
+        linarith
       linarith
     -- the linear term
     have hlin : 26 * ℓ / ((1 - I.γ) * n) ≤ (2 * I.cb * L / ((1 - I.γ) * n)) / 2 := by
       have h2 : (2 * I.cb * L / ((1 - I.γ) * n)) / 2 = I.cb * L / ((1 - I.γ) * n) := by ring
       rw [h2]
-      exact div_le_div_of_nonneg_right (by nlinarith) (by positivity)
+      exact div_le_div_of_nonneg_right
+        (by have := mul_le_mul_of_nonneg_right hcb hL0.le; linarith) (by positivity)
     have hmax : Real.sqrt (I.cb * L / n * v) / 2 + (2 * I.cb * L / ((1 - I.γ) * n)) / 2 ≤
         max (Real.sqrt (I.cb * L / n * v)) (2 * I.cb * L / ((1 - I.γ) * n)) := by
       have := le_max_left (Real.sqrt (I.cb * L / n * v)) (2 * I.cb * L / ((1 - I.γ) * n))
@@ -135,7 +141,7 @@ theorem sqrt_add_sq_le {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
   refine ⟨by positivity, ?_⟩
   have h := Real.sq_sqrt ha
   have : 0 ≤ Real.sqrt a * b := by positivity
-  nlinarith
+  linarith
 
 /-- **Step 4.2 penalty upper bound** (`offlineRL.tex:1456–1466`): at a pair with
 `0 < N_{s,a} ≤ N` on the Lemma 6.6 bound, for `c_b ≥ 96`,
@@ -180,7 +186,7 @@ theorem bonus_le_of_lemma66 (hγ : 1 / 2 ≤ I.γ) (hcb : 96 ≤ I.cb) (d : Fini
       rw [hW]; field_simp
     have h3 : (72 / I.cb) * W ^ 2 ≤ W ^ 2 := by
       have : 72 / I.cb ≤ 1 := by rw [div_le_one hcb0]; linarith
-      nlinarith [sq_nonneg W]
+      exact mul_le_of_le_one_left (sq_nonneg W) this
     linarith
   have hx : Real.sqrt (I.cb * L / n * v) ≤ Real.sqrt (2 * I.cb * L * w / n) + W :=
     (Real.sqrt_le_sqrt hinside).trans (sqrt_add_sq_le (by positivity) hW0.le)
@@ -189,8 +195,11 @@ theorem bonus_le_of_lemma66 (hγ : 1 / 2 ≤ I.γ) (hcb : 96 ≤ I.cb) (d : Fini
     have h5n : 5 / (I.N : ℝ) ≤ 5 / n := div_le_div_of_nonneg_left (by norm_num) hn0 hnN'
     have : 5 / n ≤ W := by
       rw [hW, div_le_div_iff₀ hn0 (by positivity)]
-      have : 5 * (1 - I.γ) ≤ I.cb * L := by nlinarith
-      nlinarith
+      have h5k : 5 * (1 - I.γ) ≤ I.cb * L := by
+        have := mul_le_mul_of_nonneg_right hcb hL0.le
+        linarith
+      have := mul_le_mul_of_nonneg_right h5k hn0.le
+      linarith
     linarith
   have hfinal : 4 * I.cb * L / ((1 - I.γ) * n) = 4 * W := by rw [hW]; ring
   rw [hfinal]

@@ -51,11 +51,15 @@ theorem td_logCube_unitConstants_accuracy
   have hc₃pos : 0 < c₃ := by positivity
   have hc'c₃ : c' * c₃ = 8192 := by
     simp only [c', c₃]; field_simp
-  have hc₃large : (3168 : ℝ) ≤ c₃ := by simp only [c₃]; nlinarith
+  have hc₃large : (3168 : ℝ) ≤ c₃ := by simp only [c₃]; linarith
   have hc₃384 : (384 : ℝ) ≤ c₃ := le_trans (by norm_num) hc₃large
   have hc₁c₃ : (4 : ℝ) ≤ c' * c₃ := by rw [hc'c₃]; norm_num
   have hconstVariance : 1 ≤ c' * c₃ * Real.log 2 ^ 2 := by
-    rw [hc'c₃]; nlinarith
+    rw [hc'c₃]
+    have hsq : (1/4 : ℝ) ≤ Real.log 2 ^ 2 :=
+      calc (1/4 : ℝ) = (1/2) ^ 2 := by norm_num
+        _ ≤ Real.log 2 ^ 2 := pow_le_pow_left₀ (by norm_num) hlog2 2
+    linarith
   have hbudget' : c₃ * L ^ 3 * Real.log ((Fintype.card State : ℝ) * T / δ) /
       ((1 - M.discount) ^ 3 * ε ^ 2) ≤ T := by
     have he : c₃ * L ^ 3 = 8192 * L ^ 4 := by simp only [c₃]; ring
@@ -71,10 +75,12 @@ theorem td_logCube_unitConstants_accuracy
   have hTr : (0 : ℝ) < T := by exact_mod_cast (by omega : 0 < T)
   have hT256 : (256 : ℝ) ≤ T := by
     have h5 : (1 / 2 : ℝ) ^ 5 ≤ L ^ 5 := pow_le_pow_left₀ (by norm_num) (by linarith) 5
-    have hle : c₃ * L ^ 4 ≤ T := hnorm.trans (by nlinarith)
+    have hle : c₃ * L ^ 4 ≤ T := hnorm.trans (by
+      have := mul_le_mul_of_nonneg_left hgap1 hTr.le
+      linarith)
     have he : c₃ * L ^ 4 = 8192 * L ^ 5 := by simp only [c₃]; ring
     rw [he] at hle
-    nlinarith
+    linarith
   have hL4 : (4 : ℝ) ≤ L := by
     have h256 : Real.log (256 : ℝ) = 8 * Real.log 2 := by
       rw [show (256 : ℝ) = 2 ^ 8 by norm_num, Real.log_pow]; norm_num
@@ -84,7 +90,8 @@ theorem td_logCube_unitConstants_accuracy
   have hprod : c' * c' ≤ 1 / 8 := by
     simp only [c']
     rw [div_mul_div_comm, one_mul, div_le_div_iff₀ (by positivity) (by norm_num)]
-    nlinarith
+    have := mul_le_mul hL4 hL4 (by norm_num) (by linarith)
+    linarith
   have hsource : tdSourceRateSchedule M.discount c' c' T η := by
     intro i hi hiT
     have h := hη i hi hiT

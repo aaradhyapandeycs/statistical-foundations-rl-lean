@@ -72,9 +72,10 @@ theorem lcbqFinite_restricted (cb : ℝ) (hcb : 5 ≤ cb) (H : ℕ) (hH : 0 < H)
   have hY2 : 2 ≤ Y := by
     simp only [Y]; rw [le_div_iff₀ hδ]
     have : (2 : ℝ) ≤ Fintype.card S * Fintype.card A * K := by
-      have := mul_le_mul hS1 hA2r (by norm_num) (by positivity)
-      nlinarith
-    nlinarith
+      have h1 := mul_le_mul hS1 hA2r (by norm_num) (by positivity)
+      calc (2 : ℝ) ≤ Fintype.card S * Fintype.card A * 1 := by linarith
+        _ ≤ _ := mul_le_mul_of_nonneg_left hK1 (by positivity)
+    linarith
   have hι2 : Real.log 2 ≤ Real.log Y := Real.log_le_log (by norm_num) hY2
   have hlog2 := Real.log_two_gt_d9
   set ι := Real.log Y
@@ -102,7 +103,10 @@ theorem lcbqFinite_restricted (cb : ℝ) (hcb : 5 ≤ cb) (H : ℕ) (hH : 0 < H)
       calc (H : ℝ) = H * 1 * 1 := by ring
         _ ≤ H * H * H := by gcongr
         _ = H ^ 3 := by ring
-    have hc : (1 : ℝ) ≤ 10 ^ 6 * cb ^ 2 * 0.69 := by nlinarith
+    have hcb25 : (25 : ℝ) ≤ cb ^ 2 :=
+    calc (25 : ℝ) = 5 ^ 2 := by norm_num
+      _ ≤ cb ^ 2 := pow_le_pow_left₀ (by norm_num) hcb 2
+    have hc : (1 : ℝ) ≤ 10 ^ 6 * cb ^ 2 * 0.69 := by linarith
     have : (H : ℝ) ^ 3 ≤ 10 ^ 6 * cb ^ 2 * (0.69 * (H : ℝ) ^ 3) := by
       have := mul_le_mul_of_nonneg_right hc (by positivity : (0 : ℝ) ≤ (H : ℝ) ^ 3)
       linarith
@@ -141,7 +145,9 @@ theorem lcbqFinite_restricted (cb : ℝ) (hcb : 5 ≤ cb) (H : ℕ) (hH : 0 < H)
     linarith
   have hcb0 : 0 ≤ cb := by linarith
   have h4ι : 4 * ι' ≤ cb ^ 2 * L := by
-    have hcb2 : 25 ≤ cb ^ 2 := by nlinarith
+    have hcb2 : (25 : ℝ) ≤ cb ^ 2 :=
+      calc (25 : ℝ) = 5 ^ 2 := by norm_num
+        _ ≤ cb ^ 2 := pow_le_pow_left₀ (by norm_num) hcb 2
     have := mul_le_mul_of_nonneg_right hcb2 hL0
     linarith
   -- pathwise: good event ⇒ gap ≤ ε
@@ -234,9 +240,14 @@ theorem printed_size_imp_export_size (cb : ℝ) (hcb : 5 ≤ cb) (H : ℕ) (hH :
   have hA2 : (2 : ℝ) ≤ Fintype.card A := by exact_mod_cast (Fintype.one_lt_card (α := A))
   have hS1 : (1 : ℝ) ≤ Fintype.card S := by exact_mod_cast Fintype.card_pos
   have hK1 : (1 : ℝ) ≤ K := by exact_mod_cast hK
-  have hSA : (2 : ℝ) ≤ Fintype.card S * Fintype.card A := by nlinarith
+  have hSA : (2 : ℝ) ≤ Fintype.card S * Fintype.card A :=
+    le_trans hA2 (le_mul_of_one_le_left (by linarith) hS1)
   have hY2 : (2 : ℝ) ≤ Fintype.card S * Fintype.card A * K / δ := by
-    rw [le_div_iff₀ hδ]; nlinarith
+    rw [le_div_iff₀ hδ]
+    have hSAK : (2 : ℝ) ≤ Fintype.card S * Fintype.card A * K :=
+      calc (2 : ℝ) ≤ Fintype.card S * Fintype.card A * 1 := by linarith
+        _ ≤ _ := mul_le_mul_of_nonneg_left hK1 (by positivity)
+    linarith
   have hι69 : 0.69 ≤ ι := by
     have := Real.log_le_log (by norm_num) hY2
     have := Real.log_two_gt_d9
@@ -246,7 +257,7 @@ theorem printed_size_imp_export_size (cb : ℝ) (hcb : 5 ≤ cb) (H : ℕ) (hH :
     have : ι ≤ ι ^ 3 :=
       calc ι = ι * 1 * 1 := by ring
         _ ≤ ι * ι * ι := mul_le_mul (mul_le_mul le_rfl h1 (by norm_num) (by linarith)) h1
-            (by norm_num) (by nlinarith)
+            (by norm_num) (mul_self_nonneg ι)
         _ = ι ^ 3 := by ring
     exact hcase (hLι.trans this)
   have hY3 : (Fintype.card S : ℝ) * Fintype.card A * K / δ < 3 := by
@@ -256,7 +267,8 @@ theorem printed_size_imp_export_size (cb : ℝ) (hcb : 5 ≤ cb) (H : ℕ) (hH :
     linarith
   have hK2 : (K : ℝ) < 2 := by
     rw [div_lt_iff₀ hδ] at hY3
-    nlinarith
+    have hSAK := mul_le_mul_of_nonneg_right hSA (by linarith : (0 : ℝ) ≤ K)
+    linarith
   have hKeq : (K : ℝ) = 1 := by
     have : K < 2 := by exact_mod_cast hK2
     have : K = 1 := by omega
@@ -280,7 +292,10 @@ theorem printed_size_imp_export_size (cb : ℝ) (hcb : 5 ≤ cb) (H : ℕ) (hH :
           ring
       _ ≤ 10 ^ 6 * cb ^ 2 * ((H : ℝ) ^ 5 * (Fintype.card S * C) * ι ^ 3) := h2
       _ = _ := by ring
-  have hcb2 : (10 : ℝ) ≤ 10 ^ 6 * cb ^ 2 * 0.3 := by nlinarith
+  have hcb25 : (25 : ℝ) ≤ cb ^ 2 :=
+    calc (25 : ℝ) = 5 ^ 2 := by norm_num
+      _ ≤ cb ^ 2 := pow_le_pow_left₀ (by norm_num) hcb 2
+  have hcb2 : (10 : ℝ) ≤ 10 ^ 6 * cb ^ 2 * 0.3 := by linarith
   have h3 : (H : ℝ) ^ 2 * 10 ≤ (H : ℝ) ^ 2 * (10 ^ 6 * cb ^ 2 * 0.3) :=
     mul_le_mul_of_nonneg_left hcb2 (by positivity)
   have hHpos : 0 < (H : ℝ) ^ 2 := by positivity

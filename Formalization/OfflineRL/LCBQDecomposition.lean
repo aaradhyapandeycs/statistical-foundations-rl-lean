@@ -283,7 +283,7 @@ theorem alpha_step (hcb : 0 ≤ cb) (hT : 1 ≤ T) (hδ : 0 < δ) (hδ1 : δ < 1
         (t := u.val + 1) (by omega) u.isLt s
       have h := mul_le_mul_of_nonneg_left this (hw0 s)
       simp only [hw, hF, hW, hΔ] at h ⊢
-      nlinarith [h]
+      linarith [h]
     have hθ : thetaSeq M cb δ sel π₀ data ρ πstar j = κ ^ j * ∑ u : Fin T, ∑ s, w s * W (u.val + 1) s := by
       simp only [thetaSeq]
       rw [sum_Icc_eq_sum_fin (fun t => ∑ s, M.occupancyStateAt (detPolicy πstar) ρ j s *
@@ -366,10 +366,10 @@ theorem alpha_step (hcb : 0 ≤ cb) (hT : 1 ≤ T) (hδ : 0 < δ) (hδ1 : δ < 1
   have hγκ : 0 ≤ γ * κ ^ j := mul_nonneg hγ0 (pow_nonneg hκ0 j)
   have h1 : γ * κ ^ j * c * X ≤ γ * κ ^ j * c ^ 2 * Y := by
     have := mul_le_mul_of_nonneg_left hXY (mul_nonneg hγκ (by linarith : (0 : ℝ) ≤ c))
-    nlinarith
+    linarith
   have h2 := mul_le_mul_of_nonneg_left hQle (pow_nonneg hκ0 (j + 1))
   rw [hψ, hφ, hξ, hα1]
-  nlinarith
+  linarith
 
 end AlphaStep
 
@@ -445,7 +445,8 @@ theorem performance_le_alpha0 (hT : 1 ≤ T)
           simp only [hD, delta]
           linarith
   rw [le_div_iff₀ hT']
-  nlinarith
+  have h3 := mul_le_mul_of_nonneg_right h1 hT'.le
+  linarith
 
 end Iterate
 
@@ -601,7 +602,7 @@ theorem final_scalar {gap α ξ θ Ψ C Cs S T ι L x ε : ℝ}
     rw [div_le_iff₀ (by positivity)] at hcond
     have : 16 * C ^ 2 * S * Cs * L ^ 2 = 16 * C ^ 2 * K := by rw [hK]; ring
     linarith
-  have hC2 : C ≤ C ^ 2 := by nlinarith
+  have hC2 : C ≤ C ^ 2 := le_self_pow₀ hC two_ne_zero
   have hCK : C ^ 2 ≤ C ^ 2 * K := le_mul_of_one_le_right (sq_nonneg C) hK1
   -- (a) the θ term
   have hθT : C * Real.sqrt (Cs * S * T * ι ^ 2 / x ^ 5) ≤ T * ε / 4 := by
@@ -618,12 +619,13 @@ theorem final_scalar {gap α ξ θ Ψ C Cs S T ι L x ε : ℝ}
       apply div_le_div_of_nonneg_right _ hx5.le
       rw [hK]
       have : 0 ≤ Cs * S * T := by positivity
-      nlinarith
+      have := mul_le_mul_of_nonneg_left hι2 this
+      linarith
     have h2 : C ^ 2 * (K * T / x ^ 5) ≤ (T * ε / 4) ^ 2 := by
       rw [show C ^ 2 * (K * T / x ^ 5) = (16 * C ^ 2 * K) * T / (16 * x ^ 5) by field_simp,
         div_le_iff₀ (by positivity)]
       have := mul_le_mul_of_nonneg_right hcond' hT.le
-      nlinarith
+      linarith
     linarith
   -- (b) the ξ term
   have hξT : C / x ^ 2 ≤ T * ε / 16 := by
@@ -631,7 +633,7 @@ theorem final_scalar {gap α ξ θ Ψ C Cs S T ι L x ε : ℝ}
       have : x ^ 3 * ε = x ^ 2 * (x * ε) := by ring
       rw [this]
       have : x ^ 2 ≤ 1 := pow_le_one₀ hx0.le hx1
-      nlinarith [sq_nonneg x]
+      exact mul_le_one₀ this (by positivity) hεx
     have h1 : 16 * C ≤ T * (x ^ 5 * ε ^ 2) := by linarith
     have h2 : T * (x ^ 5 * ε ^ 2) ≤ T * (x ^ 2 * ε) := by
       apply mul_le_mul_of_nonneg_left _ hT.le
@@ -645,7 +647,7 @@ theorem final_scalar {gap α ξ θ Ψ C Cs S T ι L x ε : ℝ}
   have hΨT : C * Cs * ι ^ 2 / x ^ 3 ≤ T * ε / 16 := by
     have hx2 : x ^ 2 * ε ≤ 1 := by
       have : x ^ 2 * ε = x * (x * ε) := by ring
-      rw [this]; nlinarith
+      rw [this]; exact mul_le_one₀ hx1 (by positivity) hεx
     have hι2 : ι ^ 2 ≤ L ^ 2 := pow_le_pow_left₀ (by linarith) hιL 2
     have h1 : 16 * C * Cs * ι ^ 2 ≤ 16 * C ^ 2 * K := by
       rw [hK]
@@ -656,9 +658,9 @@ theorem final_scalar {gap α ξ θ Ψ C Cs S T ι L x ε : ℝ}
           have : C * (Cs * L ^ 2) ≤ C ^ 2 * (S * (Cs * L ^ 2)) := by
             apply mul_le_mul hC2 (le_mul_of_one_le_left (by positivity) hS) (by positivity)
               (by positivity)
-          nlinarith
+          linarith
         linarith
-      nlinarith
+      linarith
     have h2 : T * (x ^ 5 * ε ^ 2) ≤ T * (x ^ 3 * ε) := by
       apply mul_le_mul_of_nonneg_left _ hT.le
       have : x ^ 5 * ε ^ 2 = (x ^ 3 * ε) * (x ^ 2 * ε) := by ring
@@ -669,7 +671,8 @@ theorem final_scalar {gap α ξ θ Ψ C Cs S T ι L x ε : ℝ}
     linarith
   rw [le_div_iff₀ hT] at hgap
   have : α ≤ T * ε / 4 + T * ε / 16 + T * ε / 16 := by linarith
-  have hfin : gap * T ≤ ε * T := by nlinarith
+  have hTε : 0 ≤ T * ε := by positivity
+  have hfin : gap * T ≤ ε * T := by linarith
   exact le_of_mul_le_mul_right hfin hT
 
 end Final
@@ -709,7 +712,8 @@ theorem corner_subsingleton {T : ℕ} (hT : 1 ≤ T) (hδ : 0 < δ) (hδ1 : δ <
     have he := Real.exp_one_lt_d9
     have : (n : ℝ) < 3 * δ := by
       rw [div_lt_iff₀ hδ] at h
-      nlinarith
+      have h3 : Real.exp 1 * δ < 3 * δ := mul_lt_mul_of_pos_right (by linarith) hδ
+      linarith
     have : (n : ℝ) < 3 := by linarith
     exact_mod_cast this
   have hn_one : n = 1 := by
@@ -722,13 +726,14 @@ theorem corner_subsingleton {T : ℕ} (hT : 1 ≤ T) (hδ : 0 < δ) (hδ1 : δ <
       apply Real.log_lt_log (by norm_num)
       rw [← hncast, hn2, lt_div_iff₀ (by positivity)]
       push_cast
-      nlinarith
+      have hh : (1 - M.discount) * δ ≤ 1 * δ := mul_le_mul_of_nonneg_right hx1 hδ.le
+      linarith
     have hlog2 := Real.log_two_gt_d9
     have hS : (1 : ℝ) ≤ Fintype.card S := by exact_mod_cast Fintype.card_pos
     have hden : (1 - M.discount) ^ 5 * ε ^ 2 ≤ 1 := by
       have h1 : ((1 - M.discount) * ε) ^ 2 ≤ 1 := by
         have : 0 ≤ (1 - M.discount) * ε := by positivity
-        nlinarith
+        exact pow_le_one₀ this hεx
       have h2 : (1 - M.discount) ^ 3 ≤ 1 := pow_le_one₀ hx0.le hx1
       have : (1 - M.discount) ^ 5 * ε ^ 2 = (1 - M.discount) ^ 3 * ((1 - M.discount) * ε) ^ 2 := by
         ring
@@ -740,7 +745,7 @@ theorem corner_subsingleton {T : ℕ} (hT : 1 ≤ T) (hδ : 0 < δ) (hδ1 : δ <
         have := mul_le_mul hc₂ hS (by norm_num) (by linarith)
         have := mul_le_mul this hCs (by norm_num) (by positivity)
         linarith
-      nlinarith [sq_nonneg L]
+      exact mul_le_mul_of_nonneg_right this (sq_nonneg L)
     have hge : c₂ * Fintype.card S * Cs * L ^ 2 ≤
         c₂ * Fintype.card S * Cs * L ^ 2 / ((1 - M.discount) ^ 5 * ε ^ 2) :=
       le_div_self (by positivity) (by positivity) hden
@@ -749,9 +754,12 @@ theorem corner_subsingleton {T : ℕ} (hT : 1 ≤ T) (hδ : 0 < δ) (hδ1 : δ <
         rw [hn]
         have : 1 ≤ Fintype.card S * Fintype.card A :=
           Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero Fintype.card_ne_zero Fintype.card_ne_zero)
-        nlinarith
+        exact Nat.le_mul_of_pos_left T this
       exact_mod_cast (show T ≤ 2 by omega)
-    nlinarith
+    have hL69 : (0.69 : ℝ) < L := by linarith
+    have hL2sq : (0.69 : ℝ) ^ 2 < L ^ 2 := pow_lt_pow_left₀ hL69 (by norm_num) two_ne_zero
+    have hDen0 : 0 < (1 - M.discount) ^ 5 * ε ^ 2 := by positivity
+    linarith
   have h0 : Fintype.card S * Fintype.card A * T = 1 := by rw [← hn]; exact hn_one
   have h1 : Fintype.card S * Fintype.card A = 1 := Nat.eq_one_of_mul_eq_one_right h0
   have h2 : Fintype.card A = 1 := Nat.eq_one_of_mul_eq_one_left h1
@@ -811,7 +819,7 @@ theorem thm68_corrected_prob (hcb : 4 ≤ cb) (hsel : ∀ (f : A → ℝ) (a : A
       rw [div_le_div_iff₀ hδ (by positivity)]
       have : 0 ≤ (Fintype.card S : ℝ) * Fintype.card A * T := by positivity
       have := mul_nonneg (mul_nonneg this hδ.le) M.discount_nonneg
-      nlinarith
+      linarith
     haveI := M.state_nonempty
     have hS : (1 : ℝ) ≤ Fintype.card S := by exact_mod_cast Fintype.card_pos
     have hT' : (0 : ℝ) < T := by exact_mod_cast hT
@@ -823,7 +831,8 @@ theorem thm68_corrected_prob (hcb : 4 ≤ cb) (hsel : ∀ (f : A → ℝ) (a : A
   · push_neg at hι
     have hc₂ : 16 ≤ thm68Const cb := by
       unfold thm68Const
-      nlinarith
+      have h := one_le_pow₀ (n := 2) hC1
+      linarith
     haveI hsub := corner_subsingleton M δ hT hδ hδ1 hι hc₂ hCs1 hε hεx' hcond
     have huniv : {ω | ρ.expectation (M.trajectoryExpectedValue M.optimalGreedyPolicy) -
         ρ.expectation (M.trajectoryExpectedValue

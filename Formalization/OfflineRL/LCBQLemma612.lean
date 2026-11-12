@@ -41,13 +41,16 @@ theorem psi_phi_final {Cs ι x H L K₀ ψ φ C : ℝ} (hx0 : 0 < x) (hx1 : x �
     calc H * L ≤ 5 * ι / x * (4 * ι) := mul_le_mul hH hL hL0 (by positivity)
       _ = 20 * ι ^ 2 / x := by ring
   have hrest : 1 + 10 * L ≤ 41 * ι ^ 2 / x := by
-    have h1 : 1 + 10 * L ≤ 41 * ι ^ 2 := by nlinarith
+    have hι2' : 1 ≤ ι ^ 2 := one_le_pow₀ hι
+    have hιι : ι ≤ ι ^ 2 := le_self_pow₀ hι two_ne_zero
+    have h1 : 1 + 10 * L ≤ 41 * ι ^ 2 := by linarith
     refine h1.trans ?_
     rw [le_div_iff₀ hx0]
-    nlinarith [sq_nonneg ι]
+    have := mul_le_mul_of_nonneg_left hx1 (by positivity : (0 : ℝ) ≤ 41 * ι ^ 2)
+    linarith
   have hin : 4 * H * L + 1 + 10 * L ≤ 121 * ι ^ 2 / x := by
     have e : 121 * ι ^ 2 / x = 4 * (20 * ι ^ 2 / x) + 41 * ι ^ 2 / x := by ring
-    nlinarith
+    linarith
   have hK₀X : K₀ ≤ 60984 * X := by
     rw [hK]
     calc 504 * Cs / x ^ 2 * (4 * H * L + 1 + 10 * L) ≤ 504 * Cs / x ^ 2 * (121 * ι ^ 2 / x) :=
@@ -57,12 +60,14 @@ theorem psi_phi_final {Cs ι x H L K₀ ψ φ C : ℝ} (hx0 : 0 < x) (hx1 : x �
   have hι2 : 1 ≤ ι ^ 2 := one_le_pow₀ hι
   have hsmall : 1 / x ^ 2 ≤ X := by
     rw [hX, div_le_div_iff₀ (by positivity) (by positivity)]
-    have h1 : 1 ≤ Cs * ι ^ 2 := by nlinarith
-    nlinarith [pow_pos hx0 2, pow_pos hx0 3]
+    have h1 : 1 ≤ Cs * ι ^ 2 := one_le_mul_of_one_le_of_one_le hCs1 hι2
+    have := mul_le_mul_of_nonneg_right h1 (pow_nonneg hx0.le 2)
+    linarith
   have hCsmall : Cs / x ^ 2 ≤ X := by
     rw [hX, div_le_div_iff₀ (by positivity) (by positivity)]
     have := mul_le_mul hι2 h2 (by positivity) (by positivity)
-    nlinarith
+    have := mul_le_mul_of_nonneg_left this (by linarith : (0 : ℝ) ≤ Cs)
+    linarith
   have e1 : 168 * Cs / x ^ 2 = 168 * (Cs / x ^ 2) := by ring
   have e2 : (168 : ℝ) / x ^ 2 = 168 * (1 / x ^ 2) := by ring
   have hgoal : C * Cs * ι ^ 2 / x ^ 3 = C * X := by rw [hX]; ring
