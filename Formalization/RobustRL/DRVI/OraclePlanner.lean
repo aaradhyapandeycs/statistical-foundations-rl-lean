@@ -157,13 +157,9 @@ theorem gap_le_of_residual (ball : RowBall State) (M : DiscountedMDP State Actio
   have hRB0 : 0 ≤ (kernelResolvent M KB fh *ᵥ (fun t ↦ |dB t|)) s :=
     kernelResolvent_nonneg M KB fh (fun _ ↦ abs_nonneg _) s
   have h1 : M.discount * (kernelResolvent M KA πs *ᵥ (fun t ↦ |dA t|)) s ≤
-      selfBoundExpr M.discount B' Ξ a1 a0 := by
-    have := mul_le_mul_of_nonneg_right M.discount_lt_one.le hRA0
-    linarith
+      selfBoundExpr M.discount B' Ξ a1 a0 := by nlinarith
   have h2 : M.discount * (kernelResolvent M KB fh *ᵥ (fun t ↦ |dB t|)) s ≤
-      selfBoundExpr M.discount B' Ξ a1 a0 := by
-    have := mul_le_mul_of_nonneg_right M.discount_lt_one.le hRB0
-    linarith
+      selfBoundExpr M.discount B' Ξ a1 a0 := by nlinarith
   linarith
 
 /-- Deterministic TV gap bound on the good event for an arbitrary deterministic planner output
