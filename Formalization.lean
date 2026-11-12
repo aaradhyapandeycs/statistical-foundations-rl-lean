@@ -726,6 +726,7 @@ import Formalization.Probability.ChenShaoNonlinear
 import Formalization.TDInference.HalfSpace
 import Formalization.Probability.WeakConvergenceSmoothTest
 import Formalization.TDInference.ClassicCLT
+import Formalization.TDInference.CltBridge
 import Formalization.TDInference.ClassicCLTPrintedRefutation
 import Formalization.TDInference.Confidence.Intervals
 import Formalization.TDInference.Confidence.HalfLineEvidence

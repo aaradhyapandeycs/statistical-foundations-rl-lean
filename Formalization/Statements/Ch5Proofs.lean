@@ -384,6 +384,12 @@ theorem Lemma5_14_corrected_holds : Lemma5_14_corrected := by
     mvpActualDecouplingEvent, mvpActualT1, mvpVarianceW4, mvpVarianceT6UCB,
     mvpActualW3, mvpVarianceHistory, mvpVarianceContinuation] using hmain
 
+/-- Drift guard: the library copy `StatisticalRL.OnlineRL.MVPSourceRegretCorrected` of `MVP_regret_corrected` is definitionally the statement-index
+entry, so any divergence breaks the build. -/
+theorem MVP_regret_corrected_iff_library :
+    MVP_regret_corrected.{u, v} ↔ StatisticalRL.OnlineRL.MVPSourceRegretCorrected.{u, v} :=
+  Iff.rfl
+
 /-- Apply the actual-law Claim 5.1 confidence result to its indexed statement. -/
 theorem Claim5_1_corrected_holds : Claim5_1_corrected := by
   intro State Action instS instA H K hH hK E ρ fallback δ c₁ c₂ hδ hδ1 hc₁ hc₂ hbudget
