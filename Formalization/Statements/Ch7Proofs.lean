@@ -255,6 +255,12 @@ theorem Thm7_2_corrected_holds : Thm7_2_corrected :=
 theorem Remark7_1_restricted_holds : Remark7_1_restricted :=
   StatisticalRL.RobustRL.DRVI.tv_oracle_planner_guarantee
 
+/-- Drift guard: the library copy `StatisticalRL.RobustRL.Ch7.Thm7_2_corrected` of `Thm7_2_corrected` is definitionally the statement-index
+entry, so any divergence breaks the build. -/
+theorem Thm7_2_corrected_iff_library :
+    Thm7_2_corrected ↔ StatisticalRL.RobustRL.Ch7.Thm7_2_corrected :=
+  Iff.rfl
+
 /-- `Remark7_2_restricted` from `StatisticalRL.RobustRL.DRVI.chi_oracle_planner_guarantee`
 (`c₂ = 10⁶ + 8 c_opt`). -/
 theorem Remark7_2_restricted_holds : Remark7_2_restricted :=
@@ -266,6 +272,12 @@ theorem Thm7_4_corrected_holds : Thm7_4_corrected :=
   StatisticalRL.RobustRL.DRVI.thm7_4_corrected_holds
 
 section Thm7_12
+
+/-- Drift guard: the library copy `StatisticalRL.RobustRL.Ch7.Thm7_4_corrected` of `Thm7_4_corrected` is definitionally the statement-index
+entry, so any divergence breaks the build. -/
+theorem Thm7_4_corrected_iff_library :
+    Thm7_4_corrected ↔ StatisticalRL.RobustRL.Ch7.Thm7_4_corrected :=
+  Iff.rfl
 
 open StatisticalRL.Ch7Rest.Rlhf in
 theorem Thm7_12_corrected_holds : Thm7_12_corrected := by
@@ -354,6 +366,12 @@ theorem Thm7_6_restricted_holds : Thm7_6_restricted :=
 
 end Thm7_6
 
+/-- Drift guard: the library copy `StatisticalRL.Ch7Rest.Marl76.Thm7_6_restricted` of `Thm7_6_restricted` is definitionally the statement-index
+entry, so any divergence breaks the build. -/
+theorem Thm7_6_restricted_iff_library :
+    Thm7_6_restricted ↔ StatisticalRL.Ch7Rest.Marl76.Thm7_6_restricted :=
+  Iff.rfl
+
 section Thm7_7
 
 /-- `Thm7_7_restricted` from `StatisticalRL.Ch7Rest.Marl77.thm7_7_restricted` (`C = 20000`). -/
@@ -361,6 +379,12 @@ theorem Thm7_7_restricted_holds : Thm7_7_restricted :=
   StatisticalRL.Ch7Rest.Marl77.thm7_7_restricted
 
 end Thm7_7
+
+/-- Drift guard: the library copy `StatisticalRL.Ch7Rest.Marl77.Thm7_7_restricted` of `Thm7_7_restricted` is definitionally the statement-index
+entry, so any divergence breaks the build. -/
+theorem Thm7_7_restricted_iff_library :
+    Thm7_7_restricted ↔ StatisticalRL.Ch7Rest.Marl77.Thm7_7_restricted :=
+  Iff.rfl
 
 section Eq_mdp_value_Q_restricted
 
