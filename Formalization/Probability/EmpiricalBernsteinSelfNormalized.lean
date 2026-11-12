@@ -131,51 +131,6 @@ theorem empiricalVariance_leaveOneOut_decrement_nonneg (N : ℕ) (hN2 : 2 ≤ N)
   have : (2 : ℝ) ≤ N := by exact_mod_cast hN2
   linarith
 
-/-- A bounded vector has uniformly bounded leave-one-out decrements. -/
-theorem empiricalVariance_leaveOneOut_decrement_le (N : ℕ) (hN2 : 2 ≤ N)
-    (V : State → ℝ) (B : ℝ) (hV : ∀ s, V s ∈ Set.Icc 0 B)
-    (ω : Fin N → State) (i : Fin N) :
-    let hN : 0 < N := by omega
-    empiricalVariance N hN V ω - leaveOneOutResidual N hN2 V ω i ≤
-      B ^ 2 / ((N : ℝ) - 1) := by
-  intro hN
-  rw [empiricalVariance_sub_leaveOneOutResidual]
-  have hm0 : 0 ≤ (empiricalRow N hN ω).expectation V :=
-    (empiricalRow N hN ω).expectation_nonneg (fun s ↦ (hV s).1)
-  have hmB : (empiricalRow N hN ω).expectation V ≤ B :=
-    (empiricalRow N hN ω).expectation_le_const (fun s ↦ (hV s).2)
-  have hsq : (V (ω i) - (empiricalRow N hN ω).expectation V) ^ 2 ≤ B ^ 2 := by
-    have hp : 0 ≤ (B - V (ω i) + (empiricalRow N hN ω).expectation V) *
-        (B + V (ω i) - (empiricalRow N hN ω).expectation V) :=
-      mul_nonneg (by linarith [(hV (ω i)).2]) (by linarith [(hV (ω i)).1])
-    nlinarith
-  apply div_le_div_of_nonneg_right hsq
-  have : (2 : ℝ) ≤ N := by exact_mod_cast hN2
-  linarith
-
-/-- A self-bounding quadratic decrement estimate for the actual sample variance.
-This is deterministic structural input, not a concentration theorem. -/
-theorem sum_sq_empiricalVariance_leaveOneOut_decrement_le (N : ℕ) (hN2 : 2 ≤ N)
-    (V : State → ℝ) (B : ℝ) (hV : ∀ s, V s ∈ Set.Icc 0 B)
-    (ω : Fin N → State) :
-    let hN : 0 < N := by omega
-    (∑ i : Fin N, (empiricalVariance N hN V ω - leaveOneOutResidual N hN2 V ω i) ^ 2) ≤
-      B ^ 2 * (N : ℝ) / ((N : ℝ) - 1) ^ 2 * empiricalVariance N hN V ω := by
-  intro hN
-  have hsum : (∑ i : Fin N,
-      (empiricalVariance N hN V ω - leaveOneOutResidual N hN2 V ω i) ^ 2) ≤
-      (B ^ 2 / ((N : ℝ) - 1)) * ∑ i : Fin N,
-        (empiricalVariance N hN V ω - leaveOneOutResidual N hN2 V ω i) := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_le_sum
-    intro i _
-    have h0 := empiricalVariance_leaveOneOut_decrement_nonneg N hN2 V ω i
-    have hb := empiricalVariance_leaveOneOut_decrement_le N hN2 V B hV ω i
-    nlinarith
-  rw [sum_empiricalVariance_leaveOneOut_decrement] at hsum
-  convert hsum using 1
-  field_simp
-
 omit [Fintype State] in
 /-- The mean after deleting one sample remains in the original interval. -/
 theorem leaveOneOutMean_mem_Icc (N : ℕ) (hN2 : 2 ≤ N)

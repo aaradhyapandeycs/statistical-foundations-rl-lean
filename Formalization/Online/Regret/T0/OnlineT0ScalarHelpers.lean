@@ -29,19 +29,6 @@ theorem onlineT0Suffix_sqrt_radius_absorb
   have hright : 0 ≤ (1 / 8 : ℝ) * Real.sqrt (S * A * H * x * I) := by positivity
   nlinarith
 
-theorem onlineT0Suffix_w1w2_scalar
-    (w₁ w₂ rV rDsmall rDbig lin₁ lin₂ p₂ : ℝ)
-    (hW₁ : w₁ ≤ (1 / 8 : ℝ) * rV + (1 / 8 : ℝ) * rDsmall +
-      lin₁)
-    (hW₂ : w₂ ≤ (1 / 8 : ℝ) * rDbig + lin₂)
-    (hr : rDsmall ≤ rDbig)
-    (hp : lin₁ + lin₂ ≤ p₂) :
-    w₁ + w₂ ≤ (1 / 8 : ℝ) * rV + (1 / 4 : ℝ) * rDbig +
-      p₂ := by
-  have hr' := mul_le_mul_of_nonneg_left hr (by norm_num : (0 : ℝ) ≤ 1 / 8)
-  have hsum := add_le_add hW₁ hW₂
-  linarith
-
 theorem onlineT0Suffix_log_factor (L : ℝ) (hL : 1 ≤ L) :
     2 * L ≤ 4 * L^2 := by
   have hLsq : L ≤ L^2 := by nlinarith [sq_nonneg (L - 1)]
@@ -86,6 +73,5 @@ theorem onlineT0Suffix_mass_coefficient (S F : ℝ) (hS : 1 ≤ S)
     _ ≤ (1 / 8 : ℝ) * (S^2 * F) + (1 / 8 : ℝ) * (S^2 * F) :=
       add_le_add (mul_le_mul_of_nonneg_left hmul (by norm_num)) le_rfl
     _ = (1 / 4 : ℝ) * S^2 * F := by ring
-
 
 end StatisticalRL.OnlineRL

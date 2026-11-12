@@ -53,36 +53,6 @@ theorem onlineSequentialOutcomeLaw_continuation_first_sum
       simpa only [FiniteDistribution.expectation] using congrArg
         (fun z : ℝ => prefixMass * z) hfirst
 
-/-- The actual one-step T₃ residual has zero integral on every fixed-prefix
-continuation fiber. This is the finite-sum form needed for the later joint
-reset-vector/history conditional-expectation bridge. -/
-theorem onlineSequentialOutcomeLaw_continuation_t3_residual_sum_zero
-    (d : Row → FiniteDistribution Outcome)
-    (choose : List (Row × Outcome) → Row)
-    (n m : ℕ) (history : List (Row × Outcome))
-    (prePath : OnlineOutcomePath Outcome n) (tail : Outcome → ℝ) :
-    (∑ suffix : OnlineOutcomePath Outcome (m + 1),
-      (onlineSequentialOutcomeLaw d choose ((m + 1) + n) history).prob
-        (onlineSequentialPathAppend n (m + 1) prePath suffix) *
-        ((d (choose (onlineSequentialPathHistory choose n history prePath))).expectation tail -
-          tail suffix.2.1)) = 0 := by
-  classical
-  let f : Outcome → ℝ := fun x =>
-    (d (choose (onlineSequentialPathHistory choose n history prePath))).expectation tail -
-      tail x
-  change (∑ suffix : OnlineOutcomePath Outcome (m + 1),
-      (onlineSequentialOutcomeLaw d choose ((m + 1) + n) history).prob
-        (onlineSequentialPathAppend n (m + 1) prePath suffix) * f suffix.2.1) = 0
-  rw [onlineSequentialOutcomeLaw_continuation_first_sum]
-  have hrow :
-      (d (choose (onlineSequentialPathHistory choose n history prePath))).expectation
-        f = 0 := by
-    rw [FiniteDistribution.expectation_sub,
-      FiniteDistribution.expectation_const]
-    ring
-  rw [hrow]
-  ring
-
 /-- The same zero continuation sum under the actual joint reset/path law, with
 the reset vector fixed. The reset factor is the true source-law atom; it is
 not assumed positive and no conditional probability is formed. -/

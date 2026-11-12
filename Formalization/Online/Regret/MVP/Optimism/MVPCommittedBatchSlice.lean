@@ -7,14 +7,6 @@ import Formalization.Online.SourceOptimism.ObservedEmpiricalPrefix
 actual chronological row observations.  No random-count independence is used. -/
 namespace StatisticalRL.OnlineRL
 
-theorem mvp_sourceBatch_eq_takeDrop {Outcome : Type*} [DecidableEq Outcome]
-    (xs : List Outcome) (h : 2 ≤ xs.length) :
-    onlineMVPSourceBatchList xs =
-      (xs.take (2 * onlineMVPStoredCount xs.length)).drop
-        (onlineMVPStoredCount xs.length) := by
-  simp [onlineMVPSourceBatchList, onlineMVPSourceBatchStart,
-    onlineMVPSourceBatchEnd, show ¬ xs.length < 2 by omega]
-
 theorem mvp_sourceBatch_dyadic_fit {Outcome : Type*} [DecidableEq Outcome]
     (xs : List Outcome) (h : 2 ≤ xs.length) :
     2 * onlineMVPStoredCount xs.length ≤ xs.length := by

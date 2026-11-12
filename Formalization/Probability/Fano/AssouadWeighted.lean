@@ -112,35 +112,6 @@ theorem assouad_weighted_sum (p : (Fin m → Bool) → Ω → ℝ) (w : Fin m �
     have := mul_le_mul_of_nonneg_left (hsum j) (hw j)
     linarith
 
-/-- Averaged form with the normalization `1/2^m` made explicit. -/
-theorem assouad_weighted_average (p : (Fin m → Bool) → Ω → ℝ) (w : Fin m → ℝ)
-    (hw : ∀ j, 0 ≤ w j) (d : Ω → Fin m → Bool) (θ : ℝ)
-    (htest : ∀ j σ, σ j = false →
-      θ ≤ (∑ x, p σ x * (if d x j = true then 1 else 0)) +
-        ∑ x, p (flipAt j σ) x * (if d x j = false then 1 else 0)) :
-    (θ / 2) * ∑ j, w j ≤
-      (1 / (2 : ℝ) ^ m) * ∑ σ, ∑ x, p σ x * ∑ j, w j * (if d x j ≠ σ j then 1 else 0) := by
-  have h := assouad_weighted_sum p w hw d θ htest
-  have hpos : (0 : ℝ) < 2 ^ m := by positivity
-  rw [one_div_mul_eq_div, le_div_iff₀ hpos]
-  linarith
-
-/-- Existential corollary: some vertex has expected weighted loss at least `(θ/2) ∑ w`. -/
-theorem assouad_weighted_exists (p : (Fin m → Bool) → Ω → ℝ) (w : Fin m → ℝ)
-    (hw : ∀ j, 0 ≤ w j) (d : Ω → Fin m → Bool) (θ : ℝ)
-    (htest : ∀ j σ, σ j = false →
-      θ ≤ (∑ x, p σ x * (if d x j = true then 1 else 0)) +
-        ∑ x, p (flipAt j σ) x * (if d x j = false then 1 else 0)) :
-    ∃ σ, (θ / 2) * ∑ j, w j ≤ ∑ x, p σ x * ∑ j, w j * (if d x j ≠ σ j then 1 else 0) := by
-  by_contra hne
-  push_neg at hne
-  have h := assouad_weighted_sum p w hw d θ htest
-  have hlt := Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty fun σ (_ : σ ∈ univ) ↦ hne σ
-  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_bool,
-    Fintype.card_fin, nsmul_eq_mul] at hlt
-  push_cast at hlt
-  linarith
-
 end Assouad
 
 section ReverseMarkov

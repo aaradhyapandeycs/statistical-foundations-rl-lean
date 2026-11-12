@@ -301,16 +301,4 @@ theorem onlineMVPCommittedTablesRun_committed_eq_sourceBatchHistogram
     _ = onlineMVPSourceBatchHistogram (onlineMVPRowVisitList rowAt nextAt n r) x :=
       onlineMVPRowBatchStateRun_committed_eq_sourceBatchHistogram x
 
-theorem onlineMVPSourceBatchHistogram_sum (xs : List Outcome) :
-    (∑ x : Outcome, onlineMVPSourceBatchHistogram xs x) =
-      (onlineMVPSourceBatchList xs).length := by
-  classical
-  let ys := onlineMVPSourceBatchList xs
-  change (∑ x : Outcome, ys.count x) = ys.length
-  induction ys with
-  | nil => simp
-  | cons a tail ih =>
-      simp only [List.count_cons, Finset.sum_add_distrib, ih]
-      simp
-
 end StatisticalRL.OnlineRL

@@ -45,21 +45,6 @@ noncomputable def tdSquareLateWindowSum (M : DiscountedMDP State Action)
   ∑ n ∈ Finset.range t,
     tdSquareLateWindowIncrement M π η T t V₀ s n data
 
-theorem tdSquareLateWindowIncrement_zero_before
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (T t : ℕ) (V₀ : State → ℝ) (s : State) (n : ℕ)
-    (hn : n < t / 2) :
-    tdSquareLateWindowIncrement M π η T t V₀ s n = fun _ ↦ 0 := by
-  have hnot : ¬ t / 2 ≤ n := Nat.not_le.mpr hn
-  simp [tdSquareLateWindowIncrement, hnot]
-
-theorem tdSquareLateWindowIncrement_zero_after
-    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (η : ℕ → ℝ) (T t : ℕ) (V₀ : State → ℝ) (s : State) (n : ℕ)
-    (hn : t ≤ n) :
-    tdSquareLateWindowIncrement M π η T t V₀ s n = fun _ ↦ 0 := by
-  simp [tdSquareLateWindowIncrement, Nat.not_lt.mpr hn]
-
 theorem tdSquareTerminalIncrement_eq_sourceTerm_shift
     (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (η : ℕ → ℝ) (T t : ℕ) (V₀ : State → ℝ) (s : State) (n : ℕ)

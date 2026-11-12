@@ -649,12 +649,6 @@ theorem map_mulVec_eq_map_affine_zero (μ : Measure (ι → ℝ)) :
     μ.map (fun z ↦ L *ᵥ z) = μ.map (fun z ↦ (0 : ι → ℝ) + L *ᵥ z) := by
   simp only [zero_add]
 
-/-- `map_affine_measure_apply` with `c = 0`. -/
-theorem map_mulVec_measure_apply (μ : Measure (ι → ℝ)) (s : Set (ι → ℝ)) :
-    μ.map (fun z ↦ L *ᵥ z) s = μ ((fun z ↦ L *ᵥ z) ⁻¹' s) := by
-  rw [map_mulVec_eq_map_affine_zero L, map_affine_measure_apply L hL 0]
-  simp only [zero_add]
-
 /-- `map_affine_convexShell_le` with `c = 0` (infrastructure). -/
 theorem map_mulVec_convexShell_le {K : Set (ι → ℝ)} (hK : Convex ℝ K) {r : ℝ} (hr : 0 ≤ r) :
     ((stdGaussianPi ι).map (fun z ↦ L *ᵥ z)).real

@@ -29,13 +29,6 @@ private theorem averageTestError_nonneg (P : I → Measure Ω)
   · exact Finset.sum_nonneg (fun i _ ↦ testError_nonneg P ψ i)
   · exact card_positive_real.le
 
-private theorem worstTestError_nonneg (P : I → Measure Ω)
-    [∀ i, IsProbabilityMeasure (P i)] (ψ : MeasurableTest (Ω := Ω) (I := I)) :
-    0 ≤ worstTestError P ψ := by
-  rcases ‹Nonempty I› with ⟨i⟩
-  exact (testError_nonneg P ψ i).trans
-    (Finset.le_sup' _ (Finset.mem_univ i))
-
 private theorem measurableTest_nonempty :
     Nonempty (MeasurableTest (Ω := Ω) (I := I)) := by
   classical
@@ -58,12 +51,6 @@ private theorem averageRisk_range_bddBelow (P : I → Measure Ω)
   refine ⟨0, ?_⟩
   rintro y ⟨ψ, rfl⟩
   exact averageTestError_nonneg P ψ
-
-private theorem worstRisk_range_bddBelow (P : I → Measure Ω)
-    [∀ i, IsProbabilityMeasure (P i)] : BddBelow (Set.range (worstTestError P)) := by
-  refine ⟨0, ?_⟩
-  rintro y ⟨ψ, rfl⟩
-  exact worstTestError_nonneg P ψ
 
 /-- For every actual measurable test, its average error is no larger than its
 worst-hypothesis error. -/
@@ -138,31 +125,6 @@ theorem averageTestError_eq_pushed_identityError (P : I → Measure Ω)
   apply Finset.sum_congr rfl
   intro i _
   exact testError_eq_identityError_of_map P ψ i
-
-/-- Finite-valued KL data processing applies separately to every law in the
-actual testing family. Its source-space carrier remains arbitrary. -/
-theorem testPushforward_klDiv_le (P : I → Measure Ω)
-    [∀ i, IsProbabilityMeasure (P i)] (i j : I)
-    (ψ : MeasurableTest (Ω := Ω) (I := I)) :
-    InformationTheory.klDiv ((P i).map ψ.1) ((P j).map ψ.1) ≤
-      InformationTheory.klDiv (P i) (P j) :=
-  finiteValued_klDiv_map_le (P i) (P j) ψ.1 ψ.2
-
-/-- The KL budget for any fixed test's finite-valued output laws is no larger
-than the corresponding source-law budget, term by term over an arbitrary
-finite collection of alternatives. -/
-theorem testPushforward_alternativeKL_sum_le
-    {J : Type*} [Fintype J]
-    (P : I → Measure Ω) [∀ i, IsProbabilityMeasure (P i)]
-    (baseline : I) (alternative : J → I)
-    (ψ : MeasurableTest (Ω := Ω) (I := I)) :
-    (∑ j : J, InformationTheory.klDiv
-      ((P (alternative j)).map ψ.1) ((P baseline).map ψ.1)) ≤
-      ∑ j : J, InformationTheory.klDiv (P (alternative j)) (P baseline) := by
-  apply Finset.sum_le_sum
-  intro j _
-  exact testPushforward_klDiv_le P (alternative j) baseline ψ
-
 
 end Testing
 

@@ -58,16 +58,6 @@ def onlineMVPCommittedTablesRun {Row Outcome : Type*}
   | n + 1 => onlineMVPCommittedTablesStep
       (onlineMVPCommittedTablesRun rowAt nextAt n) (rowAt n) (nextAt n)
 
-theorem onlineMVPCommittedTablesErase_init (Row Outcome : Type*) :
-    onlineMVPCommittedTablesErase (onlineMVPCommittedTablesInit Row Outcome) =
-      onlineMVPCountTablesInit Row Outcome := rfl
-
-theorem onlineMVPCommittedTablesErase_step {Row Outcome : Type*}
-    [Fintype Outcome] [DecidableEq Row] [DecidableEq Outcome]
-    (st : OnlineMVPCommittedTables Row Outcome) (r : Row) (x : Outcome) :
-    onlineMVPCommittedTablesErase (onlineMVPCommittedTablesStep st r x) =
-      onlineMVPCountTablesStep st.base r x := rfl
-
 theorem onlineMVPCommittedTablesErase_run {Row Outcome : Type*}
     [Fintype Outcome] [DecidableEq Row] [DecidableEq Outcome]
     (rowAt : ℕ → Row) (nextAt : ℕ → Outcome) (n : ℕ) :

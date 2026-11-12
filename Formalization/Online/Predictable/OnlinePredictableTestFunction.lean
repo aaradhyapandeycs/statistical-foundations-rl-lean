@@ -150,7 +150,6 @@ noncomputable def onlinePredictableTestResidualAtPrefix
   exact (rowLaw (choose history)).expectation tail -
     tail (onlineSequentialPathSuffix n (m + 1) sample.2).2.1
 
-
 theorem onlineSequentialEpisodeLaw_predictableTest_condExp_zero
     (H K : ℕ) (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
     (ρ : FiniteDistribution State) (fallback : State)
@@ -226,6 +225,5 @@ theorem onlineSequentialEpisodeLaw_predictableTest_condExp_zero
     hle hf (fun s hs hμs => integrableOn_zero)
       (fun s hs hμs => (hset s hs hμs).symm) hgm
   exact hcond.symm
-
 
 end StatisticalRL.OnlineRL

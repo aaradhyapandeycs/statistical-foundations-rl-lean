@@ -1,5 +1,5 @@
-import Formalization.ModelFree.TDSharpSecondFreedmanEligibleUnion
 import Formalization.ModelFree.TDSourceRateProxyTransport
+import Formalization.ModelFree.TDSharpSecondFreedman
 
 /-!
 

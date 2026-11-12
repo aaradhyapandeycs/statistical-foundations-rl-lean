@@ -58,20 +58,6 @@ theorem trajectoryExpectedQ_eq_optimalityFixedPoint_of_optimal (M : DiscountedMD
   · rw [← M.optimalGreedy_trajectoryQ s a]
     exact hf _ s a
 
-/-- Value form: the same policies have value `max_a Q⋆(s,a)`. -/
-theorem trajectoryExpectedValue_eq_of_optimal (M : DiscountedMDP State Action)
-    (f g : State → Action)
-    (hf : ∀ (π : StationaryPolicy State Action) (s : State),
-      M.trajectoryExpectedValue π s ≤
-        M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (f x)) s)
-    (hg : ∀ (π : StationaryPolicy State Action) (s : State),
-      M.trajectoryExpectedValue π s ≤
-        M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (g x)) s) :
-    M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (f x)) =
-      M.trajectoryExpectedValue (fun x ↦ EnvironmentStage.pointMass (g x)) := by
-  funext s
-  exact le_antisymm (hg _ s) (hf _ s)
-
 end DiscountedMDP
 
 namespace EnvironmentStage

@@ -72,7 +72,6 @@ theorem onlineActualW2Point_le_radius
       sa.1 sa.2).expectation gap - ((E h).transition sa.1 sa.2).expectation gap ≤ _
     linarith [hp, hs]
 
-
   · simp only [if_neg hn] at hp ⊢
     exact hp
 end StatisticalRL.OnlineRL

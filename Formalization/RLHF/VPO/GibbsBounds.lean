@@ -168,11 +168,6 @@ variable {X Y : Type} [Fintype X] [Fintype Y]
 noncomputable def pairDisp (ρ : X → ℝ) (pol g : X → Y → ℝ) : ℝ :=
   ∑ x, ρ x * ∑ y, ∑ y', pol x y * pol x y' * (g x y - g x y') ^ 2
 
-theorem pairDisp_nonneg (ρ : X → ℝ) (hρ : ∀ x, 0 ≤ ρ x) (pol g : X → Y → ℝ)
-    (hpol : ∀ x y, 0 ≤ pol x y) : 0 ≤ pairDisp ρ pol g :=
-  sum_nonneg fun x _ ↦ mul_nonneg (hρ x) (sum_nonneg fun y _ ↦ sum_nonneg fun y' _ ↦
-    mul_nonneg (mul_nonneg (hpol x y) (hpol x y')) (sq_nonneg _))
-
 /-- The calibrated values of two rewards at the same policy differ by the expected reward
 difference (the KL terms cancel). -/
 theorem calValue_sub (ρ : X → ℝ) (π_ref π_cal : X → Y → ℝ) (β : ℝ) (r s pol : X → Y → ℝ) :

@@ -33,9 +33,6 @@ theorem kpow_zero_apply (x y : X) : kpow K 0 x y = if x = y then 1 else 0 := rfl
 
 theorem kpow_succ_apply (t : ℕ) (x y : X) : kpow K (t + 1) x y = ∑ w, K x w * kpow K t w y := rfl
 
-theorem kpow_one_apply (x y : X) : kpow K 1 x y = K x y := by
-  simp [kpow_succ_apply, kpow_zero_apply]
-
 theorem kpow_nonneg (hK : IsStochastic K) (t : ℕ) (x y : X) : 0 ≤ kpow K t x y := by
   induction t generalizing x with
   | zero => simp only [kpow_zero_apply]; split_ifs <;> norm_num
@@ -49,10 +46,6 @@ theorem kpow_row_sum (hK : IsStochastic K) (t : ℕ) (x : X) : ∑ y, kpow K t x
     rw [sum_comm]
     simp_rw [← mul_sum, ih, mul_one]
     exact hK.row_sum x
-
-theorem kpow_le_one (hK : IsStochastic K) (t : ℕ) (x y : X) : kpow K t x y ≤ 1 := by
-  rw [← kpow_row_sum hK t x]
-  exact single_le_sum (fun y _ ↦ kpow_nonneg hK t x y) (mem_univ y)
 
 theorem kpow_isProb (hK : IsStochastic K) (t : ℕ) (x : X) : IsProb (kpow K t x) :=
   ⟨kpow_nonneg hK t x, kpow_row_sum hK t x⟩

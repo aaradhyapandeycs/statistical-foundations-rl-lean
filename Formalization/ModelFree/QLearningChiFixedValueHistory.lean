@@ -71,5 +71,4 @@ theorem qChiFixedFluctuation_condExp_natural_sq (M : DiscountedMDP State Action)
     ((M.discount * qPositiveWeight η u (t+1))^2 * qRowVariance M s a (v))
   exact htower.symm.trans (hc.trans (Filter.Eventually.of_forall fun data ↦ by rw [hconst]))
 
-
 end StatisticalRL.QLearning

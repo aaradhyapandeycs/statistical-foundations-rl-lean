@@ -133,37 +133,4 @@ theorem allSampledArms_confidence [MeasurableSpace Arm] [MeasurableSingletonClas
   rw [Set.union_compl_self, probReal_univ] at hu
   linarith
 
-/-- The same event on any probability space carrying the exact joint law of
-(action vector, noise vector). -/
-theorem allSampledArms_confidence_of_hasLaw [MeasurableSpace Arm] [MeasurableSingletonClass Arm]
-    {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
-    (d : Measure Arm) [IsProbabilityMeasure d] (r : Arm → ℝ) (N : ℕ)
-    (act : Ω → Fin N → Arm) (noise : Ω → Fin N → ℝ)
-    (hlaw : HasLaw (fun ω => (act ω, noise ω))
-      ((Measure.pi fun _ : Fin N => d).prod (Measure.pi fun _ : Fin N => gaussianReal 0 1)) P)
-    (δ : ℝ) (hδ : 0 < δ) (hδ1 : δ < 1) :
-    1 - δ / 2 ≤ P.real {ω | ∀ b, 0 < armCount (act ω) b →
-          |empiricalArmMean r (act ω) (noise ω) b - r b| ≤
-            armRadius (Fintype.card Arm) δ (armCount (act ω) b)} := by
-  set Good := {ω : (Fin N → Arm) × (Fin N → ℝ) | ∀ b, 0 < armCount ω.1 b →
-          |empiricalArmMean r ω.1 ω.2 b - r b| ≤
-            armRadius (Fintype.card Arm) δ (armCount ω.1 b)}
-  have hpre : {ω | ∀ b, 0 < armCount (act ω) b →
-          |empiricalArmMean r (act ω) (noise ω) b - r b| ≤
-            armRadius (Fintype.card Arm) δ (armCount (act ω) b)} =
-      (fun ω => (act ω, noise ω)) ⁻¹' Good := rfl
-  have hbad := allSampledArms_bad_le d r N δ hδ hδ1
-  have hle : P ((fun ω => (act ω, noise ω)) ⁻¹' Goodᶜ) ≤ ENNReal.ofReal (δ / 2) := by
-    calc _ ≤ P.map (fun ω => (act ω, noise ω)) Goodᶜ := Measure.le_map_apply hlaw.aemeasurable _
-      _ = _ := by rw [hlaw.map_eq]
-      _ ≤ _ := hbad
-  have hbadR : P.real ((fun ω => (act ω, noise ω)) ⁻¹' Good)ᶜ ≤ δ / 2 := by
-    rw [← Set.preimage_compl]
-    exact ENNReal.toReal_le_of_le_ofReal (by positivity) hle
-  have hu := measureReal_union_le (μ := P) ((fun ω => (act ω, noise ω)) ⁻¹' Good)
-    ((fun ω => (act ω, noise ω)) ⁻¹' Good)ᶜ
-  rw [Set.union_compl_self, probReal_univ] at hu
-  rw [hpre]
-  linarith
-
 end StatisticalRL.OfflineRL

@@ -1,5 +1,4 @@
 import Formalization.ModelFree.QLearningStoppedPrefixGeometricBound
-import Formalization.ModelFree.QLearningCountableKLNonneg
 
 /-! Actual stopped-prefix normalization, support and KL summability for Pinsker. -/
 
@@ -56,16 +55,5 @@ theorem qActualStoppedPrefixPinskerInputs
         exact mul_ne_zero hw hq
   · exact qActualStoppedPrefixKL_abs_summable M M' π γ ρ s a
       hγ hγ1 hρ hrowSupport hrowKL
-
-/-- At zero discount the actual stopped law is the common zero-transition
-point mass, hence its zero-safe KL series is zero. This endpoint statement
-does not require any transition-row support or KL assumption. -/
-theorem qActualStoppedPrefixPinskerInputs_zero_discount
-    (M M' : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (s : State) (a : Action) :
-    (∑' z : qStoppedPrefixAbsCarrier (State := State) (Action := Action),
-      qStoppedPrefixKLAtom (qActualStoppedPrefixMass M' π 0 s a z)
-        (qActualStoppedPrefixMass M π 0 s a z)) = 0 := by
-  exact qActualStoppedPrefixKL_zero_discount M M' π s a
 
 end StatisticalRL.QLearning.CountablePinsker

@@ -27,5 +27,4 @@ noncomputable def onlineCappedGreedyPlanner {H : ℕ}
         (onlineCompletedHistoryPlanningStages E history) h.val s)
       exact ⟨a, ha.symm⟩)
 
-
 end StatisticalRL.OnlineRL

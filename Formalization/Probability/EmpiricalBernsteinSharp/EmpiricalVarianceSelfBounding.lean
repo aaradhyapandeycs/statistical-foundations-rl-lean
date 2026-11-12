@@ -19,19 +19,6 @@ noncomputable def normalizedUnbiasedVarianceRemoved (N : ℕ) (hN2 : 2 ≤ N)
     (V : State → ℝ) (B : ℝ) (ω : Fin N → State) (i : Fin N) : ℝ :=
   ((N : ℝ)^2 / (((N : ℝ) - 1) * B^2)) * leaveOneOutResidual N hN2 V ω i
 
-/-- The normalized statistic is nonnegative on every sample. -/
-theorem normalizedUnbiasedVariance_nonneg (N : ℕ) (hN2 : 2 ≤ N)
-    (V : State → ℝ) (B : ℝ) (hB : 0 < B) (ω : Fin N → State) :
-    0 ≤ normalizedUnbiasedVariance N hN2 V B ω := by
-  let hN : 0 < N := by omega
-  unfold normalizedUnbiasedVariance
-  apply mul_nonneg
-  · have hn : 0 < (N : ℝ) - 1 := by
-      have hh : (2 : ℝ) ≤ N := by exact_mod_cast hN2
-      linarith
-    positivity
-  · exact empiricalVariance_nonneg N hN V ω
-
 /-- The normalization has expectation N times the true variance divided by B². -/
 theorem normalizedUnbiasedVariance_integral (d : FiniteDistribution State)
     (N : ℕ) (hN2 : 2 ≤ N) (V : State → ℝ) (B : ℝ) (hB : 0 < B) :

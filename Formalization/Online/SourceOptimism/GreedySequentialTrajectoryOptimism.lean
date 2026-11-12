@@ -25,33 +25,6 @@ def onlineHistoryAllStageTrajectoryOptimism
       onlineCappedBackwardQAt (H : ℝ) (Real.log (1 / δ)) c₁ c₂
         (onlinePreEpisodePlanningStages E history k.val) h.val s a)
 
-/-- This equality consumes the production actual-trajectory exports, rather
-than relabeling Bellman optima as expected returns by definition. -/
-theorem onlineHistory_trajectoryOptimism_iff_bellman
-    (H K : ℕ) (E : Fin H → EnvironmentStage State Action) (δ c₁ c₂ : ℝ)
-    (history : List (OnlineMDPRow State Action H × State)) :
-    onlineHistoryAllStageTrajectoryOptimism H K E δ c₁ c₂ history ↔
-      onlineHistoryAllStageBellmanOptimism H K E δ c₁ c₂ history := by
-  simp only [onlineHistoryAllStageTrajectoryOptimism, onlineHistoryAllStageBellmanOptimism,
-    EnvironmentStage.greedy_suffix_value, EnvironmentStage.greedy_suffix_Q]
-
-/-- The represented true greedy suffix dominates every randomized nonstationary
-policy in the same true environment, for V and every forced initial action Q. -/
-theorem onlineTrueGreedySuffix_dominates_allPolicies
-    (H : ℕ) (E : Fin H → EnvironmentStage State Action) (h : Fin H)
-    (π : ℕ → StationaryPolicy State Action) (s : State) (a : Action) :
-    DecisionStage.trajectoryValue
-        (EnvironmentStage.controlled ((List.ofFn E).drop h.val) π) s ≤
-      DecisionStage.trajectoryValue
-        ((EnvironmentStage.greedyStages (List.ofFn E)).drop h.val) s ∧
-    DecisionStage.trajectoryQ
-        (EnvironmentStage.controlled ((List.ofFn E).drop h.val) π) s a ≤
-      DecisionStage.trajectoryQ
-        ((EnvironmentStage.greedyStages (List.ofFn E)).drop h.val) s a := by
-  rw [EnvironmentStage.greedy_suffix_value, EnvironmentStage.greedy_suffix_Q]
-  exact ⟨EnvironmentStage.trajectoryValue_le_optimal _ π s,
-    EnvironmentStage.trajectoryQ_le_optimal _ π s a⟩
-
 /-- A realized sequential transcript has exactly kH completed transitions at
 its episode-k boundary. This includes the final transition of each past episode. -/
 theorem onlineSequential_episodePrefix_length
@@ -67,19 +40,6 @@ theorem onlineSequential_episodePrefix_length
   have hbound : k * H ≤ K * H := Nat.mul_le_mul_right H hk
   simpa only [List.length_take, List.length_nil, zero_add,
     hlen, Nat.min_eq_left hbound]
-
-/-- The actual greedy planner, when given the realized completed prefix, uses
-exactly the pre-episode table in the optimism event on the full transcript. -/
-theorem onlineSequential_greedyPrefix_table
-    (H K : ℕ) (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
-    (initial : Fin K → State) (fallback : State) (L c₁ c₂ : ℝ)
-    (path : OnlineOutcomePath State (K * H)) (k : Fin K) :
-    let planner := onlineCappedGreedyPlanner E L c₁ c₂
-    let history := onlineSequentialPathHistory
-      (onlineEpisodicChoose H K hH initial fallback planner) (K * H) [] path
-    onlineCompletedHistoryPlanningStages E (history.take (k.val * H)) =
-      onlinePreEpisodePlanningStages E history k.val := by
-  rfl
 
 /-- Every actual action uses the fixed episode planner on the full history's
 completed-episode prefix. This is a pathwise statement from row consistency;

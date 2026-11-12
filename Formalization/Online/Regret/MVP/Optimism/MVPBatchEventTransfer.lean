@@ -1,5 +1,7 @@
 import Formalization.Online.Regret.MVP.Optimism.MVPFiniteStackPlanningRow
-import Formalization.Online.Regret.MVP.Optimism.MVPTrueSuffixBonus
+import Formalization.Online.Regret.MVP.Optimism.MVPBatchBonus
+import Formalization.Online.SourceOptimism.GreedySequentialBellmanOptimism
+import Formalization.Online.SourceOptimism.SourceOptimismAllocation
 
 /-! Intermediate actual-stack event transfer. The count bound is an explicit
 pathwise premise here, to be derived from stage-tagged episode history by the

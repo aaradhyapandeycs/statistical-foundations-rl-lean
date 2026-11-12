@@ -147,12 +147,6 @@ theorem absorbFamily_nonempty (U : RowFamily State Action) (hU : ∀ s a, (U s a
   · exact Set.singleton_nonempty _
   · exact hU s a
 
-theorem absorbFamily_rowAttains (U : RowFamily State Action) (hU : ∀ s a, RowAttains (U s a))
-    (x : State) : ∀ s a, RowAttains (absorbFamily U x s a) := by
-  intro s a
-  unfold absorbFamily
-  exact rowAttains_ite _ (rowAttains_singleton _) (hU s a)
-
 theorem robustQ_absorb_at (U : RowFamily State Action) (M : DiscountedMDP State Action)
     (x : State) (u : ℝ) (V : State → ℝ) (a : Action) :
     robustQ (absorbFamily U x) (absorbMDP M x u) V x a =

@@ -8,13 +8,6 @@ local instance w1PolicySourceStateMeasurable : MeasurableSpace State := ⊤
 local instance w1PolicySourceAtomMeasurable (K n : ℕ) :
     MeasurableSpace ((Fin K → State) × OnlineOutcomePath State n) := ⊤
 
-theorem onlineActualW1PolicyBudgetEvent_measurable
-    (H K : ℕ) (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
-    (fallback : State) (δ c₁ c₂ : ℝ) :
-    MeasurableSet (onlineActualW1PolicyBudgetEvent H K hH E fallback δ c₁ c₂) := by
-  classical
-  exact (Set.to_countable _).measurableSet
-
 /-- Source-allocated same-law W₁ policy-variance budget, with the strict
 6 SAHK δ′ confidence loss from the two actual events. -/
 theorem onlineSourceAllocated_actualW1PolicyBudget_strict

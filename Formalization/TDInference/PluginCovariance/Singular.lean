@@ -27,9 +27,6 @@ namespace StatisticalRL.Ch7Rest.TDInference
 variable {State Action : Type} [Fintype State] [Fintype Action] [DecidableEq State]
 
 omit [Fintype State] [Fintype Action] in
-theorem pluginVisitCount_nonneg {T : ℕ} (ω : Fin T → Tuple State Action) (s : State) :
-    0 ≤ pluginVisitCount ω s :=
-  Finset.sum_nonneg fun _ _ ↦ by split_ifs <;> norm_num
 
 omit [Fintype State] [Fintype Action] in
 theorem pluginTransCount_nonneg {T : ℕ} (ω : Fin T → Tuple State Action) (s j : State) :
@@ -111,12 +108,6 @@ theorem setOf_aBar_det_eq_zero (M : DiscountedMDP State Action) (T : ℕ) :
     exact (h.2 hs) hdet
   · rintro ⟨s, hs⟩
     exact aBar_det_eq_zero_of_unsampled M ω hs
-
-/-- On the sampled event `Ā_T⁻¹` is a genuine inverse (no junk value). -/
-theorem aBar_mul_inv_of_sampled (M : DiscountedMDP State Action) {T : ℕ}
-    (ω : Fin T → Tuple State Action) (h : ∀ s, ∃ t, (ω t).1 = s) :
-    aBar M ω * (aBar M ω)⁻¹ = 1 :=
-  Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (aBar_det_ne_zero_of_sampled M ω h))
 
 /-! ## Probability of the singular event -/
 
@@ -221,14 +212,5 @@ theorem pathProb_aBar_singular_pos (M : DiscountedMDP State Action)
     (hss : s ≠ s') (hs' : 0 < μ.prob s') (T : ℕ) :
     0 < pathProb M π μ T {ω | (aBar M ω).det = 0} :=
   lt_of_lt_of_le (pow_pos (one_sub_prob_pos μ hss hs') T) (pathProb_aBar_singular_ge M π μ T s)
-
-/-- The junk event `{lambdaHat = 0}` contains the singular event, so it has probability at least
-`(1 − μ(s))^T` for every `s`. -/
-theorem pathProb_lambdaHat_eq_zero_ge (M : DiscountedMDP State Action)
-    (π : StationaryPolicy State Action) (μ : FiniteDistribution State) (η₀ : ℝ) (V₀ : State → ℝ)
-    (T : ℕ) (s : State) :
-    (1 - μ.prob s) ^ T ≤ pathProb M π μ T {ω | lambdaHat M η₀ V₀ ω = 0} :=
-  (pathProb_aBar_singular_ge M π μ T s).trans
-    (pathProb_mono M π μ T fun _ hω ↦ lambdaHat_eq_zero_of_det_eq_zero M η₀ V₀ hω)
 
 end StatisticalRL.Ch7Rest.TDInference

@@ -375,21 +375,6 @@ theorem sum_abs_tdA_le (M : DiscountedMDP State Action) (π : StationaryPolicy S
           h1sum]
     _ ≤ 2 := by nlinarith
 
-/-- `gaussCov A Γ_true` is the law of `tdGaussFactor Z = A⁻¹ diag(√Γ_true) Z`. -/
-theorem gaussCov_tdA_eq_map (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (μ : FiniteDistribution State) :
-    gaussCov (tdA M π μ) (trueGamma M π μ) =
-      (stdGaussianPi State).map fun z ↦ tdGaussFactor M π μ *ᵥ z :=
-  gaussCov_eq_map_inv_mul_diagonal_sqrt _ _
-
-/-- `tdGaussFactor = A⁻¹ diag(√Γ_true)` is invertible when `μ > 0` and `Γ_true > 0`. -/
-theorem isUnit_det_tdGaussFactor (M : DiscountedMDP State Action)
-    (π : StationaryPolicy State Action) (μ : FiniteDistribution State) {μmin : ℝ}
-    (hμmin0 : 0 < μmin) (hμmin : ∀ s, μmin ≤ μ.prob s) (hΓ : ∀ s, 0 < trueGamma M π μ s) :
-    IsUnit (tdGaussFactor M π μ).det :=
-  isUnit_det_inv_mul_diagonal_sqrt
-    ((Matrix.isUnit_iff_isUnit_det _).1 (tdA_isUnit M π μ hμmin0 hμmin)) hΓ
-
 /-- `‖tdGaussFactor⁻¹‖_{∞→∞} ≤ 2/√γmin` when `Γ_true ≥ γmin > 0`. -/
 theorem matrixMaxRowAbsSum_tdGaussFactor_inv_le (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (μ : FiniteDistribution State) {μmin γmin : ℝ}

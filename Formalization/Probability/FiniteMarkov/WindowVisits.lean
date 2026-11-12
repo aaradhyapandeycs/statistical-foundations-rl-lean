@@ -42,10 +42,6 @@ def ind (z y : X) : ℝ := if y = z then 1 else 0
 
 theorem ind_nonneg (z y : X) : 0 ≤ ind z y := by unfold ind; split_ifs <;> norm_num
 
-theorem ind_le_one (z y : X) : ind z y ≤ 1 := by unfold ind; split_ifs <;> norm_num
-
-theorem ind_sq (z y : X) : ind z y * ind z y = ind z y := by unfold ind; split_ifs <;> norm_num
-
 theorem sum_kpow_mul_ind (t : ℕ) (u z : X) : ∑ y, kpow K t u y * ind z y = kpow K t u z := by
   simp [ind]
 

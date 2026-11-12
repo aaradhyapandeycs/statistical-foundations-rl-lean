@@ -25,28 +25,6 @@ theorem onlineUCBVI_sqrt_gap_young (H C D : ℝ) (hH : 0 < H)
   rw [heq] at hy
   convert hy using 1 <;> ring
 
-/-- The nested square-root term appearing after substitution into T2.
-The parameters a, q, d are nonnegative and S is a positive state count. -/
-theorem onlineUCBVI_nested_root (a q d S : ℝ)
-    (ha : 0 ≤ a) (hq : 0 ≤ q) (hd : 0 ≤ d) (hS : 0 < S) :
-    Real.sqrt (a * Real.sqrt (q * d) / 8) ≤
-      (1 / 8 : ℝ) * Real.sqrt (a * d / S) +
-      (1 / 2 : ℝ) * Real.sqrt (a * q * S) := by
-  have hrootprod : Real.sqrt (a * d / S) * Real.sqrt (a * q * S) =
-      a * Real.sqrt (q * d) := by
-    rw [← Real.sqrt_mul (by positivity : 0 ≤ a * d / S)]
-    have heq : (a * d / S) * (a * q * S) = a^2 * (q * d) := by
-      field_simp
-    rw [heq, Real.sqrt_mul (sq_nonneg a), Real.sqrt_sq ha]
-  have hu := Real.sqrt_nonneg (a * d / S)
-  have hv := Real.sqrt_nonneg (a * q * S)
-  have hqdr := Real.sqrt_nonneg (q * d)
-  apply Real.sqrt_le_iff.mpr
-  constructor
-  · positivity
-  · nlinarith only [hrootprod, mul_nonneg hu hv, sq_nonneg ((1 / 8 : ℝ) * Real.sqrt (a * d / S) -
-        (1 / 2 : ℝ) * Real.sqrt (a * q * S))]
-
 /-- Subadditivity of three nonnegative square-root terms. -/
 theorem onlineUCBVI_sqrt_three (x y z : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) (hz : 0 ≤ z) :
     Real.sqrt (x + y + z) ≤ Real.sqrt x + Real.sqrt y + Real.sqrt z := by
@@ -60,35 +38,6 @@ theorem onlineUCBVI_sqrt_three (x y z : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y) (hz :
   constructor
   · positivity
   · nlinarith only [hx', hy', hz', hxy, hxz, hyz]
-
-/-- Substitute the simplified T5 estimate into the T2 square-root charge.
-The final linear charge z remains explicit for the sharper mass accounting. -/
-theorem onlineUCBVI_T2_from_T5 (a b q d S T5 T2 z : ℝ)
-    (ha : 0 ≤ a) (hb : 0 ≤ b) (hq : 0 ≤ q) (hd : 0 ≤ d) (hS : 0 < S)
-    (hT5 : T5 ≤ 6 * b + (1 / 2 : ℝ) * Real.sqrt (q * d) + 4 * q)
-    (hT2 : T2 ≤ (1 / 2 : ℝ) * Real.sqrt (a * T5) + z) :
-    T2 ≤ (1 / 2 : ℝ) * Real.sqrt (6 * a * b) +
-      (1 / 8 : ℝ) * Real.sqrt (a * d / S) +
-      (1 / 2 : ℝ) * Real.sqrt (a * q * S) + Real.sqrt (a * q) + z := by
-  have hmul := mul_le_mul_of_nonneg_left hT5 ha
-  have hr := Real.sqrt_le_sqrt hmul
-  have hsplit := onlineUCBVI_sqrt_three (6 * a * b) (a * Real.sqrt (q * d) / 2) (4 * a * q)
-    (by positivity) (by positivity) (by positivity)
-  have hsum : a * (6 * b + (1 / 2 : ℝ) * Real.sqrt (q * d) + 4 * q) =
-      6 * a * b + a * Real.sqrt (q * d) / 2 + 4 * a * q := by ring
-  rw [hsum] at hr
-  have hmid : (1 / 2 : ℝ) * Real.sqrt (a * Real.sqrt (q * d) / 2) =
-      Real.sqrt (a * Real.sqrt (q * d) / 8) := by
-    have heq : a * Real.sqrt (q * d) / 8 = (1 / 4 : ℝ) * (a * Real.sqrt (q * d) / 2) := by ring
-    rw [heq, Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 1 / 4)]
-    norm_num
-  have hlast : Real.sqrt (4 * a * q) = 2 * Real.sqrt (a * q) := by
-    have heq : 4 * a * q = 4 * (a * q) := by ring
-    rw [heq, Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 4)]
-    norm_num
-  have hnested := onlineUCBVI_nested_root a q d S ha hq hd hS
-  rw [hlast] at hsplit
-  linarith only [hT2, hr, hsplit, hmid, hnested]
 
 /-- Final self-bounding arithmetic with all component estimates visible.
 `R` is the nonnegative leading source square-root expression and `B` is the

@@ -67,9 +67,9 @@ theorem onlineActualT56_joint_confidence_of_T0
       |onlineActualJ1 H K hH E sample.1 fallback sample.2 δ c₁ c₂| ≤
         Real.sqrt (8 * onlineActualT6Difference H K hH E sample.1 fallback sample.2 δ c₁ c₂ * Real.log (1 / δ)) +
           5 * (H : ℝ) * Real.log (1 / δ)}
-  have hn : 2 ≤ K * H := by nlinarith
-  have hp8 := onlineActualT8_source_confidence H K hH hn E ρ fallback δ c₁ c₂ hδ hδsmall (by linarith) (by nlinarith [sq_nonneg c₁])
-  have hpJ := onlineActualJ1_source_confidence_conditional H K hH hn E ρ fallback δ c₁ c₂ hδ hδsmall (by linarith) (by nlinarith [sq_nonneg c₁])
+  have hn : 2 ≤ K * H := hK.trans (Nat.le_mul_of_pos_right K hH)
+  have hp8 := onlineActualT8_source_confidence H K hH hn E ρ fallback δ c₁ c₂ hδ hδsmall (by linarith) ((sq_nonneg c₁).trans hc₂)
+  have hpJ := onlineActualJ1_source_confidence_conditional H K hH hn E ρ fallback δ c₁ c₂ hδ hδsmall (by linarith) ((sq_nonneg c₁).trans hc₂)
   have hpL := onlineActualT6Policy_confidence_strict H K hH (by omega) E ρ fallback δ c₁ c₂ hδ (by linarith)
   have hp01 := onlineTwoEvent_confidence_strict μ T8 T0 (2 * (Nat.log2 (K * H) : ℝ) * δ)
     (9 * (Fintype.card State : ℝ)^2 * (Fintype.card Action : ℝ) * H^2 * K * δ) hp8 hT0prob
@@ -83,10 +83,10 @@ theorem onlineActualT56_joint_confidence_of_T0
     have hopt := hs.2.2.2.1
     have hstage := hs.2.2.2.2
     have hbound5 := onlineActualT5_le_W3_T8_T2 H K hH E sample.1 fallback sample.2 δ c₁ c₂ hδ
-      (by linarith) (by linarith) (by nlinarith [sq_nonneg c₁])
+      (by linarith) (by linarith) ((sq_nonneg c₁).trans hc₂)
     have hbound6 := onlineActualT6Difference_le_stagewiseT0_of_J1 H K hH E sample.1 fallback sample.2 δ c₁ c₂
       (onlineActualT0SourceUpper H K hH E fallback sample δ c₁ c₂) hδ (by linarith) (by linarith)
-      (by nlinarith [sq_nonneg c₁]) hopt hstage (hs.2.1 hopt)
+      ((sq_nonneg c₁).trans hc₂) hopt hstage (hs.2.1 hopt)
     refine ⟨?_, hs.1, hbound6⟩
     have h8abs : |onlineActualT8 H K hH E sample.1 fallback sample.2 δ c₁ c₂| ≤
         Real.sqrt (32 * (H : ℝ)^2 * onlineActualT6UCB H K hH E sample.1 fallback sample.2 δ c₁ c₂ * Real.log (1 / δ)) +
@@ -101,15 +101,14 @@ theorem onlineActualT56_joint_confidence_of_T0
   have hHr : (1 : ℝ) ≤ H := by exact_mod_cast hH
   have hKr : (1 : ℝ) ≤ K := by exact_mod_cast (show 1 ≤ K by omega)
   have hM : (1 : ℝ) ≤ (Fintype.card State : ℝ)^2 * (Fintype.card Action : ℝ) * H := by
-    have hs2 : (1 : ℝ) ≤ (Fintype.card State : ℝ)^2 := by nlinarith
-    nlinarith [mul_nonneg (sub_nonneg.mpr hs2) (sub_nonneg.mpr hA),
-      mul_nonneg (sub_nonneg.mpr hA) (sub_nonneg.mpr hHr)]
+    have hs2 : (1 : ℝ) ≤ (Fintype.card State : ℝ)^2 := one_le_pow₀ hS
+    exact one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hs2 hA) hHr
   have hlog : 2 * (Nat.log2 (K * H) : ℝ) ≤ (K : ℝ) * H := by exact_mod_cast hnlog
   have hcost : 4 * (Nat.log2 (K * H) : ℝ) + 2 ≤
       5 * (Fintype.card State : ℝ)^2 * (Fintype.card Action : ℝ) * H^2 * K := by
     have hm1 := mul_le_mul_of_nonneg_right hM (show 0 ≤ (K : ℝ) * H by positivity)
-    nlinarith only [hm1, hN, hlog]
+    linarith only [hm1, hN, hlog]
   have hcostδ := mul_le_mul_of_nonneg_right hcost (le_of_lt hδ)
   change 1 - 14 * (Fintype.card State : ℝ)^2 * (Fintype.card Action : ℝ) * H^2 * K * δ < μ.real _
-  nlinarith only [hp03, hm, hcostδ]
+  linarith only [hp03, hm, hcostδ]
 end StatisticalRL.OnlineRL

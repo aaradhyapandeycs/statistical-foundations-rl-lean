@@ -1,5 +1,5 @@
-import Formalization.ModelFree.QLearningHistoryAdaptation
 import Formalization.Probability.Variance
+import Formalization.ModelFree.QLearningNaturalHistory
 
 /-! Deterministic Q-learning increment caps. -/
 open MeasureTheory ProbabilityTheory

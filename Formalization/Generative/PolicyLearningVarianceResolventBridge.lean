@@ -80,42 +80,6 @@ theorem empiricalPolicyValue_variance_resolvent_bound (M H : DiscountedMDP State
   dsimp [k, c, h, R, σ, W, z]
   field_simp
 
-/-- Generic Jensen consequence of the empirical-value variance bound, with
-exact source γ and horizon factors and no division by γ. -/
-theorem empiricalPolicyValue_sqrtVariance_resolvent_bound
-    (M H : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (hr : H.reward = M.reward) (hγ : H.discount = M.discount) :
-    M.discount ^ 2 * ‖truePolicyResolvent M π *ᵥ
-      (fun s ↦ Real.sqrt ((M.policyTransition π s).variance (H.trajectoryExpectedValue π)))‖ ^ 2 ≤
-      2 / (1 - M.discount) ^ 3 +
-      (2 * M.discount / (1 - M.discount) ^ 2) *
-        (M.discount * ‖truePolicyResolvent M π *ᵥ
-          (fun s ↦ |empiricalPolicyValueResidual M H π s|)‖) := by
-  let h := 1 - M.discount
-  let R := truePolicyResolvent M π
-  let σ : State → ℝ := fun s ↦ (M.policyTransition π s).variance (H.trajectoryExpectedValue π)
-  let Z := R *ᵥ (fun s ↦ |empiricalPolicyValueResidual M H π s|)
-  let U := R *ᵥ (fun s ↦ Real.sqrt (σ s))
-  let V := R *ᵥ σ
-  have hh : 0 < h := sub_pos.mpr M.discount_lt_one
-  have hσ (s : State) : 0 ≤ σ s := (M.policyTransition π s).variance_nonneg _
-  have hj := truePolicyResolvent_sqrt_norm_le M π σ hσ
-  change ‖U‖ ≤ Real.sqrt (‖V‖ / h) at hj
-  have hv : 0 ≤ ‖V‖ / h := div_nonneg (norm_nonneg _) hh.le
-  have hj2 := (sq_le_sq₀ (norm_nonneg U) (Real.sqrt_nonneg _)).2 hj
-  rw [Real.sq_sqrt hv] at hj2
-  have hb := empiricalPolicyValue_variance_resolvent_bound M H π hr hγ
-  change M.discount ^ 2 * ‖V‖ ≤ 2 / h ^ 2 + (2 * M.discount ^ 2 / h) * ‖Z‖ at hb
-  have hjmul := mul_le_mul_of_nonneg_left hj2 (sq_nonneg M.discount)
-  change M.discount ^ 2 * ‖U‖ ^ 2 ≤
-    2 / h ^ 3 + (2 * M.discount / h ^ 2) * (M.discount * ‖Z‖)
-  have hscaled := div_le_div_of_nonneg_right hb hh.le
-  calc
-    _ ≤ M.discount ^ 2 * (‖V‖ / h) := hjmul
-    _ = (M.discount ^ 2 * ‖V‖) / h := by ring
-    _ ≤ (2 / h ^ 2 + (2 * M.discount ^ 2 / h) * ‖Z‖) / h := hscaled
-    _ = _ := by field_simp
-
 /-- Conditional deterministic self-bounding inequality obtained from a
 pointwise residual input and the derived empirical variance expansion. It
 holds for every realized policy and does not assume nonnegative forcing. -/

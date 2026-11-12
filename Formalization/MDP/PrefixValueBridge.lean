@@ -120,4 +120,3 @@ theorem trajectoryExpectedValue_eq_valueFixedPoint
   simpa only [M.integral_partialDiscountedReturn_eq_finiteDiscountedValue π s] using hlim
 
 end StatisticalRL.DiscountedMDP
-

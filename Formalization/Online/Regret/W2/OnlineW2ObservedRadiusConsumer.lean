@@ -59,38 +59,4 @@ theorem onlineObservedW2_selected_weighted_bound
     (by exact_mod_cast Nat.zero_le H) hL (by exact_mod_cast (show 0 < _ by omega)) hV
   intro x
   exact onlineObservedW2_selected_coordinate_bound H K E δ hδ hδsmall history hcert k r hn x
-/-- Summing the actual selected-row certificates over any finite collection of
-stage/episode pairs. The continuation functions may depend on the whole
-realized history: the coordinate event was simultaneous before selection. -/
-theorem onlineObservedW2_selected_sum_bound
-    (H K : ℕ) (E : Fin H → EnvironmentStage State Action) (δ : ℝ)
-    (hδ : 0 < δ) (hδsmall : δ ≤ 2 / 5)
-    (history : List (OnlineMDPRow State Action H × State))
-    (hcert : onlineObservedW2CoordinateCertificates H K E δ history)
-    (rows : Fin H × Fin K → OnlineMDPRow State Action H)
-    (values : Fin H × Fin K → State → ℝ)
-    (indices : Finset (Fin H × Fin K))
-    (hn : ∀ i ∈ indices, 3 ≤ (onlineRowOutcomes
-      (history.take (i.2.val * H)) (rows i)).length)
-    (hV : ∀ i ∈ indices, ∀ x, 0 ≤ values i x ∧ values i x ≤ H) :
-    (∑ i ∈ indices,
-      let n := (onlineRowOutcomes (history.take (i.2.val * H)) (rows i)).length
-      if hp : 0 < n then
-        let emp := FiniteDistribution.empiricalRow n hp
-          (onlineObservedRowData (history.take (i.2.val * H)) (rows i))
-        emp.expectation (values i) - (onlineMDPSuccessorRowLaw E (rows i)).expectation (values i)
-      else 0) ≤
-    ∑ i ∈ indices,
-      let n := (onlineRowOutcomes (history.take (i.2.val * H)) (rows i)).length
-      Real.sqrt (2 * (Fintype.card State : ℝ) * Real.log (1 / δ) / n) *
-        Real.sqrt ((onlineMDPSuccessorRowLaw E (rows i)).variance (values i)) +
-      (Fintype.card State : ℝ) * H * Real.log (1 / δ) / n := by
-  apply Finset.sum_le_sum
-  intro i hi
-  have hp : 0 < (onlineRowOutcomes (history.take (i.2.val * H)) (rows i)).length := by
-    have := hn i hi
-    omega
-  simp only [dif_pos hp]
-  exact onlineObservedW2_selected_weighted_bound H K E δ hδ hδsmall history hcert
-    i.2 (rows i) (hn i hi) (values i) (hV i hi)
 end StatisticalRL.OnlineRL

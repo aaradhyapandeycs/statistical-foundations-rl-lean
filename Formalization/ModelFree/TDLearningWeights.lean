@@ -24,9 +24,6 @@ theorem tdRateWeight_diagonal (γ : ℝ) (η : ℕ → ℝ) (t : ℕ) (ht : 0 < 
     tdRateWeight γ η t t = η t := by
   simp [tdRateWeight, ht.ne']
 
-theorem tdRateWeight_out_of_range (γ : ℝ) (η : ℕ → ℝ) (t k : ℕ) (hk : t < k) :
-    tdRateWeight γ η t k = 0 := by simp [tdRateWeight, Nat.not_le.mpr hk]
-
 theorem tdRateContraction_bounds (γ : ℝ) (η : ℕ → ℝ) (i : ℕ)
     (hγ : 0 ≤ γ) (hγ1 : γ ≤ 1) (hη : 0 ≤ η i ∧ η i ≤ 1) :
     0 ≤ tdRateContraction γ η i ∧ tdRateContraction γ η i ≤ 1 := by

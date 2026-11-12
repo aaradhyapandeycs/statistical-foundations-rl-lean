@@ -45,19 +45,21 @@ theorem asyncRate_le_one {c L a h ε m T tm : ℝ} (hcL : 1 ≤ c * L ^ 2) (hm :
     refine le_trans ?_ hfirst
     rw [div_mul_div_comm, mul_comm (c * L ^ 2) a,
       div_le_div_iff₀ (by positivity) (by positivity)]
-    have : 0 ≤ a * (m * (h ^ 4 * ε ^ 2)) := by positivity
-    nlinarith
+    have h0 : 0 ≤ a * (m * (h ^ 4 * ε ^ 2)) := by positivity
+    have := mul_le_mul_of_nonneg_left hcL h0
+    linarith
   have ha' : a ≤ T * m * (h ^ 4 * ε ^ 2) := by
     rw [div_le_iff₀ (by positivity)] at hstep
     linarith
   have hsmall : h ^ 3 * ε ^ 2 ≤ 1 := by
     have h1 : h ^ 3 ≤ 1 := pow_le_one₀ hh.le hh1
     have h2 : ε ^ 2 ≤ 1 := pow_le_one₀ hε.le hε1
-    nlinarith [pow_nonneg hh.le 3, sq_nonneg ε]
+    exact mul_le_one₀ h1 (sq_nonneg ε) h2
   have ha'' : a ≤ h * T * m := by
     have hTm : 0 ≤ T * m * h := by positivity
     have : T * m * (h ^ 4 * ε ^ 2) = T * m * h * (h ^ 3 * ε ^ 2) := by ring
-    nlinarith
+    have h6 := mul_le_mul_of_nonneg_left hsmall hTm
+    linarith
   rw [one_mul, div_le_one (by positivity)]
   exact ha''
 
@@ -96,7 +98,7 @@ theorem asyncQ_meanError_exists_constants :
   have hγone := M.discount_lt_one
   have hh : 0 < 1 - M.discount := by linarith
   have hhhalf : 1 - M.discount ≤ 1 / 2 := by linarith
-  have hεγ : ε * (1 - M.discount) ≤ 1 := by nlinarith
+  have hεγ : ε * (1 - M.discount) ≤ 1 := mul_le_one₀ hε1 hh.le (by linarith)
   obtain ⟨hδ0, hδ1, hscalar⟩ := meanError_scalar hγone hε hεγ
   -- notation
   set c := max c₂z 1 with hcdef
@@ -130,13 +132,14 @@ theorem asyncQ_meanError_exists_constants :
         have := mul_le_mul hS1 hA1 zero_le_one (by positivity)
         have := mul_le_mul this hT1r zero_le_one (by positivity)
         simpa using this
-      have : 4 * (ε * (1 - M.discount)) ≤ 2 := by nlinarith
-      nlinarith
+      have h5 : ε * (1 - M.discount) ≤ 1 * (1 / 2) := mul_le_mul hε1 hhhalf hh.le zero_le_one
+      have : 4 * (ε * (1 - M.discount)) ≤ 2 := by linarith
+      linarith
     exact (one_lt_log_four.trans_le (Real.log_le_log (by norm_num) h4)).le
   have hcL : 1 ≤ c * L ^ 2 := by
     have hc1 : 1 ≤ c := le_max_right _ _
-    have hL2 : 1 ≤ L ^ 2 := by nlinarith
-    nlinarith
+    have hL2 : 1 ≤ L ^ 2 := one_le_pow₀ hL1
+    exact one_le_mul_of_one_le_of_one_le hc1 hL2
   -- the constant rate lies in [0, 1]
   have hden : 0 < (1 - M.discount) * T * μmin := by positivity
   have hη0 : 0 ≤ 1 * Real.log T ^ 3 / ((1 - M.discount) * T * μmin) :=

@@ -25,16 +25,5 @@ theorem qFresh_value_decomposition (M : DiscountedMDP State Action) (η : ℕ �
   classical
   simp [qFreshIndicator]
 
-/-- The squared centered increment has the analogous exact pathwise expansion. -/
-theorem qFresh_increment_sq_decomposition (M : DiscountedMDP State Action) (η : ℕ → ℝ)
-    (T t : ℕ) (ht : t < T) (Q₀ : State → Action → ℝ) (s : State) (a : Action)
-    (data : QSamples State Action T) :
-    (qRowIncrement M η T t ht Q₀ s a data)^2 =
-      ∑ x, (qValueBefore M η T t Q₀ data x -
-        qRowMean M s a (qValueBefore M η T t Q₀ data))^2 *
-        qFreshIndicator T t ht s a x data := by
-  classical
-  simp [qRowIncrement, qFreshIndicator]
-
 /- Conditional indicator and increment moments are established in QLearningConditionalIncrement. -/
 end StatisticalRL.QLearning

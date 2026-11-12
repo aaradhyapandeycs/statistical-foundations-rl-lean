@@ -111,7 +111,6 @@ theorem qChiFixedFluctuation_condExp_sq (M : DiscountedMDP State Action) (v : St
   filter_upwards [hs, qChiFixedCenteredDraw_condExp_sq M v T t h.1 s a] with data hd hv
   simpa [w, Pi.smul_apply, smul_eq_mul, hv] using hd
 
-
 /-- Source schedule magnitude cap for any deterministic shifted-span value,
 including both robust comparators and every inactive padded sample layer. -/
 theorem qChiFixedFluctuation_source_abs_le (M : DiscountedMDP State Action)

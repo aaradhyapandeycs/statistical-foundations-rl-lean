@@ -1,5 +1,4 @@
 import Formalization.Online.Regret.MVP.Optimism.MVPActualStackOptimism
-import Formalization.Online.Regret.MVP.Optimism.MVPExpandedStackLaw
 
 /-! The simultaneous fixed-batch event transfers through the independent
 reset product to the actual retained-batch stack optimism event. -/

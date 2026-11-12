@@ -64,12 +64,4 @@ theorem td_source_scalar_linear_absorption
           mul_le_mul_of_nonneg_right hcoef hε.le
         _ = ε / 4 := by ring
 
-/-- The root-term coefficient bound used alongside the linear absorption. -/
-theorem td_source_scalar_root_coefficient_le_quarter
-    (c₃ : ℝ) (hc₃ : 3168 ≤ c₃) :
-    792 / c₃ ≤ 1 / 4 := by
-  have hc₃pos : 0 < c₃ := by linarith
-  rw [div_le_iff₀ hc₃pos]
-  nlinarith
-
 end StatisticalRL.TemporalDifference

@@ -136,15 +136,6 @@ theorem onlineT3CommonPrefixSigma_mono
   simp [onlineT3CommonPrefixSigma, onlineT3CommonPrefixObservation,
     onlineT3CommonFullHistory, List.take_take, Nat.min_eq_left hnj]
 
-/-- Each common prefix field is a sub-σ-algebra of the actual full-carrier
-measurable space; the source law uses the top finite-atom space. -/
-theorem onlineT3CommonPrefixSigma_le_top
-    (H K T : ℕ) (hH : 0 < H) (fallback : State)
-    (planner : OnlineEpisodePlanner State Action H) (n : ℕ) :
-    onlineT3CommonPrefixSigma H K T hH fallback planner n ≤
-      (⊤ : MeasurableSpace ((Fin K → State) × OnlineOutcomePath.{uState, 0} State T)) :=
-  le_top
-
 /-- The source prefix sigma-field transported to a sample carrier whose path
 length is named separately from its `(m+n)` split. -/
 noncomputable def onlineT3SplitPrefixSigma

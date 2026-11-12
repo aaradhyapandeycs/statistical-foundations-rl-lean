@@ -21,15 +21,6 @@ noncomputable def auxiliaryResidualCondition :
         b * ‖trueAuxiliaryValue (tail.map Prod.fst) (fun k ↦ f (k + 1)) l‖) ∧
       auxiliaryResidualCondition tail (fun k ↦ f (k + 1)) l a b
 
-/-- Exact telescoping residual, propagated through the comparison transition rows. -/
-noncomputable def auxiliaryPropagatedResidual :
-    List (EnvironmentStage State Action × EnvironmentStage State Action) →
-    (ℕ → State → Action) → ℕ → State → ℝ
-  | [], _, _ => fun _ ↦ 0
-  | (E,F) :: tail, f, l => fun s ↦
-      policyRowResidual E F (trueAuxiliaryValue (tail.map Prod.fst) (fun k ↦ f (k + 1)) l) s (f 0 s) +
-      (F.transition s (f 0 s)).expectation (auxiliaryPropagatedResidual tail (fun k ↦ f (k + 1)) l)
-
 /-- Shared forcing cancels exactly; comparison transitions propagate the error. -/
 theorem auxiliary_difference_cons (E F : EnvironmentStage State Action)
     (tail : List (EnvironmentStage State Action × EnvironmentStage State Action))
@@ -43,22 +34,6 @@ theorem auxiliary_difference_cons (E F : EnvironmentStage State Action)
   rw [comparisonAuxiliaryValue_bellman, trueAuxiliaryValue_bellman]
   simp only [policyRowResidual, FiniteDistribution.expectation_sub]
   ring
-
-/-- The actual finite-stage error equals its nested true-value residual expansion. -/
-theorem auxiliary_difference_eq_propagatedResidual
-    (pairs : List (EnvironmentStage State Action × EnvironmentStage State Action))
-    (f : ℕ → State → Action) (l : ℕ) (s : State) :
-    comparisonAuxiliaryValue pairs f l s - trueAuxiliaryValue (pairs.map Prod.fst) f l s =
-      auxiliaryPropagatedResidual pairs f l s := by
-  induction pairs generalizing f s with
-  | nil => simp [comparisonAuxiliaryValue, trueAuxiliaryValue, auxiliaryPropagatedResidual]
-  | cons p tail ih =>
-    rcases p with ⟨E,F⟩
-    rw [List.map_cons, auxiliary_difference_cons]
-    unfold auxiliaryPropagatedResidual
-    congr 1
-    exact congrArg (F.transition s (f 0 s)).expectation
-      (funext (fun t ↦ ih (fun k ↦ f (k + 1)) t))
 
 /-- A uniform envelope derived from Lemma 12, not an extra source assumption. -/
 theorem norm_trueAuxiliaryValue_le_source_growth (H l : ℕ)

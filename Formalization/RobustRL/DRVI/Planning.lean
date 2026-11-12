@@ -148,19 +148,4 @@ theorem pow_le_sq_of_iterations {γ N : ℝ} (hγ0 : 0 < γ) (hγ1 : γ < 1) (hN
   rw [← Real.log_le_log_iff h1 h2, hrhs]
   linarith
 
-/-- Consequence used in the final bound: `2γ^T/(1-γ)^2 ≤ 2/N^2`. -/
-theorem planning_term_le {γ N : ℝ} (hγ0 : 0 < γ) (hγ1 : γ < 1) (hN : 0 < N) {T : ℕ}
-    (hT : 2 * Real.log (N / (1 - γ)) / (1 - γ) ≤ T) :
-    2 * (γ ^ T / (1 - γ)) / (1 - γ) ≤ 2 / N ^ 2 := by
-  have hpos : 0 < 1 - γ := by linarith
-  have h := pow_le_sq_of_iterations hγ0 hγ1 hN hT
-  rw [div_pow] at h
-  have : γ ^ T / (1 - γ) / (1 - γ) ≤ 1 / N ^ 2 := by
-    rw [div_div, ← sq, div_le_div_iff₀ (by positivity) (by positivity)]
-    rw [le_div_iff₀ (by positivity)] at h
-    nlinarith
-  calc 2 * (γ ^ T / (1 - γ)) / (1 - γ) = 2 * (γ ^ T / (1 - γ) / (1 - γ)) := by ring
-    _ ≤ 2 * (1 / N ^ 2) := by linarith
-    _ = 2 / N ^ 2 := by ring
-
 end StatisticalRL.RobustRL.DRVI

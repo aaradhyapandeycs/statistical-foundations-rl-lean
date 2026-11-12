@@ -185,9 +185,6 @@ theorem auxFix_spec (hγ : 1 / 2 ≤ M.γ) (s : S) {u : ℝ} (hu : u ≤ M.uMax 
 theorem auxFix_mem_box (hγ : 1 / 2 ≤ M.γ) (s : S) {u : ℝ} (hu : u ≤ M.uMax s) :
     M.auxFix s u ∈ M.box := (M.auxFix_spec hγ s hu).1
 
-theorem auxPess_auxFix (hγ : 1 / 2 ≤ M.γ) (s : S) {u : ℝ} (hu : u ≤ M.uMax s) :
-    M.auxPess s u (M.auxFix s u) = M.auxFix s u := (M.auxFix_spec hγ s hu).2
-
 /-- Uniqueness of the fixed point in the box. -/
 theorem eq_auxFix (hγ : 1 / 2 ≤ M.γ) (s : S) {u : ℝ} (hu : u ≤ M.uMax s) (Q : S → A → ℝ)
     (hQ : Q ∈ M.box) (hfix : M.auxPess s u Q = Q) : Q = M.auxFix s u := by

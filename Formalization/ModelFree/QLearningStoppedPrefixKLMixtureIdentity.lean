@@ -125,31 +125,4 @@ theorem qActualStoppedPrefixKL_mixture_eq_rec
   exact tsum_congr fun k ↦ congrArg (fun x : ℝ ↦ qGeometricStopWeight γ k * x)
     (qForcedPrefixLaw_finiteKL_eq_rec M M' π k hrowSupport s a)
 
-/-- At `γ=0` the two stopped-prefix laws agree: the sole retained atom is the
-common zero-transition prefix, with mass one. Every positive-horizon atom has
-zero mass on both sides, so the countable KL series is zero without invoking
-any positive-weight cancellation or a `0^0` convention. -/
-theorem qActualStoppedPrefixKL_zero_discount
-    (M M' : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (s : State) (a : Action) :
-    (∑' z : qStoppedPrefixAbsCarrier (State := State) (Action := Action),
-      qStoppedPrefixKLAtom (qActualStoppedPrefixMass M' π 0 s a z)
-        (qActualStoppedPrefixMass M π 0 s a z)) = 0 := by
-  have hzero :
-      (fun z : qStoppedPrefixAbsCarrier (State := State) (Action := Action) ↦
-        qStoppedPrefixKLAtom (qActualStoppedPrefixMass M' π 0 s a z)
-          (qActualStoppedPrefixMass M π 0 s a z)) = fun _ ↦ 0 := by
-    funext z
-    cases z with
-    | mk k path =>
-        by_cases hk : k = 0
-        · subst k
-          cases path
-          simp [qActualStoppedPrefixMass, qGeometricStopWeight_zero,
-            qForcedPrefixWeight, qStoppedPrefixKLAtom]
-        · simp [qActualStoppedPrefixMass, qGeometricStopWeight_zero,
-            hk, qStoppedPrefixKLAtom]
-  rw [hzero]
-  simp
-
 end StatisticalRL.QLearning.CountablePinsker

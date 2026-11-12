@@ -48,8 +48,9 @@ theorem fixedLabel_event_prob_conf (hcb : 0 ≤ cb) (hδ : 0 < δ) (hδ1 : δ < 
   have hT' : (1 : ℝ) ≤ T := by exact_mod_cast hT
   set K : ℝ := (Fintype.card S : ℝ) * Fintype.card A * T with hK
   have hK1 : 1 ≤ K := by
-    have h1 : (1 : ℝ) ≤ (Fintype.card S : ℝ) * Fintype.card A := by nlinarith
-    nlinarith
+    have h1 : (1 : ℝ) ≤ (Fintype.card S : ℝ) * Fintype.card A :=
+      one_le_mul_of_one_le_of_one_le hS hA
+    rw [hK]; exact one_le_mul_of_one_le_of_one_le h1 hT'
   set δ' := δc / K with hδ'
   have hδ'0 : 0 < δ' := div_pos hδc (by linarith)
   have hδ'1 : δ' < 1 := by
@@ -244,8 +245,12 @@ theorem martSum_le_of_event_fifth (hcb : 4 ≤ cb) (hδ : 0 < δ) (hι : 1 ≤ i
     exact Real.log_mul (by norm_num) hX0.ne'
   rw [hL]
   have h10 := log_ten_le_three
-  have hcb2 : 16 ≤ cb ^ 2 := by nlinarith
-  nlinarith
+  have hcb2 : 16 ≤ cb ^ 2 :=
+    calc (16 : ℝ) = 4 ^ 2 := by norm_num
+      _ ≤ cb ^ 2 := pow_le_pow_left₀ (by norm_num) hcb 2
+  have hι0 : 0 ≤ iota S A T δ := by linarith
+  have := mul_le_mul_of_nonneg_right hcb2 hι0
+  linarith
 
 theorem lowerRecursion_of_event_fifth (hcb : 4 ≤ cb) (hδ : 0 < δ) (hδ1 : δ < 1)
     (hι : 1 ≤ iota S A T δ) (hE : martingaleEvent M cb δ sel π₀ data (δ / 5)) :
@@ -407,23 +412,27 @@ theorem prefixCountEvent_prob (db : FiniteDistribution (S × A)) {T : ℕ} {δ :
         5 * ((Fintype.card S : ℝ) * Fintype.card A * T) ^ 2 / δ by field_simp]
       rw [le_div_iff₀ hδ]
       have h1 : (Fintype.card S : ℝ) * t * T ≤ ((Fintype.card S : ℝ) * Fintype.card A * T) ^ 2 := by
-        have : (Fintype.card S : ℝ) ≤ (Fintype.card S : ℝ) ^ 2 := by nlinarith
-        have : (1 : ℝ) ≤ (Fintype.card A : ℝ) ^ 2 := by nlinarith
-        have : (t : ℝ) * T ≤ (T : ℝ) ^ 2 := by nlinarith
-        have := mul_le_mul this (by assumption : (1 : ℝ) ≤ (Fintype.card A : ℝ) ^ 2) zero_le_one
-          (by positivity)
-        nlinarith [sq_nonneg ((Fintype.card S : ℝ) * Fintype.card A * T)]
+        have hS2 : (Fintype.card S : ℝ) ≤ (Fintype.card S : ℝ) ^ 2 := le_self_pow₀ hS two_ne_zero
+        have hA2 : (1 : ℝ) ≤ (Fintype.card A : ℝ) ^ 2 := one_le_pow₀ hA
+        have htT2 : (t : ℝ) * T ≤ (T : ℝ) ^ 2 := by
+          rw [sq]; exact mul_le_mul_of_nonneg_right htT (Nat.cast_nonneg T)
+        calc (Fintype.card S : ℝ) * t * T = (Fintype.card S : ℝ) * ((t : ℝ) * T) := by ring
+          _ ≤ (Fintype.card S : ℝ) ^ 2 * (T : ℝ) ^ 2 := mul_le_mul hS2 htT2 (by positivity) (by positivity)
+          _ = (Fintype.card S : ℝ) ^ 2 * 1 * (T : ℝ) ^ 2 := by ring
+          _ ≤ (Fintype.card S : ℝ) ^ 2 * (Fintype.card A : ℝ) ^ 2 * (T : ℝ) ^ 2 := by gcongr
+          _ = ((Fintype.card S : ℝ) * Fintype.card A * T) ^ 2 := by ring
       have h2 : (Fintype.card S : ℝ) * t * T * δ ≤ (Fintype.card S : ℝ) * t * T := by
-        have : 0 ≤ (Fintype.card S : ℝ) * t * T := by positivity
-        nlinarith
-      nlinarith
+        have h0 : 0 ≤ (Fintype.card S : ℝ) * t * T := by positivity
+        have := mul_le_mul_of_nonneg_left hδ1.le h0
+        linarith
+      linarith
     have hpos : 0 < (Fintype.card S : ℝ) * t / δ'' := by positivity
     have hL := Real.log_le_log hpos hle
     rw [Real.log_mul (by norm_num) (by positivity), Real.log_pow] at hL
     have hι' : Real.log X = iota S A T δ := rfl
     have h5 := log_five_le_two
     push_cast at hL
-    nlinarith
+    linarith
   set I := Finset.Icc 2 T with hI
   let G : ℕ → Set Ω := fun t => {ω | ∀ ht : t ≤ T, ω ∈ good t ht}
   have hsub : (⋂ t ∈ I, G t) ⊆ {ω | prefixCountEvent db (X ω) δ} := by
@@ -437,7 +446,7 @@ theorem prefixCountEvent_prob (db : FiniteDistribution (S × A)) {T : ℕ} {δ :
         subst this
         have := DiscountedMDP.finiteDistribution_prob_le_one db sa
         push_cast
-        nlinarith
+        linarith
       · right
         have hm := Set.mem_iInter₂.1 hω t (by simp [hI]; omega) htT
         simp only [good, sampleSplitCountLowerEvent, Set.mem_setOf_eq] at hm

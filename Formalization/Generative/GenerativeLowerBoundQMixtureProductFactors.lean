@@ -30,17 +30,6 @@ theorem qMixture_product_restrict_row {m A N : ℕ} (θ : Fin m × Fin A)
   simp_rw [h]
   simp
 
-/-- Likelihood factors from two different state/action rows never change the
-same time-coordinate, including when N=0. -/
-theorem qMixture_distinct_row_factors {m A N : ℕ}
-    (θ θ' : Fin m × Fin A) (hne : θ ≠ θ') (f g : Fin N → ℝ) :
-    (∏ z : QMixtureActiveCoordinates m A N,
-      (if z.1 = θ then f z.2 else 1) * (if z.1 = θ' then g z.2 else 1)) =
-      (∏ t : Fin N, f t) * (∏ t : Fin N, g t) := by
-  classical
-  rw [Finset.prod_mul_distrib, qMixture_product_one_changed_row,
-    qMixture_product_one_changed_row]
-
 end StatisticalRL.GenerativeLowerBound
 
 open MeasureTheory ProbabilityTheory

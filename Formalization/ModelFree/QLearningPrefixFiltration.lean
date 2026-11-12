@@ -16,9 +16,6 @@ noncomputable def qLayerData (T t : ℕ) (data : QSamples State Action T) :
     (i : qLayerIndices (State := State) (Action := Action) T t) → State :=
   fun i ↦ data i.1
 
-noncomputable def qLayerSigma (T t : ℕ) : MeasurableSpace (QSamples State Action T) :=
-  MeasurableSpace.comap (qLayerData (State := State) (Action := Action) T t) inferInstance
-
 /-- Entire past and entire current layer are disjoint even when t≥T. -/
 theorem qPast_disjoint_layer (T t : ℕ) :
     Disjoint (qPastIndices (State := State) (Action := Action) T t)
@@ -35,12 +32,6 @@ theorem qPast_indep_layer (M : DiscountedMDP State Action) (T t : ℕ) :
       (qLayerData (State := State) (Action := Action) T t) (qSamplingLaw M T) := by
   exact iIndepFun.indepFun_finset _ _ (qPast_disjoint_layer T t)
     (qSamplingLaw_independent M T) (fun i ↦ measurable_pi_apply i)
-
-/-- Independence at the sigma-algebra level, in conditional-expectation order. -/
-theorem qLayerSigma_indep_pastSigma (M : DiscountedMDP State Action) (T t : ℕ) :
-    Indep (qLayerSigma (State := State) (Action := Action) T t)
-      (qPastSigma (State := State) (Action := Action) T t) (qSamplingLaw M T) := by
-  exact (qPast_indep_layer M T t).symm
 
 /-- The entire iterate is measurable relative to precisely the strict prefix. -/
 theorem qIterate_measurable_past (M : DiscountedMDP State Action) (η : ℕ → ℝ)

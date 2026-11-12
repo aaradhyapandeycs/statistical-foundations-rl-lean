@@ -9,16 +9,6 @@ namespace StatisticalRL.OnlineRL
 variable {State Action : Type*} [Fintype State] [Fintype Action]
 attribute [local instance] Classical.propDecidable
 
-/-- Visit indices are strictly increasing; no repeated episode is possible. -/
-theorem qLearningActualVisitEpisodes_strict {H K : ℕ} (hH : 0 < H)
-    (E : Fin H → EnvironmentStage State Action) (bonus : ℕ → ℝ)
-    (initial : Fin K → State) (fallback : State) (path : OnlineOutcomePath State (K*H))
-    (k : Fin K) (r : OnlineMDPRow State Action H) :
-    (qLearningActualVisitEpisodes hH E bonus initial fallback path k r).Pairwise (· < ·) := by
-  classical
-  unfold qLearningActualVisitEpisodes
-  exact (List.pairwise_lt_range (n := k.val)).filter _
-
 /-- Each element is genuinely an earlier episode whose row at r's stage is r. -/
 theorem qLearningActualVisitEpisodes_mem {H K : ℕ} (hH : 0 < H)
     (E : Fin H → EnvironmentStage State Action) (bonus : ℕ → ℝ)

@@ -21,5 +21,4 @@ noncomputable def onlinePreEpisodePlanningStages {H : ℕ}
     List (OnlineObservedPlanningStage State Action) :=
   List.ofFn (fun h => onlineHistoryPlanningStage E (history.take (k * H)) h)
 
-
 end StatisticalRL.OnlineRL

@@ -70,14 +70,4 @@ def qPrefixDiscountedSum (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (n : ℕ) (s : State) (a : Action) : ℝ :=
   ∑ k ∈ Finset.range n, M.discount ^ k * qPrefixRewardMean M π k s a
 
-/-- The endpoint γ=0 keeps only k=0, including Lean's canonical 0^0=1. -/
-theorem qPrefixDiscountedSum_discount_zero (M : DiscountedMDP State Action)
-    (π : StationaryPolicy State Action) (hγ : M.discount = 0)
-    (n : ℕ) (s : State) (a : Action) :
-    qPrefixDiscountedSum M π (n + 1) s a = M.reward s a := by
-  classical
-  unfold qPrefixDiscountedSum
-  rw [Finset.sum_range_succ']
-  simp [hγ, qPrefixRewardMean_zero]
-
 end StatisticalRL.QLearning

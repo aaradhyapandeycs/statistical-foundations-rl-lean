@@ -90,7 +90,6 @@ theorem discountedPolicySqrtVariancePartial_bound (M : DiscountedMDP State Actio
     nlinarith only [hR.2, hB]
   exact (sq_le_sq₀ (mul_nonneg hR.1 hs.le) hn).mp hsqr
 
-
 /-- The finite square-root variance recursions are monotone. -/
 theorem discountedPolicySqrtVariancePartial_mono (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (s : State) :
@@ -131,7 +130,6 @@ theorem discountedPolicySqrtVarianceBudget_bounds (M : DiscountedMDP State Actio
   have ht := discountedPolicySqrtVariancePartial_tendsto M π s
   exact ⟨ge_of_tendsto' ht (fun n ↦ (discountedPolicySqrtVariancePartial_sq_le M π n s).1),
     le_of_tendsto' ht (fun n ↦ discountedPolicySqrtVariancePartial_bound M π n s)⟩
-
 
 /-- The entire scaled square-root budget obeys the source-relevant sup-norm bound. -/
 theorem discountedPolicySqrtVarianceBudget_norm_bound (M : DiscountedMDP State Action)
@@ -182,32 +180,6 @@ theorem discountedPolicySqrtVarianceBudget_sq_le (M : DiscountedMDP State Action
     tendsto_const_nhds.mul (hR.pow 2)
   exact le_of_tendsto_of_tendsto' hleft hV
     (fun n ↦ (discountedPolicySqrtVariancePartial_sq_le M π n s).2)
-
-/-- The scaled square-root variance equation has a unique solution. -/
-theorem discountedPolicySqrtVarianceBudget_unique (M : DiscountedMDP State Action)
-    (π : StationaryPolicy State Action) (W : State → ℝ)
-    (hW : ∀ s, W s = M.discount * Real.sqrt (evaluationPolicyVariance M π s) +
-      M.discount * (M.policyTransition π s).expectation W) :
-    W = discountedPolicySqrtVarianceBudget M π := by
-  let B := discountedPolicySqrtVarianceBudget M π
-  have hdiff : W - B = M.valueBellman π W - M.valueBellman π B := by
-    funext s
-    have hb := discountedPolicySqrtVarianceBudget_bellman M π s
-    have hs := hW s
-    change W s - B s = M.valueBellman π W s - M.valueBellman π B s
-    simp only [valueBellman]
-    dsimp [B] at hs ⊢
-    nlinarith only [hs, hb]
-  have hnorm : ‖W - B‖ ≤ M.discount * ‖W - B‖ := by
-    calc
-      ‖W - B‖ = ‖M.valueBellman π W - M.valueBellman π B‖ := congrArg norm hdiff
-      _ ≤ _ := M.norm_valueBellman_sub_le π W B
-  have hzero : ‖W - B‖ = 0 := by
-    have hn := norm_nonneg (W - B)
-    have hg := M.discount_lt_one
-    nlinarith only [hn, hg, hnorm]
-  exact sub_eq_zero.mp (norm_eq_zero.mp hzero)
-
 
 /-- The t-fold true policy kernel applied to a state vector. -/
 noncomputable def evaluationPolicyKernelIter (M : DiscountedMDP State Action)
@@ -292,7 +264,6 @@ theorem discountedPolicySqrtVariancePartial_expansion (M : DiscountedMDP State A
         (fun t ↦ M.discount * Real.sqrt (evaluationPolicyVariance M π t)) i s := by
   rw [discountedPolicySqrtVariancePartial_eq_kernelPartial, evaluationDiscountedKernelPartial_expansion]
 
-
 noncomputable local instance varianceResolventStateDecidable : DecidableEq State := Classical.decEq State
 
 /-- The true policy transition kernel as a finite matrix. -/
@@ -363,7 +334,6 @@ theorem evaluationPolicyResolvent_sqrtVariance_bound (M : DiscountedMDP State Ac
   rw [hn]
   exact discountedPolicySqrtVarianceBudget_norm_bound M π
 
-
 /-- The infinite scaled variance budget is the literal true matrix resolvent. -/
 theorem discountedPolicyVarianceBudget_eq_inverse (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) :
@@ -423,7 +393,6 @@ theorem evaluationPolicyResolvent_variance_bound (M : DiscountedMDP State Action
   rw [evaluationPolicyResolvent_variance_scaled]
   exact ⟨(discountedPolicyVarianceBudget_bounds M π s).1,
     discountedPolicyVarianceBudget_le_norm_sq M π s⟩
-
 
 /-- The t-fold policy kernel commutes with scalar multiplication. -/
 theorem evaluationPolicyKernelIter_const_mul (M : DiscountedMDP State Action)

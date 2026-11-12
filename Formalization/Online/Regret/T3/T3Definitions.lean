@@ -41,5 +41,4 @@ coordinate and the printed T₆-policy/T₆-difference expansion. -/
           δ' c₁ c₂ * Real.log (1 / δ')) +
         5 * (H : ℝ) * Real.log (1 / δ')}
 
-
 end StatisticalRL.OnlineRL

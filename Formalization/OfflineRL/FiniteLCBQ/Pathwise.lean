@@ -113,8 +113,6 @@ variable {K : ℕ} (π₀ : Fin H → S → A) (x : Fin K → Traj S A H)
 /-- Abbreviation for the iterate after `k` episodes. -/
 noncomputable abbrev itr (k : ℕ) : Iterate S A H := iterAfter cb L sel π₀ r x k
 
-theorem itr_zero : itr cb L sel r π₀ x 0 = init π₀ := rfl
-
 theorem itr_succ_of_ge {k : ℕ} (hk : K ≤ k) : itr cb L sel r π₀ x (k + 1) = itr cb L sel r π₀ x k := by
   simp only [itr, iterAfter, dif_neg (show ¬ k < K by omega)]
 
@@ -302,11 +300,6 @@ theorem Q_le_V [Nonempty S] (k : ℕ) (h : Fin H) (s : S) (a : A) :
       exact (le_actionMaximum _ a).trans (le_max_right _ _)
     · rw [Q_succ_of_not_visS cb L sel r π₀ x k h s hv, V_succ, if_neg hv]
       exact ih
-
-theorem actionMaximum_le_V [Nonempty S] (k : ℕ) (h : Fin H) (s : S) :
-    actionMaximum ((itr cb L sel r π₀ x k).Q h s) ≤ (itr cb L sel r π₀ x k).V h s := by
-  unfold actionMaximum
-  exact Finset.sup'_le _ _ fun a _ ↦ Q_le_V cb L sel r π₀ x k h s a
 
 theorem penalty_nonneg {cb L : ℝ} (hcb : 0 ≤ cb) (n : ℕ) : 0 ≤ penalty cb L H n :=
   mul_nonneg hcb (Real.sqrt_nonneg _)

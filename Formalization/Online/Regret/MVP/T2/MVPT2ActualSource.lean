@@ -13,7 +13,6 @@ variable {State Action : Type*} [Fintype State] [Fintype Action]
 noncomputable local instance mvpT2SourceStateDecidable : DecidableEq State := Classical.decEq State
 noncomputable local instance mvpT2SourceActionDecidable : DecidableEq Action := Classical.decEq Action
 
-
 theorem mvpActualT2_le_sourceBound_fixed
     (H K : ℕ) (hH : 0 < H) (hK : 2 ≤ K) (E : Fin H → EnvironmentStage State Action)
     (initial : Fin K → State) (fallback : State) (path : OnlineOutcomePath State (K*H))

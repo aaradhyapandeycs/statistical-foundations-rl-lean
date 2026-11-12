@@ -1,5 +1,5 @@
+import Formalization.Online.QLearning.WeightedRowMGF
 import Formalization.Online.QLearning.RateSquared
-import Formalization.Online.QLearning.ActualStackWeightedTail
 
 /-! Source learning-rate proxy for the fixed-row concentration step. -/
 namespace StatisticalRL.OnlineRL

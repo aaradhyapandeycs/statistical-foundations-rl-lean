@@ -94,9 +94,6 @@ def visitPred (sa : S × A) (u : ℕ) : Prop := ∃ h : u < T, (data ⟨u, h⟩)
 noncomputable instance visitPred_decidable (sa : S × A) : DecidablePred (visitPred data sa) :=
   Classical.decPred _
 
-theorem visitTime_eq (sa : S × A) (i : ℕ) :
-    visitTime data sa i = Nat.nth (visitPred data sa) i := rfl
-
 theorem visitPred_iff {u : ℕ} (h : u < T) (s : S) (a : A) :
     visitPred data (s, a) u ↔ s = (data ⟨u, h⟩).1.1 ∧ a = (data ⟨u, h⟩).1.2 := by
   constructor

@@ -16,17 +16,6 @@ noncomputable def qLearningTargetAtRecord {H : ℕ} (hH : 0 < H)
   qLearningVisitTarget hH E bonus
     (qLearningChronologicalFold hH E bonus table (history.take j.val)) (history.get j)
 
-/-- Indexed specification of the recorded target log: each matching record
-is evaluated against the actual table immediately before that record. -/
-noncomputable def qLearningIndexedTargets {H : ℕ} (hH : 0 < H)
-    (E : Fin H → EnvironmentStage State Action) (bonus : ℕ → ℝ)
-    (r : OnlineMDPRow State Action H)
-    (table : QLearningChronologicalTable (State := State) (Action := Action) H)
-    (history : List (OnlineMDPRow State Action H × State)) : List ℝ := by
-  classical
-  exact (List.finRange history.length).filterMap (fun j =>
-    if (history.get j).1 = r then some (qLearningTargetAtRecord hH E bonus table history j) else none)
-
 /-- Record numbering on a chronological pre-episode history. The proof must
 be by snoc induction using `qLearningLogFrom_snoc`; it does not assume a target
 identity. This candidate intentionally stops at the definitions until its

@@ -79,14 +79,6 @@ theorem optimalValueAbsorbingModel_preserves_optimalTrajectoryValue
   rw [optimalTrajectoryValue_eq_actionMaximum H s, ← hQ]
   exact preservedOptimalQ_actionMaximum M x s
 
-/-- The same source identity applies pointwise to every empirical model. -/
-theorem empirical_absorbing_preserves_optimalTrajectoryValue
-    (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (data : Samples State Action N) (x s : State) :
-    optimalTrajectoryValue (optimalValueAbsorbingModel (empiricalModel M N hN data) x) s =
-      optimalTrajectoryValue (empiricalModel M N hN data) s :=
-  optimalValueAbsorbingModel_preserves_optimalTrajectoryValue (empiricalModel M N hN data) x s
-
 /-- The empirical model's actual optimal trajectory value is exactly the
 model-based policy-learning algorithm's value estimator. -/
 theorem empirical_optimalTrajectoryValue_eq_valueEstimator
@@ -94,15 +86,5 @@ theorem empirical_optimalTrajectoryValue_eq_valueEstimator
     (data : Samples State Action N) :
     optimalTrajectoryValue (empiricalModel M N hN data) = valueEstimator M N hN data := by
   rfl
-
-/-- The absorbing model built at the empirical optimum preserves the actual
-empirical value estimator at every state. -/
-theorem empirical_absorbing_preserves_valueEstimator
-    (M : DiscountedMDP State Action) (N : ℕ) (hN : 0 < N)
-    (data : Samples State Action N) (x s : State) :
-    optimalTrajectoryValue (optimalValueAbsorbingModel (empiricalModel M N hN data) x) s =
-      valueEstimator M N hN data s := by
-  rw [empirical_absorbing_preserves_optimalTrajectoryValue,
-    empirical_optimalTrajectoryValue_eq_valueEstimator]
 
 end StatisticalRL.ModelBasedPolicyLearning

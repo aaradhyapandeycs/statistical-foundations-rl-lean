@@ -1,5 +1,7 @@
 import Formalization.Online.QLearning.RateConfidence
-import Formalization.Online.QLearning.ActualStackWeightedTail
+import Formalization.Online.QLearning.WeightedRowMGF
+import Formalization.Online.SourceOptimism.StackPrefixMarginal
+import Formalization.Online.SourceOptimism.EpisodicStackSelector
 
 /-! Actual reset-stack law, fixed row and deterministic positive count. -/
 namespace StatisticalRL.OnlineRL

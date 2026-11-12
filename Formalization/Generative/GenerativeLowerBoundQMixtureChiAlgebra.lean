@@ -21,11 +21,4 @@ theorem finite_diagonal_cross_sum {ι : Type*} [Fintype ι] [Nonempty ι] [Decid
   simp_rw [h]
   simp [Finset.sum_const, nsmul_eq_mul]
 
-/-- Normalized diagonal/off-diagonal second-moment algebra, valid for K>0
-and also when the sample size is zero (then d=1). -/
-theorem finite_mixture_chi_second_moment_algebra (K d : ℝ) (hK : K ≠ 0) :
-    ((K * d + K * (K - 1)) / K ^ 2) - 1 = (d - 1) / K := by
-  field_simp
-  ring
-
 end StatisticalRL.GenerativeLowerBound

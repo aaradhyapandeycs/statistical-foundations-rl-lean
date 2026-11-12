@@ -1,5 +1,5 @@
-import Formalization.ModelFree.QLearningRobustAttainment
 import Formalization.MDP.OptimalTrajectoryValue
+import Formalization.ModelFree.QLearningRobustBallCompact
 
 /-! select actual robust optimizer rows from the
 actual robust fixed points and reduce their shifted range to ordinary MDP

@@ -27,21 +27,6 @@ def qMixtureReconstruct {m n N : ℕ} (x : QMixtureActiveCoordinates m n N → B
     | none => none
     | some j => if x ((j, z.1.2), z.2) then some j else none
 
-/-- Reconstruction retains every encoded indicator, including the empty-array case. -/
-theorem qMixtureEncode_reconstruct {m n N : ℕ} (x : QMixtureActiveCoordinates m n N → Bool) :
-    qMixtureEncode (qMixtureReconstruct x) = x := by
-  funext z
-  rcases z with ⟨⟨j, a⟩, t⟩
-  cases hx : x ((j, a), t) <;> simp [qMixtureEncode, qMixtureReconstruct, hx]
-
-/-- Consequently reconstruction is injective, so no information in the
-heterogeneous Bernoulli coordinates is lost. -/
-theorem qMixtureReconstruct_injective {m n N : ℕ} :
-    Function.Injective (@qMixtureReconstruct m n N) := by
-  intro x y h
-  have := congrArg (@qMixtureEncode m n N) h
-  simpa only [qMixtureEncode_reconstruct] using this
-
 /-- Bernoulli parameter of each active state/action/sample coordinate. -/
 def qMixtureBernoulliParameter {m n N : ℕ} (i : QMixtureIndex m n) (p q : ℝ≥0)
     (z : QMixtureActiveCoordinates m n N) : ℝ≥0 :=
@@ -179,6 +164,5 @@ theorem qMixtureSamplingLaw_eq_reconstructed_product {m n : ℕ} [NeZero n]
       rw [Measure.map_map (measurable_of_countable _) (measurable_of_countable _)]
       rfl
     _ = _ := by rw [hencode]
-
 
 end StatisticalRL.GenerativeLowerBound

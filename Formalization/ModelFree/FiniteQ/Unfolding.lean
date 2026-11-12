@@ -12,7 +12,6 @@ variable {State Action : Type*} [Fintype State] [Fintype Action]
 
 open FiniteHorizonGenerative
 
-
 theorem sampledStages_length {H : ℕ} (E : Fin H → EnvironmentStage State Action) (T : ℕ)
     (Q₀ : Fin H → State → Action → ℝ) (data : Samples State Action H T) :
     (sampledStages E T Q₀ data).length = H := by
@@ -26,13 +25,6 @@ theorem sampledStages_drop {H : ℕ} (E : Fin H → EnvironmentStage State Actio
         init := Q₀ h } :: (sampledStages E T Q₀ data).drop (h.val + 1) := by
   rw [List.drop_eq_getElem_cons (by simp [sampledStages])]
   simp [sampledStages]
-
-/-- Initialization: `Q_{0,h} = Q₀ h`. -/
-theorem sampledIterateAt_zero {H : ℕ} (E : Fin H → EnvironmentStage State Action)
-    (η : ℕ → ℝ) (T : ℕ) (Q₀ : Fin H → State → Action → ℝ) (data : Samples State Action H T)
-    (h : Fin H) : sampledIterateAt E η T Q₀ data 0 h.val = Q₀ h := by
-  rw [sampledIterateAt, sampledStages_drop]
-  rfl
 
 /-- Terminal convention: `Q_{t,H+1} ≡ 0` (0-based stage `H`). -/
 theorem sampledIterateAt_terminal {H : ℕ} (E : Fin H → EnvironmentStage State Action)

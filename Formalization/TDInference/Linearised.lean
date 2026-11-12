@@ -97,11 +97,6 @@ theorem linKernel_self [DecidableEq State] (M : DiscountedMDP State Action)
     linKernel M π μ η₀ m m = 1 :=
   matProd_self _ m
 
-theorem linKernel_of_le [DecidableEq State] (M : DiscountedMDP State Action)
-    (π : StationaryPolicy State Action) (μ : FiniteDistribution State) (η₀ : ℝ) {m t : ℕ}
-    (h : t ≤ m) : linKernel M π μ η₀ m t = 1 :=
-  matProd_of_le _ h
-
 theorem linKernel_succ [DecidableEq State] (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (μ : FiniteDistribution State) (η₀ : ℝ) {m t : ℕ}
     (h : m ≤ t) : linKernel M π μ η₀ m (t + 1) = linStep M π μ η₀ t * linKernel M π μ η₀ m t :=

@@ -255,8 +255,6 @@ theorem natDiv_ge (a b : ℕ) (hb : 0 < b) (h : 2 * b ≤ a) :
   nlinarith
 
 omit H in
-theorem natDiv_mul_le (a b : ℕ) : ((a / b : ℕ) : ℝ) * b ≤ a := by
-  exact_mod_cast Nat.div_mul_le_self a b
 
 omit H in
 theorem natDiv_mul_ge (a b : ℕ) (hb : 0 < b) : (a : ℝ) - b < ((a / b : ℕ) : ℝ) * b := by

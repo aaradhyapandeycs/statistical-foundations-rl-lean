@@ -191,57 +191,6 @@ theorem joint_policyEvaluation_event (M : DiscountedMDP State Action)
     exact hd.2 f hf
   exact ⟨h₁, empiricallyOptimal_performance M N hN data f hf r₀ r₁ hd.1 h₁⟩
 
-/-- Explicit universal constant 32, with no silent √2 absorption. -/
-theorem joint_policyEvaluation_event_constant32 (M : DiscountedMDP State Action)
-    (N : ℕ) (hN : 0 < N) (δ : ℝ) (hδ : 0 < δ) (hδ1 : δ < 1)
-    (hlarge : 720 * leaveOneOutBeta M N δ / (1 - M.discount) ≤ N) :
-    1 - δ < (samplingLaw M N).real {data |
-      ∀ f : State → Action, EmpiricallyOptimal M N hN data f →
-        ‖(empiricalModel M N hN data).trajectoryExpectedValue
-          (fun t ↦ EnvironmentStage.pointMass (f t)) -
-          M.trajectoryExpectedValue (fun t ↦ EnvironmentStage.pointMass (f t))‖ ≤
-          32 * Real.sqrt (leaveOneOutBeta M N δ / (N * (1 - M.discount) ^ 3)) ∧
-        ‖M.trajectoryExpectedValue M.optimalGreedyPolicy -
-          M.trajectoryExpectedValue (fun t ↦ EnvironmentStage.pointMass (f t))‖ ≤
-          32 * Real.sqrt (leaveOneOutBeta M N δ / (N * (1 - M.discount) ^ 3)) ∧
-        ‖M.trajectoryExpectedQ M.optimalGreedyPolicy -
-          M.trajectoryExpectedQ (fun t ↦ EnvironmentStage.pointMass (f t))‖ ≤
-          M.discount * (32 * Real.sqrt (leaveOneOutBeta M N δ / (N * (1 - M.discount) ^ 3)))} := by
-  let q := Real.sqrt (leaveOneOutBeta M N δ / (N * (1 - M.discount) ^ 3))
-  let r₀ := Real.sqrt (720 * leaveOneOutBeta M N δ / (N * (1 - M.discount) ^ 3))
-  let r₁ := 2 * Real.sqrt (2 * leaveOneOutBeta M N δ / (N * (1 - M.discount) ^ 3)) +
-    6 * leaveOneOutBeta M N δ / (N * (1 - M.discount) ^ 2)
-  have hq : 0 ≤ q := Real.sqrt_nonneg _
-  have hr := sourceEvaluation_concrete_radius_bounds M N hN δ hδ hδ1 hlarge
-  change r₀ ≤ 27 * q ∧ r₁ ≤ 5 * q at hr
-  have hsum : r₀ + r₁ ≤ 32 * q := by linarith [hr.1, hr.2]
-  let good : Set (Samples State Action N) := {data |
-      ‖(empiricalModel M N hN data).trajectoryExpectedValue M.optimalGreedyPolicy -
-        M.trajectoryExpectedValue M.optimalGreedyPolicy‖ ≤ r₀ ∧
-      ∀ f : State → Action, EmpiricallyOptimal M N hN data f →
-        ‖(empiricalModel M N hN data).trajectoryExpectedValue
-          (fun t ↦ EnvironmentStage.pointMass (f t)) -
-          M.trajectoryExpectedValue (fun t ↦ EnvironmentStage.pointMass (f t))‖ ≤ r₁ ∧
-        (∀ s, 0 ≤ M.trajectoryExpectedValue M.optimalGreedyPolicy s -
-          M.trajectoryExpectedValue (fun t ↦ EnvironmentStage.pointMass (f t)) s ∧
-          M.trajectoryExpectedValue M.optimalGreedyPolicy s -
-          M.trajectoryExpectedValue (fun t ↦ EnvironmentStage.pointMass (f t)) s ≤ r₀ + r₁) ∧
-        (∀ s a, 0 ≤ M.trajectoryExpectedQ M.optimalGreedyPolicy s a -
-          M.trajectoryExpectedQ (fun t ↦ EnvironmentStage.pointMass (f t)) s a ∧
-          M.trajectoryExpectedQ M.optimalGreedyPolicy s a -
-          M.trajectoryExpectedQ (fun t ↦ EnvironmentStage.pointMass (f t)) s a ≤ M.discount * (r₀ + r₁))}
-  have hp : 1 - δ < (samplingLaw M N).real good := joint_policyEvaluation_event M N hN δ hδ hδ1 hlarge
-  apply hp.trans_le
-  apply measureReal_mono _ (measure_ne_top (samplingLaw M N) _)
-  intro data hd f hf
-  obtain ⟨he, hv, hQ⟩ := hd.2 f hf
-  have hle : r₁ ≤ 32 * q := by linarith [hr.2]
-  refine ⟨he.trans hle, ?_⟩
-  have hv' (s : State) : M.trajectoryExpectedValue M.optimalGreedyPolicy s -
-      M.trajectoryExpectedValue (fun t ↦ EnvironmentStage.pointMass (f t)) s ≤ 32 * q :=
-    (hv s).2.trans hsum
-  exact M.trajectoryQ_loss_norm_le_discount_of_value_loss _ (32 * q) (by positivity) hv'
-
 /-- Source-shaped simultaneous V bounds, with concrete shared constants
 c₀ = 720 and c₁ = 16, uniformly over all exact empirical optimizers. -/
 theorem source_policyLearning_evaluation_constants (M : DiscountedMDP State Action)

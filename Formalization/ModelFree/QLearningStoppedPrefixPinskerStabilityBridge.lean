@@ -21,18 +21,6 @@ noncomputable def qCountableStoppedPrefixKL_forStability
     klAtom (qActualStoppedPrefixMass M' π γ s a z)
       (qActualStoppedPrefixMass M π γ s a z)
 
-/-- Compatibility with the geometric/policy adapter's distinct name for the
-same zero-safe KL atom. This is a definitional bridge, not a measure-KL claim. -/
-theorem qCountableStoppedPrefixKL_forStability_eq_stoppedAtom
-    (M M' : DiscountedMDP State Action) (π : StationaryPolicy State Action)
-    (γ : ℝ) (s : State) (a : Action) :
-    qCountableStoppedPrefixKL_forStability M M' π γ s a =
-      ∑' z : qStoppedPrefixAbsCarrier (State := State) (Action := Action),
-        qStoppedPrefixKLAtom (qActualStoppedPrefixMass M' π γ s a z)
-          (qActualStoppedPrefixMass M π γ s a z) := by
-  simp [qCountableStoppedPrefixKL_forStability, klAtom,
-    qStoppedPrefixKLAtom]
-
 /-- Countable Pinsker gives the half-L1 distance of the two actual stopped
 laws at most the square root of their actual oriented stopped KL divided by
 two. Row support and row KL are the hypotheses used to establish the actual

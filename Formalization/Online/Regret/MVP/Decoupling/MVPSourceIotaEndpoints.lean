@@ -26,16 +26,6 @@ theorem mvp_sourceIota_ge_20000 (d K : ℕ) (δp : ℝ)
     _ ≤ 40000*(Real.log K/Real.log 2)^3*Real.log (3*d)*Real.log (1/δp) := by
       gcongr
 
-theorem mvp_sourceDyadic_weight_budget (K : ℕ) (hK : 2 ≤ K) :
-    (∑ j ∈ Finset.range (Nat.log2 K), ∑ _i ∈ Finset.range (2*2^j),
-      (1:ℝ)/(16*(2:ℝ)^j*(Real.log K/Real.log 2))) ≤ 1/8 := by
-  have hx : 0 < Real.log K/Real.log 2 :=
-    div_pos (Real.log_pos (by exact_mod_cast (show 1 < K by omega)))
-      (Real.log_pos (by norm_num))
-  have hJ := Real.log2_le_logb K
-  simp only [Real.logb] at hJ
-  exact mvp_dyadicSlot_weight_budget _ _ hx hJ
-
 theorem mvp_sum_sourceDyadicSlots_zeroExtended (K : ℕ)
     (f : ℕ → ℝ) (hzero : ∀ u, K ≤ u → f u = 0) :
     (∑ u ∈ Finset.range K, f u) =

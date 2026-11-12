@@ -26,9 +26,6 @@ theorem ev_dot (a b : EuclideanSpace ℝ (Fin d)) : ev a ⬝ᵥ ev b = inner ℝ
   simp only [ev, dotProduct, PiLp.inner_apply, RCLike.inner_apply, conj_trivial]
   exact sum_congr rfl fun i _ ↦ mul_comm _ _
 
-theorem ev_sub (a b : EuclideanSpace ℝ (Fin d)) : ev (a - b) = ev a - ev b := by
-  funext i; simp [ev]
-
 /-- The realized feature differences as a sequence on `ℕ` (zero after round `T`). -/
 noncomputable def dvec (φ : X → Y → EuclideanSpace ℝ (Fin d)) {T : ℕ}
     (h : Fin T → X × Y × Y × Bool) (n : ℕ) : Fin d → ℝ :=
@@ -95,15 +92,6 @@ theorem uStat_congr {T : ℕ} (h h' : Fin T → X × Y × Y × Bool) (k : Fin T)
     uStat ρ π_ref φ β sel h k = uStat ρ π_ref φ β sel h' k := by
   unfold uStat
   rw [roundPolicy_congr π_ref φ β sel h h' k hag, gramMat_dvec_congr φ h h' k hag]
-
-theorem xStat_nonneg {T : ℕ} (h : Fin T → X × Y × Y × Bool) (k : Fin T) :
-    0 ≤ xStat φ h k := invNormSq_nonneg _ _ _
-
-theorem xStat_le_one (hφ : ∀ x y, ‖φ x y‖ ≤ 1) {T : ℕ} (h : Fin T → X × Y × Y × Bool)
-    (k : Fin T) : xStat φ h k ≤ 1 := by
-  refine le_trans (invNormSq_le _ _ _) ?_
-  have := ev_dot_self_le _ (dz_norm_le φ hφ (h k))
-  linarith
 
 /-- The conditional mean of `X_k` is `u_k`. -/
 theorem roundKernel_xStat {T : ℕ} (h : Fin T → X × Y × Y × Bool) (k : Fin T) :

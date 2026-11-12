@@ -30,14 +30,6 @@ theorem actionTrajectoryExpectation (stage : DecisionStage State Action)
   simp only [FiniteDistribution.expectation, actionTrajectoryLaw, trajectoryLaw,
     Fintype.sum_prod_type, Finset.mul_sum, mul_assoc]
 
-/-- The full path law is the mixture of the laws with the first action fixed. -/
-theorem pathWeight_cons_actionTrajectoryLaw (stage : DecisionStage State Action)
-    (tail : List (DecisionStage State Action)) (s : State) (a : Action)
-    (path : State × FinitePath State Action tail.length) :
-    pathWeight (stage :: tail) s (a, path) =
-      (stage.policy s).prob a * (actionTrajectoryLaw stage tail s a).prob path := by
-  exact mul_assoc _ _ _
-
 @[simp]
 theorem trajectoryQ_nil (s : State) (a : Action) :
     trajectoryQ ([] : List (DecisionStage State Action)) s a = 0 := rfl

@@ -11,7 +11,6 @@ variable {State Action : Type*} [Fintype State] [Fintype Action]
 noncomputable local instance mvpT2CountStateDecidable : DecidableEq State := Classical.decEq State
 noncomputable local instance mvpT2CountActionDecidable : DecidableEq Action := Classical.decEq Action
 
-
 theorem mvpT2_actual_retainedCount_eq_rank
     (H K : ℕ) (hH : 0 < H) (E : Fin H → EnvironmentStage State Action)
     (initial : Fin K → State) (fallback : State) (planner : OnlineEpisodePlanner State Action H)

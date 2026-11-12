@@ -32,23 +32,4 @@ theorem independentSeedLaw_real_event {Ω Ξ : Type*} [Fintype Ω] [Fintype Ξ]
   · intro r _
     exact ENNReal.mul_ne_top (measure_ne_top μ _) (measure_ne_top σ _)
 
-/-- The same pointwise decoder-to-Q-loss implication remains valid for any
-single seeded policy estimator under the independent product law. -/
-theorem seeded_decoder_error_le_Q_risk {m n : ℕ} (hm : 1 ≤ m) (hn : 1 ≤ n)
-    (i : HardFamilyIndex m n) (γ ε : ℝ) (hγ : (2 : ℝ) / 3 ≤ γ) (hγ1 : γ < 1)
-    (hε : 0 < ε) (hεmax : ε < 1 / (32 * (1 - γ))) (N : ℕ)
-    {Ξ : Type*} [Fintype Ξ] [MeasurableSpace Ξ] [MeasurableSingletonClass Ξ]
-    (σ : Measure Ξ) [IsProbabilityMeasure σ]
-    (estimate : Samples (Option (Fin m)) (Fin (n + 1)) N × Ξ → Option (Fin m) → Fin (n + 1)) :
-    let M := sourceFamilyMDP i γ ε hγ hγ1 hε hεmax
-    let μ := independentSeedLaw (samplingLaw M N) σ
-    μ.real {z | decodeHardPolicy (fun j ↦ estimate z (some j)) ≠ i} ≤
-    μ.real {z | ε < ‖M.trajectoryExpectedQ (deterministicFamilyPolicy (estimate z)) -
-      M.trajectoryExpectedQ M.optimalGreedyPolicy‖} := by
-  letI : IsProbabilityMeasure (independentSeedLaw
-      (samplingLaw (sourceFamilyMDP i γ ε hγ hγ1 hε hεmax) N) σ) := by
-    unfold independentSeedLaw
-    infer_instance
-  exact sourceFamilyMDP_decoder_error_probability_le_source_Q_risk _ hm hn i γ ε hγ hγ1 hε hεmax estimate
-
 end StatisticalRL.GenerativeLowerBound

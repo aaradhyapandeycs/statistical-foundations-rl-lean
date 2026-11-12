@@ -60,23 +60,4 @@ theorem allLevelBernsteinEvent_policyEvaluation {H : ℕ}
   rwa [empiricalAuxiliaryValueAt_zero_eq_policyTrajectorySuffix,
     trueAuxiliaryValueAt_zero_eq_policyTrajectorySuffix] at hh
 
-/-- An actual-law two-policy all-stage evaluation guarantee with the explicit
-safe logarithm; no confidence/log absorption is hidden. -/
-theorem simultaneous_policyEvaluation_probability {H : ℕ}
-    (E : Fin H → EnvironmentStage State Action) (N : ℕ) (hN : 0 < N)
-    (hH : 0 < H) (fallback : Action) (fixed : ℕ → State → Action)
-    (δ : ℝ) (hδ : 0 < δ) (hδ1 : δ < 1)
-    (hsize : 12 * (H : ℝ) * allLevelBeta (H := H) State Action δ < N) :
-    1 - δ < (samplingLaw E N).real {data | ∀ (b : Bool) (h : ℕ),
-      ‖policyTrajectorySuffix (empiricalStages E N hN data)
-          (sourceAuxiliaryPolicy E N hN fallback fixed b data) h -
-        policyTrajectorySuffix (List.ofFn E)
-          (sourceAuxiliaryPolicy E N hN fallback fixed b data) h‖ ≤
-        6 * H * Real.sqrt (3 * allLevelBeta (H := H) State Action δ * H / (N : ℝ))} := by
-  have hp := allLevelBernsteinEvent_probability E N hN hH fallback fixed δ hδ hδ1
-  apply hp.trans_le
-  apply measureReal_mono _ (measure_ne_top (samplingLaw E N) _)
-  intro data hd b h
-  exact allLevelBernsteinEvent_policyEvaluation E N hN hH fallback fixed δ hδ hδ1 hsize data hd b h
-
 end StatisticalRL.FiniteHorizonGenerative

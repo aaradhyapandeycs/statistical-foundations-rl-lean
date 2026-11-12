@@ -12,7 +12,6 @@ local instance w1RestrictedStateMeasurable : MeasurableSpace State := ⊤
 local instance w1RestrictedAtomMeasurable (K n : ℕ) :
     MeasurableSpace ((Fin K → State) × OnlineOutcomePath State n) := ⊤
 
-
 /-- Source iota absorbs the proved coarse same-path W₁ policy budget for K≥2.
 The K≥2 restriction and zero-count correction are explicit. -/
 theorem onlineActualW1PolicyBudget_implies_restrictedIota

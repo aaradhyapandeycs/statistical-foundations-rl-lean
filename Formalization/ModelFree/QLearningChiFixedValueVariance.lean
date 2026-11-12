@@ -94,5 +94,4 @@ theorem qChiFixed_historyPredictableVariance_le (M : DiscountedMDP State Action)
   unfold qChiFixedVarianceBudget
   exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hw (sq_nonneg M.discount)) hv
 
-
 end StatisticalRL.QLearning

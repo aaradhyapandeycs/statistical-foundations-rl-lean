@@ -28,9 +28,4 @@ theorem mvp_main_small_regime_rate (d H K I R : ℝ)
   · rw [min_eq_right h]
     nlinarith
 
-/-- Abstract source-eligibility step: the large branch entails its required
-level-range hypothesis once the source logarithm is bounded by iota. -/
-theorem mvp_main_large_branch_eligible (d K I B : ℝ)
-    (hd : 0≤d) (hI : B≤I) (hK : d*I≤K) : d*B≤K := by
-  exact le_trans (mul_le_mul_of_nonneg_left hI hd) hK
 end StatisticalRL.OnlineRL

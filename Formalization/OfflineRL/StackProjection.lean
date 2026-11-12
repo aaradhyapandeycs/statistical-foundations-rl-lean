@@ -84,18 +84,4 @@ theorem stackLaw_map_selectByRank (P : Row → Measure S) [∀ r, IsProbabilityM
   pi_map_comp_injective (fun p : Row × Fin n => P p.1)
     (fun i => (l i, RankedPair.visitRankFin l i)) (RankedPair.rankedPairFin_injective l)
 
-/-- The selected next states are independent under the stack law. -/
-theorem iIndepFun_selectByRank (P : Row → Measure S) [∀ r, IsProbabilityMeasure (P r)]
-    (l : Fin n → Row) :
-    iIndepFun (fun i (ω : Row × Fin n → S) => selectByRank l ω i) (stackLaw P n) :=
-  iIndepFun_comp_injective (fun p : Row × Fin n => P p.1)
-    (fun i => (l i, RankedPair.visitRankFin l i)) (RankedPair.rankedPairFin_injective l)
-
-/-- Each selected next state has the actual transition law of its row. -/
-theorem stackLaw_map_selectByRank_apply (P : Row → Measure S)
-    [∀ r, IsProbabilityMeasure (P r)] (l : Fin n → Row) (i : Fin n) :
-    (stackLaw P n).map (fun ω => selectByRank l ω i) = P (l i) :=
-  (measurePreserving_eval (fun p : Row × Fin n => P p.1)
-    (l i, RankedPair.visitRankFin l i)).map_eq
-
 end StatisticalRL.OfflineRL.StackProjection
