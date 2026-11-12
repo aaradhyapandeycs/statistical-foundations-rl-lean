@@ -247,6 +247,15 @@ class Site(InfoPages):
         return chip(n.get("site_label"), n.get("site_markers", ()), n.get("site_sub_reason", ""),
                     self.issue_html(n) if issues else "")
 
+    @staticmethod
+    def issue_class_note(n: dict) -> str:
+        """Plain muted text (not a status) naming the item's issue class(es), A to D."""
+        cls = n.get("issue_classes") or []
+        if not cls:
+            return ""
+        return (f'<span class="issue-class" title="Class assigned by this project; see Source issues">'
+                f'Issue class {esc("/".join(cls))}</span>')
+
     def item_header(self, n: dict) -> str:
         """The item's one label (the same one the results index and the graph show), its markers and,
         for a refuted printed statement, the refutation theorems."""
@@ -302,7 +311,7 @@ class Site(InfoPages):
             refuted = (f'<p class="refuted-line paper tex2jax_process"><strong>Appears to fail (paper argument, not '
                        f'checked in Lean):</strong> {reading} {what} The argument and any correction are {OURS}.</p>')
         return (f'<div class="item-status"><span class="item-name">{esc(n["display_name"])}</span>'
-                f'{self.node_chip(n, issues=True)}{refuted}</div>')
+                f'{self.node_chip(n, issues=True)}{self.issue_class_note(n)}{refuted}</div>')
 
     def entry_label(self, e):
         """(label, markers, sub-reason) of one statement entry, from its node and ledger record."""
