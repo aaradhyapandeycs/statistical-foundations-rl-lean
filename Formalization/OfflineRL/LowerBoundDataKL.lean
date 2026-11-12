@@ -2,6 +2,7 @@ import Formalization.OfflineRL.LowerBoundConcentrability
 import Formalization.OfflineRL.JointRowLaw
 import Formalization.PrelimKL.KLArbitraryFinitePi
 import Formalization.Generative.GenerativeLowerBoundFiniteKLDataProcessing
+import Formalization.Probability.FiniteDistributionBridge
 
 /-!
 # KL divergence of offline datasets for the hard family
@@ -38,16 +39,13 @@ local instance genericRowSingleton : MeasurableSingletonClass X :=
 
 /-- Atom masses of the row law. -/
 theorem rowMeasure_singleton_eq (d : FiniteDistribution X) (x : X) :
-    d.rowMeasure {x} = ENNReal.ofReal (d.prob x) := by
-  unfold FiniteDistribution.rowMeasure
-  rw [@PMF.toMeasure_apply_singleton X ⊤ d.toPMF x MeasurableSpace.measurableSet_top]
-  unfold FiniteDistribution.toPMF
-  rw [PMF.ofFintype_apply]
+    d.rowMeasure {x} = ENNReal.ofReal (d.prob x) :=
+  FiniteDistribution.rowMeasure_singleton d x
 
 /-- Real atom masses of the row law. -/
 theorem rowMeasure_real_singleton_eq (d : FiniteDistribution X) (x : X) :
-    d.rowMeasure.real {x} = d.prob x := by
-  rw [measureReal_def, rowMeasure_singleton_eq, ENNReal.toReal_ofReal (d.prob_nonneg x)]
+    d.rowMeasure.real {x} = d.prob x :=
+  FiniteDistribution.rowMeasure_real_singleton d x
 
 /-- Absolute continuity of row laws from the vanishing of atoms. -/
 theorem rowMeasure_ac (d d' : FiniteDistribution X) (h : ∀ x, d'.prob x = 0 → d.prob x = 0) :

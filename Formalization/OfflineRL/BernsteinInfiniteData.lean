@@ -2,6 +2,7 @@ import Formalization.OfflineRL.BernsteinInfiniteFixedRow
 import Formalization.OfflineRL.BernsteinInfiniteCover
 import Formalization.OfflineRL.VILCBDatasetDefinitions
 import Formalization.OfflineRL.EmittedLaw
+import Formalization.Probability.FiniteDistributionBridge
 
 /-!
 # Lemma 6.6: the leave-one-out probability layer
@@ -269,9 +270,8 @@ local instance dataStateMeasurable : MeasurableSpace S := ⊤
 local instance dataRowMeasurable : MeasurableSpace (FiniteDistribution S) := ⊤
 
 theorem rowMeasure_isProbability {X : Type*} [Fintype X] (d : FiniteDistribution X) :
-    @IsProbabilityMeasure X ⊤ d.rowMeasure := by
-  unfold FiniteDistribution.rowMeasure
-  exact @PMF.toMeasure.isProbabilityMeasure X ⊤ d.toPMF
+    @IsProbabilityMeasure X ⊤ d.rowMeasure :=
+  FiniteDistribution.isProbabilityMeasure_rowMeasure_top d
 
 theorem transitionStack_isProbability (P : S → A → FiniteDistribution S) (N : ℕ) :
     IsProbabilityMeasure (EmittedLaw.transitionStack P N) := by

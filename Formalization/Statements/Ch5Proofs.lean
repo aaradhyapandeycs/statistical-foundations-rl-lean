@@ -384,8 +384,9 @@ theorem Lemma5_14_corrected_holds : Lemma5_14_corrected := by
     mvpActualDecouplingEvent, mvpActualT1, mvpVarianceW4, mvpVarianceT6UCB,
     mvpActualW3, mvpVarianceHistory, mvpVarianceContinuation] using hmain
 
-/-- Drift guard: the library copy `StatisticalRL.OnlineRL.MVPSourceRegretCorrected` of `MVP_regret_corrected` is definitionally the statement-index
-entry, so any divergence breaks the build. -/
+/-- Drift guard: the library copy `StatisticalRL.OnlineRL.MVPSourceRegretCorrected` of
+`MVP_regret_corrected` is definitionally the statement-index entry, so any divergence breaks the
+build. -/
 theorem MVP_regret_corrected_iff_library :
     MVP_regret_corrected.{u, v} ↔ StatisticalRL.OnlineRL.MVPSourceRegretCorrected.{u, v} :=
   Iff.rfl

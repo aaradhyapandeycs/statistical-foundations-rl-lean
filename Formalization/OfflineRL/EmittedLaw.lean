@@ -1,5 +1,6 @@
 import Formalization.OfflineRL.JointRowLaw
 import Formalization.OfflineRL.StackProjection
+import Formalization.Probability.FiniteDistributionBridge
 
 /-! The law of the source's emitted sample sequence.
 
@@ -31,20 +32,6 @@ def emitObservation {n : ℕ}
     Fin n → (State × Action) × State :=
   fun i => (ω.1 i, StackProjection.selectByRank ω.1 ω.2 i)
 
-omit [DecidableEq State] [DecidableEq Action] in
-private theorem rowMeasure_singleton {X : Type*} [Fintype X] (d : FiniteDistribution X) (x : X) :
-    d.rowMeasure {x} = ENNReal.ofReal (d.prob x) := by
-  unfold FiniteDistribution.rowMeasure
-  rw [@PMF.toMeasure_apply_singleton X ⊤ d.toPMF x MeasurableSpace.measurableSet_top]
-  unfold FiniteDistribution.toPMF
-  rw [PMF.ofFintype_apply]
-
-omit [DecidableEq State] [DecidableEq Action] in
-private theorem rowMeasure_isProb {X : Type*} [Fintype X] (d : FiniteDistribution X) :
-    @IsProbabilityMeasure X ⊤ d.rowMeasure := by
-  unfold FiniteDistribution.rowMeasure
-  exact @PMF.toMeasure.isProbabilityMeasure X ⊤ d.toPMF
-
 /-- **Emitted-law identity.** iid behaviour labels, independent transition
 stack, rank selection: the emitted sequence is `n` iid joint-row draws. -/
 theorem emitObservation_law (ρ : FiniteDistribution (State × Action))
@@ -59,9 +46,9 @@ theorem emitObservation_law (ρ : FiniteDistribution (State × Action))
   letI : MeasurableSpace (State × Action) := ⊤
   letI : MeasurableSpace ((State × Action) × State) := ⊤
   haveI hPr : ∀ r : State × Action, IsProbabilityMeasure (P r.1 r.2).rowMeasure :=
-    fun r => rowMeasure_isProb _
-  haveI hρr : IsProbabilityMeasure ρ.rowMeasure := rowMeasure_isProb _
-  haveI hJr : IsProbabilityMeasure (JointRow.jointRow ρ P).rowMeasure := rowMeasure_isProb _
+    fun r => FiniteDistribution.isProbabilityMeasure_rowMeasure_top _
+  haveI hρr : IsProbabilityMeasure ρ.rowMeasure := FiniteDistribution.isProbabilityMeasure_rowMeasure_top _
+  haveI hJr : IsProbabilityMeasure (JointRow.jointRow ρ P).rowMeasure := FiniteDistribution.isProbabilityMeasure_rowMeasure_top _
   haveI : IsProbabilityMeasure (transitionStack P n) := by
     show IsProbabilityMeasure (Measure.pi _); infer_instance
   haveI : IsProbabilityMeasure (ρ.sampleMeasure n) := by
@@ -102,7 +89,8 @@ theorem emitObservation_law (ρ : FiniteDistribution (State × Action))
     rw [Measure.pi_singleton]
   rw [hstack, hlab, hjoint, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun i _ => ?_
-  rw [rowMeasure_singleton, rowMeasure_singleton, rowMeasure_singleton,
+  rw [FiniteDistribution.rowMeasure_singleton, FiniteDistribution.rowMeasure_singleton,
+    FiniteDistribution.rowMeasure_singleton,
     ← ENNReal.ofReal_mul (ρ.prob_nonneg _)]
   rfl
 

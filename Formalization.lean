@@ -40,6 +40,7 @@ import Formalization.Probability.FiniteDistribution
 import Formalization.Probability.Variance
 import Formalization.Probability.KLChiSquared
 import Formalization.Probability.EmpiricalRow
+import Formalization.Probability.FiniteDistributionBridge
 import Formalization.Probability.EmpiricalHoeffding
 import Formalization.Probability.EmpiricalHoeffdingFamily
 import Formalization.Probability.EmpiricalHoeffdingRandomFamily
