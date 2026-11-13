@@ -423,7 +423,9 @@ def label_overclaims(n: dict):
     if lab not in LABEL_RANK:
         return None
     if n["class"] == "prose":
-        ranks = [lead_rank(l) for l in n.get("reviewed_leads", []) if l.strip()]  # no bold headline: unrated
+        ranks = [lead_rank(l) for l in n.get("reviewed_leads", []) if l.strip()]
+        if not ranks and n.get("statement_entries") and LABEL_RANK[lab] > 1:
+            return f"{n['id']}: label {lab!r} but no reviewed COVERAGE row has a bold status headline"
     else:
         counted = {r["lean_statement"] for r in n["ledger_records"] if not r["status_override"]}
         ranks = [RANK.get(s["variant"], 1) for s in n["statement_entries"] if s["name"] in counted]
