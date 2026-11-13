@@ -606,6 +606,17 @@ candidate records the asserted error.
   unspecified initialization (`prelim.tex:316`) as any `Q₀` with entries in `[0, 1/(1−γ)]`
   (covering `Q₀ = 0`); for unbounded `Q₀` no uniform constant exists, so a bounded start is
   implicit in the printed `O(·)` claim. PI starts from an arbitrary stationary policy.
+- Theorem 4.7 iteration-complexity prose (`Thm4_7_iterationLowerBound`, `generative_model_model_free.tex:992–1000`):
+  the source's Ω̃ is made explicit as T log²T ≥ c_lb/((1−γ)⁴ε²) in Theorem 4.7's regime (regime constant
+  max(c₃,1)); the hard instance is chosen before ε and inherits the dummy-action encoding of `Thm4_7`
+  ([C31](#C31) item 5). The sentence that the bound is not a high-probability bound is a scope remark and is not
+  formalized.
+
+- Theorem 6.13 (`thm:infinite-lwoer-bound`, `offlineRL.tex:2367–2402`): the unsuffixed `Thm6_13` covers
+  deterministic estimators only. The printed "all estimators" claim is proved by `Thm6_13_randomized`
+  (independent external seed; outer probability when the failure set is not measurable), which is the counted
+  entry; `Thm6_13` is its Dirac-seed special case and is a supporting entry.
+
 - `eq:lemma-VarP-V-bound` with `eq:I-gamma-P-Var-bound`
   (`generative_model_model_based.tex:327–352`) is indexed as `Eq_lemma_VarP_V_bound` on the
   domain `0 < γ`: the printed bounds divide by `γ` and `γ²`, so they are undefined at `γ = 0`
@@ -1843,3 +1854,16 @@ allocation is neither proved nor refuted here; C16 refutes only the generic Lemm
 is also incomplete at level `l = 1`: it applies Lemma 5.13 at `l = 1` (:4464), but that lemma covers only
 `2 ≤ l ≤ log₂K + 1`. The formal proof treats `l = 1` deterministically (each term ≤ H, total ≤ dH ≤ dHI/(2x)).
 The fixed committed tie rule is a restriction of the claim to that tie rule.
+
+<a id="C51"></a>
+## C51: scope disclosure for `Remark6_5` (offline bandit LCB remark, informal claim)
+
+**Source:** Remark 6.5, `chapters/offlineRL.tex:413–415`, Algorithm 6.1 (`alg:MAB-LCB`). This is a scope disclosure
+for a statement-index entry, not a refutation.
+
+The remark states informally (with "≈" and "with high probability") how the LCB algorithm behaves on the Example 6.1
+bandit. `Remark6_5` (unsuffixed) is this project's precise reading, and its constants are ours, not the book's:
+for δ ∈ (0,1) and N − 1 > 8 log(8/δ), with probability ≥ 1 − δ, r₂^lcb ≤ 0, |r₁^lcb − 1| ≤ 2√(2 log(8/δ)/(N−1)) and
+r₂^lcb < r₁^lcb. The threshold 8 log(8/δ) and the factor 2 are not printed. Both counts are positive on this event, so
+the zero-count branch of [C18](#C18) is not reached. The entry is indexed as the formal reading of an informal claim,
+as for `Remark5_12_lowerBound`, and is not a restriction of a printed theorem. Candidate language; not author-approved.

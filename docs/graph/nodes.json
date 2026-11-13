@@ -21,8 +21,8 @@
   "Formalization/Statements/Ch6Proofs.lean": "8fe9bb4558a7af2f9c2d688810c60338d9b62d51b9239c2ca63fbea0f9844506",
   "Formalization/Statements/Ch7.lean": "bf6b16acf57e183b9670cffb2057a30da5fa356db7f9c8d8bb4345ff41c3eaa7",
   "Formalization/Statements/Ch7Proofs.lean": "7f81433eecb369ee3c539cb4ab6e3ad57cbc6477a3c502d176611fcc1717c506",
-  "docs/COVERAGE.md": "68c65e1fe72a7a16275b2b9585163779b1cf23e27461c691dd302a818285f202",
-  "docs/SOURCE-ISSUES.md": "ab416bd20832ac9b6566346bfa120e2f00b9807b2f7d6ac0124687c5bf948319",
+  "docs/COVERAGE.md": "5173e7f4e28a6a7c7b5e03e3845ed0a02ca940787e0f411bbbd85d4f4f53058c",
+  "docs/SOURCE-ISSUES.md": "6d925c1d9b1145a8e60b3125b4101505e5cc7dfa61a9c96ce35443eecef93150",
   "docs/graph/uses-review.json": "ec0fd31e102e3d6bb48ab1b0c5c493408c9508b4f9234fe09ba1d35e802250dc",
   "docs/issue-classes.json": "c509b5f7d1115ec120cf5a33bddb64817f06f94784898fba33e05f85b033cac8",
   "docs/named-result-status.json": "e963ac3ea4ca4a6b51e1f5ffc215c48e6d2de49780b5511a557b4db54adbdb2c",
@@ -2379,7 +2379,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    169
+    170
    ],
    "issues": [],
    "evidence": [],
@@ -2439,7 +2439,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    169
+    170
    ],
    "issues": [],
    "evidence": [],
@@ -3429,7 +3429,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    180
+    181
    ],
    "issues": [],
    "evidence": [],
@@ -3463,7 +3463,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     180
+     181
     ]
    },
    "site_label": null,
@@ -4274,7 +4274,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    183
+    184
    ],
    "issues": [],
    "evidence": [],
@@ -4297,7 +4297,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     183
+     184
     ]
    },
    "site_label": null,
@@ -4327,7 +4327,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    187
+    188
    ],
    "issues": [],
    "evidence": [],
@@ -4350,7 +4350,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     187
+     188
     ]
    },
    "site_label": null,
@@ -4756,7 +4756,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    184
+    185
    ],
    "issues": [],
    "evidence": [],
@@ -4800,7 +4800,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     184
+     185
     ]
    },
    "site_label": null,
@@ -4862,8 +4862,8 @@
     }
    ],
    "coverage_rows": [
-    156,
-    157
+    157,
+    158
    ],
    "issues": [
     "C1",
@@ -5322,7 +5322,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    215
+    216
    ],
    "issues": [],
    "evidence": [],
@@ -5347,7 +5347,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     215
+     216
     ]
    },
    "site_label": "incomplete",
@@ -5544,7 +5544,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    170
+    171
    ],
    "issues": [],
    "evidence": [],
@@ -6121,7 +6121,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    170
+    171
    ],
    "issues": [],
    "evidence": [],
@@ -6181,7 +6181,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    219
+    220
    ],
    "issues": [
     "C1",
@@ -6210,7 +6210,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     219
+     220
     ]
    },
    "site_label": "incomplete",
@@ -6282,7 +6282,7 @@
     }
    ],
    "coverage_rows": [
-    167
+    168
    ],
    "issues": [
     "C30",
@@ -6421,7 +6421,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    168
+    169
    ],
    "issues": [
     "C31"
@@ -6635,7 +6635,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    220
+    221
    ],
    "issues": [],
    "evidence": [],
@@ -6660,7 +6660,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     220
+     221
     ]
    },
    "site_label": "incomplete",
@@ -6943,7 +6943,7 @@
     }
    ],
    "coverage_rows": [
-    175
+    176
    ],
    "issues": [
     "C34"
@@ -7058,7 +7058,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    171
+    172
    ],
    "issues": [
     "C34"
@@ -7138,7 +7138,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    221
+    222
    ],
    "issues": [
     "C34"
@@ -7165,7 +7165,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     221
+     222
     ]
    },
    "site_label": "incomplete",
@@ -7217,7 +7217,7 @@
     }
    ],
    "coverage_rows": [
-    176
+    177
    ],
    "issues": [
     "C35"
@@ -7410,7 +7410,7 @@
     }
    ],
    "coverage_rows": [
-    172
+    173
    ],
    "issues": [
     "C31"
@@ -7489,7 +7489,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    208
+    209
    ],
    "issues": [],
    "evidence": [],
@@ -7525,7 +7525,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     208
+     209
     ]
    },
    "site_label": "incomplete",
@@ -7573,7 +7573,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    173
+    174
    ],
    "issues": [],
    "evidence": [],
@@ -7941,7 +7941,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    231
+    232
    ],
    "issues": [],
    "evidence": [],
@@ -7966,7 +7966,7 @@
    ],
    "closing_rows": {
     "cited-out-of-scope": [
-     231
+     232
     ]
    },
    "site_label": "incomplete",
@@ -7996,7 +7996,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    192
+    193
    ],
    "issues": [],
    "evidence": [],
@@ -8019,7 +8019,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     192
+     193
     ]
    },
    "site_label": null,
@@ -8201,7 +8201,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    232
+    233
    ],
    "issues": [],
    "evidence": [],
@@ -8237,7 +8237,7 @@
    ],
    "closing_rows": {
     "cited-out-of-scope": [
-     232
+     233
     ]
    },
    "site_label": "incomplete",
@@ -8401,7 +8401,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    190
+    191
    ],
    "issues": [],
    "evidence": [],
@@ -8424,7 +8424,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     190
+     191
     ]
    },
    "site_label": null,
@@ -8631,7 +8631,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    193
+    194
    ],
    "issues": [],
    "evidence": [],
@@ -8675,7 +8675,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     193
+     194
     ]
    },
    "site_label": null,
@@ -8705,7 +8705,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    190
+    191
    ],
    "issues": [],
    "evidence": [],
@@ -8728,7 +8728,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     190
+     191
     ]
    },
    "site_label": null,
@@ -9163,7 +9163,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    209
+    210
    ],
    "issues": [
     "C8",
@@ -9191,7 +9191,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     209
+     210
     ]
    },
    "site_label": "incomplete",
@@ -9219,7 +9219,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    194
+    195
    ],
    "issues": [],
    "evidence": [],
@@ -9242,7 +9242,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     194
+     195
     ]
    },
    "site_label": null,
@@ -9580,7 +9580,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    210
+    211
    ],
    "issues": [
     "C8",
@@ -9619,7 +9619,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     210
+     211
     ]
    },
    "site_label": "incomplete",
@@ -10509,7 +10509,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    211
+    212
    ],
    "issues": [
     "C8",
@@ -10551,7 +10551,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     211
+     212
     ]
    },
    "site_label": "incomplete",
@@ -11060,7 +11060,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    195
+    196
    ],
    "issues": [],
    "evidence": [],
@@ -11094,7 +11094,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     195
+     196
     ]
    },
    "site_label": null,
@@ -11256,7 +11256,7 @@
     }
    ],
    "coverage_rows": [
-    160
+    161
    ],
    "issues": [
     "C25",
@@ -11370,7 +11370,7 @@
     }
    ],
    "coverage_rows": [
-    161
+    162
    ],
    "issues": [],
    "evidence": [
@@ -11445,7 +11445,7 @@
     }
    ],
    "coverage_rows": [
-    162
+    163
    ],
    "issues": [],
    "evidence": [
@@ -12003,7 +12003,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    234
+    235
    ],
    "issues": [],
    "evidence": [],
@@ -12028,7 +12028,7 @@
    ],
    "closing_rows": {
     "cited-out-of-scope": [
-     234
+     235
     ]
    },
    "site_label": "incomplete",
@@ -12130,7 +12130,7 @@
    "ledger_records": [],
    "coverage_rows": [
     141,
-    235
+    236
    ],
    "issues": [],
    "evidence": [],
@@ -12160,7 +12160,7 @@
    ],
    "closing_rows": {
     "cited-out-of-scope": [
-     235
+     236
     ]
    },
    "site_label": "incomplete",
@@ -12389,7 +12389,8 @@
     145
    ],
    "issues": [
-    "C18"
+    "C18",
+    "C51"
    ],
    "evidence": [],
    "refutations_cited": [],
@@ -12721,7 +12722,7 @@
     }
    ],
    "coverage_rows": [
-    177
+    178
    ],
    "issues": [
     "C10",
@@ -12864,7 +12865,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    223
+    224
    ],
    "issues": [],
    "evidence": [],
@@ -12889,7 +12890,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     223
+     224
     ]
    },
    "site_label": "incomplete",
@@ -13032,7 +13033,7 @@
     }
    ],
    "coverage_rows": [
-    155
+    156
    ],
    "issues": [
     "C19"
@@ -13147,7 +13148,7 @@
     }
    ],
    "coverage_rows": [
-    159
+    160
    ],
    "issues": [
     "C10",
@@ -13217,7 +13218,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    197
+    198
    ],
    "issues": [],
    "evidence": [],
@@ -13251,7 +13252,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     197
+     198
     ]
    },
    "site_label": null,
@@ -13370,7 +13371,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    198
+    199
    ],
    "issues": [],
    "evidence": [],
@@ -13404,7 +13405,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     198
+     199
     ]
    },
    "site_label": null,
@@ -13432,7 +13433,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    199
+    200
    ],
    "issues": [],
    "evidence": [],
@@ -13466,7 +13467,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     199
+     200
     ]
    },
    "site_label": null,
@@ -13518,7 +13519,7 @@
     }
    ],
    "coverage_rows": [
-    166
+    167
    ],
    "issues": [
     "C22",
@@ -13678,7 +13679,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    230
+    231
    ],
    "issues": [
     "C50"
@@ -13758,7 +13759,7 @@
     }
    ],
    "coverage_rows": [
-    163
+    164
    ],
    "issues": [
     "C28"
@@ -13871,7 +13872,7 @@
     }
    ],
    "coverage_rows": [
-    164
+    165
    ],
    "issues": [
     "C28"
@@ -14097,7 +14098,7 @@
     }
    ],
    "coverage_rows": [
-    165
+    166
    ],
    "issues": [
     "C24",
@@ -14235,7 +14236,7 @@
    "statement_entries": [
     {
      "name": "StatisticalRL.Statements.Ch6.Thm6_13",
-     "variant": "printed",
+     "variant": "supporting",
      "ledger": null,
      "file": "Formalization/Statements/Ch6.lean",
      "line": 245,
@@ -14368,7 +14369,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    236
+    237
    ],
    "issues": [],
    "evidence": [],
@@ -14414,7 +14415,7 @@
    ],
    "closing_rows": {
     "cited-out-of-scope": [
-     236
+     237
     ]
    },
    "site_label": "incomplete",
@@ -14637,7 +14638,7 @@
     }
    ],
    "coverage_rows": [
-    178
+    179
    ],
    "issues": [
     "C32"
@@ -14710,7 +14711,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    224
+    225
    ],
    "issues": [
     "C32"
@@ -14737,7 +14738,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     224
+     225
     ]
    },
    "site_label": "incomplete",
@@ -14793,7 +14794,7 @@
     }
    ],
    "coverage_rows": [
-    179
+    180
    ],
    "issues": [
     "C33"
@@ -14888,7 +14889,7 @@
     }
    ],
    "coverage_rows": [
-    158
+    159
    ],
    "issues": [],
    "evidence": [
@@ -15641,7 +15642,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    225
+    226
    ],
    "issues": [
     "C37",
@@ -15671,7 +15672,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     225
+     226
     ]
    },
    "site_label": "incomplete",
@@ -15701,7 +15702,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    226
+    227
    ],
    "issues": [
     "C1",
@@ -15730,7 +15731,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     226
+     227
     ]
    },
    "site_label": "incomplete",
@@ -16121,7 +16122,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    227
+    228
    ],
    "issues": [
     "C7",
@@ -16150,7 +16151,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     227
+     228
     ]
    },
    "site_label": "incomplete",
@@ -16436,7 +16437,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    228
+    229
    ],
    "issues": [
     "C45"
@@ -16463,7 +16464,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     228
+     229
     ]
    },
    "site_label": "incomplete",
@@ -16843,7 +16844,7 @@
    ],
    "ledger_records": [],
    "coverage_rows": [
-    229
+    230
    ],
    "issues": [
     "C41"
@@ -17020,7 +17021,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    242
+    243
    ],
    "issues": [],
    "evidence": [],
@@ -17045,7 +17046,7 @@
    ],
    "closing_rows": {
     "cited-out-of-scope": [
-     242
+     243
     ]
    },
    "site_label": "incomplete",
@@ -18278,7 +18279,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    207
+    208
    ],
    "issues": [
     "C44"
@@ -18308,7 +18309,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "explanatory": [
-     207
+     208
     ]
    },
    "site_label": null,
@@ -18349,7 +18350,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    212
+    213
    ],
    "issues": [
     "C44"
@@ -18381,7 +18382,7 @@
    "decision_anchors": [],
    "closing_rows": {
     "implied": [
-     212
+     213
     ]
    },
    "site_label": "incomplete",
@@ -18980,7 +18981,7 @@
  ],
  "closing_rows_without_node": [
   {
-   "line": 181,
+   "line": 182,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -18988,7 +18989,7 @@
    "item": "Time-invariant policies suffice, preliminaries line 76"
   },
   {
-   "line": 182,
+   "line": 183,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -18996,7 +18997,7 @@
    "item": "Solving the Bellman linear systems, preliminaries lines 225–228"
   },
   {
-   "line": 185,
+   "line": 186,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19004,7 +19005,7 @@
    "item": "Asymptotic conclusion of the second policy-evaluation attempt, model-based chapter lines 354–376"
   },
   {
-   "line": 186,
+   "line": 187,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19012,7 +19013,7 @@
    "item": "First-attempt policy-learning analysis, model-based chapter lines 975–1122"
   },
   {
-   "line": 188,
+   "line": 189,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19020,7 +19021,7 @@
    "item": "Stochastic-approximation prelude, model-free chapter lines 14–54"
   },
   {
-   "line": 189,
+   "line": 190,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19028,7 +19029,7 @@
    "item": "Over-estimation heuristic, model-free chapter lines 1003–1013"
   },
   {
-   "line": 191,
+   "line": 192,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19036,7 +19037,7 @@
    "item": "Omitted lower-order bonus term, online-RL line 615"
   },
   {
-   "line": 196,
+   "line": 197,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19044,7 +19045,7 @@
    "item": "Heuristic separation condition, offline-RL lines 505–515 (logs dropped at 511)"
   },
   {
-   "line": 200,
+   "line": 201,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19052,7 +19053,7 @@
    "item": "Verbal summary of the LCB-Q recursion, offline-RL lines 1894–1896"
   },
   {
-   "line": 201,
+   "line": 202,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19060,7 +19061,7 @@
    "item": "Comparison with Q-learning after the Bernstein LCB-Q display, offline-RL lines 1789–1793"
   },
   {
-   "line": 202,
+   "line": 203,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19068,7 +19069,7 @@
    "item": "Finite-sample meaning of Theorem 7.11, inference chapter line 144"
   },
   {
-   "line": 203,
+   "line": 204,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19076,7 +19077,7 @@
    "item": "CCE computation, multi-agent chapter line 247"
   },
   {
-   "line": 204,
+   "line": 205,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19084,7 +19085,7 @@
    "item": "Centralized versus communication-efficient federated RL, federated chapter lines 157–160"
   },
   {
-   "line": 205,
+   "line": 206,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19092,7 +19093,7 @@
    "item": "Normalization factor is hard to compute, RLHF chapter line 74"
   },
   {
-   "line": 206,
+   "line": 207,
    "kind": "explanatory",
    "entries": [],
    "variant": null,
@@ -19100,7 +19101,7 @@
    "item": "Introduction, Cousins and Conclusion chapters (survey prose)"
   },
   {
-   "line": 213,
+   "line": 214,
    "kind": "implied",
    "entries": [
     "StatisticalRL.Statements.Ch3.Thm3_1"
@@ -19110,7 +19111,7 @@
    "item": "Sample-size read-off after Theorem 3.1, model-based chapter lines 157–165"
   },
   {
-   "line": 214,
+   "line": 215,
    "kind": "implied",
    "entries": [
     "StatisticalRL.Statements.Ch3.Thm3_2"
@@ -19120,7 +19121,7 @@
    "item": "Sample-size read-off and range after Theorem 3.2 (including the range display at lines 934–937), model-based chapter lines 926–937"
   },
   {
-   "line": 216,
+   "line": 217,
    "kind": "implied",
    "entries": [
     "StatisticalRL.Statements.Ch3.Thm3_1",
@@ -19133,7 +19134,7 @@
    "item": "Minimax optimality of the model-based approach, model-based chapter lines 1468–1474"
   },
   {
-   "line": 217,
+   "line": 218,
    "kind": "implied",
    "entries": [
     "StatisticalRL.Statements.Ch4.Thm4_1"
@@ -19143,7 +19144,7 @@
    "item": "TD sample-size read-off, model-free chapter lines 240–251"
   },
   {
-   "line": 218,
+   "line": 219,
    "kind": "implied",
    "entries": [
     "StatisticalRL.Statements.Ch4.Thm4_1"
@@ -19153,7 +19154,7 @@
    "item": "Loose TD iteration count, model-free chapter lines 434–447"
   },
   {
-   "line": 222,
+   "line": 223,
    "kind": "implied",
    "entries": [
     "StatisticalRL.Statements.Ch4.Thm4_13_corrected",
@@ -19164,7 +19165,7 @@
    "item": "Finite-horizon Q-learning sample size, model-free chapter lines 2237–2247"
   },
   {
-   "line": 233,
+   "line": 234,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19172,7 +19173,7 @@
    "item": "Reference-advantage and Bernstein-bonus model-free regret, online-RL lines 1923–1929"
   },
   {
-   "line": 237,
+   "line": 238,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19180,7 +19181,7 @@
    "item": "Variance-reduced pessimistic model-free offline RL, offline-RL lines 1795–1800"
   },
   {
-   "line": 238,
+   "line": 239,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19188,7 +19189,7 @@
    "item": "Minimax-optimality sentence after the finite-horizon VI-LCB sample size, offline-RL line 3121"
   },
   {
-   "line": 239,
+   "line": 240,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19196,7 +19197,7 @@
    "item": "Asynchronous Q-learning lower bound, model-free chapter lines 2117–2118"
   },
   {
-   "line": 240,
+   "line": 241,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19204,7 +19205,7 @@
    "item": "Adaptive learning rates and cover-time analysis for asynchronous Q-learning, model-free chapter lines 2155–2164"
   },
   {
-   "line": 241,
+   "line": 242,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19212,7 +19213,7 @@
    "item": "Model-free Notes, model-free chapter lines 3956–3995"
   },
   {
-   "line": 243,
+   "line": 244,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19220,7 +19221,7 @@
    "item": "Q-FTRL algorithm (omitted at line 432) and the residual of Theorem 7.7 that `Thm7_7_restricted` does not cover, multi-agent chapter lines 423–432 and 441–467"
   },
   {
-   "line": 244,
+   "line": 245,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19228,7 +19229,7 @@
    "item": "PPAD-hardness of Nash equilibria, multi-agent chapter line 247"
   },
   {
-   "line": 245,
+   "line": 246,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19236,7 +19237,7 @@
    "item": "V-learning guarantees, Cousins chapter lines 30–40"
   },
   {
-   "line": 246,
+   "line": 247,
    "kind": "cited-out-of-scope",
    "entries": [],
    "variant": null,
@@ -19249,7 +19250,8 @@
   80,
   81,
   100,
-  174
+  155,
+  175
  ],
  "warnings": []
 }

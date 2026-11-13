@@ -25,7 +25,7 @@ Open numbered results and prose claims (remarks, displayed claims) whose every p
 ### Remarks and displayed claims (4)
 
 - Display `eq:Vk-Itrue` — `chapters/onlineRL.tex:4470–4473` · statement `refuted` · C17
-- Remark 6.3 — `chapters/offlineRL.tex:175–185` · statement `partial` · user decision 2026-11-09 · also cited-out-of-scope (COVERAGE.md:235)
+- Remark 6.3 — `chapters/offlineRL.tex:175–185` · statement `partial` · user decision 2026-11-09 · also cited-out-of-scope (COVERAGE.md:236)
 - Display `eq:sample-size-LCBQ-bernstein` — `chapters/offlineRL.tex:1781–1783` · statement `prose-claim` · C50 · COVERAGE note only, no statement entry
 - Display `eq:convex.Cdelta` — `chapters/inference.tex:191–193` · statement `partial` · C43, C47
 
@@ -114,7 +114,7 @@ The printed statement is not proved as printed. Each needs either a proof of the
 
 A COVERAGE row marked partial, or a statement entry without its reviewed record.
 
-- Remark 6.3 — `chapters/offlineRL.tex:175–185` · statement `partial` · user decision 2026-11-09 · also cited-out-of-scope (COVERAGE.md:235)
+- Remark 6.3 — `chapters/offlineRL.tex:175–185` · statement `partial` · user decision 2026-11-09 · also cited-out-of-scope (COVERAGE.md:236)
 - Display `eq:convex.Cdelta` — `chapters/inference.tex:191–193` · statement `partial` · C43, C47
 
 ## Implied by a proved entry (not separately proved) (15 nodes, 6 unlabelled rows)
@@ -136,12 +136,12 @@ A COVERAGE row headed **Implied by `X`**: the item follows from the named statem
 - Display `eq:chi2-final-samples` — `chapters/robust_RL.tex:490–492` · statement `implied (corrected)` · C7, C37 · by `Thm7_4_corrected`, `Thm7_5_corrected`
 - Display `eq:upper-bound-order` — `chapters/marl.tex:404–406` · statement `implied (restricted)` · C45 · by `Thm7_6_restricted`
 - Display `eq:RLHF-policy` — `chapters/RLHF.tex:172–175` · statement `implied (restricted)` · C44 · by `Eq_online_RBMLE_restricted`
-- Sample-size read-off after Theorem 3.1, model-based chapter lines 157–165 — `docs/COVERAGE.md:213` · no inventory node · by `Thm3_1` (printed)
-- Sample-size read-off and range after Theorem 3.2 (including the range display at lines 934–937), model-based chapter lines 926–937 — `docs/COVERAGE.md:214` · no inventory node · by `Thm3_2` (printed)
-- Minimax optimality of the model-based approach, model-based chapter lines 1468–1474 — `docs/COVERAGE.md:216` · no inventory node · by `Thm3_1`, `Thm3_2`, `Thm3_7_corrected`, `Thm3_7_policyEvaluation_A1` (corrected)
-- TD sample-size read-off, model-free chapter lines 240–251 — `docs/COVERAGE.md:217` · no inventory node · by `Thm4_1` (printed)
-- Loose TD iteration count, model-free chapter lines 434–447 — `docs/COVERAGE.md:218` · no inventory node · by `Thm4_1` (printed)
-- Finite-horizon Q-learning sample size, model-free chapter lines 2237–2247 — `docs/COVERAGE.md:222` · no inventory node · by `Thm4_13_corrected`, `Thm3_9_minimaxLowerBound_restricted` (corrected)
+- Sample-size read-off after Theorem 3.1, model-based chapter lines 157–165 — `docs/COVERAGE.md:214` · no inventory node · by `Thm3_1` (printed)
+- Sample-size read-off and range after Theorem 3.2 (including the range display at lines 934–937), model-based chapter lines 926–937 — `docs/COVERAGE.md:215` · no inventory node · by `Thm3_2` (printed)
+- Minimax optimality of the model-based approach, model-based chapter lines 1468–1474 — `docs/COVERAGE.md:217` · no inventory node · by `Thm3_1`, `Thm3_2`, `Thm3_7_corrected`, `Thm3_7_policyEvaluation_A1` (corrected)
+- TD sample-size read-off, model-free chapter lines 240–251 — `docs/COVERAGE.md:218` · no inventory node · by `Thm4_1` (printed)
+- Loose TD iteration count, model-free chapter lines 434–447 — `docs/COVERAGE.md:219` · no inventory node · by `Thm4_1` (printed)
+- Finite-horizon Q-learning sample size, model-free chapter lines 2237–2247 — `docs/COVERAGE.md:223` · no inventory node · by `Thm4_13_corrected`, `Thm3_9_minimaxLowerBound_restricted` (corrected)
 
 ## Explanatory (no mathematical claim) (16 nodes, 15 unlabelled rows)
 
@@ -163,21 +163,21 @@ A COVERAGE row headed **Explanatory (no mathematical claim)**: attribution, comp
 - Remark 6.7 — `chapters/offlineRL.tex:1539–1541` · statement `explanatory`
 - Remark 6.8 — `chapters/offlineRL.tex:1695–1697` · statement `explanatory`
 - Display `eq:RBMLE_online` — `chapters/RLHF.tex:163–170` · statement `explanatory` · C44
-- Time-invariant policies suffice, preliminaries line 76 — `docs/COVERAGE.md:181` · no inventory node
-- Solving the Bellman linear systems, preliminaries lines 225–228 — `docs/COVERAGE.md:182` · no inventory node
-- Asymptotic conclusion of the second policy-evaluation attempt, model-based chapter lines 354–376 — `docs/COVERAGE.md:185` · no inventory node
-- First-attempt policy-learning analysis, model-based chapter lines 975–1122 — `docs/COVERAGE.md:186` · no inventory node
-- Stochastic-approximation prelude, model-free chapter lines 14–54 — `docs/COVERAGE.md:188` · no inventory node
-- Over-estimation heuristic, model-free chapter lines 1003–1013 — `docs/COVERAGE.md:189` · no inventory node
-- Omitted lower-order bonus term, online-RL line 615 — `docs/COVERAGE.md:191` · no inventory node
-- Heuristic separation condition, offline-RL lines 505–515 (logs dropped at 511) — `docs/COVERAGE.md:196` · no inventory node
-- Verbal summary of the LCB-Q recursion, offline-RL lines 1894–1896 — `docs/COVERAGE.md:200` · no inventory node
-- Comparison with Q-learning after the Bernstein LCB-Q display, offline-RL lines 1789–1793 — `docs/COVERAGE.md:201` · no inventory node
-- Finite-sample meaning of Theorem 7.11, inference chapter line 144 — `docs/COVERAGE.md:202` · no inventory node
-- CCE computation, multi-agent chapter line 247 — `docs/COVERAGE.md:203` · no inventory node
-- Centralized versus communication-efficient federated RL, federated chapter lines 157–160 — `docs/COVERAGE.md:204` · no inventory node
-- Normalization factor is hard to compute, RLHF chapter line 74 — `docs/COVERAGE.md:205` · no inventory node
-- Introduction, Cousins and Conclusion chapters (survey prose) — `docs/COVERAGE.md:206` · no inventory node
+- Time-invariant policies suffice, preliminaries line 76 — `docs/COVERAGE.md:182` · no inventory node
+- Solving the Bellman linear systems, preliminaries lines 225–228 — `docs/COVERAGE.md:183` · no inventory node
+- Asymptotic conclusion of the second policy-evaluation attempt, model-based chapter lines 354–376 — `docs/COVERAGE.md:186` · no inventory node
+- First-attempt policy-learning analysis, model-based chapter lines 975–1122 — `docs/COVERAGE.md:187` · no inventory node
+- Stochastic-approximation prelude, model-free chapter lines 14–54 — `docs/COVERAGE.md:189` · no inventory node
+- Over-estimation heuristic, model-free chapter lines 1003–1013 — `docs/COVERAGE.md:190` · no inventory node
+- Omitted lower-order bonus term, online-RL line 615 — `docs/COVERAGE.md:192` · no inventory node
+- Heuristic separation condition, offline-RL lines 505–515 (logs dropped at 511) — `docs/COVERAGE.md:197` · no inventory node
+- Verbal summary of the LCB-Q recursion, offline-RL lines 1894–1896 — `docs/COVERAGE.md:201` · no inventory node
+- Comparison with Q-learning after the Bernstein LCB-Q display, offline-RL lines 1789–1793 — `docs/COVERAGE.md:202` · no inventory node
+- Finite-sample meaning of Theorem 7.11, inference chapter line 144 — `docs/COVERAGE.md:203` · no inventory node
+- CCE computation, multi-agent chapter line 247 — `docs/COVERAGE.md:204` · no inventory node
+- Centralized versus communication-efficient federated RL, federated chapter lines 157–160 — `docs/COVERAGE.md:205` · no inventory node
+- Normalization factor is hard to compute, RLHF chapter line 74 — `docs/COVERAGE.md:206` · no inventory node
+- Introduction, Cousins and Conclusion chapters (survey prose) — `docs/COVERAGE.md:207` · no inventory node
 
 ## Cited results out of scope (user decision) (5 nodes, 10 unlabelled rows)
 
@@ -188,16 +188,16 @@ A COVERAGE row headed **Out of scope: cited result**, with a dated user-decision
 - Remark 6.1 — `chapters/offlineRL.tex:45–47` · statement `cited-out-of-scope` · user decision 2026-11-09
 - Remark 6.9 — `chapters/offlineRL.tex:2404–2411` · statement `cited-out-of-scope` · user decision 2026-11-09
 - Remark 7.3 — `chapters/federated_RL.tex:250–252` · statement `cited-out-of-scope` · user decision 2026-11-09
-- Reference-advantage and Bernstein-bonus model-free regret, online-RL lines 1923–1929 — `docs/COVERAGE.md:233` · no inventory node · user decision 2026-11-09
-- Variance-reduced pessimistic model-free offline RL, offline-RL lines 1795–1800 — `docs/COVERAGE.md:237` · no inventory node · user decision 2026-11-09
-- Minimax-optimality sentence after the finite-horizon VI-LCB sample size, offline-RL line 3121 — `docs/COVERAGE.md:238` · no inventory node · user decision 2026-11-09
-- Asynchronous Q-learning lower bound, model-free chapter lines 2117–2118 — `docs/COVERAGE.md:239` · no inventory node · user decision 2026-11-09
-- Adaptive learning rates and cover-time analysis for asynchronous Q-learning, model-free chapter lines 2155–2164 — `docs/COVERAGE.md:240` · no inventory node · user decision 2026-11-09
-- Model-free Notes, model-free chapter lines 3956–3995 — `docs/COVERAGE.md:241` · no inventory node · user decision 2026-11-09
-- Q-FTRL algorithm (omitted at line 432) and the residual of Theorem 7.7 that `Thm7_7_restricted` does not cover, multi-agent chapter lines 423–432 and 441–467 — `docs/COVERAGE.md:243` · no inventory node · user decision 2026-11-09
-- PPAD-hardness of Nash equilibria, multi-agent chapter line 247 — `docs/COVERAGE.md:244` · no inventory node · user decision 2026-11-09
-- V-learning guarantees, Cousins chapter lines 30–40 — `docs/COVERAGE.md:245` · no inventory node · user decision 2026-11-09
-- Adaptive calibration policy, RLHF chapter lines 218–234 — `docs/COVERAGE.md:246` · no inventory node · user decision 2026-11-09
+- Reference-advantage and Bernstein-bonus model-free regret, online-RL lines 1923–1929 — `docs/COVERAGE.md:234` · no inventory node · user decision 2026-11-09
+- Variance-reduced pessimistic model-free offline RL, offline-RL lines 1795–1800 — `docs/COVERAGE.md:238` · no inventory node · user decision 2026-11-09
+- Minimax-optimality sentence after the finite-horizon VI-LCB sample size, offline-RL line 3121 — `docs/COVERAGE.md:239` · no inventory node · user decision 2026-11-09
+- Asynchronous Q-learning lower bound, model-free chapter lines 2117–2118 — `docs/COVERAGE.md:240` · no inventory node · user decision 2026-11-09
+- Adaptive learning rates and cover-time analysis for asynchronous Q-learning, model-free chapter lines 2155–2164 — `docs/COVERAGE.md:241` · no inventory node · user decision 2026-11-09
+- Model-free Notes, model-free chapter lines 3956–3995 — `docs/COVERAGE.md:242` · no inventory node · user decision 2026-11-09
+- Q-FTRL algorithm (omitted at line 432) and the residual of Theorem 7.7 that `Thm7_7_restricted` does not cover, multi-agent chapter lines 423–432 and 441–467 — `docs/COVERAGE.md:244` · no inventory node · user decision 2026-11-09
+- PPAD-hardness of Nash equilibria, multi-agent chapter line 247 — `docs/COVERAGE.md:245` · no inventory node · user decision 2026-11-09
+- V-learning guarantees, Cousins chapter lines 30–40 — `docs/COVERAGE.md:246` · no inventory node · user decision 2026-11-09
+- Adaptive calibration policy, RLHF chapter lines 218–234 — `docs/COVERAGE.md:247` · no inventory node · user decision 2026-11-09
 
 ## Other obligations outside the numbered-result count
 
@@ -205,5 +205,5 @@ A COVERAGE row headed **Out of scope: cited result**, with a dated user-decision
 - Algorithms: 17; definitions: 4; assumptions: 3 (context items, not nodes; edges to them are recorded but never block).
 - Source-gap candidates in the inventory: 59 (see `docs/SOURCE-ISSUES.md`).
 - Unlabelled prose claims not listed in `docs/COVERAGE.md` are not tracked as nodes.
-- Supporting-infrastructure COVERAGE rows (attached to no node, proving nothing by themselves): 5.
+- Supporting-infrastructure COVERAGE rows (attached to no node, proving nothing by themselves): 6.
 
