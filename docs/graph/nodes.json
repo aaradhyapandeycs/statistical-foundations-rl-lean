@@ -21,7 +21,7 @@
   "Formalization/Statements/Ch6Proofs.lean": "8fe9bb4558a7af2f9c2d688810c60338d9b62d51b9239c2ca63fbea0f9844506",
   "Formalization/Statements/Ch7.lean": "bf6b16acf57e183b9670cffb2057a30da5fa356db7f9c8d8bb4345ff41c3eaa7",
   "Formalization/Statements/Ch7Proofs.lean": "7f81433eecb369ee3c539cb4ab6e3ad57cbc6477a3c502d176611fcc1717c506",
-  "docs/COVERAGE.md": "42768543f37c19138fc63f3a0d237bd16e5bdf6aec2a3e780fb0e98f748b14a7",
+  "docs/COVERAGE.md": "68c65e1fe72a7a16275b2b9585163779b1cf23e27461c691dd302a818285f202",
   "docs/SOURCE-ISSUES.md": "ab416bd20832ac9b6566346bfa120e2f00b9807b2f7d6ac0124687c5bf948319",
   "docs/graph/uses-review.json": "ec0fd31e102e3d6bb48ab1b0c5c493408c9508b4f9234fe09ba1d35e802250dc",
   "docs/issue-classes.json": "c509b5f7d1115ec120cf5a33bddb64817f06f94784898fba33e05f85b033cac8",
@@ -67,9 +67,9 @@
   "named_printed_with_cited_printed": 34,
   "prose_nodes": 115,
   "prose_by_statement_status": {
-   "printed": 47,
+   "printed": 46,
    "corrected": 11,
-   "restricted": 17,
+   "restricted": 18,
    "refuted": 1,
    "partial": 2,
    "implied": 15,
@@ -102,9 +102,9 @@
   "named_refuted_marker": 3,
   "named_overridden_incomplete": 1,
   "prose_by_label": {
-   "stated": 47,
+   "stated": 46,
    "corrected": 11,
-   "restricted": 17,
+   "restricted": 18,
    "incomplete": 24,
    "no_claim": 16
   },
@@ -354,9 +354,9 @@
      "prose-claim": 0
     },
     "prose": {
-     "printed": 5,
+     "printed": 4,
      "corrected": 1,
-     "restricted": 0,
+     "restricted": 1,
      "refuted": 0,
      "partial": 0,
      "implied": 4,
@@ -376,9 +376,9 @@
      "incomplete": 0
     },
     "prose_by_label": {
-     "stated": 5,
+     "stated": 4,
      "corrected": 1,
-     "restricted": 0,
+     "restricted": 1,
      "incomplete": 4,
      "no_claim": 0
     },
@@ -7559,11 +7559,11 @@
     },
     {
      "name": "StatisticalRL.Statements.Ch4.QLearning_singleAction_eq_TD",
-     "variant": "printed",
+     "variant": "supporting",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
      "line": 406,
-     "counted": true
+     "counted": false
     }
    ],
    "proof_wrappers": [
@@ -7573,8 +7573,7 @@
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
-    173,
-    174
+    173
    ],
    "issues": [],
    "evidence": [],
@@ -7585,21 +7584,21 @@
    "display_name": "Remark 4.5",
    "proof_origins": [],
    "display_notes": [],
-   "correction_status": null,
+   "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
    "issue_class_items": [],
    "issue_classes": [],
-   "statement_status": "printed",
+   "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
    "implied_variant": null,
    "decision_anchors": [],
    "closing_rows": {},
-   "site_label": "stated",
+   "site_label": "restricted",
    "site_markers": [],
    "site_sub_reason": "",
-   "printed_with_cited_printed": true
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:eq:PAC-from-regret-conversion",
@@ -19249,7 +19248,8 @@
   73,
   80,
   81,
-  100
+  100,
+  174
  ],
  "warnings": []
 }

@@ -312,6 +312,46 @@ class GenNodesTest(unittest.TestCase):
         self.assertFalse(any("headline wins" in w for w in data["warnings"]))
         self.assertEqual([e["counted"] for e in n["ch2-remark-2.1"]["statement_entries"]], [False])
 
+    def _remark_with_aux(self, aux_lead):
+        ch2 = CH2.replace("end StatisticalRL.Statements", "/-- Aux fact, `chapters/prelim.tex:120-125`. -/\n"
+                          "def Remark2_1_aux : Prop := True\n\nend StatisticalRL.Statements")
+        proofs = CH2_PROOFS.replace("end StatisticalRL.Statements", "theorem Remark2_1_aux_holds : Remark2_1_aux := "
+                                    "StatisticalRL.Foo.aux\n\nend StatisticalRL.Statements")
+        cov = COVERAGE.replace("**Proved** (`Remark2_1`).", "**Restricted variant proved.** (`Remark2_1`).")
+        cov += f"| Aux fact supporting Remark 2.1, prelim lines 120-125 | x | **{aux_lead}** (`Remark2_1_aux`). |\n"
+        (self.tmp / "Formalization/Statements/Ch2.lean").write_text(ch2)
+        (self.tmp / "Formalization/Statements/Ch2Proofs.lean").write_text(proofs)
+        (self.tmp / "docs/COVERAGE.md").write_text(cov)
+
+    def test_supporting_entry_never_upgrades_the_remark_label(self):
+        # Remark 4.5 pattern: restricted headline plus an unsuffixed auxiliary entry
+        self._remark_with_aux("Supporting entry proved")
+        data = gn.build(gn.Reader(self.tmp))
+        n = {x["id"]: x for x in data["nodes"]}["ch2-remark-2.1"]
+        self.assertEqual(n["site_label"], "restricted")
+        by = {e["name"].rsplit(".", 1)[-1]: e for e in n["statement_entries"]}
+        self.assertEqual((by["Remark2_1_aux"]["variant"], by["Remark2_1_aux"]["counted"]), ("supporting", False))
+        self.assertEqual((by["Remark2_1"]["variant"], by["Remark2_1"]["counted"]), ("restricted", True))
+
+    def test_label_gate_fails_generation_on_overclaim(self):
+        # without the supporting marker the auxiliary entry is counted printed: the gate must stop generation
+        self._remark_with_aux("Proved")
+        with self.assertRaises(SystemExit) as cm:
+            gn.build(gn.Reader(self.tmp))
+        self.assertIn("ch2-remark-2.1", str(cm.exception))
+
+    def test_lead_rank_and_label_overclaims(self):
+        self.assertEqual([gn.lead_rank(x) for x in ("Proved", "Corrected variant proved", "Restricted variant proved; x",
+                                                    "Partial: one clause", "Printed statement refuted")], [3, 2, 2, 1, 1])
+        node = {"id": "n", "class": "prose", "site_label": "stated", "reviewed_leads": ["Restricted variant proved"],
+                "ledger_records": [], "statement_entries": []}
+        self.assertIn("stronger", gn.label_overclaims(node))
+        node["site_label"] = "restricted"
+        self.assertIsNone(gn.label_overclaims(node))
+        node["reviewed_leads"] = [""]   # no headline: unrated, never an offender
+        node["site_label"] = "stated"
+        self.assertIsNone(gn.label_overclaims(node))
+
     def test_partial_headline_on_a_recorded_numbered_result_fails_closed(self):
         cov = COVERAGE + "| Lemma 2.1, `lem:a` | x | **Partial:** one clause only. |\n"
         (self.tmp / "docs/COVERAGE.md").write_text(cov)
