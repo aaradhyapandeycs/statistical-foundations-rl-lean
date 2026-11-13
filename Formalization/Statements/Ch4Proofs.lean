@@ -9,6 +9,7 @@ import Formalization.ModelFree.TDIterateBounds
 import Formalization.ModelFree.TDSquareEnergy
 import Formalization.ModelFree.TDSourceVarianceProxyUniversal
 import Formalization.ModelFree.TDSourceAccuracyExactSamples
+import Formalization.ModelFree.TDSourceScheduleGeneral
 import Formalization.ModelFree.QLearningIterateBounds
 import Formalization.ModelFree.QLearningStabilityInfinityNorm
 import Formalization.ModelFree.QLearningRobustContraction
@@ -26,9 +27,10 @@ open StatisticalRL.TemporalDifference StatisticalRL.QLearning
 universe u v
 
 theorem Thm4_1_holds : Thm4_1 := by
-  obtain ⟨c₁, c₂, c₃, hc₂, horder, _hc₁le, hc₃, hsource⟩ :=
-    tdSource_policyEvaluation_exactSamples_accuracy_exists_universal_constants
-  refine ⟨c₁, c₂, c₃, hc₂, horder, hc₃, ?_⟩
+  refine ⟨1 / 4, by norm_num, fun c₁ c₂ hc₂ hc₂₁ hc₁ ↦ ?_⟩
+  obtain ⟨c₃, hc₃, hsource⟩ := tdSource_policyEvaluation_exactSamples_accuracy_exists_c₃ c₁ c₂ hc₂
+    hc₂₁ (by nlinarith)
+  refine ⟨c₃, hc₃, ?_⟩
   intro State Action instState instAction M π η δ ε T hγhalf hγone hT
     hδ hδone hε hεmax hη V₀ h₀ hbudget
   have hεsource : ε ≤ M.effectiveHorizon := by
@@ -87,9 +89,20 @@ theorem Lemma4_11_holds : Lemma4_11 := by
   · simpa [dist_eq_norm, DiscountedMDP.coe_discountConstant] using h.2.2.dist_le_mul Q R
 
 theorem Thm4_6_holds : Thm4_6 := by
-  obtain ⟨c₁, c₂, c₃, hc₂, horder, _, hc₃, h⟩ :=
-    qLearning_exists_universal_constants_source_accuracy
-  exact ⟨c₁, c₂, c₃, hc₂, horder, hc₃, h⟩
+  refine ⟨1, one_pos, fun c₁ c₂ hc₂ hc₂₁ hc₁ ↦ ?_⟩
+  obtain ⟨c₃, hc₃, he, hs, hd⟩ := qFinal_exists_universal_budget_constant c₂ hc₂
+  refine ⟨c₃, hc₃, ?_⟩
+  intro State Action instState instAction M η δ ε T hγhalf hA hT hδ hδ1 hε hεmax hschedule Q₀
+    h₀ hbudget
+  have hρ : 0 ≤ qChiSourceRadius (qChiSourceRateEnvelope M.discount c₂ T) δ
+      (Fintype.card State) (Fintype.card Action) T := by
+    have hηbar := qChiSourceRateEnvelope_pos M.discount c₂ T M.discount_lt_one hc₂ hT
+    exact (qChiSourceRadius_pos _ δ _ _ T hηbar hδ hδ1
+      (Fintype.card_pos_iff.mpr M.state_nonempty)
+      (Fintype.card_pos_iff.mpr M.action_nonempty) hT).le
+  exact qLearning_conditional_source_accuracy M η c₁ c₂ c₃ δ ε T hγhalf (hc₂.trans_le hc₂₁)
+    hc₁ hc₂ hc₃ he hs hd hT hδ hδ1 hε hεmax hschedule Q₀ h₀ hbudget
+    (qSource_robust_comparator_closeness_from_stopped_law M _ hρ)
 
 theorem Thm4_6_underestimation_holds : Thm4_6_underestimation :=
   qLearning_underestimation_exists_universal_constants
@@ -123,8 +136,9 @@ theorem Thm4_13_corrected_holds : Thm4_13_corrected := by
 
 open Classical in
 theorem Thm4_12_corrected_holds : Thm4_12_corrected := by
-  obtain ⟨c₂, hc₂, h⟩ := AsyncQ.asyncQ_exists_c₂ 1 one_pos le_rfl
-  refine ⟨1, one_pos, le_rfl, c₂, hc₂, ?_⟩
+  intro c₁ hc₁ hc₁1
+  obtain ⟨c₂, hc₂, h⟩ := AsyncQ.asyncQ_exists_c₂ c₁ hc₁ hc₁1
+  refine ⟨c₂, hc₂, ?_⟩
   intro S A _ _ M πb μ μmin tmix s₀ δ ε T hγ hst _ htmix hμmin _ hμ0 hT1 hT2 hδ hδ1 hε hε1 hbud
     Q₀ h₀
   exact h S A M πb μ μmin tmix s₀ δ ε T hγ hst htmix.1 hμmin hμ0 hT1 hT2 hδ hδ1 hε hε1 hbud Q₀ h₀

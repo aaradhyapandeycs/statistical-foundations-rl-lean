@@ -531,9 +531,10 @@ candidate records the asserted error.
 - Remark 4.5 (`generative_model_model_free.tex:3455–3457`) is indexed as `Remark4_5`. Its clause
   (iii), `E ξ_{t,max} > 0`, is stated for `t ≥ τ̂`, the range of Lemma 4.15 which the remark
   follows; at `t = 0` one has `ξ₀ = 0`, so the clause is false there. Theorem 4.6's "for some
-  small enough universal constants `c₁ ≥ c₂ > 0`" is read existentially, as printed; the export
-  witnesses `c₁ = c₂ = 1`, and schedules with `c₂ < 1` are not covered (see the `Thm4_6`
-  docstring).
+  small enough universal constants `c₁ ≥ c₂ > 0`" is read as a threshold `c₀ = 1` below which every
+  schedule pair `0 < c₂ ≤ c₁ ≤ c₀` works (with `c₃` depending on `c₂`), as for `Thm4_13_corrected` (see the
+  `Thm4_6` docstring); the same reading holds for `Thm4_1` (threshold `1/4`). Only the
+  under-estimation claim `Thm4_6_underestimation` is still proved at the single pair `c₁ = c₂ = 1`.
 
 - `eq:DPO` (`RLHF.tex:62–74`), `eq:policy_RBMLE` (`:115–141`) and `eq:online_RBMLE` (`:158–198`) are indexed as
   `Eq_DPO_restricted`, `Eq_policy_RBMLE_restricted` and `Eq_online_RBMLE_restricted`. The main restriction is the
