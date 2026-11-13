@@ -13,19 +13,19 @@
   "Formalization/Statements/Ch2Proofs.lean": "b279c60aa0cf1507ed9a896fad0981e43a2239ffc20086eb6f281ecf23a5f560",
   "Formalization/Statements/Ch3.lean": "0c5cc7cf1e101c571cfd6a353a876009a4802d22b7f69f45ca381070c38d0300",
   "Formalization/Statements/Ch3Proofs.lean": "cd6d4a2a9d98d1de22971f8393094060cb6304f81c3cddcfe156815b1fe6967e",
-  "Formalization/Statements/Ch4.lean": "86923d993aab1153a084d9fe622b28ba7506f4c68c9390efef46d9320c3baabd",
-  "Formalization/Statements/Ch4Proofs.lean": "39d6d11d46244d6bc2483e35c3b3d33a549d9e4dd2f8f4448bdb851b8d0f6971",
+  "Formalization/Statements/Ch4.lean": "cda7d36d9ef62e2f40ce218467b3dd41c2db81cddc66432f8e099e6a29971519",
+  "Formalization/Statements/Ch4Proofs.lean": "0b4c0a74436ed71d8746e717c8d08ee22cb876fdad659a5f294a83aaad03b8f2",
   "Formalization/Statements/Ch5.lean": "17d24819bc404b453460c6dbc2ae06e8cae3294fec61a279307c57e90c505494",
   "Formalization/Statements/Ch5Proofs.lean": "e28e7c0fc71f4fe1b21b094b19905da61acf6933c06da14c54902c35b715cc86",
   "Formalization/Statements/Ch6.lean": "e17cc9045a7d70dd349eea74cc6d1ae06316cadef20e5b275c1286463f2c76d6",
   "Formalization/Statements/Ch6Proofs.lean": "8fe9bb4558a7af2f9c2d688810c60338d9b62d51b9239c2ca63fbea0f9844506",
   "Formalization/Statements/Ch7.lean": "bf6b16acf57e183b9670cffb2057a30da5fa356db7f9c8d8bb4345ff41c3eaa7",
   "Formalization/Statements/Ch7Proofs.lean": "7f81433eecb369ee3c539cb4ab6e3ad57cbc6477a3c502d176611fcc1717c506",
-  "docs/COVERAGE.md": "5173e7f4e28a6a7c7b5e03e3845ed0a02ca940787e0f411bbbd85d4f4f53058c",
-  "docs/SOURCE-ISSUES.md": "6d925c1d9b1145a8e60b3125b4101505e5cc7dfa61a9c96ce35443eecef93150",
+  "docs/COVERAGE.md": "41a08a3b9e990b2a4edce5139a04e03adb94e1a61731db1681dc256325b1744b",
+  "docs/SOURCE-ISSUES.md": "74c6880755b50e5a7c6610acec663d7a9ba7578834c720ccbad08d074009ebc1",
   "docs/graph/uses-review.json": "ec0fd31e102e3d6bb48ab1b0c5c493408c9508b4f9234fe09ba1d35e802250dc",
   "docs/issue-classes.json": "c509b5f7d1115ec120cf5a33bddb64817f06f94784898fba33e05f85b033cac8",
-  "docs/named-result-status.json": "e963ac3ea4ca4a6b51e1f5ffc215c48e6d2de49780b5511a557b4db54adbdb2c",
+  "docs/named-result-status.json": "1e8a5a353e9668ad3aa3718e6287b3938a4f2d92830667723fc782244883b6e8",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
  "vocabulary": {
@@ -67,9 +67,9 @@
   "named_printed_with_cited_printed": 34,
   "prose_nodes": 115,
   "prose_by_statement_status": {
-   "printed": 46,
+   "printed": 45,
    "corrected": 11,
-   "restricted": 18,
+   "restricted": 19,
    "refuted": 1,
    "partial": 2,
    "implied": 15,
@@ -102,9 +102,9 @@
   "named_refuted_marker": 3,
   "named_overridden_incomplete": 1,
   "prose_by_label": {
-   "stated": 46,
+   "stated": 45,
    "corrected": 11,
-   "restricted": 18,
+   "restricted": 19,
    "incomplete": 24,
    "no_claim": 16
   },
@@ -354,9 +354,9 @@
      "prose-claim": 0
     },
     "prose": {
-     "printed": 4,
+     "printed": 3,
      "corrected": 1,
-     "restricted": 1,
+     "restricted": 2,
      "refuted": 0,
      "partial": 0,
      "implied": 4,
@@ -376,9 +376,9 @@
      "incomplete": 0
     },
     "prose_by_label": {
-     "stated": 4,
+     "stated": 3,
      "corrected": 1,
-     "restricted": 1,
+     "restricted": 2,
      "incomplete": 4,
      "no_claim": 0
     },
@@ -5386,7 +5386,7 @@
     "StatisticalRL.Statements.Ch4.Thm4_1_holds"
    ],
    "library_exports": [
-    "StatisticalRL.TemporalDifference.tdSource_policyEvaluation_exactSamples_accuracy_exists_universal_constants"
+    "StatisticalRL.TemporalDifference.tdSource_policyEvaluation_exactSamples_accuracy_exists_c₃"
    ],
    "ledger_records": [
     {
@@ -5487,7 +5487,7 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch4.Thm4_1",
-     "note": "'For some small enough universal constants' is read existentially: proved with the witnesses c₁ = c₂ = 1/4, so 'for every sufficiently small pair' is not established."
+     "note": "Proved for every schedule pair 0 < c₂ ≤ c₁ ≤ 1/4 (threshold c₀ = 1/4), with c₃ depending only on c₁, c₂."
     }
    ],
    "correction_status": null,
@@ -5534,7 +5534,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 598,
+     "line": 604,
      "counted": true
     }
    ],
@@ -5605,7 +5605,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 45,
+     "line": 49,
      "counted": true
     }
    ],
@@ -5681,7 +5681,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 230,
+     "line": 233,
      "counted": true
     }
    ],
@@ -5796,7 +5796,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 57,
+     "line": 61,
      "counted": true
     }
    ],
@@ -5871,7 +5871,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 74,
+     "line": 78,
      "counted": true
     }
    ],
@@ -5962,7 +5962,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 140,
+     "line": 144,
      "counted": true
     },
     {
@@ -5970,7 +5970,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 165,
+     "line": 169,
      "counted": false
     }
    ],
@@ -6071,7 +6071,7 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch4.Thm4_6",
-     "note": "'For some small enough universal constants c₁ ≥ c₂ > 0' is read existentially: proved with c₁ = c₂ = 1, so schedules with c₂ < 1 are not covered."
+     "note": "Proved for every schedule pair 0 < c₂ ≤ c₁ ≤ 1 (the proof gives threshold c₀ = 1), with c₃ depending only on c₂."
     }
    ],
    "correction_status": null,
@@ -6111,7 +6111,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 633,
+     "line": 639,
      "counted": true
     }
    ],
@@ -6241,7 +6241,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 302,
+     "line": 305,
      "counted": false
     },
     {
@@ -6249,7 +6249,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 524,
+     "line": 530,
      "counted": true
     },
     {
@@ -6257,7 +6257,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 581,
+     "line": 587,
      "counted": false
     }
    ],
@@ -6411,7 +6411,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 560,
+     "line": 566,
      "counted": true
     }
    ],
@@ -6473,7 +6473,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 97,
+     "line": 101,
      "counted": true
     }
    ],
@@ -6561,7 +6561,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 254,
+     "line": 257,
      "counted": true
     }
    ],
@@ -6691,7 +6691,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 111,
+     "line": 115,
      "counted": true
     }
    ],
@@ -6788,7 +6788,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 130,
+     "line": 134,
      "counted": true
     }
    ],
@@ -6857,23 +6857,25 @@
    ],
    "statement_entries": [
     {
-     "name": "StatisticalRL.Statements.Ch4.Thm4_6_underestimation",
-     "variant": "printed",
+     "name": "StatisticalRL.Statements.Ch4.Thm4_6_underestimation_restricted",
+     "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 185,
+     "line": 189,
      "counted": true
     }
    ],
    "proof_wrappers": [
-    "StatisticalRL.Statements.Ch4.Thm4_6_underestimation_holds"
+    "StatisticalRL.Statements.Ch4.Thm4_6_underestimation_restricted_holds"
    ],
    "library_exports": [],
    "ledger_records": [],
    "coverage_rows": [
     139
    ],
-   "issues": [],
+   "issues": [
+    "C52"
+   ],
    "evidence": [],
    "refutations_cited": [],
    "partial_lead": false,
@@ -6881,22 +6883,27 @@
    "uses": [],
    "display_name": "Unnumbered display (generative_model_model_free.tex:1873–1879)",
    "proof_origins": [],
-   "display_notes": [],
-   "correction_status": null,
+   "display_notes": [
+    {
+     "entry": "StatisticalRL.Statements.Ch4.Thm4_6_underestimation_restricted",
+     "note": "Proved only for the single schedule pair c₁ = c₂ = 1 (Theorem 4.6's schedule with log³T); the reading 'for every sufficiently small c₁ ≥ c₂ > 0' (as proved for Theorem 4.6) is not established. Proof-infrastructure limit, not a source error (C52)."
+    }
+   ],
+   "correction_status": "proposed-by-project",
    "status_override": null,
    "printed_refuted": null,
    "issue_class_items": [],
    "issue_classes": [],
-   "statement_status": "printed",
+   "statement_status": "restricted",
    "proof_status": "proved",
    "implied_by": [],
    "implied_variant": null,
    "decision_anchors": [],
    "closing_rows": {},
-   "site_label": "stated",
+   "site_label": "restricted",
    "site_markers": [],
    "site_sub_reason": "",
-   "printed_with_cited_printed": true
+   "printed_with_cited_printed": false
   },
   {
    "id": "label:thm:infinite-horizon-asyn",
@@ -6922,7 +6929,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 469,
+     "line": 472,
      "counted": true
     }
    ],
@@ -6986,7 +6993,7 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch4.Thm4_12_corrected",
-     "note": "Adds $0 < \\mu_{\\mathsf{min}}$ and (T ≥ 2 or SA ≥ 2), plus 1 ≤ T (C34); the counterexamples to the printed statement are this project's paper computations, not Lean-checked."
+     "note": "Adds $0 < \\mu_{\\mathsf{min}}$ and (T ≥ 2 or SA ≥ 2), plus 1 ≤ T (C34); holds for every c₁ ∈ (0,1] with c₂ depending on c₁; the counterexamples to the printed statement are this project's paper computations, not Lean-checked."
     }
    ],
    "correction_status": "proposed-by-project",
@@ -7048,7 +7055,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 668,
+     "line": 674,
      "counted": true
     }
    ],
@@ -7196,7 +7203,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 431,
+     "line": 434,
      "counted": true
     }
    ],
@@ -7301,7 +7308,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 278,
+     "line": 281,
      "counted": true
     }
    ],
@@ -7389,7 +7396,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 332,
+     "line": 335,
      "counted": true
     }
    ],
@@ -7554,7 +7561,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 360,
+     "line": 363,
      "counted": true
     },
     {
@@ -7562,7 +7569,7 @@
      "variant": "supporting",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 406,
+     "line": 409,
      "counted": false
     }
    ],

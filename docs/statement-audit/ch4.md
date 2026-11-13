@@ -180,7 +180,7 @@ Counts: SOURCE 13, STANDING 1, TYPING 1, EXCESS 0. Reading note as for Thm4_1 (e
 Reconstruction: when T ≍ threshold, the constant rate η ≡ 1/(1+c₁(1−γ)T/log³T) satisfies the schedule for 0≤t≤T and is Õ((1−γ)³ε²).
 Binders: c₁,c₂,c₃,γ,ε,δ,S,A,T and `0<c₂≤c₁`, `0<c₃` (SOURCE/STANDING, constants of the schedule/budget), `0≤γ<1` (STANDING), `0<ε`, `0<δ<1`, `1≤S`, `1≤A`, `2≤T` (STANDING: Thm 4.6 context; S,A≥1 typing of a finite MDP). (ii) premise = "T ≥ threshold" (SOURCE: the `≥` half of `≍`, which is the only direction an upper bound on η uses — disclosed in docstring and not a weakening of the claim, since the claim is an upper bound). Counts: SOURCE 4, STANDING 9, TYPING 2, EXCESS 0. Algebra checked: η ≤ log³T/(c₁(1−γ)T) ≤ (1−γ)³ε²/(c₁c₃ log T log(SAT/δ)). Õ made explicit. **Verdict: PASS.**
 
-## 11. `Thm4_6_underestimation` — Ch4.lean:210; prose `.tex:1869–1881`
+## 11. `Thm4_6_underestimation_restricted` — Ch4.lean:210; prose `.tex:1869–1881`
 
 Reconstruction: Q̃ (same init and samples, next action from deterministic optimal π⋆) satisfies Q̃_T ≤ Q_T, and (in the Thm 4.6 setting, w.h.p.) Q_T−Q⋆ ≥ Q̃_T−Q⋆ ≥ −Õ(√(1/((1−γ)³T)))·1.
 
@@ -336,7 +336,7 @@ change (outside scope); no `sorry`/`admit` in either file.
 
 ## Cross-cutting observations (non-failing)
 
-1. Constant-quantifier reading. Thm4_1, Lemma4_5, Thm4_6, Thm4_6_underestimation, Remark4_1, Remark4_2 read
+1. Constant-quantifier reading. Thm4_1, Lemma4_5, Thm4_6, Thm4_6_underestimation_restricted, Remark4_1, Remark4_2 read
    "for some small enough universal constants c₁ ≥ c₂ > 0" existentially (the literal "for some"); Thm4_13_corrected
    reads "for sufficiently small" (no "some", `.tex:2210`) universally (∃c₀ ∀ c₁≥c₂ ≤ c₀). The split follows the
    printed wording. A reader who takes "small enough" in Thm 4.1/4.6 to mean "every sufficiently small pair" would
@@ -365,7 +365,7 @@ change (outside scope); no `sorry`/`admit` in either file.
 | 8 | Lemma4_11 | 132 | PASS |
 | 9 | Thm4_6 | 147 | PASS |
 | 10 | Thm4_6_constantRate | 175 | PASS |
-| 11 | Thm4_6_underestimation | 210 | PASS |
+| 11 | Thm4_6_underestimation_restricted | 210 | PASS |
 | 12 | Lemma4_3_corrected | 241 | PASS-DISCLOSED |
 | 13 | Lemma4_14 | 289 | PASS |
 | 14 | Thm4_7_restricted | 323 | PASS-DISCLOSED |

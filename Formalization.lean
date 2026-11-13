@@ -363,6 +363,7 @@ import Formalization.ModelFree.QLearningCausality
 import Formalization.ModelFree.TDStepSizeEarly
 import Formalization.ModelFree.TDStandaloneStepSizeCounterexample
 import Formalization.ModelFree.TDSourceAccuracyExactSamples
+import Formalization.ModelFree.TDSourceScheduleGeneral
 import Formalization.ModelFree.TDStepSizeLate
 import Formalization.ModelFree.TDStepSizeBudget
 import Formalization.ModelFree.QLearningConditionalMoments

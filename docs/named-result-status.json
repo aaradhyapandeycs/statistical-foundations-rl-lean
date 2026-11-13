@@ -244,9 +244,9 @@
       "coverage": "docs/COVERAGE.md",
       "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_6",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_6_holds",
-      "statement_scope": "Printed statement. 'For some small enough universal constants c₁ ≥ c₂ > 0' is read existentially, as worded; the entry is proved with c₁ = c₂ = 1, so schedules with c₂ < 1 are not covered and the reading 'for every sufficiently small pair' is not established.",
+      "statement_scope": "Printed statement. 'Small enough universal constants c₁ ≥ c₂ > 0' and 'sufficiently large c₃' are read as: there is a threshold c₀ (the proof gives 1) such that for every 0 < c₂ ≤ c₁ ≤ c₀ there is a universal c₃ (depending only on c₂), chosen before the model, δ, ε and T; this is the Theorem 4.13 shape and implies the existential reading.",
       "proof_origin": "source-proof",
-      "display_note": "'For some small enough universal constants c₁ ≥ c₂ > 0' is read existentially: proved with c₁ = c₂ = 1, so schedules with c₂ < 1 are not covered.",
+      "display_note": "Proved for every schedule pair 0 < c₂ ≤ c₁ ≤ 1 (the proof gives threshold c₀ = 1), with c₃ depending only on c₂.",
       "correction_status": "proposed-by-project"
     },
     {
@@ -270,7 +270,7 @@
       "source_file": "chapters/generative_model_model_free.tex",
       "source_lines": "204–224",
       "source_context_lines": "179–187 (learning-rate schedule)",
-      "lean_export": "StatisticalRL.TemporalDifference.tdSource_policyEvaluation_exactSamples_accuracy_exists_universal_constants",
+      "lean_export": "StatisticalRL.TemporalDifference.tdSource_policyEvaluation_exactSamples_accuracy_exists_c₃",
       "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_1",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_1_holds",
       "evidence": "docs/critic-td-full-accuracy-source-20261104.md",
@@ -279,9 +279,9 @@
         "docs/td-main-theorem-verification.md"
       ],
       "coverage": "docs/COVERAGE.md",
-      "statement_scope": "Printed statement. 'For some small enough universal constants' is read existentially, as worded; the entry is proved with the witnesses c₁ = c₂ = 1/4 and $c_{3} = \\max (4096, \\exp (4)/(\\log 2)^{4})$, so the reading 'for every sufficiently small pair' is not established.",
+      "statement_scope": "Printed statement. 'Small enough universal constants c₁ ≥ c₂ > 0' and 'sufficiently large c₃' are read as: there is a threshold c₀ (the proof gives 1/4) such that for every 0 < c₂ ≤ c₁ ≤ c₀ there is a universal c₃ (depending only on c₁, c₂), chosen before the model, δ, ε and T; this is the Theorem 4.13 shape and implies the existential reading.",
       "proof_origin": "source-proof",
-      "display_note": "'For some small enough universal constants' is read existentially: proved with the witnesses c₁ = c₂ = 1/4, so 'for every sufficiently small pair' is not established.",
+      "display_note": "Proved for every schedule pair 0 < c₂ ≤ c₁ ≤ 1/4 (threshold c₀ = 1/4), with c₃ depending only on c₁, c₂.",
       "correction_status": "proposed-by-project"
     },
     {
@@ -1343,14 +1343,14 @@
       "lean_export": "StatisticalRL.AsyncQ.asyncQ_exists_c₂",
       "lean_statement": "StatisticalRL.Statements.Ch4.Thm4_12_corrected",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Thm4_12_corrected_holds",
-      "statement_scope": "Corrected: the printed ∃c₁ ∃c₂ statement for asynchronous Q-learning along one Markov trajectory (with probability ≥ 1−δ the final iterate is ε-accurate at the printed learning rate), with exactly two added premises, $0 < \\mu_{\\mathsf{min}}$ and 2 ≤ T ∨ 2 ≤ S·A, plus the domain premise 1 ≤ T (C34: the printed statement fails at T = 1 and when $\\mu_{\\mathsf{min}} = 0$, by this project's paper computations, not machine-checked). The trajectory is given by its finite path law. The Markov mixing theory (stationarity, mixing-distance decay, window visit counts) is built from scratch, and the proof is new rather than the monograph's cited argument. The library export holds for every c₁ ∈ (0,1] with c₂ = max($e^{32/c_{1}}$, 4096); joint satisfiability of the budget for this c₂ is argued on paper only. Not author-approved; this does not prove the printed theorem.",
+      "statement_scope": "Corrected: the printed statement (read as: for every c₁ ∈ (0,1] there is a universal c₂, stronger than ∃c₁ ∃c₂) for asynchronous Q-learning along one Markov trajectory (with probability ≥ 1−δ the final iterate is ε-accurate at the printed learning rate), with exactly two added premises, $0 < \\mu_{\\mathsf{min}}$ and 2 ≤ T ∨ 2 ≤ S·A, plus the domain premise 1 ≤ T (C34: the printed statement fails at T = 1 and when $\\mu_{\\mathsf{min}} = 0$, by this project's paper computations, not machine-checked). The trajectory is given by its finite path law. The Markov mixing theory (stationarity, mixing-distance decay, window visit counts) is built from scratch, and the proof is new rather than the monograph's cited argument. The library export holds for every c₁ ∈ (0,1] with c₂ = max($e^{32/c_{1}}$, 4096); joint satisfiability of the budget for this c₂ is argued on paper only. Not author-approved; this does not prove the printed theorem.",
       "evidence": "docs/critic-thm4-12.md",
       "supporting_evidence": [
         "docs/critic-thm4-12-plan-check.md"
       ],
       "coverage": "docs/COVERAGE.md",
       "proof_origin": "own-proof:source-cites",
-      "display_note": "Adds $0 < \\mu_{\\mathsf{min}}$ and (T ≥ 2 or SA ≥ 2), plus 1 ≤ T (C34); the counterexamples to the printed statement are this project's paper computations, not Lean-checked.",
+      "display_note": "Adds $0 < \\mu_{\\mathsf{min}}$ and (T ≥ 2 or SA ≥ 2), plus 1 ≤ T (C34); holds for every c₁ ∈ (0,1] with c₂ depending on c₁; the counterexamples to the printed statement are this project's paper computations, not Lean-checked.",
       "correction_status": "proposed-by-project"
     },
     {
@@ -1887,6 +1887,7 @@
     }
   },
   "entry_display_notes": {
+    "Thm4_6_underestimation_restricted": "Proved only for the single schedule pair c₁ = c₂ = 1 (Theorem 4.6's schedule with log³T); the reading 'for every sufficiently small c₁ ≥ c₂ > 0' (as proved for Theorem 4.6) is not established. Proof-infrastructure limit, not a source error (C52).",
     "Thm4_7_restricted": "Superseded, kept for reference. `Thm4_7` proves both cases of the printed Theorem 4.7 and implies this earlier case (ii)-only entry.",
     "Thm4_7_case_i": "Reading aid. Case (i) is covered by `Thm4_7`, which the ledger records as proved as printed; this entry restates case (i) alone and has no review record of its own.",
     "Lemma7_1_tv": "Reading aid: the TV projection of the fully proved Lemma 7.1 (`Lemma7_1`), not a restricted case.",

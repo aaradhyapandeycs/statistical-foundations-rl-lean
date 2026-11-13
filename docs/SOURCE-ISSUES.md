@@ -531,9 +531,11 @@ candidate records the asserted error.
 - Remark 4.5 (`generative_model_model_free.tex:3455–3457`) is indexed as `Remark4_5`. Its clause
   (iii), `E ξ_{t,max} > 0`, is stated for `t ≥ τ̂`, the range of Lemma 4.15 which the remark
   follows; at `t = 0` one has `ξ₀ = 0`, so the clause is false there. Theorem 4.6's "for some
-  small enough universal constants `c₁ ≥ c₂ > 0`" is read existentially, as printed; the export
-  witnesses `c₁ = c₂ = 1`, and schedules with `c₂ < 1` are not covered (see the `Thm4_6`
-  docstring).
+  small enough universal constants `c₁ ≥ c₂ > 0`" is read as a threshold `c₀ = 1` below which every
+  schedule pair `0 < c₂ ≤ c₁ ≤ c₀` works (with `c₃` depending on `c₂`), as for `Thm4_13_corrected` (see the
+  `Thm4_6` docstring); the same reading holds for `Thm4_1` (threshold `1/4`). Only the
+  under-estimation claim is still proved at the single pair `c₁ = c₂ = 1` and is indexed as
+  `Thm4_6_underestimation_restricted` ([C52](#C52)).
 
 - `eq:DPO` (`RLHF.tex:62–74`), `eq:policy_RBMLE` (`:115–141`) and `eq:online_RBMLE` (`:158–198`) are indexed as
   `Eq_DPO_restricted`, `Eq_policy_RBMLE_restricted` and `Eq_online_RBMLE_restricted`. The main restriction is the
@@ -1867,3 +1869,10 @@ for δ ∈ (0,1) and N − 1 > 8 log(8/δ), with probability ≥ 1 − δ, r₂^
 r₂^lcb < r₁^lcb. The threshold 8 log(8/δ) and the factor 2 are not printed. Both counts are positive on this event, so
 the zero-count branch of [C18](#C18) is not reached. The entry is indexed as the formal reading of an informal claim,
 as for `Remark5_12_lowerBound`, and is not a restriction of a printed theorem. Candidate language; not author-approved.
+
+<a id="C52"></a>
+## C52: scope disclosure for `Thm4_6_underestimation_restricted` (under-estimation after Theorem 4.6)
+
+**Source:** the paragraph "Discussion: over-estimation vs. under-estimation", `chapters/generative_model_model_free.tex:1869–1881`, which inherits Theorem 4.6's log³T schedule. This is a scope disclosure for a statement-index entry, not a refutation and not a source error.
+
+The entry is proved only for the single schedule pair `c₁ = c₂ = 1`. The reading "for every sufficiently small `c₁ ≥ c₂ > 0`" (the reading now proved for `Thm4_6` itself) is not established here. This is a proof-infrastructure limit: the transported TD analysis needs `c₂ ≥ 1` after rewriting the log³T schedule as a log²T schedule with T-dependent constants, and for `c₂ < 1` the schedule band is not contained in the `c₁ = c₂ = 1` band. The entry therefore carries the suffix `_restricted`. Candidate language; not author-approved.

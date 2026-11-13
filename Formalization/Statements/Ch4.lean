@@ -18,12 +18,16 @@ local instance stateMeasurable (State : Type*) : MeasurableSpace State := ⊤
 local instance actionMeasurable (Action : Type*) : MeasurableSpace Action := ⊤
 
 /-- `thm:policy-evaluation-TD`, `chapters/generative_model_model_free.tex:179–224`.
-The proof uses the universal witness `c₁=c₂=1/4` and
-`c₃=max(4096, exp(4)/(log 2)^4)`. The indexed event uses exactly the source's
-T synchronous samples and compares the resulting iterate with the true
+The book uses "small enough universal constants c₁ ≥ c₂ > 0" and "sufficiently large c₃". They
+are read as: there is a threshold `c₀ > 0` such that for EVERY `0 < c₂ ≤ c₁ ≤ c₀` (every schedule
+in the family) there is a universal `c₃ > 0` (depending only on `c₁`, `c₂`), chosen before the
+model, `δ`, `ε` and `T`. This is the same shape as `Thm4_13_corrected` and implies the weaker
+reading `∃ c₁ ≥ c₂ ∃ c₃`. The proof takes `c₀ = 1/4` and
+`c₃ = max(4096, e^{1/c₂}/(log 2)^4, 4/c₁, 1/(c₁ (log 2)²))`. The indexed event uses exactly the
+source's T synchronous samples and compares the resulting iterate with the true
 infinite-trajectory policy value. -/
 def Thm4_1 : Prop :=
-  ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+  ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ c₂ : ℝ, 0 < c₂ → c₂ ≤ c₁ → c₁ ≤ c₀ → ∃ c₃ : ℝ, 0 < c₃ ∧
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (η : ℕ → ℝ) (δ ε : ℝ) (T : ℕ),
@@ -138,14 +142,14 @@ def Lemma4_11 : Prop :=
     ‖qRobustBellmanMinus M ρ b Q - qRobustBellmanMinus M ρ b R‖ ≤ M.discount * ‖Q - R‖
 
 /-- `thm:infinite-horizon-simple`, chapters/generative_model_model_free.tex:891–912.
-The book uses “small enough universal constants c₁ ≥ c₂ > 0”; this is encoded
-existentially. The proof witnesses c₁ = c₂ = 1 (the same witnesses as `Remark4_2` and
-`Thm4_6_underestimation`) and a sufficiently large c₃. Schedules with c₂ < 1 are not
-covered by this entry, and the reading “for every sufficiently small c₁ ≥ c₂” is not
-established. The library separately retains the c₁ = c₂ = 1/4 result as
-`qLearning_exists_universal_constants_source_accuracy_quarter`. -/
+The book uses "small enough universal constants c₁ ≥ c₂ > 0" and "sufficiently large c₃". They
+are read as: there is a threshold `c₀ > 0` such that for EVERY `0 < c₂ ≤ c₁ ≤ c₀` (every schedule
+in the family, including the constant and rescaled-linear rates) there is a universal `c₃ > 0`
+(depending only on `c₂`), chosen before the model, `δ`, `ε`, `T` and the initialization. This is
+the same shape as `Thm4_13_corrected` and implies the weaker reading `∃ c₁ ≥ c₂ ∃ c₃`. The proof
+takes `c₀ = 1`. -/
 def Thm4_6 : Prop :=
-  ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+  ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ c₂ : ℝ, 0 < c₂ → c₂ ≤ c₁ → c₁ ≤ c₀ → ∃ c₃ : ℝ, 0 < c₃ ∧
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (η : ℕ → ℝ) (δ ε : ℝ) (T : ℕ),
     1/2 ≤ M.discount → 2 ≤ Fintype.card Action → 2 ≤ T →
@@ -200,14 +204,13 @@ deterministic optimal policy `f` (`V^f = V⋆` at every state) instead of maximi
   `log⁴T · log(SAT/δ)` (C = 91 in the proof).
 * There is no budget premise on `T` (only `T ≥ 2`) and no `A ≥ 2` premise; both are
   stronger than the printed context.
-* The schedule constants are existential, as in `Thm4_6` ("small enough universal
-  constants" is encoded existentially). The proof witnesses `c₁ = c₂ = 1`, the same
-  witnesses as `Thm4_6`; schedules with `c₂ < 1` are not covered, and the reading
-  "for every sufficiently small `c₁ ≥ c₂`" is not established. This is a limit of the
-  proof infrastructure (the transported TD analysis needs `c₂ ≥ 1` after rewriting the
-  `log³T` schedule as a `log²T` schedule with `T`-dependent constants), not a source
-  error. A prose claim, not a numbered result. -/
-def Thm4_6_underestimation : Prop :=
+* RESTRICTED: proved only for the single schedule pair `c₁ = c₂ = 1`. The statement is existential
+  (`∃ c₁ c₂ C`), unlike `Thm4_6`, which now covers every `0 < c₂ ≤ c₁ ≤ 1`; the reading "for every
+  sufficiently small `c₁ ≥ c₂ > 0`" is not established. This is a limit of the proof
+  infrastructure (the transported TD analysis needs `c₂ ≥ 1` after rewriting the `log³T` schedule
+  as a `log²T` schedule with `T`-dependent constants), not a source error; see
+  [`SOURCE-ISSUES.md#C52`](../../docs/SOURCE-ISSUES.md#C52). A prose claim, not a numbered result. -/
+def Thm4_6_underestimation_restricted : Prop :=
   ∃ c₁ c₂ C : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < C ∧
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (η : ℕ → ℝ) (δ : ℝ) (T : ℕ),
@@ -487,10 +490,13 @@ Reading: the probability is under the law of the state–action path `(s₀,a₀
 trajectory of :1900–1903; `Q_T` only depends on it). Total variation is `½ ∑ |p - q|`; `t_mix` is
 the least `t ∈ ℕ` (so `t_mix = 0` is allowed) with `max_{(s,a)} TV(P^t(·|s,a), μ) ≤ 1/4`;
 uniform ergodicity is `TV(P^t(·|s,a), μ) ≤ C r^t` with `r < 1`; `μ` is a stationary distribution of
-the pair chain; logarithms are natural. The printed "for some universal constants" is read as
-`∃ c₁ ∃ c₂`. The library export `AsyncQ.asyncQ_exists_c₂` proves more: for every `c₁ ∈ (0,1]`,
-`c₂ = max(e^{32/c₁}, 4096)` works (the wrapper uses `c₁ = 1`), and `c₂` growing like `e^{32/c₁}`
-is a proof artifact. The reversed order `∃ c₂ ∀ c₁` would be false. Fix `c₂`, take `S = A = 1`,
+the pair chain; logarithms are natural. The printed "for some universal constants `0 < c₁ ≤ 1`"
+(rate) and "sufficiently large `c₂`" (budget) are read as: for EVERY `c₁ ∈ (0,1]` there is a
+universal `c₂ > 0` (depending only on `c₁`, chosen before the instance) such that the conclusion
+holds. This is the strongest natural reading and implies the weaker `∃ c₁ ∃ c₂` reading. It is
+proved by the library export `AsyncQ.asyncQ_exists_c₂` with `c₂ = max(e^{32/c₁}, 4096)`; `c₂`
+growing like `e^{32/c₁}` is a proof artifact. The reversed order `∃ c₂ ∀ c₁` would be false. Fix
+`c₂`, take `S = A = 1`,
 `r = 1`, `γ = 1/2`, `Q₀ = 0` (so `Q⋆ = 2`) and any `T` satisfying the budget, which does not
 involve `c₁`. Then the error `2(1-η)^T` tends to `2` as `c₁ → 0`. For example, `c₂ = 1.5·10⁵`,
 `T = e^{40}` and `c₁ = 10⁻⁶` give an error of about `1.88 > 1`. This counterexample is a paper
@@ -500,7 +506,7 @@ Joint satisfiability of the budget for the chosen `c₂` is likewise argued on p
 machine-checked: for fixed instance parameters the right-hand side grows only polylogarithmically
 in `T`, so every large enough `T` satisfies it. -/
 def Thm4_12_corrected : Prop :=
-  ∃ c₁ : ℝ, 0 < c₁ ∧ c₁ ≤ 1 ∧ ∃ c₂ : ℝ, 0 < c₂ ∧
+  ∀ c₁ : ℝ, 0 < c₁ → c₁ ≤ 1 → ∃ c₂ : ℝ, 0 < c₂ ∧
   ∀ (S : Type u) (A : Type v) [Fintype S] [Fintype A]
     (M : DiscountedMDP S A) (πb : StationaryPolicy S A) (μ : FiniteDistribution (S × A))
     (μmin : ℝ) (tmix : ℕ) (s₀ : S) (δ ε : ℝ) (T : ℕ),
