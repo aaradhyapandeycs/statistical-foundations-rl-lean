@@ -108,7 +108,7 @@ Reconstruction: in the Thm 4.1 setting, for fixed t with T/(c₂ log T) ≤ t �
 
 | Binder | Bin | Citation |
 |---|---|---|
-| ∃c₁≥c₂>0, c₃>0 | SOURCE | constants of Thm 4.1 |
+| ∃c₀>0 ∀ 0<c₂≤c₁≤c₀ ∃c₃>0 (threshold form, updated 2026-11-13; was ∃c₁≥c₂ ∃c₃, implied by it) | SOURCE | constants of Thm 4.1 |
 | State, Action, M, π | TYPING/STANDING | |
 | η, δ, ε, T, t, V₀ | SOURCE | |
 | `1/2≤γ`, `2≤T`, `0<δ<1`, `0<ε≤H` | STANDING | Thm 4.1 premises `:206` |
@@ -336,6 +336,7 @@ change (outside scope); no `sorry`/`admit` in either file.
 
 ## Cross-cutting observations (non-failing)
 
+0. Update 2026-11-13: Thm4_1, Lemma4_5, Thm4_6, Remark4_1, Remark4_2 are now stated in the threshold form (∃c₀ ∀ 0<c₂≤c₁≤c₀ ∃c₃), which implies the reading below; only Thm4_6_underestimation_restricted remains single-pair (C52). The paragraph below is the earlier reading.
 1. Constant-quantifier reading. Thm4_1, Lemma4_5, Thm4_6, Thm4_6_underestimation_restricted, Remark4_1, Remark4_2 read
    "for some small enough universal constants c₁ ≥ c₂ > 0" existentially (the literal "for some"); Thm4_13_corrected
    reads "for sufficiently small" (no "some", `.tex:2210`) universally (∃c₀ ∀ c₁≥c₂ ≤ c₀). The split follows the

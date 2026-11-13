@@ -296,6 +296,8 @@ with `P_π(s,t) = Σ_a π(a|s)P(t|s,a)`, `V^π` the expected infinite-trajectory
 inverse: `0 ≤ (I − γP_π)⁻¹Var_{P_π}(V^π) ≤ (2‖V^π‖∞²/γ²)1` entrywise, and
 `0 ≤ ‖(I − γP_π)⁻¹√Var_{P_π}(V^π)‖∞ ≤ √(2/(1−γ))‖V^π‖∞/γ`. Domain condition `0 < γ`: the printed
 bounds divide by `γ` (at `γ = 0` they are undefined; Lean's `x/0 = 0` would make them false).
+This is a scope disclosure, not a source error (`docs/SOURCE-ISSUES.md`, "Statement-index scope
+disclosures", `eq:lemma-VarP-V-bound` bullet).
 The intermediate expressions of the printed chain are proof steps and are not stated. -/
 def Eq_lemma_VarP_V_bound : Prop :=
   ∀ (State Action : Type*) [Fintype State] [Fintype Action] [DecidableEq State]

@@ -10,6 +10,7 @@ import Formalization.ModelFree.TDSquareEnergy
 import Formalization.ModelFree.TDSourceVarianceProxyUniversal
 import Formalization.ModelFree.TDSourceAccuracyExactSamples
 import Formalization.ModelFree.TDSourceScheduleGeneral
+import Formalization.ModelFree.ScheduleGeneralRemarks
 import Formalization.ModelFree.QLearningIterateBounds
 import Formalization.ModelFree.QLearningStabilityInfinityNorm
 import Formalization.ModelFree.QLearningRobustContraction
@@ -60,9 +61,9 @@ theorem Lemma4_4_holds : Lemma4_4 := by
   exact tdSquaredIterateEnergy M π η T V₀ h₀ hη k hk hkT
 
 theorem Lemma4_5_holds : Lemma4_5 := by
-  obtain ⟨c₁, c₂, c₃, hc₂, horder, _, hc₃, h⟩ :=
-    tdSource_varianceProxy_exists_universal_constants
-  exact ⟨c₁, c₂, c₃, hc₂, horder, hc₃, h⟩
+  refine ⟨1 / 4, by norm_num, fun c₁ c₂ hc₂ hc₂₁ hc₁ ↦ ?_⟩
+  obtain ⟨c₃, hc₃, h⟩ := tdSource_varianceProxy_exists_c₃ c₁ c₂ hc₂ hc₂₁ (by nlinarith)
+  exact ⟨c₃, hc₃, h⟩
 
 theorem Lemma4_8_holds : Lemma4_8 := by
   intro State Action instS instA M η samples Q₀ t h₀ hη
@@ -143,9 +144,15 @@ theorem Thm4_12_corrected_holds : Thm4_12_corrected := by
     Q₀ h₀
   exact h S A M πb μ μmin tmix s₀ δ ε T hγ hst htmix.1 hμmin hμ0 hT1 hT2 hδ hδ1 hε hε1 hbud Q₀ h₀
 
-theorem Remark4_1_holds : Remark4_1 := tdSource_meanError_exists_universal_constants
+theorem Remark4_1_holds : Remark4_1 := by
+  refine ⟨1 / 4, by norm_num, fun c₁ c₂ hc₂ hc₂₁ hc₁ ↦ ?_⟩
+  obtain ⟨c₃, hc₃, h⟩ := tdSource_meanError_exists_c₃ c₁ c₂ hc₂ hc₂₁ hc₁
+  exact ⟨c₃, hc₃, h⟩
 
-theorem Remark4_2_holds : Remark4_2 := qLearning_meanError_exists_universal_constants
+theorem Remark4_2_holds : Remark4_2 := by
+  refine ⟨1, one_pos, fun c₁ c₂ hc₂ hc₂₁ hc₁ ↦ ?_⟩
+  obtain ⟨c₃, hc₃, h⟩ := qLearning_meanError_exists_c₃ c₁ c₂ hc₂ hc₂₁ hc₁
+  exact ⟨c₃, hc₃, h⟩
 
 open Classical in
 theorem Remark4_3_corrected_holds : Remark4_3_corrected :=

@@ -9,23 +9,23 @@
  "inputs_sha256": {
   "Formalization/Statements/Ch1.lean": "f523ae98c23b85909a195bcb9f338133b83d4a6f6dc7b08f54e2400deb7387a0",
   "Formalization/Statements/Ch1Proofs.lean": "816c9b8fd9e071b405c76069681144beffddf72bd2a3ce9d6d883e4601757965",
-  "Formalization/Statements/Ch2.lean": "c8ea5ea973a23bda4035c22f9f7b836370ee9c7a8404ac371408a927bb078e99",
-  "Formalization/Statements/Ch2Proofs.lean": "b279c60aa0cf1507ed9a896fad0981e43a2239ffc20086eb6f281ecf23a5f560",
-  "Formalization/Statements/Ch3.lean": "0c5cc7cf1e101c571cfd6a353a876009a4802d22b7f69f45ca381070c38d0300",
+  "Formalization/Statements/Ch2.lean": "498cad2d517fa95d97753f507cca70698e845e6a0d8da456a24c673ac1c8169e",
+  "Formalization/Statements/Ch2Proofs.lean": "39168c218cce181e4751a4f01f1ab1cf64ae9ec0bf94bf72a20215db43119124",
+  "Formalization/Statements/Ch3.lean": "c8aea8aa0e378f8d76d06293a4caeaa0dd5c11c0d1dbf1db7df9fe8606babe91",
   "Formalization/Statements/Ch3Proofs.lean": "cd6d4a2a9d98d1de22971f8393094060cb6304f81c3cddcfe156815b1fe6967e",
-  "Formalization/Statements/Ch4.lean": "cda7d36d9ef62e2f40ce218467b3dd41c2db81cddc66432f8e099e6a29971519",
-  "Formalization/Statements/Ch4Proofs.lean": "0b4c0a74436ed71d8746e717c8d08ee22cb876fdad659a5f294a83aaad03b8f2",
+  "Formalization/Statements/Ch4.lean": "29879f4d352ff29914b4782a8aa6d2d94ec8037f0dd081b11e5649668813db77",
+  "Formalization/Statements/Ch4Proofs.lean": "39b5d1f7e64d9d55c6216b169cba4fd3507062dd2666d65d575ee129cafb0d56",
   "Formalization/Statements/Ch5.lean": "17d24819bc404b453460c6dbc2ae06e8cae3294fec61a279307c57e90c505494",
   "Formalization/Statements/Ch5Proofs.lean": "e28e7c0fc71f4fe1b21b094b19905da61acf6933c06da14c54902c35b715cc86",
   "Formalization/Statements/Ch6.lean": "e17cc9045a7d70dd349eea74cc6d1ae06316cadef20e5b275c1286463f2c76d6",
   "Formalization/Statements/Ch6Proofs.lean": "8fe9bb4558a7af2f9c2d688810c60338d9b62d51b9239c2ca63fbea0f9844506",
   "Formalization/Statements/Ch7.lean": "bf6b16acf57e183b9670cffb2057a30da5fa356db7f9c8d8bb4345ff41c3eaa7",
   "Formalization/Statements/Ch7Proofs.lean": "7f81433eecb369ee3c539cb4ab6e3ad57cbc6477a3c502d176611fcc1717c506",
-  "docs/COVERAGE.md": "41a08a3b9e990b2a4edce5139a04e03adb94e1a61731db1681dc256325b1744b",
+  "docs/COVERAGE.md": "ea90c9ef534d7761342a2908d78d393a32ac063d04f3d851359d7cba66ab270b",
   "docs/SOURCE-ISSUES.md": "74c6880755b50e5a7c6610acec663d7a9ba7578834c720ccbad08d074009ebc1",
   "docs/graph/uses-review.json": "ec0fd31e102e3d6bb48ab1b0c5c493408c9508b4f9234fe09ba1d35e802250dc",
   "docs/issue-classes.json": "c509b5f7d1115ec120cf5a33bddb64817f06f94784898fba33e05f85b033cac8",
-  "docs/named-result-status.json": "1e8a5a353e9668ad3aa3718e6287b3938a4f2d92830667723fc782244883b6e8",
+  "docs/named-result-status.json": "b0736d0fb8985e7557bba4ba7dee4d18da816c2b1334d73e9c1c7f00606cb01e",
   "docs/source-inventory.json": "8a4ec8c02e6a4e331ceb63ae34b04f9d9debc55a13d017004194249941a63ca7"
  },
  "vocabulary": {
@@ -1153,7 +1153,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 449,
+     "line": 474,
      "counted": true
     }
    ],
@@ -1213,7 +1213,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 464,
+     "line": 489,
      "counted": true
     }
    ],
@@ -1273,7 +1273,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 464,
+     "line": 489,
      "counted": true
     }
    ],
@@ -1333,7 +1333,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 478,
+     "line": 503,
      "counted": true
     }
    ],
@@ -1393,7 +1393,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 508,
+     "line": 533,
      "counted": true
     }
    ],
@@ -1453,7 +1453,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 508,
+     "line": 533,
      "counted": true
     }
    ],
@@ -1513,7 +1513,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 532,
+     "line": 557,
      "counted": true
     }
    ],
@@ -1573,7 +1573,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 532,
+     "line": 557,
      "counted": true
     }
    ],
@@ -1633,7 +1633,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 532,
+     "line": 557,
      "counted": true
     }
    ],
@@ -1693,7 +1693,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 552,
+     "line": 577,
      "counted": true
     }
    ],
@@ -1753,7 +1753,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 552,
+     "line": 577,
      "counted": true
     }
    ],
@@ -1813,7 +1813,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 573,
+     "line": 598,
      "counted": true
     }
    ],
@@ -1871,7 +1871,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 147,
+     "line": 152,
      "counted": true
     }
    ],
@@ -1971,7 +1971,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 168,
+     "line": 178,
      "counted": true
     }
    ],
@@ -2369,7 +2369,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 395,
+     "line": 409,
      "counted": true
     }
    ],
@@ -2429,7 +2429,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 418,
+     "line": 436,
      "counted": true
     }
    ],
@@ -2489,7 +2489,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 589,
+     "line": 614,
      "counted": true
     }
    ],
@@ -2549,7 +2549,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 589,
+     "line": 614,
      "counted": true
     }
    ],
@@ -2609,7 +2609,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 589,
+     "line": 614,
      "counted": true
     }
    ],
@@ -2669,7 +2669,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 623,
+     "line": 648,
      "counted": true
     }
    ],
@@ -2729,7 +2729,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 641,
+     "line": 666,
      "counted": true
     }
    ],
@@ -2789,7 +2789,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 274,
+     "line": 288,
      "counted": true
     }
    ],
@@ -2866,7 +2866,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 297,
+     "line": 311,
      "counted": true
     }
    ],
@@ -2955,7 +2955,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 247,
+     "line": 261,
      "counted": true
     }
    ],
@@ -3032,7 +3032,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 193,
+     "line": 207,
      "counted": true
     }
    ],
@@ -3268,7 +3268,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 358,
+     "line": 372,
      "counted": true
     }
    ],
@@ -3346,7 +3346,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 228,
+     "line": 242,
      "counted": true
     }
    ],
@@ -3494,7 +3494,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 344,
+     "line": 358,
      "counted": true
     }
    ],
@@ -3571,7 +3571,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch2.lean",
-     "line": 213,
+     "line": 227,
      "counted": true
     }
    ],
@@ -4031,7 +4031,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 469,
+     "line": 471,
      "counted": false
     },
     {
@@ -4039,7 +4039,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 507,
+     "line": 509,
      "counted": false
     }
    ],
@@ -4208,7 +4208,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 443,
+     "line": 445,
      "counted": true
     }
    ],
@@ -4683,7 +4683,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 314,
+     "line": 316,
      "counted": true
     }
    ],
@@ -4831,7 +4831,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 360,
+     "line": 362,
      "counted": true
     },
     {
@@ -4839,7 +4839,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 410,
+     "line": 412,
      "counted": false
     }
    ],
@@ -4991,7 +4991,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 553,
+     "line": 555,
      "counted": true
     }
    ],
@@ -5061,7 +5061,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 553,
+     "line": 555,
      "counted": true
     }
    ],
@@ -5131,7 +5131,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 340,
+     "line": 342,
      "counted": true
     }
    ],
@@ -5217,7 +5217,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 642,
+     "line": 644,
      "counted": false
     },
     {
@@ -5225,7 +5225,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 690,
+     "line": 692,
      "counted": true
     }
    ],
@@ -5310,7 +5310,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch3.lean",
-     "line": 588,
+     "line": 590,
      "counted": false
     }
    ],
@@ -5534,7 +5534,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 604,
+     "line": 607,
      "counted": true
     }
    ],
@@ -5681,7 +5681,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 233,
+     "line": 236,
      "counted": true
     }
    ],
@@ -5879,7 +5879,7 @@
     "StatisticalRL.Statements.Ch4.Lemma4_5_holds"
    ],
    "library_exports": [
-    "StatisticalRL.TemporalDifference.tdSource_varianceProxy_exists_universal_constants"
+    "StatisticalRL.TemporalDifference.tdSource_varianceProxy_exists_c₃"
    ],
    "ledger_records": [
     {
@@ -5920,7 +5920,7 @@
    "display_notes": [
     {
      "entry": "StatisticalRL.Statements.Ch4.Lemma4_5",
-     "note": "Universal constants read existentially (the proof gives c₁ = c₂ = 1/4, c₃ = 4096)."
+     "note": "Proved for every schedule pair 0 < c₂ ≤ c₁ ≤ 1/4 (threshold c₀ = 1/4), with c₃ depending only on c₁, c₂."
     }
    ],
    "correction_status": null,
@@ -5962,7 +5962,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 144,
+     "line": 147,
      "counted": true
     },
     {
@@ -5970,7 +5970,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 169,
+     "line": 172,
      "counted": false
     }
    ],
@@ -6111,7 +6111,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 639,
+     "line": 644,
      "counted": true
     }
    ],
@@ -6241,7 +6241,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 305,
+     "line": 308,
      "counted": false
     },
     {
@@ -6249,7 +6249,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 530,
+     "line": 533,
      "counted": true
     },
     {
@@ -6257,7 +6257,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 587,
+     "line": 590,
      "counted": false
     }
    ],
@@ -6411,7 +6411,7 @@
      "variant": "printed",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 566,
+     "line": 569,
      "counted": true
     }
    ],
@@ -6473,7 +6473,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 101,
+     "line": 104,
      "counted": true
     }
    ],
@@ -6561,7 +6561,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 257,
+     "line": 260,
      "counted": true
     }
    ],
@@ -6691,7 +6691,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 115,
+     "line": 118,
      "counted": true
     }
    ],
@@ -6788,7 +6788,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 134,
+     "line": 137,
      "counted": true
     }
    ],
@@ -6861,7 +6861,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 189,
+     "line": 192,
      "counted": true
     }
    ],
@@ -6929,7 +6929,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 472,
+     "line": 475,
      "counted": true
     }
    ],
@@ -7055,7 +7055,7 @@
      "variant": "corrected",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 674,
+     "line": 680,
      "counted": true
     }
    ],
@@ -7203,7 +7203,7 @@
      "variant": "corrected",
      "ledger": "variant",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 434,
+     "line": 437,
      "counted": true
     }
    ],
@@ -7308,7 +7308,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 281,
+     "line": 284,
      "counted": true
     }
    ],
@@ -7396,7 +7396,7 @@
      "variant": "printed",
      "ledger": "certified",
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 335,
+     "line": 338,
      "counted": true
     }
    ],
@@ -7561,7 +7561,7 @@
      "variant": "restricted",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 363,
+     "line": 366,
      "counted": true
     },
     {
@@ -7569,7 +7569,7 @@
      "variant": "supporting",
      "ledger": null,
      "file": "Formalization/Statements/Ch4.lean",
-     "line": 409,
+     "line": 412,
      "counted": false
     }
    ],

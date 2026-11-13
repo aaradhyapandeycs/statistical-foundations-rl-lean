@@ -77,10 +77,13 @@ def Lemma4_4 : Prop :=
 
 /-- `lemma:TD-variance-proxy-bound`, chapters/generative_model_model_free.tex:727–743,
 under the surrounding eligible-terminal condition at lines 488–490. The
-book uses “small enough universal constants c₁ ≥ c₂ > 0”; the existing
-proof supplies c₁ = c₂ = 1/4 and c₃ = 4096. -/
+book uses “small enough universal constants c₁ ≥ c₂ > 0”, read in threshold form as in `Thm4_1`:
+there is `c₀ > 0` such that for EVERY `0 < c₂ ≤ c₁ ≤ c₀` there is a universal `c₃ > 0` (depending
+only on `c₁`, `c₂`), chosen before the model, `δ`, `ε`, `T` and `t`. This implies the weaker
+reading `∃ c₁ ≥ c₂ ∃ c₃` (take `c₁ = c₂ = c₀`). The proof takes `c₀ = 1/4` and
+`c₃ = max(384, 1/(c₁ (log 2)²))`. -/
 def Lemma4_5 : Prop :=
-  ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+  ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ c₂ : ℝ, 0 < c₂ → c₂ ≤ c₁ → c₁ ≤ c₀ → ∃ c₃ : ℝ, 0 < c₃ ∧
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (η : ℕ → ℝ) (δ ε : ℝ) (T t : ℕ),
@@ -604,16 +607,18 @@ def Thm4_7_case_i : Prop :=
 /-- Remark 4.1 (mean estimation guarantee for TD),
 `chapters/generative_model_model_free.tex:226–239`, for Theorem 4.1 `thm:policy-evaluation-TD`
 (:179–224). The constants `c₁, c₂, c₃` are those of Theorem 4.1: the statement quantifies them
-existentially in the same order and with the same side conditions as `Thm4_1`, and the proof reuses
-`Thm4_1`'s witnesses (`c₁ = c₂ = 1/4`, `c₃ = max(4096, e⁴/(log 2)⁴)`) by applying the same export
-`tdSource_policyEvaluation_exactSamples_accuracy_exists_universal_constants`. `δ := ε(1−γ)/2` as
+in the same order and with the same side conditions as `Thm4_1`, and the proof reuses
+`Thm4_1`'s witnesses by applying the same exports. Like `Thm4_1` it is in threshold form: there is
+`c₀ > 0` such that for EVERY `0 < c₂ ≤ c₁ ≤ c₀` there is a universal `c₃ > 0`; this implies the
+weaker reading `∃ c₁ ≥ c₂ ∃ c₃`. The proof takes `c₀ = 1/4` and the `c₃` of the generalised
+Theorem 4.1 (`tdSource_policyEvaluation_exactSamples_accuracy_exists_c₃`). `δ := ε(1−γ)/2` as
 printed, so `S T/δ = 2 S T/(ε(1−γ))` and the budget is exactly Theorem 4.1's at this `δ`. `max_s` is
 `⨆ s` over the finite nonempty state space. The expectation is the Bochner integral under the actual
 sampling law of the `T` synchronous draws; integrability is concluded, not assumed (it excludes the
 Bochner junk value). The five conjuncts are the printed `δ ∈ (0,1)`, the printed chain `E[…] ≤
 ε(1−δ) + δ/(1−γ) ≤ 2ε`, and integrability. -/
 def Remark4_1 : Prop :=
-  ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+  ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ c₂ : ℝ, 0 < c₂ → c₂ ≤ c₁ → c₁ ≤ c₀ → ∃ c₃ : ℝ, 0 < c₃ ∧
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
     (η : ℕ → ℝ) (ε : ℝ) (T : ℕ),
@@ -638,16 +643,17 @@ def Remark4_1 : Prop :=
 
 /-- Remark 4.2 (mean estimation guarantee for synchronous Q-learning),
 `chapters/generative_model_model_free.tex:914–929`, for Theorem 4.6 `thm:infinite-horizon-simple`
-(:891–912). The constants are those of Theorem 4.6 (witnesses c₁ = c₂ = 1), quantified in the same
-order and with the same
-side conditions as `Thm4_6` (the proof reuses its witnesses by applying the same export
-`qLearning_exists_universal_constants_source_accuracy`). `δ := ε(1−γ)/2` as printed, so
+(:891–912). The constants are those of Theorem 4.6, quantified in the same order (threshold form:
+there is `c₀ > 0` such that for EVERY `0 < c₂ ≤ c₁ ≤ c₀` there is a universal `c₃ > 0`, implying the
+weaker reading `∃ c₁ ≥ c₂ ∃ c₃`; the proof takes `c₀ = 1`) and with the same
+side conditions as `Thm4_6` (the proof reuses `qLearning_source_accuracy_exists_c₃`, the chain of
+`Thm4_6_holds`). `δ := ε(1−γ)/2` as printed, so
 `S A T/δ = 2 S A T/(ε(1−γ))`. The premises other than `δ` are those of `Thm4_6`. `max_{(s,a)}` is
 `⨆` over the finite nonempty pair space, `Q⋆` is the actual optimal trajectory Q-function (as in
 `Thm4_6`), and the expectation is the Bochner integral under the actual product sampling law;
 integrability is concluded. Five conjuncts as in `Remark4_1`. -/
 def Remark4_2 : Prop :=
-  ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+  ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ c₂ : ℝ, 0 < c₂ → c₂ ≤ c₁ → c₁ ≤ c₀ → ∃ c₃ : ℝ, 0 < c₃ ∧
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (η : ℕ → ℝ) (ε : ℝ) (T : ℕ),
     1/2 ≤ M.discount → 2 ≤ Fintype.card Action → 2 ≤ T →

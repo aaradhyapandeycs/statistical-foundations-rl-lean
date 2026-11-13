@@ -24,6 +24,20 @@ import Formalization.MDP.FiniteQTrajectory
 namespace StatisticalRL.Statements.Ch2
 open MeasureTheory
 
+/-- Identification of the policy Bellman solution with the trajectory Q-value, assembled from
+`trajectoryExpectedQ_eq_policyFixedPoint`. -/
+private theorem trajQ_ident {State Action : Type*} [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action) :
+    M.trajectoryExpectedQ π = M.policyFixedPoint π :=
+  funext fun s ↦ funext fun a ↦ M.trajectoryExpectedQ_eq_policyFixedPoint π s a
+
+/-- Identification of the trajectory value with the policy average of the Bellman solution. -/
+private theorem trajV_ident {State Action : Type*} [Fintype State] [Fintype Action]
+    (M : DiscountedMDP State Action) (π : StationaryPolicy State Action) :
+    M.trajectoryExpectedValue π = fun s ↦ (π s).expectation (M.policyFixedPoint π s) := by
+  funext s
+  rw [M.trajectoryExpectedValue_eq_policyAverageQ π s, trajQ_ident]
+
 theorem Lemma2_2_holds : Lemma2_2 := by
   intro State Action _ _ M V Vhat hV hVhat
   exact M.transitionVariance_perturbation hV hVhat
@@ -51,7 +65,9 @@ theorem Lemma2_3_holds : Lemma2_3 := by
 
 theorem Lemma2_1_holds : Lemma2_1 := by
   intro State Action _ _ M
-  constructor
+  refine ⟨trajQ_ident M, ?_, ?_, ?_⟩
+  · simp only [trajQ_ident M]
+    exact M.iSup_policyFixedPoint_eq_optimalityFixedPoint
   · intro Q₀ k _
     exact M.value_iteration_error Q₀ k
   · intro π f hupdate hmax k _
@@ -155,22 +171,34 @@ theorem Lemma2_10_holds : Lemma2_10.{u} := by
 
 theorem Eq_QV_pi_perturbation_r_inf_holds : Eq_QV_pi_perturbation_r_inf := by
   intro State Action _ _ M M' hP hγ π
-  exact ⟨M.policyFixedPoint_sub_norm_le_of_reward M' hP hγ π,
+  exact ⟨⟨trajQ_ident M π, trajQ_ident M' π,
+      trajV_ident M π, trajV_ident M' π⟩,
+    M.policyFixedPoint_sub_norm_le_of_reward M' hP hγ π,
     M.policyValue_sub_norm_le_of_reward M' hP hγ π⟩
 
 theorem Eq_QV_star_perturbation_r_inf_holds : Eq_QV_star_perturbation_r_inf := by
   intro State Action _ _ M M' hP hγ
-  exact M.optimal_reward_perturbation M' hP hγ
+  exact ⟨fun π ↦ ⟨trajQ_ident M π, trajQ_ident M' π,
+      trajV_ident M π, trajV_ident M' π⟩,
+    M.optimal_reward_perturbation M' hP hγ⟩
 
 theorem Lemma2_1_iterationCount_holds : Lemma2_1_iterationCount := by
   intro State Action _ _ M ε hε
-  exact ⟨fun Q₀ k hk ↦ M.value_iteration_count ε hε Q₀ k hk,
+  refine ⟨trajQ_ident M, ?_, fun Q₀ k hk ↦ M.value_iteration_count ε hε Q₀ k hk,
     fun π f hupdate hmax k hk ↦
       M.arbitraryGreedyPolicyIteration_count ε hε π f hupdate hmax k hk⟩
+  simp only [trajQ_ident M]
+  exact M.iSup_policyFixedPoint_eq_optimalityFixedPoint
 
 theorem Eq_Qpi_Vpi_matrix_notation_inf_holds : Eq_Qpi_Vpi_matrix_notation_inf := by
   intro State Action _ _ M π
-  exact M.policyFixedPoint_matrix_forms π
+  have h := M.policyFixedPoint_matrix_forms π
+  refine ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2, ?_, ?_⟩
+  · funext sa
+    exact (congrFun (congrFun (trajQ_ident M π) sa.1) sa.2).symm
+  · funext s
+    rw [congrFun (trajV_ident M π) s]
+    rfl
 
 theorem Eq_defn_Vpi_inf_holds : Eq_defn_Vpi_inf := by
   intro State Action _ _ M π s
