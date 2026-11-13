@@ -204,14 +204,13 @@ deterministic optimal policy `f` (`V^f = V⋆` at every state) instead of maximi
   `log⁴T · log(SAT/δ)` (C = 91 in the proof).
 * There is no budget premise on `T` (only `T ≥ 2`) and no `A ≥ 2` premise; both are
   stronger than the printed context.
-* The schedule constants are existential ("small enough universal constants" is encoded
-  existentially here, unlike `Thm4_6`, which now covers every `0 < c₂ ≤ c₁ ≤ 1`). The proof
-  witnesses `c₁ = c₂ = 1`; schedules with `c₂ < 1` are not covered, and the reading
-  "for every sufficiently small `c₁ ≥ c₂`" is not established. This is a limit of the
-  proof infrastructure (the transported TD analysis needs `c₂ ≥ 1` after rewriting the
-  `log³T` schedule as a `log²T` schedule with `T`-dependent constants), not a source
-  error. A prose claim, not a numbered result. -/
-def Thm4_6_underestimation : Prop :=
+* RESTRICTED: proved only for the single schedule pair `c₁ = c₂ = 1`. The statement is existential
+  (`∃ c₁ c₂ C`), unlike `Thm4_6`, which now covers every `0 < c₂ ≤ c₁ ≤ 1`; the reading "for every
+  sufficiently small `c₁ ≥ c₂ > 0`" is not established. This is a limit of the proof
+  infrastructure (the transported TD analysis needs `c₂ ≥ 1` after rewriting the `log³T` schedule
+  as a `log²T` schedule with `T`-dependent constants), not a source error; see
+  [`SOURCE-ISSUES.md#C52`](../../docs/SOURCE-ISSUES.md#C52). A prose claim, not a numbered result. -/
+def Thm4_6_underestimation_restricted : Prop :=
   ∃ c₁ c₂ C : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < C ∧
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (η : ℕ → ℝ) (δ : ℝ) (T : ℕ),

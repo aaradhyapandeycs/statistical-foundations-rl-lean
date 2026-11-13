@@ -104,7 +104,7 @@ theorem Thm4_6_holds : Thm4_6 := by
     hc₁ hc₂ hc₃ he hs hd hT hδ hδ1 hε hεmax hschedule Q₀ h₀ hbudget
     (qSource_robust_comparator_closeness_from_stopped_law M _ hρ)
 
-theorem Thm4_6_underestimation_holds : Thm4_6_underestimation :=
+theorem Thm4_6_underestimation_restricted_holds : Thm4_6_underestimation_restricted :=
   qLearning_underestimation_exists_universal_constants
 
 theorem Lemma4_3_corrected_holds : Lemma4_3_corrected := by

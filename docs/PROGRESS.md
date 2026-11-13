@@ -88,7 +88,7 @@ The remaining prose items were triaged (plan and [independent check](critic-comp
 
 ## Q-learning under-estimation; Theorem 4.6 re-witnessed at c₁ = c₂ = 1
 
-The displayed under-estimation claim after Theorem 4.6 (model-free chapter lines 1869–1881) is proved (`Thm4_6_underestimation`): Q̃_T ≤ Q_T pathwise, and Q̃_T − Q⋆ ≥ −91·√(log⁴T·log(SAT/δ)/((1−γ)³T)) for all (s,a) with probability ≥ 1−δ, with no budget and no A ≥ 2. Theorem 4.6's export now witnesses c₁ = c₂ = 1 (same `Thm4_6` Prop; the 1/4 proof is kept as `qLearning_exists_universal_constants_source_accuracy_quarter`), so both entries share one schedule class. Schedules with c₂ < 1 are not covered (proof-infrastructure limit, not a source error). Independently reviewed ([critic-underestimation.md](critic-underestimation.md)). A displayed claim, so the named count is unchanged. The complete monograph remains **INCOMPLETE**.
+The displayed under-estimation claim after Theorem 4.6 (model-free chapter lines 1869–1881) is proved (`Thm4_6_underestimation_restricted`): Q̃_T ≤ Q_T pathwise, and Q̃_T − Q⋆ ≥ −91·√(log⁴T·log(SAT/δ)/((1−γ)³T)) for all (s,a) with probability ≥ 1−δ, with no budget and no A ≥ 2. Theorem 4.6's export now witnesses c₁ = c₂ = 1 (same `Thm4_6` Prop; the 1/4 proof is kept as `qLearning_exists_universal_constants_source_accuracy_quarter`), so both entries share one schedule class. Schedules with c₂ < 1 are not covered (proof-infrastructure limit, not a source error). Independently reviewed ([critic-underestimation.md](critic-underestimation.md)). A displayed claim, so the named count is unchanged. The complete monograph remains **INCOMPLETE**.
 
 ## Theorem 3.9 for every empirically optimal policy
 
