@@ -43,6 +43,7 @@ The printed statement is not proved as printed. Each needs either a proof of the
 - Theorem 4.12 `thm:infinite-horizon-asyn` — `chapters/generative_model_model_free.tex:2062–2086` · statement `corrected` · C34
 - Remark 4.3 — `chapters/generative_model_model_free.tex:2088–2090` · statement `corrected` · C34
 - Theorem 4.13 `thm:finite-horizon-simple-Q-generative` — `chapters/generative_model_model_free.tex:2215–2236` · statement `corrected` · C35
+- Remark 4.5 — `chapters/generative_model_model_free.tex:3455–3457` · statement `restricted`
 - Display `eq:PAC-from-regret-conversion` — `chapters/onlineRL.tex:115–141` · statement `corrected` · C46
 - Theorem 5.1 `thm:bandit-pure-ucb` — `chapters/bandits.tex:258–277` · statement `restricted` · C36
 - Theorem 5.2 `thm-ucbvi-regret` — `chapters/onlineRL.tex:470–484` · statement `corrected` · C8
@@ -200,9 +201,9 @@ A COVERAGE row headed **Out of scope: cited result**, with a dated user-decision
 
 ## Other obligations outside the numbered-result count
 
-- Prose nodes (remarks and displayed claims): 115, of which 47 printed, 11 corrected, 17 restricted, 1 refuted, 2 partial, 15 implied, 16 explanatory, 5 cited-out-of-scope, 1 prose-claim.
+- Prose nodes (remarks and displayed claims): 115, of which 46 printed, 11 corrected, 18 restricted, 1 refuted, 2 partial, 15 implied, 16 explanatory, 5 cited-out-of-scope, 1 prose-claim.
 - Algorithms: 17; definitions: 4; assumptions: 3 (context items, not nodes; edges to them are recorded but never block).
 - Source-gap candidates in the inventory: 59 (see `docs/SOURCE-ISSUES.md`).
 - Unlabelled prose claims not listed in `docs/COVERAGE.md` are not tracked as nodes.
-- Supporting-infrastructure COVERAGE rows (attached to no node, proving nothing by themselves): 4.
+- Supporting-infrastructure COVERAGE rows (attached to no node, proving nothing by themselves): 5.
 

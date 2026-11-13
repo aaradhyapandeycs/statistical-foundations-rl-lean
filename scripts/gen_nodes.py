@@ -382,6 +382,56 @@ def coverage_partial(name: str, coverage_rows: list) -> bool:
     return False
 
 
+def row_subjects(row: dict) -> list:
+    """Entry names a coverage row names as its primary subject (see `coverage_variant`)."""
+    rest = re.sub(r"^\s*\*\*.+?\*\*", "", row["scope"], count=1)
+    paren = re.match(r"\s*\(([^)]*)\)", rest)
+    if paren:
+        subjects = re.findall(r"`([^`]+)`", paren.group(1))
+    else:
+        first = re.search(r"`([^`]+)`", rest)
+        subjects = [first.group(1)] if first else []
+    return [x.rsplit(".", 1)[-1] for x in subjects]
+
+
+def supporting_entry_names(coverage_rows: list) -> set:
+    """Statement entries that a `**Supporting ...**` COVERAGE row names as its subject.  Such an entry
+    formalizes a supporting fact, not the printed statement of the item it supports, so it never
+    counts for any item and never sets a label (the reader shows it as "Supporting Lean entry")."""
+    return {x for r in coverage_rows if SUPPORTING_LEAD_RE.match(r["lead"].strip()) for x in row_subjects(r)}
+
+
+RANK = {"incomplete": 1, "restricted": 2, "corrected": 2, "printed": 3}
+LABEL_RANK = {"incomplete": 1, "restricted": 2, "corrected": 2, "stated": 3}
+
+
+def lead_rank(lead: str) -> int:
+    """Strength of a COVERAGE headline: printed 3 > corrected/restricted 2 > incomplete 1."""
+    low = lead.lower()
+    if partial_lead(low) or "proved" not in low:
+        return 1
+    if "corrected" in low or re.search(r"restricted|\bonly for\b", low):
+        return 2
+    return 3
+
+
+def label_overclaims(n: dict):
+    """The label may never exceed the ledger status: the weakest reviewed COVERAGE headline of a
+    remark or display, or the weakest counted ledger-record variant of a numbered result.  Returns a
+    description when the node's label is stronger, else None."""
+    lab = n.get("site_label")
+    if lab not in LABEL_RANK:
+        return None
+    if n["class"] == "prose":
+        ranks = [lead_rank(l) for l in n.get("reviewed_leads", []) if l.strip()]  # no bold headline: unrated
+    else:
+        counted = {r["lean_statement"] for r in n["ledger_records"] if not r["status_override"]}
+        ranks = [RANK.get(s["variant"], 1) for s in n["statement_entries"] if s["name"] in counted]
+    if ranks and LABEL_RANK[lab] > min(ranks):
+        return f"{n['id']}: label {lab!r} is stronger than its ledger status (rank {min(ranks)} < {LABEL_RANK[lab]})"
+    return None
+
+
 def coverage_variant(name: str, coverage_rows: list) -> str | None:
     """Variant that the coverage ledger records for an entry with no named-ledger record.
 
@@ -628,6 +678,7 @@ class Builder:
         self.inv = json.loads(inv_text)
         self.ledger = json.loads(self.read("docs/named-result-status.json"))
         self.coverage = parse_coverage(self.read("docs/COVERAGE.md"))
+        self.supporting_names = supporting_entry_names(self.coverage)
         # Reader notes for statement entries without a ledger record (keyed by entry name; optional).
         notes = self.ledger.get("entry_display_notes") or {}
         if not isinstance(notes, dict) or not all(isinstance(v, str) for v in notes.values()):
@@ -851,7 +902,7 @@ class Builder:
                     "statement_entries": [], "proof_wrappers": [], "library_exports": [],
                     "ledger_records": [], "coverage_rows": [], "issues": set(), "evidence": [],
                     "refutations_cited": [], "partial_lead": False, "refuted_lead": False, "uses": [],
-                    "closing": {}, "reviewed_rows": 0,
+                    "closing": {}, "reviewed_rows": 0, "reviewed_leads": [],
                     "display_name": "", "proof_origins": [], "display_notes": [], "correction_status": None,
                     "status_override": None, "printed_refuted": None, "issue_class_items": [], "issue_classes": [],
                 }
@@ -946,6 +997,8 @@ class Builder:
                 target = self.reviewed_parent(ent, target) or target
                 n = node_for(target)
                 variant = classify(ent["name"], None, "", self.coverage)
+                if ent["name"] in self.supporting_names:
+                    variant = "supporting"
             self.entry_node[ent["full"]] = n["id"]
             attached = [n]
             if not rec:
@@ -1065,6 +1118,7 @@ class Builder:
                     n["closing"].setdefault(closing, []).append(info)
                 else:
                     n["reviewed_rows"] += 1
+                    n["reviewed_leads"].append(row["lead"])
                 n["issues"].update(coverage_issue_ids(row["raw"]))
                 for name in REFUTATION_RE.findall(row["raw"]):
                     if name not in n["refutations_cited"]:
@@ -1081,10 +1135,12 @@ class Builder:
         self.apply_issue_classes(nodes)
 
         # statuses ------------------------------------------------------------------------
+        overclaims = []
         for n in nodes.values():
             over_names = {r["lean_statement"] for r in n["ledger_records"] if r["status_override"]}
             variants = [s["variant"] for s in n["statement_entries"]
-                        if (n["class"] == "prose" or s["ledger"] is not None) and s["name"] not in over_names]
+                        if (n["class"] == "prose" or s["ledger"] is not None) and s["name"] not in over_names
+                        and s["variant"] != "supporting"]
             # A ledger record with `status_override: "incomplete"` never counts as proving the node
             # (downgrade only); the node is proved only by its other records.
             counted = [r for r in n["ledger_records"] if not r["status_override"]]
@@ -1093,7 +1149,7 @@ class Builder:
                 proved = bool(counted)
             else:
                 # a closing row (implied / explanatory / out of scope) never makes an entry count as proved
-                proved = bool(n["statement_entries"]) and n["reviewed_rows"] > 0
+                proved = any(s["variant"] != "supporting" for s in n["statement_entries"]) and n["reviewed_rows"] > 0
             if proved and (n["partial_lead"] or n["refuted_lead"]):
                 # A numbered result's ledger record and its COVERAGE headline disagree: warn. For a remark
                 # or display the COVERAGE row is its only reviewed record, so the headline is its status.
@@ -1134,7 +1190,7 @@ class Builder:
             n["proof_wrappers"] = sorted(set(n["proof_wrappers"]))
             over = {r["lean_statement"] for r in n["ledger_records"] if r["status_override"]}
             for se in n["statement_entries"]:
-                se["counted"] = se["name"] not in over and (proved if n["class"] == "prose" else se["ledger"] is not None)
+                se["counted"] = se["variant"] != "supporting" and se["name"] not in over and (proved if n["class"] == "prose" else se["ledger"] is not None)
             n["status_override"] = "incomplete" if overridden and not counted else None
             n["proof_origins"] = sorted({r["proof_origin"] for r in counted} - {"unclassified"}) if proved else []
             corr = [r["correction_status"] for r in counted]
@@ -1145,6 +1201,14 @@ class Builder:
             n["display_name"] = display_name(n)
             lab, markers, sub = site_label(n)
             n["site_label"], n["site_markers"], n["site_sub_reason"] = lab, markers, sub
+            bad = label_overclaims(n)
+            if bad:
+                overclaims.append(bad)
+            n.pop("reviewed_leads", None)
+
+        if overclaims:
+            raise SystemExit("label gate failed: a site label may never exceed the ledger status "
+                             "(COVERAGE headline / ledger record variant); offenders:\n  " + "\n  ".join(overclaims))
 
         # an implication is only as good as the entry it comes from: that entry's node must be proved
         for n in nodes.values():
