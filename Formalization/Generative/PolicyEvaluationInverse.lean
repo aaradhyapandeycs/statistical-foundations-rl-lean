@@ -16,7 +16,7 @@ noncomputable def empiricalMatrix (N : ℕ) (hN : 0 < N) (data : Samples State N
 
 /-- The known state reward induced by the fixed policy. -/
 def policyReward (M : DiscountedMDP State Action) (π : StationaryPolicy State Action) :
-    State → ℝ := fun s ↦ (π s).expectation (M.reward s)
+    State → ℝ := fun s ↦ M.policyExpectedReward π s
 
 theorem empiricalMatrix_mulVec (N : ℕ) (hN : 0 < N) (data : Samples State N)
     (V : State → ℝ) (s : State) :
@@ -59,7 +59,8 @@ theorem valueEstimator_matrix_equation (M : DiscountedMDP State Action)
       valueEstimator M π N hN data = policyReward M π := by
   funext s
   simp only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec,
-    Pi.sub_apply, Pi.smul_apply, smul_eq_mul, empiricalMatrix_mulVec, policyReward]
+    Pi.sub_apply, Pi.smul_apply, smul_eq_mul, empiricalMatrix_mulVec, policyReward,
+    DiscountedMDP.policyExpectedReward]
   have h := valueEstimator_bellman M π N hN data s
   linarith
 

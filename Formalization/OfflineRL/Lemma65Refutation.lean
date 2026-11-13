@@ -55,10 +55,8 @@ noncomputable def lemma65Rho : FiniteDistribution (Unit × Bool) where
   sum_prob := by simp
 
 /-- The (only) transition row on `Unit`. -/
-noncomputable def lemma65UnitDist : FiniteDistribution Unit where
-  prob := fun _ ↦ 1
-  prob_nonneg := fun _ ↦ zero_le_one
-  sum_prob := by simp
+noncomputable def lemma65UnitDist : FiniteDistribution Unit :=
+  FiniteDistribution.ofUnique Unit
 
 /-- The discrete σ-algebra on triples (as in the printed statement). -/
 local instance lemma65TripleMeasurable : MeasurableSpace ((Unit × Bool) × Unit) := ⊤
@@ -70,7 +68,7 @@ noncomputable def lemma65Law : Measure ((Unit × Bool) × Unit) :=
 
 theorem lemma65Law_univ : lemma65Law Set.univ = 1 := by
   simp only [lemma65Law, Measure.coe_finset_sum, Finset.sum_apply, Measure.smul_apply,
-    measure_univ, smul_eq_mul, mul_one, lemma65Rho, lemma65UnitDist]
+    measure_univ, smul_eq_mul, mul_one, lemma65Rho, lemma65UnitDist, FiniteDistribution.ofUnique_prob]
   simp only [Finset.sum_const, Finset.card_univ]
   rw [nsmul_eq_mul, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity)]
   simp [Fintype.card_prod]

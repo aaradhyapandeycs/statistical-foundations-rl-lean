@@ -1,5 +1,6 @@
 import Mathlib.Algebra.BigOperators.Field
 import Formalization.ModelFree.QLearningFinitePinskerCoarsening
+import Formalization.RobustRL.TVCore
 
 /-! TV proof source bridge for finite event-TV. Reuses the
 landed finite half-L1 positive-cell identity, and proves that its value is the
@@ -13,9 +14,10 @@ namespace StatisticalRL.RobustRL.TVProof.Event
 
 variable {State : Type*} [Fintype State] [DecidableEq State]
 
-/-- Signed mass discrepancy on an event of the finite state space. -/
+/-- Signed mass discrepancy on an event of the finite state space; the canonical definition is
+`RobustRL.eventTVMassDifference`. -/
 def eventMassDifference (p q : State → ℝ) (A : Finset State) : ℝ :=
-  (∑ s ∈ A, p s) - (∑ s ∈ A, q s)
+  RobustRL.eventTVMassDifference p q A
 
 /-- Finite maximum of the source's absolute event-mass discrepancy. Since the
 state space is finite and discrete, `Finset State` indexes every measurable

@@ -59,7 +59,7 @@ theorem policyTransition_singleAction (M : DiscountedMDP State Action)
 theorem policyReward_singleAction (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (a : Action) (s : State) :
     policyReward M π s = M.reward s a := by
-  unfold policyReward
+  unfold policyReward DiscountedMDP.policyExpectedReward
   have hconst : M.reward s = fun _ ↦ M.reward s a :=
     funext fun b ↦ by rw [Subsingleton.elim b a]
   rw [hconst, FiniteDistribution.expectation_const]

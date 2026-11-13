@@ -49,6 +49,20 @@ theorem eq_of_subsingleton [Subsingleton Ω] (d e : FiniteDistribution Ω) : d =
     rwa [Fintype.sum_subsingleton _ a] at h
   exact ext (funext fun a ↦ by rw [hprob d a, hprob e a])
 
+/-- The unique finite distribution on a one-point carrier: all mass `1` on the only point. -/
+def ofUnique (Ω : Type*) [Fintype Ω] [Unique Ω] : FiniteDistribution Ω where
+  prob := fun _ ↦ 1
+  prob_nonneg := fun _ ↦ zero_le_one
+  sum_prob := by simp
+
+@[simp]
+theorem ofUnique_prob (Ω : Type*) [Fintype Ω] [Unique Ω] (x : Ω) :
+    (ofUnique Ω).prob x = 1 := rfl
+
+/-- Every finite distribution on a one-point carrier is `FiniteDistribution.ofUnique`. -/
+theorem eq_ofUnique [Unique Ω] (d : FiniteDistribution Ω) : d = ofUnique Ω :=
+  eq_of_subsingleton d _
+
 @[simp]
 theorem expectation_const (d : FiniteDistribution Ω) (c : ℝ) :
     d.expectation (fun _ ↦ c) = c := by

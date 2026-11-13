@@ -72,10 +72,8 @@ noncomputable def Lemma5_8_printed : Prop :=
             Real.sqrt (2 * (K : ℝ) * (H : ℝ)^2 * Real.log (1 / δ'))}
 
 /-- The probability vector on the one-point type. -/
-noncomputable def lemma58UnitDist : FiniteDistribution Unit where
-  prob := fun _ ↦ 1
-  prob_nonneg := fun _ ↦ zero_le_one
-  sum_prob := by simp
+noncomputable def lemma58UnitDist : FiniteDistribution Unit :=
+  FiniteDistribution.ofUnique Unit
 
 /-- One-state, one-action stage with zero reward. -/
 noncomputable def lemma58UnitStage : EnvironmentStage Unit Unit where

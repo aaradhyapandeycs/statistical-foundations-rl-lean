@@ -10,7 +10,7 @@ variable {State Action : Type*} [Fintype State] [Fintype Action]
 /-- The known reward of the evaluated stationary policy. -/
 noncomputable def policyReward (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (s : State) : ℝ :=
-  (π s).expectation (M.reward s)
+  M.policyExpectedReward π s
 
 /-- Simultaneous update using the next-state samples for iteration `t + 1`. -/
 noncomputable def tdIterate (M : DiscountedMDP State Action)

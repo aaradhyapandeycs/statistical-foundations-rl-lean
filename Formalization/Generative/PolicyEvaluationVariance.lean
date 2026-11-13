@@ -20,7 +20,7 @@ variable {State Action : Type*} [Fintype State] [Fintype Action]
 /-- The known one-step policy-averaged reward. -/
 def evaluationPolicyReward (M : DiscountedMDP State Action)
     (π : StationaryPolicy State Action) (s : State) : ℝ :=
-  (π s).expectation (M.reward s)
+  M.policyExpectedReward π s
 
 /-- Population variance of the actual true trajectory value under the policy row. -/
 noncomputable def evaluationPolicyVariance (M : DiscountedMDP State Action)
