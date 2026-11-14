@@ -254,14 +254,14 @@
       "source_label": "lemma:TD-variance-proxy-bound",
       "source_file": "chapters/generative_model_model_free.tex",
       "source_lines": "727–743",
-      "lean_export": "StatisticalRL.TemporalDifference.tdSource_varianceProxy_exists_universal_constants",
+      "lean_export": "StatisticalRL.TemporalDifference.tdSource_varianceProxy_exists_c₃",
       "evidence": "docs/critic-td-variance-lemma.md",
       "coverage": "docs/COVERAGE.md",
       "lean_statement": "StatisticalRL.Statements.Ch4.Lemma4_5",
       "lean_statement_proof": "StatisticalRL.Statements.Ch4.Lemma4_5_holds",
-      "statement_scope": "Printed statement at every step t with T/(c₂ log T) ≤ t ≤ T. Universal constants are read existentially (the proof gives c₁ = c₂ = 1/4, c₃ = 4096).",
+      "statement_scope": "Printed statement at every step t with T/(c₂ log T) ≤ t ≤ T. 'Small enough universal constants c₁ ≥ c₂ > 0' are read as: there is a threshold c₀ (the proof gives 1/4) such that for every 0 < c₂ ≤ c₁ ≤ c₀ there is a universal c₃ (depending only on c₁, c₂); this is the Theorem 4.1 shape and implies the existential reading.",
       "proof_origin": "source-proof",
-      "display_note": "Universal constants read existentially (the proof gives c₁ = c₂ = 1/4, c₃ = 4096).",
+      "display_note": "Proved for every schedule pair 0 < c₂ ≤ c₁ ≤ 1/4 (threshold c₀ = 1/4), with c₃ depending only on c₁, c₂.",
       "correction_status": "proposed-by-project"
     },
     {

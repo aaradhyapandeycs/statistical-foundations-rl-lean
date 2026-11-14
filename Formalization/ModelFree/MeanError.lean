@@ -85,12 +85,25 @@ open StatisticalRL.MeanError
 
 local instance meanErrorStateMeasurable (State : Type*) : MeasurableSpace State := ⊤
 
-/-- Remark 4.1 (`chapters/generative_model_model_free.tex:226–239`): mean ℓ∞ TD estimation error
-`≤ ε(1−δ) + δ/(1−γ) ≤ 2ε` with `δ = ε(1−γ)/2`, with the constants of Theorem 4.1. -/
-theorem tdSource_meanError_exists_universal_constants :
-    ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
-    ∀ (State : Type*) (Action : Type*) [Fintype State] [Fintype Action]
-      (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+/-- Remark 4.1 (`chapters/generative_model_model_free.tex:226–239`) from the Theorem 4.1 accuracy
+statement for a FIXED schedule pair `c₁ ≥ c₂ > 0`, whichever constants it holds for. -/
+theorem tdSource_meanError_of_accuracy {State : Type*} {Action : Type*} [Fintype State]
+    [Fintype Action] (c₁ c₂ c₃ : ℝ) (hc₂ : 0 < c₂) (horder : c₂ ≤ c₁)
+    (hsource : ∀ (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+      (η : ℕ → ℝ) (δ ε : ℝ) (T : ℕ),
+      1 / 2 ≤ M.discount → 2 ≤ T →
+      0 < δ → δ < 1 → 0 < ε → ε ≤ M.effectiveHorizon →
+      tdSourceRateSchedule M.discount c₁ c₂ T η →
+      ∀ (V₀ : State → ℝ),
+      (∀ s, 0 ≤ V₀ s ∧ V₀ s ≤ M.effectiveHorizon) →
+      c₃ * Real.log (T : ℝ) ^ 3 *
+        Real.log ((Fintype.card State : ℝ) * T / δ) /
+          ((1 - M.discount) ^ 3 * ε ^ 2) ≤ (T : ℝ) →
+      1 - δ ≤ (tdSourceSamplingLaw M π T).real
+        {data | ∀ s : State,
+          |tdSourceSampledIterate M π η T V₀ data s -
+            M.trajectoryExpectedValue π s| ≤ ε}) :
+    ∀ (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
       (η : ℕ → ℝ) (ε : ℝ) (T : ℕ),
       1 / 2 ≤ M.discount → M.discount < 1 → 2 ≤ T →
       0 < ε → ε ≤ 1 / (1 - M.discount) →
@@ -110,10 +123,7 @@ theorem tdSource_meanError_exists_universal_constants :
       ∫ data, err data ∂(tdSourceSamplingLaw M π T) ≤
         ε * (1 - δ) + 1 / (1 - M.discount) * δ ∧
       ε * (1 - δ) + 1 / (1 - M.discount) * δ ≤ 2 * ε := by
-  obtain ⟨c₁, c₂, c₃, hc₂, horder, _hc₁le, hc₃, hsource⟩ :=
-    tdSource_policyEvaluation_exactSamples_accuracy_exists_universal_constants
-  refine ⟨c₁, c₂, c₃, hc₂, horder, hc₃, ?_⟩
-  intro State Action _ _ M π η ε T hγhalf hγone hT hε hεmax hη V₀ h₀ hbudget δ err
+  intro M π η ε T hγhalf hγone hT hε hεmax hη V₀ h₀ hbudget δ err
   have hh : 0 < 1 - M.discount := by linarith
   have hεγ : ε * (1 - M.discount) ≤ 1 := by
     have := (le_div_iff₀ hh).1 hεmax
@@ -131,7 +141,7 @@ theorem tdSource_meanError_exists_universal_constants :
   have hbudget' : c₃ * Real.log (T : ℝ) ^ 3 * Real.log ((Fintype.card State : ℝ) * T / δ) /
       ((1 - M.discount) ^ 3 * ε ^ 2) ≤ (T : ℝ) := by
     rw [hlogarg]; exact hbudget
-  have hp := hsource State Action M π η δ ε T hγhalf hT hδ0 hδ1 hε hεsource hη V₀ h₀source
+  have hp := hsource M π η δ ε T hγhalf hT hδ0 hδ1 hε hεsource hη V₀ h₀source
     hbudget'
   -- the crude pathwise bound
   have hc₁ : 0 < c₁ := lt_of_lt_of_le hc₂ horder
@@ -163,6 +173,39 @@ theorem tdSource_meanError_exists_universal_constants :
     hcrude hεmax (fun _ hω ↦ hω) hp
   exact ⟨hδ0, hδ1, hI, hE, hscalar⟩
 
+
+/-- Remark 4.1 (`chapters/generative_model_model_free.tex:226–239`): mean ℓ∞ TD estimation error
+`≤ ε(1−δ) + δ/(1−γ) ≤ 2ε` with `δ = ε(1−γ)/2`, with the constants of Theorem 4.1. -/
+theorem tdSource_meanError_exists_universal_constants :
+    ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+    ∀ (State : Type*) (Action : Type*) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (π : StationaryPolicy State Action)
+      (η : ℕ → ℝ) (ε : ℝ) (T : ℕ),
+      1 / 2 ≤ M.discount → M.discount < 1 → 2 ≤ T →
+      0 < ε → ε ≤ 1 / (1 - M.discount) →
+      (∀ t, 1 ≤ t → t ≤ T →
+        1 / (1 + c₁ * (1 - M.discount) * T / Real.log (T : ℝ) ^ 2) ≤ η t ∧
+        η t ≤ 1 / (1 + c₂ * (1 - M.discount) * t / Real.log (T : ℝ) ^ 2)) →
+      ∀ (V₀ : State → ℝ),
+      (∀ s, 0 ≤ V₀ s ∧ V₀ s ≤ 1 / (1 - M.discount)) →
+      c₃ * Real.log (T : ℝ) ^ 3 *
+        Real.log (2 * (Fintype.card State : ℝ) * T / (ε * (1 - M.discount))) /
+          ((1 - M.discount) ^ 3 * ε ^ 2) ≤ (T : ℝ) →
+      let δ := ε * (1 - M.discount) / 2
+      let err := fun data ↦ ⨆ s : State,
+        |tdSourceSampledIterate M π η T V₀ data s - M.trajectoryExpectedValue π s|
+      0 < δ ∧ δ < 1 ∧
+      Integrable err (tdSourceSamplingLaw M π T) ∧
+      ∫ data, err data ∂(tdSourceSamplingLaw M π T) ≤
+        ε * (1 - δ) + 1 / (1 - M.discount) * δ ∧
+      ε * (1 - δ) + 1 / (1 - M.discount) * δ ≤ 2 * ε := by
+  obtain ⟨c₁, c₂, c₃, hc₂, horder, _hc₁le, hc₃, hsource⟩ :=
+    tdSource_policyEvaluation_exactSamples_accuracy_exists_universal_constants
+  refine ⟨c₁, c₂, c₃, hc₂, horder, hc₃, ?_⟩
+  intro State Action _ _
+  exact tdSource_meanError_of_accuracy c₁ c₂ c₃ hc₂ horder
+    (fun M π η δ ε T ↦ hsource State Action M π η δ ε T)
+
 end StatisticalRL.TemporalDifference
 
 namespace StatisticalRL.QLearning
@@ -170,13 +213,23 @@ open StatisticalRL.MeanError
 
 local instance meanErrorQStateMeasurable (State : Type*) : MeasurableSpace State := ⊤
 
-/-- Remark 4.2 (`chapters/generative_model_model_free.tex:914–929`): mean ℓ∞ synchronous
-Q-learning error `≤ ε(1−δ) + δ/(1−γ) ≤ 2ε` with `δ = ε(1−γ)/2`, with the constants of
-Theorem 4.6. -/
-theorem qLearning_meanError_exists_universal_constants :
-    ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
-    ∀ (State : Type*) (Action : Type*) [Fintype State] [Fintype Action]
-      (M : DiscountedMDP State Action) (η : ℕ → ℝ) (ε : ℝ) (T : ℕ),
+/-- Remark 4.2 (`chapters/generative_model_model_free.tex:914–929`) from the Theorem 4.6 accuracy
+statement for a FIXED schedule pair `c₁ ≥ c₂ > 0`, whichever constants it holds for. -/
+theorem qLearning_meanError_of_accuracy {State : Type*} {Action : Type*} [Fintype State]
+    [Fintype Action] (c₁ c₂ c₃ : ℝ) (hc₂ : 0 < c₂) (horder : c₂ ≤ c₁)
+    (hsource : ∀ (M : DiscountedMDP State Action) (η : ℕ → ℝ) (δ ε : ℝ) (T : ℕ),
+      1/2 ≤ M.discount → 2 ≤ Fintype.card Action → 2 ≤ T →
+      0 < δ → δ < 1 → 0 < ε → ε ≤ M.effectiveHorizon →
+      qSourceRateSchedule M.discount c₁ c₂ T η →
+      ∀ (Q₀ : State → Action → ℝ),
+      (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ M.effectiveHorizon) →
+      c₃ * Real.log (T : ℝ) ^ 4 * Real.log
+        ((Fintype.card State : ℝ) * (Fintype.card Action : ℝ) * T / δ) /
+          ((1 - M.discount) ^ 4 * ε ^ 2) ≤ T →
+      1 - δ ≤ (qSamplingLaw M T).real {data | ∀ s a,
+        |qSampledIterate M η T Q₀ data s a -
+          M.trajectoryExpectedQ M.optimalGreedyPolicy s a| ≤ ε}) :
+    ∀ (M : DiscountedMDP State Action) (η : ℕ → ℝ) (ε : ℝ) (T : ℕ),
       1/2 ≤ M.discount → 2 ≤ Fintype.card Action → 2 ≤ T →
       0 < ε → ε ≤ M.effectiveHorizon →
       (∀ k, k ≤ T →
@@ -196,10 +249,7 @@ theorem qLearning_meanError_exists_universal_constants :
       Integrable err (qSamplingLaw M T) ∧
       ∫ data, err data ∂(qSamplingLaw M T) ≤ ε * (1 - δ) + 1 / (1 - M.discount) * δ ∧
       ε * (1 - δ) + 1 / (1 - M.discount) * δ ≤ 2 * ε := by
-  obtain ⟨c₁, c₂, c₃, hc₂, horder, _hc₁le, hc₃, hsource⟩ :=
-    qLearning_exists_universal_constants_source_accuracy
-  refine ⟨c₁, c₂, c₃, hc₂, horder, hc₃, ?_⟩
-  intro State Action _ _ M η ε T hγhalf hA hT hε hεmax hη Q₀ h₀ hbudget δ err
+  intro M η ε T hγhalf hA hT hε hεmax hη Q₀ h₀ hbudget δ err
   have hγone := M.discount_lt_one
   have hh : 0 < 1 - M.discount := by linarith
   have hεmax' : ε ≤ 1 / (1 - M.discount) := by
@@ -218,7 +268,7 @@ theorem qLearning_meanError_exists_universal_constants :
       ((Fintype.card State : ℝ) * (Fintype.card Action : ℝ) * T / δ) /
       ((1-M.discount)^4*ε^2) ≤ T := by
     rw [hlogarg]; exact hbudget
-  have hp := hsource State Action M η δ ε T hγhalf hA hT hδ0 hδ1 hε hεmax hη Q₀ h₀ hbudget'
+  have hp := hsource M η δ ε T hγhalf hA hT hδ0 hδ1 hε hεmax hη Q₀ h₀ hbudget'
   have hc₁ : 0 < c₁ := lt_of_lt_of_le hc₂ horder
   have hηunit : ∀ k, 1 ≤ k → k ≤ T → 0 ≤ η k ∧ η k ≤ 1 := by
     intro k _ hkT
@@ -254,5 +304,39 @@ theorem qLearning_meanError_exists_universal_constants :
       M.trajectoryExpectedQ M.optimalGreedyPolicy p.1 p.2)
     hcrude hεmax' (fun _ hω p ↦ hω p.1 p.2) hp
   exact ⟨hδ0, hδ1, hI, hE, hscalar⟩
+
+
+/-- Remark 4.2 (`chapters/generative_model_model_free.tex:914–929`): mean ℓ∞ synchronous
+Q-learning error `≤ ε(1−δ) + δ/(1−γ) ≤ 2ε` with `δ = ε(1−γ)/2`, with the constants of
+Theorem 4.6. -/
+theorem qLearning_meanError_exists_universal_constants :
+    ∃ c₁ c₂ c₃ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧ 0 < c₃ ∧
+    ∀ (State : Type*) (Action : Type*) [Fintype State] [Fintype Action]
+      (M : DiscountedMDP State Action) (η : ℕ → ℝ) (ε : ℝ) (T : ℕ),
+      1/2 ≤ M.discount → 2 ≤ Fintype.card Action → 2 ≤ T →
+      0 < ε → ε ≤ M.effectiveHorizon →
+      (∀ k, k ≤ T →
+        1 / (1 + c₁ * (1 - M.discount) * T / Real.log (T : ℝ) ^ 3) ≤ η k ∧
+        η k ≤ 1 / (1 + c₂ * (1 - M.discount) * k / Real.log (T : ℝ) ^ 3)) →
+      ∀ (Q₀ : State → Action → ℝ),
+      (∀ s a, 0 ≤ Q₀ s a ∧ Q₀ s a ≤ M.effectiveHorizon) →
+      c₃ * Real.log (T : ℝ)^4 * Real.log
+        (2 * (Fintype.card State : ℝ) * (Fintype.card Action : ℝ) * T /
+          (ε * (1 - M.discount))) /
+        ((1-M.discount)^4*ε^2) ≤ T →
+      let δ := ε * (1 - M.discount) / 2
+      let err := fun data ↦ ⨆ p : State × Action,
+        |qSampledIterate M η T Q₀ data p.1 p.2 -
+          M.trajectoryExpectedQ M.optimalGreedyPolicy p.1 p.2|
+      0 < δ ∧ δ < 1 ∧
+      Integrable err (qSamplingLaw M T) ∧
+      ∫ data, err data ∂(qSamplingLaw M T) ≤ ε * (1 - δ) + 1 / (1 - M.discount) * δ ∧
+      ε * (1 - δ) + 1 / (1 - M.discount) * δ ≤ 2 * ε := by
+  obtain ⟨c₁, c₂, c₃, hc₂, horder, _hc₁le, hc₃, hsource⟩ :=
+    qLearning_exists_universal_constants_source_accuracy
+  refine ⟨c₁, c₂, c₃, hc₂, horder, hc₃, ?_⟩
+  intro State Action _ _
+  exact qLearning_meanError_of_accuracy c₁ c₂ c₃ hc₂ horder
+    (fun M η δ ε T ↦ hsource State Action M η δ ε T)
 
 end StatisticalRL.QLearning

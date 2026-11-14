@@ -114,15 +114,18 @@ noncomputable def Lemma2_3 : Prop :=
 
 /-- `eq:Qpi-Vpi-matrix-notation-inf`, equations (2.24a–d), `chapters/prelim.tex:496–531`,
 with the intermediate display `Q^π = r + γ P^π Q^π` of `chapters/prelim.tex:524–526`.
-`Q^π` is the policy Bellman solution `M.policyFixedPoint π` (separately proved equal to the
-expected infinite-trajectory Q-value, `trajectoryExpectedQ_eq_policyFixedPoint`), viewed as a
-vector indexed by `State × Action`; `V^π = Π^π Q^π`, i.e. `V^π(s) = E_{a∼π(s)} Q^π(s,a)`
+`Q^π` is the policy Bellman solution `M.policyFixedPoint π`, viewed as a
+vector indexed by `State × Action`; the final two conjuncts record that `Q` is the expected
+infinite-trajectory Q-value `trajectoryExpectedQ π` and `V` the trajectory value
+`trajectoryExpectedValue π` (`eq:defn-Qpi-inf-horizon`, `eq:defn-Vpi-inf`), so the displayed
+identities hold for the actual `Q^π`, `V^π`; `V^π = Π^π Q^π`, i.e. `V^π(s) = E_{a∼π(s)} Q^π(s,a)`
 (`eq:Vpi-a-function-of-Qpi-inf`); `r` is the reward vector on `State × Action`,
 `r_π(s) = E_{a∼π(s)} r(s,a)`; `P` is the `(S·A) × S` transition matrix; `P_π` and `P^π` are
 the policy matrices exactly as in `Lemma2_3`; all stationary randomized policies are included.
 The conjuncts, in order: (2.24a) `Q^π = r + γPV^π`; (2.24b) `V^π = r_π + γP_πV^π`;
-(2.24c) `V^π = (I − γP_π)⁻¹ r_π`; the intermediate `Q^π = r + γP^πQ^π`; and (2.24d)
-`Q^π = (I − γP^π)⁻¹ r`. The inverses are Mathlib's `Matrix` inverses; `I − γP_π` and
+(2.24c) `V^π = (I − γP_π)⁻¹ r_π`; the intermediate `Q^π = r + γP^πQ^π`; (2.24d)
+`Q^π = (I − γP^π)⁻¹ r`; and the identifications `Q = trajectoryExpectedQ π`,
+`V = trajectoryExpectedValue π`. The inverses are Mathlib's `Matrix` inverses; `I − γP_π` and
 `I − γP^π` are invertible (`Lemma2_3`), so they are not junk values. -/
 noncomputable def Eq_Qpi_Vpi_matrix_notation_inf : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
@@ -142,16 +145,23 @@ noncomputable def Eq_Qpi_Vpi_matrix_notation_inf : Prop :=
     V = rπ + γ • (Pπ *ᵥ V) ∧
     V = (1 - γ • Pπ)⁻¹ *ᵥ rπ ∧
     Q = r + γ • (Ppi *ᵥ Q) ∧
-    Q = (1 - γ • Ppi)⁻¹ *ᵥ r
+    Q = (1 - γ • Ppi)⁻¹ *ᵥ r ∧
+    Q = (fun sa ↦ M.trajectoryExpectedQ π sa.1 sa.2) ∧
+    V = M.trajectoryExpectedValue π
 
 /-- Linear convergence of value iteration and policy iteration,
 `chapters/prelim.tex:317–343`, equations `eq:value_iteration` (`chapters/prelim.tex:317–319`) and
-`eq:policy_iteration` (`chapters/prelim.tex:328–330`). Fixed points denote actual trajectory values by the separately proved
-trajectory identification and optimality theorems;
-policy iteration permits arbitrary maximizing tie choices at each update. -/
+`eq:policy_iteration` (`chapters/prelim.tex:328–330`). The iterates are compared with the Bellman fixed points
+`policyFixedPoint` and `optimalityFixedPoint`; the first two conjuncts identify them with the
+actual trajectory objects: `Q^π = trajectoryExpectedQ π` for every stationary randomized policy
+and `Q⋆ = max_π Q^π` (the supremum over all stationary randomized policies of the trajectory
+Q-values). Policy iteration permits arbitrary maximizing tie choices at each update. -/
 def Lemma2_1 : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action),
+    (∀ π : StationaryPolicy State Action, M.trajectoryExpectedQ π = M.policyFixedPoint π) ∧
+    (fun s a ↦ ⨆ π : StationaryPolicy State Action, M.trajectoryExpectedQ π s a) =
+      M.optimalityFixedPoint ∧
     (∀ (Q₀ : State → Action → ℝ) (k : ℕ), 1 ≤ k →
       ‖M.qOptimality^[k] Q₀ - M.optimalityFixedPoint‖ ≤
         M.discount ^ k * ‖Q₀ - M.optimalityFixedPoint‖) ∧
@@ -171,12 +181,16 @@ def Lemma2_1 : Prop :=
 `(1/(1−γ)) log(‖Q₀ − Q⋆‖∞/ε)` iterations, for value iteration and for policy iteration
 (`Q_k = Q^{π_k}`, `Q₀ = Q^{π₀}`). Read as: for every `ε > 0` and every iteration count
 `k ≥ log(‖Q₀ − Q⋆‖∞/ε)/(1−γ)`, `‖Q_k − Q⋆‖∞ ≤ ε`. Objects and binders are those of `Lemma2_1`
-(policy iteration with arbitrary maximizing tie choices). When `Q₀ = Q⋆` the printed `log 0`
+(policy iteration with arbitrary maximizing tie choices), including the leading identifications of
+the fixed points with the trajectory objects. When `Q₀ = Q⋆` the printed `log 0`
 is undefined; Lean's `log 0 = 0` turns the condition into `k ≥ 0`, and the conclusion holds
 there since then every iterate equals `Q⋆`. -/
 def Lemma2_1_iterationCount : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M : DiscountedMDP State Action) (ε : ℝ), 0 < ε →
+    (∀ π : StationaryPolicy State Action, M.trajectoryExpectedQ π = M.policyFixedPoint π) ∧
+    (fun s a ↦ ⨆ π : StationaryPolicy State Action, M.trajectoryExpectedQ π s a) =
+      M.optimalityFixedPoint ∧
     (∀ (Q₀ : State → Action → ℝ) (k : ℕ),
       Real.log (‖Q₀ - M.optimalityFixedPoint‖ / ε) / (1 - M.discount) ≤ k →
       ‖M.qOptimality^[k] Q₀ - M.optimalityFixedPoint‖ ≤ ε) ∧
@@ -398,9 +412,9 @@ def Lemma2_10 : Prop :=
 `M' = (S,A,P,r̃,γ)` with the same transition kernel and discount, differing only in the
 reward. For every stationary randomized policy `π` (the policy class of `prelim.tex:66`),
 `‖Q^π − Q̃^π‖∞ ≤ ‖r − r̃‖∞/(1−γ)` and `‖V^π − Ṽ^π‖∞ ≤ ‖r − r̃‖∞/(1−γ)`.
-As in `Lemma2_1`, `Q^π` is written as the policy Bellman solution `M.policyFixedPoint π`
-(separately proved equal to the expected infinite-trajectory Q-value,
-`trajectoryExpectedQ_eq_policyFixedPoint`), and `V^π(s) = E_{a∼π(s)} Q^π(s,a)`. The norms are
+As in `Lemma2_1`, `Q^π` is written as the policy Bellman solution `M.policyFixedPoint π`, and
+`V^π(s) = E_{a∼π(s)} Q^π(s,a)`; the leading conjunct identifies these, for both models, with the
+actual trajectory objects `trajectoryExpectedQ π` and `trajectoryExpectedValue π`. The norms are
 the finite sup norms (`‖·‖` on `State → Action → ℝ` and `State → ℝ` is the max of `|·|`). The
 printed intermediate resolvent identities (`(I−γP^π)⁻¹ r` and `‖(I−γP^π)⁻¹‖₁ = 1/(1−γ)`) are
 proof steps and are not restated here; the matrix facts are `Lemma2_3`. -/
@@ -409,6 +423,10 @@ def Eq_QV_pi_perturbation_r_inf : Prop :=
     (M M' : DiscountedMDP State Action),
     M'.transition = M.transition → M'.discount = M.discount →
     ∀ π : StationaryPolicy State Action,
+      (M.trajectoryExpectedQ π = M.policyFixedPoint π ∧
+        M'.trajectoryExpectedQ π = M'.policyFixedPoint π ∧
+        M.trajectoryExpectedValue π = (fun s ↦ (π s).expectation (M.policyFixedPoint π s)) ∧
+        M'.trajectoryExpectedValue π = (fun s ↦ (π s).expectation (M'.policyFixedPoint π s))) ∧
       ‖M.policyFixedPoint π - M'.policyFixedPoint π‖ ≤
           ‖M.reward - M'.reward‖ / (1 - M.discount) ∧
       ‖(fun s ↦ (π s).expectation (M.policyFixedPoint π s)) -
@@ -421,7 +439,9 @@ def Eq_QV_pi_perturbation_r_inf : Prop :=
 `‖Q⋆ − Q̃⋆‖∞ = ‖max_π Q^π − max_π Q̃^π‖∞ ≤ max_π ‖Q^π − Q̃^π‖∞ ≤ ‖r − r̃‖∞/(1−γ)` and
 `‖V⋆ − Ṽ⋆‖∞ ≤ ‖r − r̃‖∞/(1−γ)` is stated with `max_π` as the supremum `⨆ π` over stationary
 randomized policies of the policy Bellman solutions (`Q^π = M.policyFixedPoint π`,
-`V^π(s) = E_{a∼π(s)} Q^π(s,a)`). The first conjunct records that these suprema are the optimal
+`V^π(s) = E_{a∼π(s)} Q^π(s,a)`); the leading conjunct identifies these, for both models, with the
+actual trajectory objects `trajectoryExpectedQ π` and `trajectoryExpectedValue π`, so the suprema
+are over the true `Q^π`, `V^π`. The second conjunct records that these suprema are the optimal
 Bellman solution `optimalityFixedPoint` (the `Q⋆` of `Lemma2_1`) of each model, so the Q-suprema
 are attained (by `optimalGreedyPolicy`); the V-suprema are bounded above by `1/(1−γ)` and the
 norm-supremum by `‖r − r̃‖∞/(1−γ)`, so no `⨆` here is a junk value. -/
@@ -429,6 +449,11 @@ def Eq_QV_star_perturbation_r_inf : Prop :=
   ∀ (State : Type u) (Action : Type v) [Fintype State] [Fintype Action]
     (M M' : DiscountedMDP State Action),
     M'.transition = M.transition → M'.discount = M.discount →
+    (∀ π : StationaryPolicy State Action,
+      M.trajectoryExpectedQ π = M.policyFixedPoint π ∧
+      M'.trajectoryExpectedQ π = M'.policyFixedPoint π ∧
+      M.trajectoryExpectedValue π = (fun s ↦ (π s).expectation (M.policyFixedPoint π s)) ∧
+      M'.trajectoryExpectedValue π = (fun s ↦ (π s).expectation (M'.policyFixedPoint π s))) ∧
     ((fun s a ↦ ⨆ π : StationaryPolicy State Action, M.policyFixedPoint π s a) =
         M.optimalityFixedPoint ∧
       (fun s a ↦ ⨆ π : StationaryPolicy State Action, M'.policyFixedPoint π s a) =
